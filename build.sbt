@@ -5,7 +5,7 @@ scalaJSSettings
 
 workbenchSettings
 
-name := "Example"
+name := "Doodle"
 
 version := "0.1-SNAPSHOT"
 
