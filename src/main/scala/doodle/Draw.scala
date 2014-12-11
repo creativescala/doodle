@@ -2,7 +2,7 @@ package doodle
  
 import org.scalajs.dom
 
-object Scene {
+object Draw {
   def apply(img: Image, canvas: dom.HTMLCanvasElement): Unit = {
     val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
     val originX  = canvas.width / 2
@@ -34,6 +34,7 @@ object Scene {
         ctx.rect(originX - w/2, originY - h/2, w, h)
         ctx.closePath()
         doStrokeAndFill()
+
       case Overlay(t, b) =>
         draw(b, originX, originY, stroke, fill, ctx)
         draw(t, originX, originY, stroke, fill, ctx)
@@ -59,8 +60,12 @@ object Scene {
 
         draw(t, originX, tOriginY, stroke, fill, ctx)
         draw(b, originX, bOriginY, stroke, fill, ctx)
+
       case StrokeColour(c, i) =>
         val newStroke = stroke.copy(colour = c)
+        draw(i, originX, originY, newStroke, fill, ctx)
+      case StrokeWidth(w, i) =>
+        val newStroke = stroke.copy(line = stroke.line.copy(width = w))
         draw(i, originX, originY, newStroke, fill, ctx)
     }
   }

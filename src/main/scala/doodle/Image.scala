@@ -36,6 +36,8 @@ sealed trait Image {
 
       case StrokeColour(c, i) =>
         i.boundingBox
+      case StrokeWidth(w, i) =>
+        i.boundingBox
     }
 
   def beside(right: Image): Image =
@@ -55,6 +57,9 @@ sealed trait Image {
 
   def strokeColour(colour: Colour): Image =
     StrokeColour(colour, this)
+
+  def strokeWidth(width: Double): Image =
+    StrokeWidth(width, this)
 }
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
@@ -72,4 +77,5 @@ final case class Overlay(t: Image, b: Image) extends Image
 //     Path(elements ++ path.elements)
 // }
 final case class StrokeColour(colour: Colour, image: Image) extends Image
+final case class StrokeWidth(width: Double, Image: Image) extends Image
 
