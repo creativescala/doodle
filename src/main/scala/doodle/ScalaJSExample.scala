@@ -17,9 +17,9 @@ object ScalaJSExample {
         case _ => Triangle(40, 40)
       }
 
-    val picture = tree(4) above Rectangle(20,40)
+    val picture = tree(4) strokeColour(RGB(0, 255,0)) above Rectangle(20,40)
 
 
-    Scene(picture, canvas)
+    Draw(picture, canvas)
   }
 }

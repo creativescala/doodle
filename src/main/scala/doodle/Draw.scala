@@ -34,9 +34,6 @@ object Draw {
         ctx.rect(originX - w/2, originY - h/2, w, h)
         ctx.closePath()
         doStrokeAndFill()
-<<<<<<< HEAD:src/main/scala/doodle/Draw.scala
-
-=======
       case Triangle(w, h) =>
         ctx.beginPath()
         ctx.moveTo(originX      , originY - h/2)
@@ -44,7 +41,7 @@ object Draw {
         ctx.lineTo(originX - w/2, originY + h/2)
         ctx.closePath()
         doStrokeAndFill()
->>>>>>> 3e85d6bbc7c99f0190ea1ad808ed72736e93f4bf:src/main/scala/doodle/Scene.scala
+
       case Overlay(t, b) =>
         draw(b, originX, originY, stroke, fill, ctx)
         draw(t, originX, originY, stroke, fill, ctx)
