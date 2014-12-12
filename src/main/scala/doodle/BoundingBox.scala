@@ -4,7 +4,7 @@ package doodle
   * Represents a bounding box around an image. The coordinate system
   * follows the canvas convention, meaning that the origin is the top
   * left. However, the coordinate system is not the global coordinate
-  * system of the canvast but one that is local to the image. We
+  * system of the canvas but one that is local to the image. We
   * require the image is centered at the origin, and thus left and top
   * will usually be negative.
   */
