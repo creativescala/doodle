@@ -8,7 +8,10 @@ sealed trait Image {
 
       case Rectangle(w, h) =>
         BoundingBox(-w/2, -h/2, w/2, h/2)
-        
+
+      case Triangle(w, h) =>
+        BoundingBox(-w/2, -h/2, w/2, h/2)
+
       case Overlay(t, b) =>
         val BoundingBox(l1, t1, r1, b1) = t.boundingBox
         val BoundingBox(l2, t2, r2, b2) = b.boundingBox
@@ -26,7 +29,8 @@ sealed trait Image {
 
       case Above(t, b) =>
         val boxT = t.boundingBox
-        val boxB = t.boundingBox
+        val boxB = b.boundingBox
+
         BoundingBox(
           boxT.left min boxB.left,
           -(boxT.height + boxB.height) / 2,
@@ -63,6 +67,7 @@ sealed trait Image {
 }
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
+final case class Triangle(w: Double, h: Double) extends Image
 final case class Beside(l: Image, r: Image) extends Image
 final case class Above(l: Image, r: Image) extends Image
 final case class Overlay(t: Image, b: Image) extends Image

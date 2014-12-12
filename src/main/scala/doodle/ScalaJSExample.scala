@@ -8,9 +8,18 @@ object ScalaJSExample {
   def main(canvas: dom.HTMLCanvasElement): Unit = {
     val ctx = canvas.getContext("2d")
                     .asInstanceOf[dom.CanvasRenderingContext2D]
-    val progression =
-      Circle(5) beside Rectangle(20,20) beside Circle(15) beside (Circle(20) on Rectangle(40, 40))
-    val picture = progression above progression strokeColour (RGB(59, 67, 70)) strokeWidth (5.0)
 
-    Draw(picture, canvas)}
+    def tree(levels: Int): Image =
+      levels match {
+        case n if n > 1 =>
+          val row: Seq[Image] = (1 to n).map(_ => Triangle(40,40))
+          row.reduce(_ beside _) below tree(n-1)
+        case _ => Triangle(40, 40)
+      }
+
+    val picture = tree(4) above Rectangle(20,40)
+
+
+    Scene(picture, canvas)
+  }
 }
