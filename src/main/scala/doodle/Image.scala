@@ -26,7 +26,8 @@ sealed trait Image {
 
       case Above(t, b) =>
         val boxT = t.boundingBox
-        val boxB = t.boundingBox
+        val boxB = b.boundingBox
+
         BoundingBox(
           boxT.left min boxB.left,
           -(boxT.height + boxB.height) / 2,
