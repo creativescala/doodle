@@ -1,5 +1,5 @@
 package doodle
- 
+
 import org.scalajs.dom
 
 object Scene {
@@ -34,6 +34,13 @@ object Scene {
         ctx.rect(originX - w/2, originY - h/2, w, h)
         ctx.closePath()
         doStrokeAndFill()
+      case Triangle(w, h) =>
+        ctx.beginPath()
+        ctx.moveTo(originX      , originY - h/2)
+        ctx.lineTo(originX + w/2, originY + h/2)
+        ctx.lineTo(originX - w/2, originY + h/2)
+        ctx.closePath()
+        doStrokeAndFill()
       case Overlay(t, b) =>
         draw(b, originX, originY, stroke, fill, ctx)
         draw(t, originX, originY, stroke, fill, ctx)
@@ -64,4 +71,4 @@ object Scene {
         draw(i, originX, originY, newStroke, fill, ctx)
     }
   }
-} 
+}
