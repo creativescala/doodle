@@ -22,6 +22,12 @@ object Draw {
           ctx.stroke()
         }
       }
+      context.fill.foreach {
+        case Fill(colour) => {
+          ctx.fillStyle = colour.toCanvas
+          ctx.fill()
+        }
+      }
     }
 
     img match {
@@ -74,6 +80,9 @@ object Draw {
         draw(i, originX, originY, newContext, ctx)
       case StrokeWidth(w, i) =>
         val newContext = context.lineWidth(w)
+        draw(i, originX, originY, newContext, ctx)
+      case FillColour(w, i) =>
+        val newContext = context.fillColour(w)
         draw(i, originX, originY, newContext, ctx)
     }
   }
