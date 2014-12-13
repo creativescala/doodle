@@ -1,11 +1,13 @@
 package doodle
+import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom
 
 @JSExport
-object ScalaJSExample {
+object ScalaJSExample extends JSApp {
   @JSExport
-  def main(canvas: dom.HTMLCanvasElement): Unit = {
+  def main(): Unit = {
+    val canvas: dom.HTMLCanvasElement = dom.document.getElementById("canvas").asInstanceOf[dom.HTMLCanvasElement]
     val ctx = canvas.getContext("2d")
                     .asInstanceOf[dom.CanvasRenderingContext2D]
 
@@ -23,3 +25,4 @@ object ScalaJSExample {
     Draw(picture, canvas)
   }
 }
+ 

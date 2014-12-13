@@ -1,9 +1,6 @@
-import scala.scalajs.sbtplugin.ScalaJSPlugin._
-import com.lihaoyi.workbench.Plugin._
+lazy val root = project.in(file(".")).
+  enablePlugins(ScalaJSPlugin)
 
-scalaJSSettings
-
-workbenchSettings
 
 name := "Doodle"
 
@@ -11,11 +8,17 @@ version := "0.1-SNAPSHOT"
 
 scalaVersion := "2.11.2"
 
+persistLauncher := true
+
+persistLauncher in Test := false
+
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6"
-)
+  "org.scalaz" %% "scalaz-core" % "7.1.0",
+  "org.scala-js" %%% "scalajs-dom" % "0.7.0"
+) 
 
-bootSnippet := "ScalaJSExample().main(document.getElementById('canvas'));"
+workbenchSettings
 
-updateBrowsers <<= updateBrowsers.triggeredBy(ScalaJSKeys.fastOptJS in Compile)
+bootSnippet := "doodle.ScalaJSExample().main();"
 
+//refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
