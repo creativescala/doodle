@@ -15,7 +15,7 @@ sealed trait Image {
       case Overlay(t, b) =>
         val BoundingBox(l1, t1, r1, b1) = t.boundingBox
         val BoundingBox(l2, t2, r2, b2) = b.boundingBox
-        BoundingBox(l1 min l2, t1 min t2, r1 max r1, b1 max b2)
+        BoundingBox(l1 min l2, t1 min t2, r1 max r2, b1 max b2)
 
       case Beside(l, r) =>
         val boxL = l.boundingBox
