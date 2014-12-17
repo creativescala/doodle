@@ -16,13 +16,20 @@ object ScalaJSExample extends JSApp {
     val green = RGB(0, 255, 0)
 
     val bauble = Circle(7) strokeColour(red) fillColour(red)
+    val goldBauble = Circle(10) strokeColour(gold) fillColour(gold)
+
+    val treeElement = Triangle(40, 40)
+
+    def row(elements: Int): Image =
+      elements match {
+        case 1 => bauble on treeElement
+        case n => bauble on treeElement beside row(n - 1)
+      }
 
     def tree(levels: Int): Image =
       levels match {
-        case n if n > 1 =>
-          val row: Seq[Image] = (1 to n).map(_ => bauble on Triangle(40,40))
-          row.reduce(_ beside _) below tree(n-1)
-        case _ => Circle(10) strokeColour(gold) fillColour(gold) above Triangle(40, 40)
+        case 1 => goldBauble above treeElement
+        case n => row(n) below tree(n - 1)
       }
 
     val picture = tree(4) strokeColour(green) fillColour(green) above Rectangle(20,40)
