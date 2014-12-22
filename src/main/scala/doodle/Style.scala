@@ -1,13 +1,5 @@
 package doodle
 
-sealed trait Colour {
-  def toCanvas: String =
-    this match {
-      case RGB(r, g, b) => s"rgb($r, $g, $b)"
-    }
-}
-final case class RGB(r: Int, g: Int, b: Int) extends Colour
-
 object Line {
   sealed trait Cap {
     def toCanvas: String =
