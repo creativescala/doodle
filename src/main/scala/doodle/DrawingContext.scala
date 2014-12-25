@@ -24,6 +24,11 @@ case class DrawingContext(
   def fill: Option[Fill] =
     fillColour.map(Fill.apply _)
 
+  // A lens library would help to reduce this redundancy is the
+  // DrawingContext transformations. However, in the introductory
+  // context we're developing this code I don't want to add the
+  // complication. At least this serves to motivate lenses!
+
   def lineColour(colour: Colour): DrawingContext =
     this.copy(lineColour = Some(colour))
 

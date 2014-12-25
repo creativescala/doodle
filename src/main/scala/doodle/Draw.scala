@@ -75,15 +75,8 @@ object Draw {
         draw(t, originX, tOriginY, context, ctx)
         draw(b, originX, bOriginY, context, ctx)
 
-      case StrokeColour(c, i) =>
-        val newContext = context.lineColour(c)
-        draw(i, originX, originY, newContext, ctx)
-      case StrokeWidth(w, i) =>
-        val newContext = context.lineWidth(w)
-        draw(i, originX, originY, newContext, ctx)
-      case FillColour(w, i) =>
-        val newContext = context.fillColour(w)
-        draw(i, originX, originY, newContext, ctx)
+      case ContextTransform(f, i) =>
+        draw(i, originX, originY, f(context), ctx)
     }
   }
 }

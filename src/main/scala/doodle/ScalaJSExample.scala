@@ -15,8 +15,8 @@ object ScalaJSExample extends JSApp {
     val gold = Colour.rgb(255, 255, 0)
     val green = Colour.rgb(0, 255, 0)
 
-    val bauble = Circle(7) strokeColour(red) fillColour(red)
-    val goldBauble = Circle(10) strokeColour(gold) fillColour(gold)
+    val bauble = Circle(7) lineColour(red) fillColour(red)
+    val goldBauble = Circle(10) lineColour(gold) fillColour(gold)
 
     val treeElement = Triangle(40, 40)
 
@@ -32,7 +32,7 @@ object ScalaJSExample extends JSApp {
         case n => row(n) below tree(n - 1)
       }
 
-    val picture = tree(4) strokeColour(green) fillColour(green) above Rectangle(20,40)
+    val picture = tree(4) lineColour(green) fillColour(green) above Rectangle(20,40)
 
 
     Draw(picture, canvas)
