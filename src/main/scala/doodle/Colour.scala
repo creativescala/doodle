@@ -1,25 +1,45 @@
 package doodle
 
 /**
-  * An angle in degrees, from 0 to 360
+  * An angle in radians, normalised to be in [0, 2pi)
   */
 final case class Angle(get: Double) extends AnyVal {
+  def +(that: Angle): Angle =
+    Angle.radians(this.get + that.get)
+
+  def -(that: Angle): Angle =
+    Angle.radians(this.get - that.get)
+
   /** Angle as the proportion of a full turn around a circle */
   def toTurn: Normalised =
-    Normalised.clip(this.get / 360.0)
+    Normalised.clip(this.get / Angle.TwoPi)
+  def toDegrees: Double =
+    this.get * Angle.TwoPi
 }
 object Angle {
-  def degrees(deg: Double): Angle = {
-    def normalise(deg: Double): Double =
-      deg match {
-        case d if deg < 0.0 =>
-          normalise(d + 360.0)
-        case d if deg > 360.0 =>
-          normalise(d - 360.0)
-        case d => d
-      }
-    Angle(normalise(deg))
-  }
+  val TwoPi = math.Pi * 2
+
+  def normalise(rad: Double): Double =
+    rad match {
+      case r if r < 0.0 =>
+        normalise(r + TwoPi)
+      case r if r > TwoPi =>
+        normalise(r - TwoPi)
+      case r => r
+    }
+
+  def degrees(deg: Double): Angle = 
+    Angle(normalise(deg * TwoPi / 360.0))
+
+  def radians(rad: Double): Angle =
+    Angle(normalise(rad))
+
+  /**
+    *  A turn represents angle as a proportion of a full turn around a
+    *  circle, with a full turn being 1.0
+    */
+  def turn(t: Double): Angle =
+    Angle(normalise(t * TwoPi))
 }
 
 /**
@@ -81,14 +101,7 @@ sealed trait Colour {
             60 * (((bNormalised - rNormalised) / delta) + 2)
           else
             60 * (((rNormalised - gNormalised) / delta) + 4)
-        val hue =
-          unnormalisedHue match {
-            case h if unnormalisedHue < 0 =>
-              h + 360
-            case h if unnormalisedHue > 360 =>
-              h - 360
-            case h => h
-          }
+        val hue = Angle.degrees(unnormalisedHue).toDegrees
 
         val lightness = (cMax + cMin) / 2
 
@@ -112,13 +125,8 @@ sealed trait Colour {
             val lightness = (l.get * 255).toInt
             Colour.rgba(lightness, lightness, lightness, a.get)
           case s =>
-            def hueToRgb(p: Double, q: Double, t: Double): Double = {
-              val turn = t match {
-                case t if t < 0 => t + 1
-                case t if t > 1 => t - 1
-                case t => t
-              }
-              turn match {
+            def hueToRgb(p: Double, q: Double, t: Normalised): Double = {
+              t.get match {
                 case t if t < 1.0/6.0 => p + (q - p) * 6 * t
                 case t if t < 0.5 => q
                 case t if t < 2.0/3.0 => p + (q - p) * (2/3 - t) * 6
@@ -133,9 +141,9 @@ sealed trait Colour {
               else
                 lightness + s - (lightness * s)
             val p = 2 * lightness - q
-            val r = hueToRgb(p, q, h.toTurn.get + 1.0/3.0)
-            val g = hueToRgb(p, q, h.toTurn.get)
-            val b = hueToRgb(p, q, h.toTurn.get - 1.0/3.0)
+            val r = hueToRgb(p, q, (h + Angle.degrees(120)).toTurn)
+            val g = hueToRgb(p, q, h.toTurn)
+            val b = hueToRgb(p, q, (h - Angle.degrees(120)).toTurn)
 
             Colour.rgba(
               Math.round(r * 255).toInt,
