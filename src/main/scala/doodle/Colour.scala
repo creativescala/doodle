@@ -1,5 +1,7 @@
 package doodle
 
+import scala.annotation.tailrec
+
 /**
   * An angle in radians, normalised to be in [0, 2pi)
   */
@@ -13,12 +15,14 @@ final case class Angle(get: Double) extends AnyVal {
   /** Angle as the proportion of a full turn around a circle */
   def toTurn: Normalised =
     Normalised.clip(this.get / Angle.TwoPi)
+
   def toDegrees: Double =
     this.get * Angle.TwoPi
 }
 object Angle {
   val TwoPi = math.Pi * 2
 
+  @tailrec
   def normalise(rad: Double): Double =
     rad match {
       case r if r < 0.0 =>
