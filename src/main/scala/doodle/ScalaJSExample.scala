@@ -11,9 +11,9 @@ object ScalaJSExample extends JSApp {
     val ctx = canvas.getContext("2d")
                     .asInstanceOf[dom.CanvasRenderingContext2D]
 
-    val red = RGB(255, 0, 0)
-    val gold = RGB(255, 255, 0)
-    val green = RGB(0, 255, 0)
+    val red = Colour.rgb(255, 0, 0)
+    val gold = Colour.rgb(255, 255, 0)
+    val green = Colour.rgb(0, 255, 0)
 
     val bauble = Circle(7) strokeColour(red) fillColour(red)
     val goldBauble = Circle(10) strokeColour(gold) fillColour(gold)

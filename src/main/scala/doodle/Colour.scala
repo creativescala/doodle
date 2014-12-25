@@ -1,9 +1,13 @@
 package doodle
 
 /**
-  * An angle in degrees
+  * An angle in degrees, from 0 to 360
   */
-final case class Angle(get: Double) extends AnyVal
+final case class Angle(get: Double) extends AnyVal {
+  /** Angle as the proportion of a full turn around a circle */
+  def toTurn: Normalised =
+    Normalised.clip(this.get / 360.0)
+}
 object Angle {
   def degrees(deg: Double): Angle = {
     def normalise(deg: Double): Double =
@@ -129,11 +133,15 @@ sealed trait Colour {
               else
                 lightness + s - (lightness * s)
             val p = 2 * lightness - q
-            val r = hueToRgb(p, q, h.get + 1.0/3.0)
-            val g = hueToRgb(p, q, h.get)
-            val b = hueToRgb(p, q, h.get - 1.0/3.0)
+            val r = hueToRgb(p, q, h.toTurn.get + 1.0/3.0)
+            val g = hueToRgb(p, q, h.toTurn.get)
+            val b = hueToRgb(p, q, h.toTurn.get - 1.0/3.0)
 
-            Colour.rgba((r * 255).toInt, (g * 255).toInt, (b * 255).toInt, a.get)
+            Colour.rgba(
+              Math.round(r * 255).toInt,
+              Math.round(g * 255).toInt,
+              Math.round(b * 255).toInt,
+              a.get)
         }
     }
 }

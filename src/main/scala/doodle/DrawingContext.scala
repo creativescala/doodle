@@ -38,7 +38,7 @@ object DrawingContext {
   val whiteLines =
     DrawingContext(
       lineWidth = Some(1.0),
-      lineColour = Some(RGB(255, 255, 255)),
+      lineColour = Some(Colour.rgb(255, 255, 255)),
       lineCap = Some(Line.Cap.Butt),
       lineJoin = Some(Line.Join.Bevel),
       fillColour = None
@@ -46,7 +46,7 @@ object DrawingContext {
   val blackLines =
     DrawingContext(
       lineWidth = Some(1.0),
-      lineColour = Some(RGB(0, 0, 0)),
+      lineColour = Some(Colour.rgb(0, 0, 0)),
       lineCap = Some(Line.Cap.Butt),
       lineJoin = Some(Line.Join.Bevel),
       fillColour = None
