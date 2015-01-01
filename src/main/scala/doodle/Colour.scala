@@ -83,9 +83,9 @@ sealed trait Colour {
               else
                 lightness + s - (lightness * s)
             val p = 2 * lightness - q
-            val r = hueToRgb(p, q, (h + Angle.degrees(120)).toTurn)
-            val g = hueToRgb(p, q, h.toTurn)
-            val b = hueToRgb(p, q, (h - Angle.degrees(120)).toTurn)
+            val r = hueToRgb(p, q, (h + Angle.degrees(120)).toTurns)
+            val g = hueToRgb(p, q, h.toTurns)
+            val b = hueToRgb(p, q, (h - Angle.degrees(120)).toTurns)
 
             Colour.rgba(
               Math.round(r * 255).toInt,

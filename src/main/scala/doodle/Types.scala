@@ -13,7 +13,7 @@ final case class Angle(get: Double) extends AnyVal {
     Angle.radians(this.get - that.get)
 
   /** Angle as the proportion of a full turn around a circle */
-  def toTurn: Normalised =
+  def toTurns: Normalised =
     Normalised.clip(this.get / Angle.TwoPi)
 
   def toDegrees: Double =
@@ -42,7 +42,7 @@ object Angle {
     *  A turn represents angle as a proportion of a full turn around a
     *  circle, with a full turn being 1.0
     */
-  def turn(t: Double): Angle =
+  def turns(t: Double): Angle =
     Angle(normalise(t * TwoPi))
 }
 
