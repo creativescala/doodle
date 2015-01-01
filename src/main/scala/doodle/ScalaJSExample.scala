@@ -1,7 +1,10 @@
 package doodle
+
 import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom
+
+import doodle.syntax.angle._
 
 @JSExport
 object ScalaJSExample extends JSApp {
@@ -14,11 +17,15 @@ object ScalaJSExample extends JSApp {
     val red = Colour.rgb(255, 0, 0)
     val gold = Colour.rgb(255, 255, 0)
     val green = Colour.rgb(0, 255, 0)
+    val brown = Colour.rgb(169, 69, 19)
 
     val bauble = Circle(7) lineColour(red) fillColour(red)
     val goldBauble = Circle(10) lineColour(gold) fillColour(gold)
 
-    val treeElement = Triangle(40, 40)
+    def treeElement = {
+      val colour = green spin (Math.random() * 30).degrees
+      Triangle(40, 40) lineColour(colour) fillColour(colour)
+    }
 
     def row(elements: Int): Image =
       elements match {
@@ -32,7 +39,7 @@ object ScalaJSExample extends JSApp {
         case n => row(n) below tree(n - 1)
       }
 
-    val picture = tree(4) lineColour(green) fillColour(green) above Rectangle(20,40)
+    val picture = tree(4) above Rectangle(20,40) lineColour(brown) fillColour(brown)
 
 
     Draw(picture, canvas)
