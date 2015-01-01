@@ -1,6 +1,7 @@
 package doodle
 
 import utest._
+import doodle.syntax.angle._
 
 object ColourSpec extends TestSuite {
   val tests = TestSuite {
@@ -16,8 +17,8 @@ object ColourSpec extends TestSuite {
 
     "HSLA spin transforms correctly"-{
       val original = Colour.hsla(120, 0.5, 0.5, 1.0)
-      val spun = original.spin(Angle.degrees(60))
-      val unspun = original.spin(Angle.degrees(-60))
+      val spun = original.spin(60.degrees)
+      val unspun = original.spin(-60.degrees)
 
       assert(spun ~= Colour.hsla(180, 0.5, 0.5, 1.0))
       assert(unspun ~= Colour.hsla(60, 0.5, 0.5, 1.0))
