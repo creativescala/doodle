@@ -23,7 +23,7 @@ sealed trait Colour {
       case RGBA(r, g, b, a) =>
         s"rgba(${r.toCanvas}, ${g.toCanvas}, ${b.toCanvas}, ${a.toCanvas})"
       case HSLA(h, s, l, a) =>
-        s"hsla($h, ${s.toPercentage}, ${l.toPercentage}, ${a.toCanvas})"
+        s"hsla(${h.toCanvas}, ${s.toPercentage}, ${l.toPercentage}, ${a.toCanvas})"
     }
 
   def toHSLA: HSLA = 

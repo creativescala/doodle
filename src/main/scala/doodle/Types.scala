@@ -17,7 +17,10 @@ final case class Angle(get: Double) extends AnyVal {
     Normalised.clip(this.get / Angle.TwoPi)
 
   def toDegrees: Double =
-    this.get * Angle.TwoPi
+    (this.get / Angle.TwoPi) * 360
+
+  def toCanvas: String =
+    this.toDegrees.toString
 }
 object Angle {
   val TwoPi = math.Pi * 2

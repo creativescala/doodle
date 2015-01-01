@@ -23,5 +23,12 @@ object ColourSpec extends TestSuite {
       assert(spun ~= Colour.hsla(180, 0.5, 0.5, 1.0))
       assert(unspun ~= Colour.hsla(60, 0.5, 0.5, 1.0))
     }
+
+    "Colours print to canvas correctly"-{
+      val hsla = Colour.hsl(120, 0.5, 0.5).toCanvas
+      assert(hsla == "hsla(120, 50%, 50%, 1)")
+      val rgba = Colour.rgb(240, 12, 12).toCanvas
+      assert(rgba == "rgba(240, 12, 12, 1)")
+    }
   }
 }

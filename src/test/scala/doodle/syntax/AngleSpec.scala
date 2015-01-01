@@ -1,7 +1,8 @@
-package doodle
+package doodle.syntax
 
 import utest._
 import doodle.syntax.angle._
+import doodle.Angle
 
 object AngleSpec extends TestSuite {
   val tests = TestSuite {
