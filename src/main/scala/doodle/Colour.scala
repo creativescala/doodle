@@ -10,6 +10,38 @@ sealed trait Colour {
     original.copy(h = original.h + angle)
   }
 
+  /** Lighten the colour by the given amount. This is an absolute
+    * amount, not an amount relative to the Colour's current
+    * lightness. Lightness is clipped at Normalised.MaxValue */
+  def lighten(lightness: Normalised) = {
+    val original = this.toHSLA
+    original.copy(l = Normalised.clip(original.l + lightness))
+  }
+
+  /** Darken the colour by the given amount. This is an absolute
+    * amount, not an amount relative to the Colour's current
+    * lightness. Lightness is clipped at Normalised.MaxValue */
+  def darken(darkness: Normalised) = {
+    val original = this.toHSLA
+    original.copy(l = Normalised.clip(original.l - darkness))
+  }
+
+  /** Saturate the colour by the given amount. This is an absolute
+    * amount, not an amount relative to the Colour's current
+    * saturation. Saturation is clipped at Normalised.MaxValue */
+  def saturate(saturation: Normalised) = {
+    val original = this.toHSLA
+    original.copy(s = Normalised.clip(original.s + saturation))
+  }
+
+  /** Desaturate the colour by the given amount. This is an absolute
+    * amount, not an amount relative to the Colour's current
+    * saturation. Saturation is clipped at Normalised.MaxValue */
+  def desaturate(desaturation: Normalised) = {
+    val original = this.toHSLA
+    original.copy(s = Normalised.clip(original.s - desaturation))
+  }
+
   /** True if this is approximately equal to that */
   def ~=(that: Colour): Boolean =
     (this.toRGBA, that.toRGBA) match {
