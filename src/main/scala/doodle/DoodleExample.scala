@@ -8,7 +8,7 @@ import doodle.syntax.angle._
 import doodle.syntax.normalised._ 
 
 @JSExport
-object ScalaJSExample extends JSApp {
+object DoodleExample extends JSApp {
   @JSExport
   def main(): Unit = {
     val canvas: dom.HTMLCanvasElement = dom.document.getElementById("canvas").asInstanceOf[dom.HTMLCanvasElement]
