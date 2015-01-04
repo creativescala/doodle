@@ -1,5 +1,7 @@
 package doodle
 
+import doodle.syntax.angle._
+
 sealed trait Colour {
 
   /** Adjust hue by the given angle */
@@ -43,17 +45,17 @@ sealed trait Colour {
             60 * (((bNormalised - rNormalised) / delta) + 2)
           else
             60 * (((rNormalised - gNormalised) / delta) + 4)
-        val hue = Angle.degrees(unnormalisedHue).toDegrees
+        val hue = unnormalisedHue.degrees
 
-        val lightness = (cMax + cMin) / 2
+        val lightness = Normalised.clip((cMax + cMin) / 2)
 
         val saturation =
           if(delta == 0.0)
-            0.0
+            Normalised.MinValue
           else
-            (delta / (1 - Math.abs(2 * lightness - 1)))
+            Normalised.clip(delta / (1 - Math.abs(2 * lightness.get - 1)))
 
-        Colour.hsla(hue, saturation, lightness, a.get)
+        HSLA(hue, saturation, lightness, a)
 
       case HSLA(h, s, l, a) => HSLA(h, s, l, a)
     }
@@ -83,16 +85,11 @@ sealed trait Colour {
               else
                 lightness + s - (lightness * s)
             val p = 2 * lightness - q
-            val r = hueToRgb(p, q, (h + Angle.degrees(120)).toTurns)
+            val r = hueToRgb(p, q, (h + 120.degrees).toTurns)
             val g = hueToRgb(p, q, h.toTurns)
-            val b = hueToRgb(p, q, (h - Angle.degrees(120)).toTurns)
+            val b = hueToRgb(p, q, (h - 120.degrees).toTurns)
 
-            RGBA(
-              r.toUnsignedByte,
-              g.toUnsignedByte,
-              b.toUnsignedByte,
-              a
-            )
+            RGBA(r.toUnsignedByte, g.toUnsignedByte, b.toUnsignedByte, a)
         }
     }
 }
