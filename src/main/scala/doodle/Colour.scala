@@ -29,9 +29,9 @@ sealed trait Colour {
   def toHSLA: HSLA = 
     this match {
       case RGBA(r, g, b, a) =>
-        val rNormalised = r.get / 255.0
-        val gNormalised = g.get / 255.0
-        val bNormalised = b.get / 255.0
+        val rNormalised = r.toNormalised
+        val gNormalised = g.toNormalised
+        val bNormalised = b.toNormalised
         val cMax = rNormalised max gNormalised max bNormalised
         val cMin = rNormalised min gNormalised min bNormalised
         val delta = cMax - cMin
@@ -64,16 +64,16 @@ sealed trait Colour {
       case HSLA(h, s, l, a) =>
         s.get match {
           case 0 =>
-            val lightness = (l.get * 255).toInt
-            Colour.rgba(lightness, lightness, lightness, a.get)
+            val lightness = l.toUnsignedByte
+            RGBA(lightness, lightness, lightness, a)
           case s =>
-            def hueToRgb(p: Double, q: Double, t: Normalised): Double = {
-              t.get match {
+            def hueToRgb(p: Double, q: Double, t: Normalised): Normalised = {
+              Normalised.clip(t.get match {
                 case t if t < 1.0/6.0 => p + (q - p) * 6 * t
                 case t if t < 0.5 => q
                 case t if t < 2.0/3.0 => p + (q - p) * (2/3 - t) * 6
                 case t => p
-              }
+              })
             }
 
             val lightness = l.get
@@ -87,11 +87,12 @@ sealed trait Colour {
             val g = hueToRgb(p, q, h.toTurns)
             val b = hueToRgb(p, q, (h - Angle.degrees(120)).toTurns)
 
-            Colour.rgba(
-              Math.round(r * 255).toInt,
-              Math.round(g * 255).toInt,
-              Math.round(b * 255).toInt,
-              a.get)
+            RGBA(
+              r.toUnsignedByte,
+              g.toUnsignedByte,
+              b.toUnsignedByte,
+              a
+            )
         }
     }
 }
