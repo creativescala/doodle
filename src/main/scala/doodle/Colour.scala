@@ -42,6 +42,24 @@ sealed trait Colour {
     original.copy(s = Normalised.clip(original.s - desaturation))
   }
 
+  /** Increase the alpha channel by the given amount. */
+  def fadeIn(opacity: Normalised) = {
+    val original = this.toHSLA
+    original.copy(a = Normalised.clip(original.a + opacity))
+  }
+
+  /** Decrease the alpha channel by the given amount. */
+  def fadeOut(opacity: Normalised) = {
+    val original = this.toHSLA
+    original.copy(a = Normalised.clip(original.a - opacity))
+  }
+
+  def alpha: Normalised =
+    this match {
+      case RGBA(_, _, _, a) => a
+      case HSLA(_, _, _, a) => a
+    }
+
   /** True if this is approximately equal to that */
   def ~=(that: Colour): Boolean =
     (this.toRGBA, that.toRGBA) match {

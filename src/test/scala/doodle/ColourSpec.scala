@@ -2,6 +2,7 @@ package doodle
 
 import utest._
 import doodle.syntax.angle._
+import doodle.syntax.normalised._
 
 object ColourSpec extends TestSuite {
   val tests = TestSuite {
@@ -50,6 +51,15 @@ object ColourSpec extends TestSuite {
 
       assert(spun ~= Colour.hsla(180, 0.5, 0.5, 1.0))
       assert(unspun ~= Colour.hsla(60, 0.5, 0.5, 1.0))
+    }
+
+    "Fade in/out transforms correctly"-{
+      val original = Colour.hsla(120, 0.5, 0.5, 0.5)
+      val fadeOut = original fadeOut(0.5.clip)
+      val fadeIn = original fadeIn(0.5.clip)
+
+      assert(fadeOut.alpha == 0.0.clip)
+      assert(fadeIn.alpha == 1.0.clip)
     }
 
     "Colours print to canvas correctly"-{
