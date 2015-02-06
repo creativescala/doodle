@@ -1,8 +1,8 @@
 package doodle.syntax
 
 import utest._
+import doodle.core.Normalised
 import doodle.syntax.normalised._
-import doodle.Normalised
 
 object NormalisedSpec extends TestSuite {
   val tests = TestSuite {

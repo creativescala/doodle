@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 import utest._
 import doodle.syntax.angle._
