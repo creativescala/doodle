@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 // import scalaz.syntax.applicative._
 // import scalaz.std.option._
@@ -24,7 +24,7 @@ case class DrawingContext(
   def fill: Option[Fill] =
     fillColour.map(Fill.apply _)
 
-  // A lens library would help to reduce this redundancy is the
+  // A lens library would help to reduce this redundancy in the
   // DrawingContext transformations. However, in the introductory
   // context we're developing this code I don't want to add the
   // complication. At least this serves to motivate lenses!

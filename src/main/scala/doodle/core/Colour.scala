@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 import doodle.syntax.angle._
 
@@ -78,7 +78,7 @@ sealed trait Colour {
         s"hsla(${h.toCanvas}, ${s.toPercentage}, ${l.toPercentage}, ${a.toCanvas})"
     }
 
-  def toHSLA: HSLA = 
+  def toHSLA: HSLA =
     this match {
       case RGBA(r, g, b, a) =>
         val rNormalised = r.toNormalised
@@ -143,8 +143,8 @@ sealed trait Colour {
         }
     }
 }
-final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalised) extends Colour 
-final case class HSLA(h: Angle, s: Normalised, l: Normalised, a: Normalised) extends Colour 
+final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalised) extends Colour
+final case class HSLA(h: Angle, s: Normalised, l: Normalised, a: Normalised) extends Colour
 
 object Colour {
   // Convenience constructors that clip their input

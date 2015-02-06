@@ -1,20 +1,15 @@
-package doodle
-
 import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom
 
+import doodle.core._
 import doodle.syntax.angle._
-import doodle.syntax.normalised._ 
+import doodle.syntax.normalised._
 
 @JSExport
-object DoodleExample extends JSApp {
+object Main extends JSApp {
   @JSExport
   def main(): Unit = {
-    val canvas: dom.HTMLCanvasElement = dom.document.getElementById("canvas").asInstanceOf[dom.HTMLCanvasElement]
-    val ctx = canvas.getContext("2d")
-                    .asInstanceOf[dom.CanvasRenderingContext2D]
-
     val red = Colour.rgb(255, 0, 0)
     val gold = Colour.rgb(255, 255, 0)
     val green = Colour.rgb(0, 255, 0)
@@ -49,7 +44,7 @@ object DoodleExample extends JSApp {
     val trunk = Rectangle(20,40) lineColour(brown) fillColour(brown)
     val picture = goldBauble above (tree(levels) on treeBackground) above trunk
 
-    Draw(picture, canvas)
+    doodle.canvas.Draw(picture, "canvas")
   }
 }
- 
+

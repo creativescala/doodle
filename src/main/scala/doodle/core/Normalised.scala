@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 /**
   * A value in the range [0, 1]

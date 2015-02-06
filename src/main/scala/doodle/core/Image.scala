@@ -1,47 +1,6 @@
-package doodle
+package doodle.core
 
 sealed trait Image {
-  val boundingBox: BoundingBox =
-    this match {
-      case Circle(r) =>
-        BoundingBox(-r, -r, r, r)
-
-      case Rectangle(w, h) =>
-        BoundingBox(-w/2, -h/2, w/2, h/2)
-
-      case Triangle(w, h) =>
-        BoundingBox(-w/2, -h/2, w/2, h/2)
-
-      case Overlay(t, b) =>
-        val BoundingBox(l1, t1, r1, b1) = t.boundingBox
-        val BoundingBox(l2, t2, r2, b2) = b.boundingBox
-        BoundingBox(l1 min l2, t1 min t2, r1 max r2, b1 max b2)
-
-      case Beside(l, r) =>
-        val boxL = l.boundingBox
-        val boxR = r.boundingBox
-        BoundingBox(
-          - (boxL.width + boxR.width) / 2,
-          boxL.top min boxR.top,
-          (boxL.width + boxR.width) / 2,
-          boxL.bottom max boxR.bottom
-        )
-
-      case Above(t, b) =>
-        val boxT = t.boundingBox
-        val boxB = b.boundingBox
-
-        BoundingBox(
-          boxT.left min boxB.left,
-          -(boxT.height + boxB.height) / 2,
-          boxT.right max boxB.right,
-          (boxT.height + boxB.height) / 2
-        )
-
-      case ContextTransform(f, i) =>
-        i.boundingBox
-    }
-
   def beside(right: Image): Image =
     Beside(this, right)
 

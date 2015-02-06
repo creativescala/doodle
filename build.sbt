@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.1.0",
   "org.scala-js" %%% "scalajs-dom" % "0.7.0",
   "com.lihaoyi" %%% "utest" % "0.2.5-M3"
-) 
+)
 
 workbenchSettings
 

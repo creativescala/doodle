@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 final case class UnsignedByte(value: Byte) extends AnyVal {
   def +(that: UnsignedByte): Int =

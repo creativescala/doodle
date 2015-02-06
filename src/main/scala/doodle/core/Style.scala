@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 object Line {
   sealed trait Cap {
@@ -28,7 +28,7 @@ object Line {
     final case object Round extends Join
     final case object Miter extends Join
   }
-} 
+}
 
 final case class Stroke(width: Double, colour: Colour, cap: Line.Cap, join: Line.Join)
 final case class Fill(colour: Colour)

@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 sealed trait PathElement
 final case class MoveTo(x: Double, y: Double) extends PathElement

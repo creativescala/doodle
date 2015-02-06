@@ -1,4 +1,4 @@
-package doodle
+package doodle.core
 
 import scala.annotation.tailrec
 
@@ -37,7 +37,7 @@ object Angle {
       case r => r
     }
 
-  def degrees(deg: Double): Angle = 
+  def degrees(deg: Double): Angle =
     Angle(normalise(deg * TwoPi / 360.0))
 
   def radians(rad: Double): Angle =

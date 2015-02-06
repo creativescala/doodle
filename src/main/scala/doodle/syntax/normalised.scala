@@ -1,6 +1,6 @@
 package doodle.syntax
 
-import doodle.Normalised
+import doodle.core.Normalised
 
 object normalised {
   implicit class ToNormalisedOps(val normalised: Double) extends AnyVal {

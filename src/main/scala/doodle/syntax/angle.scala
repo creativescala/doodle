@@ -1,6 +1,6 @@
 package doodle.syntax
 
-import doodle.Angle
+import doodle.core.Angle
 
 object angle {
   implicit class ToAngleOps(val angle: Double) extends AnyVal {
