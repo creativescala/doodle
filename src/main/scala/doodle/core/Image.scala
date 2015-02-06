@@ -16,14 +16,14 @@ sealed trait Image {
   def below(top: Image): Image =
     Above(top, this)
 
-  def lineColour(colour: Colour): Image =
-    ContextTransform(_.lineColour(colour), this)
+  def lineColor(color: Color): Image =
+    ContextTransform(_.lineColor(color), this)
 
   def lineWidth(width: Double): Image =
     ContextTransform(_.lineWidth(width), this)
 
-  def fillColour(colour: Colour): Image =
-    ContextTransform(_.fillColour(colour), this)
+  def fillColor(color: Color): Image =
+    ContextTransform(_.fillColor(color), this)
 }
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image

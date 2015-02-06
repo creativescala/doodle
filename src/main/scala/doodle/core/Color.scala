@@ -2,7 +2,7 @@ package doodle.core
 
 import doodle.syntax.angle._
 
-sealed trait Colour {
+sealed trait Color {
 
   /** Adjust hue by the given angle */
   def spin(angle: Angle) = {
@@ -10,32 +10,32 @@ sealed trait Colour {
     original.copy(h = original.h + angle)
   }
 
-  /** Lighten the colour by the given amount. This is an absolute
-    * amount, not an amount relative to the Colour's current
+  /** Lighten the color by the given amount. This is an absolute
+    * amount, not an amount relative to the Color's current
     * lightness. Lightness is clipped at Normalised.MaxValue */
   def lighten(lightness: Normalised) = {
     val original = this.toHSLA
     original.copy(l = Normalised.clip(original.l + lightness))
   }
 
-  /** Darken the colour by the given amount. This is an absolute
-    * amount, not an amount relative to the Colour's current
+  /** Darken the color by the given amount. This is an absolute
+    * amount, not an amount relative to the Color's current
     * lightness. Lightness is clipped at Normalised.MaxValue */
   def darken(darkness: Normalised) = {
     val original = this.toHSLA
     original.copy(l = Normalised.clip(original.l - darkness))
   }
 
-  /** Saturate the colour by the given amount. This is an absolute
-    * amount, not an amount relative to the Colour's current
+  /** Saturate the color by the given amount. This is an absolute
+    * amount, not an amount relative to the Color's current
     * saturation. Saturation is clipped at Normalised.MaxValue */
   def saturate(saturation: Normalised) = {
     val original = this.toHSLA
     original.copy(s = Normalised.clip(original.s + saturation))
   }
 
-  /** Desaturate the colour by the given amount. This is an absolute
-    * amount, not an amount relative to the Colour's current
+  /** Desaturate the color by the given amount. This is an absolute
+    * amount, not an amount relative to the Color's current
     * saturation. Saturation is clipped at Normalised.MaxValue */
   def desaturate(desaturation: Normalised) = {
     val original = this.toHSLA
@@ -61,7 +61,7 @@ sealed trait Colour {
     }
 
   /** True if this is approximately equal to that */
-  def ~=(that: Colour): Boolean =
+  def ~=(that: Color): Boolean =
     (this.toRGBA, that.toRGBA) match {
       case (RGBA(r1, g1, b1, a1), RGBA(r2, g2, b2, a2)) =>
         Math.abs(r1 - r2) < 2 &&
@@ -143,10 +143,10 @@ sealed trait Colour {
         }
     }
 }
-final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalised) extends Colour
-final case class HSLA(h: Angle, s: Normalised, l: Normalised, a: Normalised) extends Colour
+final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalised) extends Color
+final case class HSLA(h: Angle, s: Normalised, l: Normalised, a: Normalised) extends Color
 
-object Colour {
+object Color {
   // Convenience constructors that clip their input
   def rgba(r: Int, g: Int, b: Int, a: Double): RGBA =
     RGBA(
@@ -162,7 +162,7 @@ object Colour {
       Normalised.clip(l),
       Normalised.clip(a)
     )
-  def rgb(r: Int, g: Int, b: Int): Colour =
+  def rgb(r: Int, g: Int, b: Int): Color =
     rgba(r, g, b, 1.0)
   def hsl(h: Double, s: Double, l: Double) =
     hsla(h, s, l, 1.0)

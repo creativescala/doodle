@@ -30,5 +30,5 @@ object Line {
   }
 }
 
-final case class Stroke(width: Double, colour: Colour, cap: Line.Cap, join: Line.Join)
-final case class Fill(colour: Colour)
+final case class Stroke(width: Double, color: Color, cap: Line.Cap, join: Line.Join)
+final case class Fill(color: Color)

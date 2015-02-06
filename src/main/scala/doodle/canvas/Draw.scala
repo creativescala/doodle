@@ -20,17 +20,17 @@ object Draw {
   def draw(img: Image, originX: Double, originY: Double, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
     def doStrokeAndFill() = {
       context.stroke.foreach {
-        case Stroke(width, colour, cap, join) => {
+        case Stroke(width, color, cap, join) => {
           ctx.lineWidth = width
           ctx.lineCap = cap.toCanvas
           ctx.lineJoin = join.toCanvas
-          ctx.strokeStyle = colour.toCanvas
+          ctx.strokeStyle = color.toCanvas
           ctx.stroke()
         }
       }
       context.fill.foreach {
-        case Fill(colour) => {
-          ctx.fillStyle = colour.toCanvas
+        case Fill(color) => {
+          ctx.fillStyle = color.toCanvas
           ctx.fill()
         }
       }

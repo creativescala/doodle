@@ -10,22 +10,22 @@ import doodle.syntax.normalised._
 object Main extends JSApp {
   @JSExport
   def main(): Unit = {
-    val red = Colour.rgb(255, 0, 0)
-    val gold = Colour.rgb(255, 255, 0)
-    val green = Colour.rgb(0, 255, 0)
-    val brown = Colour.rgb(169, 69, 19)
+    val red = Color.rgb(255, 0, 0)
+    val gold = Color.rgb(255, 255, 0)
+    val green = Color.rgb(0, 255, 0)
+    val brown = Color.rgb(169, 69, 19)
     val darkGreen = green.darken(0.3.clip)
 
-    val bauble = Circle(7) lineColour(red) fillColour(red)
-    val goldBauble = Circle(10) lineColour(gold) fillColour(gold)
+    val bauble = Circle(7) lineColor(red) fillColor(red)
+    val goldBauble = Circle(10) lineColor(gold) fillColor(gold)
 
     val levels = 4
 
     def treeElement = {
-      val colour = green.spin((Math.random() * 30).degrees)
+      val color = green.spin((Math.random() * 30).degrees)
         .darken((Math.random() * 0.1).clip)
         .desaturate((Math.random() * 0.1).clip)
-      Triangle(40, 40) lineColour(colour) fillColour(colour)
+      Triangle(40, 40) lineColor(color) fillColor(color)
     }
 
     def row(elements: Int): Image =
@@ -40,8 +40,8 @@ object Main extends JSApp {
         case n => row(n) below tree(n - 1)
       }
 
-    val treeBackground = Triangle(40 * levels, 40 * levels) fillColour(darkGreen)
-    val trunk = Rectangle(20,40) lineColour(brown) fillColour(brown)
+    val treeBackground = Triangle(40 * levels, 40 * levels) fillColor(darkGreen)
+    val trunk = Rectangle(20,40) lineColor(brown) fillColor(brown)
     val picture = goldBauble above (tree(levels) on treeBackground) above trunk
 
     doodle.canvas.Draw(picture, "canvas")
