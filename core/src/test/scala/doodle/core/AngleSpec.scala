@@ -4,6 +4,8 @@ import utest._
 import doodle.syntax.angle._
 
 object AngleSpec extends TestSuite {
+  implicit val ec = utest.ExecutionContext.RunNow
+
   val tests = TestSuite {
     "Conversions to/from degrees ok"-{
       for(i <- 1 to 100) {
