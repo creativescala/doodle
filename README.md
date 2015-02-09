@@ -27,11 +27,7 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
 3.  Use Scala commands to draw a shape in a native window:
 
     ~~~ scala
-    scala> import doodle.core._, doodle.jvm._
-    import doodle.core._
-    import doodle.jvm._
-
-    scala> Draw(Circle(10) fillColor Color.rgba(0, 0, 0, 0))
+    scala> draw(Circle(10) fillColor Color.rgba(0, 0, 0, 0))
     ~~~
 
     A window should appear containing a black circle.
