@@ -27,10 +27,10 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
 3.  Use Scala commands to draw a shape in a native window:
 
     ~~~ scala
-    scala> draw(Circle(10) fillColor Color.rgba(0, 0, 0, 0))
+    scala> draw(Circle(10) fillColor Color.red)
     ~~~
 
-    A window should appear containing a black circle.
+    A window should appear containing a red circle.
 
 4.  Return to the SBT prompt and compile the JS version:
 
