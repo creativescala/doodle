@@ -1,4 +1,4 @@
-package doodle.canvas
+package doodle.js
 
 import org.scalajs.dom
 

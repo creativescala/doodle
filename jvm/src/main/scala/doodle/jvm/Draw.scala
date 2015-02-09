@@ -1,4 +1,4 @@
-package doodle.java2d
+package doodle.jvm
 
 import java.awt.{Graphics, Graphics2D, Shape => Shape2D, Color => AwtColor, BasicStroke}
 import java.awt.geom.{Ellipse2D, Rectangle2D, Path2D}

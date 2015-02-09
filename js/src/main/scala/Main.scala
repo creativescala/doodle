@@ -5,6 +5,6 @@ import org.scalajs.dom
 
 @JSExport object Main extends JSApp {
   @JSExport def main(): Unit = {
-    doodle.canvas.Draw(doodle.Example.picture, "canvas")
+    doodle.js.Draw(doodle.Example.picture, "canvas")
   }
 }
