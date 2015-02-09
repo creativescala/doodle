@@ -9,7 +9,7 @@ package doodle.core
   * will usually be negative.
   */
 final case class BoundingBox(left: Double, top: Double, right: Double, bottom: Double) {
-  // TODO: Are bounding boxes every not symmetric around any given
+  // TODO: Are bounding boxes ever not symmetric around any given
   // axis? Can we replace l/t/r/b with just width and height?
   val height: Double =
     bottom - top
