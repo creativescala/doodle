@@ -8,7 +8,7 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
 
 # Getting Started
 
-1. Start SBT:
+1.  Start SBT:
 
     ~~~ bash
     bash$ sbt
@@ -16,7 +16,7 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
     > # This is the SBT prompt. Press Ctrl+D to quit to the OS.
     ~~~
 
-2. Start the console:
+2.  Start the console:
 
     ~~~ coffee
     > console
@@ -24,7 +24,7 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
     scala> # This is the Scala prompt. Press Ctrl+D to quit to SBT.
     ~~~
 
-3. Use Scala commands to draw a shape in a native window:
+3.  Use Scala commands to draw a shape in a native window:
 
     ~~~ scala
     scala> import doodle.core._, doodle.jvm._
@@ -34,13 +34,15 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
     scala> Draw(Circle(10) fillColor Color.rgba(0, 0, 0, 0))
     ~~~
 
- 4. Return to the SBT prompt and compile the JS version:
+    A window should appear containing a black circle.
 
-     ~~~ scala
-     > fastOptJS
-     ~~~
+4.  Return to the SBT prompt and compile the JS version:
 
- 5. Open your browser and point to `http://localhost:12345`
+    ~~~ scala
+    > fastOptJS
+    ~~~
+
+5.  Open your browser and point to `http://localhost:12345`
     to see an HTML 5 canvas version of the code.
 
 # Directory Structure
