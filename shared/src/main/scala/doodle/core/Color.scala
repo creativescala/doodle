@@ -146,8 +146,8 @@ sealed trait Color {
 final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalised) extends Color
 final case class HSLA(h: Angle, s: Normalised, l: Normalised, a: Normalised) extends Color
 
-object Color {
-  // Convenience constructors that clip their input
+object Color extends CommonColors {
+  /** Convenience constructors that clips its input. */
   def rgba(r: Int, g: Int, b: Int, a: Double): RGBA =
     RGBA(
       UnsignedByte.clip(r),
@@ -155,6 +155,8 @@ object Color {
       UnsignedByte.clip(b),
       Normalised.clip(a)
     )
+
+  /** Convenience constructors that clips its input. */
   def hsla(h: Double, s: Double, l: Double, a: Double): HSLA =
     HSLA(
       Angle.degrees(h),
@@ -162,8 +164,12 @@ object Color {
       Normalised.clip(l),
       Normalised.clip(a)
     )
+
+  /** Convenience constructors that clips its input. */
   def rgb(r: Int, g: Int, b: Int): Color =
     rgba(r, g, b, 1.0)
+
+  /** Convenience constructors that clips its input. */
   def hsl(h: Double, s: Double, l: Double) =
     hsla(h, s, l, 1.0)
 }
