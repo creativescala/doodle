@@ -23,6 +23,7 @@ def canvasSettings(projectName: String) = {
 }
 
 lazy val core = project.in(file("core")).
+  enablePlugins(ScalaJSPlugin).
   settings(commonSettings("doodle-core") : _*)
 
 lazy val canvas = project.in(file("canvas")).
