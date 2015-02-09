@@ -18,3 +18,17 @@ lazy val doodle = crossProject.
     )
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
   )
+
+lazy val doodleJVM = doodle.jvm
+
+lazy val doodleJS = doodle.js
+
+// Handy shortcuts:
+//  - `run`       runs `doodleJVM/run`
+//  - `console`   runs `doodleJVM/console`
+//  - `test`      runs `doodleJVM/test` and then `doodleJS/test`
+//  - `fastOptJS` runs `doodleJS/fastOptJS`
+
+run     <<= run     in (doodleJVM, Compile)
+
+console <<= console in (doodleJVM, Compile)
