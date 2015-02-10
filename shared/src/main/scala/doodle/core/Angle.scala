@@ -5,19 +5,19 @@ import scala.annotation.tailrec
 /**
   * An angle in radians, normalized to be in [0, 2pi)
   */
-final case class Angle(get: Double) extends AnyVal {
+final case class Angle(toRadians: Double) extends AnyVal {
   def +(that: Angle): Angle =
-    Angle.radians(this.get + that.get)
+    Angle.radians(this.toRadians + that.toRadians)
 
   def -(that: Angle): Angle =
-    Angle.radians(this.get - that.get)
+    Angle.radians(this.toRadians - that.toRadians)
 
   /** Angle as the proportion of a full turn around a circle */
   def toTurns: Normalized =
-    Normalized.clip(this.get / Angle.TwoPi)
+    Normalized.clip(this.toRadians / Angle.TwoPi)
 
   def toDegrees: Double =
-    (this.get / Angle.TwoPi) * 360
+    (this.toRadians / Angle.TwoPi) * 360
 
   def toCanvas: String =
     this.toDegrees.toString
