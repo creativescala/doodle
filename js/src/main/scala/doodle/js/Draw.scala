@@ -14,10 +14,10 @@ object Draw {
     val originX = canvas.width / 2
     val originY = canvas.height / 2
 
-    draw(img, originX, originY, DrawingContext.blackLines, ctx)
+    draw(img, Point(originX, originY), DrawingContext.blackLines, ctx)
   }
 
-  def draw(img: Image, originX: Double, originY: Double, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
+  def draw(img: Image, origin: Point, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
     def doStrokeAndFill() = {
       context.fill.foreach {
         case Fill(color) => {
@@ -40,57 +40,58 @@ object Draw {
     img match {
       case Circle(r) =>
         ctx.beginPath()
-        ctx.arc(originX, originY, r, 0.0, Math.PI * 2)
+        ctx.arc(origin.x, origin.y, r, 0.0, Math.PI * 2)
         ctx.closePath()
         doStrokeAndFill()
 
       case Rectangle(w, h) =>
         ctx.beginPath()
-        ctx.rect(originX - w/2, originY - h/2, w, h)
+        ctx.rect(origin.x - w/2, origin.y - h/2, w, h)
         ctx.closePath()
         doStrokeAndFill()
 
       case Triangle(w, h) =>
         ctx.beginPath()
-        ctx.moveTo(originX      , originY - h/2)
-        ctx.lineTo(originX + w/2, originY + h/2)
-        ctx.lineTo(originX - w/2, originY + h/2)
+        ctx.moveTo(origin.x      , origin.y - h/2)
+        ctx.lineTo(origin.x + w/2, origin.y + h/2)
+        ctx.lineTo(origin.x - w/2, origin.y + h/2)
         ctx.closePath()
         doStrokeAndFill()
 
       case Overlay(t, b) =>
-        draw(b, originX, originY, context, ctx)
-        draw(t, originX, originY, context, ctx)
+        draw(b, origin, context, ctx)
+        draw(t, origin, context, ctx)
 
       case b @ Beside(l, r) =>
         val box = BoundingBox(b)
         val lBox = BoundingBox(l)
         val rBox = BoundingBox(r)
 
-        val lOriginX = originX + box.left + (lBox.width / 2)
-        val rOriginX = originX + box.right - (rBox.width / 2)
-        // Beside always vertically centers l and r,
-        // so we don't need to calculate center ys for l and r.
+        val lOriginX = origin.x + box.left + (lBox.width / 2)
+        val rOriginX = origin.x + box.right - (rBox.width / 2)
+        // Beside always vertically centers l and r, so we don't need
+        // to calculate center ys for l and r.
 
-        draw(l, lOriginX, originY, context, ctx)
-        draw(r, rOriginX, originY, context, ctx)
-
+        draw(l, Point(lOriginX, origin.y), context, ctx)
+        draw(r, Point(rOriginX, origin.y), context, ctx)
       case a @ Above(t, b) =>
         val box = BoundingBox(a)
         val tBox = BoundingBox(t)
         val bBox = BoundingBox(b)
 
-        val tOriginY = originY + box.top + (tBox.height / 2)
-        val bOriginY = originY + box.bottom - (bBox.height / 2)
+        val tOriginY = origin.y + box.top + (tBox.height / 2)
+        val bOriginY = origin.y + box.bottom - (bBox.height / 2)
 
-        draw(t, originX, tOriginY, context, ctx)
-        draw(b, originX, bOriginY, context, ctx)
+        draw(t, Point(origin.x, tOriginY), context, ctx)
+        draw(b, Point(origin.x, bOriginY), context, ctx)
+      case At(vec, i) =>
+        draw(i, origin + vec, context, ctx)
 
       case ContextTransform(f, i) =>
-        draw(i, originX, originY, f(context), ctx)
+        draw(i, origin, f(context), ctx)
 
       case d: Drawable =>
-        draw(d.draw, originX, originY, context, ctx)
+        draw(d.draw, origin, context, ctx)
     }
   }
 }
