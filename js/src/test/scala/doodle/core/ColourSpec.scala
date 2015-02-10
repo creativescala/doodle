@@ -55,11 +55,11 @@ object ColorSpec extends TestSuite {
 
     "Fade in/out transforms correctly"-{
       val original = Color.hsla(120, 0.5, 0.5, 0.5)
-      val fadeOut = original fadeOut(0.5.clip)
-      val fadeIn = original fadeIn(0.5.clip)
+      val fadeOut = original fadeOut(0.5.normalized)
+      val fadeIn = original fadeIn(0.5.normalized)
 
-      assert(fadeOut.alpha == 0.0.clip)
-      assert(fadeIn.alpha == 1.0.clip)
+      assert(fadeOut.alpha == 0.0.normalized)
+      assert(fadeIn.alpha == 1.0.normalized)
     }
 
     "Colors print to canvas correctly"-{

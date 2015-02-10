@@ -13,8 +13,8 @@ object ChristmasTree extends Drawable {
   def treeElement = {
     val color = green
       .spin((math.random * 30).degrees)
-      .darken((math.random * 0.1).clip)
-      .desaturate((math.random * 0.1).clip)
+      .darken((math.random * 0.1).normalized)
+      .desaturate((math.random * 0.1).normalized)
 
     Triangle(40, 40) lineWidth 0 fillColor color
   }

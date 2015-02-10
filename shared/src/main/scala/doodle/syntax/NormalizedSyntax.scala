@@ -3,9 +3,9 @@ package doodle.syntax
 import doodle.core.Normalized
 import scala.language.implicitConversions
 
-class ToNormalizedOps(val normalized: Double) extends AnyVal {
-  def clip: Normalized =
-    Normalized.clip(normalized)
+class ToNormalizedOps(val value: Double) extends AnyVal {
+  def normalized: Normalized =
+    Normalized.clip(value)
 }
 
 trait NormalizedSyntax {
