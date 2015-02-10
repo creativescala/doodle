@@ -80,6 +80,8 @@ object Draw {
 
         draw(t, originX, tOriginY, context, ctx)
         draw(b, originX, bOriginY, context, ctx)
+      case At((x, y), i) =>
+        draw(i, originX + x, originY + y, context, ctx) 
 
       case ContextTransform(f, i) =>
         draw(i, originX, originY, f(context), ctx)
