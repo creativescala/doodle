@@ -16,6 +16,9 @@ sealed trait Image {
   def below(top: Image): Image =
     Above(top, this)
 
+  def at(x: Double, y: Double) =
+    At(Vec(x, y), this)
+
   def lineColor(color: Color): Image =
     ContextTransform(_.lineColor(color), this)
 
@@ -31,6 +34,7 @@ final case class Triangle(w: Double, h: Double) extends Image
 final case class Beside(l: Image, r: Image) extends Image
 final case class Above(l: Image, r: Image) extends Image
 final case class Overlay(t: Image, b: Image) extends Image
+final case class At(at: Vec, i: Image) extends Image
 // final case class Path(elements: List[Path]) extends Image {
 //   def +:(elt: PathElement): Path =
 //     Path(elt +: elements)
