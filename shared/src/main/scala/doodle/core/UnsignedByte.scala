@@ -10,8 +10,8 @@ final case class UnsignedByte(value: Byte) extends AnyVal {
   def get: Int =
     (value + 128)
 
-  def toNormalised: Normalised =
-    Normalised.clip(get.toDouble / UnsignedByte.MaxValue.get.toDouble)
+  def toNormalized: Normalized =
+    Normalized.clip(get.toDouble / UnsignedByte.MaxValue.get.toDouble)
 
   def toCanvas: String =
     (value + 128).toString

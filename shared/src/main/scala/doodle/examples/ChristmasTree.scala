@@ -2,7 +2,7 @@ package doodle.examples
 
 import doodle.core._
 import doodle.syntax.angle._
-import doodle.syntax.normalised._
+import doodle.syntax.normalized._
 
 object ChristmasTree extends Drawable {
   import Color._

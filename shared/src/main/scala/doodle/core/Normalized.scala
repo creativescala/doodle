@@ -3,20 +3,20 @@ package doodle.core
 /**
   * A value in the range [0, 1]
   */
-final case class Normalised(get: Double) extends AnyVal {
-  def +(that: Normalised): Double =
+final case class Normalized(get: Double) extends AnyVal {
+  def +(that: Normalized): Double =
     this.get + that.get
 
-  def -(that: Normalised): Double =
+  def -(that: Normalized): Double =
     this.get - that.get
 
-  def max(that: Normalised): Normalised =
+  def max(that: Normalized): Normalized =
     if(this.get > that.get)
       this
     else
       that
 
-  def min(that: Normalised): Normalised =
+  def min(that: Normalized): Normalized =
     if(this.get < that.get)
       this
     else
@@ -31,14 +31,14 @@ final case class Normalised(get: Double) extends AnyVal {
   def toCanvas: String =
     get.toString
 }
-object Normalised {
-  val MinValue = Normalised(0.0)
-  val MaxValue = Normalised(1.0)
+object Normalized {
+  val MinValue = Normalized(0.0)
+  val MaxValue = Normalized(1.0)
 
-  def clip(value: Double): Normalised =
+  def clip(value: Double): Normalized =
     value match {
       case v if value < 0.0 => MinValue
       case v if value > 1.0 => MaxValue
-      case v => Normalised(v)
+      case v => Normalized(v)
     }
 }

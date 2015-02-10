@@ -15,7 +15,7 @@ object AngleSpec extends TestSuite {
       }
     }
 
-    "Conversions to/from normalised"-{
+    "Conversions to/from normalized"-{
       for(i <- 1 to 100) {
         val original = Angle.turns(Math.random)
         val converted = Angle.turns(original.toTurns.get)

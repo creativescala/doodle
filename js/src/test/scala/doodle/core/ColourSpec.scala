@@ -2,7 +2,7 @@ package doodle.core
 
 import utest._
 import doodle.syntax.angle._
-import doodle.syntax.normalised._
+import doodle.syntax.normalized._
 
 object ColorSpec extends TestSuite {
   val tests = TestSuite {

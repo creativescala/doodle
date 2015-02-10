@@ -3,7 +3,7 @@ package doodle.core
 import scala.annotation.tailrec
 
 /**
-  * An angle in radians, normalised to be in [0, 2pi)
+  * An angle in radians, normalized to be in [0, 2pi)
   */
 final case class Angle(get: Double) extends AnyVal {
   def +(that: Angle): Angle =
@@ -13,8 +13,8 @@ final case class Angle(get: Double) extends AnyVal {
     Angle.radians(this.get - that.get)
 
   /** Angle as the proportion of a full turn around a circle */
-  def toTurns: Normalised =
-    Normalised.clip(this.get / Angle.TwoPi)
+  def toTurns: Normalized =
+    Normalized.clip(this.get / Angle.TwoPi)
 
   def toDegrees: Double =
     (this.get / Angle.TwoPi) * 360
