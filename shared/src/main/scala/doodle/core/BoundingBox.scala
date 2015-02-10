@@ -55,7 +55,7 @@ object BoundingBox {
         (boxT.height + boxB.height) / 2
       )
 
-    case At((x, y), i) =>
+    case At(Vec(x, y), i) =>
       val inner = BoundingBox(i)
       // Because bounding boxes are required to be centered on the the
       // image they enclose, all we need to do is divide the x and y
