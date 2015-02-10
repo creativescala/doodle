@@ -4,6 +4,12 @@ lazy val doodle = crossProject.
     name         := "doodle",
     version      := "0.1-SNAPSHOT",
     scalaVersion := "2.11.5"
+  ).jvmSettings(
+    initialCommands in console := """
+      |import doodle.core._
+      |import doodle.syntax._
+      |import doodle.jvm._
+    """.trim.stripMargin
   ).jsSettings(
     workbenchSettings : _*
   ).jsSettings(

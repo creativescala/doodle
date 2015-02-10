@@ -1,35 +1,76 @@
 package doodle.jvm
 
-import java.awt.{Graphics, Graphics2D, Shape => Shape2D, Color => AwtColor, BasicStroke}
-import java.awt.geom.{Ellipse2D, Rectangle2D, Path2D}
-import javax.swing.{JFrame, JPanel}
+import java.awt.{
+  BasicStroke,
+  Color => AwtColor,
+  Dimension,
+  Graphics,
+  Graphics2D,
+  RenderingHints,
+  Shape => Shape2D
+}
+
+import java.awt.geom.{
+  Ellipse2D,
+  Path2D,
+  Rectangle2D
+}
+
+import javax.swing.{
+  JFrame,
+  JPanel,
+  WindowConstants
+}
 
 import doodle.core._
 
 object Draw {
-  def apply(img: Image): Unit = {
+  val margin = 20
+
+  def apply(image: Image): Unit = {
     val canvas = new JPanel {
-      override def paintComponent(ctx: Graphics): Unit = Draw.draw(
-        img,
-        Point(getWidth/2, getHeight/2),
-        DrawingContext.blackLines,
-        ctx.asInstanceOf[Graphics2D]
-      )
+      override def paintComponent(ctx: Graphics): Unit = {
+        Draw.draw(
+          image,
+          Point(getWidth/2, getHeight/2),
+          DrawingContext.blackLines,
+          ctx.asInstanceOf[Graphics2D]
+        )
+      }
     }
 
+    val box = BoundingBox(image)
+    canvas.setPreferredSize(new Dimension(
+      box.width.toInt + 2 * margin,
+      box.height.toInt + 2 * margin
+    ))
+
     val frame = new JFrame("Doodle")
-    frame.getContentPane().add(canvas)
-    frame.setSize(500, 500)
+    // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
+    frame.getContentPane.add(canvas)
+    frame.pack
     frame.setVisible(true)
   }
 
-  def draw(img: Image, origin: Point, context: DrawingContext, ctx: Graphics2D): Unit = {
+  def draw(image: Image, origin: Point, context: DrawingContext, ctx: Graphics2D): Unit = {
     def awtColor(color: Color): AwtColor = {
       val RGBA(r, g, b, a) = color.toRGBA
       new AwtColor(r.get, g.get, b.get, a.toUnsignedByte.get)
     }
 
     def doStrokeAndFill(shape: Shape2D) = {
+      ctx.setRenderingHints(new RenderingHints(
+        RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON
+      ))
+
+      context.fill.foreach {
+        case Fill(color) => {
+          ctx.setPaint(awtColor(color))
+          ctx.fill(shape)
+        }
+      }
+
       context.stroke.foreach {
         case Stroke(width, color, cap, join) => {
           ctx.setStroke(new BasicStroke(width.toFloat))
@@ -38,15 +79,9 @@ object Draw {
           ctx.draw(shape)
         }
       }
-      context.fill.foreach {
-        case Fill(color) => {
-          ctx.setPaint(awtColor(color))
-          ctx.fill(shape)
-        }
-      }
     }
 
-    img match {
+    image match {
       case Circle(r) =>
         doStrokeAndFill(new Ellipse2D.Double(origin.x-r, origin.y-r, r*2, r*2))
 
@@ -66,7 +101,7 @@ object Draw {
         draw(t, origin, context, ctx)
 
       case b @ Beside(l, r) =>
-        val box = BoundingBox(b)
+        val box  = BoundingBox(b)
         val lBox = BoundingBox(l)
         val rBox = BoundingBox(r)
 
