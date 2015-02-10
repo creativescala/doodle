@@ -9,6 +9,7 @@ lazy val doodle = crossProject.
       |import doodle.core._
       |import doodle.syntax._
       |import doodle.jvm._
+      |import doodle.examples._
     """.trim.stripMargin
   ).jsSettings(
     workbenchSettings : _*

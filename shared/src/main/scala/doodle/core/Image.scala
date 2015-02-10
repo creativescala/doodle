@@ -25,20 +25,12 @@ sealed trait Image {
   def fillColor(color: Color): Image =
     ContextTransform(_.fillColor(color), this)
 }
+
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
 final case class Triangle(w: Double, h: Double) extends Image
 final case class Beside(l: Image, r: Image) extends Image
 final case class Above(l: Image, r: Image) extends Image
 final case class Overlay(t: Image, b: Image) extends Image
-// final case class Path(elements: List[Path]) extends Image {
-//   def +:(elt: PathElement): Path =
-//     Path(elt +: elements)
-
-//   def :+(elt: PathElement): Path =
-//     Path(elements :+ elt)
-
-//   def ++(path: Path): Path =
-//     Path(elements ++ path.elements)
-// }
 final case class ContextTransform(f: DrawingContext => DrawingContext, image: Image) extends Image
+trait Drawable extends Image { def draw: Image }

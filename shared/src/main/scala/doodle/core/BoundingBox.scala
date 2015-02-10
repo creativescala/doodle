@@ -57,5 +57,8 @@ object BoundingBox {
 
     case ContextTransform(f, i) =>
       BoundingBox(i)
+
+    case d: Drawable =>
+      BoundingBox(d.draw)
   }
 }

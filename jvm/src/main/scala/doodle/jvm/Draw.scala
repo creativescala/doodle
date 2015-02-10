@@ -113,6 +113,7 @@ object Draw {
 
         draw(l, lOriginX, originY, context, ctx)
         draw(r, rOriginX, originY, context, ctx)
+
       case a @ Above(t, b) =>
         val box  = BoundingBox(a)
         val tBox = BoundingBox(t)
@@ -126,6 +127,9 @@ object Draw {
 
       case ContextTransform(f, i) =>
         draw(i, originX, originY, f(context), ctx)
+
+      case d: Drawable =>
+        draw(d.draw, originX, originY, context, ctx)
     }
   }
 }

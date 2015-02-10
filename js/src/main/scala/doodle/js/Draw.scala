@@ -19,6 +19,13 @@ object Draw {
 
   def draw(img: Image, originX: Double, originY: Double, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
     def doStrokeAndFill() = {
+      context.fill.foreach {
+        case Fill(color) => {
+          ctx.fillStyle = color.toCanvas
+          ctx.fill()
+        }
+      }
+
       context.stroke.foreach {
         case Stroke(width, color, cap, join) => {
           ctx.lineWidth = width
@@ -26,12 +33,6 @@ object Draw {
           ctx.lineJoin = join.toCanvas
           ctx.strokeStyle = color.toCanvas
           ctx.stroke()
-        }
-      }
-      context.fill.foreach {
-        case Fill(color) => {
-          ctx.fillStyle = color.toCanvas
-          ctx.fill()
         }
       }
     }
@@ -42,11 +43,13 @@ object Draw {
         ctx.arc(originX, originY, r, 0.0, Math.PI * 2)
         ctx.closePath()
         doStrokeAndFill()
+
       case Rectangle(w, h) =>
         ctx.beginPath()
         ctx.rect(originX - w/2, originY - h/2, w, h)
         ctx.closePath()
         doStrokeAndFill()
+
       case Triangle(w, h) =>
         ctx.beginPath()
         ctx.moveTo(originX      , originY - h/2)
@@ -58,6 +61,7 @@ object Draw {
       case Overlay(t, b) =>
         draw(b, originX, originY, context, ctx)
         draw(t, originX, originY, context, ctx)
+
       case b @ Beside(l, r) =>
         val box = BoundingBox(b)
         val lBox = BoundingBox(l)
@@ -65,11 +69,12 @@ object Draw {
 
         val lOriginX = originX + box.left + (lBox.width / 2)
         val rOriginX = originX + box.right - (rBox.width / 2)
-        // Beside always vertically centers l and r, so we don't need
-        // to calculate center ys for l and r.
+        // Beside always vertically centers l and r,
+        // so we don't need to calculate center ys for l and r.
 
         draw(l, lOriginX, originY, context, ctx)
         draw(r, rOriginX, originY, context, ctx)
+
       case a @ Above(t, b) =>
         val box = BoundingBox(a)
         val tBox = BoundingBox(t)
@@ -83,6 +88,9 @@ object Draw {
 
       case ContextTransform(f, i) =>
         draw(i, originX, originY, f(context), ctx)
+
+      case d: Drawable =>
+        draw(d.draw, originX, originY, context, ctx)
     }
   }
 }

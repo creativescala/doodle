@@ -4,7 +4,8 @@ import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom
 
 @JSExport object Main extends JSApp {
-  @JSExport def main(): Unit = {
-    doodle.js.Draw(doodle.Example.picture, "canvas")
-  }
+  val image = doodle.examples.ChristmasTree
+
+  @JSExport def main(): Unit =
+    doodle.js.draw(image, "canvas")
 }
