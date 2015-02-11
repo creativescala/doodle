@@ -1,5 +1,3 @@
 object Main extends App {
-  val image = doodle.examples.ChristmasTree
-
-  doodle.jvm.draw(image)
+  doodle.jvm.draw(doodle.examples.RainbowSierpinski)
 }

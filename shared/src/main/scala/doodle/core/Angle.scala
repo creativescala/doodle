@@ -12,6 +12,12 @@ final case class Angle(toRadians: Double) extends AnyVal {
   def -(that: Angle): Angle =
     Angle.radians(this.toRadians - that.toRadians)
 
+  def *(m: Double): Angle =
+    Angle.radians(this.toRadians * m)
+
+  def /(m: Double): Angle =
+    Angle.radians(this.toRadians / m)
+
   def sin: Double =
     math.sin(toRadians)
 

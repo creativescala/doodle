@@ -3,8 +3,8 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-case class Orbit(angle: Angle, radius: Double, image: Image) extends Animation {
-  def animate = this.copy(angle + 5.degrees)
+case class Orbit(image: Image, radius: Double = 50, angle: Angle = 0.degrees) extends Animation {
+  def animate = this.copy(angle = angle + 5.degrees)
   def draw: Image = {
     image.at(
       radius * math.sin(angle.toRadians),
@@ -13,4 +13,4 @@ case class Orbit(angle: Angle, radius: Double, image: Image) extends Animation {
   }
 }
 
-object Orbit extends Orbit(Angle(0), 30, Circle(10) fillColor Color.orange)
+object Orbit extends Orbit(Circle(10) fillColor Color.orange, 50, 0.degrees)

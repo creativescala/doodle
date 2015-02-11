@@ -31,6 +31,7 @@ final case class Normalized(get: Double) extends AnyVal {
   def toCanvas: String =
     get.toString
 }
+
 object Normalized {
   val MinValue = Normalized(0.0)
   val MaxValue = Normalized(1.0)
