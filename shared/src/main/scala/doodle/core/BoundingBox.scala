@@ -61,12 +61,12 @@ object BoundingBox {
       // image they enclose, all we need to do is divide the x and y
       // displacement evenly amongst the bounds of the inner bounding
       // box.
-      val xAmount = Math.abs(x) / 2
-      val yAmount = Math.abs(y) / 2
+      val xAmount = math.abs(x) / 2
+      val yAmount = math.abs(y) / 2
       BoundingBox(
-        inner.left - xAmount,
-        inner.top - yAmount,
-        inner.right + xAmount,
+        inner.left   - xAmount,
+        inner.top    - yAmount,
+        inner.right  + xAmount,
         inner.bottom + yAmount
       )
 

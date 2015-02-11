@@ -12,6 +12,12 @@ final case class Angle(toRadians: Double) extends AnyVal {
   def -(that: Angle): Angle =
     Angle.radians(this.toRadians - that.toRadians)
 
+  def sin: Double =
+    math.sin(toRadians)
+
+  def cos: Double =
+    math.cos(toRadians)
+
   /** Angle as the proportion of a full turn around a circle */
   def toTurns: Normalized =
     Normalized.clip(this.toRadians / Angle.TwoPi)
