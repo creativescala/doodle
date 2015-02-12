@@ -10,7 +10,11 @@ object ChessBoard extends Drawable {
     (redSquare   beside blackSquare) above
     (blackSquare beside redSquare)
 
-  def draw =
+  val fourByFour =
     (twoByTwo beside twoByTwo) above
     (twoByTwo beside twoByTwo)
+
+  val draw =
+    (fourByFour beside fourByFour) above
+    (fourByFour beside fourByFour)
 }
