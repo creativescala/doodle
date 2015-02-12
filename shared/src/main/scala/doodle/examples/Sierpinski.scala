@@ -4,14 +4,20 @@ import doodle.core._
 import doodle.syntax._
 
 object Sierpinski extends Drawable {
-  def sierpinski(size: Double, color: Color): Image = {
-    if(size > 8) {
-      val child = sierpinski(size/2, color)
-      child above (child beside child)
+  def triangle(size: Double): Image = {
+    println(s"Creating a triangle")
+    Triangle(size, size) lineColor Color.magenta
+  }
+
+  def sierpinski(n: Int, size: Double): Image = {
+    println(s"Creating a Sierpinski with n = $n")
+    if(n == 1) {
+      triangle(size)
     } else {
-      Triangle(size, size) lineWidth 0 fillColor color
+      val smaller = sierpinski(n - 1, size/2)
+      smaller above (smaller beside smaller)
     }
   }
 
-  def draw = sierpinski(512, Color.orange)
+  val draw = sierpinski(10, 512)
 }
