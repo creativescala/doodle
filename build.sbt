@@ -23,7 +23,7 @@ lazy val doodle = crossProject.
       "org.scalaz"                %% "scalaz-core"  % "7.1.0",
       "org.scala-js"              %%% "scalajs-dom" % "0.7.0",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
-      "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
+      "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test",
       "com.github.japgolly.nyaya" %%% "nyaya-core"  % "0.5.3" % "test"
     )
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
