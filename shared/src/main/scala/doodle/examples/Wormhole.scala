@@ -4,16 +4,16 @@ import doodle.core._
 import doodle.syntax._
 
 object Wormhole extends Drawable {
-  def darken(color: Color): Color =
-    color darken 0.05.normalized
+  def fadeOut(color: Color): Color =
+    color fadeOut 0.05.normalized
 
   def bands(color: Color): Color =
-    color spin 100.degrees darken 0.025.normalized
+    color spin 80.degrees fadeOut 0.025.normalized
 
   def wormhole(radius: Double, color: Color, change: Color => Color): Image = {
     val angle  = radius.degrees
     val circle = Circle(radius).
-      lineWidth(radius * 0.3).
+      lineWidth(radius * 0.1).
       lineColor(color)
 
     if(radius > 10) {
@@ -28,5 +28,5 @@ object Wormhole extends Drawable {
     }
   }
 
-  def draw = wormhole(512, Color.orange, bands)
+  def draw = wormhole(512, Color.blue desaturate 0.5.normalized, bands)
 }

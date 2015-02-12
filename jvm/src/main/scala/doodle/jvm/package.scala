@@ -2,10 +2,22 @@ package doodle
 
 import doodle.core._
 
-package object jvm {
-  def draw(image: Image): Unit =
-    DoodleFrame(image).setVisible(true)
+import java.awt.Frame
+import scala.collection.JavaConversions._
 
-  def animate(anim: Animation): Unit =
+package object jvm {
+  var frame: DoodleFrame = null
+
+  def draw(image: Image): Unit = {
+    DoodleFrame(image).setVisible(true)
+  }
+
+  def animate(anim: Animation): Unit = {
     DoodleFrame(anim).setVisible(true)
+  }
+
+  def quit(): Unit = {
+    Frame.getFrames().foreach(_.dispose)
+    System.exit(0)
+  }
 }

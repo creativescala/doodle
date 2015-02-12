@@ -17,6 +17,7 @@ class DoodleFrame private(var anim: Animation) extends JFrame("Doodle") with Act
   val panel = DoodlePanel(anim.draw)
   val timer = new Timer(1000/24, this)
 
+  // setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
   getContentPane().add(panel)
   pack()
   timer.start()
