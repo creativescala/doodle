@@ -20,7 +20,7 @@ object AngleSpec extends TestSuite {
         val original = Angle.turns(Math.random)
         val converted = Angle.turns(original.toTurns.get)
 
-        assert(Math.abs(original.get - converted.get) < 0.1)
+        assert(Math.abs(original.toRadians - converted.toRadians) < 0.1)
       }
     }
   }

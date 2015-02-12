@@ -123,7 +123,7 @@ sealed trait Color {
               Normalized.clip(t.get match {
                 case t if t < 1.0/6.0 => p + (q - p) * 6 * t
                 case t if t < 0.5 => q
-                case t if t < 2.0/3.0 => p + (q - p) * (2/3 - t) * 6
+                case t if t < 2.0/3.0 => p + (q - p) * (2.0/3.0 - t) * 6
                 case t => p
               })
             }

@@ -3,6 +3,9 @@ package doodle.core
 import utest._
 import doodle.syntax.angle._
 import doodle.syntax.normalized._
+import japgolly.nyaya.Prop
+import japgolly.nyaya.test.Gen
+import japgolly.nyaya.test.PropTest._
 
 object ColorSpec extends TestSuite {
   val tests = TestSuite {
@@ -67,6 +70,42 @@ object ColorSpec extends TestSuite {
       assert(hsla == "hsla(120, 50%, 50%, 1)")
       val rgba = Color.rgb(240, 12, 12).toCanvas
       assert(rgba == "rgba(240, 12, 12, 1)")
+    }
+
+    val genAngle: Gen[Angle] =
+      Gen.chooseint(0, 360) map (d => Angle.degrees(d.toDouble))
+
+    val genNormalized: Gen[Normalized] =
+      Gen.choosedouble(0, 1) map Normalized.clip
+
+    val genUnsignedByte: Gen[UnsignedByte] =
+      Gen.chooseint(0, 255) map (UnsignedByte.clip _)
+
+    val genHSLA: Gen[HSLA] =
+      for {
+        h <- genAngle
+        s <- genNormalized
+        l <- genNormalized
+        a <- genNormalized
+      } yield HSLA(h, s, l, a) 
+
+    val genRGBA: Gen[RGBA] =
+      for {
+        r <- genUnsignedByte
+        g <- genUnsignedByte
+        b <- genUnsignedByte
+        a <- genNormalized
+      } yield RGBA(r, g, b, a)
+
+    def propIdentity[A <: Color](f: A => A, name: String): Prop[A] =
+      Prop.test[A](s"$name is an identity", c => f(c) ~= c)
+
+    ".toRGBA andThen .toHSLA is the identity"-{
+      genHSLA mustSatisfy propIdentity[HSLA]((c => c.toRGBA.toHSLA), "toRGBA andThen toHSLA")
+    }
+
+    ".toHSLA andThen.toRGBA is the identity"-{
+      genRGBA mustSatisfy propIdentity[RGBA]((c => c.toHSLA.toRGBA), "toHSLA andThen toRGBA")
     }
   }
 }
