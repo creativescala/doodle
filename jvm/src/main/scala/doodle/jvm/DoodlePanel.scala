@@ -74,6 +74,7 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
         path.lineTo(origin.x + w/2 , origin.y + h/2)
         path.lineTo(origin.x - w/2 , origin.y + h/2)
         path.lineTo(origin.x       , origin.y - h/2)
+        path.closePath()
         strokeAndFill(path)
 
       case Overlay(t, b) =>
