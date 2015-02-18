@@ -22,19 +22,19 @@ object ColorsAndShapes extends Drawable {
   def triangle(n: Int): Image =
     Triangle(2*size(n), 2*size(n))
 
-  def colored(shape: Int => Image, color: Int => Color) =
+  def colored(shape: Int => Image, color: Int => Color): Int => Image =
     (n: Int) =>
       shape(n) lineWidth 10 lineColor color(n)
 
-  def many(n: Int, single: Int => Image): Image =
+  def manyShapes(n: Int, singleShape: Int => Image): Image =
     if(n == 1) {
-      single(n)
+      singleShape(n)
     } else {
-      single(n) on many(n - 1, single)
+      singleShape(n) on manyShapes(n - 1, singleShape)
     }
 
   def draw =
-    many(20, colored(circle, spinning)) beside
-    many(20, colored(triangle, fading)) beside
-    many(20, colored(square, spinning))
+    manyShapes(10, colored(circle, spinning)) beside
+    manyShapes(10, colored(triangle, fading)) beside
+    manyShapes(10, colored(square, spinning))
 }
