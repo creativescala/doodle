@@ -33,7 +33,7 @@ case class DrawingContext(
     this.copy(lineColor = Some(color))
 
   def lineWidth(width: Double): DrawingContext =
-    this.copy(lineWidth = Some(width))
+    this.copy(lineWidth = if(width <= 0) None else Some(width))
 
   def fillColor(Color: Color): DrawingContext =
     this.copy(fillColor = Some(Color))
