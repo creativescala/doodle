@@ -18,62 +18,62 @@ package object js {
     animate(anim, canvasElement(id))
 
   def animate(anim: Animation, canvas: dom.HTMLCanvasElement): Unit = {
-    def nextFrame(): Unit =
-      dom.requestAnimationFrame { (_: Double) =>
-        animate(anim.animate, canvas)
-      }
+      def nextFrame(): Unit =
+        dom.requestAnimationFrame { (_: Double) ⇒
+          animate(anim.animate, canvas)
+        }
 
     draw(anim.draw, canvas)
-    dom.setTimeout(nextFrame _, 1000/24)
+    dom.setTimeout(nextFrame _, 1000 / 24)
   }
 
   private def draw(img: Image, origin: Point, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
-    def doStrokeAndFill() = {
-      context.fill.foreach {
-        case Fill(color) => {
-          ctx.fillStyle = color.toCanvas
-          ctx.fill()
+      def doStrokeAndFill() = {
+        context.fill.foreach {
+          case Fill(color) ⇒ {
+            ctx.fillStyle = color.toCanvas
+            ctx.fill()
+          }
         }
-      }
 
-      context.stroke.foreach {
-        case Stroke(width, color, cap, join) => {
-          ctx.lineWidth = width
-          ctx.lineCap = cap.toCanvas
-          ctx.lineJoin = join.toCanvas
-          ctx.strokeStyle = color.toCanvas
-          ctx.stroke()
+        context.stroke.foreach {
+          case Stroke(width, color, cap, join) ⇒ {
+            ctx.lineWidth   = width
+            ctx.lineCap     = cap.toCanvas
+            ctx.lineJoin    = join.toCanvas
+            ctx.strokeStyle = color.toCanvas
+            ctx.stroke()
+          }
         }
       }
-    }
 
     img match {
-      case Circle(r) =>
+      case Circle(r) ⇒
         ctx.beginPath()
         ctx.arc(origin.x, origin.y, r, 0.0, Math.PI * 2)
         ctx.closePath()
         doStrokeAndFill()
 
-      case Rectangle(w, h) =>
+      case Rectangle(w, h) ⇒
         ctx.beginPath()
-        ctx.rect(origin.x - w/2, origin.y - h/2, w, h)
+        ctx.rect(origin.x - w / 2, origin.y - h / 2, w, h)
         ctx.closePath()
         doStrokeAndFill()
 
-      case Triangle(w, h) =>
+      case Triangle(w, h) ⇒
         ctx.beginPath()
-        ctx.moveTo(origin.x      , origin.y - h/2)
-        ctx.lineTo(origin.x + w/2, origin.y + h/2)
-        ctx.lineTo(origin.x - w/2, origin.y + h/2)
+        ctx.moveTo(origin.x        , origin.y - h / 2)
+        ctx.lineTo(origin.x + w / 2, origin.y + h / 2)
+        ctx.lineTo(origin.x - w / 2, origin.y + h / 2)
         ctx.closePath()
         doStrokeAndFill()
 
-      case Overlay(t, b) =>
+      case Overlay(t, b) ⇒
         draw(b, origin, context, ctx)
         draw(t, origin, context, ctx)
 
-      case b @ Beside(l, r) =>
-        val box = BoundingBox(b)
+      case b @ Beside(l, r) ⇒
+        val box  = BoundingBox(b)
         val lBox = BoundingBox(l)
         val rBox = BoundingBox(r)
 
@@ -84,8 +84,9 @@ package object js {
 
         draw(l, Point(lOriginX, origin.y), context, ctx)
         draw(r, Point(rOriginX, origin.y), context, ctx)
-      case a @ Above(t, b) =>
-        val box = BoundingBox(a)
+
+      case a @ Above(t, b) ⇒
+        val box  = BoundingBox(a)
         val tBox = BoundingBox(t)
         val bBox = BoundingBox(b)
 
@@ -94,14 +95,29 @@ package object js {
 
         draw(t, Point(origin.x, tOriginY), context, ctx)
         draw(b, Point(origin.x, bOriginY), context, ctx)
-      case At(vec, i) =>
+
+      case At(vec, i) ⇒
         draw(i, origin + vec, context, ctx)
 
-      case ContextTransform(f, i) =>
+      case ContextTransform(f, i) ⇒
         draw(i, origin, f(context), ctx)
 
-      case d: Drawable =>
+      case d: Drawable ⇒
         draw(d.draw, origin, context, ctx)
+
+      case p @ Path(head, tail) ⇒
+        val box = BoundingBox(p)
+
+        ctx.beginPath()
+        ctx.moveTo(head.x, head.y)
+
+        tail.foreach {
+          case MoveTo(x, y)                        ⇒ ctx.moveTo(x, y)
+          case LineTo(x, y)                        ⇒ ctx.lineTo(x, y)
+          case ArcTo(x, y, x2, y2, r)              ⇒ ctx.arc(x, y, r, x2, y2)
+          case QuadraticCurveTo(cpx, cpy, x, y)    ⇒ ctx.quadraticCurveTo(cpx, cpy, x, y)
+          case BezierCurveTo(x, y, x2, y2, x3, y3) ⇒ ctx.bezierCurveTo(x2, y2, x3, y3, x, y)
+        }
     }
   }
 
