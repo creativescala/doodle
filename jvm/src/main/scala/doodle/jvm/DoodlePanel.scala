@@ -68,10 +68,10 @@ class DoodlePanel private (private var _image: Image) extends JPanel {
 
       case Triangle(w, h) ⇒
         val path = new Path2D.Double()
-        path.moveTo(origin.x, origin.y - h / 2)
+        path.moveTo(origin.x        , origin.y - h / 2)
         path.lineTo(origin.x + w / 2, origin.y + h / 2)
         path.lineTo(origin.x - w / 2, origin.y + h / 2)
-        path.lineTo(origin.x, origin.y - h / 2)
+        path.lineTo(origin.x        , origin.y - h / 2)
         strokeAndFill(path)
 
       case Overlay(t, b) ⇒

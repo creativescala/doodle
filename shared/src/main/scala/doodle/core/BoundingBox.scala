@@ -62,9 +62,9 @@ object BoundingBox {
       val xAmount = math.abs(x) / 2
       val yAmount = math.abs(y) / 2
       BoundingBox(
-        inner.left - xAmount,
-        inner.top - yAmount,
-        inner.right + xAmount,
+        inner.left   - xAmount,
+        inner.top    - yAmount,
+        inner.right  + xAmount,
         inner.bottom + yAmount)
 
     case ContextTransform(f, i) ⇒
@@ -77,10 +77,10 @@ object BoundingBox {
      
       implicit class bounder(b: BoundingBox) {
         def bound(x: Double, y: Double): BoundingBox = {
-          b.copy(left = Math.min(b.top, x),
-            top = Math.min(b.top, y),
-            right = Math.max(b.top, x),
-            bottom = Math.max(b.top, y))
+          b.copy(left   = Math.min(b.top, x),
+                 top    = Math.min(b.top, y),
+                 right  = Math.max(b.top, x),
+                 bottom = Math.max(b.top, y))
         }
       }
       val box: BoundingBox = BoundingBox(0, 0, 0, 0).bound(head.x,head.y)
