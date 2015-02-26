@@ -61,9 +61,9 @@ class name as a command line argument. For example:
 bash$ ./sbt.sh 'run Sierpinski'
 ~~~
 
-**Note the compulsory quotes around `'run Sierpinski`'.
-If you forget these your OS will pass "Sierpinski" to SBT
-and not to Doodle as required.**
+**Note:** The quotes around `'run Sierpinski'` are *required*.
+This tells SBT to treat "Sierpinski" as an argument to "run",
+as opposed to a command in its own right.
 
 # Directory Structure
 
