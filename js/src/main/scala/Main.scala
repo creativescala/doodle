@@ -7,7 +7,7 @@ import org.scalajs.dom
 
 @JSExport object Main extends JSApp {
   val image = ChristmasTree
-  val anim  = Orbit(Angle.radians(0), 50, image)
+  val anim  = Orbit(image, 50, Angle.radians(0))
 
   @JSExport def main(): Unit =
     doodle.js.animate(anim, "canvas")
