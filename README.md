@@ -6,6 +6,14 @@ A Scala library for compositional vector graphics,
 with a native back-end via Swing and Java2D,
 and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
 
+# Creative Scala
+
+Doodle is featured in [Creative Scala][creative-scala],
+our free introductory Scala ebook.
+Follow the link to download your copy from our web site.
+
+[creative-scala]: http://underscore.io/training/courses/creative-scala
+
 # Getting Started
 
 1.  Start SBT:
@@ -40,6 +48,22 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
 
 5.  Open your browser and point to `http://localhost:12345`
     to see an HTML 5 canvas version of the code.
+
+# Viewing the Examples
+
+Doodle ships with a set of examples for each of the exercises in Creative Scala.
+See the `shared/src/main/scala/doodle/examples` directory for a complete list.
+
+To view an example, simply run Doodle from the command line passing the
+class name as a command line argument. For example:
+
+~~~ bash
+bash$ ./sbt.sh 'run Sierpinski'
+~~~
+
+**Note the compulsory quotes around `'run Sierpinski`'.
+If you forget these your OS will pass "Sierpinski" to SBT
+and not to Doodle as required.**
 
 # Directory Structure
 
