@@ -3,7 +3,7 @@ package doodle.core
 import scala.annotation.tailrec
 
 /**
-  * An angle in radians, normalized to be in [0, 2pi]
+  * An angle in radians, normalized to be in [0, 2pi)
   */
 final case class Angle(toRadians: Double) extends AnyVal {
   def +(that: Angle): Angle =
