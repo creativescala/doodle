@@ -32,6 +32,7 @@ sealed trait Image {
     ContextTransform(_.fillColor(color), this)
 }
 
+final case class Path(elements: Seq[PathElement]) extends Image
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
 final case class Triangle(w: Double, h: Double) extends Image

@@ -62,6 +62,35 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
     }
 
     image match {
+      case Path(elts) =>
+        val path = new Path2D.Double()
+        path.moveTo(origin.x, origin.y)
+
+        elts.foldLeft(origin){ (origin, elt) =>
+          elt match {
+            case MoveTo(x, y) =>
+              val newOrigin = origin + Vec(x, y)
+              path.moveTo(newOrigin.x, newOrigin.y)
+              newOrigin 
+
+            case LineTo(x, y) => 
+              val newOrigin = origin + Vec(x, y)
+              path.lineTo(newOrigin.x, newOrigin.y)
+              newOrigin 
+
+            case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) =>
+              val newOrigin = origin + Vec(x, y)
+              path.curveTo(
+                origin.x + cp1x , origin.y + cp1y,
+                origin.x + cp2x , origin.y + cp2y,
+                newOrigin.x     , newOrigin.y
+              )
+              newOrigin 
+          }
+        }
+        path.closePath()
+        strokeAndFill(path)
+
       case Circle(r) =>
         strokeAndFill(new Ellipse2D.Double(origin.x-r, origin.y-r, r*2, r*2))
 

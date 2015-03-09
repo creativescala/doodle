@@ -19,7 +19,36 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
 }
 
 object BoundingBox {
+  val empty: BoundingBox = BoundingBox(0.0, 0.0, 0.0, 0.0)
+
   def apply(image: Image): BoundingBox = image match {
+    case Path(elts) =>
+      def expand(bb: BoundingBox, x: Double, y: Double): BoundingBox =
+        bb.copy(
+          left = bb.left min x,
+          top = bb.top min y,
+          right = bb.right max x,
+          bottom = bb.bottom max y 
+        )
+
+      val ( end, boundingBox ) =
+        elts.foldLeft( (0.0, 0.0), BoundingBox.empty ){ (accum, elt) =>
+          val ( (x, y), bb ) = accum
+          elt match {
+            case MoveTo(newX, newY) =>
+              ( (newX, newY), expand(bb, newX, newY) )
+            case LineTo(newX, newY) => 
+              ( (newX, newY), expand(bb, newX, newY) )
+            case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, newX, newY) => 
+              // The control points form a bounding box around a bezier
+              // curve, but this may not be a tight bounding box. It's
+              // an acceptable solution for now but in the future we may
+              // wish to generate a tighted bounding box.
+              ( (newX, newY), expand(expand(expand(bb, newX, newY), cp2x, cp2y), cp1x, cp1y) )
+          }
+        }
+      boundingBox
+
     case Circle(r) =>
       BoundingBox(-r, -r, r, r)
 
