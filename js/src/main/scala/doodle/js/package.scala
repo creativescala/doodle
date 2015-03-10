@@ -10,8 +10,9 @@ package object js {
 
   def draw(img: Image, canvas: dom.HTMLCanvasElement): Unit = {
     val ctx    = canvasContext(canvas)
-    val origin = canvasCenter(canvas)
-    draw(img, origin, DrawingContext.blackLines, ctx)
+    val bounds = BoundingBox(img)
+    val center = canvasCenter(canvas) - bounds.center/2
+    draw(img, center, DrawingContext.blackLines, ctx)
   }
 
   def animate(anim: Animation, id: String): Unit =

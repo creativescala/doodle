@@ -15,8 +15,6 @@ object Polygon extends Drawable {
     Path(elements) lineWidth 5 lineColor Color.hsl(centerAngle, 1, .5)
   }
 
-  def draw =
-    allOn((3 to 20) map { sides =>
-      polygon(sides, 100))
-    }
+  def draw = allOn((3 to 20) map (polygon(_, 100)))
 }
+

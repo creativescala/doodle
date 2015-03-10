@@ -9,6 +9,8 @@ package doodle.core
   * will usually be negative.
   */
 final case class BoundingBox(left: Double, top: Double, right: Double, bottom: Double) {
+  def center = Vec((left + right) / 2, (top + bottom) / 2)
+
   // TODO: Are bounding boxes ever not symmetric around any given
   // axis? Can we replace l/t/r/b with just width and height?
   val height: Double =
@@ -16,38 +18,43 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
 
   val width: Double =
     right - left
+
+  def expand(toInclude: Vec): BoundingBox =
+    BoundingBox(
+      left   min toInclude.x,
+      top    min toInclude.y,
+      right  max toInclude.x,
+      bottom max toInclude.y
+    )
+
+  def translate(v: Vec): BoundingBox =
+    BoundingBox(left + v.x, top + v.y, right + v.x, bottom + v.y)
 }
 
 object BoundingBox {
   val empty: BoundingBox = BoundingBox(0.0, 0.0, 0.0, 0.0)
 
+  def apply(vec: Vec): BoundingBox =
+    BoundingBox(vec.x, vec.y, vec.x, vec.y)
+
+  def apply(vecs: Seq[Vec]): BoundingBox = vecs match {
+    case Seq()    => BoundingBox.empty
+    case Seq(hd)  => BoundingBox(hd)
+    case hd +: tl => tl.foldLeft(BoundingBox(hd))(_ expand _)
+  }
+
   def apply(image: Image): BoundingBox = image match {
     case Path(elts) =>
-      def expand(bb: BoundingBox, x: Double, y: Double): BoundingBox =
-        bb.copy(
-          left = bb.left min x,
-          top = bb.top min y,
-          right = bb.right max x,
-          bottom = bb.bottom max y
-        )
-
-      val ( end, boundingBox ) =
-        elts.foldLeft( (0.0, 0.0), BoundingBox.empty ){ (accum, elt) =>
-          val ( (x, y), bb ) = accum
-          elt match {
-            case MoveTo(Vec(newX, newY)) =>
-              ( (newX, newY), expand(bb, newX, newY) )
-            case LineTo(Vec(newX, newY)) =>
-              ( (newX, newY), expand(bb, newX, newY) )
-            case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(newX, newY)) =>
-              // The control points form a bounding box around a bezier
-              // curve, but this may not be a tight bounding box. It's
-              // an acceptable solution for now but in the future we may
-              // wish to generate a tighted bounding box.
-              ( (newX, newY), expand(expand(expand(bb, newX, newY), cp2x, cp2y), cp1x, cp1y) )
-          }
-        }
-      boundingBox
+      BoundingBox(elts.flatMap {
+        case MoveTo(pos) => Seq(pos)
+        case LineTo(pos) => Seq(pos)
+        case BezierCurveTo(cp1, cp2, pos) =>
+          // The control points form a bounding box around a bezier curve,
+          // but this may not be a tight bounding box.
+          // It's an acceptable solution for now but in the future
+          // we may wish to generate a tighted bounding box.
+          Seq(cp1, cp2, pos)
+      })
 
     case Circle(r) =>
       BoundingBox(-r, -r, r, r)
@@ -84,19 +91,8 @@ object BoundingBox {
         (boxT.height + boxB.height) / 2
       )
 
-    case At(Vec(x, y), i) =>
-      val inner = BoundingBox(i)
-      // Because bounding boxes are required to be centered on the the
-      // image they enclose, all we need to do is divide the x and y
-      // displacement evenly amongst the bounds of the inner bounding box.
-      val xAmount = math.abs(x) / 2
-      val yAmount = math.abs(y) / 2
-      BoundingBox(
-        inner.left   - xAmount,
-        inner.top    - yAmount,
-        inner.right  + xAmount,
-        inner.bottom + yAmount
-      )
+    case At(v, i) =>
+      BoundingBox(i) translate v
 
     case ContextTransform(f, i) =>
       BoundingBox(i)

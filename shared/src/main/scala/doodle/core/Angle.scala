@@ -34,7 +34,7 @@ final case class Angle(toRadians: Double) extends AnyVal {
 }
 
 object Angle {
-  val TwoPi = math.Pi * 2
+  val TwoPi    = math.Pi * 2
   val MinValue = Angle(0.0)
   val MaxValue = Angle(TwoPi)
 
