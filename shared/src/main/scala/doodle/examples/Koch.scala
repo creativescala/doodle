@@ -4,7 +4,7 @@ import doodle.core._
 import doodle.syntax._
 
 object Koch extends Drawable {
-  def koch(depth: Int, start: Vec, angle: Angle, length: Double): Seq[PathElement] = {
+  def kochElements(depth: Int, start: Vec, angle: Angle, length: Double): Seq[PathElement] = {
     if(depth == 0) {
       Seq(LineTo(start + Vec.polar(angle, length)))
     } else {
@@ -19,16 +19,19 @@ object Koch extends Drawable {
       val mid3 = mid2 + edge.rotate( 60.degrees)
       val end  = mid3 + edge
 
-      koch(depth-1, start,  angle, third) ++
-      koch(depth-1,  mid1, lAngle, third) ++
-      koch(depth-1,  mid2, rAngle, third) ++
-      koch(depth-1,  mid3,  angle, third)
+      kochElements(depth-1, start,  angle, third) ++
+      kochElements(depth-1,  mid1, lAngle, third) ++
+      kochElements(depth-1,  mid2, rAngle, third) ++
+      kochElements(depth-1,  mid3,  angle, third)
     }
   }
 
-  def draw = {
-    val size  = 405
-    val depth = 4
-    Path(koch(depth, Vec.zero, 0.degrees, size))
+  def koch(depth: Int, length: Double): Image = {
+    val origin = Vec(0, length/6)
+    Path(MoveTo(origin) +: kochElements(depth, origin, 0.degrees, length))
   }
+
+  val draw = allAbove((1 to 4) map { depth =>
+    koch(depth, 512)
+  })
 }
