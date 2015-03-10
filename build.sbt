@@ -1,9 +1,10 @@
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
-    name         := "doodle",
-    version      := "0.1-SNAPSHOT",
-    scalaVersion := "2.11.5"
+    name          := "doodle",
+    version       := "0.1-SNAPSHOT",
+    scalaVersion  := "2.11.5",
+    scalacOptions += "-feature"
   ).jvmSettings(
     initialCommands in console := """
       |import doodle.core._
@@ -24,7 +25,7 @@ lazy val doodle = crossProject.
     """.trim.stripMargin,
     testFrameworks          += new TestFramework("utest.runner.Framework"),
     libraryDependencies    ++= Seq(
-      "org.scalaz"                %% "scalaz-core"  % "7.1.0",
+      "org.scalaz"                %%  "scalaz-core" % "7.1.0",
       "org.scala-js"              %%% "scalajs-dom" % "0.7.0",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
       "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
