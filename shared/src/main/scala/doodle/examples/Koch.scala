@@ -29,7 +29,6 @@ object Koch extends Drawable {
   def draw = {
     val size  = 405
     val depth = 4
-    val start = Vec.unitX * -0.5 * size
-    Path(MoveTo(start) +: koch(depth, start, 0.degrees, size))
+    Path(koch(depth, Vec.zero, 0.degrees, size))
   }
 }
