@@ -27,7 +27,7 @@ package object js {
     dom.setTimeout(nextFrame _, 1000/24)
   }
 
-  private def draw(img: Image, origin: Point, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
+  private def draw(img: Image, origin: Vec, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
     def doStrokeAndFill() = {
       context.fill.foreach {
         case Fill(color) => {
@@ -52,31 +52,22 @@ package object js {
         ctx.beginPath()
         ctx.moveTo(origin.x, origin.y)
 
-        elts.foldLeft(origin){ (origin, elt) =>
-          elt match {
-            case MoveTo(x, y) =>
-              val newOrigin = origin + Vec(x, y)
-              ctx.moveTo(newOrigin.x, newOrigin.y)
-              newOrigin 
+        elts.foreach {
+          case MoveTo(Vec(x, y)) =>
+            ctx.moveTo(origin.x + x, origin.y + y)
 
-            case LineTo(x, y) => 
-              val newOrigin = origin + Vec(x, y)
-              ctx.lineTo(newOrigin.x, newOrigin.y)
-              newOrigin 
+          case LineTo(Vec(x, y)) =>
+            ctx.lineTo(origin.x + x, origin.y + y)
 
-            case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) =>
-              val newOrigin = origin + Vec(x, y)
-              ctx.bezierCurveTo(
-                origin.x + cp1x , origin.y + cp1y,
-                origin.x + cp2x , origin.y + cp2y,
-                newOrigin.x     , newOrigin.y
-              )
-              newOrigin 
-          }
+          case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(x, y)) =>
+            ctx.bezierCurveTo(
+              origin.x + cp1x , origin.y + cp1y,
+              origin.x + cp2x , origin.y + cp2y,
+              origin.x + x    , origin.y + y
+            )
         }
         ctx.closePath()
         doStrokeAndFill()
-
 
       case Circle(r) =>
         ctx.beginPath()
@@ -107,13 +98,13 @@ package object js {
         val lBox = BoundingBox(l)
         val rBox = BoundingBox(r)
 
-        val lOriginX = origin.x + box.left + (lBox.width / 2)
+        val lOriginX = origin.x + box.left  + (lBox.width / 2)
         val rOriginX = origin.x + box.right - (rBox.width / 2)
         // Beside always vertically centers l and r, so we don't need
         // to calculate center ys for l and r.
 
-        draw(l, Point(lOriginX, origin.y), context, ctx)
-        draw(r, Point(rOriginX, origin.y), context, ctx)
+        draw(l, Vec(lOriginX, origin.y), context, ctx)
+        draw(r, Vec(rOriginX, origin.y), context, ctx)
       case a @ Above(t, b) =>
         val box = BoundingBox(a)
         val tBox = BoundingBox(t)
@@ -122,8 +113,8 @@ package object js {
         val tOriginY = origin.y + box.top + (tBox.height / 2)
         val bOriginY = origin.y + box.bottom - (bBox.height / 2)
 
-        draw(t, Point(origin.x, tOriginY), context, ctx)
-        draw(b, Point(origin.x, bOriginY), context, ctx)
+        draw(t, Vec(origin.x, tOriginY), context, ctx)
+        draw(b, Vec(origin.x, bOriginY), context, ctx)
       case At(vec, i) =>
         draw(i, origin + vec, context, ctx)
 
@@ -141,6 +132,6 @@ package object js {
   private def canvasContext(canvas: dom.HTMLCanvasElement): dom.CanvasRenderingContext2D =
     canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
 
-  private def canvasCenter(canvas: dom.HTMLCanvasElement): Point =
-    Point(canvas.width / 2, canvas.height / 2)
+  private def canvasCenter(canvas: dom.HTMLCanvasElement): Vec =
+    Vec(canvas.width / 2, canvas.height / 2)
 }

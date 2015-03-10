@@ -28,18 +28,18 @@ object BoundingBox {
           left = bb.left min x,
           top = bb.top min y,
           right = bb.right max x,
-          bottom = bb.bottom max y 
+          bottom = bb.bottom max y
         )
 
       val ( end, boundingBox ) =
         elts.foldLeft( (0.0, 0.0), BoundingBox.empty ){ (accum, elt) =>
           val ( (x, y), bb ) = accum
           elt match {
-            case MoveTo(newX, newY) =>
+            case MoveTo(Vec(newX, newY)) =>
               ( (newX, newY), expand(bb, newX, newY) )
-            case LineTo(newX, newY) => 
+            case LineTo(Vec(newX, newY)) =>
               ( (newX, newY), expand(bb, newX, newY) )
-            case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, newX, newY) => 
+            case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(newX, newY)) =>
               // The control points form a bounding box around a bezier
               // curve, but this may not be a tight bounding box. It's
               // an acceptable solution for now but in the future we may
@@ -88,8 +88,7 @@ object BoundingBox {
       val inner = BoundingBox(i)
       // Because bounding boxes are required to be centered on the the
       // image they enclose, all we need to do is divide the x and y
-      // displacement evenly amongst the bounds of the inner bounding
-      // box.
+      // displacement evenly amongst the bounds of the inner bounding box.
       val xAmount = math.abs(x) / 2
       val yAmount = math.abs(y) / 2
       BoundingBox(

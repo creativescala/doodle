@@ -40,10 +40,10 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
       RenderingHints.VALUE_ANTIALIAS_ON
     ))
 
-    paintImage(image, Point(getWidth/2, getHeight/2), DrawingContext.blackLines)
+    paintImage(image, Vec(getWidth/2, getHeight/2), DrawingContext.blackLines)
   }
 
-  def paintImage(image: Image, origin: Point, context: DrawingContext)(implicit g: Graphics2D): Unit = {
+  def paintImage(image: Image, origin: Vec, context: DrawingContext)(implicit g: Graphics2D): Unit = {
     def strokeAndFill(shape: Shape) = {
       context.fill.foreach {
         case Fill(color) => {
@@ -66,28 +66,21 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
         val path = new Path2D.Double()
         path.moveTo(origin.x, origin.y)
 
-        elts.foldLeft(origin){ (origin, elt) =>
-          elt match {
-            case MoveTo(x, y) =>
-              val newOrigin = origin + Vec(x, y)
-              path.moveTo(newOrigin.x, newOrigin.y)
-              newOrigin 
+        elts foreach {
+          case MoveTo(Vec(x, y)) =>
+            path.moveTo(origin.x + x, origin.y + y)
 
-            case LineTo(x, y) => 
-              val newOrigin = origin + Vec(x, y)
-              path.lineTo(newOrigin.x, newOrigin.y)
-              newOrigin 
+          case LineTo(Vec(x, y)) =>
+            path.lineTo(origin.x + x, origin.y + y)
 
-            case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) =>
-              val newOrigin = origin + Vec(x, y)
-              path.curveTo(
-                origin.x + cp1x , origin.y + cp1y,
-                origin.x + cp2x , origin.y + cp2y,
-                newOrigin.x     , newOrigin.y
-              )
-              newOrigin 
-          }
+          case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(x, y)) =>
+            path.curveTo(
+              origin.x + cp1x , origin.y + cp1y,
+              origin.x + cp2x , origin.y + cp2y,
+              origin.x + x    , origin.y + y
+            )
         }
+
         path.closePath()
         strokeAndFill(path)
 
@@ -120,8 +113,8 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
         // Beside always vertically centers l and r, so we don't need
         // to calculate center ys for l and r.
 
-        paintImage(l, Point(lOriginX, origin.y), context)
-        paintImage(r, Point(rOriginX, origin.y), context)
+        paintImage(l, Vec(lOriginX, origin.y), context)
+        paintImage(r, Vec(rOriginX, origin.y), context)
       case a @ Above(t, b) =>
         val box  = BoundingBox(a)
         val tBox = BoundingBox(t)
@@ -130,8 +123,8 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
         val tOriginY = origin.y + box.top + (tBox.height / 2)
         val bOriginY = origin.y + box.bottom - (bBox.height / 2)
 
-        paintImage(t, Point(origin.x, tOriginY), context)
-        paintImage(b, Point(origin.x, bOriginY), context)
+        paintImage(t, Vec(origin.x, tOriginY), context)
+        paintImage(b, Vec(origin.x, bOriginY), context)
       case At(vec, i) =>
         paintImage(i, origin + vec, context)
 
