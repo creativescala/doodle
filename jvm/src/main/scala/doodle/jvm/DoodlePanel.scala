@@ -27,7 +27,7 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
     val margin = 20
     val bounds = BoundingBox(image)
     setPreferredSize(new Dimension(
-      bounds.width.toInt + 2 * margin,
+      bounds.width.toInt  + 2 * margin,
       bounds.height.toInt + 2 * margin
     ))
   }
@@ -40,10 +40,13 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
       RenderingHints.VALUE_ANTIALIAS_ON
     ))
 
-    paintImage(image, Point(getWidth/2, getHeight/2), DrawingContext.blackLines)
+    val bounds = BoundingBox(image)
+    val center = Vec(getWidth/2, getHeight/2) - bounds.center
+
+    paintImage(image, center, DrawingContext.blackLines)
   }
 
-  def paintImage(image: Image, origin: Point, context: DrawingContext)(implicit g: Graphics2D): Unit = {
+  def paintImage(image: Image, origin: Vec, context: DrawingContext)(implicit g: Graphics2D): Unit = {
     def strokeAndFill(shape: Shape) = {
       context.fill.foreach {
         case Fill(color) => {
@@ -62,11 +65,29 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
     }
 
     image match {
+      case Path(elts) =>
+        val path = new Path2D.Double()
+        elts foreach {
+          case MoveTo(Vec(x, y)) =>
+            path.moveTo(origin.x + x, origin.y + y)
+
+          case LineTo(Vec(x, y)) =>
+            path.lineTo(origin.x + x, origin.y + y)
+
+          case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(x, y)) =>
+            path.curveTo(
+              origin.x + cp1x , origin.y + cp1y,
+              origin.x + cp2x , origin.y + cp2y,
+              origin.x + x    , origin.y + y
+            )
+        }
+        strokeAndFill(path)
+
       case Circle(r) =>
         strokeAndFill(new Ellipse2D.Double(origin.x-r, origin.y-r, r*2, r*2))
 
       case Rectangle(w, h) =>
-        strokeAndFill(new Rectangle2D.Double(origin.x - w/2, origin.y - h/2, w, h))
+        strokeAndFill(new Rectangle2D.Double(origin.x-w/2, origin.y-h/2, w, h))
 
       case Triangle(w, h) =>
         val path = new Path2D.Double()
@@ -91,8 +112,8 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
         // Beside always vertically centers l and r, so we don't need
         // to calculate center ys for l and r.
 
-        paintImage(l, Point(lOriginX, origin.y), context)
-        paintImage(r, Point(rOriginX, origin.y), context)
+        paintImage(l, Vec(lOriginX, origin.y), context)
+        paintImage(r, Vec(rOriginX, origin.y), context)
       case a @ Above(t, b) =>
         val box  = BoundingBox(a)
         val tBox = BoundingBox(t)
@@ -101,8 +122,8 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
         val tOriginY = origin.y + box.top + (tBox.height / 2)
         val bOriginY = origin.y + box.bottom - (bBox.height / 2)
 
-        paintImage(t, Point(origin.x, tOriginY), context)
-        paintImage(b, Point(origin.x, bOriginY), context)
+        paintImage(t, Vec(origin.x, tOriginY), context)
+        paintImage(b, Vec(origin.x, bOriginY), context)
       case At(vec, i) =>
         paintImage(i, origin + vec, context)
 

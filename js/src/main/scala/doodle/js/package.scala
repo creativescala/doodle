@@ -10,8 +10,9 @@ package object js {
 
   def draw(img: Image, canvas: dom.HTMLCanvasElement): Unit = {
     val ctx    = canvasContext(canvas)
-    val origin = canvasCenter(canvas)
-    draw(img, origin, DrawingContext.blackLines, ctx)
+    val bounds = BoundingBox(img)
+    val center = canvasCenter(canvas) - bounds.center/2
+    draw(img, center, DrawingContext.blackLines, ctx)
   }
 
   def animate(anim: Animation, id: String): Unit =
@@ -27,7 +28,7 @@ package object js {
     dom.setTimeout(nextFrame _, 1000/24)
   }
 
-  private def draw(img: Image, origin: Point, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
+  private def draw(img: Image, origin: Vec, context: DrawingContext, ctx: dom.CanvasRenderingContext2D): Unit = {
     def doStrokeAndFill() = {
       context.fill.foreach {
         case Fill(color) => {
@@ -48,6 +49,27 @@ package object js {
     }
 
     img match {
+      case Path(elts) =>
+        ctx.beginPath()
+        ctx.moveTo(origin.x, origin.y)
+
+        elts.foreach {
+          case MoveTo(Vec(x, y)) =>
+            ctx.moveTo(origin.x + x, origin.y + y)
+
+          case LineTo(Vec(x, y)) =>
+            ctx.lineTo(origin.x + x, origin.y + y)
+
+          case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(x, y)) =>
+            ctx.bezierCurveTo(
+              origin.x + cp1x , origin.y + cp1y,
+              origin.x + cp2x , origin.y + cp2y,
+              origin.x + x    , origin.y + y
+            )
+        }
+        ctx.closePath()
+        doStrokeAndFill()
+
       case Circle(r) =>
         ctx.beginPath()
         ctx.arc(origin.x, origin.y, r, 0.0, Math.PI * 2)
@@ -77,13 +99,13 @@ package object js {
         val lBox = BoundingBox(l)
         val rBox = BoundingBox(r)
 
-        val lOriginX = origin.x + box.left + (lBox.width / 2)
+        val lOriginX = origin.x + box.left  + (lBox.width / 2)
         val rOriginX = origin.x + box.right - (rBox.width / 2)
         // Beside always vertically centers l and r, so we don't need
         // to calculate center ys for l and r.
 
-        draw(l, Point(lOriginX, origin.y), context, ctx)
-        draw(r, Point(rOriginX, origin.y), context, ctx)
+        draw(l, Vec(lOriginX, origin.y), context, ctx)
+        draw(r, Vec(rOriginX, origin.y), context, ctx)
       case a @ Above(t, b) =>
         val box = BoundingBox(a)
         val tBox = BoundingBox(t)
@@ -92,8 +114,8 @@ package object js {
         val tOriginY = origin.y + box.top + (tBox.height / 2)
         val bOriginY = origin.y + box.bottom - (bBox.height / 2)
 
-        draw(t, Point(origin.x, tOriginY), context, ctx)
-        draw(b, Point(origin.x, bOriginY), context, ctx)
+        draw(t, Vec(origin.x, tOriginY), context, ctx)
+        draw(b, Vec(origin.x, bOriginY), context, ctx)
       case At(vec, i) =>
         draw(i, origin + vec, context, ctx)
 
@@ -111,6 +133,6 @@ package object js {
   private def canvasContext(canvas: dom.HTMLCanvasElement): dom.CanvasRenderingContext2D =
     canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
 
-  private def canvasCenter(canvas: dom.HTMLCanvasElement): Point =
-    Point(canvas.width / 2, canvas.height / 2)
+  private def canvasCenter(canvas: dom.HTMLCanvasElement): Vec =
+    Vec(canvas.width / 2, canvas.height / 2)
 }

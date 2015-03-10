@@ -120,7 +120,7 @@ sealed trait Color {
             RGBA(lightness, lightness, lightness, a)
           case s =>
             def hueToRgb(p: Double, q: Double, t: Normalized): Normalized = {
-              Normalized.clip(t.get match {
+              Normalized.wrap(t.get match {
                 case t if t < 1.0/6.0 => p + (q - p) * 6 * t
                 case t if t < 0.5 => q
                 case t if t < 2.0/3.0 => p + (q - p) * (2.0/3.0 - t) * 6
@@ -135,9 +135,9 @@ sealed trait Color {
               else
                 lightness + s - (lightness * s)
             val p = 2 * lightness - q
-            val r = hueToRgb(p, q, (h + 120.degrees).toTurns)
-            val g = hueToRgb(p, q, h.toTurns)
-            val b = hueToRgb(p, q, (h - 120.degrees).toTurns)
+            val r = hueToRgb(p, q, Normalized.wrap((h + 120.degrees).toTurns))
+            val g = hueToRgb(p, q, Normalized.wrap(h.toTurns))
+            val b = hueToRgb(p, q, Normalized.wrap((h - 120.degrees).toTurns))
 
             RGBA(r.toUnsignedByte, g.toUnsignedByte, b.toUnsignedByte, a)
         }
@@ -147,7 +147,7 @@ final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Norm
 final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized) extends Color
 
 object Color extends CommonColors {
-  /** Convenience constructors that clips its input. */
+  /** Convenience constructor that clips its input. */
   def rgba(r: Int, g: Int, b: Int, a: Double): RGBA =
     RGBA(
       UnsignedByte.clip(r),
@@ -156,20 +156,28 @@ object Color extends CommonColors {
       Normalized.clip(a)
     )
 
-  /** Convenience constructors that clips its input. */
-  def hsla(h: Double, s: Double, l: Double, a: Double): HSLA =
+  /** Convenience constructor that clips its input. */
+  def hsla(h: Angle, s: Double, l: Double, a: Double): HSLA =
     HSLA(
-      Angle.degrees(h),
+      h,
       Normalized.clip(s),
       Normalized.clip(l),
       Normalized.clip(a)
     )
 
-  /** Convenience constructors that clips its input. */
+  /** Convenience constructor that clips its input. */
+  def hsla(h: Int, s: Double, l: Double, a: Double): HSLA =
+    hsla(h.degrees, s, l, a)
+
+  /** Convenience constructor that clips its input. */
   def rgb(r: Int, g: Int, b: Int): Color =
     rgba(r, g, b, 1.0)
 
-  /** Convenience constructors that clips its input. */
-  def hsl(h: Double, s: Double, l: Double) =
+  /** Convenience constructor that clips its input. */
+  def hsl(h: Angle, s: Double, l: Double) =
     hsla(h, s, l, 1.0)
+
+  /** Convenience constructor that clips its input. */
+  def hsl(h: Int, s: Double, l: Double) =
+    hsla(h.degrees, s, l, 1.0)
 }

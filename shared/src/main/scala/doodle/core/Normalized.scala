@@ -1,5 +1,7 @@
 package doodle.core
 
+import scala.annotation.tailrec
+
 /**
   * A value in the range [0, 1]
   */
@@ -42,4 +44,14 @@ object Normalized {
       case v if value > 1.0 => MaxValue
       case v => Normalized(v)
     }
+
+  def wrap(value: Double): Normalized = {
+    @tailrec def loop(value: Double): Normalized = value match {
+      case v if v > 1.0 => loop(v - 1.0)
+      case v if v < 0.0 => loop(v + 1.0)
+      case v => Normalized(v)
+    }
+
+    loop(value)
+  }
 }
