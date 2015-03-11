@@ -2,6 +2,9 @@ package doodle.examples
 
 import doodle.core._
 
+// Mandelbrot Fractal
+// Contributed by Mat Moore -- https://github.com/MatMoore
+
 case class Complex(real: Double, imaginary: Double) {
   def +(other: Complex) = Complex(real + other.real, imaginary + other.imaginary)
 

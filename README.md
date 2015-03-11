@@ -91,3 +91,7 @@ We provide four quick aliases for common commands:
 > fastOptJS compiles the JS codebase
 > test      runs the unit tests for both codebases
 ~~~
+
+# Acknowledgements
+
+Doodle was written by Noel Welsh and Dave Gurnell with contributions from Jono Ferguson, Richard Dallaway, and Mat Moore.
