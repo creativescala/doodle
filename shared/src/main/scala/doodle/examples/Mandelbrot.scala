@@ -1,4 +1,5 @@
 package doodle.examples
+
 import doodle.core._
 
 case class Complex(real: Double, imaginary: Double) {
@@ -26,7 +27,7 @@ case class Complex(real: Double, imaginary: Double) {
 }
 
 
-object Mandlebrot extends Drawable {
+object Mandelbrot extends Drawable {
   val maxApplys: Int = 50
 
   trait CellRenderer {
@@ -38,7 +39,7 @@ object Mandlebrot extends Drawable {
   class PaletteCellRenderer(val palette: List[Color]) extends CellRenderer {
     def color(count: Int) = {
       if(count == maxApplys) {
-        // Use the first colour for points in the Mandlebrot set
+        // Use the first colour for points in the Mandelbrot set
         palette(0)
       }
       else {
