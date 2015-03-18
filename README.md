@@ -1,4 +1,4 @@
-# Compositional Graphics
+# Doodle: Compositional Graphics
 
 by [Underscore](http://underscore.io).
 
