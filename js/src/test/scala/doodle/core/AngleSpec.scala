@@ -18,7 +18,7 @@ object AngleSpec extends TestSuite {
     "Conversions to/from normalized"-{
       for(i <- 1 to 100) {
         val original = Angle.turns(Math.random)
-        val converted = Angle.turns(original.toTurns.get)
+        val converted = Angle.turns(original.toTurns)
 
         assert(Math.abs(original.toRadians - converted.toRadians) < 0.1)
       }

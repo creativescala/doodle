@@ -3,6 +3,7 @@ package doodle.core
 import utest._
 import doodle.syntax.angle._
 import doodle.syntax.normalized._
+import doodle.syntax.uByte._
 import japgolly.nyaya.Prop
 import japgolly.nyaya.test.Gen
 import japgolly.nyaya.test.PropTest._
@@ -10,54 +11,54 @@ import japgolly.nyaya.test.PropTest._
 object ColorSpec extends TestSuite {
   val tests = TestSuite {
     "Known HSLA converts to expected RGBA"-{
-      val blueHSLA = Color.hsla(240, 0.5, 0.5, 1.0).toRGBA
-      val blueRGBA = Color.rgba(64, 64, 191, 1.0)
+      val blueHSLA = Color.hsl(240.degrees, 0.5.normalized, 0.5.normalized).toRGBA
+      val blueRGBA = Color.rgb(64.uByte, 64.uByte, 191.uByte)
       assert(blueHSLA ~= blueRGBA)
 
-      val greenHSLA = Color.hsla(120, 0.5, 0.5, 1.0).toRGBA
-      val greenRGBA = Color.rgba(64, 191, 64, 1.0)
+      val greenHSLA = Color.hsl(120.degrees, 0.5.normalized, 0.5.normalized).toRGBA
+      val greenRGBA = Color.rgb(64.uByte, 191.uByte, 64.uByte)
       assert(greenHSLA ~= greenRGBA)
 
-      val redHSLA = Color.hsla(0, 0.75, 0.5, 1.0).toRGBA
-      val redRGBA = Color.rgba(223, 32, 32, 1.0)
+      val redHSLA = Color.hsl(0.degrees, 0.75.normalized, 0.5.normalized).toRGBA
+      val redRGBA = Color.rgb(223.uByte, 32.uByte, 32.uByte)
       assert(redHSLA ~= redRGBA)
     }
 
     "Known RGBA converts to expected HSLA"-{
-      val blueHSLA = Color.hsla(240, 0.5, 0.5, 1.0)
-      val blueRGBA = Color.rgba(64, 64, 191, 1.0).toHSLA
+      val blueHSLA = Color.hsl(240.degrees, 0.5.normalized, 0.5.normalized)
+      val blueRGBA = Color.rgb(64.uByte, 64.uByte, 191.uByte).toHSLA
       assert(blueHSLA ~= blueRGBA)
 
-      val greenHSLA = Color.hsla(120, 0.5, 0.5, 1.0)
-      val greenRGBA = Color.rgba(64, 191, 64, 1.0).toHSLA
+      val greenHSLA = Color.hsl(120.degrees, 0.5.normalized, 0.5.normalized)
+      val greenRGBA = Color.rgb(64.uByte, 191.uByte, 64.uByte).toHSLA
       assert(greenHSLA ~= greenRGBA)
 
-      val redHSLA = Color.hsla(0, 0.75, 0.5, 1.0)
-      val redRGBA = Color.rgba(223, 32, 32, 1.0).toHSLA
+      val redHSLA = Color.hsl(0.degrees, 0.75.normalized, 0.5.normalized)
+      val redRGBA = Color.rgb(223.uByte, 32.uByte, 32.uByte).toHSLA
       assert(redHSLA ~= redRGBA)
     }
 
     "HSLA with 0 saturation converts to gray"-{
-      val grey1HSLA = Color.hsla(0, 0, 0.5, 1.0).toRGBA
-      val grey1RGBA = Color.rgba(128, 128, 128, 1.0)
+      val grey1HSLA = Color.hsl(0.degrees, 0.normalized, 0.5.normalized).toRGBA
+      val grey1RGBA = Color.rgb(128.uByte, 128.uByte, 128.uByte)
       assert(grey1HSLA ~= grey1RGBA)
 
-      val grey2HSLA = Color.hsla(0, 0, 1.0, 1.0).toRGBA
-      val grey2RGBA = Color.rgba(255, 255, 255, 1.0)
+      val grey2HSLA = Color.hsl(0.degrees, 0.normalized, 1.0.normalized).toRGBA
+      val grey2RGBA = Color.rgb(255.uByte, 255.uByte, 255.uByte)
       assert(grey2HSLA ~= grey2RGBA)
     }
 
     "HSLA spin transforms correctly"-{
-      val original = Color.hsla(120, 0.5, 0.5, 1.0)
+      val original = Color.hsl(120.degrees, 0.5.normalized, 0.5.normalized)
       val spun = original.spin(60.degrees)
       val unspun = original.spin(-60.degrees)
 
-      assert(spun ~= Color.hsla(180, 0.5, 0.5, 1.0))
-      assert(unspun ~= Color.hsla(60, 0.5, 0.5, 1.0))
+      assert(spun ~= Color.hsl(180.degrees, 0.5.normalized, 0.5.normalized))
+      assert(unspun ~= Color.hsl(60.degrees, 0.5.normalized, 0.5.normalized))
     }
 
     "Fade in/out transforms correctly"-{
-      val original = Color.hsla(120, 0.5, 0.5, 0.5)
+      val original = Color.hsla(120.degrees, 0.5.normalized, 0.5.normalized, 0.5.normalized)
       val fadeOut = original fadeOut(0.5.normalized)
       val fadeIn = original fadeIn(0.5.normalized)
 
@@ -66,9 +67,9 @@ object ColorSpec extends TestSuite {
     }
 
     "Colors print to canvas correctly"-{
-      val hsla = Color.hsl(120, 0.5, 0.5).toCanvas
+      val hsla = Color.hsl(120.degrees, 0.5.normalized, 0.5.normalized).toCanvas
       assert(hsla == "hsla(120, 50%, 50%, 1)")
-      val rgba = Color.rgb(240, 12, 12).toCanvas
+      val rgba = Color.rgb(240.uByte, 12.uByte, 12.uByte).toCanvas
       assert(rgba == "rgba(240, 12, 12, 1)")
     }
 

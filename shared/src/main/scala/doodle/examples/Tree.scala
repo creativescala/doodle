@@ -8,7 +8,7 @@ object Tree extends Drawable {
     Path(Seq(
       MoveTo(Vec.zero),
       LineTo(Vec.polar(angle, length))
-    )) lineColor Color.hsl(angle, .5, .5)
+    )) lineColor Color.hsl(angle, .5.normalized, .5.normalized)
 
   def branch(depth: Int, angle: Angle, length: Double): Image = {
     if(depth == 0) {
