@@ -40,13 +40,27 @@ Follow the link to download your copy from our web site.
 
     A window should appear containing a red circle.
 
-4.  Return to the SBT prompt and compile the JS version:
+# Drawing in the Browser
+
+You can also draw Doodle pictures in the browser. The process is slightly different.
+
+1.  Write your code in `js/src/main/scala/Main.scala`
+
+2.  Start SBT:
+
+    ~~~ bash
+    bash$ sbt
+
+    > # This is the SBT prompt. Press Ctrl+D to quit to the OS.
+    ~~~
+
+3.  Compile the JS version:
 
     ~~~ scala
     > fastOptJS
     ~~~
 
-5.  Open your browser and point to `http://localhost:12345`
+4.  Open your browser and point to `http://localhost:12345/index.html`
     to see an HTML 5 canvas version of the code.
 
 # Viewing the Examples
@@ -73,12 +87,6 @@ Source code is in the following directories:
  - shared / src / {main,test} / scala
  - jvm    / src / {main,test} / scala
  - js     / src / {main,test} / scala
-~~~
-
-The main file for editing is:
-
-~~~ coffee
-shared/src/main/scala/doodle/Example.scala
 ~~~
 
 # SBT Commands
