@@ -1,10 +1,12 @@
 # Compositional Graphics
 
-by [Underscore](http://underscore.io).
+Copyright 2015 [Underscore](http://underscore.io).
 
 A Scala library for compositional vector graphics,
 with a native back-end via Swing and Java2D,
 and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
+
+Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
 # Creative Scala
 
