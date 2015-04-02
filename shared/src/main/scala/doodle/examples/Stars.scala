@@ -8,13 +8,17 @@ object Stars extends Drawable {
     val centerAngle = 360.degrees * skip / sides
 
     val elements = (0 to sides) map { index =>
-      LineTo(Vec.polar(centerAngle * index, radius))
+      val pt = Vec.polar(centerAngle * index, radius)
+      if(index == 0)
+        MoveTo(pt)
+      else
+        LineTo(pt)
     }
 
     Path(elements).
       lineWidth(2).
-      lineColor(Color.hsl(centerAngle, 1, .25)).
-      fillColor(Color.hsl(centerAngle, 1, .75))
+      lineColor(Color.hsl(centerAngle, 1.normalized, .25.normalized)).
+      fillColor(Color.hsl(centerAngle, 1.normalized, .75.normalized))
   }
 
   val draw =

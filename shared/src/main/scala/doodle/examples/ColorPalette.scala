@@ -13,11 +13,11 @@ object ColorPalette extends Drawable {
 
   def squareCell(size: Int): CellFunc =
     (hue: Int, lightness: Double) =>
-      Rectangle(size, size) lineWidth 0 fillColor Color.hsl(hue, 1.0, lightness)
+      Rectangle(size, size) lineWidth 0 fillColor Color.hsl(hue.degrees, 1.0.normalized, lightness.normalized)
 
   def circleCell(size: Int): CellFunc =
     (hue: Int, lightness: Double) =>
-      Circle(size/2) lineWidth 0 fillColor Color.hsl(hue, 1.0, lightness)
+      Circle(size/2) lineWidth 0 fillColor Color.hsl(hue.degrees, 1.0.normalized, lightness.normalized)
 
   // Code to construct a palette
   // from a given cell definition:
