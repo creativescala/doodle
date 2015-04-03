@@ -109,15 +109,12 @@ See [here][doodle-releases] for a list of releases.
 Once you know which release you want, add the following to your `build.sbt`:
 
 ~~~ scala
-resolvers += Resolver.url(
-  "Underscore Training",
-  url("https://dl.bintray.com/underscoreio/training")
-)(Resolver.ivyStylePatterns)
+scalaVersion := "2.11.2" // Doodle is compatible with Scala 2.11 only
+
+resolvers += "Underscore Training" at "https://dl.bintray.com/underscoreio/training"
 
 libraryDependencies += "underscoreio" %% "doodle" % <<VERSION>>
 ~~~
-
-Note: Doodle is compatible with Scala 2.11 only.
 
 [bintray-training]: https://bintray.com/underscoreio/training
 [doodle-releases]: https://bintray.com/underscoreio/training/doodle/view
