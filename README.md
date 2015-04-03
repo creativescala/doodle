@@ -102,6 +102,26 @@ We provide four quick aliases for common commands:
 > test      runs the unit tests for both codebases
 ~~~
 
+# Using Doodle as a Library
+
+You can grab Doodle from our [training repository][bintray-training] on Bintray.
+See [here][doodle-releases] for a list of releases.
+Once you know which release you want, add the following to your `build.sbt`:
+
+~~~ scala
+resolvers += Resolver.url(
+  "Underscore Training",
+  url("https://dl.bintray.com/underscoreio/training")
+)(Resolver.ivyStylePatterns)
+
+libraryDependencies += "underscoreio" %% "doodle" % <<VERSION>>
+~~~
+
+Note: Doodle is compatible with Scala 2.11 only.
+
+[bintray-training]: https://bintray.com/underscoreio/training
+[doodle-releases]: https://bintray.com/underscoreio/training/doodle/view
+
 # Acknowledgements
 
 Doodle was written by Noel Welsh and Dave Gurnell with contributions from Jono Ferguson, Richard Dallaway, and Mat Moore.
