@@ -18,10 +18,11 @@ lazy val doodle = crossProject.
     packageLabels in bintray := Seq("scala", "training", "creative-scala"),
     repository in bintray := "training",
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
-    git.formattedShaVersion := {
-      git.gitHeadCommit.value map { sha =>
-        "0.1.0-" + sha.substring(0, 6) + "-snapshot"
-      }
+    // Versioning based on Git releases:
+    git.useGitDescribe := true,
+    git.baseVersion := "0.1.0",
+    git.gitTagToVersionNumber := { tag =>
+      Option(tag) filter (_ matches "[0-9][.][0.9][.][0-9]")
     },
     initialCommands in console := """
       |import doodle.core._
