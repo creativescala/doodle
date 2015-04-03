@@ -104,8 +104,8 @@ We provide four quick aliases for common commands:
 
 # Using Doodle as a Library
 
-You can grab Doodle from our [training repository][bintray-training] on Bintray.
-See [here][doodle-releases] for a list of releases.
+You can grab Doodle from our *training* repository on Bintray.
+See [the releases tab](https://github.com/underscoreio/doodle/releases) for a list of releases.
 Once you know which release you want, add the following to your `build.sbt`:
 
 ~~~ scala
@@ -113,11 +113,11 @@ scalaVersion := "2.11.2" // Doodle is compatible with Scala 2.11 only
 
 resolvers += "Underscore Training" at "https://dl.bintray.com/underscoreio/training"
 
-libraryDependencies += "underscoreio" %% "doodle" % <<VERSION>>
+libraryDependencies += "underscoreio" %% "doodle" % <<RELEASE_VERSION>>
 ~~~
 
-If you are considering using Doodle on the console in your project,
-you may also want to add the following to your build for convenience:
+If you are considering using Doodle on the Scala console,
+you may also want to add the following to your build:
 
 ~~~ scala
 initialCommands in console := """
