@@ -116,6 +116,18 @@ resolvers += "Underscore Training" at "https://dl.bintray.com/underscoreio/train
 libraryDependencies += "underscoreio" %% "doodle" % <<VERSION>>
 ~~~
 
+If you are considering using Doodle on the console in your project,
+you may also want to add the following to your build for convenience:
+
+~~~ scala
+initialCommands in console := """
+  |import doodle.core._
+  |import doodle.syntax._
+  |import doodle.jvm._
+  |import doodle.examples._
+""".trim.stripMargin
+~~~
+
 [bintray-training]: https://bintray.com/underscoreio/training
 [doodle-releases]: https://bintray.com/underscoreio/training/doodle/view
 
