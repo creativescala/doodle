@@ -1,11 +1,28 @@
+import bintray.Keys._
+
+enablePlugins(GitVersioning)
+
+enablePlugins(GitBranchPrompt)
+
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
     name          := "doodle",
-    version       := "0.1-SNAPSHOT",
+    organization  := "underscoreio",
     scalaVersion  := "2.11.5",
     scalacOptions += "-feature"
   ).jvmSettings(
+    bintrayPublishSettings : _*
+  ).jvmSettings(
+    bintrayOrganization in bintray := Some("underscoreio"),
+    packageLabels in bintray := Seq("scala", "training", "creative-scala"),
+    repository in bintray := "training",
+    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
+    git.formattedShaVersion := {
+      git.gitHeadCommit.value map { sha =>
+        "0.1.0-" + sha.substring(0, 6) + "-snapshot"
+      }
+    },
     initialCommands in console := """
       |import doodle.core._
       |import doodle.syntax._
@@ -37,12 +54,8 @@ lazy val doodleJVM = doodle.jvm
 
 lazy val doodleJS = doodle.js
 
-// Handy shortcuts:
-//  - `run`       runs `doodleJVM/run`
-//  - `console`   runs `doodleJVM/console`
-//  - `test`      runs `doodleJVM/test` and then `doodleJS/test`
-//  - `fastOptJS` runs `doodleJS/fastOptJS`
-
 run     <<= run     in (doodleJVM, Compile)
 
 console <<= console in (doodleJVM, Compile)
+
+publish <<= publish in (doodleJVM, Compile)

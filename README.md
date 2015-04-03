@@ -1,10 +1,12 @@
-# Compositional Graphics
+# Doodle: Compositional Graphics
 
-by [Underscore](http://underscore.io).
+Copyright 2015 [Underscore](http://underscore.io).
 
 A Scala library for compositional vector graphics,
 with a native back-end via Swing and Java2D,
 and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
+
+Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
 # Creative Scala
 
@@ -40,13 +42,27 @@ Follow the link to download your copy from our web site.
 
     A window should appear containing a red circle.
 
-4.  Return to the SBT prompt and compile the JS version:
+# Drawing in the Browser
+
+You can also draw Doodle pictures in the browser. The process is slightly different.
+
+1.  Write your code in `js/src/main/scala/Main.scala`
+
+2.  Start SBT:
+
+    ~~~ bash
+    bash$ sbt
+
+    > # This is the SBT prompt. Press Ctrl+D to quit to the OS.
+    ~~~
+
+3.  Compile the JS version:
 
     ~~~ scala
     > fastOptJS
     ~~~
 
-5.  Open your browser and point to `http://localhost:12345`
+4.  Open your browser and point to `http://localhost:12345/index.html`
     to see an HTML 5 canvas version of the code.
 
 # Viewing the Examples
@@ -75,12 +91,6 @@ Source code is in the following directories:
  - js     / src / {main,test} / scala
 ~~~
 
-The main file for editing is:
-
-~~~ coffee
-shared/src/main/scala/doodle/Example.scala
-~~~
-
 # SBT Commands
 
 We provide four quick aliases for common commands:
@@ -91,3 +101,24 @@ We provide four quick aliases for common commands:
 > fastOptJS compiles the JS codebase
 > test      runs the unit tests for both codebases
 ~~~
+
+# Using Doodle as a Library
+
+You can grab Doodle from our [training repository][bintray-training] on Bintray.
+See [here][doodle-releases] for a list of releases.
+Once you know which release you want, add the following to your `build.sbt`:
+
+~~~ scala
+scalaVersion := "2.11.2" // Doodle is compatible with Scala 2.11 only
+
+resolvers += "Underscore Training" at "https://dl.bintray.com/underscoreio/training"
+
+libraryDependencies += "underscoreio" %% "doodle" % <<VERSION>>
+~~~
+
+[bintray-training]: https://bintray.com/underscoreio/training
+[doodle-releases]: https://bintray.com/underscoreio/training/doodle/view
+
+# Acknowledgements
+
+Doodle was written by Noel Welsh and Dave Gurnell with contributions from Jono Ferguson, Richard Dallaway, and Mat Moore.

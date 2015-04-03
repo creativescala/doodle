@@ -1,22 +1,25 @@
 package doodle
 
 package object core {
-  // HACK: Add a proper empty image!
-  private def emptyImage: Image =
-    Circle(0) lineWidth 0
+  private def reduceImages(images: Seq[Image])(combine: (Image, Image) => Image): Image =
+    images match {
+      case Seq()      => Circle(0) lineWidth 0 // HACK: TODO: Implemenet a proper empty image!
+      case Seq(image) => image
+      case images     => images.reduceLeft(combine)
+    }
 
   def allBeside(images: Seq[Image]): Image =
-    images.foldLeft(emptyImage)(_ beside _)
+    reduceImages(images)(_ beside _)
 
   def allAbove(images: Seq[Image]): Image =
-    images.foldLeft(emptyImage)(_ above _)
+    reduceImages(images)(_ above _)
 
   def allBelow(images: Seq[Image]): Image =
-    images.foldLeft(emptyImage)(_ below _)
+    reduceImages(images)(_ below _)
 
   def allOn(images: Seq[Image]): Image =
-    images.foldLeft(emptyImage)(_ on _)
+    reduceImages(images)(_ on _)
 
   def allUnder(images: Seq[Image]): Image =
-    images.foldLeft(emptyImage)(_ under _)
+    reduceImages(images)(_ under _)
 }

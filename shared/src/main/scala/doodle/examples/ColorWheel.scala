@@ -13,7 +13,7 @@ object ColorWheel extends Drawable {
     Circle(20).
       at(r * a.sin, r * a.cos).
       lineWidth(0).
-      fillColor(Color.hsl(h, 1, l))
+      fillColor(Color.hsl(a, 1.normalized, l.normalized))
   }
 
   def draw = blobs.reduceLeft(_ on _)

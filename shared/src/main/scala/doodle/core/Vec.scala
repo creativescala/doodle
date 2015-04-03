@@ -32,9 +32,6 @@ final case class Vec(x: Double, y: Double) {
 }
 
 object Vec {
-  implicit def tupleToVec(t: (Double, Double)) =
-    Vec(t._1, t._2)
-
   val zero  = Vec(0, 0)
   val unitX = Vec(1, 0)
   val unitY = Vec(0, 1)

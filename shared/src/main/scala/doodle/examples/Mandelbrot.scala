@@ -1,5 +1,11 @@
 package doodle.examples
+
 import doodle.core._
+import doodle.syntax.angle._
+import doodle.syntax.normalized._
+
+// Mandelbrot Fractal
+// Contributed by Mat Moore -- https://github.com/MatMoore
 
 case class Complex(real: Double, imaginary: Double) {
   def +(other: Complex) = Complex(real + other.real, imaginary + other.imaginary)
@@ -26,7 +32,7 @@ case class Complex(real: Double, imaginary: Double) {
 }
 
 
-object Mandlebrot extends Drawable {
+object Mandelbrot extends Drawable {
   val maxApplys: Int = 50
 
   trait CellRenderer {
@@ -38,7 +44,7 @@ object Mandlebrot extends Drawable {
   class PaletteCellRenderer(val palette: List[Color]) extends CellRenderer {
     def color(count: Int) = {
       if(count == maxApplys) {
-        // Use the first colour for points in the Mandlebrot set
+        // Use the first colour for points in the Mandelbrot set
         palette(0)
       }
       else {
@@ -50,7 +56,9 @@ object Mandlebrot extends Drawable {
     def shape(size: Int) = Rectangle(size, size)
   }
 
-  val defaultPalette = Color.black :: (0 to 360 by 5).map(Color.hsl(_, 1, 0.4)).toList
+  val defaultPalette = Color.black :: (0 to 360 by 5).map{ angle =>
+    Color.hsl(angle.degrees, 1.normalized, 0.4.normalized)
+  }.toList
   val defaultRenderer = new PaletteCellRenderer(defaultPalette)
 
   def countUntilDiverges(z: Complex, func: Complex => Complex) = {

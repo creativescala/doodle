@@ -22,6 +22,21 @@ final case class Angle(toRadians: Double) extends AnyVal {
   def cos: Double =
     math.cos(toRadians)
 
+  def normalize: Angle = {
+    import scala.annotation.tailrec
+    @tailrec
+    def iterate(r: Double): Double =
+      r match {
+        case r if r < 0.0 =>
+          iterate(r + Angle.TwoPi)
+        case r if r > Angle.TwoPi =>
+          iterate(r - Angle.TwoPi)
+        case r => r
+      }
+
+    Angle(iterate(toRadians))
+  }
+
   /** Angle as the proportion of a full turn around a circle */
   def toTurns: Double =
     this.toRadians / Angle.TwoPi
@@ -30,7 +45,7 @@ final case class Angle(toRadians: Double) extends AnyVal {
     (this.toRadians / Angle.TwoPi) * 360
 
   def toCanvas: String =
-    this.toDegrees.toString
+    this.normalize.toDegrees.toString
 }
 
 object Angle {

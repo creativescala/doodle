@@ -66,8 +66,8 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
 
     image match {
       case Path(elts) =>
-        val path = new Path2D.Double()
-        elts foreach {
+        val path  = new Path2D.Double()
+        normalizePathElements(elts) foreach {
           case MoveTo(Vec(x, y)) =>
             path.moveTo(origin.x + x, origin.y + y)
 
@@ -139,4 +139,10 @@ class DoodlePanel private(private var _image: Image) extends JPanel {
     val RGBA(r, g, b, a) = color.toRGBA
     new AwtColor(r.get, g.get, b.get, a.toUnsignedByte.get)
   }
+
+  private def normalizePathElements(elts: Seq[PathElement]): Seq[PathElement] =
+    elts.headOption match {
+      case Some(MoveTo(_)) => elts
+      case _ => MoveTo(Vec.zero) +: elts
+    }
 }

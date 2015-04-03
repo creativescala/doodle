@@ -1,10 +1,56 @@
 package doodle.core
 
 import doodle.syntax.angle._
+import doodle.syntax.normalized._
 
 sealed trait Color {
 
-  /** Adjust hue by the given angle */
+  // Accessors ----------------------------------------------
+
+  def red: UnsignedByte =
+    this.toRGBA.r
+
+  def green: UnsignedByte =
+    this.toRGBA.g
+
+  def blue: UnsignedByte =
+    this.toRGBA.b
+
+  def hue: Angle =
+    this.toHSLA.h
+
+  def saturation: Normalized =
+    this.toHSLA.s
+
+  def lightness: Normalized =
+    this.toHSLA.l
+
+  def alpha: Normalized =
+    this match {
+      case RGBA(_, _, _, a) => a
+      case HSLA(_, _, _, a) => a
+    }
+
+  // Color manipulation ------------------------------------
+
+  /** Copies this color, changing the hue to the given value*/
+  def hue(angle: Angle): Color =
+    this.toHSLA.copy(h = angle)
+
+  /** Copies this color, changing the saturation to the given value*/
+  def saturation(s: Normalized): Color =
+    this.toHSLA.copy(s = s)
+
+  /** Copies this color, changing the lightness to the given value*/
+  def lightness(l: Normalized): Color =
+    this.toHSLA.copy(l = l)
+
+  /** Copies this color, changing the alpha to the given value*/
+  def alpha(a: Normalized): Color =
+    this.toHSLA.copy(a = a)
+
+
+  /** Rotate hue by the given angle */
   def spin(angle: Angle) = {
     val original = this.toHSLA
     original.copy(h = original.h + angle)
@@ -54,11 +100,7 @@ sealed trait Color {
     original.copy(a = Normalized.clip(original.a - opacity))
   }
 
-  def alpha: Normalized =
-    this match {
-      case RGBA(_, _, _, a) => a
-      case HSLA(_, _, _, a) => a
-    }
+  // Other -------------------------------------------------
 
   /** True if this is approximately equal to that */
   def ~=(that: Color): Boolean =
@@ -147,37 +189,15 @@ final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Norm
 final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized) extends Color
 
 object Color extends CommonColors {
-  /** Convenience constructor that clips its input. */
-  def rgba(r: Int, g: Int, b: Int, a: Double): RGBA =
-    RGBA(
-      UnsignedByte.clip(r),
-      UnsignedByte.clip(g),
-      UnsignedByte.clip(b),
-      Normalized.clip(a)
-    )
+  def rgba(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalized): RGBA =
+    RGBA(r, g, b, a)
 
-  /** Convenience constructor that clips its input. */
-  def hsla(h: Angle, s: Double, l: Double, a: Double): HSLA =
-    HSLA(
-      h,
-      Normalized.clip(s),
-      Normalized.clip(l),
-      Normalized.clip(a)
-    )
+  def hsla(h: Angle, s: Normalized, l: Normalized, a: Normalized): HSLA =
+    HSLA(h, s, l, a)
 
-  /** Convenience constructor that clips its input. */
-  def hsla(h: Int, s: Double, l: Double, a: Double): HSLA =
-    hsla(h.degrees, s, l, a)
+  def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
+    rgba(r, g, b, 1.0.normalized)
 
-  /** Convenience constructor that clips its input. */
-  def rgb(r: Int, g: Int, b: Int): Color =
-    rgba(r, g, b, 1.0)
-
-  /** Convenience constructor that clips its input. */
-  def hsl(h: Angle, s: Double, l: Double) =
-    hsla(h, s, l, 1.0)
-
-  /** Convenience constructor that clips its input. */
-  def hsl(h: Int, s: Double, l: Double) =
-    hsla(h.degrees, s, l, 1.0)
+  def hsl(h: Angle, s: Normalized, l: Normalized) =
+    hsla(h, s, l, 1.0.normalized)
 }
