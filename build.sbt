@@ -24,6 +24,11 @@ lazy val doodle = crossProject.
     git.gitTagToVersionNumber := { tag =>
       Option(tag) filter (_ matches "[0-9][.][0.9][.][0-9]")
     },
+    git.formattedShaVersion := {
+      git.gitHeadCommit.value map { sha =>
+        "0.1.0-" + sha.substring(0, 6) + "-snapshot"
+      }
+    },
     initialCommands in console := """
       |import doodle.core._
       |import doodle.syntax._
