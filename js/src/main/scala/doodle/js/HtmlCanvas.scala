@@ -8,8 +8,8 @@ import org.scalajs.dom
 
 class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
   val context = canvas.getContext("2d").asInstanceOf[dom.raw.CanvasRenderingContext2D]
-  val originX = canvas.width / 2
-  val originY = canvas.height / 2
+  var originX = canvas.width / 2
+  var originY = canvas.height / 2
 
   /** Transform from Canvas coordinates to HTMLCanvasElement coordinates */
   def transformX(x: Double): Double =
@@ -18,6 +18,11 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
   /** Transform from Canvas coordinates to HTMLCanvasElement coordinates */
   def transformY(y: Double): Double =
     originY - y
+
+  def setOrigin(x: Int, y: Int): Unit = {
+    originX = (canvas.width / 2) + x
+    originY = (canvas.height / 2) + y
+  }
 
   def setStroke(stroke: Stroke): Unit = {
     context.lineWidth = stroke.width

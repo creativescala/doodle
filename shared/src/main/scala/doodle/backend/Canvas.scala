@@ -15,9 +15,14 @@ import doodle.core.{Color, Stroke}
   * We assume the origin is centered in the drawing context, and coordinates
   * follow the standard cartesian layout. The Canvas implementation is
   * responsible for translating this coordinate system to whatever is used
-  * internally.
+  * by the specific implementation it draws to.
+  *
+  * Callers can change the origin to another location to, for example, center an
+  * image in the canvas (if that image is itself not centered on the origin)
   */
 trait Canvas {
+
+  def setOrigin(x: Int, y: Int): Unit
 
   def setStroke(stroke: Stroke): Unit
   def setFill(color: Color): Unit
