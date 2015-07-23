@@ -42,6 +42,6 @@ object ColorPalette extends Drawable {
 
   // The final palette:
 
-  def draw =
+  def image =
     palette(10, 0.04, circleCell(20))
 }

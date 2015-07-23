@@ -94,7 +94,7 @@ trait StandardInterpreter extends Interpreter {
         draw(i, canvas, f(context), origin)
 
       case d: Drawable =>
-        draw(d.draw, canvas, context, origin)
+        draw(d.image, canvas, context, origin)
     }
   }
 }

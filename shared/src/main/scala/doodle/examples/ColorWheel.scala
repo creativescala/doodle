@@ -16,5 +16,5 @@ object ColorWheel extends Drawable {
       fillColor(Color.hsl(a, 1.normalized, l.normalized))
   }
 
-  def draw = blobs.reduceLeft(_ on _)
+  def image = blobs.reduceLeft(_ on _)
 }

@@ -14,6 +14,6 @@ object ConcentricCircles extends Drawable {
       singleCircle(n) on concentricCircles(n - 1)
     }
 
-  def draw: Image =
+  def image: Image =
     concentricCircles(20)
 }

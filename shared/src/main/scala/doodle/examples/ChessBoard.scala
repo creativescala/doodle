@@ -14,7 +14,7 @@ object ChessBoard extends Drawable {
     (twoByTwo beside twoByTwo) above
     (twoByTwo beside twoByTwo)
 
-  val draw =
+  val image =
     (fourByFour beside fourByFour) above
     (fourByFour beside fourByFour)
 }

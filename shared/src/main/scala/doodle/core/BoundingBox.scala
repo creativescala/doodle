@@ -100,6 +100,6 @@ object BoundingBox {
       BoundingBox(i)
 
     case d: Drawable =>
-      BoundingBox(d.draw)
+      BoundingBox(d.image)
   }
 }

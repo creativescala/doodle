@@ -111,6 +111,6 @@ object Mandelbrot extends Drawable {
     }
   }
 
-  val draw = mandlebrot(Complex(-0.5, 0), Complex(3, 3), 512)
+  val image = mandlebrot(Complex(-0.5, 0), Complex(3, 3), 512)
 }
 

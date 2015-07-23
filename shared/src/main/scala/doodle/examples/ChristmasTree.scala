@@ -35,5 +35,5 @@ object ChristmasTree extends Drawable {
   val foliage = Triangle(40 * levels, 40 * levels) fillColor darkGreen
   val trunk   = Rectangle(20,40) lineColor brown fillColor brown
 
-  val draw = goldBauble above ( tree(levels) on foliage ) above trunk
+  val image = goldBauble above ( tree(levels) on foliage ) above trunk
 }

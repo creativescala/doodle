@@ -31,7 +31,7 @@ object Koch extends Drawable {
     Path(MoveTo(origin) +: kochElements(depth, origin, 0.degrees, length))
   }
 
-  val draw = allAbove((1 to 4) map { depth =>
+  val image = allAbove((1 to 4) map { depth =>
     koch(depth, 512)
   })
 }

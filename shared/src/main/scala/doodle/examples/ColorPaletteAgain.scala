@@ -102,7 +102,7 @@ object ColorPaletteAgain extends Drawable {
   //   spun.copy(s = calm(normalize(saturation)), l = calm(normalize(lightness)))
   // }
 
-  def draw =
+  def image =
     complementCircles(10, Color.seaGreen) beside
     nearComplementCircles(10, Color.seaGreen) beside
     coloredCircles(10, Color.seaGreen, lcgColor)

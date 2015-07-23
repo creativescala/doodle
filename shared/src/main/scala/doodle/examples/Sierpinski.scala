@@ -19,5 +19,5 @@ object Sierpinski extends Drawable {
     }
   }
 
-  val draw = sierpinski(10, 512)
+  val image = sierpinski(10, 512)
 }

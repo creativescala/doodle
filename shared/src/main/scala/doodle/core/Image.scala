@@ -41,4 +41,4 @@ final case class Above(l: Image, r: Image) extends Image
 final case class Overlay(t: Image, b: Image) extends Image
 final case class At(at: Vec, i: Image) extends Image
 final case class ContextTransform(f: DrawingContext => DrawingContext, image: Image) extends Image
-trait Drawable extends Image { def draw: Image }
+trait Drawable extends Image { def image: Image }

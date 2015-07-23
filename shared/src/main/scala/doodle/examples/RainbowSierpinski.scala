@@ -16,5 +16,5 @@ object RainbowSierpinski extends Drawable {
     }
   }
 
-  def draw = sierpinski(512, Color.red)
+  def image = sierpinski(512, Color.red)
 }

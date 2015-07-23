@@ -21,5 +21,5 @@ object Tree extends Drawable {
     }
   }
 
-  def draw = branch(10, 90.degrees, 50)
+  def image = branch(10, 90.degrees, 50)
 }

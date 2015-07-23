@@ -33,7 +33,7 @@ object Street extends Drawable {
   val houseAndGarden =
     (house beside tree) above street
 
-  val draw = (
+  val image = (
     houseAndGarden beside
     houseAndGarden beside
     houseAndGarden
