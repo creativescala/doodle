@@ -7,7 +7,7 @@ import doodle.backend.Canvas
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.awt.{Color => AwtColor, BasicStroke, Dimension, Graphics, Graphics2D, RenderingHints, Shape}
 import java.awt.geom.Path2D
-import javax.swing.JPanel
+import javax.swing.{JPanel, SwingUtilities}
 
 import scala.collection.mutable.Queue
 
@@ -22,10 +22,7 @@ class CanvasPanel extends JPanel {
   // The Ops we have pulled off the queue
   val operations = new Queue[Op]() 
 
-  setPreferredSize(new Dimension(600, 600))
-
   override def paintComponent(graphics: Graphics): Unit = {
-    retrieveOps()
     val context = graphics.asInstanceOf[Graphics2D]
     context.setRenderingHints(new RenderingHints(
                                 RenderingHints.KEY_ANTIALIASING,
@@ -37,6 +34,13 @@ class CanvasPanel extends JPanel {
     var currentFill: Color = null
     var currentPath: Path2D = null
 
+    // Bounds on the rendered image so we can resize the panel to fit the image.
+    var top = 0
+    var left = 0
+    var bottom = 0
+    var right = 0
+
+    retrieveOps()
     operations.foreach {
       case SetStroke(stroke) => 
         currentStroke = stroke
@@ -62,11 +66,22 @@ class CanvasPanel extends JPanel {
           context.setPaint(color)
 
           context.draw(currentPath)
-        } 
+
+          val bb = currentPath.getBounds()
+          top = bb.y min top
+          left = bb.y min left
+          right = (bb.x + bb.width) max right
+          bottom = (bb.y + bb.height) max bottom}
       case Fill() =>
         if(currentFill != null && currentPath != null) {
           context.setPaint(awtColor(currentFill))
           context.fill(currentPath)
+
+          val bb = currentPath.getBounds()
+          top = bb.y min top
+          left = bb.y min left
+          right = (bb.x + bb.width) max right
+          bottom = (bb.y + bb.height) max bottom
         }
       case BeginPath() =>
         currentPath = new Path2D.Double()
@@ -83,6 +98,9 @@ class CanvasPanel extends JPanel {
       case EndPath() =>
         currentPath.closePath()
     }
+
+    setPreferredSize(new Dimension(right - left + 40, bottom - top + 40))
+    SwingUtilities.windowForComponent(this).pack()
   }
 
   private def retrieveOps(): Unit = {
