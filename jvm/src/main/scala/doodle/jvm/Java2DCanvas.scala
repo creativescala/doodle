@@ -33,3 +33,11 @@ class Java2DCanvas(panel: CanvasPanel) extends Canvas {
   def stroke(): Unit =
     queueAndRepaint(Stroke())
 }
+
+object Java2DCanvas {
+  implicit def canvas: Canvas = {
+    val frame = new CanvasFrame()
+    frame.setVisible(true)
+    frame.panel.canvas
+  }
+}

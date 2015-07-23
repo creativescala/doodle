@@ -118,12 +118,6 @@ class CanvasPanel extends JPanel {
 }
 
 object CanvasPanel {
-  implicit def canvas: Canvas = {
-    val frame = new CanvasFrame()
-    frame.setVisible(true)
-    frame.panel.canvas
-  }
-
   sealed trait Op
   final case class SetStroke(stroke: DoodleStroke) extends Op
   final case class SetFill(color: Color) extends Op

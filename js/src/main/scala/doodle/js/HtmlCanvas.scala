@@ -4,10 +4,10 @@ package js
 import doodle.core.{Color, Stroke}
 import doodle.backend.Canvas
 
-import org.scalajs.dom.{CanvasRenderingContext2D, HTMLCanvasElement}
+import org.scalajs.dom
 
-class HtmlCanvas(canvas: HTMLCanvasElement) extends Canvas {
-  val context = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
+class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
+  val context = canvas.getContext("2d").asInstanceOf[dom.raw.CanvasRenderingContext2D]
   val originX = canvas.width / 2
   val originY = canvas.height / 2
 
@@ -58,11 +58,11 @@ class HtmlCanvas(canvas: HTMLCanvasElement) extends Canvas {
 }
 
 object HtmlCanvas {
-  implicit def canvas(implicit elt: HTMLCanvasElement): Canvas =
-    HtmlCanvas(elt)
+  implicit def canvas(implicit elt: dom.raw.HTMLCanvasElement): Canvas =
+    new HtmlCanvas(elt)
 
   def fromElementId(id: String): Canvas = {
-    val elt = dom.document.getElementById(id).asInstanceOf[dom.HTMLCanvasElement]
+    val elt = dom.document.getElementById(id).asInstanceOf[dom.raw.HTMLCanvasElement]
     canvas(elt)
   }
 }

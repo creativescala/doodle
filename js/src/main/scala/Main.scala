@@ -1,5 +1,7 @@
 import doodle.core._
 import doodle.examples._
+import doodle.syntax.image._
+import doodle.js.HtmlCanvas
 
 import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
