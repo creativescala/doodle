@@ -6,6 +6,10 @@ import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom
 
 @JSExport object Main extends JSApp {
-  @JSExport def main(): Unit =
-    doodle.js.draw(Tree, "canvas")
+  @JSExport def main(): Unit = {
+    import doodle.backend.StandardInterpreter._
+
+    implicit val canvas = HtmlCanvas.fromElementId("canvas")
+    Tree.draw.draw
+  }
 }

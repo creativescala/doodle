@@ -56,3 +56,13 @@ class HtmlCanvas(canvas: HTMLCanvasElement) extends Canvas {
   def endPath(): Unit = 
     context.closePath()
 }
+
+object HtmlCanvas {
+  implicit def canvas(implicit elt: HTMLCanvasElement): Canvas =
+    HtmlCanvas(elt)
+
+  def fromElementId(id: String): Canvas = {
+    val elt = dom.document.getElementById(id).asInstanceOf[dom.HTMLCanvasElement]
+    canvas(elt)
+  }
+}
