@@ -32,25 +32,12 @@ class CanvasPanel extends JPanel {
     var currentFill: Color = null
     var currentPath: Path2D = null
 
-    // True if we actually rendered something. used to avoid excessive resizing
-    // of this panel
-    var didRender: Boolean = false
-
-    // Bounds on the rendered image so we can resize the panel to fit the image.
-    var top = 0
-    var left = 0
-    var bottom = 0
-    var right = 0
-
-    def updateBounds(boundingBox: Rectangle): Unit = {
-      top    = boundingBox.y min top
-      left   = boundingBox.x min left
-      right  = (boundingBox.x + boundingBox.width) max right
-      bottom = (boundingBox.y + boundingBox.height) max bottom
-    }
-
     retrieveOps()
     operations.foreach {
+      case SetSize(width, height) =>
+        setPreferredSize(new Dimension(width + 40, height + 40))
+        SwingUtilities.windowForComponent(this).pack()
+
       case SetOrigin(x, y) =>
         center = Vec(getWidth/2, getHeight/2) + Vec(x, y)
 
@@ -80,18 +67,12 @@ class CanvasPanel extends JPanel {
           context.setPaint(color)
 
           context.draw(currentPath)
-
-          updateBounds(currentPath.getBounds())
-          didRender = true
         }
 
       case Fill() =>
         if(currentFill != null && currentPath != null) {
           context.setPaint(awtColor(currentFill))
           context.fill(currentPath)
-
-          updateBounds(currentPath.getBounds())
-          didRender = true
         }
 
       case BeginPath() =>
@@ -112,11 +93,6 @@ class CanvasPanel extends JPanel {
 
       case EndPath() =>
         currentPath.closePath()
-    }
-
-    if(didRender) {
-      setPreferredSize(new Dimension(right - left + 40, bottom - top + 40))
-      SwingUtilities.windowForComponent(this).pack()
     }
   }
   // The Ops we have pulled off the queue
@@ -139,6 +115,7 @@ class CanvasPanel extends JPanel {
 object CanvasPanel {
   sealed trait Op
   final case class SetOrigin(x: Int, y: Int) extends Op
+  final case class SetSize(width: Int, height: Int) extends Op
   final case class SetStroke(stroke: DoodleStroke) extends Op
   final case class SetFill(color: Color) extends Op
   final case class Stroke() extends Op

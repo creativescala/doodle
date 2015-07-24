@@ -24,6 +24,11 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
     originY = (canvas.height / 2) + y
   }
 
+  def setSize(width: Int, height: Int): Unit = {
+    canvas.width = width
+    canvas.height = height
+  }
+
   def setStroke(stroke: Stroke): Unit = {
     context.lineWidth = stroke.width
     context.lineCap = stroke.cap.toCanvas

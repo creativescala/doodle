@@ -21,7 +21,17 @@ import doodle.core.{Color, Stroke}
   * image in the canvas (if that image is itself not centered on the origin)
   */
 trait Canvas {
+  /** Set the size of the canvas.
+    *
+    * Should only be set before drawing takes place, and before calling
+    * setOrigin as calls to setOrigin will often use the current size to
+    * calculate offsets in the implementation specific coordinate system.
+    * 
+    * The Canvas may ignore this if it is not capable of changing its size. */
+  def setSize(width: Int, height: Int): Unit
 
+  /** Translate the origin by the given x and y amount. Should only be set before
+    * drawing takes place.*/
   def setOrigin(x: Int, y: Int): Unit
 
   def setStroke(stroke: Stroke): Unit

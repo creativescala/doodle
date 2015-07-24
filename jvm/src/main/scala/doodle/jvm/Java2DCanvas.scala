@@ -14,24 +14,26 @@ class Java2DCanvas(panel: CanvasPanel) extends Canvas {
     panel.repaint()
   }
 
+  def setSize(width: Int, height: Int): Unit =
+    queue.add(SetSize(width, height))
   def setOrigin(x: Int, y: Int): Unit =
-    queueAndRepaint(SetOrigin(x, y))
+    queue.add(SetOrigin(x, y))
   def beginPath(): Unit =
-    queueAndRepaint(BeginPath())
+    queue.add(BeginPath())
   def bezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double): Unit =
-    queueAndRepaint(BezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY))
+    queue.add(BezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY))
   def endPath(): Unit =
-    queueAndRepaint(EndPath())
+    queue.add(EndPath())
   def fill(): Unit =
     queueAndRepaint(Fill())
   def lineTo(x: Double, y: Double): Unit =
-    queueAndRepaint(LineTo(x, y))
+    queue.add(LineTo(x, y))
   def moveTo(x: Double, y: Double): Unit =
-    queueAndRepaint(MoveTo(x, y))
+    queue.add(MoveTo(x, y))
   def setFill(color: Color): Unit =
-    queueAndRepaint(SetFill(color))
+    queue.add(SetFill(color))
   def setStroke(stroke: DoodleStroke): Unit =
-    queueAndRepaint(SetStroke(stroke))
+    queue.add(SetStroke(stroke))
   def stroke(): Unit =
     queueAndRepaint(Stroke())
 }
