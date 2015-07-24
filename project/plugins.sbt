@@ -1,5 +1,4 @@
 resolvers ++= Seq(
-  Resolver.url("fix-sbt-plugin-releases", url("https://dl.bintray.com/sbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns),
   Resolver.bintrayRepo("scala-js", "scala-js-releases")
 )
 
