@@ -18,8 +18,8 @@ class Java2DCanvas(panel: CanvasPanel) extends Canvas {
     queue.add(SetSize(width, height))
   def setOrigin(x: Int, y: Int): Unit =
     queue.add(SetOrigin(x, y))
-  def clear(): Unit =
-    queueAndRepaint(Clear)
+  def clear(color: Color): Unit =
+    queueAndRepaint(Clear(color))
   def beginPath(): Unit =
     queue.add(BeginPath())
   def bezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double): Unit =

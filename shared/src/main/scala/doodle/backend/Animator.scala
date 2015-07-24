@@ -13,8 +13,7 @@ object Animator {
     canvas.setSize(600, 600)
 
     def callback(): Unit = {
-      canvas.setFill(Color.white)
-      canvas.clear()
+      canvas.clear(Color.white)
       interpreter.draw(currentFrame.image, canvas, DrawingContext.blackLines, Vec.zero)
       currentFrame = currentFrame.next
     }

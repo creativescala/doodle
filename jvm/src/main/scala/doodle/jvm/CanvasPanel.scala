@@ -44,11 +44,11 @@ class CanvasPanel extends JPanel {
       case SetOrigin(x, y) =>
         center = Vec(getWidth/2, getHeight/2) + Vec(x, y)
 
-      case Clear =>
-        if(currentFill != null) {
-          context.setColor(awtColor(currentFill))
-          context.fillRect(0, 0, getWidth, getHeight)
-        }
+      case Clear(color) =>
+        val oldColor = context.getColor()
+        context.setColor(awtColor(color))
+        context.fillRect(0, 0, getWidth, getHeight)
+        context.setColor(oldColor)
 
       case SetStroke(stroke) => 
         currentStroke = stroke
@@ -123,6 +123,13 @@ class CanvasPanel extends JPanel {
   private def retrieveOps(): Unit = {
     var op = queue.poll()
     while(op != null) {
+      op match {
+        case Clear(_) =>
+          // For efficiency, drop all preceding operations
+          operations.clear()
+        case _ =>
+          ()
+      }
       operations += op
       op = queue.poll()
     }
@@ -136,17 +143,17 @@ class CanvasPanel extends JPanel {
 
 object CanvasPanel {
   sealed trait Op
-  final case class  SetOrigin(x: Int, y: Int) extends Op
-  final case class  SetSize(width: Int, height: Int) extends Op
-  final case object Clear extends Op
-  final case class  SetStroke(stroke: DoodleStroke) extends Op
-  final case class  SetFill(color: Color) extends Op
-  final case class  Stroke() extends Op
-  final case class  Fill() extends Op
-  final case class  BeginPath() extends Op
-  final case class  MoveTo(x: Double, y: Double) extends Op
-  final case class  LineTo(x: Double, y: Double) extends Op
-  final case class  BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
-  final case class  EndPath() extends Op
-  final case class  SetAnimationFrameCallback(callbacl: () => Unit) extends Op
+  final case class SetOrigin(x: Int, y: Int) extends Op
+  final case class SetSize(width: Int, height: Int) extends Op
+  final case class Clear(color: Color) extends Op
+  final case class SetStroke(stroke: DoodleStroke) extends Op
+  final case class SetFill(color: Color) extends Op
+  final case class Stroke() extends Op
+  final case class Fill() extends Op
+  final case class BeginPath() extends Op
+  final case class MoveTo(x: Double, y: Double) extends Op
+  final case class LineTo(x: Double, y: Double) extends Op
+  final case class BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
+  final case class EndPath() extends Op
+  final case class SetAnimationFrameCallback(callbacl: () => Unit) extends Op
 }

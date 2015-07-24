@@ -25,8 +25,11 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
     originY = (canvas.height / 2) + y
   }
 
-  def clear(): Unit = {
+  def clear(color: Color): Unit = {
+    val oldFill = context.fillStyle
+    context.fillStyle = color.toCanvas
     context.fillRect(0, 0, canvas.width, canvas.height)
+    context.fillStyle = oldFill
   }
 
   def setSize(width: Int, height: Int): Unit = {

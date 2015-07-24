@@ -34,8 +34,8 @@ trait Canvas {
     * drawing takes place.*/
   def setOrigin(x: Int, y: Int): Unit
 
-  /** Paints the entire canvas using the current fill */
-  def clear(): Unit
+  /** Fills the entire canvas with the given color */
+  def clear(color: Color): Unit
 
   def setStroke(stroke: Stroke): Unit
   def setFill(color: Color): Unit
