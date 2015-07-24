@@ -66,9 +66,9 @@ trait StandardInterpreter extends Interpreter {
         draw(t, canvas, context, origin)
 
       case b @ Beside(l, r) =>
-        val box = BoundingBox(b)
-        val lBox = BoundingBox(l)
-        val rBox = BoundingBox(r)
+        val box = b.boundingBox
+        val lBox = l.boundingBox
+        val rBox = r.boundingBox
 
         val lOriginX = origin.x + box.left  + (lBox.width / 2)
         val rOriginX = origin.x + box.right - (rBox.width / 2)
@@ -78,9 +78,9 @@ trait StandardInterpreter extends Interpreter {
         draw(l, canvas, context, Vec(lOriginX, origin.y))
         draw(r, canvas, context, Vec(rOriginX, origin.y))
       case a @ Above(t, b) =>
-        val box = BoundingBox(a)
-        val tBox = BoundingBox(t)
-        val bBox = BoundingBox(b)
+        val box = a.boundingBox
+        val tBox = t.boundingBox
+        val bBox = b.boundingBox
 
         val tOriginY = origin.y + box.top - (tBox.height / 2)
         val bOriginY = origin.y + box.bottom + (bBox.height / 2)

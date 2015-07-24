@@ -11,7 +11,7 @@ import doodle.core._
   */
 trait Interpreter {
   def draw(image: Image, canvas: Canvas): Unit = {
-    val center = BoundingBox(image).center
+    val center = image.boundingBox.center
     canvas.setOrigin(center.x.toInt, center.y.toInt)
     draw(image, canvas, DrawingContext.blackLines, Vec.zero)
   }

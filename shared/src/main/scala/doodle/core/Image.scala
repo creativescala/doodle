@@ -30,6 +30,14 @@ sealed trait Image {
 
   def fillColor(color: Color): Image =
     ContextTransform(_.fillColor(color), this)
+
+  /** Get a bounding box around this Image.
+    *
+    * Implemented here so we can cache the results, and avoid frequently
+    * recomputing the bounding box
+    */
+  lazy val boundingBox: BoundingBox =
+    BoundingBox(this)
 }
 
 final case class Path(elements: Seq[PathElement]) extends Image

@@ -68,13 +68,13 @@ object BoundingBox {
       BoundingBox(-w/2, h/2, w/2, -h/2)
 
     case Overlay(t, b) =>
-      val BoundingBox(l1, t1, r1, b1) = BoundingBox(t)
-      val BoundingBox(l2, t2, r2, b2) = BoundingBox(b)
+      val BoundingBox(l1, t1, r1, b1) = t.boundingBox
+      val BoundingBox(l2, t2, r2, b2) = b.boundingBox
       BoundingBox(l1 min l2, t1 max t2, r1 max r2, b1 min b2)
 
     case Beside(l, r) =>
-      val boxL = BoundingBox(l)
-      val boxR = BoundingBox(r)
+      val boxL = l.boundingBox
+      val boxR = r.boundingBox
       BoundingBox(
         -(boxL.width + boxR.width) / 2,
         boxL.top max boxR.top,
@@ -83,8 +83,8 @@ object BoundingBox {
       )
 
     case Above(t, b) =>
-      val boxT = BoundingBox(t)
-      val boxB = BoundingBox(b)
+      val boxT = t.boundingBox
+      val boxB = b.boundingBox
 
       BoundingBox(
         boxT.left min boxB.left,
@@ -94,12 +94,12 @@ object BoundingBox {
       )
 
     case At(v, i) =>
-      BoundingBox(i) translate v
+      i.boundingBox translate v
 
     case ContextTransform(f, i) =>
-      BoundingBox(i)
+      i.boundingBox
 
     case d: Drawable =>
-      BoundingBox(d.image)
+      d.image.boundingBox
   }
 }
