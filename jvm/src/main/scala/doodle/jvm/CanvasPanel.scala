@@ -7,7 +7,8 @@ import doodle.backend.Canvas
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.awt.{Color => AwtColor, BasicStroke, Dimension, Graphics, Graphics2D, RenderingHints, Rectangle, Shape}
 import java.awt.geom.Path2D
-import javax.swing.{JPanel, SwingUtilities}
+import java.awt.event.{ActionListener, ActionEvent}
+import javax.swing.{JPanel, SwingUtilities, Timer}
 
 import scala.collection.mutable.Queue
 
@@ -19,6 +20,8 @@ class CanvasPanel extends JPanel {
   // having the canvas communicate with the panel via a concurrent queue.
   val queue = new ConcurrentLinkedQueue[Op]()
   val canvas = new Java2DCanvas(this)
+
+  var currentTimer: Timer = null
 
   override def paintComponent(graphics: Graphics): Unit = {
     val context = graphics.asInstanceOf[Graphics2D]
@@ -40,6 +43,12 @@ class CanvasPanel extends JPanel {
 
       case SetOrigin(x, y) =>
         center = Vec(getWidth/2, getHeight/2) + Vec(x, y)
+
+      case Clear =>
+        if(currentFill != null) {
+          context.setColor(awtColor(currentFill))
+          context.fillRect(0, 0, getWidth, getHeight)
+        }
 
       case SetStroke(stroke) => 
         currentStroke = stroke
@@ -93,6 +102,19 @@ class CanvasPanel extends JPanel {
 
       case EndPath() =>
         currentPath.closePath()
+
+      case SetAnimationFrameCallback(callback) =>
+        if(currentTimer != null) {
+          currentTimer.stop()
+        }
+        val MsPerFrame = 17 // 17 ms per frame at 60 fps
+        val listener = new ActionListener() {
+          def actionPerformed(evt: ActionEvent): Unit =
+            callback()
+        }
+        currentTimer = new Timer(MsPerFrame, listener)
+        currentTimer.setRepeats(true)
+        currentTimer.start()
     }
   }
   // The Ops we have pulled off the queue
@@ -114,15 +136,17 @@ class CanvasPanel extends JPanel {
 
 object CanvasPanel {
   sealed trait Op
-  final case class SetOrigin(x: Int, y: Int) extends Op
-  final case class SetSize(width: Int, height: Int) extends Op
-  final case class SetStroke(stroke: DoodleStroke) extends Op
-  final case class SetFill(color: Color) extends Op
-  final case class Stroke() extends Op
-  final case class Fill() extends Op
-  final case class BeginPath() extends Op
-  final case class MoveTo(x: Double, y: Double) extends Op
-  final case class LineTo(x: Double, y: Double) extends Op
-  final case class BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
-  final case class EndPath() extends Op
+  final case class  SetOrigin(x: Int, y: Int) extends Op
+  final case class  SetSize(width: Int, height: Int) extends Op
+  final case object Clear extends Op
+  final case class  SetStroke(stroke: DoodleStroke) extends Op
+  final case class  SetFill(color: Color) extends Op
+  final case class  Stroke() extends Op
+  final case class  Fill() extends Op
+  final case class  BeginPath() extends Op
+  final case class  MoveTo(x: Double, y: Double) extends Op
+  final case class  LineTo(x: Double, y: Double) extends Op
+  final case class  BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
+  final case class  EndPath() extends Op
+  final case class  SetAnimationFrameCallback(callbacl: () => Unit) extends Op
 }

@@ -34,6 +34,9 @@ trait Canvas {
     * drawing takes place.*/
   def setOrigin(x: Int, y: Int): Unit
 
+  /** Paints the entire canvas using the current fill */
+  def clear(): Unit
+
   def setStroke(stroke: Stroke): Unit
   def setFill(color: Color): Unit
 
@@ -45,6 +48,12 @@ trait Canvas {
   def lineTo(x: Double, y: Double): Unit
   def bezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double): Unit
   def endPath(): Unit
+
+  /** Set a callback that will be called when the canvas is ready to display to a
+    * new frame. This will generally occur at 60fps. There can only be a single
+    * callback registered at any one time and there is no way to cancel a
+    * callback once it is registered. */
+  def setAnimationFrameCallback(callback: () => Unit): Unit
 
   // Convenience functions
 

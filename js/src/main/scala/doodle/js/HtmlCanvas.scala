@@ -10,6 +10,7 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
   val context = canvas.getContext("2d").asInstanceOf[dom.raw.CanvasRenderingContext2D]
   var originX = canvas.width / 2
   var originY = canvas.height / 2
+  var animationFrameCallbackHandle: Option[Int] = None
 
   /** Transform from Canvas coordinates to HTMLCanvasElement coordinates */
   def transformX(x: Double): Double =
@@ -22,6 +23,10 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
   def setOrigin(x: Int, y: Int): Unit = {
     originX = (canvas.width / 2) + x
     originY = (canvas.height / 2) + y
+  }
+
+  def clear(): Unit = {
+    context.fillRect(0, 0, canvas.width, canvas.height)
   }
 
   def setSize(width: Int, height: Int): Unit = {
@@ -65,6 +70,12 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
 
   def endPath(): Unit = 
     context.closePath()
+
+  def setAnimationFrameCallback(callback: () => Unit): Unit = {
+    animationFrameCallbackHandle.foreach(handle => dom.window.cancelAnimationFrame(handle))
+    animationFrameCallbackHandle =
+      Some(dom.window.requestAnimationFrame((_: Double)=> callback()))
+  }
 }
 
 object HtmlCanvas {
