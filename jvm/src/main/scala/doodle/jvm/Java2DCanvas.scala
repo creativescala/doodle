@@ -38,7 +38,7 @@ class Java2DCanvas(panel: CanvasPanel) extends Canvas {
     queue.add(SetStroke(stroke))
   def stroke(): Unit =
     queueAndRepaint(Stroke())
-  def setAnimationFrameCallback(callback: () => Unit): Unit =
+  def setAnimationFrameCallback(callback: Double => Unit): Unit =
     queue.add(SetAnimationFrameCallback(callback))
 }
 

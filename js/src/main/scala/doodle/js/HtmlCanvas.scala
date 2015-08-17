@@ -74,10 +74,10 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
   def endPath(): Unit = 
     context.closePath()
 
-  def setAnimationFrameCallback(callback: () => Unit): Unit = {
+  def setAnimationFrameCallback(callback: Double => Unit): Unit = {
     animationFrameCallbackHandle.foreach(handle => dom.window.cancelAnimationFrame(handle))
     animationFrameCallbackHandle =
-      Some(dom.window.requestAnimationFrame((_: Double)=> callback()))
+      Some(dom.window.requestAnimationFrame(callback))
   }
 }
 

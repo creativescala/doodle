@@ -110,7 +110,7 @@ class CanvasPanel extends JPanel {
         val MsPerFrame = 17 // 17 ms per frame at 60 fps
         val listener = new ActionListener() {
           def actionPerformed(evt: ActionEvent): Unit =
-            callback()
+            callback(evt.getWhen.toDouble)
         }
         currentTimer = new Timer(MsPerFrame, listener)
         currentTimer.setRepeats(true)
@@ -155,5 +155,5 @@ object CanvasPanel {
   final case class LineTo(x: Double, y: Double) extends Op
   final case class BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
   final case class EndPath() extends Op
-  final case class SetAnimationFrameCallback(callbacl: () => Unit) extends Op
+  final case class SetAnimationFrameCallback(callbacl: Double => Unit) extends Op
 }

@@ -52,8 +52,12 @@ trait Canvas {
   /** Set a callback that will be called when the canvas is ready to display to a
     * new frame. This will generally occur at 60fps. There can only be a single
     * callback registered at any one time and there is no way to cancel a
-    * callback once it is registered. */
-  def setAnimationFrameCallback(callback: () => Unit): Unit
+    * callback once it is registered.
+    *
+    * The callback is passed a monotically increasing value representing the
+    * current time in undefined units.
+    */
+  def setAnimationFrameCallback(callback: Double => Unit): Unit
 
   // Convenience functions
 
