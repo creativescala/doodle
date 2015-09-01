@@ -95,6 +95,8 @@ trait StandardInterpreter extends Interpreter {
 
       case d: Drawable =>
         draw(d.image, canvas, context, origin)
+
+      case Empty =>
     }
   }
 }

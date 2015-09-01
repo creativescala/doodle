@@ -101,5 +101,8 @@ object BoundingBox {
 
     case d: Drawable =>
       d.image.boundingBox
+
+    case Empty =>
+      BoundingBox.empty
   }
 }
