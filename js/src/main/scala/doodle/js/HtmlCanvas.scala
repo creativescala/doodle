@@ -2,7 +2,7 @@ package doodle
 package js
 
 import doodle.core.{Color, Stroke}
-import doodle.backend.Canvas
+import doodle.backend.{Canvas, Key}
 
 import org.scalajs.dom
 
@@ -79,6 +79,9 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
     animationFrameCallbackHandle =
       Some(dom.window.requestAnimationFrame((_: Double)=> callback()))
   }
+
+  def setKeyDownCallback(callback: Key => Unit): Unit =
+    canvas.onkeydown = (evt: dom.raw.KeyboardEvent) => callback(KeyboardEvent.toKey(evt))
 }
 
 object HtmlCanvas {

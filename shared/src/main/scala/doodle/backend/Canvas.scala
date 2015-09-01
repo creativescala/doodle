@@ -55,6 +55,9 @@ trait Canvas {
     * callback once it is registered. */
   def setAnimationFrameCallback(callback: () => Unit): Unit
 
+  /** Set a callback when a key is pressed down. */
+  def setKeyDownCallback(callback: Key => Unit): Unit
+
   // Convenience functions
 
   def circle(centerX: Double, centerY: Double, radius: Double): Unit = {

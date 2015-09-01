@@ -2,12 +2,12 @@ package doodle
 package jvm
 
 import doodle.core.{Color, Line, RGBA, Stroke => DoodleStroke, Vec}
-import doodle.backend.Canvas
+import doodle.backend.{Canvas, Key}
 
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.awt.{Color => AwtColor, BasicStroke, Dimension, Graphics, Graphics2D, RenderingHints, Rectangle, Shape}
 import java.awt.geom.Path2D
-import java.awt.event.{ActionListener, ActionEvent}
+import java.awt.event.{ActionListener, ActionEvent, KeyListener, KeyEvent}
 import javax.swing.{JPanel, SwingUtilities, Timer}
 
 import scala.collection.mutable.Queue
@@ -115,6 +115,19 @@ class CanvasPanel extends JPanel {
         currentTimer = new Timer(MsPerFrame, listener)
         currentTimer.setRepeats(true)
         currentTimer.start()
+
+      case SetKeyDownCallback(callback) =>
+        val listener = new KeyListener() {
+          def keyPressed(evt: KeyEvent): Unit =
+            callback(KeyCode.toKey(evt.getKeyCode()))
+
+          def keyReleased(evt: KeyEvent): Unit =
+            ()
+
+          def keyTyped(evt: KeyEvent): Unit =
+            ()
+        }
+        this.addKeyListener(listener)
     }
   }
   // The Ops we have pulled off the queue
@@ -155,5 +168,6 @@ object CanvasPanel {
   final case class LineTo(x: Double, y: Double) extends Op
   final case class BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
   final case class EndPath() extends Op
-  final case class SetAnimationFrameCallback(callbacl: () => Unit) extends Op
+  final case class SetAnimationFrameCallback(callback: () => Unit) extends Op
+  final case class SetKeyDownCallback(callback: Key => Unit) extends Op
 }
