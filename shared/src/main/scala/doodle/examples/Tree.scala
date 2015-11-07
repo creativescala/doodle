@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Tree extends Drawable {
+object Tree {
   def leaf(angle: Angle, length: Double): Image =
     Path(Seq(
       MoveTo(Vec.zero),

@@ -61,7 +61,7 @@ trait StandardInterpreter extends Interpreter {
         canvas.endPath()
         doStrokeAndFill()
 
-      case Overlay(t, b) =>
+      case On(t, b) =>
         draw(b, canvas, context, origin)
         draw(t, canvas, context, origin)
 
@@ -92,9 +92,6 @@ trait StandardInterpreter extends Interpreter {
 
       case ContextTransform(f, i) =>
         draw(i, canvas, f(context), origin)
-
-      case d: Drawable =>
-        draw(d.image, canvas, context, origin)
 
       case Empty =>
     }

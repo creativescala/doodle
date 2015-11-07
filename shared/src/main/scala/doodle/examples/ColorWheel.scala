@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object ColorWheel extends Drawable {
+object ColorWheel {
   val blobs = for {
     l <- (0 to 100 by 10) map (_ / 100.0)
     h <- (0 to 360 by 10)

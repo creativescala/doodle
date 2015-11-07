@@ -11,7 +11,7 @@ package doodle.core
   * Given this system, left and bottom should always be <= 0, and top and right >= 0
   */
 final case class BoundingBox(left: Double, top: Double, right: Double, bottom: Double) {
-  def center = Vec((left + right) / 2, (top + bottom) / 2)
+  val center = Vec((left + right) / 2, (top + bottom) / 2)
 
   // TODO: Are bounding boxes ever not symmetric around any given
   // axis? Can we replace l/t/r/b with just width and height?
@@ -67,7 +67,7 @@ object BoundingBox {
     case Triangle(w, h) =>
       BoundingBox(-w/2, h/2, w/2, -h/2)
 
-    case Overlay(t, b) =>
+    case On(t, b) =>
       val BoundingBox(l1, t1, r1, b1) = t.boundingBox
       val BoundingBox(l2, t2, r2, b2) = b.boundingBox
       BoundingBox(l1 min l2, t1 max t2, r1 max r2, b1 min b2)
@@ -98,9 +98,6 @@ object BoundingBox {
 
     case ContextTransform(f, i) =>
       i.boundingBox
-
-    case d: Drawable =>
-      d.image.boundingBox
 
     case Empty =>
       BoundingBox.empty

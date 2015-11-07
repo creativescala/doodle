@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object RainbowSierpinski extends Drawable {
+object RainbowSierpinski {
   def sierpinski(size: Double, color: Color): Image = {
     if(size > 8) {
       val delta = 120.degrees * (size / 512.0)

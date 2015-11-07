@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Koch extends Drawable {
+object Koch {
   def kochElements(depth: Int, start: Vec, angle: Angle, length: Double): Seq[PathElement] = {
     if(depth == 0) {
       Seq(LineTo(start + Vec.polar(angle, length)))

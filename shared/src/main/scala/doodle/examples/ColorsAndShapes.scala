@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object ColorsAndShapes extends Drawable {
+object ColorsAndShapes {
   def size(n: Int): Double =
     50 + 12 * n
 

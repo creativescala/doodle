@@ -4,7 +4,7 @@ import doodle.core._
 import doodle.syntax.angle._
 import doodle.syntax.normalized._
 
-object ChristmasTree extends Drawable {
+object ChristmasTree {
   import Color._
 
   val redBauble  = Circle(7)  lineWidth 0 fillColor red

@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object ColorPaletteAgain extends Drawable {
+object ColorPaletteAgain {
 
   val circleMinimum = 50
   val circleIncrement = 10

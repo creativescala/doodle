@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object ColorPalette extends Drawable {
+object ColorPalette {
   // Type alias for cell constructor functions.
   // Takes a hue and a lightness as parameters:
 

@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Polygon extends Drawable {
+object Polygon {
   def polygon(sides: Int, radius: Double) = {
     val centerAngle = 360.degrees / sides
 

@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Stars extends Drawable {
+object Stars {
   def star(sides: Int, skip: Int, radius: Double) = {
     val centerAngle = 360.degrees * skip / sides
 

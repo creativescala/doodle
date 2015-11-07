@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Street extends Drawable {
+object Street {
   import Color._
 
   val roof = Triangle(50, 30) fillColor brown

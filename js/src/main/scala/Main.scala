@@ -12,6 +12,6 @@ import org.scalajs.dom
     import doodle.backend.StandardInterpreter._
 
     implicit val canvas = HtmlCanvas.fromElementId("canvas")
-    Tree.draw
+    Tree.image.draw
   }
 }
