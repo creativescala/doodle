@@ -7,7 +7,7 @@ import doodle.syntax.normalized._
 // Mandelbrot Fractal
 // Contributed by Mat Moore -- https://github.com/MatMoore
 
-case class Complex(real: Double, imaginary: Double) {
+final case class Complex(real: Double, imaginary: Double) {
   def +(other: Complex) = Complex(real + other.real, imaginary + other.imaginary)
 
   def *(other: Complex) = {
@@ -32,7 +32,7 @@ case class Complex(real: Double, imaginary: Double) {
 }
 
 
-object Mandelbrot extends Drawable {
+object Mandelbrot {
   val maxApplys: Int = 50
 
   trait CellRenderer {
@@ -111,6 +111,6 @@ object Mandelbrot extends Drawable {
     }
   }
 
-  val draw = mandlebrot(Complex(-0.5, 0), Complex(3, 3), 512)
+  val image = mandlebrot(Complex(-0.5, 0), Complex(3, 3), 512)
 }
 

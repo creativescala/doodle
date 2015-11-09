@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Polygon extends Drawable {
+object Polygon {
   def polygon(sides: Int, radius: Double) = {
     val centerAngle = 360.degrees / sides
 
@@ -15,6 +15,6 @@ object Polygon extends Drawable {
     Path(elements) lineWidth 5 lineColor Color.hsl(centerAngle, 1.normalized, .5.normalized)
   }
 
-  def draw = allOn((3 to 20) map (polygon(_, 100)))
+  def image = allOn((3 to 20) map (polygon(_, 100)))
 }
 

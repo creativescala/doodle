@@ -3,7 +3,7 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object ConcentricCircles extends Drawable {
+object ConcentricCircles {
   def singleCircle(n: Int): Image =
     Circle(50 + 5 * n) lineColor (Color.red fadeOut (n / 20).normalized)
 
@@ -14,6 +14,6 @@ object ConcentricCircles extends Drawable {
       singleCircle(n) on concentricCircles(n - 1)
     }
 
-  def draw: Image =
+  def image: Image =
     concentricCircles(20)
 }

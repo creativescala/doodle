@@ -4,7 +4,7 @@ import doodle.core._
 import doodle.syntax.angle._
 import doodle.syntax.normalized._
 
-object ChristmasTree extends Drawable {
+object ChristmasTree {
   import Color._
 
   val redBauble  = Circle(7)  lineWidth 0 fillColor red
@@ -35,5 +35,5 @@ object ChristmasTree extends Drawable {
   val foliage = Triangle(40 * levels, 40 * levels) fillColor darkGreen
   val trunk   = Rectangle(20,40) lineColor brown fillColor brown
 
-  val draw = goldBauble above ( tree(levels) on foliage ) above trunk
+  val image = goldBauble above ( tree(levels) on foliage ) above trunk
 }

@@ -39,7 +39,7 @@ Follow the link to download your copy from our web site.
 3.  Use Scala commands to draw a shape in a native window:
 
     ~~~ scala
-    scala> draw(Circle(10) fillColor Color.red)
+    scala> (Circle(10) fillColor Color.red).draw
     ~~~
 
     A window should appear containing a red circle.
@@ -72,16 +72,17 @@ You can also draw Doodle pictures in the browser. The process is slightly differ
 Doodle ships with a set of examples for each of the exercises in Creative Scala.
 See the `shared/src/main/scala/doodle/examples` directory for a complete list.
 
-To view an example, simply run Doodle from the command line passing the
-class name as a command line argument. For example:
+To view an example, simply run the sbt console, and draw the examples from there. For example:
 
 ~~~ bash
-bash$ ./sbt.sh 'run Sierpinski'
+bash$ sbt console
 ~~~
 
-**Note:** The quotes around `'run Sierpinski'` are *required*.
-This tells SBT to treat "Sierpinski" as an argument to "run",
-as opposed to a command in its own right.
+When the console is running, type
+
+~~~ coffee
+scala> Sierpinski.image.draw
+~~~
 
 # Directory Structure
 
@@ -95,10 +96,9 @@ Source code is in the following directories:
 
 # SBT Commands
 
-We provide four quick aliases for common commands:
+We provide three quick aliases for common commands:
 
 ~~~ coffee
-> run       runs the JVM codebase
 > console   runs the console using the JVM codebase
 > fastOptJS compiles the JS codebase
 > test      runs the unit tests for both codebases

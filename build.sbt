@@ -9,7 +9,7 @@ lazy val doodle = crossProject.
   settings(
     name          := "doodle",
     organization  := "underscoreio",
-    scalaVersion  := "2.11.5",
+    scalaVersion  := "2.11.7",
     scalacOptions += "-feature"
   ).jvmSettings(
     bintrayPublishSettings : _*
@@ -30,7 +30,8 @@ lazy val doodle = crossProject.
     initialCommands in console := """
       |import doodle.core._
       |import doodle.syntax._
-      |import doodle.jvm._
+      |import doodle.jvm.Java2DCanvas._
+      |import doodle.backend.StandardInterpreter._
       |import doodle.examples._
     """.trim.stripMargin,
     cleanupCommands in console := """
@@ -47,7 +48,7 @@ lazy val doodle = crossProject.
     testFrameworks          += new TestFramework("utest.runner.Framework"),
     libraryDependencies    ++= Seq(
       "org.scalaz"                %%  "scalaz-core" % "7.1.0",
-      "org.scala-js"              %%% "scalajs-dom" % "0.7.0",
+      "org.scala-js"              %%% "scalajs-dom" % "0.8.1",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
       "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
     )
