@@ -1,5 +1,7 @@
 # Doodle: Compositional Graphics
 
+[![Join the chat at https://gitter.im/underscoreio/doodle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/underscoreio/doodle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Copyright 2015 [Underscore](http://underscore.io).
 
 A Scala library for compositional vector graphics,
