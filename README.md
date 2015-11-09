@@ -8,6 +8,8 @@ and an HTML canvas backend via [Scala.js](http://www.scala-js.org/).
 
 Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
+[![Join the chat at https://gitter.im/underscoreio/doodle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/underscoreio/doodle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # Creative Scala
 
 Doodle is featured in [Creative Scala][creative-scala],
