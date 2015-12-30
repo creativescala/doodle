@@ -45,7 +45,7 @@ object DrawingContext {
       lineWidth = Some(1.0),
       lineColor = Some(Color.white),
       lineCap = Some(Line.Cap.Butt),
-      lineJoin = Some(Line.Join.Bevel),
+      lineJoin = Some(Line.Join.Miter),
       fillColor = None
     )
   val blackLines =
@@ -53,7 +53,7 @@ object DrawingContext {
       lineWidth = Some(1.0),
       lineColor = Some(Color.black),
       lineCap = Some(Line.Cap.Butt),
-      lineJoin = Some(Line.Join.Bevel),
+      lineJoin = Some(Line.Join.Miter),
       fillColor = None
     )
 }
