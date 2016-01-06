@@ -130,6 +130,13 @@ initialCommands in console := """
 """.trim.stripMargin
 ~~~
 
+Note that, if you are using the older 0.1.0 release, the syntax for using the draw function is different.
+Drawing the same red circle that we did in the 'Getting Started' section above can be accomplished with the following:
+
+~~~ scala
+scala> draw(Circle(10).fillColor(Color.red))
+~~~
+
 [bintray-training]: https://bintray.com/underscoreio/training
 [doodle-releases]: https://bintray.com/underscoreio/training/doodle/view
 
