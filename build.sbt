@@ -1,5 +1,3 @@
-import bintray.Keys._
-
 enablePlugins(GitVersioning)
 
 enablePlugins(GitBranchPrompt)
@@ -10,13 +8,12 @@ lazy val doodle = crossProject.
     name          := "doodle",
     organization  := "underscoreio",
     scalaVersion  := "2.11.7",
-    scalacOptions += "-feature"
+    scalacOptions += "-feature",
+    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0"))
   ).jvmSettings(
-    bintrayPublishSettings : _*
-  ).jvmSettings(
-    bintrayOrganization in bintray := Some("underscoreio"),
-    packageLabels in bintray := Seq("scala", "training", "creative-scala"),
-    repository in bintray := "training",
+    bintrayOrganization := Some("underscoreio"),
+    bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
+    bintrayRepository := "training",
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     // Release versioning:
     // version := "0.2.0",
