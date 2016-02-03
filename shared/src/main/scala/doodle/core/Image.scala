@@ -39,7 +39,19 @@ sealed trait Image {
   lazy val boundingBox: BoundingBox =
     BoundingBox(this)
 }
+object Image {
 
+  // Smart constructors
+
+  def circle(r: Double): Image =
+    Circle(r)
+
+  def rectangle(w: Double, h: Double): Image =
+    Rectangle(w,h)
+
+  def triangle(w: Double, h: Double): Image =
+    Triangle(w,h)
+}
 final case class Path(elements: Seq[PathElement]) extends Image
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
