@@ -3,7 +3,7 @@ package doodle.core
 // import scalaz.syntax.applicative._
 // import scalaz.std.option._
 
-case class DrawingContext(
+final case class DrawingContext(
   lineWidth: Option[Double],
   lineColor: Option[Color],
   lineCap: Option[Line.Cap],
@@ -40,6 +40,14 @@ case class DrawingContext(
 }
 
 object DrawingContext {
+  val empty =
+    DrawingContext(
+      lineWidth = None,
+      lineColor = None,
+      lineCap = None,
+      lineJoin = None,
+      fillColor = None
+    )
   val whiteLines =
     DrawingContext(
       lineWidth = Some(1.0),
