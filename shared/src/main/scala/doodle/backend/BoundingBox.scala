@@ -1,11 +1,13 @@
 package doodle
 package backend
 
+import doodle.core.{ContextTransform,BezierCurveTo,LineTo,MoveTo,Vec}
+
 /**
   * A `BoundingBox` serves two purposes:
   *
   * - it defines the extent (width and height) of an `Image`; and
-  * 
+  *
   * - it defines a *local* coordinate system based on an origin that *must* be
   *   contained within the `BoundingBox`.
   *
@@ -27,6 +29,14 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
   val width: Double =
     right - left
 
+  def pad(padding: Double): BoundingBox =
+    BoundingBox(
+      left   - padding,
+      top    + padding,
+      right  + padding,
+      bottom - padding
+    )
+
   def expand(toInclude: Vec): BoundingBox =
     BoundingBox(
       left   min toInclude.x,
@@ -34,6 +44,41 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
       right  max toInclude.x,
       bottom min toInclude.y
     )
+
+  def beside(that: BoundingBox): BoundingBox =
+    BoundingBox(
+      -(this.width + that.width) / 2,
+      this.top max that.top,
+      (this.width + that.width) / 2,
+      this.bottom min that.bottom
+    )
+
+  def on(that: BoundingBox): BoundingBox = 
+    BoundingBox(
+      this.left   min that.left,
+      this.top    max that.top,
+      this.right  max that.right,
+      this.bottom min that.bottom
+    )
+
+  def above(that: BoundingBox): BoundingBox =
+    BoundingBox(
+      this.left min that.left,
+      (this.height + that.height) / 2,
+      this.right max that.right,
+      -(this.height + that.height) / 2
+    )
+
+  def at(offset: Vec): BoundingBox = {
+    val topLeft     = Vec(left, top) 
+    val topRight    = Vec(right, top)
+    val bottomLeft  = Vec(left, bottom)
+    val bottomRight = Vec(right, bottom)
+
+    List(topLeft, topRight, bottomLeft, bottomRight)
+      .map(_ + offset)
+      .foldLeft(this){ (bb, point) => bb.expand(point) }
+  }
 }
 
 object BoundingBox {
@@ -51,7 +96,7 @@ object BoundingBox {
 
   def apply(image: Image): BoundingBox =
     image match {
-      case Path(elts) =>
+      case Path(ctx, elts) =>
         BoundingBox(elts.flatMap {
                       case MoveTo(pos) => Seq(pos)
                       case LineTo(pos) => Seq(pos)
@@ -62,15 +107,6 @@ object BoundingBox {
                         // we may wish to generate a tighter bounding box.
                         Seq(cp1, cp2, pos)
                     })
-
-      case Circle(r) =>
-        BoundingBox(-r, r, r, -r)
-
-      case Rectangle(w, h) =>
-        BoundingBox(-w/2, h/2, w/2, -h/2)
-
-      case Triangle(w, h) =>
-        BoundingBox(-w/2, h/2, w/2, -h/2)
 
       case On(t, b) =>
         val BoundingBox(l1, t1, r1, b1) = t.boundingBox
@@ -99,10 +135,8 @@ object BoundingBox {
         )
 
       case At(v, i) =>
-        i.boundingBox translate v
-
-      case ContextTransform(f, i) =>
         i.boundingBox
+        //i.boundingBox translate v
 
       case Empty =>
         BoundingBox.empty

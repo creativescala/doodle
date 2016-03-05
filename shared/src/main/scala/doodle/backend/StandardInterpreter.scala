@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core._
+import doodle.core.{DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,Vec}
 
 /**
   *  The standard interpreter that renders an Image to a Canvas. No special
@@ -9,21 +9,9 @@ import doodle.core._
   *  standard interpreter.
   */
 trait StandardInterpreter extends Interpreter {
-  def draw(image: Image, canvas: Canvas, context: DrawingContext, origin: Vec): Unit = {
-    def doStrokeAndFill() = {
-      context.fill.foreach { fill =>
-        canvas.setFill(fill.color)
-        canvas.fill()
-      }
-
-      context.stroke.foreach { stroke =>
-        canvas.setStroke(stroke)
-        canvas.stroke()
-      }
-    }
-
+  def draw(image: Image, canvas: Canvas, origin: Vec): Unit = {
     image match {
-      case Path(elts) =>
+      case Path(ctx, elts) =>
         canvas.beginPath()
         canvas.moveTo(origin.x, origin.y)
 
@@ -42,28 +30,18 @@ trait StandardInterpreter extends Interpreter {
             )
         }
         canvas.endPath()
-        doStrokeAndFill()
-
-      case Circle(r) =>
-        canvas.circle(origin.x, origin.y, r)
-        doStrokeAndFill()
-
-      case Rectangle(w, h) =>
-        canvas.rectangle(origin.x - w/2, origin.y + h/2, w, h)
-        doStrokeAndFill()
-
-      case Triangle(w, h) =>
-        canvas.beginPath()
-        canvas.moveTo(origin.x      , origin.y + h/2)
-        canvas.lineTo(origin.x + w/2, origin.y - h/2)
-        canvas.lineTo(origin.x - w/2, origin.y - h/2)
-        canvas.lineTo(origin.x      , origin.y + h/2)
-        canvas.endPath()
-        doStrokeAndFill()
+        ctx.fill.foreach { fill =>
+          canvas.setFill(fill.color)
+          canvas.fill()
+        }
+        ctx.stroke.foreach { stroke =>
+          canvas.setStroke(stroke)
+          canvas.stroke()
+        }
 
       case On(t, b) =>
-        draw(b, canvas, context, origin)
-        draw(t, canvas, context, origin)
+        draw(b, canvas, origin)
+        draw(t, canvas, origin)
 
       case b @ Beside(l, r) =>
         val box = b.boundingBox
@@ -75,8 +53,8 @@ trait StandardInterpreter extends Interpreter {
         // Beside always vertically centers l and r, so we don't need
         // to calculate center ys for l and r.
 
-        draw(l, canvas, context, Vec(lOriginX, origin.y))
-        draw(r, canvas, context, Vec(rOriginX, origin.y))
+        draw(l, canvas, Vec(lOriginX, origin.y))
+        draw(r, canvas, Vec(rOriginX, origin.y))
       case a @ Above(t, b) =>
         val box = a.boundingBox
         val tBox = t.boundingBox
@@ -85,13 +63,10 @@ trait StandardInterpreter extends Interpreter {
         val tOriginY = origin.y + box.top - (tBox.height / 2)
         val bOriginY = origin.y + box.bottom + (bBox.height / 2)
 
-        draw(t, canvas, context, Vec(origin.x, tOriginY))
-        draw(b, canvas, context, Vec(origin.x, bOriginY))
+        draw(t, canvas, Vec(origin.x, tOriginY))
+        draw(b, canvas, Vec(origin.x, bOriginY))
       case At(vec, i) =>
-        draw(i, canvas, context, origin + vec)
-
-      case ContextTransform(f, i) =>
-        draw(i, canvas, f(context), origin)
+        draw(i, canvas, origin + vec)
 
       case Empty =>
     }
