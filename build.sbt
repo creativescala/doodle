@@ -16,14 +16,14 @@ lazy val doodle = crossProject.
     bintrayRepository := "training",
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     // Release versioning:
-    version := "0.2.0",
+    // version := "0.3.0",
     // Snapshot versioning:
-    // git.baseVersion := "0.2.0",
-    // git.formattedShaVersion := {
-    //   git.gitHeadCommit.value map { sha =>
-    //     git.baseVersion.value + "-" + sha.substring(0, 6) + "-snapshot"
-    //   }
-    // },
+    git.baseVersion := "0.3.0",
+    git.formattedShaVersion := {
+      git.gitHeadCommit.value map { sha =>
+        git.baseVersion.value + "-" + sha.substring(0, 6) + "-snapshot"
+      }
+    },
     initialCommands in console := """
       |import doodle.core._
       |import doodle.core.Image._
