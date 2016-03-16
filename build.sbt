@@ -2,6 +2,8 @@ enablePlugins(GitVersioning)
 
 enablePlugins(GitBranchPrompt)
 
+val cats = "org.typelevel"             %%  "cats"        % "0.4.1"
+
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
@@ -9,7 +11,8 @@ lazy val doodle = crossProject.
     organization  := "underscoreio",
     scalaVersion  := "2.11.7",
     scalacOptions += "-feature",
-    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0"))
+    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
+    libraryDependencies ++= Seq(cats)
   ).jvmSettings(
     bintrayOrganization := Some("underscoreio"),
     bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
@@ -44,13 +47,12 @@ lazy val doodle = crossProject.
       |doodle.ScalaJSExample().main();
     """.trim.stripMargin,
     testFrameworks          += new TestFramework("utest.runner.Framework"),
-    libraryDependencies    ++= Seq(
-      "org.scalaz"                %%  "scalaz-core" % "7.1.0",
+    //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
+    libraryDependencies ++= Seq(
       "org.scala-js"              %%% "scalajs-dom" % "0.8.1",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
       "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
     )
-    //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
   )
 
 lazy val doodleJVM = doodle.jvm

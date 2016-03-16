@@ -43,6 +43,9 @@ object Image {
 
   def triangle(w: Double, h: Double): Image =
     Triangle(w,h)
+
+  def empty: Image =
+    Empty
 }
 final case class Path(elements: Seq[PathElement]) extends Image
 final case class Circle(r: Double) extends Image

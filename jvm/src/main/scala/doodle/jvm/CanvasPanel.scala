@@ -29,7 +29,21 @@ class CanvasPanel extends JPanel {
                                 RenderingHints.KEY_ANTIALIASING,
                                 RenderingHints.VALUE_ANTIALIAS_ON
                               ))
-    var center = Vec(getWidth/2, getHeight/2)
+
+    // The origin in canvas coordinates
+    var center = Vec(0, 0)
+    // Convert from canvas coordinates to screen coordinates
+    def canvasToScreen(x: Double, y: Double): Vec = {
+      val offsetX = getWidth / 2
+      val offsetY = getHeight / 2
+      //println(s"Converting ($x,$y) to screen")
+      //println(s"Center $center")
+      //println(s"Offset (${offsetX},${offsetY})")
+      val Vec(centerX, centerY) = center
+      //println(s"(${x - centerX + offsetX}, ${offsetY - y + centerY})")
+      Vec(x - centerX + offsetX, offsetY - y + centerY)
+    }
+
 
     var currentStroke: DoodleStroke = null
     var currentFill: Color = null
@@ -38,11 +52,12 @@ class CanvasPanel extends JPanel {
     retrieveOps()
     operations.foreach {
       case SetSize(width, height) =>
+        //println(s"SetSize ${width},${height}")
         setPreferredSize(new Dimension(width + 40, height + 40))
         SwingUtilities.windowForComponent(this).pack()
 
       case SetOrigin(x, y) =>
-        center = Vec(getWidth/2, getHeight/2) + Vec(x, y)
+        center = Vec(x, y)
 
       case Clear(color) =>
         val oldColor = context.getColor()
@@ -88,20 +103,27 @@ class CanvasPanel extends JPanel {
         currentPath = new Path2D.Double()
 
       case MoveTo(x, y) =>
-        currentPath.moveTo(center.x + x, center.y - y)
+        val Vec(screenX, screenY) = canvasToScreen(x, y)
+        currentPath.moveTo(screenX, screenY)
 
       case LineTo(x, y) =>
-        currentPath.lineTo(center.x + x, center.y - y)
+        val Vec(screenX, screenY) = canvasToScreen(x, y)
+        currentPath.lineTo(screenX, screenY)
 
       case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY) =>
+        val Vec(screenCp1X, screenCp1Y) = canvasToScreen(cp1x, cp1y)
+        val Vec(screenCp2X, screenCp2Y) = canvasToScreen(cp2x, cp2y)
+        val Vec(screenEndX, screenEndY) = canvasToScreen(endX, endY)
         currentPath.curveTo(
-          center.x + cp1x , center.y - cp1y,
-          center.x + cp2x , center.y - cp2y,
-          center.x + endX , center.y - endY
+          screenCp1X , screenCp1Y,
+          screenCp2X , screenCp2Y,
+          screenEndX , screenEndY
         )
 
       case EndPath() =>
-        currentPath.closePath()
+        // Closing a path on the Java 2D canvas draws a line from the end point
+        // to the starting point. We don't want to do this, as this stops people
+        // drawing paths that aren't closed. Thus this is a no-op
 
       case SetAnimationFrameCallback(callback) =>
         if(currentTimer != null) {
