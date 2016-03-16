@@ -189,15 +189,15 @@ final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Norm
 final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized) extends Color
 
 object Color extends CommonColors {
-  def rgba(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalized): RGBA =
+  def rgba(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalized): Color =
     RGBA(r, g, b, a)
 
-  def hsla(h: Angle, s: Normalized, l: Normalized, a: Normalized): HSLA =
+  def hsla(h: Angle, s: Normalized, l: Normalized, a: Normalized): Color =
     HSLA(h, s, l, a)
 
   def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
     rgba(r, g, b, 1.0.normalized)
 
-  def hsl(h: Angle, s: Normalized, l: Normalized) =
+  def hsl(h: Angle, s: Normalized, l: Normalized): Color =
     hsla(h, s, l, 1.0.normalized)
 }
