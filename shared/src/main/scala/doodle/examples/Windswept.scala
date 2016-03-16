@@ -63,26 +63,27 @@ object Windswept {
 
   val tendril: Random[Image] =
     for {
-      hue     <- Random.gaussian(25, 15) map (_.degrees)
-      stroke   = Color.hsla(hue, 0.8.normalized, 0.6.normalized, 0.6.normalized)
-      start   <- gaussianVec(Vec(0,0), 10)
-      curve1  <- randomBezier(Vec(-20, -400), Vec(200, -500), Vec(400, -100), 25)
-      curve2  <- randomBezier(Vec(400, 50), Vec(200, 50), Vec(200, -200), 50)
-    } yield Path(Seq(MoveTo(start), curve1, curve2)) lineColor stroke lineWidth 1.0
+      stroke <- randomColor(25.degrees) map (_.fadeOut(0.4.normalized))
+      offset  = -425
+      start   = Vec(offset, 0)
+      end    <- Random.gaussian(800, 30)
+    } yield Path(Seq(MoveTo(start), LineTo(Vec(end + offset, 0)))) lineColor stroke lineWidth 1.0
 
   val tendrils: Random[Image] =
-    (1 to 800).foldLeft(tendril){ (randomImage, _) =>
+    (-50 to 50).foldLeft(tendril){ (randomImage, i) =>
       for {
         accum <- randomImage
-        t     <- tendril
-      } yield t on accum
+        t     <- tendril 
+      } yield (t at (0, i)) on accum
     }
 
   def image =
     (for {
-       t  <- tendrils
+       t1 <- tendrils
+       t2 <- tendrils
+       t3 <- tendrils
        p1 <- pattern
        p2 <- pattern
        p3 <- pattern
-     } yield t on (p1 above p2 above p3)).run(scala.util.Random)
+     } yield (t1 on p1) above (t2 on p2) above (t3 on p3)).run(scala.util.Random)
 }
