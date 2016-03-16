@@ -17,10 +17,13 @@ object Windswept {
   val leafGreen: Random[Color] = randomColor(80.degrees)
   val emeraldGreen: Random[Color] = randomColor(110.degrees)
 
-  def randomSquare(color: Random[Color]): Random[Image] =
-    for {
-      fill <- color
-    } yield Image.rectangle(50,50) fillColor fill lineWidth 0.0
+  def square(fill: Color): Image =
+    Image.rectangle(25,25) fillColor fill lineWidth 0.0
+
+  def randomSquare(fill: Random[Color]): Random[Image] =
+    (fill |@| fill |@| fill |@| fill) map { (f1, f2, f3, f4) =>
+      (square(f1) beside square(f2)) above (square(f3) beside square(f4))
+    }
 
   val leafSquare = randomSquare(leafGreen)
   val emeraldSquare = randomSquare(emeraldGreen)
