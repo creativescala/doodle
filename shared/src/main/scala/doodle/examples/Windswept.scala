@@ -49,14 +49,14 @@ object Windswept {
   val pattern: Random[Image] =
     (singleRepeat |@| singleRepeat |@| singleRepeat |@| columnOne) map { _ beside _ beside _ beside _ }
 
-  def randomVec(x: Random[Double], y: Random[Double]): Random[Vec] =
-    (x |@| y) map { (x, y) => Vec(x, y) }
+  def randomPoint(x: Random[Double], y: Random[Double]): Random[Point] =
+    (x |@| y) map { (x, y) => Point.cartesian(x, y) }
 
-  def gaussianVec(vec: Vec, stdDev: Double = 50): Random[Vec] =
-    randomVec(Random.gaussian(vec.x, stdDev), Random.gaussian(vec.y, stdDev))
+  def gaussianPoint(point: Point, stdDev: Double = 50): Random[Point] =
+    randomPoint(Random.gaussian(point.x, stdDev), Random.gaussian(point.y, stdDev))
 
-  def randomBezier(cp1: Vec, cp2: Vec, end: Vec, stdDev: Double): Random[BezierCurveTo] = {
-    (gaussianVec(cp1, stdDev) |@| gaussianVec(cp2, stdDev) |@| gaussianVec(end, stdDev)) map {
+  def randomBezier(cp1: Point, cp2: Point, end: Point, stdDev: Double): Random[BezierCurveTo] = {
+    (gaussianPoint(cp1, stdDev) |@| gaussianPoint(cp2, stdDev) |@| gaussianPoint(end, stdDev)) map {
       (cp1, cp2, end) => BezierCurveTo(cp1, cp2, end)
     }
   }
@@ -65,15 +65,15 @@ object Windswept {
     for {
       stroke <- randomColor(25.degrees) map (_.fadeOut(0.4.normalized))
       offset  = -425
-      start   = Vec(offset, 0)
+      start   = Point.cartesian(offset, 0)
       end    <- Random.gaussian(800, 30)
-    } yield Path(Seq(MoveTo(start), LineTo(Vec(end + offset, 0)))) lineColor stroke lineWidth 1.0
+    } yield Path(Seq(MoveTo(start), LineTo(Point.cartesian(end + offset, 0)))) lineColor stroke lineWidth 1.0
 
   val tendrils: Random[Image] =
     (-50 to 50).foldLeft(tendril){ (randomImage, i) =>
       for {
         accum <- randomImage
-        t     <- tendril 
+        t     <- tendril
       } yield (t at (0, i)) on accum
     }
 

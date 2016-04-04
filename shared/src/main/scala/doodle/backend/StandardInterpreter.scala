@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,Vec}
+import doodle.core.{DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,Vec}
 
 /**
   *  The standard interpreter that renders an Image to a Canvas. No special
@@ -9,20 +9,22 @@ import doodle.core.{DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,
   *  standard interpreter.
   */
 trait StandardInterpreter extends Interpreter {
-  def draw(image: Image, canvas: Canvas, origin: Vec): Unit = {
+  def draw(image: Image, canvas: Canvas, origin: Point): Unit = {
+    import Point.extractors.Cartesian
+
     image match {
       case Path(ctx, elts) =>
         canvas.beginPath()
         canvas.moveTo(origin.x, origin.y)
 
         elts.foreach {
-          case MoveTo(Vec(x, y)) =>
+          case MoveTo(Cartesian(x, y)) =>
             canvas.moveTo(origin.x + x, origin.y + y)
 
-          case LineTo(Vec(x, y)) =>
+          case LineTo(Cartesian(x, y)) =>
             canvas.lineTo(origin.x + x, origin.y + y)
 
-          case BezierCurveTo(Vec(cp1x, cp1y), Vec(cp2x, cp2y), Vec(x, y)) =>
+          case BezierCurveTo(Cartesian(cp1x, cp1y), Cartesian(cp2x, cp2y), Cartesian(x, y)) =>
             canvas.bezierCurveTo(
               origin.x + cp1x , origin.y + cp1y,
               origin.x + cp2x , origin.y + cp2y,
@@ -53,8 +55,8 @@ trait StandardInterpreter extends Interpreter {
         // Beside always vertically centers l and r, so we don't need
         // to calculate center ys for l and r.
 
-        draw(l, canvas, Vec(lOriginX, origin.y))
-        draw(r, canvas, Vec(rOriginX, origin.y))
+        draw(l, canvas, Point.cartesian(lOriginX, origin.y))
+        draw(r, canvas, Point.cartesian(rOriginX, origin.y))
       case a @ Above(t, b) =>
         val box = a.boundingBox
         val tBox = t.boundingBox
@@ -63,8 +65,8 @@ trait StandardInterpreter extends Interpreter {
         val tOriginY = origin.y + box.top - (tBox.height / 2)
         val bOriginY = origin.y + box.bottom + (bBox.height / 2)
 
-        draw(t, canvas, Vec(origin.x, tOriginY))
-        draw(b, canvas, Vec(origin.x, bOriginY))
+        draw(t, canvas, Point.cartesian(origin.x, tOriginY))
+        draw(b, canvas, Point.cartesian(origin.x, bOriginY))
       case At(vec, i) =>
         draw(i, canvas, origin + vec)
 

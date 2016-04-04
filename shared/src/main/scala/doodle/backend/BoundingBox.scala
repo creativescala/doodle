@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{ContextTransform,BezierCurveTo,LineTo,MoveTo,Vec}
+import doodle.core.{ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,Vec}
 
 /**
   * A `BoundingBox` serves two purposes:
@@ -21,7 +21,7 @@ import doodle.core.{ContextTransform,BezierCurveTo,LineTo,MoveTo,Vec}
   * right) not the common computer graphic coordinate system (+ve Y is down).
   */
 final case class BoundingBox(left: Double, top: Double, right: Double, bottom: Double) {
-  val center = Vec((left + right) / 2, (top + bottom) / 2)
+  val center = Point.cartesian((left + right) / 2, (top + bottom) / 2)
 
   val height: Double =
     top - bottom
@@ -37,7 +37,7 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
       bottom - padding
     )
 
-  def expand(toInclude: Vec): BoundingBox =
+  def expand(toInclude: Point): BoundingBox =
     BoundingBox(
       left   min toInclude.x,
       top    max toInclude.y,
@@ -70,10 +70,10 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
     )
 
   def at(offset: Vec): BoundingBox = {
-    val topLeft     = Vec(left, top) 
-    val topRight    = Vec(right, top)
-    val bottomLeft  = Vec(left, bottom)
-    val bottomRight = Vec(right, bottom)
+    val topLeft     = Point.cartesian(left, top) 
+    val topRight    = Point.cartesian(right, top)
+    val bottomLeft  = Point.cartesian(left, bottom)
+    val bottomRight = Point.cartesian(right, bottom)
 
     List(topLeft, topRight, bottomLeft, bottomRight)
       .map(_ + offset)
@@ -84,11 +84,11 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
 object BoundingBox {
   val empty: BoundingBox = BoundingBox(0.0, 0.0, 0.0, 0.0)
 
-  def apply(vec: Vec): BoundingBox =
-    BoundingBox(vec.x, vec.y, vec.x, vec.y)
+  def apply(point: Point): BoundingBox =
+    BoundingBox(point.x, point.y, point.x, point.y)
 
-  def apply(vecs: Seq[Vec]): BoundingBox =
-    vecs match {
+  def apply(points: Seq[Point]): BoundingBox =
+    points match {
       case Seq()    => BoundingBox.empty
       case Seq(hd)  => BoundingBox(hd)
       case hd +: tl => tl.foldLeft(BoundingBox(hd))(_ expand _)

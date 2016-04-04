@@ -16,8 +16,8 @@ sealed trait Image {
   def below(top: Image): Image =
     Above(top, this)
 
-  def at(v: Vec): Image =
-    At(v, this)
+  def at(vec: Vec): Image =
+    At(vec, this)
 
   def at(x: Double, y: Double): Image =
     At(Vec(x, y), this)

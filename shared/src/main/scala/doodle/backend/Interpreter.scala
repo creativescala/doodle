@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{DrawingContext,Vec}
+import doodle.core.{DrawingContext,Point}
 
 /**
   * An interpreter gives meaning to an Image, usually by drawing it on a Canvas
@@ -14,10 +14,10 @@ trait Interpreter {
 
   /** Draw an Image on a Canvas of the given size with origin optionally
     * translated to the given point */
-  def draw(image: core.Image, canvas: Canvas, width: Int, height: Int, origin: Vec = Vec.zero): Unit = {
+  def draw(image: core.Image, canvas: Canvas, width: Int, height: Int, origin: Point = Point.zero): Unit = {
     canvas.setSize(width, height)
     canvas.setOrigin(origin.x.ceil.toInt, origin.y.ceil.toInt)
-    draw(image, canvas, DrawingContext.blackLines, Vec.zero)
+    draw(image, canvas, DrawingContext.blackLines, Point.zero)
   }
 
   /** Draw an Image centered on the Canvas. */
@@ -27,8 +27,8 @@ trait Interpreter {
     draw(image, canvas, bb.width.ceil.toInt, bb.height.ceil.toInt, bb.center)
   }
 
-  def draw(image: core.Image, canvas: Canvas, context: DrawingContext, origin: Vec): Unit =
+  def draw(image: core.Image, canvas: Canvas, context: DrawingContext, origin: Point): Unit =
     draw(Image.compile(image, context), canvas, origin)
 
-  def draw(image: Image, canvas: Canvas, origin: Vec): Unit
+  def draw(image: Image, canvas: Canvas, origin: Point): Unit
 }

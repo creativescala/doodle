@@ -8,7 +8,7 @@ object Stars {
     val centerAngle = 360.degrees * skip / sides
 
     val elements = (0 to sides) map { index =>
-      val pt = Vec.polar(centerAngle * index, radius)
+      val pt = Point.polar(radius, centerAngle * index)
       if(index == 0)
         MoveTo(pt)
       else
