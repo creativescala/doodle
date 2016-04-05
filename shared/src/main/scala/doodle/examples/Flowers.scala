@@ -26,30 +26,36 @@ object Flowers {
         lineColorTransform(_.alpha(alpha))
     }
 
-  def point(rotation: Angle): Angle => Image = {
-    val ptGen = position(5)
-    val scaleGen = scale(200.0)
-    val dropGen = drop(2, 15, 0.5.normalized, 0.3.normalized, 1.0.normalized)
+  def square(minAlpha: Normalized, maxAlpha: Normalized): Normalized => Image =
+    (r: Normalized) => {
+      val alpha = (minAlpha.get + (r.get * (maxAlpha - minAlpha))).normalized
+      rectangle(5, 5).fillColorTransform(_.alpha(alpha)).noLine
+    }
 
+  def point(
+    position: Angle => Point,
+    scale: Point => Point,
+    image: Normalized => Image,
+    rotation: Angle
+  ): Angle => Image = {
     (angle: Angle) => {
-      val pt = ptGen(angle)
+      val pt = position(angle)
+      val scaledPt = scale(pt)
       val r = pt.r.normalized
-      val drop = dropGen(r)
+      val img = image(r)
 
-      val scaledPt = scaleGen(pt)
-
-      (drop at scaledPt.toVec.rotate(rotation))
+      (img at scaledPt.toVec.rotate(rotation))
     }
   }
 
 
   def iterate(step: Angle): (Angle => Image) => Image = {
-    (parametric: Angle => Image) => {
+    (point: Angle => Image) => {
       def iter(angle: Angle): Image = {
         if(angle > Angle.One)
           Empty
         else
-          parametric(angle) on iter(angle + step)
+          point(angle) on iter(angle + step)
       }
 
       iter(Angle.Zero)
@@ -57,9 +63,27 @@ object Flowers {
   }
 
   val image: Image = {
-    iterate(1.degrees){ point(0.degrees) }.
-      fillColor(Color.fuchsia).
-      lineColor(Color.fuchsia) on
-    (rectangle(500, 500) fillColor Color.black)
+    val petals =
+      iterate(1.degrees){
+        point(
+          position(5),
+          scale(200.0),
+          drop(2, 15, 0.5.normalized, 0.3.normalized, 1.0.normalized),
+          0.degrees
+        )
+      }.fillColor(Color.fuchsia).lineColor(Color.fuchsia)
+
+    val leaves =
+      iterate(1.degrees){
+        point(
+          position(5),
+          scale(150.0),
+          square(0.3.normalized, 0.5.normalized),
+          36.degrees)
+      }.fillColor(Color.yellowGreen).lineColor(Color.yellowGreen)
+
+    val background = (rectangle(500, 500) fillColor Color.black)
+
+    petals on leaves on background
   }
 }
