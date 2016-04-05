@@ -16,6 +16,12 @@ final case class Angle(toRadians: Double) extends AnyVal {
   def /(m: Double): Angle =
     Angle.radians(this.toRadians / m)
 
+  def >(that: Angle): Boolean =
+    this.toRadians > that.toRadians
+
+  def <(that: Angle): Boolean =
+    this.toRadians < that.toRadians
+
   def sin: Double =
     math.sin(toRadians)
 
@@ -50,8 +56,8 @@ final case class Angle(toRadians: Double) extends AnyVal {
 
 object Angle {
   val TwoPi    = math.Pi * 2
-  val MinValue = Angle(0.0)
-  val MaxValue = Angle(TwoPi)
+  val Zero = Angle(0.0)
+  val One = Angle(TwoPi)
 
   def degrees(deg: Double): Angle =
     Angle(deg * TwoPi / 360.0)
