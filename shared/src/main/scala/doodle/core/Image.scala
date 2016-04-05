@@ -30,6 +30,12 @@ sealed trait Image {
 
   def fillColor(color: Color): Image =
     ContextTransform(_.fillColor(color), this)
+
+  def noLine: Image =
+    ContextTransform(_.noLine, this)
+
+  def noFill: Image =
+    ContextTransform(_.noFill, this)
 }
 object Image {
 
