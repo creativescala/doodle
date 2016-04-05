@@ -42,7 +42,7 @@ sealed abstract class Point extends Product with Serializable {
   def toPolar: Polar =
     this match {
       case Cartesian(x, y) =>
-        val length = math.sqrt(x*x + y*y)
+        val r = math.sqrt(x*x + y*y)
         val angle = Angle.radians(math.atan2(y, x))
         Polar(r, angle)
       case p @ Polar(_, _) =>
