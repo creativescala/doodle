@@ -40,7 +40,7 @@ Follow the link to download your copy from our web site.
 3.  Use Scala commands to draw a shape in a native window:
 
     ~~~ scala
-    scala> (Circle(10) fillColor Color.red).draw
+    scala> (circle(10) fillColor Color.red).draw
     ~~~
 
     A window should appear containing a red circle.
@@ -107,14 +107,12 @@ We provide three quick aliases for common commands:
 
 # Using Doodle as a Library
 
-You can grab Doodle from our *training* repository on Bintray.
-See [the releases tab](https://github.com/underscoreio/doodle/releases) for a list of releases.
-Once you know which release you want, add the following to your `build.sbt`:
+You can grab Doodle from our [repository on Bintray][bintray-training]. Once you know which version you want, add the following to your `build.sbt`:
 
 ~~~ scala
-scalaVersion := "2.11.2" // Doodle is compatible with Scala 2.11 only
+scalaVersion := "2.11.8" // Doodle is compatible with Scala 2.11 only
 
-resolvers += "Underscore Training" at "https://dl.bintray.com/underscoreio/training"
+resolvers += Resolver.bintrayRepo("underscoreio", "training")
 
 libraryDependencies += "underscoreio" %% "doodle" % <<RELEASE_VERSION>>
 ~~~
@@ -125,14 +123,14 @@ you may also want to add the following to your build:
 ~~~ scala
 initialCommands in console := """
   |import doodle.core._
+  |import doodle.core.Image._
   |import doodle.syntax._
   |import doodle.jvm._
   |import doodle.examples._
 """.trim.stripMargin
 ~~~
 
-[bintray-training]: https://bintray.com/underscoreio/training
-[doodle-releases]: https://bintray.com/underscoreio/training/doodle/view
+[bintray-training]: https://bintray.com/underscoreio/training/doodle
 
 # Acknowledgements
 
