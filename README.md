@@ -13,7 +13,7 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 # Using Doodle 
 
-To use Doodle in your own project we publish JARs to our [Bintray repository][bintray-training]. The current release is *`0.3.0`*. To use it add the following to your `build.sbt`:
+You can use Doodle in your own project by importing the JARs published to our [Bintray repository][bintray-training]. The current release is **`0.3.0`**. To use it add the following to your `build.sbt`:
 
 [bintray-training]: https://bintray.com/underscoreio/training/doodle
 
