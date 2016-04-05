@@ -25,11 +25,17 @@ final case class DrawingContext(
   def lineColor(color: Color): DrawingContext =
     this.copy(lineColor = Some(color))
 
+  def lineColorTransform(f: Color => Color): DrawingContext =
+    this.copy(lineColor = lineColor.map(f))
+
   def lineWidth(width: Double): DrawingContext =
     this.copy(lineWidth = if(width <= 0) None else Some(width))
 
   def fillColor(Color: Color): DrawingContext =
     this.copy(fillColor = Some(Color))
+
+  def fillColorTransform(f: Color => Color): DrawingContext =
+    this.copy(fillColor = fillColor.map(f))
 
   def noLine: DrawingContext =
     this.copy(lineWidth = None)

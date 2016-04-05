@@ -25,11 +25,17 @@ sealed trait Image {
   def lineColor(color: Color): Image =
     ContextTransform(_.lineColor(color), this)
 
+  def lineColorTransform(f: Color => Color): Image =
+    ContextTransform(_.lineColorTransform(f), this)
+
   def lineWidth(width: Double): Image =
     ContextTransform(_.lineWidth(width), this)
 
   def fillColor(color: Color): Image =
     ContextTransform(_.fillColor(color), this)
+
+  def fillColorTransform(f: Color => Color): Image =
+    ContextTransform(_.fillColorTransform(f), this)
 
   def noLine: Image =
     ContextTransform(_.noLine, this)
