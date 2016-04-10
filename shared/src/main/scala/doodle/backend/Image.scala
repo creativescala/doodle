@@ -10,7 +10,7 @@ import doodle.core.{DrawingContext,PathElement,MoveTo,LineTo,BezierCurveTo,Point
   * to calculate the true size of the bounding box taking into account the line
   * width.
   */
-sealed abstract class Image {
+sealed abstract class Image extends Product with Serializable {
   lazy val boundingBox: BoundingBox =
     this match {
       case Path(ctx, elts) =>

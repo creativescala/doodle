@@ -1,6 +1,6 @@
 package doodle.core
 
-sealed trait Image {
+sealed abstract class Image extends Product with Serializable {
   def beside(right: Image): Image =
     Beside(this, right)
 

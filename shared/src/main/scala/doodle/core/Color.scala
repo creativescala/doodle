@@ -3,7 +3,7 @@ package doodle.core
 import doodle.syntax.angle._
 import doodle.syntax.normalized._
 
-sealed trait Color {
+sealed abstract class Color extends Product with Serializable {
 
   // Accessors ----------------------------------------------
 
