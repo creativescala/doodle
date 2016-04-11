@@ -24,6 +24,9 @@ final case class Normalized(get: Double) extends AnyVal {
     else
       that
 
+  def toTurns: Angle =
+    Angle.turns(get)
+
   def toPercentage: String =
     s"${get * 100}%"
 

@@ -8,7 +8,7 @@ object Polygon {
     val centerAngle = 360.degrees / sides
 
     val elements = (0 until sides) map { index =>
-      val point = Vec.polar(centerAngle * index, radius)
+      val point = Point.polar(radius, centerAngle * index)
       if(index == 0) MoveTo(point) else LineTo(point)
     }
 

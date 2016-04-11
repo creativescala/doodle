@@ -1,7 +1,7 @@
 package doodle.core
 
-// import scalaz.syntax.applicative._
-// import scalaz.std.option._
+import cats.std.option._
+import cats.syntax.cartesian._
 
 final case class DrawingContext(
   lineWidth: Option[Double],
@@ -12,14 +12,7 @@ final case class DrawingContext(
   fillColor: Option[Color]
 ) {
   def stroke: Option[Stroke] =
-    //Scalaz applicative syntax apparently doesn't yet compiled in Scala.js
-    //(lineWidth |@| lineColor |@| lineCap |@| lineJoin){Stroke.apply _}
-    for {
-      w <- lineWidth
-      c <- lineColor
-      p <- lineCap
-      j <- lineJoin
-    } yield Stroke(w, c, p, j)
+    (lineWidth |@| lineColor |@| lineCap |@| lineJoin) map { Stroke.apply _ }
 
   def fill: Option[Fill] =
     fillColor.map(Fill.apply _)
@@ -32,11 +25,23 @@ final case class DrawingContext(
   def lineColor(color: Color): DrawingContext =
     this.copy(lineColor = Some(color))
 
+  def lineColorTransform(f: Color => Color): DrawingContext =
+    this.copy(lineColor = lineColor.map(f))
+
   def lineWidth(width: Double): DrawingContext =
     this.copy(lineWidth = if(width <= 0) None else Some(width))
 
   def fillColor(Color: Color): DrawingContext =
     this.copy(fillColor = Some(Color))
+
+  def fillColorTransform(f: Color => Color): DrawingContext =
+    this.copy(fillColor = fillColor.map(f))
+
+  def noLine: DrawingContext =
+    this.copy(lineWidth = None)
+
+  def noFill: DrawingContext =
+    this.copy(fillColor = None)
 }
 
 object DrawingContext {

@@ -164,7 +164,7 @@ class CanvasPanel extends JPanel {
 }
 
 object CanvasPanel {
-  sealed trait Op
+  sealed abstract class Op extends Product with Serializable
   final case class SetOrigin(x: Int, y: Int) extends Op
   final case class SetSize(width: Int, height: Int) extends Op
   final case class Clear(color: Color) extends Op

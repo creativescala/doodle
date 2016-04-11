@@ -3,7 +3,7 @@ package doodle.core
 import doodle.syntax.angle._
 import doodle.syntax.normalized._
 
-sealed trait Color {
+sealed abstract class Color extends Product with Serializable {
 
   // Accessors ----------------------------------------------
 
@@ -98,6 +98,54 @@ sealed trait Color {
   def fadeOut(opacity: Normalized) = {
     val original = this.toHSLA
     original.copy(a = Normalized.clip(original.a - opacity))
+  }
+
+  /** Lighten the color by the given *relative* amount. For example, calling
+    * `aColor.lightenBy(0.1.normalized` increases the lightness by 10% of the
+    * current lightness.
+    */
+  def lightenBy(lightness: Normalized) = {
+    val original = this.toHSLA
+    original.copy(l = Normalized.clip(original.l.get * (1 + lightness.get)))
+  }
+
+  /** Darken the color by the given *relative* amount. For example, calling
+    * `aColor.darkenBy(0.1.normalized` decreases the lightness by 10% of the
+    * current lightness.
+    */
+  def darkenBy(darkness: Normalized) = {
+    val original = this.toHSLA
+    original.copy(l = Normalized.clip(original.l.get * (1 - darkness.get)))
+  }
+
+  /** Saturate the color by the given *relative* amount. For example, calling
+    * `aColor.saturateBy(0.1.normalized` increases the saturation by 10% of the
+    * current saturation.
+    */
+  def saturateBy(saturation: Normalized) = {
+    val original = this.toHSLA
+    original.copy(s = Normalized.clip(original.l.get * (1 + saturation.get)))
+  }
+
+  /** Desaturate the color by the given *relative* amount. For example, calling
+    * `aColor.desaturateBy(0.1.normalized` decreases the saturation by 10% of the
+    * current saturation.
+    */
+  def desaturateBy(desaturation: Normalized) = {
+    val original = this.toHSLA
+    original.copy(s = Normalized.clip(original.l.get * (1 - desaturation.get)))
+  }
+
+  /** Increase the alpha channel by the given relative amount. */
+  def fadeInBy(opacity: Normalized) = {
+    val original = this.toHSLA
+    original.copy(a = Normalized.clip(original.a.get * (1 + opacity.get)))
+  }
+
+  /** Decrease the alpha channel by the given relative amount. */
+  def fadeOutBy(opacity: Normalized) = {
+    val original = this.toHSLA
+    original.copy(a = Normalized.clip(original.a.get * (1 - opacity.get)))
   }
 
   // Other -------------------------------------------------

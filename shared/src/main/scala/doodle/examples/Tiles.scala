@@ -22,7 +22,7 @@ object Tiles {
 
   def randomTriangle(width: Double): Random[Image] = {
     val coord = Random.positiveIntLessThan(width.floor.toInt)
-    val point = (coord |@| coord) map { (x, y) => Vec(x, y) }
+    val point = (coord |@| coord) map { (x, y) => Point.cartesian(x, y) }
     for {
       pt1 <- point
       pt2 <- point

@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{DrawingContext,PathElement,MoveTo,LineTo,BezierCurveTo,Vec}
+import doodle.core.{DrawingContext,PathElement,MoveTo,LineTo,BezierCurveTo,Point,Vec}
 
 /**
   * This Image representation serves as the intermediate form used for
@@ -10,7 +10,7 @@ import doodle.core.{DrawingContext,PathElement,MoveTo,LineTo,BezierCurveTo,Vec}
   * to calculate the true size of the bounding box taking into account the line
   * width.
   */
-sealed abstract class Image {
+sealed abstract class Image extends Product with Serializable {
   lazy val boundingBox: BoundingBox =
     this match {
       case Path(ctx, elts) =>
@@ -42,6 +42,8 @@ sealed abstract class Image {
 object Image {
   def compile(image: doodle.core.Image, context: DrawingContext): Image = {
     import doodle.core
+    import Point._
+
     def loop(image: doodle.core.Image, context: DrawingContext): Image =
       image match {
         case core.Empty =>
@@ -56,11 +58,11 @@ object Image {
           val c = 0.551915024494
           val cR = c * r
           val elts = List(
-            MoveTo(Vec(0.0, r)),
-            BezierCurveTo(Vec(cR, r), Vec(r, cR), Vec(r, 0.0)),
-            BezierCurveTo(Vec(r, -cR), Vec(cR, -r), Vec(0.0, -r)),
-            BezierCurveTo(Vec(-cR, -r), Vec(-r, -cR), Vec(-r, 0.0)),
-            BezierCurveTo(Vec(-r, cR), Vec(-cR, r), Vec(0.0, r))
+            MoveTo(cartesian(0.0, r)),
+            BezierCurveTo(cartesian(cR, r), cartesian(r, cR), cartesian(r, 0.0)),
+            BezierCurveTo(cartesian(r, -cR), cartesian(cR, -r), cartesian(0.0, -r)),
+            BezierCurveTo(cartesian(-cR, -r), cartesian(-r, -cR), cartesian(-r, 0.0)),
+            BezierCurveTo(cartesian(-r, cR), cartesian(-cR, r), cartesian(0.0, r))
           )
           Path(context, elts)
 
@@ -70,11 +72,11 @@ object Image {
           val right = w/2
           val bottom = -h/2
           val elts = List(
-            MoveTo(Vec(left, top)),
-            LineTo(Vec(right, top)),
-            LineTo(Vec(right, bottom)),
-            LineTo(Vec(left, bottom)),
-            LineTo(Vec(left, top))
+            MoveTo(cartesian(left, top)),
+            LineTo(cartesian(right, top)),
+            LineTo(cartesian(right, bottom)),
+            LineTo(cartesian(left, bottom)),
+            LineTo(cartesian(left, top))
           )
           Path(context, elts)
 
@@ -85,10 +87,10 @@ object Image {
           val bottom = -h/2
 
           val elts = List(
-            MoveTo(Vec(left, bottom)),
-            LineTo(Vec(0.0, top)),
-            LineTo(Vec(right, bottom)),
-            LineTo(Vec(left, bottom))
+            MoveTo(cartesian(left, bottom)),
+            LineTo(cartesian(0.0, top)),
+            LineTo(cartesian(right, bottom)),
+            LineTo(cartesian(left, bottom))
           )
           Path(context, elts)
 
