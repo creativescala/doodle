@@ -3,8 +3,8 @@ package doodle.examples
 import doodle.core._
 import doodle.syntax._
 
-object Koch extends Drawable {
-  def kochElements(depth: Int, start: Vec, angle: Angle, length: Double): Seq[PathElement] = {
+object Koch {
+  def kochElements(depth: Int, start: Point, angle: Angle, length: Double): Seq[PathElement] = {
     if(depth == 0) {
       Seq(LineTo(start + Vec.polar(angle, length)))
     } else {
@@ -27,11 +27,11 @@ object Koch extends Drawable {
   }
 
   def koch(depth: Int, length: Double): Image = {
-    val origin = Vec(0, length/6)
+    val origin = Point.cartesian(0, length/6)
     Path(MoveTo(origin) +: kochElements(depth, origin, 0.degrees, length))
   }
 
-  val draw = allAbove((1 to 4) map { depth =>
+  val image = allAbove((1 to 4) map { depth =>
     koch(depth, 512)
   })
 }

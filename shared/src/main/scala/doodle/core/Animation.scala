@@ -1,12 +1,12 @@
 package doodle.core
 
 trait Animation {
-  def animate: Animation
-  def draw: Image
+  def next: Animation
+  def image: Image
 }
 
-case class StaticAnimation(draw: Image) extends Animation {
-  val animate = this
+case class StaticAnimation(image: Image) extends Animation {
+  val next = this
 }
 
 object Animation {

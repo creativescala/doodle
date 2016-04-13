@@ -1,7 +1,7 @@
 package doodle.core
 
 object Line {
-  sealed trait Cap {
+  sealed abstract class Cap extends Product with Serializable {
     def toCanvas: String =
       this match {
         case Cap.Butt => "butt"
@@ -15,7 +15,7 @@ object Line {
     final case object Square extends Cap
   }
 
-  sealed trait Join {
+  sealed abstract class Join extends Product with Serializable {
     def toCanvas: String =
       this match {
         case Join.Bevel => "bevel"

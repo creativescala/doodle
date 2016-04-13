@@ -1,6 +1,7 @@
-package doodle.core
+package doodle
+package core
 
-/** A 2D vector or point. We can't use the name `Vector` as Scala already uses it. */
+/** A 2D vector. We can't use the name `Vector` as Scala already uses it. */
 final case class Vec(x: Double, y: Double) {
   def +(that: Vec): Vec = Vec(this.x + that.x, this.y + that.y)
   def -(that: Vec): Vec = Vec(this.x - that.x, this.y - that.y)

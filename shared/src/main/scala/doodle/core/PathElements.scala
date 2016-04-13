@@ -1,6 +1,6 @@
 package doodle.core
 
-sealed trait PathElement
-final case class MoveTo(to: Vec) extends PathElement
-final case class LineTo(to: Vec) extends PathElement
-final case class BezierCurveTo(cp1: Vec, cp2: Vec, to: Vec) extends PathElement
+sealed abstract class PathElement extends Product with Serializable
+final case class MoveTo(to: Point) extends PathElement
+final case class LineTo(to: Point) extends PathElement
+final case class BezierCurveTo(cp1: Point, cp2: Point, to: Point) extends PathElement
