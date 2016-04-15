@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,Vec}
+import doodle.core.{DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,PathElement,Vec}
 
 /**
   *  The standard interpreter that renders an Image to a Canvas. No special
@@ -12,34 +12,47 @@ trait StandardInterpreter extends Interpreter {
   def draw(image: Image, canvas: Canvas, origin: Point): Unit = {
     import Point.extractors.Cartesian
 
+    def drawElements(elts: Seq[PathElement]): Unit = {
+      elts.foreach {
+        case MoveTo(Cartesian(x, y)) =>
+          canvas.moveTo(origin.x + x, origin.y + y)
+
+        case LineTo(Cartesian(x, y)) =>
+          canvas.lineTo(origin.x + x, origin.y + y)
+
+        case BezierCurveTo(Cartesian(cp1x, cp1y), Cartesian(cp2x, cp2y), Cartesian(x, y)) =>
+          canvas.bezierCurveTo(
+            origin.x + cp1x , origin.y + cp1y,
+            origin.x + cp2x , origin.y + cp2y,
+            origin.x + x    , origin.y + y
+          )
+      }
+    }
+
+    def setContext(ctx: DrawingContext): Unit = {
+      ctx.fill.foreach { fill =>
+        canvas.setFill(fill.color)
+        canvas.fill()
+      }
+      ctx.stroke.foreach { stroke =>
+        canvas.setStroke(stroke)
+        canvas.stroke()
+      }
+    }
+
     image match {
-      case Path(ctx, elts) =>
+      case ClosedPath(ctx, elts) =>
         canvas.beginPath()
         canvas.moveTo(origin.x, origin.y)
-
-        elts.foreach {
-          case MoveTo(Cartesian(x, y)) =>
-            canvas.moveTo(origin.x + x, origin.y + y)
-
-          case LineTo(Cartesian(x, y)) =>
-            canvas.lineTo(origin.x + x, origin.y + y)
-
-          case BezierCurveTo(Cartesian(cp1x, cp1y), Cartesian(cp2x, cp2y), Cartesian(x, y)) =>
-            canvas.bezierCurveTo(
-              origin.x + cp1x , origin.y + cp1y,
-              origin.x + cp2x , origin.y + cp2y,
-              origin.x + x    , origin.y + y
-            )
-        }
+        drawElements(elts)
         canvas.endPath()
-        ctx.fill.foreach { fill =>
-          canvas.setFill(fill.color)
-          canvas.fill()
-        }
-        ctx.stroke.foreach { stroke =>
-          canvas.setStroke(stroke)
-          canvas.stroke()
-        }
+        setContext(ctx)
+
+      case OpenPath(ctx, elts) =>
+        canvas.beginPath()
+        canvas.moveTo(origin.x, origin.y)
+        drawElements(elts)
+        setContext(ctx)
 
       case On(t, b) =>
         draw(b, canvas, origin)

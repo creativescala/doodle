@@ -11,21 +11,27 @@ import doodle.core.{DrawingContext,PathElement,MoveTo,LineTo,BezierCurveTo,Point
   * width.
   */
 sealed abstract class Image extends Product with Serializable {
-  lazy val boundingBox: BoundingBox =
+  lazy val boundingBox: BoundingBox = {
+    def pathElementsToBoundingBox(elts: Seq[PathElement]): BoundingBox =
+      BoundingBox(
+        elts.flatMap {
+          case MoveTo(pos) => Seq(pos)
+          case LineTo(pos) => Seq(pos)
+          case BezierCurveTo(cp1, cp2, pos) =>
+            // The control points form a bounding box around a bezier curve,
+            // but this may not be a tight bounding box.
+            // It's an acceptable solution for now but in the future
+            // we may wish to generate a tighter bounding box.
+            Seq(cp1, cp2, pos)
+        }
+      )
+
     this match {
-      case Path(ctx, elts) =>
-        val bb = BoundingBox(
-          elts.flatMap {
-            case MoveTo(pos) => Seq(pos)
-            case LineTo(pos) => Seq(pos)
-            case BezierCurveTo(cp1, cp2, pos) =>
-              // The control points form a bounding box around a bezier curve,
-              // but this may not be a tight bounding box.
-              // It's an acceptable solution for now but in the future
-              // we may wish to generate a tighter bounding box.
-              Seq(cp1, cp2, pos)
-          }
-        )
+      case OpenPath(ctx, elts) =>
+        val bb = pathElementsToBoundingBox(elts)
+        ctx.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)
+      case ClosedPath(ctx, elts) =>
+        val bb = pathElementsToBoundingBox(elts)
         ctx.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)
       case Beside(l, r) =>
         l.boundingBox beside r.boundingBox
@@ -38,6 +44,7 @@ sealed abstract class Image extends Product with Serializable {
       case Empty =>
         BoundingBox.empty
     }
+  }
 }
 object Image {
   def compile(image: doodle.core.Image, context: DrawingContext): Image = {
@@ -49,8 +56,11 @@ object Image {
         case core.Empty =>
           Empty
 
-        case core.Path(elts) =>
-          Path(context, elts)
+        case core.OpenPath(elts) =>
+          OpenPath(context, elts)
+
+        case core.ClosedPath(elts) =>
+          ClosedPath(context, elts)
 
         case core.Circle(r) =>
           // See http://spencermortensen.com/articles/bezier-circle/ for approximation
@@ -64,7 +74,7 @@ object Image {
             BezierCurveTo(cartesian(-cR, -r), cartesian(-r, -cR), cartesian(-r, 0.0)),
             BezierCurveTo(cartesian(-r, cR), cartesian(-cR, r), cartesian(0.0, r))
           )
-          Path(context, elts)
+          ClosedPath(context, elts)
 
         case core.Rectangle(w, h) =>
           val left = -w/2
@@ -78,7 +88,7 @@ object Image {
             LineTo(cartesian(left, bottom)),
             LineTo(cartesian(left, top))
           )
-          Path(context, elts)
+          ClosedPath(context, elts)
 
         case core.Triangle(w, h) =>
           val left = -w/2
@@ -92,7 +102,7 @@ object Image {
             LineTo(cartesian(right, bottom)),
             LineTo(cartesian(left, bottom))
           )
-          Path(context, elts)
+          ClosedPath(context, elts)
 
         case core.Beside(l, r) =>
           Beside(loop(l, context), loop(r, context))
@@ -114,7 +124,12 @@ object Image {
   }
 
 }
-final case class Path(context: DrawingContext, elements: Seq[PathElement]) extends Image
+sealed abstract class Path extends Image {
+  def context: DrawingContext
+  def elements: Seq[PathElement]
+}
+final case class OpenPath(context: DrawingContext, elements: Seq[PathElement]) extends Path
+final case class ClosedPath(context: DrawingContext, elements: Seq[PathElement]) extends Path
 final case class Beside(l: Image, r: Image) extends Image
 final case class Above(t: Image, b: Image) extends Image
 final case class On(o: Image, u: Image) extends Image

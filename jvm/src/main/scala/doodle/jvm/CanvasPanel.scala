@@ -121,9 +121,7 @@ class CanvasPanel extends JPanel {
         )
 
       case EndPath() =>
-        // Closing a path on the Java 2D canvas draws a line from the end point
-        // to the starting point. We don't want to do this, as this stops people
-        // drawing paths that aren't closed. Thus this is a no-op
+        currentPath.closePath()
 
       case SetAnimationFrameCallback(callback) =>
         if(currentTimer != null) {
