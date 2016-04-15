@@ -81,15 +81,11 @@ sealed abstract class Path extends Image {
       case ClosedPath(elts) => OpenPath(elts)
     }
 
-  def closed: Path =
+  def close: Path =
     this match {
       case OpenPath(elts) => ClosedPath(elts)
       case ClosedPath(_)  => this
     }
-}
-object Path {
-  def empty: Path =
-    OpenPath(List.empty[PathElement])
 }
 final case class OpenPath(elements: Seq[PathElement]) extends Path
 final case class ClosedPath(elements: Seq[PathElement]) extends Path

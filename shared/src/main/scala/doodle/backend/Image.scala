@@ -14,7 +14,7 @@ sealed abstract class Image extends Product with Serializable {
   lazy val boundingBox: BoundingBox = {
     def pathElementsToBoundingBox(elts: Seq[PathElement]): BoundingBox =
       BoundingBox(
-        elts.flatMap {
+        Point.zero +: elts.flatMap {
           case MoveTo(pos) => Seq(pos)
           case LineTo(pos) => Seq(pos)
           case BezierCurveTo(cp1, cp2, pos) =>
