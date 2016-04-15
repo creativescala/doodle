@@ -47,6 +47,12 @@ object Image {
 
   // Smart constructors
 
+  def closedPath(elements: Seq[PathElement]): Image =
+    ClosedPath(elements)
+
+  def openPath(elements: Seq[PathElement]): Image =
+    OpenPath(elements)
+
   def circle(r: Double): Image =
     Circle(r)
 
