@@ -12,20 +12,26 @@ object CreativeScala {
   import doodle.core.Color._
 
   val triangle =
-    OpenPath(List(
-               LineTo(cartesian(50, 100)),
-               LineTo(cartesian(100, 0)),
-               LineTo(cartesian(0, 0))
-             )) 
+    List(
+      LineTo(cartesian(50, 100)),
+      LineTo(cartesian(100, 0)),
+      LineTo(cartesian(0, 0))
+    )
 
   val curve =
-    OpenPath(List(BezierCurveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0))))
+    List(BezierCurveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
 
+  def style(image: Image): Image =
+    image.
+      lineWidth(6.0).
+      lineColor(royalBlue).
+      fillColor(skyBlue)
 
   val openPaths =
-    (triangle beside curve) lineWidth 6.0 lineColor royalBlue fillColor skyBlue
+    style(openPath(triangle) beside openPath(curve))
+
   val closedPaths =
-    (triangle.close beside curve.close) lineWidth 6.0 lineColor royalBlue fillColor skyBlue
+    style(closedPath(triangle) beside closedPath(curve))
 
   val paths = openPaths above closedPaths
 }
