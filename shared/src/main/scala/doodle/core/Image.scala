@@ -47,6 +47,12 @@ object Image {
 
   // Smart constructors
 
+  def closedPath(elements: Seq[PathElement]): Image =
+    ClosedPath(elements)
+
+  def openPath(elements: Seq[PathElement]): Image =
+    OpenPath(elements)
+
   def circle(r: Double): Image =
     Circle(r)
 
@@ -59,7 +65,30 @@ object Image {
   def empty: Image =
     Empty
 }
-final case class Path(elements: Seq[PathElement]) extends Image
+sealed abstract class Path extends Image {
+  def isOpen: Boolean =
+    this match {
+      case OpenPath(_)   => true
+      case ClosedPath(_) => false
+    }
+
+  def isClosed: Boolean =
+    !this.isOpen
+
+  def open: Path =
+    this match {
+      case OpenPath(_)      => this
+      case ClosedPath(elts) => OpenPath(elts)
+    }
+
+  def close: Path =
+    this match {
+      case OpenPath(elts) => ClosedPath(elts)
+      case ClosedPath(_)  => this
+    }
+}
+final case class OpenPath(elements: Seq[PathElement]) extends Path
+final case class ClosedPath(elements: Seq[PathElement]) extends Path
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
 final case class Triangle(w: Double, h: Double) extends Image

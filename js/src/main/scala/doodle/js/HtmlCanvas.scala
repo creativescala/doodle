@@ -77,7 +77,7 @@ class HtmlCanvas(canvas: dom.raw.HTMLCanvasElement) extends Canvas {
     )
   }
 
-  def endPath(): Unit = 
+  def endPath(): Unit =
     context.closePath()
 
   def setAnimationFrameCallback(callback: () => Unit): Unit = {

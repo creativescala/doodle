@@ -5,7 +5,7 @@ import doodle.syntax._
 
 object Tree {
   def leaf(angle: Angle, length: Double): Image =
-    Path(Seq(
+    OpenPath(Seq(
       MoveTo(Point.zero),
       LineTo(Point.polar(length, angle))
     )) lineColor Color.hsl(angle, .5.normalized, .5.normalized)

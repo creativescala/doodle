@@ -14,20 +14,31 @@ import doodle.core.{ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,Vec}
   * Together this information is used to layout an Image.
   *
   * Note the origin of the local coordinate system can be any point that is not
-  * outside the box. It is typically at the center of the box, but it need not
-  * be there.
+  * outside the box. There is a convention for placement of the origin that is
+  * relied upon for layout:
+  *
+  *  - for a Path, the origin may be anywhere; otherwise
+  *
+  *  - layout operations align origins of the bounding boxex they enclose along
+  *    one or more dimensions. The origin of the bounding box of such an
+  *    operation is similarly aligned along the relevant dimension and centered
+  *    on any dimension that is not aligned.
+  *
+  * To example the above more clearly, and Beside aligns the y coordinates of
+  * the elements it encloses, and its own origin is aligned along the y-axis
+  * with the enclosing elements and centered on the x-axis.
   *
   * Coordinates follow the usual Cartesian system (+ve Y is up, and +ve X is
   * right) not the common computer graphic coordinate system (+ve Y is down).
   */
 final case class BoundingBox(left: Double, top: Double, right: Double, bottom: Double) {
-  val center = Point.cartesian((left + right) / 2, (top + bottom) / 2)
-
   val height: Double =
     top - bottom
 
   val width: Double =
     right - left
+
+  val center = Point.cartesian(left + (width / 2), bottom + (height / 2))
 
   def pad(padding: Double): BoundingBox =
     BoundingBox(
@@ -45,15 +56,20 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
       bottom min toInclude.y
     )
 
-  def beside(that: BoundingBox): BoundingBox =
-    BoundingBox(
-      -(this.width + that.width) / 2,
-      this.top max that.top,
-      (this.width + that.width) / 2,
-      this.bottom min that.bottom
-    )
+  def beside(that: BoundingBox): BoundingBox = {
+    val width = this.width + that.width
+    val top   = this.top max that.top
+    val bottom = this.bottom min that.bottom
 
-  def on(that: BoundingBox): BoundingBox = 
+    BoundingBox(
+      -(width / 2),
+      top,
+      width / 2,
+      bottom
+    )
+  }
+
+  def on(that: BoundingBox): BoundingBox =
     BoundingBox(
       this.left   min that.left,
       this.top    max that.top,
@@ -61,16 +77,21 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
       this.bottom min that.bottom
     )
 
-  def above(that: BoundingBox): BoundingBox =
+  def above(that: BoundingBox): BoundingBox = {
+    val height = this.height + that.height
+    val right = this.right max that.right
+    val left = this.left min that.left
+
     BoundingBox(
-      this.left min that.left,
-      (this.height + that.height) / 2,
-      this.right max that.right,
-      -(this.height + that.height) / 2
+      left,
+      height / 2,
+      right,
+      -(height / 2)
     )
+  }
 
   def at(offset: Vec): BoundingBox = {
-    val topLeft     = Point.cartesian(left, top) 
+    val topLeft     = Point.cartesian(left, top)
     val topRight    = Point.cartesian(right, top)
     val bottomLeft  = Point.cartesian(left, bottom)
     val bottomRight = Point.cartesian(right, bottom)
@@ -88,57 +109,5 @@ object BoundingBox {
     BoundingBox(point.x, point.y, point.x, point.y)
 
   def apply(points: Seq[Point]): BoundingBox =
-    points match {
-      case Seq()    => BoundingBox.empty
-      case Seq(hd)  => BoundingBox(hd)
-      case hd +: tl => tl.foldLeft(BoundingBox(hd))(_ expand _)
-    }
-
-  def apply(image: Image): BoundingBox =
-    image match {
-      case Path(ctx, elts) =>
-        BoundingBox(elts.flatMap {
-                      case MoveTo(pos) => Seq(pos)
-                      case LineTo(pos) => Seq(pos)
-                      case BezierCurveTo(cp1, cp2, pos) =>
-                        // The control points form a bounding box around a bezier curve,
-                        // but this may not be a tight bounding box.
-                        // It's an acceptable solution for now but in the future
-                        // we may wish to generate a tighter bounding box.
-                        Seq(cp1, cp2, pos)
-                    })
-
-      case On(t, b) =>
-        val BoundingBox(l1, t1, r1, b1) = t.boundingBox
-        val BoundingBox(l2, t2, r2, b2) = b.boundingBox
-        BoundingBox(l1 min l2, t1 max t2, r1 max r2, b1 min b2)
-
-      case Beside(l, r) =>
-        val boxL = l.boundingBox
-        val boxR = r.boundingBox
-        BoundingBox(
-          -(boxL.width + boxR.width) / 2,
-          boxL.top max boxR.top,
-          (boxL.width + boxR.width) / 2,
-          boxL.bottom min boxR.bottom
-        )
-
-      case Above(t, b) =>
-        val boxT = t.boundingBox
-        val boxB = b.boundingBox
-
-        BoundingBox(
-          boxT.left min boxB.left,
-          (boxT.height + boxB.height) / 2,
-          boxT.right max boxB.right,
-          -(boxT.height + boxB.height) / 2
-        )
-
-      case At(v, i) =>
-        i.boundingBox
-        //i.boundingBox translate v
-
-      case Empty =>
-        BoundingBox.empty
-    }
+    points.foldLeft(BoundingBox.empty){ (bb, elt) => bb.expand(elt) }
 }
