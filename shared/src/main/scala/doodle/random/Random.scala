@@ -5,7 +5,7 @@ import cats.Monad
 import scala.util.{Random => Rng}
 
 final case class Random[A](generator: Rng => A) { self =>
-  def run(rng: Rng): A =
+  def run(rng: Rng = scala.util.Random): A =
     generator(rng)
 
   def map[B](f: A => B): Random[B] =
