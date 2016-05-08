@@ -1,7 +1,10 @@
-package doodle.core
+package doodle
+package core
 
 import cats.std.option._
 import cats.syntax.cartesian._
+
+import doodle.core.font.Font
 
 final case class DrawingContext(
   lineWidth: Option[Double],
@@ -9,7 +12,9 @@ final case class DrawingContext(
   lineCap: Option[Line.Cap],
   lineJoin: Option[Line.Join],
 
-  fillColor: Option[Color]
+  fillColor: Option[Color],
+
+  font: Option[Font]
 ) {
   def stroke: Option[Stroke] =
     (lineWidth |@| lineColor |@| lineCap |@| lineJoin) map { Stroke.apply _ }
@@ -42,6 +47,9 @@ final case class DrawingContext(
 
   def noFill: DrawingContext =
     this.copy(fillColor = None)
+
+  def font(font: Font) =
+    this.copy(font = Some(font))
 }
 
 object DrawingContext {
@@ -51,7 +59,8 @@ object DrawingContext {
       lineColor = None,
       lineCap = None,
       lineJoin = None,
-      fillColor = None
+      fillColor = None,
+      font = None
     )
   val whiteLines =
     DrawingContext(
@@ -59,7 +68,8 @@ object DrawingContext {
       lineColor = Some(Color.white),
       lineCap = Some(Line.Cap.Butt),
       lineJoin = Some(Line.Join.Miter),
-      fillColor = None
+      fillColor = None,
+      font = Some(Font.defaultSerif)
     )
   val blackLines =
     DrawingContext(
@@ -67,6 +77,7 @@ object DrawingContext {
       lineColor = Some(Color.black),
       lineCap = Some(Line.Cap.Butt),
       lineJoin = Some(Line.Join.Miter),
-      fillColor = None
+      fillColor = None,
+      font = Some(Font.defaultSerif)
     )
 }

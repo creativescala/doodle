@@ -1,4 +1,4 @@
-package doodle
+/*package doodle
 package backend
 
 import doodle.core.{DrawingContext,PathElement,MoveTo,LineTo,BezierCurveTo,Point,Vec}
@@ -104,6 +104,9 @@ object Image {
           )
           ClosedPath(context, elts)
 
+        case core.Text(txt) =>
+          Text(txt, context)
+
         case core.Beside(l, r) =>
           Beside(loop(l, context), loop(r, context))
 
@@ -130,8 +133,10 @@ sealed abstract class Path extends Image {
 }
 final case class OpenPath(context: DrawingContext, elements: Seq[PathElement]) extends Path
 final case class ClosedPath(context: DrawingContext, elements: Seq[PathElement]) extends Path
+final case class Text(chars: String, font: Font) extends Image
 final case class Beside(l: Image, r: Image) extends Image
 final case class Above(t: Image, b: Image) extends Image
 final case class On(o: Image, u: Image) extends Image
 final case class At(offset: Vec, i: Image) extends Image
 final case object Empty extends Image 
+ */

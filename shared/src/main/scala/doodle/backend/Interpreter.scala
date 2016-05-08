@@ -1,7 +1,7 @@
-package doodle
+/*package doodle
 package backend
 
-import doodle.core.{DrawingContext,Point}
+import doodle.core.{DrawingContext,Point,Image}
 
 /**
   * An interpreter gives meaning to an Image, usually by drawing it on a Canvas
@@ -9,7 +9,7 @@ import doodle.core.{DrawingContext,Point}
   * This is a simplified type class pattern. As we only ever draw Images we
   * don't need the generic parameter usually used in a type class.
   */
-trait Interpreter {
+trait OldInterpreter {
   import doodle.core
 
   /** Draw an Image on a Canvas of the given size with origin optionally
@@ -32,3 +32,4 @@ trait Interpreter {
 
   def draw(image: Image, canvas: Canvas, origin: Point): Unit
 }
+ */

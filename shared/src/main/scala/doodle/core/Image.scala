@@ -1,4 +1,7 @@
-package doodle.core
+package doodle
+package core
+
+import doodle.core.font.Font
 
 sealed abstract class Image extends Product with Serializable {
   def beside(right: Image): Image =
@@ -42,6 +45,9 @@ sealed abstract class Image extends Product with Serializable {
 
   def noFill: Image =
     ContextTransform(_.noFill, this)
+
+  def font(font: Font): Image =
+    ContextTransform(_.font(font), this)
 }
 object Image {
 
@@ -52,6 +58,9 @@ object Image {
 
   def openPath(elements: Seq[PathElement]): Image =
     OpenPath(elements)
+
+  def text(characters: String): Image =
+    Text(characters)
 
   def circle(r: Double): Image =
     Circle(r)
@@ -89,6 +98,7 @@ sealed abstract class Path extends Image {
 }
 final case class OpenPath(elements: Seq[PathElement]) extends Path
 final case class ClosedPath(elements: Seq[PathElement]) extends Path
+final case class Text(get: String) extends Image
 final case class Circle(r: Double) extends Image
 final case class Rectangle(w: Double, h: Double) extends Image
 final case class Triangle(w: Double, h: Double) extends Image

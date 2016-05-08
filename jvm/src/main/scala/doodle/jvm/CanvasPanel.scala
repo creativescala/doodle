@@ -1,8 +1,8 @@
 package doodle
 package jvm
 
-import doodle.core.{Color, Line, RGBA, Stroke => DoodleStroke, Vec}
-import doodle.backend.Canvas
+import doodle.core.{DrawingContext, Color, Line, RGBA, Stroke => DoodleStroke, Point, Image, MoveTo, LineTo, BezierCurveTo, PathElement, Vec}
+import doodle.backend.{Metrics, Interpreter, OpenPath, ClosedPath, Text, Empty}
 
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.awt.{Color => AwtColor, BasicStroke, Dimension, Graphics, Graphics2D, RenderingHints, Rectangle, Shape}
@@ -13,17 +13,23 @@ import javax.swing.{JPanel, SwingUtilities, Timer}
 import scala.collection.mutable.Queue
 
 class CanvasPanel extends JPanel {
-  import CanvasPanel._
+  def draw(interpreter: (DrawingContext, Metrics) => Interpreter, image: Image): Unit = {
+    println("Pushing")
+    queue.add( (interpreter, image) )
+    println("Requesting repaint")
+    this.repaint()
+  }
 
-  // Drawing must be done on the Swing thread, while calls to the Canvas
-  // attached to this panel may be done by other threads. We solve this issue by
-  // having the canvas communicate with the panel via a concurrent queue.
-  val queue = new ConcurrentLinkedQueue[Op]()
-  val canvas = new Java2DCanvas(this)
+  // Drawing must be done on the Swing thread, while calls to draw may be done
+  // by other threads. We solve this issue by having the canvas communicate with
+  // the panel via a concurrent queue.
+  val queue = new ConcurrentLinkedQueue[((DrawingContext, Metrics) => Interpreter, Image)]()
 
   var currentTimer: Timer = null
 
   override def paintComponent(graphics: Graphics): Unit = {
+    import Point.extractors.Cartesian
+
     val context = graphics.asInstanceOf[Graphics2D]
     context.setRenderingHints(new RenderingHints(
                                 RenderingHints.KEY_ANTIALIASING,
@@ -31,17 +37,18 @@ class CanvasPanel extends JPanel {
                               ))
 
     // The origin in canvas coordinates
-    var center = Vec(0, 0)
+    var center = Point.cartesian(0, 0)
     // Convert from canvas coordinates to screen coordinates
-    def canvasToScreen(x: Double, y: Double): Vec = {
+    def canvasToScreen(x: Double, y: Double): Point = {
       val offsetX = getWidth / 2
       val offsetY = getHeight / 2
       //println(s"Converting ($x,$y) to screen")
       //println(s"Center $center")
       //println(s"Offset (${offsetX},${offsetY})")
-      val Vec(centerX, centerY) = center
+      val centerX = center.toCartesian.x
+      val centerY = center.toCartesian.y
       //println(s"(${x - centerX + offsetX}, ${offsetY - y + centerY})")
-      Vec(x - centerX + offsetX, offsetY - y + centerY)
+      Point.cartesian(x - centerX + offsetX, offsetY - y + centerY)
     }
 
 
@@ -49,109 +56,111 @@ class CanvasPanel extends JPanel {
     var currentFill: Color = null
     var currentPath: Path2D = null
 
-    retrieveOps()
-    operations.foreach {
-      case SetSize(width, height) =>
-        //println(s"SetSize ${width},${height}")
-        setPreferredSize(new Dimension(width + 40, height + 40))
+    def setContext(dc: DrawingContext): Unit = {
+      dc.fillColor.foreach(fc => currentFill = fc)
+      dc.stroke.foreach(s => currentStroke = s)
+      dc.font.foreach(f => context.setFont(FontMetrics.toJFont(f)))
+    }
+
+    def stroke() = {
+      if(currentStroke != null && currentPath != null) {
+        val width = currentStroke.width.toFloat
+        val cap = currentStroke.cap match {
+          case Line.Cap.Butt => BasicStroke.CAP_BUTT
+          case Line.Cap.Round => BasicStroke.CAP_ROUND
+          case Line.Cap.Square => BasicStroke.CAP_SQUARE
+        }
+        val join = currentStroke.join match {
+          case Line.Join.Bevel => BasicStroke.JOIN_BEVEL
+          case Line.Join.Miter => BasicStroke.JOIN_MITER
+          case Line.Join.Round => BasicStroke.JOIN_ROUND
+        }
+        val stroke = new BasicStroke(width, cap, join)
+        val color = awtColor(currentStroke.color)
+
+        context.setStroke(stroke)
+        context.setPaint(color)
+
+        context.draw(currentPath)
+      }
+    }
+
+    def fill() = {
+      if(currentFill != null && currentPath != null) {
+        context.setPaint(awtColor(currentFill))
+        context.fill(currentPath)
+      }
+    }
+
+    def drawPath(elts: List[PathElement], offsetX: Double, offsetY: Double) =
+      elts.foreach {
+        case MoveTo(Cartesian(x, y)) =>
+          val screen = canvasToScreen(x + offsetX, y + offsetY).toCartesian
+          currentPath.moveTo(screen.x, screen.y)
+        case LineTo(Cartesian(x, y)) =>
+          val screen = canvasToScreen(x + offsetX, y + offsetY).toCartesian
+          currentPath.lineTo(screen.x, screen.y)
+
+        case BezierCurveTo(Cartesian(cp1x, cp1y), Cartesian(cp2x, cp2y), Cartesian(endX, endY)) =>
+          val screenCp1 = canvasToScreen(cp1x + offsetX, cp1y + offsetY).toCartesian
+          val screenCp2 = canvasToScreen(cp2x + offsetX, cp2y + offsetY).toCartesian
+          val screenEnd = canvasToScreen(endX + offsetX, endY + offsetY).toCartesian
+          currentPath.curveTo(
+            screenCp1.x , screenCp1.y,
+            screenCp2.x , screenCp2.y,
+            screenEnd.x , screenEnd.y
+          )
+      }
+
+
+    retrieveDrawables()
+    drawables.foreach {
+      case (interpreter, image) =>
+        val metrics = FontMetrics(context.getFontRenderContext()).boundingBox _
+        val dc = DrawingContext.blackLines
+        val renderable = interpreter(dc, metrics)(image)
+
+        val bb = renderable.boundingBox
+        center = bb.center
+
+        setPreferredSize(new Dimension(bb.width.toInt + 40, bb.height.toInt + 40))
         SwingUtilities.windowForComponent(this).pack()
 
-      case SetOrigin(x, y) =>
-        center = Vec(x, y)
+        renderable.elements.foreach {
+          case ClosedPath(ctx, at, elts) =>
+            setContext(ctx)
+            currentPath = new Path2D.Double()
+            drawPath(elts, at.x, at.y)
+            currentPath.closePath()
+            stroke()
+            fill()
 
-      case Clear(color) =>
-        val oldColor = context.getColor()
-        context.setColor(awtColor(color))
-        context.fillRect(0, 0, getWidth, getHeight)
-        context.setColor(oldColor)
+          case OpenPath(ctx, at, elts) =>
+            setContext(ctx)
+            currentPath = new Path2D.Double()
+            drawPath(elts, at.x, at.y)
+            stroke()
+            fill()
 
-      case SetStroke(stroke) => 
-        currentStroke = stroke
+          case Text(ctx, at, bb, chars) =>
+            setContext(ctx)
+            // drawString takes the bottom left corner of the text
+            val bottomLeft = at - Vec(bb.width/2, bb.height/2)
+            val screen = canvasToScreen(bottomLeft.x, bottomLeft.y)
+            context.drawString(chars, screen.x.toInt, screen.y.toInt)
 
-      case SetFill(color) =>
-        currentFill = color
-
-      case Stroke() =>
-        if(currentStroke != null && currentPath != null) {
-          val width = currentStroke.width.toFloat
-          val cap = currentStroke.cap match {
-            case Line.Cap.Butt => BasicStroke.CAP_BUTT
-            case Line.Cap.Round => BasicStroke.CAP_ROUND
-            case Line.Cap.Square => BasicStroke.CAP_SQUARE
-          }
-          val join = currentStroke.join match {
-            case Line.Join.Bevel => BasicStroke.JOIN_BEVEL
-            case Line.Join.Miter => BasicStroke.JOIN_MITER
-            case Line.Join.Round => BasicStroke.JOIN_ROUND
-          }
-          val stroke = new BasicStroke(width, cap, join)
-          val color = awtColor(currentStroke.color)
-
-          context.setStroke(stroke)
-          context.setPaint(color)
-
-          context.draw(currentPath)
+          case Empty => // do nothing
         }
-
-      case Fill() =>
-        if(currentFill != null && currentPath != null) {
-          context.setPaint(awtColor(currentFill))
-          context.fill(currentPath)
-        }
-
-      case BeginPath() =>
-        currentPath = new Path2D.Double()
-
-      case MoveTo(x, y) =>
-        val Vec(screenX, screenY) = canvasToScreen(x, y)
-        currentPath.moveTo(screenX, screenY)
-
-      case LineTo(x, y) =>
-        val Vec(screenX, screenY) = canvasToScreen(x, y)
-        currentPath.lineTo(screenX, screenY)
-
-      case BezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY) =>
-        val Vec(screenCp1X, screenCp1Y) = canvasToScreen(cp1x, cp1y)
-        val Vec(screenCp2X, screenCp2Y) = canvasToScreen(cp2x, cp2y)
-        val Vec(screenEndX, screenEndY) = canvasToScreen(endX, endY)
-        currentPath.curveTo(
-          screenCp1X , screenCp1Y,
-          screenCp2X , screenCp2Y,
-          screenEndX , screenEndY
-        )
-
-      case EndPath() =>
-        currentPath.closePath()
-
-      case SetAnimationFrameCallback(callback) =>
-        if(currentTimer != null) {
-          currentTimer.stop()
-        }
-        val MsPerFrame = 17 // 17 ms per frame at 60 fps
-        val listener = new ActionListener() {
-          def actionPerformed(evt: ActionEvent): Unit =
-            callback()
-        }
-        currentTimer = new Timer(MsPerFrame, listener)
-        currentTimer.setRepeats(true)
-        currentTimer.start()
     }
   }
-  // The Ops we have pulled off the queue
-  private val operations = new Queue[Op]() 
+  // The ((DrawingContext, Metrics) => Interpreter, Image) pairs we have pulled off the queue
+  private val drawables = new Queue[((DrawingContext, Metrics) => Interpreter, Image)]()
 
-  private def retrieveOps(): Unit = {
-    var op = queue.poll()
-    while(op != null) {
-      op match {
-        case Clear(_) =>
-          // For efficiency, drop all preceding operations
-          operations.clear()
-        case _ =>
-          ()
-      }
-      operations += op
-      op = queue.poll()
+  private def retrieveDrawables(): Unit = {
+    var drawable = queue.poll()
+    while(drawable != null) {
+      drawables += drawable
+      drawable = queue.poll()
     }
   }
 
@@ -159,21 +168,4 @@ class CanvasPanel extends JPanel {
     val RGBA(r, g, b, a) = color.toRGBA
     new AwtColor(r.get, g.get, b.get, a.toUnsignedByte.get)
   }
-}
-
-object CanvasPanel {
-  sealed abstract class Op extends Product with Serializable
-  final case class SetOrigin(x: Int, y: Int) extends Op
-  final case class SetSize(width: Int, height: Int) extends Op
-  final case class Clear(color: Color) extends Op
-  final case class SetStroke(stroke: DoodleStroke) extends Op
-  final case class SetFill(color: Color) extends Op
-  final case class Stroke() extends Op
-  final case class Fill() extends Op
-  final case class BeginPath() extends Op
-  final case class MoveTo(x: Double, y: Double) extends Op
-  final case class LineTo(x: Double, y: Double) extends Op
-  final case class BezierCurveTo(cp1x: Double, cp1y: Double, cp2x: Double, cp2y: Double, endX: Double, endY: Double) extends Op
-  final case class EndPath() extends Op
-  final case class SetAnimationFrameCallback(callbacl: () => Unit) extends Op
 }
