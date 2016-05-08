@@ -217,4 +217,29 @@ object CreativeScala {
 
     def line = lineOfStars(5, 10)
   }
+
+  object randomConcentricCircles {
+    import doodle.random._
+    import cats.syntax.cartesian._
+
+    def randomAngle: Random[Angle] =
+      Random.double.map(x => x.turns)
+
+    def randomColor(s: Normalized, l: Normalized): Random[Color] =
+      randomAngle map (hue => Color.hsl(hue, s, l))
+
+    def randomCircle(r: Double, color: Random[Color]): Random[Image] =
+      color map (fill => Image.circle(r) fillColor fill)
+
+    val randomPastel = randomColor(0.7.normalized, 0.7.normalized)
+
+    def randomConcentricCircles(n: Int): Random[Image] =
+      n match {
+        case 0 => randomCircle(10, randomPastel)
+        case n =>
+          randomConcentricCircles(n-1) |@| randomCircle(n * 10, randomPastel) map {
+            (circles, circle) => circles on circle
+          }
+      }
+  }
 }
