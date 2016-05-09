@@ -10,7 +10,7 @@ lazy val doodle = crossProject.
     name          := "doodle",
     organization  := "underscoreio",
     scalaVersion  := "2.11.8",
-    scalacOptions += "-feature",
+    scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked"),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(cats)
   ).jvmSettings(

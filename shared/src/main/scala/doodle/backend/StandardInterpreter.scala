@@ -12,61 +12,10 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
   def interpret(image: Image): Renderable =
     layout(finalise(image))
 
-  /**
-    * A Finalised object has a DrawingContext associated with every leaf node in
-    * the tree. This meanas we can calculate the dimensions of every element and
-    * hence lay it out.
-    */
-  sealed abstract class Finalised extends Product with Serializable {
-    lazy val boundingBox: BoundingBox = {
-      def pathElementsToBoundingBox(elts: Seq[PathElement]): BoundingBox =
-        BoundingBox(
-          Point.zero +: elts.flatMap {
-            case MoveTo(pos) => Seq(pos)
-            case LineTo(pos) => Seq(pos)
-            case BezierCurveTo(cp1, cp2, pos) =>
-              // The control points form a bounding box around a bezier curve,
-              // but this may not be a tight bounding box.
-              // It's an acceptable solution for now but in the future
-              // we may wish to generate a tighter bounding box.
-              Seq(cp1, cp2, pos)
-          }
-        )
-
-      this match {
-        case OpenPath(ctx, elts) =>
-          val bb = pathElementsToBoundingBox(elts)
-          ctx.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)
-        case ClosedPath(ctx, elts) =>
-          val bb = pathElementsToBoundingBox(elts)
-          ctx.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)
-        case Text(ctx, txt) =>
-          ctx.font.map(f => metrics(f, txt)).getOrElse(BoundingBox.empty)
-        case Beside(l, r) =>
-          l.boundingBox beside r.boundingBox
-        case Above(t, b) =>
-          t.boundingBox above b.boundingBox
-        case On(o, u) =>
-          o.boundingBox on u.boundingBox
-        case At(offset, i) =>
-          i.boundingBox at offset
-        case Empty =>
-          BoundingBox.empty
-      }
-    }
-  }
-  final case class OpenPath(context: DrawingContext, elements: Seq[PathElement]) extends Finalised
-  final case class ClosedPath(context: DrawingContext, elements: Seq[PathElement]) extends Finalised
-  final case class Text(context: DrawingContext, characters: String) extends Finalised
-  final case class Beside(l: Finalised, r: Finalised) extends Finalised
-  final case class Above(t: Finalised, b: Finalised) extends Finalised
-  final case class On(o: Finalised, u: Finalised) extends Finalised
-  final case class At(offset: Vec, i: Finalised) extends Finalised
-  final case object Empty extends Finalised
-
   def finalise(image: Image): Finalised = {
     import doodle.core
     import Point._
+    import Finalised._
 
     def loop(image: Image, context: DrawingContext): Finalised =
       image match {
@@ -144,6 +93,8 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
   }
 
   def layout(finalised: Finalised): Renderable = {
+    import Finalised._
+
     def loop(finalised: Finalised, origin: Point): List[CanvasElement] =
       finalised match {
         case ClosedPath(ctx, elts) =>
@@ -153,15 +104,15 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
           List(backend.OpenPath(ctx, origin.toVec, elts.toList))
 
         case t @ Text(ctx, txt) =>
-          List(backend.Text(ctx, origin.toVec, t.boundingBox, txt))
+          List(backend.Text(ctx, origin.toVec, boundingBox(t), txt))
 
         case On(t, b) =>
           loop(b, origin) ++ loop(t, origin)
 
         case b @ Beside(l, r) =>
-          val box = b.boundingBox
-          val lBox = l.boundingBox
-          val rBox = r.boundingBox
+          val box = boundingBox(b)
+          val lBox = boundingBox(l)
+          val rBox = boundingBox(r)
 
           // Beside aligns the y coordinate of the origin of the bounding boxes of
           // l and r. We need to calculate the x coordinate of the origin of each
@@ -190,9 +141,9 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
           loop(l, lOrigin) ++ loop(r, rOrigin)
 
         case a @ Above(t, b) =>
-          val box = a.boundingBox
-          val tBox = t.boundingBox
-          val bBox = b.boundingBox
+          val box = boundingBox(a)
+          val tBox = boundingBox(t)
+          val bBox = boundingBox(b)
 
           val tCenterY = origin.y + box.top - (tBox.height / 2)
           val bCenterY = origin.y + box.bottom + (bBox.height / 2)
@@ -217,10 +168,68 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
           List.empty[CanvasElement]
       }
 
-    Renderable(finalised.boundingBox, loop(finalised, Point.zero))
+    Renderable(boundingBox(finalised), loop(finalised, Point.zero))
+  }
+
+  def boundingBox(finalised: Finalised): BoundingBox = {
+    import Finalised._
+
+    def pathElementsToBoundingBox(elts: Seq[PathElement]): BoundingBox =
+      BoundingBox(
+        Point.zero +: elts.flatMap {
+          case MoveTo(pos) => Seq(pos)
+          case LineTo(pos) => Seq(pos)
+          case BezierCurveTo(cp1, cp2, pos) =>
+            // The control points form a bounding box around a bezier curve,
+            // but this may not be a tight bounding box.
+            // It's an acceptable solution for now but in the future
+            // we may wish to generate a tighter bounding box.
+            Seq(cp1, cp2, pos)
+        }
+      )
+
+    finalised match {
+      case OpenPath(ctx, elts) =>
+        val bb = pathElementsToBoundingBox(elts)
+        ctx.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)
+      case ClosedPath(ctx, elts) =>
+        val bb = pathElementsToBoundingBox(elts)
+        ctx.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)
+      case Text(ctx, txt) =>
+        ctx.font.map(f => metrics(f, txt)).getOrElse(BoundingBox.empty)
+      case Beside(l, r) =>
+        boundingBox(l) beside boundingBox(r)
+      case Above(t, b) =>
+        boundingBox(t) above boundingBox(b)
+      case On(o, u) =>
+        boundingBox(o) on boundingBox(u)
+      case At(offset, i) =>
+        boundingBox(i) at offset
+      case Empty =>
+        BoundingBox.empty
+    }
   }
 }
 object StandardInterpreter {
-  implicit val interpreter: (DrawingContext, Metrics) => Interpreter =
-    (dc, metrics) => img => StandardInterpreter(dc, metrics).interpret(img)
+  implicit val interpreter: Configuration => Interpreter = {
+    case (dc, metrics) => img => StandardInterpreter(dc, metrics).interpret(img)
+  }
+}
+
+
+/**
+  * A Finalised object has a DrawingContext associated with every leaf node in
+  * the tree. This meanas we can calculate the dimensions of every element and
+  * hence lay it out.
+  */
+sealed abstract class Finalised extends Product with Serializable 
+object Finalised {
+  final case class OpenPath(context: DrawingContext, elements: Seq[PathElement]) extends Finalised
+  final case class ClosedPath(context: DrawingContext, elements: Seq[PathElement]) extends Finalised
+  final case class Text(context: DrawingContext, characters: String) extends Finalised
+  final case class Beside(l: Finalised, r: Finalised) extends Finalised
+  final case class Above(t: Finalised, b: Finalised) extends Finalised
+  final case class On(o: Finalised, u: Finalised) extends Finalised
+  final case class At(offset: Vec, i: Finalised) extends Finalised
+  final case object Empty extends Finalised
 }

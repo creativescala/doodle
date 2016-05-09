@@ -20,7 +20,7 @@ import doodle.core.{Color, Stroke}
   * Callers can change the origin to another location to, for example, center an
   * image in the canvas (if that image is itself not centered on the origin)
   */
-trait Canvas {
+trait OldCanvas {
   /** Set the size of the canvas.
     *
     * Should only be set before drawing takes place, and before calling

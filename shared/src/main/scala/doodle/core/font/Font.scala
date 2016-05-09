@@ -6,7 +6,7 @@ sealed abstract class FontFamily extends Product with Serializable
 final case object Serif extends FontFamily
 final case object SansSerif extends FontFamily
 final case object Monospaced extends FontFamily
-final case class Physical(name: String) extends FontFamily
+final case class Named(get: String) extends FontFamily
 
 sealed abstract class FontFace extends Product with Serializable
 final case object Bold extends FontFace
