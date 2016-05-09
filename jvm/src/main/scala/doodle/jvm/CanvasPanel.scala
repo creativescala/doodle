@@ -2,7 +2,7 @@ package doodle
 package jvm
 
 import doodle.core.{DrawingContext, Color, Line, RGBA, Stroke, Point, Image, MoveTo, LineTo, BezierCurveTo, PathElement, Vec}
-import doodle.backend.{Canvas, Configuration, Metrics, Interpreter, OpenPath, ClosedPath, Text, Empty}
+import doodle.backend.{Canvas, Configuration, Metrics, Interpreter, CanvasElement}
 
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.awt.{Color => AwtColor, BasicStroke, Dimension, Graphics, Graphics2D, RenderingHints, Rectangle, Shape}
@@ -24,6 +24,7 @@ class CanvasPanel extends JPanel with Canvas {
   val queue = new ConcurrentLinkedQueue[(Configuration => Interpreter, Image)]()
 
   override def paintComponent(graphics: Graphics): Unit = {
+    import CanvasElement._
     import Point.extractors.Cartesian
 
     val context = graphics.asInstanceOf[Graphics2D]

@@ -98,13 +98,13 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
     def loop(finalised: Finalised, origin: Point): List[CanvasElement] =
       finalised match {
         case ClosedPath(ctx, elts) =>
-          List(backend.ClosedPath(ctx, origin.toVec, elts.toList))
+          List(CanvasElement.ClosedPath(ctx, origin.toVec, elts.toList))
 
         case OpenPath(ctx, elts) =>
-          List(backend.OpenPath(ctx, origin.toVec, elts.toList))
+          List(CanvasElement.OpenPath(ctx, origin.toVec, elts.toList))
 
         case t @ Text(ctx, txt) =>
-          List(backend.Text(ctx, origin.toVec, boundingBox(t), txt))
+          List(CanvasElement.Text(ctx, origin.toVec, boundingBox(t), txt))
 
         case On(t, b) =>
           loop(b, origin) ++ loop(t, origin)
