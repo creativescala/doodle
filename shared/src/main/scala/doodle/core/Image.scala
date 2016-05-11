@@ -68,6 +68,45 @@ object Image {
   def rectangle(w: Double, h: Double): Image =
     Rectangle(w,h)
 
+  def roundedRectangle(w: Double, h: Double, r: Double): Image = {
+    import PathElement._
+
+    // Clamp radius to the smallest of width and height
+    val radius =
+      if(r > w/2 || r > h/2)
+        (w/2) min (h/2)
+      else
+        r
+
+    // Magic number of drawing circles with bezier curves
+    // See http://spencermortensen.com/articles/bezier-circle/ for approximation
+    // of a circle with a Bezier curve.
+    val c = (4.0/3.0) * (Math.sqrt(2) - 1)
+    val cR = c * radius
+
+    val elts = List(
+      moveTo(w/2 - radius, h/2),
+      curveTo(w/2 - radius + cR, h/2,
+              w/2, h/2 - radius + cR,
+              w/2, h/2 - radius),
+      lineTo(w/2, -h/2 + radius),
+      curveTo(w/2, -h/2 + radius - cR,
+              w/2 - radius + cR, -h/2,
+              w/2 - radius, -h/2),
+      lineTo(-w/2 + radius, -h/2),
+      curveTo(-w/2 + radius - cR, -h/2,
+              -w/2, -h/2 + radius - cR,
+              -w/2, -h/2 + radius),
+      lineTo(-w/2, h/2 - radius),
+      curveTo(-w/2, h/2 - radius + cR,
+              -w/2 + radius - cR, h/2,
+              -w/2 + radius, h/2),
+      lineTo(w/2 - radius, h/2)
+    )
+
+    closedPath(elts)
+  }
+
   def triangle(w: Double, h: Double): Image =
     Triangle(w,h)
 
