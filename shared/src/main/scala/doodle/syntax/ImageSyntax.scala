@@ -5,7 +5,7 @@ import doodle.backend.{Canvas, Interpreter, Configuration}
 
 trait ImageSyntax {
   implicit class ToImageOps(val image: Image) {
-    def draw(implicit canvas: Canvas, interpreter: Configuration => Interpreter): Unit =
+    def draw[A](implicit canvas: Canvas[A], interpreter: Configuration => Interpreter): A =
       canvas.draw(interpreter, image)
   }
 }

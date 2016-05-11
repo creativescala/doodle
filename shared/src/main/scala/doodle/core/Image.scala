@@ -68,6 +68,25 @@ object Image {
   def rectangle(w: Double, h: Double): Image =
     Rectangle(w,h)
 
+  def rightArrow(w: Double, h: Double): Image = {
+    import PathElement._
+
+    val path = List(
+      moveTo(w/2, 0),
+      lineTo(0, h/2),
+
+      lineTo(0, h * 0.2),
+      lineTo(-w/2, h * 0.2),
+      lineTo(-w/2, -h * 0.2),
+      lineTo(0, -h * 0.2),
+
+      lineTo(0, -h/2),
+      lineTo(w/2, 0)
+    )
+
+    closedPath(path)
+  }
+
   def roundedRectangle(w: Double, h: Double, r: Double): Image = {
     import PathElement._
 
