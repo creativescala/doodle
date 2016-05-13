@@ -222,7 +222,7 @@ object CreativeScala {
     import doodle.random._
     import cats.syntax.cartesian._
 
-    def randomAngle: Random[Angle] =
+    val randomAngle: Random[Angle] =
       Random.double.map(x => x.turns)
 
     def randomColor(s: Normalized, l: Normalized): Random[Color] =
@@ -240,6 +240,94 @@ object CreativeScala {
           randomConcentricCircles(n-1) |@| randomCircle(n * 10, randomPastel) map {
             (circles, circle) => circles on circle
           }
+      }
+  }
+
+  object sequentialBoxes {
+    import doodle.random._
+    import cats.syntax.cartesian._
+
+    val randomAngle: Random[Angle] =
+      Random.double.map(x => x.turns)
+
+    val randomColor: Random[Color] =
+      randomAngle map (hue => Color.hsl(hue, 0.7.normalized, 0.7.normalized))
+
+    val randomSpin: Random[Double] =
+      Random.gaussian(15.0, 10.0)
+
+    def nextColor(color: Color): Random[Color] =
+      randomSpin map { spin => color.spin(spin.degrees) }
+
+    def coloredRectangle(color: Color): Image =
+       rectangle(20, 20) fillColor color
+
+    // Basic structural recursion
+    def gradientBoxes(n: Int, color: Color): Image =
+      n match {
+        case 0 => coloredRectangle(color)
+        case n => coloredRectangle(color) beside gradientBoxes(n-1, color.spin(15.degrees))
+      }
+
+    // Structural recursion with applicative
+    def randomColorBoxes(n: Int): Random[Image] =
+      n match {
+        case 0 => randomColor map { c => coloredRectangle(c) }
+        case n =>
+          val box = randomColor map { c => coloredRectangle(c) }
+          val boxes = randomColorBoxes(n-1)
+          (box |@| boxes) map { (b, bs) => b beside bs }
+      }
+
+    // Structural recursion with monad
+    def randomGradientBoxes(n: Int, color: Color): Random[Image] =
+      n match {
+        case 0 => Random(rng => coloredRectangle(color))
+        case n =>
+          val box = coloredRectangle(color)
+          val boxes = nextColor(color) flatMap { c => randomGradientBoxes(n-1, c) }
+          boxes map { b => box beside b }
+      }
+
+    val image: Random[Image] = {
+      val boxes = randomColor flatMap { c => randomGradientBoxes(4, c) }
+      boxes |@| boxes |@| boxes map { (b1, b2, b3) => b1 above b2 above b3 }
+    }
+  }
+
+  object scatterPlot {
+    import doodle.random._
+    import cats.syntax.cartesian._
+
+    val normal = Random.gaussian(50, 15)
+    val uniform = Random.natural(100).map(x => x.toDouble)
+    val normalSquared = Random.gaussian map (x => (x * x * 7.5))
+
+    def makePoint(x: Random[Double], y: Random[Double]): Random[Point] =
+      x |@| y map { (x, y) => Point.cartesian(x, y) }
+
+    val iter = (1 to 1000).toList
+
+    def allOn(points: List[Random[Image]]): Random[Image] =
+      points match {
+        case Nil => Random.always(Image.empty)
+        case img :: imgs => img |@| allOn(imgs) map { (i, is) => i on is }
+      }
+
+    val gaussian2D = makePoint(normal, normal)
+    val uniform2D = makePoint(uniform, uniform)
+    val gaussianSquared2D = makePoint(normalSquared, normalSquared)
+
+    def scatter(loc: Point): Image =
+      circle(2).fillColor(Color.cadetBlue.alpha(0.3.normalized)).noLine.at(loc.toVec)
+
+    val spacer = rectangle(10, 20).noLine.noFill
+
+    val image =
+      (allOn(iter.map(i => uniform2D map (scatter _)))  |@|
+       allOn(iter.map(i => gaussian2D map (scatter _))) |@|
+       allOn(iter.map(i => gaussianSquared2D map (scatter _)))) map {
+        (s1, s2, s3) => s1 above spacer above s2 above spacer above s3
       }
   }
 }

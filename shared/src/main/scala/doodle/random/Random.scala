@@ -16,10 +16,13 @@ final case class Random[A](generator: Rng => A) { self =>
 }
 object Random {
 
+  def always[A](in: A): Random[A] =
+    Random(rng => in)
+
   def int: Random[Int] =
     Random(rng => rng.nextInt())
 
-  def positiveIntLessThan(upperLimit: Int): Random[Int] =
+  def natural(upperLimit: Int): Random[Int] =
     Random(rng => rng.nextInt(upperLimit))
 
   def double: Random[Double] =
@@ -31,6 +34,13 @@ object Random {
   def gaussian(mean: Double, stdDev: Double): Random[Double] =
     gaussian map (x => (stdDev * x) + mean)
 
+  def oneOf[A](elts: A*): Random[A] = {
+    val length = elts.length
+    Random.natural(length) map (idx => elts(idx))
+  }
+
+  def discrete[A](elts: (A, Double)*): Random[A] =
+    ???
 
   implicit object randomInstances extends Monad[Random] {
     override def flatMap[A, B](fa: Random[A])(f: (A) ⇒ Random[B]): Random[B] =
@@ -39,7 +49,7 @@ object Random {
     override def map[A, B](fa: Random[A])(f: (A) => B): Random[B] =
       fa.map(f)
 
-    override def pure[A](x: A): Random[A] =
-      Random(rng => x)
+    override def pure[A](in: A): Random[A] =
+      Random.always(in)
   }
 }
