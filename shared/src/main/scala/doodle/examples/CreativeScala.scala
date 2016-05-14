@@ -321,13 +321,13 @@ object CreativeScala {
     def scatter(loc: Point): Image =
       circle(2).fillColor(Color.cadetBlue.alpha(0.3.normalized)).noLine.at(loc.toVec)
 
-    val spacer = rectangle(10, 20).noLine.noFill
+    val spacer = rectangle(20, 20).noLine.noFill
 
     val image =
       (allOn(iter.map(i => uniform2D map (scatter _)))  |@|
        allOn(iter.map(i => gaussian2D map (scatter _))) |@|
        allOn(iter.map(i => gaussianSquared2D map (scatter _)))) map {
-        (s1, s2, s3) => s1 above spacer above s2 above spacer above s3
+        (s1, s2, s3) => s1 beside spacer beside s2 beside spacer beside s3
       }
   }
 }
