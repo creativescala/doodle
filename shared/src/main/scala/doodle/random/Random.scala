@@ -28,12 +28,6 @@ object Random {
   def double: Random[Double] =
     Random(rng => rng.nextDouble())
 
-  def gaussian: Random[Double] =
-    Random(rng => rng.nextGaussian())
-
-  def gaussian(mean: Double, stdDev: Double): Random[Double] =
-    gaussian map (x => (stdDev * x) + mean)
-
   def oneOf[A](elts: A*): Random[A] = {
     val length = elts.length
     Random.natural(length) map (idx => elts(idx))
@@ -41,6 +35,12 @@ object Random {
 
   def discrete[A](elts: (A, Double)*): Random[A] =
     ???
+
+  def normal: Random[Double] =
+    Random(rng => rng.nextGaussian())
+
+  def normal(mean: Double, stdDev: Double): Random[Double] =
+    normal map (x => (stdDev * x) + mean)
 
   implicit object randomInstances extends Monad[Random] {
     override def flatMap[A, B](fa: Random[A])(f: (A) ⇒ Random[B]): Random[B] =

@@ -11,7 +11,7 @@ object Windswept {
 
   def randomColor(meanHue: Angle) =
     for {
-      hue <- Random.gaussian(meanHue.toDegrees, 10.0) map (_.degrees)
+      hue <- Random.normal(meanHue.toDegrees, 10.0) map (_.degrees)
     } yield Color.hsl(hue, 0.8.normalized, 0.6.normalized)
 
   val leafGreen: Random[Color] = randomColor(80.degrees)
@@ -52,11 +52,11 @@ object Windswept {
   def randomPoint(x: Random[Double], y: Random[Double]): Random[Point] =
     (x |@| y) map { (x, y) => Point.cartesian(x, y) }
 
-  def gaussianPoint(point: Point, stdDev: Double = 50): Random[Point] =
-    randomPoint(Random.gaussian(point.x, stdDev), Random.gaussian(point.y, stdDev))
+  def normalPoint(point: Point, stdDev: Double = 50): Random[Point] =
+    randomPoint(Random.normal(point.x, stdDev), Random.normal(point.y, stdDev))
 
   def randomBezier(cp1: Point, cp2: Point, end: Point, stdDev: Double): Random[BezierCurveTo] = {
-    (gaussianPoint(cp1, stdDev) |@| gaussianPoint(cp2, stdDev) |@| gaussianPoint(end, stdDev)) map {
+    (normalPoint(cp1, stdDev) |@| normalPoint(cp2, stdDev) |@| normalPoint(end, stdDev)) map {
       (cp1, cp2, end) => BezierCurveTo(cp1, cp2, end)
     }
   }
@@ -66,7 +66,7 @@ object Windswept {
       stroke <- randomColor(25.degrees) map (_.fadeOut(0.4.normalized))
       offset  = -425
       start   = Point.cartesian(offset, 0)
-      end    <- Random.gaussian(800, 30)
+      end    <- Random.normal(800, 30)
     } yield OpenPath(Seq(MoveTo(start), LineTo(Point.cartesian(end + offset, 0)))) lineColor stroke lineWidth 1.0
 
   val tendrils: Random[Image] =

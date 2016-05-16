@@ -14,10 +14,10 @@ object Tiles {
 
   def randomColor(meanHue: Angle): Random[Color] =
     for {
-      hue   <- Random.gaussian(meanHue.toDegrees, 10.0) map (_.degrees)
-      sat   <- Random.gaussian(0.8, 0.05) map (_.normalized)
-      light <- Random.gaussian(0.6, 0.05) map (_.normalized)
-      alpha <- Random.gaussian(0.5, 0.1) map (_.normalized)
+      hue   <- Random.normal(meanHue.toDegrees, 10.0) map (_.degrees)
+      sat   <- Random.normal(0.8, 0.05) map (_.normalized)
+      light <- Random.normal(0.6, 0.05) map (_.normalized)
+      alpha <- Random.normal(0.5, 0.1) map (_.normalized)
     } yield Color.hsla(hue, sat, light, alpha)
 
   def randomTriangle(width: Double): Random[Image] = {

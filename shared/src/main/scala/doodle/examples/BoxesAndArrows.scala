@@ -9,6 +9,10 @@ import doodle.backend.StandardInterpreter._
 
 object BoxesAndArrows {
   import Point._
+  import FontFamily._
+  import FontFace._
+  import FontSize._
+
   val size = 100
 
   val spacer = rectangle(size * 0.2,size).noFill.noLine

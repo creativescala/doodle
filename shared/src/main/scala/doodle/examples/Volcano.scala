@@ -19,7 +19,7 @@ object Volcano {
     }
 
   def jitter(point: Point): Random[Point] = {
-    val noise = Random.gaussian(0, 10.0)
+    val noise = Random.normal(0, 10.0)
 
     (noise |@| noise) map { (dx, dy) =>
       Point.cartesian(point.x + dx, point.y + dy)
@@ -27,15 +27,15 @@ object Volcano {
   }
 
   def smoke(r: Normalized): Random[Image] = {
-    val alpha = Random.gaussian(0.5, 0.1) map (a => a.normalized)
+    val alpha = Random.normal(0.5, 0.1) map (a => a.normalized)
     val hue = Random.double.map(h => (h * 0.1).turns)
     val saturation = Random.double.map(s => (s * 0.8).normalized)
-    val lightness = Random.gaussian(0.4, 0.1) map (a => a.normalized)
+    val lightness = Random.normal(0.4, 0.1) map (a => a.normalized)
     val color =
       (hue |@| saturation |@| lightness |@| alpha) map {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
-    val c = Random.gaussian(5, 5) map (r => circle(r))
+    val c = Random.normal(5, 5) map (r => circle(r))
 
     (c |@| color) map { (circle, line) => circle.lineColor(line).noFill }
   }

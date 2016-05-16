@@ -254,7 +254,7 @@ object CreativeScala {
       randomAngle map (hue => Color.hsl(hue, 0.7.normalized, 0.7.normalized))
 
     val randomSpin: Random[Double] =
-      Random.gaussian(15.0, 10.0)
+      Random.normal(15.0, 10.0)
 
     def nextColor(color: Color): Random[Color] =
       randomSpin map { spin => color.spin(spin.degrees) }
@@ -279,10 +279,20 @@ object CreativeScala {
           (box |@| boxes) map { (b, bs) => b beside bs }
       }
 
+    // Structural recursion with applicative (with more pleasing result)
+    def noisyGradientBoxes(n: Int, color: Color): Random[Image] =
+      n match {
+        case 0 => nextColor(color) map { c => coloredRectangle(c) }
+        case n =>
+          val box = nextColor(color) map { c => coloredRectangle(c) }
+          val boxes = noisyGradientBoxes(n-1, color.spin(15.degrees))
+          box |@| boxes map { (b, bs) =>  b beside bs }
+      }
+
     // Structural recursion with monad
     def randomGradientBoxes(n: Int, color: Color): Random[Image] =
       n match {
-        case 0 => Random(rng => coloredRectangle(color))
+        case 0 => Random.always(coloredRectangle(color))
         case n =>
           val box = coloredRectangle(color)
           val boxes = nextColor(color) flatMap { c => randomGradientBoxes(n-1, c) }
@@ -299,9 +309,9 @@ object CreativeScala {
     import doodle.random._
     import cats.syntax.cartesian._
 
-    val normal = Random.gaussian(50, 15)
+    val normal = Random.normal(50, 15)
     val uniform = Random.natural(100).map(x => x.toDouble)
-    val normalSquared = Random.gaussian map (x => (x * x * 7.5))
+    val normalSquared = Random.normal map (x => (x * x * 7.5))
 
     def makePoint(x: Random[Double], y: Random[Double]): Random[Point] =
       x |@| y map { (x, y) => Point.cartesian(x, y) }
@@ -314,19 +324,19 @@ object CreativeScala {
         case img :: imgs => img |@| allOn(imgs) map { (i, is) => i on is }
       }
 
-    val gaussian2D = makePoint(normal, normal)
+    val normal2D = makePoint(normal, normal)
     val uniform2D = makePoint(uniform, uniform)
-    val gaussianSquared2D = makePoint(normalSquared, normalSquared)
+    val normalSquared2D = makePoint(normalSquared, normalSquared)
 
-    def scatter(loc: Point): Image =
+    def point(loc: Point): Image =
       circle(2).fillColor(Color.cadetBlue.alpha(0.3.normalized)).noLine.at(loc.toVec)
 
     val spacer = rectangle(20, 20).noLine.noFill
 
     val image =
-      (allOn(iter.map(i => uniform2D map (scatter _)))  |@|
-       allOn(iter.map(i => gaussian2D map (scatter _))) |@|
-       allOn(iter.map(i => gaussianSquared2D map (scatter _)))) map {
+      (allOn(iter.map(i => uniform2D map (point _)))  |@|
+       allOn(iter.map(i => normal2D map (point _))) |@|
+       allOn(iter.map(i => normalSquared2D map (point _)))) map {
         (s1, s2, s3) => s1 beside spacer beside s2 beside spacer beside s3
       }
   }
