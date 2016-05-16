@@ -19,6 +19,10 @@ final case class FontMetrics(context: FontRenderContext) {
   }
 }
 object FontMetrics {
+  import FontFamily._
+  import FontFace._
+  import FontSize._
+
   def toJFont(font: Font): JFont =
     font match {
       case Font(family, face, size) =>
