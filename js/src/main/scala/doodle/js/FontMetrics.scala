@@ -14,7 +14,7 @@ final case class FontMetrics(svg: dom.raw.SVGSVGElement) {
 
   def boundingBox(font: Font, characters: String): BoundingBox = {
     val elt = text(
-      id:="doodle-font-metrics"
+      id:="doodle-font-metrics",
       display:="none",
       font:=FontMetrics.toCss(font),
       characters
@@ -47,7 +47,7 @@ object FontMetrics {
 
     val size =
       font.size match {
-        Points(pts) => s"${pts}pt"
+        case Points(pts) => s"${pts}pt"
       }
 
     val family =

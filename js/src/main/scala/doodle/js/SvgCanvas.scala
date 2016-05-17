@@ -16,16 +16,31 @@ final case class SvgCanvas(root: dom.raw.SVGSVGElement) {
     val metrics = FontMetrics(root).boundingBox _
     val renderable = interpreter(dc, metrics)(image)
 
+    val center = renderable.boundingBox.center
+
+    // Convert from canvas coordinates to screen coordinates
+    def canvasToScreen(canvas: Point): Point = {
+      val offsetX = screenCenter.x
+      val offsetY = screenCenter.y
+      val centerX = center.x
+      val centerY = center.y
+      Point.cartesian(canvas.x - centerX + offsetX, offsetY - canvas.y + centerY)
+    }
+
     renderable.elements.foreach {
       case ClosedPath(ctx, at, elts) =>
-        val dAttr = SvgCanvas.pathToSvgPath(???, elts) ++ "Z"
-        path(d:=dAttr)
+        val dAttr = SvgCanvas.pathToSvgPath(canvasToScreen _, elts) ++ "Z"
+        val elt = path(d:=dAttr).render
+        svg.appendChild(elt)
       case OpenPath(ctx, at, elts) => ???
-        val dAttr = SvgCanvas.pathToSvgPath(???, elts)
-        path(d:=dAttr)
+        val dAttr = SvgCanvas.pathToSvgPath(canvasToScreen _, elts)
+        val elt = path(d:=dAttr).render
+        svg.appendChild(elt)
       case Text(ctx, at, bb, chars) =>
-        text(chars)
-      case Empty => ???
+        val elt = text(chars)
+        svg.appendChild(elt)
+      case Empty =>
+        // Do nothing
     }
   }
 }
