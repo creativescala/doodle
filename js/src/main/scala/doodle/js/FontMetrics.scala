@@ -6,23 +6,23 @@ import doodle.backend.BoundingBox
 
 import org.scalajs.dom
 
-final case class FontMetrics(svg: dom.raw.SVGSVGElement) {
-  import scalatags.JsDom.svgTags._
-  import scalatags.JsDom.svgAttrs._
-  import scalatags.JsDom.tags._
-  import scalatags.JsDom.styles._
+final case class FontMetrics(root: dom.svg.SVG) {
+  //import scalatags.JsDom.tags._
+  //import scalatags.JsDom.styles._
 
   def boundingBox(font: Font, characters: String): BoundingBox = {
-    val elt = text(
-      id:="doodle-font-metrics",
-      display:="none",
-      font:=FontMetrics.toCss(font),
+    import scalatags.JsDom.short._
+    import scalatags.JsDom.{svgTags => svg}
+
+    val elt = svg.text(
+      *.display:="none",
+      *.font:=FontMetrics.toCss(font),
       characters
     ).render
 
-    val txt = svg.appendChild(elt).asInstanceOf[SVGLocatable]
-    val bb = txt.getBBox()
-    svg.removeChild(txt)
+    val txt = root.appendChild(elt)
+    val bb = txt.asInstanceOf[dom.svg.Locatable].getBBox()
+    root.removeChild(txt)
 
     BoundingBox(0, 0, bb.width, bb.height)
   }

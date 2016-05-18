@@ -50,7 +50,7 @@ lazy val doodle = crossProject.
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
       "org.scala-js"              %%% "scalajs-dom" % "0.9.0",
-      "com.lihaoyi"                %% "scalatags"   % "0.5.5",
+      "com.lihaoyi"               %%% "scalatags"   % "0.5.5",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
       "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
     )

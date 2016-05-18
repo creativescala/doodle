@@ -1,4 +1,4 @@
-package doodle
+/*package doodle
 package js
 
 import doodle.core.{Color, Stroke, Vec}
@@ -96,3 +96,4 @@ object HtmlCanvas {
     canvas(elt)
   }
 }
+ */
