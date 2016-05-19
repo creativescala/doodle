@@ -35,7 +35,7 @@ final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends C
         val dAttr = SvgCanvas.pathToSvgPath(canvasToScreen _, elts) ++ "Z"
         val elt = svg.path(svgAttrs.d:=dAttr).render
         root.appendChild(elt)
-      case OpenPath(ctx, at, elts) => ???
+      case OpenPath(ctx, at, elts) =>
         val dAttr = SvgCanvas.pathToSvgPath(canvasToScreen _, elts)
         val elt = svg.path(svgAttrs.d:=dAttr).render
         root.appendChild(elt)
