@@ -6,12 +6,11 @@ import javax.swing.JFrame
 import doodle.backend.{Interpreter, Configuration}
 import doodle.core.Image
 
-class CanvasFrame extends JFrame {
-  def draw(interpreter: Configuration => Interpreter, image: Image): Unit =
-    panel.draw(interpreter, image)
-
-  val panel = new CanvasPanel()
+final class CanvasFrame(interpreter: Configuration => Interpreter, image: Image) extends JFrame {
+  val panel = new CanvasPanel(interpreter, image)
 
   getContentPane().add(panel)
   pack()
+  repaint()
+  setVisible(true)
 }

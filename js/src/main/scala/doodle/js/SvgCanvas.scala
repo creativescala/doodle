@@ -7,8 +7,8 @@ import doodle.backend._
 
 import org.scalajs.dom
 
-final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends Canvas[SvgCanvas] {
-  def draw(interpreter: Configuration => Interpreter, image: Image): SvgCanvas = {
+final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends Draw {
+  def draw(interpreter: Configuration => Interpreter, image: Image): Unit = {
     import scalatags.JsDom.implicits._
     import scalatags.JsDom.{svgTags => svg}
     import scalatags.JsDom.svgAttrs
@@ -45,12 +45,10 @@ final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends C
       case Empty =>
         // Do nothing
     }
-
-    this
   }
 }
 object SvgCanvas {
-  def fromElementId(id: String, width: Int, height: Int): Canvas[SvgCanvas] = {
+  def fromElementId(id: String, width: Int, height: Int): SvgCanvas = {
     val elt = dom.document.getElementById(id).asInstanceOf[dom.svg.SVG]
     SvgCanvas(elt, width, height)
   }
