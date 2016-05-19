@@ -1,8 +1,8 @@
 package doodle
 package backend
 
-import doodle.core.{Animation, Color, DrawingContext, Point}
 /*
+import doodle.core.{Animation, Color, DrawingContext, Point}
 /**
   * An Animator gives meaning to an animation
   */

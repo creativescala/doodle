@@ -7,8 +7,6 @@ import doodle.backend.{Configuration, Interpreter}
 import java.awt.{Dimension, Graphics, Graphics2D}
 import javax.swing.{JPanel, SwingUtilities}
 
-import scala.collection.mutable.Queue
-
 final class CanvasPanel(interpreter: Configuration => Interpreter, image: Image) extends JPanel {
 
   override def paintComponent(context: Graphics): Unit = {

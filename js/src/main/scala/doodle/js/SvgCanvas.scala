@@ -2,7 +2,6 @@ package doodle
 package js
 
 import doodle.core._
-import doodle.core.font._
 import doodle.backend._
 
 import org.scalajs.dom

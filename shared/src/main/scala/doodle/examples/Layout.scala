@@ -2,14 +2,12 @@ package doodle
 package examples
 
 import doodle.core._
-import doodle.syntax._
 
 object Layout {
   // Examples for debugging layout
 
   import doodle.core.Image._
   import doodle.core.Point._
-  import doodle.core.Color._
 
   def addOrigin(image: Image): Image = {
     val origin = Circle(5).noLine.fillColor(Color.red)

@@ -2,7 +2,6 @@ package doodle.syntax
 
 import utest._
 import doodle.core.Angle
-import doodle.syntax.angle._
 
 object AngleSpec extends TestSuite {
   val tests = TestSuite {

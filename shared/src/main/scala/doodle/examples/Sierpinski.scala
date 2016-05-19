@@ -1,7 +1,6 @@
 package doodle.examples
 
 import doodle.core._
-import doodle.syntax._
 
 object Sierpinski {
   def triangle(size: Double): Image = {

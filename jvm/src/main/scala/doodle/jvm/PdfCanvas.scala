@@ -7,7 +7,6 @@ import doodle.backend.Formats.Pdf
 
 import de.erichseifert.vectorgraphics2d.PDFGraphics2D
 
-import java.awt.image.BufferedImage
 import java.io.FileOutputStream
 
 object PdfCanvas extends Save[Pdf] {

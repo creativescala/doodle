@@ -4,11 +4,8 @@ package examples
 import doodle.core._
 import doodle.core.Image._
 import doodle.core.font._
-import doodle.syntax._
-import doodle.backend.StandardInterpreter._
 
 object BoxesAndArrows {
-  import Point._
   import FontFamily._
   import FontFace._
   import FontSize._

@@ -2,7 +2,6 @@ package doodle.syntax
 
 import utest._
 import doodle.core.Normalized
-import doodle.syntax.normalized._
 
 object NormalizedSpec extends TestSuite {
   val tests = TestSuite {

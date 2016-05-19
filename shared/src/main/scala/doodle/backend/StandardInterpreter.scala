@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{Image,DrawingContext,ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,PathElement,Vec}
+import doodle.core.{Image, DrawingContext, BezierCurveTo, LineTo, MoveTo, Point, PathElement, Vec}
 
 /**
   *  The standard interpreter that renders an Image. No special effects or

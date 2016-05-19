@@ -2,7 +2,7 @@ package doodle
 package jvm
 
 import doodle.core._
-import doodle.backend.{CanvasElement, Configuration, Draw, Drawable, Interpreter, Renderable, Save}
+import doodle.backend.{Configuration, Draw, Interpreter, Save}
 import doodle.backend.Formats.Png
 
 object Java2DCanvas extends Draw with Save[Png] {

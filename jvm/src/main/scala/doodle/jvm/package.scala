@@ -1,7 +1,6 @@
 package doodle
 
 import java.awt.Frame
-import scala.collection.JavaConversions._
 
 package object jvm {
   def quit(): Unit = {

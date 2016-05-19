@@ -4,7 +4,7 @@ package jvm
 import doodle.core._
 import doodle.backend.{CanvasElement, Metrics, Renderable}
 
-import java.awt.{Color => AwtColor, BasicStroke, Dimension, Graphics, Graphics2D, RenderingHints, Rectangle, Shape}
+import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, RenderingHints}
 import java.awt.image.BufferedImage
 import java.awt.geom.Path2D
 

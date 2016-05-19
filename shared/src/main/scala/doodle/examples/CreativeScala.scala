@@ -4,7 +4,6 @@ package examples
 import doodle.core._
 import doodle.core.Image._
 import doodle.syntax._
-import doodle.backend.StandardInterpreter._
 
 object CreativeScala {
   // Images from Creative Scala

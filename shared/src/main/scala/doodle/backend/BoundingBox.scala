@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{ContextTransform,BezierCurveTo,LineTo,MoveTo,Point,Vec}
+import doodle.core.{Point, Vec}
 
 /**
   * A `BoundingBox` serves two purposes:

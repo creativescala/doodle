@@ -1,8 +1,7 @@
 package doodle.core
 
 import utest._
-import scala.util.Random
-import doodle.syntax.angle._
+import doodle.syntax._
 import japgolly.nyaya.Prop
 import japgolly.nyaya.test.Gen
 import japgolly.nyaya.test.PropTest._
