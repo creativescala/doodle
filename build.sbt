@@ -35,8 +35,8 @@ lazy val doodle = crossProject.
       |import doodle.core._
       |import doodle.core.Image._
       |import doodle.syntax._
-      |import doodle.jvm.Java2DCanvas._
       |import doodle.jvm.PdfCanvas._
+      |import doodle.jvm.Java2DCanvas._
       |import doodle.backend.StandardInterpreter._
       |import doodle.backend.Formats._
       |import doodle.examples._

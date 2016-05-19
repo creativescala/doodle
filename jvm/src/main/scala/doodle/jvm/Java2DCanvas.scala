@@ -6,7 +6,7 @@ import doodle.backend.{Configuration, Draw, Interpreter, Save}
 import doodle.backend.Formats.Png
 
 object Java2DCanvas extends Draw with Save[Png] {
-  implicit val canvas: Java2DCanvas.type =
+  implicit val java2DCanvas: Java2DCanvas.type =
     this
 
   def draw(interpreter: Configuration => Interpreter, image: Image): Unit = {

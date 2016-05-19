@@ -10,11 +10,11 @@ import de.erichseifert.vectorgraphics2d.PDFGraphics2D
 import java.io.FileOutputStream
 
 object PdfCanvas extends Save[Pdf] {
-  implicit val canvas: PdfCanvas.type =
+  implicit val pdfCanvas: PdfCanvas.type =
     this
 
   def save[F <: Pdf](fileName: String, interpreter: Configuration => Interpreter, image: Image): Unit = {
-    val metrics = Java2D.bufferFontMetrics 
+    val metrics = Java2D.bufferFontMetrics
     val dc = DrawingContext.blackLines
     val renderable = interpreter(dc, metrics)(image)
     val bb = renderable.boundingBox
