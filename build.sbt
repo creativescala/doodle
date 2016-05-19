@@ -14,6 +14,9 @@ lazy val doodle = crossProject.
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(cats)
   ).jvmSettings(
+    libraryDependencies ++= Seq(
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.10"
+    ),
     bintrayOrganization := Some("underscoreio"),
     bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
     bintrayRepository := "training",
