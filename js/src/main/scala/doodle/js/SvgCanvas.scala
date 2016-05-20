@@ -20,26 +20,29 @@ final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends D
     val center = renderable.boundingBox.center
 
     // Convert from canvas coordinates to screen coordinates
-    def canvasToScreen(canvas: Point): Point = {
-      val offsetX = screenCenter.x
-      val offsetY = screenCenter.y
-      val centerX = center.x
-      val centerY = center.y
-      Point.cartesian(canvas.x - centerX + offsetX, offsetY - canvas.y + centerY)
-    }
+    def canvasToScreen(offset: Vec): Point => Point =
+      (canvas: Point) => {
+        Point.cartesian(
+          canvas.x + offset.x - center.x + screenCenter.x,
+          screenCenter.y - canvas.y - offset.y + center.y
+        )
+      }
 
     import CanvasElement._
     renderable.elements.foreach {
       case ClosedPath(ctx, at, elts) =>
-        val dAttr = SvgCanvas.pathToSvgPath(canvasToScreen _, elts) ++ "Z"
-        val elt = svg.path(svgAttrs.d:=dAttr).render
+        val dAttr = SvgCanvas.toSvgPath(canvasToScreen(at), elts) ++ "Z"
+        val style = SvgCanvas.toStyle(ctx)
+        val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
         root.appendChild(elt)
       case OpenPath(ctx, at, elts) =>
-        val dAttr = SvgCanvas.pathToSvgPath(canvasToScreen _, elts)
-        val elt = svg.path(svgAttrs.d:=dAttr).render
+        val dAttr = SvgCanvas.toSvgPath(canvasToScreen(at), elts)
+        val style = SvgCanvas.toStyle(ctx)
+        val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
         root.appendChild(elt)
       case Text(ctx, at, bb, chars) =>
-        val elt = svg.text(chars).render
+        val style = SvgCanvas.toStyle(ctx)
+        val elt = svg.text(svgAttrs.style:=style, chars).render
         root.appendChild(elt)
       case Empty =>
         // Do nothing
@@ -52,11 +55,44 @@ object SvgCanvas {
     SvgCanvas(elt, width, height)
   }
 
-  def pathToSvgPath(transform: Point => Point, elts: List[PathElement]): String = {
+  def toStyle(dc: DrawingContext): String = {
     import scala.collection.mutable.StringBuilder
     val builder = new StringBuilder(64)
-    builder ++= "M 0 0 "
 
+    def toHSLA(color: Color): String = {
+      val (h, s, l, a) = (color.hue, color.saturation, color.lightness, color.alpha)
+      s"hsla(${h.toDegrees}, ${s.toPercentage}, ${l.toPercentage}, ${a.get})"
+    }
+
+    dc.stroke.fold(builder ++= "stroke: none; ") {
+      case Stroke(width, color, cap, join) =>
+        val linecap = cap match {
+          case Line.Cap.Butt => "butt"
+          case Line.Cap.Round => "round"
+          case Line.Cap.Square => "square"
+        }
+        val linejoin = join match {
+          case Line.Join.Bevel => "bevel"
+          case Line.Join.Round => "round"
+          case Line.Join.Miter => "miter"
+        }
+        builder ++= s"stroke-width: ${width}px; "
+        builder ++= s"stroke: ${toHSLA(color)};"
+        builder ++= s"stroke-linecap: ${linecap}; "
+        builder ++= s"stroke-linejoin ${linejoin}; "
+    }
+
+    dc.fill.fold(builder ++= "fill: none; ") {
+      case Fill(color) =>
+        builder ++= s"fill: ${toHSLA(color)}; "
+    }
+
+    builder.toString
+  }
+
+  def toSvgPath(transform: Point => Point, elts: List[PathElement]): String = {
+    import scala.collection.mutable.StringBuilder
+    val builder = new StringBuilder(64)
     elts.foreach {
       case MoveTo(end) =>
         val screen = transform(end)
@@ -70,6 +106,7 @@ object SvgCanvas {
         val screenEnd = transform(end)
         builder ++= s"C ${screenCp1.x} ${screenCp1.y}, ${screenCp2.x} ${screenCp2.y}, ${screenEnd.x} ${screenEnd.y} "
     }
+
     builder.toString
   }
 }

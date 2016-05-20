@@ -10,7 +10,7 @@ import scala.scalajs.js.annotation.JSExport
     import doodle.backend.StandardInterpreter._
 
     implicit val canvas = SvgCanvas.fromElementId("canvas", 400, 400)
-    //Tree.image.draw
-    ChristmasTree.image.draw
+    Tree.image.draw
+    //ChristmasTree.image.draw
   }
 }
