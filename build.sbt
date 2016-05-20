@@ -2,7 +2,7 @@ enablePlugins(GitVersioning)
 
 enablePlugins(GitBranchPrompt)
 
-val cats = "org.typelevel" %% "cats" % "0.4.1"
+val catsVersion = "0.6.0"
 
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
@@ -13,7 +13,9 @@ lazy val doodle = crossProject.
     scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import"),
     scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked"),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
-    libraryDependencies ++= Seq(cats)
+    libraryDependencies ++= Seq(
+       "org.typelevel" %% "cats" % catsVersion
+    )
   ).jvmSettings(
     libraryDependencies ++= Seq(
       "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.10"
@@ -55,6 +57,7 @@ lazy val doodle = crossProject.
     testFrameworks          += new TestFramework("utest.runner.Framework"),
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
+      "org.typelevel"             %%% "cats"        % catsVersion,
       "org.scala-js"              %%% "scalajs-dom" % "0.9.0",
       "com.lihaoyi"               %%% "scalatags"   % "0.5.5",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
