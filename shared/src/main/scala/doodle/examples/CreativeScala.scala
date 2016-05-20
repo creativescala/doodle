@@ -259,7 +259,7 @@ object CreativeScala {
       randomSpin map { spin => color.spin(spin.degrees) }
 
     def coloredRectangle(color: Color): Image =
-       rectangle(20, 20) fillColor color
+       rectangle(20, 20).noLine fillColor color
 
     // Basic structural recursion
     def gradientBoxes(n: Int, color: Color): Image =
@@ -278,7 +278,7 @@ object CreativeScala {
           (box |@| boxes) map { (b, bs) => b beside bs }
       }
 
-    // Structural recursion with applicative (with more pleasing result)
+    // Structural recursion with applicative (with sometimes more pleasing result)
     def noisyGradientBoxes(n: Int, color: Color): Random[Image] =
       n match {
         case 0 => nextColor(color) map { c => coloredRectangle(c) }
@@ -338,5 +338,57 @@ object CreativeScala {
        allOn(iter.map(i => normalSquared2D map (point _)))) map {
         (s1, s2, s3) => s1 beside spacer beside s2 beside spacer beside s3
       }
+  }
+
+  object parametricNoise {
+    import doodle.random._
+    import cats.syntax.cartesian._
+
+    def rose(k: Int): Angle => Point =
+      (angle: Angle) => {
+        Point.cartesian((angle * k).cos * angle.cos, (angle * k).cos * angle.sin)
+      }
+
+    def scale(point: Point): Point =
+      Point.polar(point.r * 400, point.angle)
+
+    def perturb(point: Point): Random[Point] =
+      (Random.normal(10.0, 10.0) |@| Random.normal(10.0, 10.0)) map { (x,y) =>
+        Point.cartesian(point.x + x, point.y + y)
+      }
+
+    def randomCircle(point: Point, hue: Angle): Random[Image] = {
+      val at = perturb(point) map (pt => pt.toVec)
+      val size = Random.natural(5) map (r => r + 5)
+      val lightness = Random.double map (l => l.normalized)
+      val alpha = Random.double map (a => a.normalized)
+
+      (size |@| lightness |@| alpha |@| at) map { (r, l, a, at) =>
+        val fill = Color.hsla(hue, l, 0.4.normalized, a)
+        circle(r).noFill.lineColor(fill).at(at)
+      }
+    }
+
+    def perturbedRose(k: Int, hue: Angle): Angle => Random[Image] =
+      rose(k) andThen scale andThen { pt => randomCircle(pt, hue) }
+
+    def allOn(points: List[Random[Image]]): Random[Image] =
+      points match {
+        case Nil => Random.always(Image.empty)
+        case img :: imgs => img |@| allOn(imgs) map { (i, is) => i on is }
+      }
+
+    val image: Random[Image] =
+      allOn(
+        (3 to 7 by 2).toList map { k =>
+          val r = perturbedRose(k, ((k-3) * 30).degrees)
+          allOn(
+            (1 to 360).toList map { d =>
+              val angle = d.degrees
+              r(angle)
+            }
+          )
+        }
+      )
   }
 }
