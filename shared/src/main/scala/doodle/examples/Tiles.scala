@@ -36,22 +36,24 @@ object Tiles {
   def randomTile(n: Int, color: Random[Color]): Random[Image] =
     (1 to n).toList.map{ _ =>
       (randomTriangle(100) |@| color) map { _ fillColor _ }
-    }.sequence.map(images => images.foldLeft(Image.empty){ _ on _ })
+    }.sequenceU.map(images => images.foldLeft(Image.empty){ _ on _ })
 
   def tile(baseN: Int, topN: Int): Random[Image] =
     (randomTile(baseN, aquamarine) |@| randomTile(topN, leafGreen)) map { _ under _ }
 
   def tileGrid(tile: Random[Image], sideLength: Int): Random[Image] = {
-    val row = (1 to sideLength).map(_ => tile).toList.sequence.map(images =>
-      images.foldLeft(Image.empty){ (row, img) => row beside img }
-    )
-    val grid = (1 to sideLength).map(_ => row).toList.sequence.map(rows =>
-      rows.foldLeft(Image.empty){ (grid, row) => grid above row }
-    )
+    val row: Random[Image] =
+      (1 to sideLength).map(_ => tile).toList.sequenceU.map(images =>
+        images.foldLeft(Image.empty){ (row, img) => row beside img }
+      )
+    val grid: Random[Image] =
+      (1 to sideLength).map(_ => row).toList.sequenceU.map(rows =>
+        rows.foldLeft(Image.empty){ (grid, row) => grid above row }
+      )
     grid
   }
 
   def image: Image ={
-    tileGrid(tile(400, 20), 3).run(scala.util.Random)
+    tileGrid(tile(400, 20), 3).run
   }
 }

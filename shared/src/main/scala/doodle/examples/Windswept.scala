@@ -85,5 +85,5 @@ object Windswept {
        p1 <- pattern
        p2 <- pattern
        p3 <- pattern
-     } yield (t1 on p1) above (t2 on p2) above (t3 on p3)).run(scala.util.Random)
+     } yield (t1 on p1) above (t2 on p2) above (t3 on p3)).run
 }
