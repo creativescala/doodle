@@ -1,9 +1,9 @@
 package doodle.core
 
 /**
-  * An angle in radians, normalized to be in [0, 2pi)
+  * An angle in radians
   */
-final case class Angle(toRadians: Double) extends AnyVal {
+final class Angle(val toRadians: Double) {
   def +(that: Angle): Angle =
     Angle.radians(this.toRadians + that.toRadians)
 
@@ -52,10 +52,22 @@ final case class Angle(toRadians: Double) extends AnyVal {
 
   def toCanvas: String =
     this.normalize.toDegrees.toString
+
+  override def toString: String =
+    s"Angle(${toRadians.toString})"
+
+  def copy(toRadians: Double = this.toRadians): Angle =
+    new Angle(toRadians)
+
+  override def equals(that: Any): Boolean =
+    (that.isInstanceOf[Angle] && that.asInstanceOf[Angle].toRadians == this.toRadians)
+
+  override def hashCode: Int =
+    this.toRadians.hashCode
 }
 
 object Angle {
-  val TwoPi    = math.Pi * 2
+  val TwoPi = math.Pi * 2
   val Zero = Angle(0.0)
   val One = Angle(TwoPi)
 
@@ -71,4 +83,11 @@ object Angle {
     */
   def turns(t: Double): Angle =
     Angle(t * TwoPi)
+
+
+  def apply(radians: Double): Angle =
+    if(radians.isNaN)
+      new Angle(0.0)
+    else
+      new Angle(radians)
 }
