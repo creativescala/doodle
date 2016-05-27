@@ -21,9 +21,17 @@ object DiffusionLimitedAggregation {
   }
 
   val start = Point.zero
-  val drift = Vec(3, 0)
 
-  val seed = Random.normal(-200, 5) map { x => Point.cartesian(x, 0) }
+  val seed: Random[(Point,Vec)] = Random.double.map { t =>
+    val angle = t.turns
+    val start = Point.polar(200, angle)
+    val drift = Vec.polar((angle + 0.5.turns).normalize, 3)
+
+    (start, drift)
+  }
+
+
+
   val stuckStart =
     Random.always(List(Point.cartesian(0,0), Point.cartesian(0, 50), Point.cartesian(0, -50)))
 
@@ -36,18 +44,20 @@ object DiffusionLimitedAggregation {
     stuck.exists(pt => distance(point, pt) < stickRadius)
 
   def walk(maxSteps: Int, stuck: List[Point]): Random[Option[Point]] = {
-    def iter(step: Int, point: Random[Point]): Random[Option[Point]] =
+    def iter(step: Int, point: Random[Point], drift: Vec): Random[Option[Point]] =
       step match {
         case 0 => Random.always(None)
         case n => point.flatMap { pt =>
           if(isStuck(pt, stuck))
             Random.always(Some(pt))
           else
-            iter(step-1, brownianMotion(pt, drift))
+            iter(step-1, brownianMotion(pt, drift), drift)
         }
       }
 
-    iter(maxSteps, seed)
+    seed flatMap { case (start, drift) =>
+      iter(maxSteps, Random.always(start), drift)
+    }
   }
 
   def dla(nParticles: Int, maxSteps: Int, stuck: Random[List[Point]]): Random[List[Point]] =
@@ -75,9 +85,9 @@ object DiffusionLimitedAggregation {
       (hue |@| saturation |@| lightness |@| alpha) map {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
-    val c = Random.normal(2, 1) map (r => circle(r))
+    val c = Random.normal(1, 1) map (r => circle(Math.abs(r)))
 
-    (c |@| color) map { (circle, line) => circle.lineColor(line).lineWidth(2).noFill }
+    (c |@| color) map { (circle, line) => circle.lineColor(line).noFill }
   }
 
   def makeImage(nParticles: Int, maxSteps: Int): Random[Image] =
