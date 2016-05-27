@@ -1,6 +1,4 @@
-enablePlugins(GitVersioning)
-
-enablePlugins(GitBranchPrompt)
+version in ThisBuild := "0.6.2"
 
 val catsVersion = "0.6.0"
 
@@ -24,18 +22,10 @@ lazy val doodle = crossProject.
     bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
     bintrayRepository := "training",
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
-    // Release versioning:
-    version := "0.6.1",
-    // Snapshot versioning:
-    //git.baseVersion := "0.5.3",
-    //git.formattedShaVersion := {
-    //  git.gitHeadCommit.value map { sha =>
-    //    git.baseVersion.value + "-" + sha.substring(0, 6) + "-snapshot"
-    //  }
-    //},
     initialCommands in console := """
       |import doodle.core._
       |import doodle.core.Image._
+      |import doodle.random._
       |import doodle.syntax._
       |import doodle.jvm.PdfCanvas._
       |import doodle.jvm.Java2DCanvas._
