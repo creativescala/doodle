@@ -64,13 +64,13 @@ object Volcano {
   def iterate(step: Angle): (Angle => Random[Image]) => Random[Image] = {
     (point: Angle => Random[Image]) => {
       def iter(angle: Angle): Random[Image] = {
-        if(angle > Angle.One)
+        if(angle > Angle.one)
           Random.always(Image.empty)
         else
           point(angle) |@| iter(angle + step) map { _ on _ }
       }
 
-      iter(Angle.Zero)
+      iter(Angle.zero)
     }
   }
 

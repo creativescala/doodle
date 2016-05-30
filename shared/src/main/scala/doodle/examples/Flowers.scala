@@ -52,13 +52,13 @@ object Flowers {
   def iterate(step: Angle): (Angle => Image) => Image = {
     (point: Angle => Image) => {
       def iter(angle: Angle): Image = {
-        if(angle > Angle.One)
+        if(angle > Angle.one)
           Empty
         else
           point(angle) on iter(angle + step)
       }
 
-      iter(Angle.Zero)
+      iter(Angle.zero)
     }
   }
 

@@ -30,6 +30,9 @@ final case class Vec(x: Double, y: Double) {
   /** Z-component of the cross product of `this` and `that` */
   def cross(that: Vec): Double =
     this.x * that.y - this.y * that.x
+
+  def toPoint: Point =
+    Point.cartesian(x, y)
 }
 
 object Vec {
