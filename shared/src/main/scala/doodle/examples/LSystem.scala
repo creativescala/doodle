@@ -1,6 +1,7 @@
 package doodle
 package examples
 
+import doodle.core._
 import doodle.syntax._
 import doodle.turtle._
 
@@ -30,7 +31,7 @@ object LSystem {
     val right = turn(-25.degrees)
     val f = forward(5)
 
-    val rewrite = (i: Instruction) => {
+    val rule = (i: Instruction) => {
       i match {
         case NoOp => //  F−[[X]+X]+F[+FX]−X
           List(f, left, branch(List(branch(List(noop)), right, noop)), right, f,
@@ -44,6 +45,22 @@ object LSystem {
       }
     }
 
-    val image = Turtle.draw(iterate(6, List(noop), rewrite), 50.degrees)
+    val image = Turtle.draw(iterate(6, List(noop), rule), 50.degrees).lineColor(Color.forestGreen)
+  }
+
+  object flowers {
+    val f = forward(5)
+    val spin = turn(51.degrees)
+    val spur = List(spin, branch(List(f, noop)))
+
+    val rule = (i: Instruction) => {
+      i match {
+        case Forward(d) => List(f, f, f)
+        case NoOp => spur ++ spur ++ spur ++ spur ++ spur ++ spur ++ spur
+        case other => List(other)
+      }
+    }
+
+    val image = Turtle.draw(iterate(5, List(noop), rule))
   }
 }
