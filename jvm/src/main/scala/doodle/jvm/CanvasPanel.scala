@@ -23,6 +23,6 @@ final class CanvasPanel(interpreter: Configuration => Interpreter, image: Image)
 
     val screenCenter = Point.cartesian(getWidth / 2, getHeight / 2)
 
-    Java2D.draw(graphics, screenCenter, renderable)
+    Java2D.draw(graphics, screenCenter, dc, renderable)
   }
 }

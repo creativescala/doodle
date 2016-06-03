@@ -26,7 +26,7 @@ object Java2DCanvas extends Draw with Save[Png] {
     val buffer = new BufferedImage(bb.width.ceil.toInt + 40, bb.height.ceil.toInt + 40, BufferedImage.TYPE_INT_ARGB)
     val bufferCenter = Point.cartesian( (bb.width.ceil + 40) / 2, (bb.height.ceil + 40) / 2 )
     val graphics = Java2D.setup(buffer.createGraphics())
-    Java2D.draw(graphics, bufferCenter, renderable)
+    Java2D.draw(graphics, bufferCenter, dc, renderable)
 
     val file = new File(fileName)
     ImageIO.write(buffer, "png", file);

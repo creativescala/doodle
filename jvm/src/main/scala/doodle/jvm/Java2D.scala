@@ -36,7 +36,7 @@ object Java2D {
     new AwtColor(r.get, g.get, b.get, a.toUnsignedByte.get)
   }
 
-  def draw(graphics: Graphics2D, screenCenter: Point, renderable: Renderable): Unit = {
+  def draw(graphics: Graphics2D, screenCenter: Point, initialContext: DrawingContext, renderable: Renderable): Unit = {
     import CanvasElement._
     import Point.extractors.Cartesian
 
@@ -52,7 +52,7 @@ object Java2D {
       Point.cartesian(x - centerX + offsetX, offsetY - y + centerY)
     }
 
-    def stroke(path: Path2D, stroke: Stroke) = {
+    def setStroke(stroke: Stroke) = {
       val width = stroke.width.toFloat
       val cap = stroke.cap match {
         case Line.Cap.Butt => BasicStroke.CAP_BUTT
@@ -69,13 +69,10 @@ object Java2D {
 
       graphics.setStroke(jStroke)
       graphics.setPaint(jColor)
-
-      graphics.draw(path)
     }
 
-    def fill(path: Path2D, fill: Color) = {
+    def setFill(fill: Color) = {
       graphics.setPaint(this.toAwtColor(fill))
-      graphics.fill(path)
     }
 
     def toPath2D(elts: List[PathElement], offsetX: Double, offsetY: Double): Path2D = {
@@ -101,28 +98,55 @@ object Java2D {
       path
     }
 
-    renderable.elements.foreach {
-      case ClosedPath(ctx, at, elts) =>
-        val path = toPath2D(elts, at.x, at.y)
-        path.closePath()
-        ctx.stroke.map(s => stroke(path, s))
-        ctx.fillColor.map(c => fill(path, c))
+    def strokeAndFill(path: Path2D, previous: DrawingContext, current: DrawingContext): Unit = {
+      current.stroke.foreach { s =>
+        if(previous.stroke != current.stroke)
+          setStroke(s)
+        graphics.draw(path)
+      }
+      current.fillColor.foreach { f =>
+        if(previous.fillColor != current.fillColor)
+          setFill(f)
+        graphics.fill(path)
+      }
+    }
 
-      case OpenPath(ctx, at, elts) =>
-        val path = toPath2D(elts, at.x, at.y)
-        ctx.stroke.map(s => stroke(path, s))
-        ctx.fillColor.map(c => fill(path, c))
+    initialContext.stroke.foreach { s => setStroke(s) }
+    initialContext.fillColor.foreach { f => setFill(f) }
+    renderable.elements.foldLeft(initialContext) { (previousCtx, elt) =>
+      elt match {
+        case ClosedPath(ctx, at, elts) =>
+          val path = toPath2D(elts, at.x, at.y)
+          path.closePath()
+          strokeAndFill(path, previousCtx, ctx)
+          ctx
 
-      case Text(ctx, at, bb, chars) =>
-        // drawString takes the bottom left corner of the text
-        val bottomLeft = at - Vec(bb.width/2, bb.height/2)
-        val screen = canvasToScreen(bottomLeft.x, bottomLeft.y)
-        ctx.font map { f =>
-          graphics.setFont(FontMetrics.toJFont(f))
-          graphics.drawString(chars, screen.x.toInt, screen.y.toInt)
-        }
+        case OpenPath(ctx, at, elts) =>
+          val path = toPath2D(elts, at.x, at.y)
+          strokeAndFill(path, previousCtx, ctx)
+          ctx
 
-      case Empty => // do nothing
+        case Text(ctx, at, bb, chars) =>
+          // drawString takes the bottom left corner of the text
+          val bottomLeft = at - Vec(bb.width/2, bb.height/2)
+          val screen = canvasToScreen(bottomLeft.x, bottomLeft.y)
+          ctx.stroke.foreach { s =>
+            if(previousCtx.stroke != ctx.stroke)
+              setStroke(s)
+          }
+          ctx.fillColor.foreach { f =>
+            if(previousCtx.fillColor != ctx.fillColor)
+              setFill(f)
+          }
+          ctx.font map { f =>
+            graphics.setFont(FontMetrics.toJFont(f))
+            graphics.drawString(chars, screen.x.toInt, screen.y.toInt)
+          }
+          ctx
+
+        case Empty =>
+          previousCtx
+      }
     }
   }
 }
