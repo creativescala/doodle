@@ -18,7 +18,7 @@ lazy val doodle = crossProject.
     )
   ).jvmSettings(
     libraryDependencies ++= Seq(
-      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.10"
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.11"
     ),
     bintrayOrganization := Some("underscoreio"),
     bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
