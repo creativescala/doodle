@@ -1,4 +1,4 @@
-version in ThisBuild := "0.6.3"
+version in ThisBuild := "0.6.4"
 
 val catsVersion = "0.6.0"
 
