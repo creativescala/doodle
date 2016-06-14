@@ -12,33 +12,33 @@ object Turtle {
 
     val initialState = State(Vec.zero, angle)
 
-    def iterate(state: State, instructions: List[Instruction]): List[PathElement] = {
-      val (_, path)=
-        instructions.foldLeft( (state, List.empty[PathElement]) ){ (accum, elt) =>
-          val (state, path) = accum
-          elt match {
-            case Forward(d) =>
-              val nowAt = state.at + Vec.polar(state.heading, d)
-              val element = lineTo(nowAt.toPoint)
+    // Note that iterate returns the path in *reversed* order.
+    def iterate(state: State, instructions: List[Instruction]): (State, List[PathElement]) = {
+      instructions.foldLeft( (state, List.empty[PathElement]) ){ (accum, elt) =>
+        val (state, path) = accum
+        elt match {
+          case Forward(d) =>
+            val nowAt = state.at + Vec.polar(state.heading, d)
+            val element = lineTo(nowAt.toPoint)
 
-              (state.copy(at = nowAt), element :: path)
-            case Turn(a) =>
-              val nowHeading = state.heading + a
+            (state.copy(at = nowAt), element +: path)
+          case Turn(a) =>
+            val nowHeading = state.heading + a
 
-              (state.copy(heading = nowHeading), path)
-            case Branch(i) =>
-              val branchedPath = iterate(state, i)
+            (state.copy(heading = nowHeading), path)
+          case Branch(i) =>
+            val (_, branchedPath) = iterate(state, i)
 
-              (state, MoveTo(state.at.toPoint) :: (branchedPath ++ path))
-            case NoOp =>
-              accum
-          }
+            (state, MoveTo(state.at.toPoint) +: (branchedPath ++ path))
+
+          case NoOp =>
+            accum
         }
-
-      path
+      }
     }
 
-    Image.openPath(moveTo(0, 0) :: iterate(initialState, instructions).reverse)
+    val (_, path) = iterate(initialState, instructions)
+    Image.openPath(moveTo(0, 0) :: path.reverse.toList)
   }
 }
 
