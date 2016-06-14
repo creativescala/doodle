@@ -12,7 +12,7 @@ object LSystem {
     def rewrite(instructions: List[Instruction]): List[Instruction] =
       instructions.flatMap {
         case Branch(i) =>
-          List(branch(rewrite(i)))
+          List(branch(rewrite(i):_*))
         case other =>
           rule(other)
       }
@@ -34,8 +34,8 @@ object LSystem {
     val rule = (i: Instruction) => {
       i match {
         case NoOp => //  F−[[X]+X]+F[+FX]−X
-          List(f, left, branch(List(branch(List(noop)), right, noop)), right, f,
-               branch(List(right, f, noop)), left, noop)
+          List(f, left, branch(branch(noop), right, noop), right, f,
+              branch(right, f, noop), left, noop)
 
         case Forward(d) =>
           List(f, f)
@@ -51,7 +51,7 @@ object LSystem {
   object flowers {
     val f = forward(5)
     val spin = turn(51.degrees)
-    val spur = List(spin, branch(List(f, noop)))
+    val spur = List(spin, branch(f, noop))
 
     val rule = (i: Instruction) => {
       i match {
