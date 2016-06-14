@@ -445,7 +445,7 @@ object CreativeScala {
 
     val treeOne = List(f, bud)
     val treeTwo = List(f, f, b1 :+ (bud), b2 :+ (bud))
-    val treeThree = List(f, f, f,
+    val treeThree = List(f, f, f, f,
                          b1 ++ (List(f, b1 :+ bud, b2 :+ (bud))),
                          b2 ++ (List(f, b1 :+ bud, b2 :+ (bud))))
 
