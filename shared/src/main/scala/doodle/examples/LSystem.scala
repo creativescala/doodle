@@ -63,4 +63,29 @@ object LSystem {
 
     val image = Turtle.draw(iterate(5, List(noop), rule))
   }
+
+  object kochCurve {
+    val f = forward(5)
+    val tP = turn(45.degrees)
+    val tM = turn(-90.degrees)
+
+    val spacer = Image.rectangle(5,5).noFill.noLine
+
+    def rule(i: Instruction): List[Instruction] =
+      i match {
+        case Forward(_) => List(f, tP, f, tM, f, tP, f)
+        case other => List(other)
+      }
+
+    val seed = List(f)
+
+    val iterations = List.tabulate(5){ n =>
+      Turtle.draw(iterate(n, seed, rule))
+    }
+
+    val image =
+      iterations.fold(Image.empty){ (img, i) =>
+        img above spacer above i
+      }
+  }
 }
