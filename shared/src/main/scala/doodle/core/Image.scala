@@ -68,6 +68,33 @@ object Image {
   def rectangle(w: Double, h: Double): Image =
     Rectangle(w,h)
 
+  def regularPolygon(sides: Int, radius: Double, angle: Angle): Image = {
+    import PathElement._
+
+    val rotation = Angle.one / sides
+    val path =
+      (1 to sides).map { n =>
+          lineTo(radius, rotation * n + angle)
+      }.toList
+
+    closedPath(moveTo(radius, angle) +: path)
+  }
+
+  def star(points: Int, outerRadius: Double, innerRadius: Double, angle: Angle): Image = {
+    import PathElement._
+
+    val rotation = Angle.one / (points * 2)
+    val path =
+      (1 to (points * 2)).map { n =>
+        if(n % 2 == 0)
+          lineTo(outerRadius, rotation * n + angle)
+        else
+          lineTo(innerRadius, rotation * n + angle)
+      }.toList
+
+    closedPath(moveTo(outerRadius, angle) +: path)
+  }
+
   def rightArrow(w: Double, h: Double): Image = {
     import PathElement._
 
