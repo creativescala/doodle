@@ -35,9 +35,16 @@ object BrownianMotion {
       (hue |@| saturation |@| lightness |@| alpha) map {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
-    val c = Random.normal(2, 1) map (r => circle(r))
+    val points = Random.int(3,7)
+    val radius = Random.normal(2, 1)
+    val rotation = Random.double.map { r => r.turns }
+    val shape = (points |@| radius |@| rotation).map { (pts, r, rot) =>
+      star(pts, r, r * 0.5, rot)
+    }
 
-    (c |@| color) map { (circle, line) => circle.lineColor(line).lineWidth(2).noFill }
+    (shape |@| color).map { (shape, line) =>
+      shape.lineColor(line).lineWidth(2).noFill
+    }
   }
 
   def walk(steps: Int): Random[Image] = {
