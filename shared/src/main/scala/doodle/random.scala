@@ -45,6 +45,13 @@ object random {
     def int: Random[Int] =
       Free.liftF[RandomOp,Int](RInt)
 
+    def int(lower: Int, upper: Int): Random[Int] = {
+      val high = (upper max lower)
+      val low = (upper min lower)
+      val range = Math.abs(high - low)
+      natural(range).map { n => n + low }
+    }
+
     def natural(upperLimit: Int): Random[Int] =
       Free.liftF[RandomOp,Int](Natural(upperLimit))
 
