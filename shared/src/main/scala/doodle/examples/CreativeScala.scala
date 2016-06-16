@@ -453,5 +453,21 @@ object CreativeScala {
 
     val branches =
       Turtle.draw(treeOne) beside spacer beside Turtle.draw(treeTwo) beside spacer beside Turtle.draw(treeThree) lineColor Color.forestGreen
+
+    val stepSize = 10
+
+    def rule(i: Instruction): List[Instruction] =
+      i match {
+        case Forward(_) => List(forward(stepSize), forward(stepSize))
+        case NoOp =>
+          List(branch(turn(45.degrees), forward(stepSize), noop),
+               branch(turn(-45.degrees), forward(stepSize), noop))
+        case other => List(other)
+      }
+
+    def branching =
+      List.tabulate(5){ n =>
+        LSystem.iterate(n, List(forward(stepSize), noop), rule)
+      }.map { is => Turtle.draw(is) }.foldLeft(Image.empty){ _ beside _ }
   }
 }
