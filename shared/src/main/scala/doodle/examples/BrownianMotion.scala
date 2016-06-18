@@ -48,18 +48,20 @@ object BrownianMotion {
   }
 
   def walk(steps: Int): Random[Image] = {
-    def iter(step: Int, start: Random[Point]): List[Random[Image]] =
+    def iter(step: Int, start: Random[Point], shape: Image): List[Random[Image]] =
       step match {
         case 0 =>
           Nil
         case n =>
-          val here = (smoke |@| start) map (_ at _.toVec)
+          val here = start.map (shape at _.toVec)
           val next = start flatMap (pt => brownianMotion(pt, drift))
-          here :: iter(step-1, next)
+          here :: iter(step-1, next, shape)
       }
 
-    iter(steps, Random.always(start)).sequenceU.map { imgs =>
-      imgs.foldLeft(Image.empty){ _ on _ }
+    smoke.flatMap { shape =>
+      iter(steps, Random.always(start), shape).sequenceU.map { imgs =>
+        imgs.foldLeft(Image.empty){ _ on _ }
+      }
     }
   }
 
