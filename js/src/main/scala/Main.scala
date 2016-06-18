@@ -9,7 +9,7 @@ import scala.scalajs.js.annotation.JSExport
   @JSExport def main(): Unit = {
     import doodle.backend.StandardInterpreter._
 
-    implicit val canvas = SvgCanvas.fromElementId("canvas", 400, 400)
+    implicit val canvas = SvgCanvas.fromElementId("canvas", 600, 600)
     Tree.image.draw
     //ChristmasTree.image.draw
   }
