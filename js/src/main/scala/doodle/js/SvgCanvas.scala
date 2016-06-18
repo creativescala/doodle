@@ -8,9 +8,10 @@ import org.scalajs.dom
 
 final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends Draw {
   def draw(interpreter: Configuration => Interpreter, image: Image): Unit = {
-    import scalatags.JsDom.implicits._
+    import scalatags.JsDom.styles.{font => cssFont}
     import scalatags.JsDom.{svgTags => svg}
     import scalatags.JsDom.svgAttrs
+    import scalatags.JsDom.implicits._
 
     val dc = DrawingContext.blackLines
     val metrics = FontMetrics(root).boundingBox _
@@ -41,9 +42,20 @@ final case class SvgCanvas(root: dom.svg.SVG, width: Int, height: Int) extends D
         val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
         root.appendChild(elt)
       case Text(ctx, at, bb, chars) =>
-        val style = SvgCanvas.toStyle(ctx)
-        val elt = svg.text(svgAttrs.style:=style, chars).render
-        root.appendChild(elt)
+        val font = ctx.font.foreach { f =>
+          val style = SvgCanvas.toStyle(ctx)
+          // SVG x and y coordinates give the bottom left corner of the text. Our
+          // bounding box origin is at the center of the text.
+          val location = canvasToScreen(at)(Point.cartesian(bb.left, bb.bottom))
+          val font = FontMetrics.toCss(f)
+          val elt = svg.text(svgAttrs.style:=style,
+                             svgAttrs.x:=location.x,
+                             svgAttrs.y:=location.y,
+                             cssFont:=font,
+                             chars).render
+          root.appendChild(elt)
+
+        }
       case Empty =>
         // Do nothing
     }
@@ -79,7 +91,7 @@ object SvgCanvas {
         builder ++= s"stroke-width: ${width}px; "
         builder ++= s"stroke: ${toHSLA(color)};"
         builder ++= s"stroke-linecap: ${linecap}; "
-        builder ++= s"stroke-linejoin ${linejoin}; "
+        builder ++= s"stroke-linejoin: ${linejoin}; "
     }
 
     dc.fill.fold(builder ++= "fill: none; ") {

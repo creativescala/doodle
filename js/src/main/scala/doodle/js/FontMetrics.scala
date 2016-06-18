@@ -7,15 +7,11 @@ import doodle.backend.BoundingBox
 import org.scalajs.dom
 
 final case class FontMetrics(root: dom.svg.SVG) {
-  //import scalatags.JsDom.tags._
-  //import scalatags.JsDom.styles._
-
   def boundingBox(font: Font, characters: String): BoundingBox = {
     import scalatags.JsDom.short._
     import scalatags.JsDom.{svgTags => svg}
 
     val elt = svg.text(
-      *.display:="none",
       *.font:=FontMetrics.toCss(font),
       characters
     ).render
@@ -24,7 +20,9 @@ final case class FontMetrics(root: dom.svg.SVG) {
     val bb = txt.asInstanceOf[dom.svg.Locatable].getBBox()
     root.removeChild(txt)
 
-    BoundingBox(0, 0, bb.width, bb.height)
+    // Put the origin of the bounding box at the center of the text, in keeping
+    // with the standard convention.
+    BoundingBox(-bb.width/2, bb.height/2, bb.width/2, -bb.height/2)
   }
 }
 object FontMetrics {
