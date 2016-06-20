@@ -77,6 +77,10 @@ object Java2D {
 
     def toPath2D(elts: List[PathElement], offsetX: Double, offsetY: Double): Path2D = {
       val path = new Path2D.Double()
+      // Paths must start with a move or AWT raises an exception. Thus we always
+      // move to the origin to start.
+      val origin = canvasToScreen(offsetX, offsetY)
+      path.moveTo(origin.x, origin.y)
       elts.foreach {
         case MoveTo(Cartesian(x, y)) =>
           val screen = canvasToScreen(x + offsetX, y + offsetY).toCartesian
