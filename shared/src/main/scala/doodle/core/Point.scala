@@ -67,6 +67,12 @@ object Point {
 
   val zero: Point = Cartesian(0,0)
 
+  def apply(x: Double, y: Double) =
+    cartesian(x, y)
+
+  def apply(r: Double, angle: Angle) =
+    polar(r, angle)
+
   def polar(r: Double, angle: Angle): Point =
     Polar(r, angle)
 
