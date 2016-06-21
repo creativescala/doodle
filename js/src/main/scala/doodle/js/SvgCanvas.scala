@@ -103,7 +103,9 @@ object SvgCanvas {
   }
 
   def toSvgPath(transform: Point => Point, elts: List[PathElement]): String = {
+    import PathElement._
     import scala.collection.mutable.StringBuilder
+
     val builder = new StringBuilder(64)
     // Ensure the path starts with a move, by moving to the origin
     val origin = transform(Point.zero)

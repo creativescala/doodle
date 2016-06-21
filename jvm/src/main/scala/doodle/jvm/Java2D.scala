@@ -76,6 +76,8 @@ object Java2D {
     }
 
     def toPath2D(elts: List[PathElement], offsetX: Double, offsetY: Double): Path2D = {
+      import PathElement._
+
       val path = new Path2D.Double()
       // Paths must start with a move or AWT raises an exception. Thus we always
       // move to the origin to start.

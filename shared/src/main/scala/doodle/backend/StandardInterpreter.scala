@@ -1,7 +1,7 @@
 package doodle
 package backend
 
-import doodle.core.{Image, DrawingContext, BezierCurveTo, LineTo, MoveTo, Point, PathElement, Vec}
+import doodle.core.{Image, DrawingContext, Point, PathElement, Vec}
 
 /**
   *  The standard interpreter that renders an Image. No special effects or
@@ -14,6 +14,7 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
 
   def finalise(image: Image): Finalised = {
     import doodle.core
+    import PathElement._
     import Point._
     import Finalised._
 
@@ -172,6 +173,7 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
   }
 
   def boundingBox(finalised: Finalised): BoundingBox = {
+    import PathElement._
     import Finalised._
 
     def pathElementsToBoundingBox(elts: Seq[PathElement]): BoundingBox =

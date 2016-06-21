@@ -10,17 +10,18 @@ object CreativeScala {
 
   object paths {
     import doodle.core.Point._
+    import doodle.core.PathElement._
     import doodle.core.Color._
 
     val triangle =
       List(
-        LineTo(cartesian(50, 100)),
-        LineTo(cartesian(100, 0)),
-        LineTo(cartesian(0, 0))
+        lineTo(cartesian(50, 100)),
+        lineTo(cartesian(100, 0)),
+        lineTo(cartesian(0, 0))
       )
 
     val curve =
-      List(BezierCurveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
+      List(curveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
 
     def style(image: Image): Image =
       image.
@@ -39,30 +40,31 @@ object CreativeScala {
 
   object polygons {
     import doodle.core.Point._
+    import doodle.core.PathElement._
     import doodle.core.Color._
 
     val triangle =
       closedPath(List(
-                   MoveTo(polar(50, 0.degrees)),
-                   LineTo(polar(50, 120.degrees)),
-                   LineTo(polar(50, 240.degrees))
+                   moveTo(polar(50, 0.degrees)),
+                   lineTo(polar(50, 120.degrees)),
+                   lineTo(polar(50, 240.degrees))
                  ))
 
     val square =
       closedPath(List(
-                   MoveTo(polar(50, 45.degrees)),
-                   LineTo(polar(50, 135.degrees)),
-                   LineTo(polar(50, 225.degrees)),
-                   LineTo(polar(50, 315.degrees))
+                   moveTo(polar(50, 45.degrees)),
+                   lineTo(polar(50, 135.degrees)),
+                   lineTo(polar(50, 225.degrees)),
+                   lineTo(polar(50, 315.degrees))
                  ))
 
     val pentagon =
       closedPath((List(
-                    MoveTo(polar(50, 72.degrees)),
-                    LineTo(polar(50, 144.degrees)),
-                    LineTo(polar(50, 216.degrees)),
-                    LineTo(polar(50, 288.degrees)),
-                    LineTo(polar(50, 360.degrees))
+                    moveTo(polar(50, 72.degrees)),
+                    lineTo(polar(50, 144.degrees)),
+                    lineTo(polar(50, 216.degrees)),
+                    lineTo(polar(50, 288.degrees)),
+                    lineTo(polar(50, 360.degrees))
                   )))
 
     val spacer =
@@ -76,6 +78,7 @@ object CreativeScala {
 
   object curvedPolygons {
     import doodle.core.Point._
+    import doodle.core.PathElement._
     import doodle.core.Color._
 
     def curve(radius: Int, start: Angle, increment: Angle): PathElement = {
@@ -88,7 +91,7 @@ object CreativeScala {
 
     val triangle =
       closedPath(List(
-                   MoveTo(polar(50, 0.degrees)),
+                   moveTo(polar(50, 0.degrees)),
                    curve(50, 0.degrees, 120.degrees),
                    curve(50, 120.degrees, 120.degrees),
                    curve(50, 240.degrees, 120.degrees)
@@ -96,7 +99,7 @@ object CreativeScala {
 
     val square =
       closedPath(List(
-                   MoveTo(polar(50, 45.degrees)),
+                   moveTo(polar(50, 45.degrees)),
                    curve(50, 45.degrees, 90.degrees),
                    curve(50, 135.degrees, 90.degrees),
                    curve(50, 225.degrees, 90.degrees),
@@ -105,7 +108,7 @@ object CreativeScala {
 
     val pentagon =
       closedPath((List(
-                    MoveTo(polar(50, 72.degrees)),
+                    moveTo(polar(50, 72.degrees)),
                     curve(50, 72.degrees, 72.degrees),
                     curve(50, 144.degrees, 72.degrees),
                     curve(50, 216.degrees, 72.degrees),
@@ -125,6 +128,7 @@ object CreativeScala {
 
   object regularPolygons {
     import Point._
+    import PathElement._
 
     def polygon(sides: Int, size: Int, initialRotation: Angle): Image = {
       def iter(n: Int, rotation: Angle): List[PathElement] =
@@ -132,9 +136,9 @@ object CreativeScala {
           case 0 =>
             Nil
           case n =>
-            LineTo(polar(size, rotation * n + initialRotation)) :: iter(n - 1, rotation)
+            lineTo(polar(size, rotation * n + initialRotation)) :: iter(n - 1, rotation)
         }
-      closedPath(MoveTo(polar(size, initialRotation)) :: iter(sides, 360.degrees / sides))
+      closedPath(moveTo(polar(size, initialRotation)) :: iter(sides, 360.degrees / sides))
     }
 
     def style(img: Image): Image = {
@@ -169,14 +173,15 @@ object CreativeScala {
 
   object stars {
     import Point._
+    import PathElement._
 
     def star(sides: Int, skip: Int, radius: Double): Image = {
       val rotation = 360.degrees * skip / sides
 
-      val start = MoveTo(polar(radius, 0.degrees))
+      val start = moveTo(polar(radius, 0.degrees))
       val elements = (1 until sides).toList map { index =>
         val point = polar(radius, rotation * index)
-        LineTo(point)
+        lineTo(point)
       }
 
       closedPath(start :: elements) lineWidth 2

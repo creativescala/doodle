@@ -4,10 +4,13 @@ import doodle.core._
 import doodle.syntax._
 
 object Tree {
+  import Image._
+  import PathElement._
+
   def leaf(angle: Angle, length: Double): Image =
-    OpenPath(Seq(
-      MoveTo(Point.zero),
-      LineTo(Point.polar(length, angle))
+    openPath(Seq(
+      moveTo(Point.zero),
+      lineTo(Point.polar(length, angle))
     )) lineColor Color.hsl(angle, .5.normalized, .5.normalized)
 
   def branch(depth: Int, angle: Angle, length: Double): Image = {

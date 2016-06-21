@@ -5,14 +5,16 @@ import doodle.syntax._
 
 object Stars {
   def star(sides: Int, skip: Int, radius: Double) = {
+    import PathElement._
+
     val centerAngle = 360.degrees * skip / sides
 
     val elements = (0 to sides) map { index =>
       val pt = Point.polar(radius, centerAngle * index)
       if(index == 0)
-        MoveTo(pt)
+        moveTo(pt)
       else
-        LineTo(pt)
+        lineTo(pt)
     }
 
     OpenPath(elements).

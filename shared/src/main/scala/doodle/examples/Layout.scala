@@ -8,6 +8,7 @@ object Layout {
 
   import doodle.core.Image._
   import doodle.core.Point._
+  import doodle.core.PathElement._
 
   def addOrigin(image: Image): Image = {
     val origin = Circle(5).noLine.fillColor(Color.red)
@@ -18,9 +19,9 @@ object Layout {
   val triangle =
     addOrigin(
       openPath(List(
-                 LineTo(cartesian(50, 100)),
-                 LineTo(cartesian(100, 0)),
-                 LineTo(cartesian(0, 0))
+                 lineTo(cartesian(50, 100)),
+                 lineTo(cartesian(100, 0)),
+                 lineTo(cartesian(0, 0))
                ))
     )
 
