@@ -2,6 +2,7 @@ package doodle
 package backend
 
 import doodle.core.{Point, Vec}
+import doodle.core.transform.Transform
 
 /**
   * A `BoundingBox` serves two purposes:
@@ -19,12 +20,12 @@ import doodle.core.{Point, Vec}
   *
   *  - for a Path, the origin may be anywhere; otherwise
   *
-  *  - layout operations align origins of the bounding boxex they enclose along
+  *  - layout operations align origins of the bounding boxex they align along
   *    one or more dimensions. The origin of the bounding box of such an
   *    operation is similarly aligned along the relevant dimension and centered
   *    on any dimension that is not aligned.
   *
-  * To example the above more clearly, and Beside aligns the y coordinates of
+  * An example shows the above more clearly: a Beside aligns the y coordinates of
   * the elements it encloses, and its own origin is aligned along the y-axis
   * with the enclosing elements and centered on the x-axis.
   *
@@ -32,6 +33,11 @@ import doodle.core.{Point, Vec}
   * right) not the common computer graphic coordinate system (+ve Y is down).
   */
 final case class BoundingBox(left: Double, top: Double, right: Double, bottom: Double) {
+  val topLeft     = Point.cartesian(left, top)
+  val topRight    = Point.cartesian(right, top)
+  val bottomLeft  = Point.cartesian(left, bottom)
+  val bottomRight = Point.cartesian(right, bottom)
+
   val height: Double =
     top - bottom
 
@@ -91,14 +97,17 @@ final case class BoundingBox(left: Double, top: Double, right: Double, bottom: D
   }
 
   def at(offset: Vec): BoundingBox = {
-    val topLeft     = Point.cartesian(left, top)
-    val topRight    = Point.cartesian(right, top)
-    val bottomLeft  = Point.cartesian(left, bottom)
-    val bottomRight = Point.cartesian(right, bottom)
-
     List(topLeft, topRight, bottomLeft, bottomRight)
       .map(_ + offset)
       .foldLeft(this){ (bb, point) => bb.expand(point) }
+  }
+
+  def transform(transform: Transform): BoundingBox = {
+    BoundingBox.empty.
+      expand(transform(topLeft)).
+      expand(transform(topRight)).
+      expand(transform(bottomLeft)).
+      expand(transform(bottomRight))
   }
 }
 

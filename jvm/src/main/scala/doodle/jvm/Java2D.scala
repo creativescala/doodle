@@ -2,11 +2,14 @@ package doodle
 package jvm
 
 import doodle.core._
+import doodle.core.transform.Transform
 import doodle.backend.{CanvasElement, Metrics, Renderable}
 
 import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, RenderingHints}
 import java.awt.image.BufferedImage
-import java.awt.geom.Path2D
+import java.awt.geom.{AffineTransform, Path2D}
+
+import scala.annotation.tailrec
 
 /** Various utilities for using Java2D */
 object Java2D {
@@ -43,14 +46,16 @@ object Java2D {
     val bb = renderable.boundingBox
     val center = bb.center
 
-    // Convert from canvas coordinates to screen coordinates
-    def canvasToScreen(x: Double, y: Double): Point = {
-      val offsetX = screenCenter.x
-      val offsetY = screenCenter.y
-      val centerX = center.toCartesian.x
-      val centerY = center.toCartesian.y
-      Point.cartesian(x - centerX + offsetX, offsetY - y + centerY)
-    }
+    // Convert from canvas coordinates to screen coordinates.
+    //
+    // Shift the center of the bounding box to the origin.
+    // Reflect around the Y axis as the canvas Y coordinate is reversed compared
+    // to the Java2D Y axis.
+    // Then recenter the canvas to the center of the screen.
+    val canvasToScreen: Transform =
+      Transform.translate(-center.x, -center.y)
+        .andThen(Transform.horizontalReflection)
+        .andThen(Transform.translate(screenCenter.x, screenCenter.y))
 
     def setStroke(stroke: Stroke) = {
       val width = stroke.width.toFloat
@@ -75,33 +80,29 @@ object Java2D {
       graphics.setPaint(this.toAwtColor(fill))
     }
 
-    def toPath2D(elts: List[PathElement], offsetX: Double, offsetY: Double): Path2D = {
+    def toPath2D(elts: List[PathElement]): Path2D = {
       import PathElement._
 
       val path = new Path2D.Double()
-      // Paths must start with a move or AWT raises an exception. Thus we always
-      // move to the origin to start.
-      val origin = canvasToScreen(offsetX, offsetY)
-      path.moveTo(origin.x, origin.y)
       elts.foreach {
         case MoveTo(Cartesian(x, y)) =>
-          val screen = canvasToScreen(x + offsetX, y + offsetY).toCartesian
-          path.moveTo(screen.x, screen.y)
+          path.moveTo(x, y)
         case LineTo(Cartesian(x, y)) =>
-          val screen = canvasToScreen(x + offsetX, y + offsetY).toCartesian
-          path.lineTo(screen.x, screen.y)
+          path.lineTo(x, y)
 
         case BezierCurveTo(Cartesian(cp1x, cp1y), Cartesian(cp2x, cp2y), Cartesian(endX, endY)) =>
-          val screenCp1 = canvasToScreen(cp1x + offsetX, cp1y + offsetY).toCartesian
-          val screenCp2 = canvasToScreen(cp2x + offsetX, cp2y + offsetY).toCartesian
-          val screenEnd = canvasToScreen(endX + offsetX, endY + offsetY).toCartesian
           path.curveTo(
-            screenCp1.x , screenCp1.y,
-            screenCp2.x , screenCp2.y,
-            screenEnd.x , screenEnd.y
+            cp1x , cp1y,
+            cp2x , cp2y,
+            endX , endY
           )
       }
       path
+    }
+
+    def toAffineTransform(transform: Transform): AffineTransform = {
+      val elts = transform.elements
+      new AffineTransform(elts(0), elts(3), elts(1), elts(4), elts(2), elts(5))
     }
 
     def strokeAndFill(path: Path2D, previous: DrawingContext, current: DrawingContext): Unit = {
@@ -117,42 +118,64 @@ object Java2D {
       }
     }
 
+    graphics.transform(toAffineTransform(canvasToScreen))
     initialContext.stroke.foreach { s => setStroke(s) }
     initialContext.fillColor.foreach { f => setFill(f) }
-    renderable.elements.foldLeft(initialContext) { (previousCtx, elt) =>
-      elt match {
-        case ClosedPath(ctx, at, elts) =>
-          val path = toPath2D(elts, at.x, at.y)
-          path.closePath()
-          strokeAndFill(path, previousCtx, ctx)
-          ctx
 
-        case OpenPath(ctx, at, elts) =>
-          val path = toPath2D(elts, at.x, at.y)
-          strokeAndFill(path, previousCtx, ctx)
-          ctx
+    @tailrec
+    def loop(previousCtx: DrawingContext, elts: List[CanvasElement]): Unit = {
+      elts match {
+        case Nil => ()
+        case e :: es =>
+          e match {
+            case ClosedPath(ctx, elts) =>
+              val path = toPath2D(elts)
+              path.closePath()
+              strokeAndFill(path, previousCtx, ctx)
+              loop(ctx, es)
 
-        case Text(ctx, at, bb, chars) =>
-          // drawString takes the bottom left corner of the text
-          val bottomLeft = at - Vec(bb.width/2, bb.height/2)
-          val screen = canvasToScreen(bottomLeft.x, bottomLeft.y)
-          ctx.stroke.foreach { s =>
-            if(previousCtx.stroke != ctx.stroke)
-              setStroke(s)
-          }
-          ctx.fillColor.foreach { f =>
-            if(previousCtx.fillColor != ctx.fillColor)
-              setFill(f)
-          }
-          ctx.font map { f =>
-            graphics.setFont(FontMetrics.toJFont(f))
-            graphics.drawString(chars, screen.x.toInt, screen.y.toInt)
-          }
-          ctx
+            case OpenPath(ctx, elts) =>
+              val path = toPath2D(elts)
+              strokeAndFill(path, previousCtx, ctx)
+              loop(ctx, es)
 
-        case Empty =>
-          previousCtx
+            case Text(ctx, tx, bb, chars) =>
+              // We have to do a few different transformations here:
+              //
+              // - The canvas Y coordinate is reversed with respect to the
+              // screen Y coordinate, so normally we have to reverse
+              // coordinates. However `drawString` will draw text oriented
+              // correctly on the screen with need to reverse our reverse.
+              //
+              // - `drawString` draws from the bottom left corner of the text
+              // while the origin of the bounding box is the center of the text.
+              // Thus we need to translate to the bottom left corner.
+              val bottomLeft = Transform.translate(-bb.width/2, -bb.height/2)
+              val fullTx = Transform.horizontalReflection andThen tx andThen bottomLeft
+              val currentTx = graphics.getTransform()
+              graphics.transform(toAffineTransform(fullTx))
+              ctx.stroke.foreach { s =>
+                if(previousCtx.stroke != ctx.stroke)
+                  setStroke(s)
+              }
+              ctx.fillColor.foreach { f =>
+                if(previousCtx.fillColor != ctx.fillColor)
+                  setFill(f)
+              }
+              ctx.font map { f =>
+                graphics.setFont(FontMetrics.toJFont(f))
+                graphics.drawString(chars, 0, 0)
+              }
+              graphics.setTransform(currentTx)
+
+              loop(ctx, es)
+
+            case Empty =>
+              loop(previousCtx, es)
+          }
       }
     }
+
+    loop(initialContext, renderable.elements)
   }
 }

@@ -6,6 +6,9 @@ final case class Vec(x: Double, y: Double) {
   def +(that: Vec): Vec = Vec(this.x + that.x, this.y + that.y)
   def -(that: Vec): Vec = Vec(this.x - that.x, this.y - that.y)
 
+  def unary_- : Vec =
+    Vec(-x, -y)
+
   def *(d: Double): Vec = Vec(x*d, y*d)
   def /(d: Double): Vec = Vec(x/d, y/d)
 

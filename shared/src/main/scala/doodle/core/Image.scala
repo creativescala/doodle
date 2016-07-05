@@ -4,6 +4,8 @@ package core
 import doodle.core.font.Font
 
 sealed abstract class Image extends Product with Serializable {
+  // Layout ----------------------------------------------------------
+
   def beside(right: Image): Image =
     Beside(this, right)
 
@@ -19,11 +21,8 @@ sealed abstract class Image extends Product with Serializable {
   def below(top: Image): Image =
     Above(top, this)
 
-  def at(vec: Vec): Image =
-    At(vec, this)
 
-  def at(x: Double, y: Double): Image =
-    At(Vec(x, y), this)
+  // Context Transform ------------------------------------------------
 
   def lineColor(color: Color): Image =
     ContextTransform(_.lineColor(color), this)
@@ -48,16 +47,38 @@ sealed abstract class Image extends Product with Serializable {
 
   def font(font: Font): Image =
     ContextTransform(_.font(font), this)
+
+
+  // Affine Transform -------------------------------------------------
+
+  def transform(tx: core.transform.Transform): Image =
+    Transform(tx, this)
+
+  def rotate(angle: Angle): Image =
+    this.transform(core.transform.Transform.rotate(angle))
+
+  def at(vec: Vec): Image =
+    Transform(core.transform.Transform.translate(vec.x, vec.y), this)
+
+  def at(x: Double, y: Double): Image =
+    Transform(core.transform.Transform.translate(x, y), this)
 }
 object Image {
 
   // Smart constructors
 
-  def closedPath(elements: Seq[PathElement]): Image =
-    ClosedPath(elements)
+  def closedPath(elements: Seq[PathElement]): Image = {
+    // Paths must start at the origin. Thus we always move to the origin to
+    // start.
+    ClosedPath(PathElement.moveTo(0,0) +: elements)
+  }
 
-  def openPath(elements: Seq[PathElement]): Image =
-    OpenPath(elements)
+
+  def openPath(elements: Seq[PathElement]): Image = {
+    // Paths must start at the origin. Thus we always move to the origin to
+    // start.
+    OpenPath(PathElement.moveTo(0,0) +: elements)
+  }
 
   def text(characters: String): Image =
     Text(characters)
@@ -269,6 +290,6 @@ final case class Triangle(w: Double, h: Double) extends Image
 final case class Beside(l: Image, r: Image) extends Image
 final case class Above(l: Image, r: Image) extends Image
 final case class On(t: Image, b: Image) extends Image
-final case class At(at: Vec, i: Image) extends Image
+final case class Transform(tx: transform.Transform, i: Image) extends Image
 final case class ContextTransform(f: DrawingContext => DrawingContext, image: Image) extends Image
 final case object Empty extends Image

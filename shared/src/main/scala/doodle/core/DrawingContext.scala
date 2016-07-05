@@ -48,7 +48,7 @@ final case class DrawingContext(
   def noFill: DrawingContext =
     this.copy(fillColor = None)
 
-  def font(font: Font) =
+  def font(font: Font): DrawingContext =
     this.copy(font = Some(font))
 }
 
