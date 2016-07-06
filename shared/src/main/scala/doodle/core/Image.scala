@@ -156,6 +156,85 @@ object Image {
   def triangle(w: Double, h: Double): Image =
     Triangle(w,h)
 
+  /**
+    * Construct an open path of bezier curves that intersects all the given
+    * points. Defaults to `catmulRom` with the default tension.
+    */
+  def interpolatingSpline(points: Seq[Point]): Path =
+    catmulRom(points)
+
+  /*
+   * Interpolate a spline (a curve) that passes through all the given points,
+   * using the Catmul Rom formulation (see, e.g.,
+   * https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
+   *
+   * The tension can be changed to control how tightly the curve turns. It defaults to 0.5.
+   *
+   * The Catmul Rom algorithm requires a point before and after each pair of
+   * points that define the curve. To meet this condition for the first and last
+   * points in `points`, they are repeated.
+   *
+   * In `points` has less than two elements an empty `Path` is returned.
+   */
+  def catmulRom(points: Seq[Point], tension: Double = 0.5): Path = {
+    /*
+    To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
+
+    See, for example, http://www.almightybuserror.com/2009/12/04/drawing-splines-in-opengl.html
+
+    Inverse Bezier matrix
+    val invB = Array[Double](0, 0,       0,       1,
+                             0, 0,       1.0/3.0, 1,
+                             0, 1.0/3.0, 2.0/3.0, 1,
+                             1, 1,       1,       1)
+
+    Catmul matrix with given tension
+    val catmul = Array[Double](-tension,    2 - tension,  tension - 2,       tension,
+                               2 * tension, tension - 3,  3 - (2 * tension), -tension,
+                               -tension,    0,            tension,           0,
+                               0,           1,            0,                 0)
+
+    invB * catmul
+    val matrix = Array[Double](0,            1,           0,           0,
+                               -tension/3.0, 1,           tension/3.0, 0,
+                               0,            tension/3.0, 1,           -tension/3.0,
+                               0,            0,           1,           0)
+     */
+    def toCurve(pt0: Point, pt1: Point, pt2: Point, pt3: Point): PathElement =
+      PathElement.curveTo(
+        ((-tension * pt0.x) + 3*pt1.x + (tension * pt2.x)) / 3.0,
+        ((-tension * pt0.y) + 3*pt1.y + (tension * pt2.y)) / 3.0,
+
+        ((tension * pt1.x) + 3*pt2.x - (tension * pt3.x)) / 3.0,
+        ((tension * pt1.y) + 3*pt2.y - (tension * pt3.y)) / 3.0,
+
+        pt2.x,
+        pt2.y
+      )
+
+
+    def iter(points: Seq[Point]): Seq[PathElement] = {
+      points match {
+        case pt0 +: pt1 +: pt2 +: pt3 +: pts =>
+          toCurve(pt0, pt1, pt2, pt3) +: iter(pt1 +: pt2 +: pt3 +: pts)
+
+        case pt0 +: pt1 +: pt2 +: Seq() =>
+          // Case where we've reached the end of the sequence of points
+          // We repeat the last point
+          val pt3 = pt2
+          Seq(toCurve(pt0, pt1, pt2, pt3))
+
+        case _ =>
+          // There were two or fewer points in the sequence
+          Seq.empty[PathElement]
+      }
+    }
+
+    points.headOption.fold(OpenPath(Seq.empty)){ pt0 =>
+      OpenPath(PathElement.moveTo(pt0) +: iter(pt0 +: points))
+    }
+  }
+
   def empty: Image =
     Empty
 }
