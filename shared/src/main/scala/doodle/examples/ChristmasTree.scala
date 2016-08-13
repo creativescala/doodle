@@ -7,8 +7,8 @@ import doodle.syntax.normalized._
 object ChristmasTree {
   import Color._
 
-  val redBauble  = Circle(7)  lineWidth 0 fillColor red
-  val goldBauble = Circle(10) lineWidth 0 fillColor gold
+  val redBauble  = Image.circle(7)  lineWidth 0 fillColor red
+  val goldBauble = Image.circle(10) lineWidth 0 fillColor gold
 
   def treeElement = {
     val color = green
@@ -16,7 +16,7 @@ object ChristmasTree {
       .darken((math.random * 0.1).normalized)
       .desaturate((math.random * 0.1).normalized)
 
-    Triangle(40, 40) lineWidth 0 fillColor color
+    Image.triangle(40, 40) lineWidth 0 fillColor color
   }
 
   def row(elements: Int): Image =
@@ -32,8 +32,8 @@ object ChristmasTree {
     }
 
   val levels  = 4
-  val foliage = Triangle(40 * levels, 40 * levels) fillColor darkGreen
-  val trunk   = Rectangle(20,40) lineColor brown fillColor brown
+  val foliage = Image.triangle(40 * levels, 40 * levels) fillColor darkGreen
+  val trunk   = Image.rectangle(20,40) lineColor brown fillColor brown
 
   val image = goldBauble above ( tree(levels) on foliage ) above trunk
 }

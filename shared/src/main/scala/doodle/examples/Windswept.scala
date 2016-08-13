@@ -68,7 +68,7 @@ object Windswept {
       offset  = -425
       start   = Point.cartesian(offset, 0)
       end    <- Random.normal(800, 30)
-    } yield OpenPath(Seq(moveTo(start), lineTo(Point.cartesian(end + offset, 0)))) lineColor stroke lineWidth 1.0
+    } yield Image.openPath(Seq(moveTo(start), lineTo(Point.cartesian(end + offset, 0)))) lineColor stroke lineWidth 1.0
 
   val tendrils: Random[Image] =
     (-50 to 50).foldLeft(tendril){ (randomImage, i) =>

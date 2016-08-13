@@ -3,8 +3,8 @@ package doodle.examples
 import doodle.core._
 
 object ChessBoard {
-  val blackSquare = Rectangle(30, 30) fillColor Color.black
-  val redSquare   = Rectangle(30, 30) fillColor Color.red
+  val blackSquare = Image.rectangle(30, 30) fillColor Color.black
+  val redSquare   = Image.rectangle(30, 30) fillColor Color.red
 
   val twoByTwo =
     (redSquare   beside blackSquare) above

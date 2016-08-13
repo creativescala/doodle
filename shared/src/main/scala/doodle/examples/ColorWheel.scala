@@ -10,7 +10,7 @@ object ColorWheel {
     r  = 200 * l
     a  = Angle.degrees(h)
   } yield {
-    Circle(20).
+    Image.circle(20).
       at(r * a.sin, r * a.cos).
       lineWidth(0).
       fillColor(Color.hsl(a, 1.normalized, l.normalized))

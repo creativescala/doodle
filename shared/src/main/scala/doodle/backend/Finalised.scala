@@ -22,22 +22,21 @@ object Finalised {
 
 
   def finalise(image: Image, context: DrawingContext): Finalised = {
-    import doodle.core
     import PathElement._
     import Point._
 
     def loop(image: Image, context: DrawingContext): Finalised =
       image match {
-        case core.Empty =>
+        case Image.Empty =>
           Empty
 
-        case core.OpenPath(elts) =>
+        case Image.OpenPath(elts) =>
           OpenPath(context, elts)
 
-        case core.ClosedPath(elts) =>
+        case Image.ClosedPath(elts) =>
           ClosedPath(context, elts)
 
-        case core.Circle(r) =>
+        case Image.Circle(r) =>
           // See http://spencermortensen.com/articles/bezier-circle/ for approximation
           // of a circle with a Bezier curve.
           val c = 0.551915024494
@@ -51,7 +50,7 @@ object Finalised {
           )
           ClosedPath(context, elts)
 
-        case core.Rectangle(w, h) =>
+        case Image.Rectangle(w, h) =>
           val left = -w/2
           val top = h/2
           val right = w/2
@@ -65,7 +64,7 @@ object Finalised {
           )
           ClosedPath(context, elts)
 
-        case core.Triangle(w, h) =>
+        case Image.Triangle(w, h) =>
           val left = -w/2
           val top = h/2
           val right = w/2
@@ -79,22 +78,22 @@ object Finalised {
           )
           ClosedPath(context, elts)
 
-        case core.Text(txt) =>
+        case Image.Text(txt) =>
           Text(context, txt)
 
-        case core.Beside(l, r) =>
+        case Image.Beside(l, r) =>
           Beside(loop(l, context), loop(r, context))
 
-        case core.Above(t, b) =>
+        case Image.Above(t, b) =>
           Above(loop(t, context), loop(b, context))
 
-        case core.On(o, u) =>
+        case Image.On(o, u) =>
           On(loop(o, context), loop(u, context))
 
-        case core.Transform(tx, i) =>
+        case Image.Transform(tx, i) =>
           Transform(tx, loop(i, context))
 
-        case core.ContextTransform(f, i) =>
+        case Image.ContextTransform(f, i) =>
           loop(i, f(context))
       }
 

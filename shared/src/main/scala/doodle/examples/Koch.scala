@@ -30,7 +30,7 @@ object Koch {
 
   def koch(depth: Int, length: Double): Image = {
     val origin = Point.cartesian(0, length/6)
-    OpenPath(moveTo(origin) +: kochElements(depth, origin, 0.degrees, length))
+    Image.openPath(moveTo(origin) +: kochElements(depth, origin, 0.degrees, length))
   }
 
   val image = allAbove((1 to 4) map { depth =>

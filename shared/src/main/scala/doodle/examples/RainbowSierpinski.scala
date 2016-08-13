@@ -12,7 +12,7 @@ object RainbowSierpinski {
         sierpinski(size/2, color.spin(delta * 3))
       )
     } else {
-      Triangle(size, size) lineWidth 0 fillColor color
+      Image.triangle(size, size) lineWidth 0 fillColor color
     }
   }
 

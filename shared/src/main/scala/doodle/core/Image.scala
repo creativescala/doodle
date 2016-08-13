@@ -4,6 +4,8 @@ package core
 import doodle.core.font.Font
 
 sealed abstract class Image extends Product with Serializable {
+  import Image._
+
   // Layout ----------------------------------------------------------
 
   def beside(right: Image): Image =
@@ -63,18 +65,54 @@ sealed abstract class Image extends Product with Serializable {
   def at(x: Double, y: Double): Image =
     Transform(core.transform.Transform.translate(x, y), this)
 }
+sealed abstract class Path extends Image {
+  import Image._
+
+  def isOpen: Boolean =
+    this match {
+      case OpenPath(_)   => true
+      case ClosedPath(_) => false
+    }
+
+  def isClosed: Boolean =
+    !this.isOpen
+
+  def open: Path =
+    this match {
+      case OpenPath(_)      => this
+      case ClosedPath(elts) => OpenPath(elts)
+    }
+
+  def close: Path =
+    this match {
+      case OpenPath(elts) => ClosedPath(elts)
+      case ClosedPath(_)  => this
+    }
+}
 object Image {
+  final case class OpenPath(elements: Seq[PathElement]) extends Path
+  final case class ClosedPath(elements: Seq[PathElement]) extends Path
+  final case class Text(get: String) extends Image
+  final case class Circle(r: Double) extends Image
+  final case class Rectangle(w: Double, h: Double) extends Image
+  final case class Triangle(w: Double, h: Double) extends Image
+  final case class Beside(l: Image, r: Image) extends Image
+  final case class Above(l: Image, r: Image) extends Image
+  final case class On(t: Image, b: Image) extends Image
+  final case class Transform(tx: transform.Transform, i: Image) extends Image
+  final case class ContextTransform(f: DrawingContext => DrawingContext, image: Image) extends Image
+  final case object Empty extends Image
 
   // Smart constructors
 
-  def closedPath(elements: Seq[PathElement]): Image = {
+  def closedPath(elements: Seq[PathElement]): Path = {
     // Paths must start at the origin. Thus we always move to the origin to
     // start.
     ClosedPath(PathElement.moveTo(0,0) +: elements)
   }
 
 
-  def openPath(elements: Seq[PathElement]): Image = {
+  def openPath(elements: Seq[PathElement]): Path = {
     // Paths must start at the origin. Thus we always move to the origin to
     // start.
     OpenPath(PathElement.moveTo(0,0) +: elements)
@@ -259,37 +297,3 @@ object Image {
   def empty: Image =
     Empty
 }
-sealed abstract class Path extends Image {
-  def isOpen: Boolean =
-    this match {
-      case OpenPath(_)   => true
-      case ClosedPath(_) => false
-    }
-
-  def isClosed: Boolean =
-    !this.isOpen
-
-  def open: Path =
-    this match {
-      case OpenPath(_)      => this
-      case ClosedPath(elts) => OpenPath(elts)
-    }
-
-  def close: Path =
-    this match {
-      case OpenPath(elts) => ClosedPath(elts)
-      case ClosedPath(_)  => this
-    }
-}
-final case class OpenPath(elements: Seq[PathElement]) extends Path
-final case class ClosedPath(elements: Seq[PathElement]) extends Path
-final case class Text(get: String) extends Image
-final case class Circle(r: Double) extends Image
-final case class Rectangle(w: Double, h: Double) extends Image
-final case class Triangle(w: Double, h: Double) extends Image
-final case class Beside(l: Image, r: Image) extends Image
-final case class Above(l: Image, r: Image) extends Image
-final case class On(t: Image, b: Image) extends Image
-final case class Transform(tx: transform.Transform, i: Image) extends Image
-final case class ContextTransform(f: DrawingContext => DrawingContext, image: Image) extends Image
-final case object Empty extends Image

@@ -14,13 +14,13 @@ object ColorsAndShapes {
     Color.blue desaturate 0.5.normalized spin (n * 30).degrees
 
   def circle(n: Int): Image =
-    Circle(size(n))
+    Image.circle(size(n))
 
   def square(n: Int): Image =
-    Rectangle(2*size(n), 2*size(n))
+    Image.rectangle(2*size(n), 2*size(n))
 
   def triangle(n: Int): Image =
-    Triangle(2*size(n), 2*size(n))
+    Image.triangle(2*size(n), 2*size(n))
 
   def colored(shape: Int => Image, color: Int => Color): Int => Image =
     (n: Int) =>

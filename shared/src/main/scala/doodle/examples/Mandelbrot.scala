@@ -53,7 +53,7 @@ object Mandelbrot {
       }
     }
 
-    def shape(size: Int) = Rectangle(size, size)
+    def shape(size: Int) = Image.rectangle(size, size)
   }
 
   val defaultPalette = Color.black :: (0 to 360 by 5).map{ angle =>

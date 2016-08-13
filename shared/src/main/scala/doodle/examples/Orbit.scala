@@ -13,4 +13,4 @@ case class Orbit(base: Image, radius: Double = 50, angle: Angle = 0.degrees) ext
   }
 }
 
-object Orbit extends Orbit(Circle(10) fillColor Color.orange, 50, 0.degrees)
+object Orbit extends Orbit(Image.circle(10) fillColor Color.orange, 50, 0.degrees)

@@ -15,7 +15,7 @@ object Polygon {
       if(index == 0) moveTo(point) else lineTo(point)
     }
 
-    ClosedPath(elements) lineWidth 5 lineColor Color.hsl(centerAngle, 1.normalized, .5.normalized)
+    Image.closedPath(elements) lineWidth 5 lineColor Color.hsl(centerAngle, 1.normalized, .5.normalized)
   }
 
   def image = allOn((3 to 20) map (polygon(_, 100)))

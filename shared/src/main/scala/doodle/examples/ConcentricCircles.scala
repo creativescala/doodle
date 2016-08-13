@@ -5,7 +5,7 @@ import doodle.syntax._
 
 object ConcentricCircles {
   def singleCircle(n: Int): Image =
-    Circle(50 + 5 * n) lineColor (Color.red fadeOut (n / 20).normalized)
+    Image.circle(50 + 5 * n) lineColor (Color.red fadeOut (n / 20).normalized)
 
   def concentricCircles(n: Int): Image =
     if(n == 1) {

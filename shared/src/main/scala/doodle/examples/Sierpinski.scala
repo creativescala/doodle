@@ -5,7 +5,7 @@ import doodle.core._
 object Sierpinski {
   def triangle(size: Double): Image = {
     println(s"Creating a triangle")
-    Triangle(size, size) lineColor Color.magenta
+    Image.triangle(size, size) lineColor Color.magenta
   }
 
   def sierpinski(n: Int, size: Double): Image = {

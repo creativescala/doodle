@@ -18,7 +18,7 @@ object ColorPaletteAgain {
     c.spin(15.degrees)
 
   def singleCircle(n: Int, color: Color): Image =
-    Circle(circleMinimum + circleIncrement * n) lineColor color lineWidth circleIncrement
+    Image.circle(circleMinimum + circleIncrement * n) lineColor color lineWidth circleIncrement
 
   def complementCircles(n: Int, c: Color): Image = {
     val color = complement(c)

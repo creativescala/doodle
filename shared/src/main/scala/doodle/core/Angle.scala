@@ -84,7 +84,6 @@ object Angle {
   def turns(t: Double): Angle =
     Angle(t * TwoPi)
 
-
   def apply(radians: Double): Angle =
     if(radians.isNaN)
       new Angle(0.0)
