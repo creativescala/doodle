@@ -20,7 +20,7 @@ object Tree {
       val l = branch(depth - 1, angle + 20.degrees, length * 0.8)
       val r = branch(depth - 1, angle - 20.degrees, length * 0.8)
       val b = leaf(angle, length)
-      b on ((l on r) at Vec.polar(angle, length))
+      b on ((l on r) at Vec.polar(length, angle))
     }
   }
 

@@ -25,7 +25,7 @@ object DiffusionLimitedAggregation {
   val seed: Random[(Point,Vec)] = Random.double.map { t =>
     val angle = t.turns
     val start = Point.polar(200, angle)
-    val drift = Vec.polar((angle + 0.5.turns).normalize, 3)
+    val drift = Vec.polar(3, (angle + 0.5.turns).normalize)
 
     (start, drift)
   }

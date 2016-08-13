@@ -18,7 +18,7 @@ object Turtle {
         val (state, path) = accum
         elt match {
           case Forward(d) =>
-            val nowAt = state.at + Vec.polar(state.heading, d)
+            val nowAt = state.at + Vec.polar(d, state.heading)
             val element = lineTo(nowAt.toPoint)
 
             (state.copy(at = nowAt), element +: path)
