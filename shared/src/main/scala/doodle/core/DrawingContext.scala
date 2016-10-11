@@ -1,7 +1,7 @@
 package doodle
 package core
 
-import cats.std.option._
+import cats.instances.option._
 import cats.syntax.cartesian._
 
 import doodle.core.font.Font

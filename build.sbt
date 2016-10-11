@@ -1,6 +1,7 @@
 version in ThisBuild := "0.6.5"
 
-val catsVersion = "0.6.0"
+val catsVersion = "0.7.2"
+val spireVersion = "0.12.0"
 
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
@@ -13,8 +14,9 @@ lazy val doodle = crossProject.
     scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(
-       "org.typelevel" %% "cats" % catsVersion,
-       "org.scalatest" %% "scalatest" % "2.2.6" % "test",
+       "org.typelevel"  %% "cats" % catsVersion,
+       "org.spire-math" %% "spire" % spireVersion,
+       "org.scalatest"  %% "scalatest" % "2.2.6" % "test",
        "org.scalacheck" %% "scalacheck" % "1.12.5" % "test"
     )
   ).jvmSettings(
@@ -51,6 +53,7 @@ lazy val doodle = crossProject.
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
       "org.typelevel"             %%% "cats"        % catsVersion,
+      "org.spire-math"            %%% "spire"       % spireVersion,
       "org.scala-js"              %%% "scalajs-dom" % "0.9.0",
       "com.lihaoyi"               %%% "scalatags"   % "0.5.5",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",

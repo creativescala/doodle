@@ -1,6 +1,6 @@
 package doodle
 
-import cats.{Comonad,Monad}
+import cats.Comonad
 import cats.free.Free
 import scala.util.{Random => Rng}
 import scala.annotation.tailrec
@@ -17,8 +17,6 @@ object random {
     final case object RDouble extends RandomOp[Double]
     final case object Normal extends RandomOp[Double]
   }
-
-  implicit val randomInstance: Monad[Random] = Free.freeMonad
 
   implicit def randomInstances(implicit rng: Rng = scala.util.Random): Comonad[RandomOp] =
     new Comonad[RandomOp] {
