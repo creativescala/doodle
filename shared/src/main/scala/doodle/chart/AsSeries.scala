@@ -12,7 +12,7 @@ trait AsSeries[A] {
   def asSeries(in: A): Series
 }
 object AsSeries {
-  implicit def seqAsPointTuplesToSeries[F[_]: Traverse, A: AsPoint]: AsSeries[F[A]] =
+  implicit def traverseAsPointTuplesToSeries[F[_]: Traverse, A: AsPoint]: AsSeries[F[A]] =
     new AsSeries[F[A]] {
       import doodle.chart.syntax._
       import cats.syntax.foldable._
