@@ -18,7 +18,7 @@ object StandardInterpreter {
         }
     }
 
-  implicit val interpreter: Interpreter =
+  implicit val chartInterpreter: Interpreter =
     (chart: Chart) => {
       def loop(chart: Chart, title: Option[String] = None): Image = {
         chart match {
