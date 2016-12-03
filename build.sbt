@@ -38,6 +38,9 @@ lazy val doodle = crossProject.
       |import doodle.jvm.Java2DCanvas._
       |import doodle.backend.StandardInterpreter._
       |import doodle.backend.Formats._
+      |import doodle.chart.syntax._
+      |import doodle.chart._
+      |import doodle.chart.StandardInterpreter._
       |import doodle.examples._
     """.trim.stripMargin,
     cleanupCommands in console := """
