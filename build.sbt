@@ -3,6 +3,8 @@ version in ThisBuild := "0.6.5"
 val catsVersion = "0.7.2"
 val spireVersion = "0.12.0"
 
+scalaVersion in ThisBuild := "2.11.8"
+
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
