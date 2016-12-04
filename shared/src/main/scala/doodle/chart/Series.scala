@@ -16,6 +16,15 @@ object Series {
   def data(points: List[Point]): Series =
     Data(points)
 
-  final case class Data(points: List[Point]) extends Series
-  final case class Legend(series: Series, title: String) extends Series
+  final case class Data(points: List[Point]) extends Series {
+    val min: Point =
+      points.fold(Point.zero){ (min, elt) =>
+        Point(min.x min elt.x, min.y min elt.y)
+      }
+    val max: Point =
+      points.fold(Point.zero){ (max, elt) =>
+        Point(max.x max elt.x, max.y max elt.y)
+      }
+  }
+  final case class Legend(series: Series, title: String) extends Series 
 }
