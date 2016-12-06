@@ -103,124 +103,7 @@ object Image {
   final case class ContextTransform(f: DrawingContext => DrawingContext, image: Image) extends Image
   final case object Empty extends Image
 
-  // Smart constructors
-
-  def closedPath(elements: Seq[PathElement]): Path = {
-    // Paths must start at the origin. Thus we always move to the origin to
-    // start.
-    ClosedPath(PathElement.moveTo(0,0) +: elements)
-  }
-
-
-  def openPath(elements: Seq[PathElement]): Path = {
-    // Paths must start at the origin. Thus we always move to the origin to
-    // start.
-    OpenPath(PathElement.moveTo(0,0) +: elements)
-  }
-
-  def text(characters: String): Image =
-    Text(characters)
-
-  def circle(r: Double): Image =
-    Circle(r)
-
-  def rectangle(w: Double, h: Double): Image =
-    Rectangle(w,h)
-
-  def regularPolygon(sides: Int, radius: Double, angle: Angle): Image = {
-    import PathElement._
-
-    val rotation = Angle.one / sides
-    val path =
-      (1 to sides).map { n =>
-          lineTo(radius, rotation * n + angle)
-      }.toList
-
-    closedPath(moveTo(radius, angle) +: path)
-  }
-
-  def star(points: Int, outerRadius: Double, innerRadius: Double, angle: Angle): Image = {
-    import PathElement._
-
-    val rotation = Angle.one / (points * 2)
-    val path =
-      (1 to (points * 2)).map { n =>
-        if(n % 2 == 0)
-          lineTo(outerRadius, rotation * n + angle)
-        else
-          lineTo(innerRadius, rotation * n + angle)
-      }.toList
-
-    closedPath(moveTo(outerRadius, angle) +: path)
-  }
-
-  def rightArrow(w: Double, h: Double): Image = {
-    import PathElement._
-
-    val path = List(
-      moveTo(w/2, 0),
-      lineTo(0, h/2),
-
-      lineTo(0, h * 0.2),
-      lineTo(-w/2, h * 0.2),
-      lineTo(-w/2, -h * 0.2),
-      lineTo(0, -h * 0.2),
-
-      lineTo(0, -h/2),
-      lineTo(w/2, 0)
-    )
-
-    closedPath(path)
-  }
-
-  def roundedRectangle(w: Double, h: Double, r: Double): Image = {
-    import PathElement._
-
-    // Clamp radius to the smallest of width and height
-    val radius =
-      if(r > w/2 || r > h/2)
-        (w/2) min (h/2)
-      else
-        r
-
-    // Magic number of drawing circles with bezier curves
-    // See http://spencermortensen.com/articles/bezier-circle/ for approximation
-    // of a circle with a Bezier curve.
-    val c = (4.0/3.0) * (Math.sqrt(2) - 1)
-    val cR = c * radius
-
-    val elts = List(
-      moveTo(w/2 - radius, h/2),
-      curveTo(w/2 - radius + cR, h/2,
-              w/2, h/2 - radius + cR,
-              w/2, h/2 - radius),
-      lineTo(w/2, -h/2 + radius),
-      curveTo(w/2, -h/2 + radius - cR,
-              w/2 - radius + cR, -h/2,
-              w/2 - radius, -h/2),
-      lineTo(-w/2 + radius, -h/2),
-      curveTo(-w/2 + radius - cR, -h/2,
-              -w/2, -h/2 + radius - cR,
-              -w/2, -h/2 + radius),
-      lineTo(-w/2, h/2 - radius),
-      curveTo(-w/2, h/2 - radius + cR,
-              -w/2 + radius - cR, h/2,
-              -w/2 + radius, h/2),
-      lineTo(w/2 - radius, h/2)
-    )
-
-    closedPath(elts)
-  }
-
-  def triangle(w: Double, h: Double): Image =
-    Triangle(w,h)
-
-  /**
-    * Construct an open path of bezier curves that intersects all the given
-    * points. Defaults to `catmulRom` with the default tension.
-    */
-  def interpolatingSpline(points: Seq[Point]): Path =
-    catmulRom(points)
+  // Smart constructors --------------------------------------------------------
 
   /*
    * Interpolate a spline (a curve) that passes through all the given points,
@@ -294,6 +177,134 @@ object Image {
     }
   }
 
+  def circle(r: Double): Image =
+    Circle(r)
+
+  def closedPath(elements: Seq[PathElement]): Path = {
+    // Paths must start at the origin. Thus we always move to the origin to
+    // start.
+    ClosedPath(PathElement.moveTo(0,0) +: elements)
+  }
+
   def empty: Image =
     Empty
+
+  /**
+    * Construct an open path of bezier curves that intersects all the given
+    * points. Defaults to `catmulRom` with the default tension.
+    */
+  def interpolatingSpline(points: Seq[Point]): Path =
+    catmulRom(points)
+
+  def horizontalLine(length: Double): Path =
+    line(length, 0)
+
+  def line(x: Double, y: Double): Path =
+    openPath(Seq(PathElement.lineTo(x, y)))
+
+  def line(point: Point): Path =
+    openPath(Seq(PathElement.lineTo(point)))
+
+  def openPath(elements: Seq[PathElement]): Path = {
+    // Paths must start at the origin. Thus we always move to the origin to
+    // start.
+    OpenPath(PathElement.moveTo(0,0) +: elements)
+  }
+
+  def rectangle(w: Double, h: Double): Image =
+    Rectangle(w,h)
+
+  def regularPolygon(sides: Int, radius: Double, angle: Angle): Image = {
+    import PathElement._
+
+    val rotation = Angle.one / sides
+    val path =
+      (1 to sides).map { n =>
+        lineTo(radius, rotation * n + angle)
+      }.toList
+
+    closedPath(moveTo(radius, angle) +: path)
+  }
+
+  def rightArrow(w: Double, h: Double): Image = {
+    import PathElement._
+
+    val path = List(
+      moveTo(w/2, 0),
+      lineTo(0, h/2),
+
+      lineTo(0, h * 0.2),
+      lineTo(-w/2, h * 0.2),
+      lineTo(-w/2, -h * 0.2),
+      lineTo(0, -h * 0.2),
+
+      lineTo(0, -h/2),
+      lineTo(w/2, 0)
+    )
+
+    closedPath(path)
+  }
+
+  def roundedRectangle(w: Double, h: Double, r: Double): Image = {
+    import PathElement._
+
+    // Clamp radius to the smallest of width and height
+    val radius =
+      if(r > w/2 || r > h/2)
+        (w/2) min (h/2)
+      else
+        r
+
+    // Magic number of drawing circles with bezier curves
+    // See http://spencermortensen.com/articles/bezier-circle/ for approximation
+    // of a circle with a Bezier curve.
+    val c = (4.0/3.0) * (Math.sqrt(2) - 1)
+    val cR = c * radius
+
+    val elts = List(
+      moveTo(w/2 - radius, h/2),
+      curveTo(w/2 - radius + cR, h/2,
+              w/2, h/2 - radius + cR,
+              w/2, h/2 - radius),
+      lineTo(w/2, -h/2 + radius),
+      curveTo(w/2, -h/2 + radius - cR,
+              w/2 - radius + cR, -h/2,
+              w/2 - radius, -h/2),
+      lineTo(-w/2 + radius, -h/2),
+      curveTo(-w/2 + radius - cR, -h/2,
+              -w/2, -h/2 + radius - cR,
+              -w/2, -h/2 + radius),
+      lineTo(-w/2, h/2 - radius),
+      curveTo(-w/2, h/2 - radius + cR,
+              -w/2 + radius - cR, h/2,
+              -w/2 + radius, h/2),
+      lineTo(w/2 - radius, h/2)
+    )
+
+    closedPath(elts)
+  }
+
+  def star(points: Int, outerRadius: Double, innerRadius: Double, angle: Angle): Image = {
+    import PathElement._
+
+    val rotation = Angle.one / (points * 2)
+    val path =
+      (1 to (points * 2)).map { n =>
+        if(n % 2 == 0)
+          lineTo(outerRadius, rotation * n + angle)
+        else
+          lineTo(innerRadius, rotation * n + angle)
+      }.toList
+
+    closedPath(moveTo(outerRadius, angle) +: path)
+  }
+
+  def text(characters: String): Image =
+    Text(characters)
+
+  def triangle(w: Double, h: Double): Image =
+    Triangle(w,h)
+
+  def verticalLine(length: Double): Path =
+    line(0, length)
 }
