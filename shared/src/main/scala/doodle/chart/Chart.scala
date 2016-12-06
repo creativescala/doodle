@@ -1,19 +1,24 @@
 package doodle
 package chart
 
-/**
-  * The algebraic data type representing our Chart DSL
-  */
-sealed abstract class Chart extends Product with Serializable {
-  import Chart._
+/** The different types of chart we know how to draw */
+sealed abstract class ChartType extends Product with Serializable
+object ChartType {
+  final case object ScatterPlot extends ChartType
+}
 
+/**
+  * The representation of a Chart.
+  *
+  * A Chart doesn't have interesting recursive structure so we can use just a product type to represent it.
+  */
+final case class Chart(chartType: ChartType, series: Series, title: Option[String]) {
   def title(title: String): Chart =
-    Title(this, title)
+    this.copy(title = Some(title))
 }
 object Chart {
-  def scatterPlot(series: Series): Chart =
-    ScatterPlot(series)
+  // Constructors --------------------------------------------------------------
 
-  final case class Title(chart: Chart, title: String) extends Chart
-  final case class ScatterPlot(series: Series) extends Chart
+  def scatterPlot(series: Series): Chart =
+    Chart(ChartType.ScatterPlot, series, title = None)
 }

@@ -6,25 +6,20 @@ import doodle.core.Point
 /**
   * A `Series` represents a group of data that should be drawn on the chart.
   */
-sealed abstract class Series extends Product with Serializable {
-  import Series._
+final case class Series(data: List[Point], legend: Option[String]) {
+  def legend(legend: String): Series =
+    this.copy(legend = Some(legend))
 
-  def legend(title: String): Series =
-    Legend(this, title)
+  val min: Point =
+    data.fold(Point.zero){ (min, elt) =>
+      Point(min.x min elt.x, min.y min elt.y)
+    }
+  val max: Point =
+    data.fold(Point.zero){ (max, elt) =>
+      Point(max.x max elt.x, max.y max elt.y)
+    }
 }
 object Series {
   def data(points: List[Point]): Series =
-    Data(points)
-
-  final case class Data(points: List[Point]) extends Series {
-    val min: Point =
-      points.fold(Point.zero){ (min, elt) =>
-        Point(min.x min elt.x, min.y min elt.y)
-      }
-    val max: Point =
-      points.fold(Point.zero){ (max, elt) =>
-        Point(max.x max elt.x, max.y max elt.y)
-      }
-  }
-  final case class Legend(series: Series, title: String) extends Series 
+    Series(points, None)
 }
