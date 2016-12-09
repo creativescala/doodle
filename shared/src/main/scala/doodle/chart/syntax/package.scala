@@ -1,11 +1,11 @@
 package doodle
 package chart
 
-package object syntax extends AsPointSyntax
-    with AsSeriesSyntax
+package object syntax extends ToPointSyntax
+    with ToSeriesSyntax
     with ChartSyntax
 {
-  object asPoint extends AsPointSyntax
-  object asSeries extends AsSeriesSyntax
+  object toPoint extends ToPointSyntax
+  object toSeries extends ToSeriesSyntax
   object chart extends ChartSyntax
 }

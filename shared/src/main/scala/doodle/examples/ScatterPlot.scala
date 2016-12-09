@@ -19,12 +19,12 @@ object ScatterPlot {
     val data: Random[List[Point]] =
       List.range(0, 100).map(_ => point).sequence
 
-    val image = data.map(d => Chart.scatterPlot(d.asSeries)).run.asImage
+    val image = data.map(d => Chart.scatterPlot(d.toSeries)).run.asImage
   }
 
   object circle {
     val data: List[Point] =
       (for(a <- 0 to 360 by 5) yield { Point(1.0, a.degrees) }).toList
-    val image = Chart.scatterPlot(data.asSeries).asImage
+    val image = Chart.scatterPlot(data.toSeries).asImage
   }
 }
