@@ -35,4 +35,5 @@ object Layout {
 
   val vertical = triangle above (addOrigin(circle(100))) above curve
   val horizontal = triangle beside (addOrigin(circle(100))) beside curve
+  val at = (triangle at (Vec(100,100)))
 }
