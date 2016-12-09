@@ -56,6 +56,9 @@ sealed abstract class Image extends Product with Serializable {
   def transform(tx: core.transform.Transform): Image =
     Transform(tx, this)
 
+  def scale(x: Double, y: Double): Image =
+    this.transform(core.transform.Transform.scale(x, y))
+
   def rotate(angle: Angle): Image =
     this.transform(core.transform.Transform.rotate(angle))
 
@@ -283,6 +286,9 @@ object Image {
 
     closedPath(elts)
   }
+
+  def square(sideLength: Double): Image =
+    rectangle(sideLength, sideLength)
 
   def star(points: Int, outerRadius: Double, innerRadius: Double, angle: Angle): Image = {
     import PathElement._
