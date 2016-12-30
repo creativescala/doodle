@@ -13,7 +13,7 @@ final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) 
     Renderable.layout(Finalised.finalise(image, context), metrics)
 }
 object StandardInterpreter {
-  implicit val interpreter: Configuration => Interpreter = {
+  implicit val imageInterpreter: Configuration => Interpreter = {
     case (dc, metrics) => img => StandardInterpreter(dc, metrics).interpret(img)
   }
 }

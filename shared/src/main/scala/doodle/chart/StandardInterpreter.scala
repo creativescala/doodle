@@ -1,6 +1,7 @@
 package doodle
 package chart
 
+/*
 import doodle.core.{Color, Image, Vec}
 import doodle.syntax._
 
@@ -44,9 +45,9 @@ object StandardInterpreter {
       (xTick at Vec(i, 0)) on xLabel on (yTick at Vec(0, i)) on yLabel on accum
     }
 
-    val axes = xAxis on yAxis on ticks
+    val axis = xAxis on yAxis on ticks
 
-    pts on axes
+    pts on axis
   }
 
   implicit val chartInterpreter: Interpreter = {
@@ -58,3 +59,4 @@ object StandardInterpreter {
     }
   }
 }
+ */

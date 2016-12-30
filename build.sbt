@@ -40,7 +40,7 @@ lazy val doodle = crossProject.
       |import doodle.backend.Formats._
       |import doodle.chart.syntax._
       |import doodle.chart._
-      |import doodle.chart.StandardInterpreter._
+      |import doodle.chart.interpreter.StandardInterpreter._
       |import doodle.examples._
     """.trim.stripMargin,
     cleanupCommands in console := """

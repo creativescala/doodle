@@ -66,6 +66,8 @@ object Point {
   }
 
   val zero: Point = Cartesian(0,0)
+  val max: Point = Cartesian(Double.MaxValue, Double.MaxValue)
+  val min: Point = Cartesian(Double.MinValue, Double.MinValue)
 
   def apply(x: Double, y: Double) =
     cartesian(x, y)

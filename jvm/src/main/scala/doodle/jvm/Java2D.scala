@@ -107,12 +107,12 @@ object Java2D {
 
     def strokeAndFill(path: Path2D, previous: DrawingContext, current: DrawingContext): Unit = {
       current.stroke.foreach { s =>
-        if(previous.stroke != current.stroke)
+        //if(previous.stroke != current.stroke)
           setStroke(s)
         graphics.draw(path)
       }
       current.fillColor.foreach { f =>
-        if(previous.fillColor != current.fillColor)
+        //if(previous.fillColor != current.fillColor)
           setFill(f)
         graphics.fill(path)
       }
