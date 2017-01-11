@@ -5,7 +5,7 @@ import doodle.core._
 import doodle.syntax._
 import doodle.random._
 
-import cats.std.list._
+import cats.instances.list._
 import cats.syntax.cartesian._
 import cats.syntax.traverse._
 

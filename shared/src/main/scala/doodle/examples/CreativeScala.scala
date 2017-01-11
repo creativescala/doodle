@@ -266,7 +266,7 @@ object CreativeScala {
     def coloredRectangle(color: Color): Image =
        rectangle(20, 20).noLine fillColor color
 
-    // Basic structural recursion 
+    // Basic structural recursion
     def sequentialBoxes(n: Int, color: Color): Image =
       n match {
         case 0 => coloredRectangle(color)
