@@ -84,6 +84,7 @@ object Java2D {
       import PathElement._
 
       val path = new Path2D.Double()
+      path.moveTo(0, 0)
       elts.foreach {
         case MoveTo(Cartesian(x, y)) =>
           path.moveTo(x, y)
