@@ -1,25 +1,23 @@
-package doodle.core
+package doodle
+package core
 
-// import scalaz.syntax.applicative._
-// import scalaz.std.option._
+import cats.instances.option._
+import cats.syntax.cartesian._
 
-case class DrawingContext(
+import doodle.core.font.Font
+
+final case class DrawingContext(
   lineWidth: Option[Double],
   lineColor: Option[Color],
   lineCap: Option[Line.Cap],
   lineJoin: Option[Line.Join],
 
-  fillColor: Option[Color]
+  fillColor: Option[Color],
+
+  font: Option[Font]
 ) {
   def stroke: Option[Stroke] =
-    //Scalaz applicative syntax apparently doesn't yet compiled in Scala.js
-    //(lineWidth |@| lineColor |@| lineCap |@| lineJoin){Stroke.apply _}
-    for {
-      w <- lineWidth
-      c <- lineColor
-      p <- lineCap
-      j <- lineJoin
-    } yield Stroke(w, c, p, j)
+    (lineWidth |@| lineColor |@| lineCap |@| lineJoin) map { Stroke.apply _ }
 
   def fill: Option[Fill] =
     fillColor.map(Fill.apply _)
@@ -32,28 +30,54 @@ case class DrawingContext(
   def lineColor(color: Color): DrawingContext =
     this.copy(lineColor = Some(color))
 
+  def lineColorTransform(f: Color => Color): DrawingContext =
+    this.copy(lineColor = lineColor.map(f))
+
   def lineWidth(width: Double): DrawingContext =
     this.copy(lineWidth = if(width <= 0) None else Some(width))
 
   def fillColor(Color: Color): DrawingContext =
     this.copy(fillColor = Some(Color))
+
+  def fillColorTransform(f: Color => Color): DrawingContext =
+    this.copy(fillColor = fillColor.map(f))
+
+  def noLine: DrawingContext =
+    this.copy(lineWidth = None)
+
+  def noFill: DrawingContext =
+    this.copy(fillColor = None)
+
+  def font(font: Font): DrawingContext =
+    this.copy(font = Some(font))
 }
 
 object DrawingContext {
+  val empty =
+    DrawingContext(
+      lineWidth = None,
+      lineColor = None,
+      lineCap = None,
+      lineJoin = None,
+      fillColor = None,
+      font = None
+    )
   val whiteLines =
     DrawingContext(
       lineWidth = Some(1.0),
       lineColor = Some(Color.white),
       lineCap = Some(Line.Cap.Butt),
-      lineJoin = Some(Line.Join.Bevel),
-      fillColor = None
+      lineJoin = Some(Line.Join.Miter),
+      fillColor = None,
+      font = Some(Font.defaultSerif)
     )
   val blackLines =
     DrawingContext(
       lineWidth = Some(1.0),
       lineColor = Some(Color.black),
       lineCap = Some(Line.Cap.Butt),
-      lineJoin = Some(Line.Join.Bevel),
-      fillColor = None
+      lineJoin = Some(Line.Join.Miter),
+      fillColor = None,
+      font = Some(Font.defaultSerif)
     )
 }

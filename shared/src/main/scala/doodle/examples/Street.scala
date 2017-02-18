@@ -1,31 +1,30 @@
 package doodle.examples
 
 import doodle.core._
-import doodle.syntax._
 
-object Street extends Drawable {
+object Street {
   import Color._
 
-  val roof = Triangle(50, 30) fillColor brown
+  val roof = Image.triangle(50, 30) fillColor brown
 
   val frontDoor =
-    (Rectangle(50, 15) fillColor red) above (
-      (Rectangle(10, 25) fillColor black) on
-      (Rectangle(50, 25) fillColor red)
+    (Image.rectangle(50, 15) fillColor red) above (
+      (Image.rectangle(10, 25) fillColor black) on
+      (Image.rectangle(50, 25) fillColor red)
     )
 
   val house = roof above frontDoor
 
   val tree =
-    (Circle(25) fillColor green) above
-    (Rectangle(10, 20) fillColor brown)
+    (Image.circle(25) fillColor green) above
+    (Image.rectangle(10, 20) fillColor brown)
 
   val street =
     allBeside(
       (0 to 105 by 45) map { i =>
-        (Rectangle(30, 3) fillColor yellow) beside
-        (Rectangle(15, 3) fillColor black) above
-        (Rectangle(45, 7) fillColor black)
+        (Image.rectangle(30, 3) fillColor yellow) beside
+        (Image.rectangle(15, 3) fillColor black) above
+        (Image.rectangle(45, 7) fillColor black)
       }
     )
 
@@ -33,7 +32,7 @@ object Street extends Drawable {
   val houseAndGarden =
     (house beside tree) above street
 
-  val draw = (
+  val image = (
     houseAndGarden beside
     houseAndGarden beside
     houseAndGarden

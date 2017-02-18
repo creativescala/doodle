@@ -1,12 +1,11 @@
 package doodle.examples
 
 import doodle.core._
-import doodle.syntax._
 
-object Sierpinski extends Drawable {
+object Sierpinski {
   def triangle(size: Double): Image = {
     println(s"Creating a triangle")
-    Triangle(size, size) lineColor Color.magenta
+    Image.triangle(size, size) lineColor Color.magenta
   }
 
   def sierpinski(n: Int, size: Double): Image = {
@@ -19,5 +18,5 @@ object Sierpinski extends Drawable {
     }
   }
 
-  val draw = sierpinski(10, 512)
+  val image = sierpinski(10, 512)
 }

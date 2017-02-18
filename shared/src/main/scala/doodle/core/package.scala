@@ -3,7 +3,7 @@ package doodle
 package object core {
   private def reduceImages(images: Seq[Image])(combine: (Image, Image) => Image): Image =
     images match {
-      case Seq()      => Circle(0) lineWidth 0 // HACK: TODO: Implemenet a proper empty image!
+      case Seq()      => Image.Empty
       case Seq(image) => image
       case images     => images.reduceLeft(combine)
     }

@@ -2,9 +2,9 @@ package doodle.examples
 
 import doodle.core._
 
-object ChessBoard extends Drawable {
-  val blackSquare = Rectangle(30, 30) fillColor Color.black
-  val redSquare   = Rectangle(30, 30) fillColor Color.red
+object ChessBoard {
+  val blackSquare = Image.rectangle(30, 30) fillColor Color.black
+  val redSquare   = Image.rectangle(30, 30) fillColor Color.red
 
   val twoByTwo =
     (redSquare   beside blackSquare) above
@@ -14,7 +14,7 @@ object ChessBoard extends Drawable {
     (twoByTwo beside twoByTwo) above
     (twoByTwo beside twoByTwo)
 
-  val draw =
+  val image =
     (fourByFour beside fourByFour) above
     (fourByFour beside fourByFour)
 }

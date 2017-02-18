@@ -1,39 +1,41 @@
-import bintray.Keys._
+version in ThisBuild := "0.7.0"
 
-enablePlugins(GitVersioning)
+val catsVersion = "0.9.0"
 
-enablePlugins(GitBranchPrompt)
+scalaVersion in ThisBuild := "2.11.8"
 
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
     name          := "doodle",
     organization  := "underscoreio",
-    scalaVersion  := "2.11.5",
-    scalacOptions += "-feature"
-  ).jvmSettings(
-    bintrayPublishSettings : _*
-  ).jvmSettings(
-    bintrayOrganization in bintray := Some("underscoreio"),
-    packageLabels in bintray := Seq("scala", "training", "creative-scala"),
-    repository in bintray := "training",
+    scalaVersion  := "2.11.8",
+    scalaOrganization := "org.typelevel",
+    scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import", "-Ypartial-unification"),
+    scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
-    // Versioning:
-    version := "0.1.0",
-    // git.useGitDescribe := true,
-    // git.baseVersion := "0.1.0",
-    // git.gitTagToVersionNumber := { tag =>
-    //   Option(tag) filter (_ matches "[0-9][.][0.9][.][0-9]")
-    // },
-    // git.formattedShaVersion := {
-    //   git.gitHeadCommit.value map { sha =>
-    //     "0.1.0-" + sha.substring(0, 6) + "-snapshot"
-    //   }
-    // },
+    libraryDependencies ++= Seq(
+       "org.typelevel" %% "cats" % catsVersion,
+       "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+       "org.scalacheck" %% "scalacheck" % "1.12.1" % "test"
+    )
+  ).jvmSettings(
+    libraryDependencies ++= Seq(
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.11"
+    ),
+    bintrayOrganization := Some("underscoreio"),
+    bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
+    bintrayRepository := "training",
+    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     initialCommands in console := """
       |import doodle.core._
+      |import doodle.core.Image._
+      |import doodle.random._
       |import doodle.syntax._
-      |import doodle.jvm._
+      |import doodle.jvm.FileCanvas._
+      |import doodle.jvm.Java2DCanvas._
+      |import doodle.backend.StandardInterpreter._
+      |import doodle.backend.Formats._
       |import doodle.examples._
     """.trim.stripMargin,
     cleanupCommands in console := """
@@ -48,13 +50,14 @@ lazy val doodle = crossProject.
       |doodle.ScalaJSExample().main();
     """.trim.stripMargin,
     testFrameworks          += new TestFramework("utest.runner.Framework"),
-    libraryDependencies    ++= Seq(
-      "org.scalaz"                %%  "scalaz-core" % "7.1.0",
-      "org.scala-js"              %%% "scalajs-dom" % "0.7.0",
+    //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
+    libraryDependencies ++= Seq(
+      "org.typelevel"             %%% "cats"        % catsVersion,
+      "org.scala-js"              %%% "scalajs-dom" % "0.9.0",
+      "com.lihaoyi"               %%% "scalatags"   % "0.5.5",
       "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
       "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
     )
-    //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
   )
 
 lazy val doodleJVM = doodle.jvm
