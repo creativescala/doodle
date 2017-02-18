@@ -263,27 +263,45 @@ object CreativeScala {
     def nextColor(color: Color): Random[Color] =
       randomSpin map { spin => color.spin(spin.degrees) }
 
-    def coloredRectangle(color: Color): Image =
-       rectangle(20, 20).noLine fillColor color
+    def coloredRectangle(color: Color, size: Int = 40): Image =
+      rectangle(size, size).
+        lineWidth(5.0).
+        lineColor(color.spin(30.degrees)).
+        fillColor(color)
 
     // Basic structural recursion
     def sequentialBoxes(n: Int, color: Color): Image =
       n match {
-        case 0 => coloredRectangle(color)
+        case 0 => Image.empty
         case n => coloredRectangle(color) beside sequentialBoxes(n-1, color)
+      }
+
+    // Simple variant on structural recursion
+    def stackedBoxes(n: Int, color: Color): Image =
+      n match {
+        case 0 => Image.empty
+        case n => coloredRectangle(color) above stackedBoxes(n-1, color)
+      }
+
+    // Basic structural recursion with auxillary parameter
+    def growingBoxes(count: Int, size: Int): Image =
+      count match {
+        case 0 => Image.empty
+        case n =>
+          coloredRectangle(Color.royalBlue, size) beside growingBoxes(n-1, size + 10)
       }
 
     // Basic structural recursion modifying both parameters
     def gradientBoxes(n: Int, color: Color): Image =
       n match {
-        case 0 => coloredRectangle(color)
+        case 0 => Image.empty
         case n => coloredRectangle(color) beside gradientBoxes(n-1, color.spin(15.degrees))
       }
 
     // Structural recursion with applicative
     def randomColorBoxes(n: Int): Random[Image] =
       n match {
-        case 0 => randomColor map { c => coloredRectangle(c) }
+        case 0 => Random.always(Image.empty)
         case n =>
           val box = randomColor map { c => coloredRectangle(c) }
           val boxes = randomColorBoxes(n-1)
@@ -293,7 +311,7 @@ object CreativeScala {
     // Structural recursion with applicative (with sometimes more pleasing result)
     def noisyGradientBoxes(n: Int, color: Color): Random[Image] =
       n match {
-        case 0 => nextColor(color) map { c => coloredRectangle(c) }
+        case 0 => Random.always(Image.empty)
         case n =>
           val box = nextColor(color) map { c => coloredRectangle(c) }
           val boxes = noisyGradientBoxes(n-1, color.spin(15.degrees))
@@ -303,12 +321,49 @@ object CreativeScala {
     // Structural recursion with monad
     def randomGradientBoxes(n: Int, color: Color): Random[Image] =
       n match {
-        case 0 => Random.always(coloredRectangle(color))
+        case 0 => Random.always(Image.empty)
         case n =>
           val box = coloredRectangle(color)
           val boxes = nextColor(color) flatMap { c => randomGradientBoxes(n-1, c) }
           boxes map { b => box beside b }
       }
+
+    // Image written out as one big expression
+    val expression =
+      (
+        Image.rectangle(40, 40).
+          lineWidth(5.0).
+          lineColor(Color.royalBlue.spin(30.degrees)).
+          fillColor(Color.royalBlue) beside
+        Image.rectangle(40, 40).
+          lineWidth(5.0).
+          lineColor(Color.royalBlue.spin(30.degrees)).
+          fillColor(Color.royalBlue) beside
+        Image.rectangle(40, 40).
+          lineWidth(5.0).
+          lineColor(Color.royalBlue.spin(30.degrees)).
+          fillColor(Color.royalBlue) beside
+        Image.rectangle(40, 40).
+          lineWidth(5.0).
+          lineColor(Color.royalBlue.spin(30.degrees)).
+          fillColor(Color.royalBlue) beside
+        Image.rectangle(40, 40).
+          lineWidth(5.0).
+          lineColor(Color.royalBlue.spin(30.degrees)).
+          fillColor(Color.royalBlue)
+      )
+
+    // Image written out as one expression using abstraction (a name)
+    val abstraction =
+    {
+      val box =
+        Image.rectangle(40, 40).
+          lineWidth(5.0).
+          lineColor(Color.royalBlue.spin(30.degrees)).
+          fillColor(Color.royalBlue)
+
+      box beside box beside box beside box beside box
+    }
 
     val image: Random[Image] = {
       val boxes = randomColor flatMap { c => randomGradientBoxes(4, c) }
@@ -474,5 +529,38 @@ object CreativeScala {
       List.tabulate(5){ n =>
         LSystem.iterate(n, List(forward(stepSize), noop), rule)
       }.map { is => Turtle.draw(is) }.foldLeft(Image.empty){ _ beside _ }
+  }
+
+  object cross {
+    val circle = Image.circle(20)
+
+    def basic(n: Int): Image =
+      n match {
+        case 0 =>
+          circle
+        case n =>
+          circle beside (circle above basic(n-1) above circle) beside circle
+      }
+
+    def shrinking(n: Int): Image =
+      n match {
+        case 0 =>
+          Image.circle(40)
+        case n =>
+          val circle = Image.circle(40 * (1.0 / (n + 1)))
+          circle beside (circle above shrinking(n-1) above circle) beside circle
+      }
+  }
+
+  object sierpinski {
+    val triangle = Image.triangle(10, 10) lineColor Color.magenta
+
+    def sierpinski(count: Int): Image =
+      count match {
+        case 0 => triangle above (triangle beside triangle)
+        case n =>
+          val unit = sierpinski(n-1)
+          unit above (unit beside unit)
+      }
   }
 }
