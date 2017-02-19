@@ -5,9 +5,7 @@ import doodle.core.{Image, DrawingContext, Point, PathElement}
 import doodle.core.transform
 
 /**
-  * A Finalised object has a DrawingContext associated with every leaf node in
-  * the tree. This meanas we can calculate the dimensions of every element and
-  * hence lay it out.
+  * A Finalised object has a DrawingContext associated with every leaf node in the tree. This meanas we can calculate the dimensions of every element and hence lay it out.
   */
 sealed abstract class Finalised extends Product with Serializable
 object Finalised {
@@ -24,17 +22,38 @@ object Finalised {
   def finalise(image: Image, context: DrawingContext): Finalised = {
     import PathElement._
     import Point._
+    import Trampoline._
 
-    def loop(image: Image, context: DrawingContext): Finalised =
+    def binaryStep(
+      first: Image,
+      second: Image,
+      context: DrawingContext,
+      create: (Finalised, Finalised) => Finalised,
+      cont: Finalised => Trampoline[Finalised]): Trampoline[Finalised] =
+    {
+      val k = (a: Finalised) => {
+        continue {
+            val k = (b: Finalised) => { cont(create(a, b)) }
+
+            step(second, context)(k)
+          }
+      }
+
+      continue(step(first, context)(k))
+    }
+
+    def step(image: Image,
+             context: DrawingContext)
+             (cont: Finalised => Trampoline[Finalised]): Trampoline[Finalised] =
       image match {
         case Image.Empty =>
-          Empty
+          continue(cont(Empty))
 
         case Image.OpenPath(elts) =>
-          OpenPath(context, elts)
+          continue(cont(OpenPath(context, elts)))
 
         case Image.ClosedPath(elts) =>
-          ClosedPath(context, elts)
+          continue(cont(ClosedPath(context, elts)))
 
         case Image.Circle(r) =>
           // See http://spencermortensen.com/articles/bezier-circle/ for approximation
@@ -48,7 +67,7 @@ object Finalised {
             BezierCurveTo(cartesian(-cR, -r), cartesian(-r, -cR), cartesian(-r, 0.0)),
             BezierCurveTo(cartesian(-r, cR), cartesian(-cR, r), cartesian(0.0, r))
           )
-          ClosedPath(context, elts)
+          continue(cont(ClosedPath(context, elts)))
 
         case Image.Rectangle(w, h) =>
           val left = -w/2
@@ -62,7 +81,7 @@ object Finalised {
             LineTo(cartesian(left, bottom)),
             LineTo(cartesian(left, top))
           )
-          ClosedPath(context, elts)
+          continue(cont(ClosedPath(context, elts)))
 
         case Image.Triangle(w, h) =>
           val left = -w/2
@@ -76,27 +95,28 @@ object Finalised {
             LineTo(cartesian(right, bottom)),
             LineTo(cartesian(left, bottom))
           )
-          ClosedPath(context, elts)
+          continue(cont(ClosedPath(context, elts)))
 
         case Image.Text(txt) =>
-          Text(context, txt)
+          continue(cont(Text(context, txt)))
 
         case Image.Beside(l, r) =>
-          Beside(loop(l, context), loop(r, context))
+          binaryStep(l, r, context, Beside.apply _, cont)
 
         case Image.Above(t, b) =>
-          Above(loop(t, context), loop(b, context))
+          binaryStep(t, b, context, Above.apply _, cont)
 
         case Image.On(o, u) =>
-          On(loop(o, context), loop(u, context))
+          binaryStep(o, u, context, On.apply _, cont)
 
         case Image.Transform(tx, i) =>
-          Transform(tx, loop(i, context))
+          continue(step(i, context){ (i: Finalised) =>
+                     continue(cont(Transform(tx, i)))})
 
         case Image.ContextTransform(f, i) =>
-          loop(i, f(context))
+          continue(step(i, f(context))(cont))
       }
 
-    loop(image, context)
+    step(image, context)(i => stop(i)).value
   }
 }

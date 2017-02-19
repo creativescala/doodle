@@ -11,30 +11,47 @@ object Renderable {
     */
   def layout(finalised: Finalised, metrics: Metrics): Renderable = {
     import Finalised._
+    import Trampoline._
     // The main loop converting local to global coordinates.
     //
     // We pass around:
     // - the current transform
     // - the offset from the current origin
     //
-    // Each Transform node defines a new origin from which points under that Transform
-    // will be transformed relative to.
-    def loop(finalised: Finalised, origin: Point, tx: transform.Transform): List[CanvasElement] =
+    // Each Transform node defines a new origin from which points under that Transform will be transformed relative to.
+    def step(finalised: Finalised,
+             origin: Point,
+             tx: transform.Transform)
+            (cont: List[CanvasElement] => Trampoline[List[CanvasElement]]): Trampoline[List[CanvasElement]] =
       finalised match {
         case ClosedPath(ctx, elts) =>
           val fullTx = transform.Transform.translate(origin.toVec) andThen tx
-          List(CanvasElement.ClosedPath(ctx, elts.map(_.transform(fullTx)).toList))
+          cont(
+            List(
+              CanvasElement.ClosedPath(ctx, elts.map{ _.transform(fullTx) }.toList)
+            )
+          )
 
         case OpenPath(ctx, elts) =>
           val fullTx = transform.Transform.translate(origin.toVec) andThen tx
-          List(CanvasElement.OpenPath(ctx, elts.map(_.transform(fullTx)).toList))
+          cont(
+            List(
+              CanvasElement.OpenPath(ctx, elts.map{ _.transform(fullTx) }.toList)
+            )
+          )
 
         case t @ Text(ctx, txt) =>
           val fullTx = transform.Transform.translate(origin.toVec) andThen tx
-          List(CanvasElement.Text(ctx, fullTx, boundingBox(t, metrics), txt))
+          cont(
+            List(CanvasElement.Text(ctx, fullTx, boundingBox(t, metrics), txt))
+          )
 
         case On(t, b) =>
-          loop(b, origin, tx) ++ loop(t, origin, tx)
+          continue(step(b, origin, tx){ elts1 =>
+                      continue(step(t, origin, tx){ elts2 =>
+                                 cont(elts1 ++ elts2)
+                               })
+                   })
 
         case b @ Beside(l, r) =>
           val box = boundingBox(b, metrics)
@@ -64,7 +81,11 @@ object Renderable {
               rCenterX - rBox.center.x,
               origin.y
             )
-          loop(l, lOrigin, tx) ++ loop(r, rOrigin, tx)
+          continue(step(l, lOrigin, tx){ elts1 =>
+                     continue(step(r, rOrigin, tx){ elts2 =>
+                                cont(elts1 ++ elts2)
+                              })
+                   })
 
         case a @ Above(t, b) =>
           val box = boundingBox(a, metrics)
@@ -85,7 +106,11 @@ object Renderable {
               bCenterY - bBox.center.y
             )
 
-          loop(t, tOrigin, tx) ++ loop(b, bOrigin, tx)
+          continue(step(t, tOrigin, tx){ elts1 =>
+                     continue(step(b, bOrigin, tx){ elts2 =>
+                                cont(elts1 ++ elts2)
+                              })
+                   })
 
         case Transform(newTx, i) =>
           // Translate around the local origin, not the global one
@@ -93,14 +118,15 @@ object Renderable {
           val fullTx =
              newTx andThen there andThen tx
 
-          loop(i, Point.zero, fullTx)
+          continue(step(i, Point.zero, fullTx)(cont))
 
         case Empty =>
-          List.empty[CanvasElement]
+          cont(List.empty[CanvasElement])
       }
 
-    Renderable(boundingBox(finalised, metrics),
-               loop(finalised, Point.zero, transform.Transform.identity))
+    val elts =
+      step(finalised, Point.zero, transform.Transform.identity){ stop(_) }.value
+    Renderable(boundingBox(finalised, metrics), elts)
   }
 
   def boundingBox(finalised: Finalised, metrics: Metrics): BoundingBox = {
