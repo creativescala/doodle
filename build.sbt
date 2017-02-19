@@ -16,7 +16,7 @@ lazy val doodle = crossProject.
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(
        "org.typelevel" %% "cats" % catsVersion,
-       "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+       "org.scalatest" %% "scalatest" % "3.0.1" % "test",
        "org.scalacheck" %% "scalacheck" % "1.12.1" % "test"
     )
   ).jvmSettings(
