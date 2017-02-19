@@ -32,7 +32,15 @@ class StackSafetySpec extends FlatSpec with Matchers with PropertyChecks {
         Gen.const(
           (1 to 2000).map{ i => Image.empty }.foldLeft(Image.empty){ _ on _ }
         ),
-          // Leaf
+        // A lot of "above" to consume stack space
+        Gen.const(
+          (1 to 2000).map{ i => Image.empty }.foldLeft(Image.empty){ _ above _ }
+        ),
+        // A lot of "beside" to consume stack space
+        Gen.const(
+          (1 to 2000).map{ i => Image.empty }.foldLeft(Image.empty){ _ beside _ }
+        ),
+        // Leaf
         Gen.const(Image.circle(10))
       )
 
