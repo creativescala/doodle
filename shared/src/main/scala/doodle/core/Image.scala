@@ -222,19 +222,18 @@ object Image {
   def interpolatingSpline(points: Seq[Point]): Path =
     catmulRom(points)
 
-  /*
-   * Interpolate a spline (a curve) that passes through all the given points,
-   * using the Catmul Rom formulation (see, e.g.,
-   * https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
-   *
-   * The tension can be changed to control how tightly the curve turns. It defaults to 0.5.
-   *
-   * The Catmul Rom algorithm requires a point before and after each pair of
-   * points that define the curve. To meet this condition for the first and last
-   * points in `points`, they are repeated.
-   *
-   * In `points` has less than two elements an empty `Path` is returned.
-   */
+  /**
+    * Interpolate a spline (a curve) that passes through all the given points,
+    * using the Catmul Rom formulation (see, e.g., https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
+    *
+    * The tension can be changed to control how tightly the curve turns. It defaults to 0.5.
+    *
+    * The Catmul Rom algorithm requires a point before and after each pair of
+    * points that define the curve. To meet this condition for the first and last
+    * points in `points`, they are repeated.
+    *
+    * If `points` has less than two elements an empty `Path` is returned.
+    */
   def catmulRom(points: Seq[Point], tension: Double = 0.5): Path = {
     /*
     To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
