@@ -47,16 +47,20 @@ class StackSafetySpec extends FlatSpec with Matchers with PropertyChecks {
   implicit val arbitraryImage: Arbitrary[Image] = Arbitrary(genImage(4))
 
   "Finalising an Image" should "be stack safe" in {
+    val dummyMetrics = (f: Font, s: String) => BoundingBox.empty
     forAll { (i: Image) =>
-      noException should be thrownBy Finalised.finalise(i, DrawingContext.whiteLines)
+      noException should be thrownBy Finalised.finalise(i, DrawingContext.whiteLines, dummyMetrics)
     }
   }
 
   "Rendering an Image" should "be stack safe" in {
     val dummyMetrics = (f: Font, s: String) => BoundingBox.empty
+    val dummyCanvas = new Canvas {
+      def render(elt: CanvasElement): Unit = ()
+    }
     forAll { (i: Image) =>
-      val finalised = Finalised.finalise(i, DrawingContext.whiteLines)
-      noException should be thrownBy Renderable.layout(finalised, dummyMetrics)
+      val finalised = Finalised.finalise(i, DrawingContext.whiteLines, dummyMetrics)
+      noException should be thrownBy Render.render(dummyCanvas, finalised)
     }
   }
 }

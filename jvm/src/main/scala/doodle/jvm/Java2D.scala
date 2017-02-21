@@ -3,13 +3,12 @@ package jvm
 
 import doodle.core._
 import doodle.core.transform.Transform
-import doodle.backend.{CanvasElement, Metrics, Renderable}
+import doodle.backend.{Canvas, CanvasElement, Metrics, Finalised, Render}
 
 import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, RenderingHints}
 import java.awt.image.BufferedImage
 import java.awt.geom.{AffineTransform, Path2D}
 
-import scala.annotation.tailrec
 
 /** Various utilities for using Java2D */
 object Java2D {
@@ -39,11 +38,11 @@ object Java2D {
     new AwtColor(r.get, g.get, b.get, a.toUnsignedByte.get)
   }
 
-  def draw(graphics: Graphics2D, screenCenter: Point, initialContext: DrawingContext, renderable: Renderable): Unit = {
+  def draw(graphics: Graphics2D, screenCenter: Point, initialContext: DrawingContext, finalised: Finalised): Unit = {
     import CanvasElement._
     import Point.extractors.Cartesian
 
-    val bb = renderable.boundingBox
+    val bb = finalised.boundingBox
     val center = bb.center
 
     // Convert from canvas coordinates to screen coordinates.
@@ -106,15 +105,13 @@ object Java2D {
       new AffineTransform(elts(0), elts(3), elts(1), elts(4), elts(2), elts(5))
     }
 
-    def strokeAndFill(path: Path2D, previous: DrawingContext, current: DrawingContext): Unit = {
+    def strokeAndFill(path: Path2D, current: DrawingContext): Unit = {
       current.stroke.foreach { s =>
-        //if(previous.stroke != current.stroke)
-          setStroke(s)
+        setStroke(s)
         graphics.draw(path)
       }
       current.fillColor.foreach { f =>
-        //if(previous.fillColor != current.fillColor)
-          setFill(f)
+        setFill(f)
         graphics.fill(path)
       }
     }
@@ -123,22 +120,18 @@ object Java2D {
     initialContext.stroke.foreach { s => setStroke(s) }
     initialContext.fillColor.foreach { f => setFill(f) }
 
-    @tailrec
-    def loop(previousCtx: DrawingContext, elts: List[CanvasElement]): Unit = {
-      elts match {
-        case Nil => ()
-        case e :: es =>
-          e match {
+    val canvas =
+      new Canvas {
+        def render(elt: CanvasElement): Unit =
+          elt match {
             case ClosedPath(ctx, elts) =>
               val path = toPath2D(elts)
               path.closePath()
-              strokeAndFill(path, previousCtx, ctx)
-              loop(ctx, es)
+              strokeAndFill(path, ctx)
 
             case OpenPath(ctx, elts) =>
               val path = toPath2D(elts)
-              strokeAndFill(path, previousCtx, ctx)
-              loop(ctx, es)
+              strokeAndFill(path, ctx)
 
             case Text(ctx, tx, bb, chars) =>
               // We have to do a few different transformations here:
@@ -156,12 +149,10 @@ object Java2D {
               val currentTx = graphics.getTransform()
               graphics.transform(toAffineTransform(fullTx))
               ctx.stroke.foreach { s =>
-                if(previousCtx.stroke != ctx.stroke)
-                  setStroke(s)
+                setStroke(s)
               }
               ctx.fillColor.foreach { f =>
-                if(previousCtx.fillColor != ctx.fillColor)
-                  setFill(f)
+                setFill(f)
               }
               ctx.font map { f =>
                 graphics.setFont(FontMetrics.toJFont(f))
@@ -169,14 +160,10 @@ object Java2D {
               }
               graphics.setTransform(currentTx)
 
-              loop(ctx, es)
-
             case Empty =>
-              loop(previousCtx, es)
           }
       }
-    }
 
-    loop(initialContext, renderable.elements)
+    Render.render(canvas, finalised)
   }
 }

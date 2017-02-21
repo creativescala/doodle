@@ -7,7 +7,7 @@ import doodle.backend._
 
 import org.scalajs.dom
 
-final case class SvgCanvas(canvas: dom.svg.SVG, width: Int, height: Int) extends Draw {
+final case class SvgCanvas(svgCanvas: dom.svg.SVG, width: Int, height: Int) extends Draw {
   def draw(interpreter: Configuration => Interpreter, image: Image): Unit = {
     import scalatags.JsDom.styles.{font => cssFont}
     import scalatags.JsDom.{svgTags => svg}
@@ -15,13 +15,13 @@ final case class SvgCanvas(canvas: dom.svg.SVG, width: Int, height: Int) extends
     import scalatags.JsDom.implicits._
 
     val dc = DrawingContext.blackLines
-    val metrics = FontMetrics(canvas).boundingBox _
-    val renderable = interpreter(dc, metrics)(image)
+    val metrics = FontMetrics(svgCanvas).boundingBox _
+    val finalised = interpreter(dc, metrics)(image)
 
     val screenCenter = Point.cartesian(width / 2, height / 2)
-    val center = renderable.boundingBox.center
+    val center = finalised.boundingBox.center
 
-    // Convert from canvas coordinates to end coordinates
+    // Convert from canvas coordinates to screen coordinates
     val canvasToScreen: Transform =
       Transform.translate(-center.x, -center.y)
         .andThen(Transform.horizontalReflection)
@@ -39,43 +39,47 @@ final case class SvgCanvas(canvas: dom.svg.SVG, width: Int, height: Int) extends
     }
 
     val root = svg.g(svgAttrs.transform:=toSvgTransform(canvasToScreen)).render
-    canvas.appendChild(root)
+    svgCanvas.appendChild(root)
 
     import CanvasElement._
-    renderable.elements.foreach {
-      case ClosedPath(ctx, elts) =>
-        val dAttr = SvgCanvas.toSvgPath(elts) ++ "Z"
-        val style = SvgCanvas.toStyle(ctx)
-        val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
-        root.appendChild(elt)
+    val canvas = new Canvas {
+      def render(elt: CanvasElement): Unit =
+        elt match {
+          case ClosedPath(ctx, elts) =>
+            val dAttr = SvgCanvas.toSvgPath(elts) ++ "Z"
+            val style = SvgCanvas.toStyle(ctx)
+            val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
+            root.appendChild(elt)
 
-      case OpenPath(ctx, elts) =>
-        val dAttr = SvgCanvas.toSvgPath(elts)
-        val style = SvgCanvas.toStyle(ctx)
-        val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
-        root.appendChild(elt)
+          case OpenPath(ctx, elts) =>
+            val dAttr = SvgCanvas.toSvgPath(elts)
+            val style = SvgCanvas.toStyle(ctx)
+            val elt = svg.path(svgAttrs.style:=style, svgAttrs.d:=dAttr).render
+            root.appendChild(elt)
 
-      case Text(ctx, tx, bb, chars) =>
-        val font = ctx.font.foreach { f =>
-          val style = SvgCanvas.toStyle(ctx)
-          // SVG x and y coordinates give the bottom left corner of the text. Our
-          // bounding box origin is at the center of the text.
-          val bottomLeft = Transform.translate(-bb.width/2, -bb.height/2)
-          val fullTx = Transform.horizontalReflection andThen tx andThen bottomLeft
-          val font = FontMetrics.toCss(f)
-          val elt = svg.text(svgAttrs.style:=style,
-                             svgAttrs.x:=0,
-                             svgAttrs.y:=0,
-                             svgAttrs.transform:=toSvgTransform(fullTx),
-                             cssFont:=font,
-                             chars).render
-          root.appendChild(elt)
+          case Text(ctx, tx, bb, chars) =>
+            val font = ctx.font.foreach { f =>
+              val style = SvgCanvas.toStyle(ctx)
+              // SVG x and y coordinates give the bottom left corner of the text. Our
+              // bounding box origin is at the center of the text.
+              val bottomLeft = Transform.translate(-bb.width/2, -bb.height/2)
+              val fullTx = Transform.horizontalReflection andThen tx andThen bottomLeft
+              val font = FontMetrics.toCss(f)
+              val elt = svg.text(svgAttrs.style:=style,
+                                 svgAttrs.x:=0,
+                                 svgAttrs.y:=0,
+                                 svgAttrs.transform:=toSvgTransform(fullTx),
+                                 cssFont:=font,
+                                 chars).render
+              root.appendChild(elt)
 
+            }
+
+          case Empty =>
+            // Do nothing
         }
-
-      case Empty =>
-        // Do nothing
     }
+    Render.render(canvas, finalised)
   }
 }
 object SvgCanvas {

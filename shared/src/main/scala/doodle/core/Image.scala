@@ -90,8 +90,8 @@ sealed abstract class Path extends Image {
     }
 }
 object Image {
-  final case class OpenPath(elements: Seq[PathElement]) extends Path
-  final case class ClosedPath(elements: Seq[PathElement]) extends Path
+  final case class OpenPath(elements: List[PathElement]) extends Path
+  final case class ClosedPath(elements: List[PathElement]) extends Path
   final case class Text(get: String) extends Image
   final case class Circle(r: Double) extends Image
   final case class Rectangle(w: Double, h: Double) extends Image
@@ -108,14 +108,14 @@ object Image {
   def closedPath(elements: Seq[PathElement]): Path = {
     // Paths must start at the origin. Thus we always move to the origin to
     // start.
-    ClosedPath(PathElement.moveTo(0,0) +: elements)
+    ClosedPath((PathElement.moveTo(0,0) +: elements).toList)
   }
 
 
   def openPath(elements: Seq[PathElement]): Path = {
     // Paths must start at the origin. Thus we always move to the origin to
     // start.
-    OpenPath(PathElement.moveTo(0,0) +: elements)
+    OpenPath((PathElement.moveTo(0,0) +: elements).toList)
   }
 
   def text(characters: String): Image =
@@ -126,6 +126,9 @@ object Image {
 
   def rectangle(w: Double, h: Double): Image =
     Rectangle(w,h)
+
+  def square(side: Double): Image =
+    rectangle(side, side)
 
   def regularPolygon(sides: Int, radius: Double, angle: Angle): Image = {
     import PathElement._
@@ -271,25 +274,25 @@ object Image {
       )
 
 
-    def iter(points: Seq[Point]): Seq[PathElement] = {
+    def iter(points: List[Point]): List[PathElement] = {
       points match {
-        case pt0 +: pt1 +: pt2 +: pt3 +: pts =>
+        case pt0 :: pt1 :: pt2 :: pt3 :: pts =>
           toCurve(pt0, pt1, pt2, pt3) +: iter(pt1 +: pt2 +: pt3 +: pts)
 
-        case pt0 +: pt1 +: pt2 +: Seq() =>
+        case pt0 :: pt1 :: pt2 :: Seq() =>
           // Case where we've reached the end of the sequence of points
           // We repeat the last point
           val pt3 = pt2
-          Seq(toCurve(pt0, pt1, pt2, pt3))
+          List(toCurve(pt0, pt1, pt2, pt3))
 
         case _ =>
           // There were two or fewer points in the sequence
-          Seq.empty[PathElement]
+          List.empty[PathElement]
       }
     }
 
-    points.headOption.fold(OpenPath(Seq.empty)){ pt0 =>
-      OpenPath(PathElement.moveTo(pt0) +: iter(pt0 +: points))
+    points.headOption.fold(OpenPath(List.empty)){ pt0 =>
+      OpenPath(PathElement.moveTo(pt0) :: iter(pt0 :: points.toList))
     }
   }
 

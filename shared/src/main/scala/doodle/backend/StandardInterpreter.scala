@@ -9,8 +9,8 @@ import doodle.core.{Image, DrawingContext}
   *  interpreter.
   */
 final case class StandardInterpreter(context: DrawingContext, metrics: Metrics) {
-  def interpret(image: Image): Renderable =
-    Renderable.layout(Finalised.finalise(image, context), metrics)
+  def interpret(image: Image): Finalised =
+    Finalised.finalise(image, context, metrics)
 }
 object StandardInterpreter {
   implicit val interpreter: Configuration => Interpreter = {
