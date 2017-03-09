@@ -563,4 +563,39 @@ object CreativeScala {
           unit above (unit beside unit)
       }
   }
+
+  object point {
+    val point = Image.circle(5).at(40, 40).fillColor(Color.red).noLine
+    val spacer = Image.square(5).noLine.noFill
+    val xAxis = Image.line(40, 0) above spacer above Image.text("x")
+    val yAxis = Image.line(0, 40) beside spacer beside Image.text("y")
+    val cartesian = xAxis on yAxis on point
+  }
+
+  object parametricCircle {
+    def parametricCircle(angle: Angle): Point =
+      Point.polar(100, angle)
+
+    def sample(f: Angle => Point, samples: Int): Image = {
+      val dot = Image.circle(5).fillColor(Color.crimson.spin(15.degrees).desaturate(0.4.normalized)).lineColor(Color.crimson).lineWidth(3)
+      val step = Angle.one / samples
+      def loop(count: Int): Image = {
+        count match {
+          case 0 => dot.at(f(Angle.zero).toVec)
+          case n =>
+            val angle = step * n
+            dot.at(f(angle).toVec) on loop(n - 1)
+        }
+      }
+
+      loop(samples)
+    }
+    val spacer = Image.square(40).noFill.noLine
+
+    val image = (sample(parametricCircle _, 4)).
+      beside(spacer).
+      beside(sample(parametricCircle _, 8)).
+      beside(spacer).
+      beside(sample(parametricCircle _, 16))
+  }
 }
