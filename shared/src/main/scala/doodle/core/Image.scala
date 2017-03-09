@@ -121,8 +121,18 @@ object Image {
   def text(characters: String): Image =
     Text(characters)
 
-  def line(start: Point, end: Point): Image =
-    openPath(List(PathElement.moveTo(start), PathElement.lineTo(end)))
+  def line(x: Double, y: Double): Image = {
+    val startX = -x/2
+    val startY = -y/2
+    val endX = x/2
+    val endY = y/2
+    openPath(
+      List(
+        PathElement.moveTo(startX, startY),
+        PathElement.lineTo(endX, endY)
+      )
+    )
+  }
 
   def circle(r: Double): Image =
     Circle(r)
