@@ -1,14 +1,14 @@
 package doodle.syntax
 
 import doodle.core.Image
-import doodle.backend.{Draw, Interpreter, Configuration, Save}
+import doodle.backend.Interpreter
 
 trait ImageSyntax {
   implicit class ToImageOps(val image: Image) {
-    def draw(implicit draw: Draw, interpreter: Configuration => Interpreter): Unit =
-      draw.draw(interpreter, image)
+    def draw(implicit draw: Interpreter.Draw): Unit =
+      draw.interpret(image)
 
-    def save[Format](fileName: String)(implicit save: Save[Format], interpreter: Configuration => Interpreter): Unit =
-      save.save[Format](fileName, interpreter, image)
+    def save[Format](fileName: String)(implicit save: Interpreter.Save[Format]): Unit =
+      save.interpret(image)(fileName)
   }
 }

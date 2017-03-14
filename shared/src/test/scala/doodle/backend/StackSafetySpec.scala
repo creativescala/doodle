@@ -56,7 +56,9 @@ class StackSafetySpec extends FlatSpec with Matchers with PropertyChecks {
   "Rendering an Image" should "be stack safe" in {
     val dummyMetrics = (f: Font, s: String) => BoundingBox.empty
     val dummyCanvas = new Canvas {
-      def render(elt: CanvasElement): Unit = ()
+      def closedPath(context: doodle.core.DrawingContext,elements: List[doodle.core.PathElement]): Unit = ()
+      def openPath(context: doodle.core.DrawingContext,elements: List[doodle.core.PathElement]): Unit = ()
+      def text(context: doodle.core.DrawingContext,tx: doodle.core.transform.Transform,boundingBox: doodle.backend.BoundingBox,characters: String): Unit = ()
     }
     forAll { (i: Image) =>
       val finalised = Finalised.finalise(i, DrawingContext.whiteLines, dummyMetrics)

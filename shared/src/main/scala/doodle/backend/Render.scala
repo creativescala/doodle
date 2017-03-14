@@ -26,23 +26,19 @@ object Render {
       finalised match {
         case ClosedPath(ctx, elts, bb) =>
           val fullTx = transform.Transform.translate(origin.toVec) andThen tx
-          canvas.render(
-            CanvasElement.ClosedPath(ctx, elts.map{ _.transform(fullTx) })
-          )
+          canvas.closedPath(ctx, elts.map{ _.transform(fullTx) })
 
           cont()
 
         case OpenPath(ctx, elts, bb) =>
           val fullTx = transform.Transform.translate(origin.toVec) andThen tx
-          canvas.render(
-            CanvasElement.OpenPath(ctx, elts.map{ _.transform(fullTx) })
-          )
+          canvas.openPath(ctx, elts.map{ _.transform(fullTx) })
 
           cont()
 
         case t @ Text(ctx, txt, bb) =>
           val fullTx = transform.Transform.translate(origin.toVec) andThen tx
-          canvas.render(CanvasElement.Text(ctx, fullTx, t.boundingBox, txt))
+          canvas.text(ctx, fullTx, t.boundingBox, txt)
 
           cont()
 
