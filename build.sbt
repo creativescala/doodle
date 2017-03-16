@@ -17,7 +17,7 @@ lazy val doodle = crossProject.
     libraryDependencies ++= Seq(
        "org.typelevel" %% "cats" % catsVersion,
        "org.scalatest" %% "scalatest" % "3.0.1" % "test",
-       "org.scalacheck" %% "scalacheck" % "1.12.1" % "test"
+       "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
     )
   ).jvmSettings(
     libraryDependencies ++= Seq(
@@ -49,14 +49,11 @@ lazy val doodle = crossProject.
     bootSnippet             := """
       |doodle.ScalaJSExample().main();
     """.trim.stripMargin,
-    testFrameworks          += new TestFramework("utest.runner.Framework"),
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
-      "org.typelevel"             %%% "cats"        % catsVersion,
-      "org.scala-js"              %%% "scalajs-dom" % "0.9.0",
-      "com.lihaoyi"               %%% "scalatags"   % "0.5.5",
-      "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
-      "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
+      "org.typelevel" %%% "cats"        % catsVersion,
+      "org.scala-js"  %%% "scalajs-dom" % "0.9.0",
+      "com.lihaoyi"   %%% "scalatags"   % "0.6.3"
     )
   )
 
