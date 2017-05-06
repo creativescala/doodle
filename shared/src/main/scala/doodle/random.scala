@@ -54,12 +54,15 @@ object random {
   object Random {
     import RandomOp._
 
+    /** Create a `Random` that always generates the given value. */
     def always[A](in: A): Random[A] =
       Free.pure(in)
 
+    /** Create a `Random` that generates an `Int` uniformly distributed across the entire range. */
     def int: Random[Int] =
       Free.liftF[RandomOp,Int](RInt)
 
+    /** Create a `Random` that generates an `Int` uniformly distributed in the range greater than or equal to `lower` and less than `upper`. */
     def int(lower: Int, upper: Int): Random[Int] = {
       val high = (upper max lower)
       val low = (upper min lower)
@@ -67,12 +70,15 @@ object random {
       natural(range).map { n => n + low }
     }
 
+    /** Create a `Random` that generates an `Int` uniformly distributed in the range greater than or equal to zero and less than `upper`. */
     def natural(upperLimit: Int): Random[Int] =
       Free.liftF[RandomOp,Int](Natural(upperLimit))
 
+    /** Create a `Random` that generates a `Double` uniformly distributed between 0.0 and 1.0. */
     def double: Random[Double] =
       Free.liftF[RandomOp,Double](RDouble)
 
+    /** Create a `Random` that generates one of the provided values with uniform distribution. */
     def oneOf[A](elts: A*): Random[A] = {
       val length = elts.length
       Random.natural(length).map (idx => elts(idx))
