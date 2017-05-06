@@ -5,7 +5,7 @@ import doodle.js.SvgFrame
 import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 
-@JSExport object Main extends JSApp {
+object Main extends JSApp {
   @JSExport def main(): Unit = {
     import doodle.backend.StandardInterpreter._
 

@@ -2,14 +2,14 @@ version in ThisBuild := "0.7.0"
 
 val catsVersion = "0.9.0"
 
-scalaVersion in ThisBuild := "2.11.8"
+scalaVersion in ThisBuild := "2.12.1"
 
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
     name          := "doodle",
     organization  := "underscoreio",
-    scalaVersion  := "2.11.8",
+    scalaVersion  := "2.12.1",
     scalaOrganization := "org.typelevel",
     scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import", "-Ypartial-unification"),
     scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
@@ -52,7 +52,7 @@ lazy val doodle = crossProject.
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats"        % catsVersion,
-      "org.scala-js"  %%% "scalajs-dom" % "0.9.0",
+      "org.scala-js"  %%% "scalajs-dom" % "0.9.2",
       "com.lihaoyi"   %%% "scalatags"   % "0.6.3"
     )
   )
