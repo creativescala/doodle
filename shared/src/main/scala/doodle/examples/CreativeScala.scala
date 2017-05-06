@@ -224,7 +224,6 @@ object CreativeScala {
 
   object randomConcentricCircles {
     import doodle.random._
-    import cats.syntax.cartesian._
 
     val randomAngle: Random[Angle] =
       Random.double.map(x => x.turns)
@@ -237,12 +236,14 @@ object CreativeScala {
 
     val randomPastel = randomColor(0.7.normalized, 0.7.normalized)
 
-    def randomConcentricCircles(n: Int): Random[Image] =
-      n match {
-        case 0 => randomCircle(10, randomPastel)
+    def randomConcentricCircles(count: Int, size: Int): Random[Image] =
+      count match {
+        case 0 => Random.always(Image.empty)
         case n =>
-          randomConcentricCircles(n-1) |@| randomCircle(n * 10, randomPastel) map {
-            (circles, circle) => circles on circle
+          randomCircle(size, randomPastel) flatMap { circle =>
+            randomConcentricCircles(n-1, size + 5) map { circles =>
+              circle on circles
+            }
           }
       }
   }
@@ -298,14 +299,16 @@ object CreativeScala {
         case n => coloredRectangle(color) beside gradientBoxes(n-1, color.spin(15.degrees))
       }
 
-    // Structural recursion with applicative
-    def randomColorBoxes(n: Int): Random[Image] =
-      n match {
+    // Structural recursion with applicative (implemented via monad)
+    def randomColorBoxes(count: Int): Random[Image] =
+      count match {
         case 0 => Random.always(Image.empty)
         case n =>
           val box = randomColor map { c => coloredRectangle(c) }
           val boxes = randomColorBoxes(n-1)
-          (box |@| boxes) map { (b, bs) => b beside bs }
+          box flatMap { b =>
+            boxes map { bs => b beside bs }
+          }
       }
 
     // Structural recursion with applicative (with sometimes more pleasing result)
@@ -576,15 +579,21 @@ object CreativeScala {
     def parametricCircle(angle: Angle): Point =
       Point.polar(100, angle)
 
-    def sample(f: Angle => Point, samples: Int): Image = {
-      val dot = Image.circle(5).fillColor(Color.crimson.spin(15.degrees).desaturate(0.4.normalized)).lineColor(Color.crimson).lineWidth(3)
+    def rose(k: Int): Angle => Point =
+      (angle: Angle) => {
+        Point.cartesian((angle * k).cos * angle.cos, (angle * k).cos * angle.sin)
+      }
+
+    val dot = Image.circle(5).fillColor(Color.crimson.spin(15.degrees).desaturate(0.4.normalized)).lineColor(Color.crimson).lineWidth(3)
+
+    def sample(f: Angle => Point, samples: Int, marker: Image = dot): Image = {
       val step = Angle.one / samples
       def loop(count: Int): Image = {
         count match {
-          case 0 => dot.at(f(Angle.zero).toVec)
+          case 0 => marker.at(f(Angle.zero).toVec)
           case n =>
             val angle = step * n
-            dot.at(f(angle).toVec) on loop(n - 1)
+            marker.at(f(angle).toVec) on loop(n - 1)
         }
       }
 

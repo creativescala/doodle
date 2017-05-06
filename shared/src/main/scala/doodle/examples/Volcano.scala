@@ -27,10 +27,10 @@ object Volcano {
   }
 
   def smoke(r: Normalized): Random[Image] = {
-    val alpha = Random.normal(0.5, 0.1) map (a => a.normalized)
+    val alpha = Random.normal(0.7, 0.3) map (a => a.normalized)
     val hue = Random.double.map(h => (h * 0.1).turns)
     val saturation = Random.double.map(s => (s * 0.8).normalized)
-    val lightness = Random.normal(0.4, 0.1) map (a => a.normalized)
+    val lightness = Random.normal(0.8, 0.4) map (a => a.normalized)
     val color =
       (hue |@| saturation |@| lightness |@| alpha) map {
         (h, s, l, a) => Color.hsla(h, s, l, a)
