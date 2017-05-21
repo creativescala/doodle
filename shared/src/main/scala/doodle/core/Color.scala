@@ -124,7 +124,7 @@ sealed abstract class Color extends Product with Serializable {
     */
   def saturateBy(saturation: Normalized) = {
     val original = this.toHSLA
-    original.copy(s = Normalized.clip(original.l.get * (1 + saturation.get)))
+    original.copy(s = Normalized.clip(original.s.get * (1 + saturation.get)))
   }
 
   /** Desaturate the color by the given *relative* amount. For example, calling
@@ -133,7 +133,7 @@ sealed abstract class Color extends Product with Serializable {
     */
   def desaturateBy(desaturation: Normalized) = {
     val original = this.toHSLA
-    original.copy(s = Normalized.clip(original.l.get * (1 - desaturation.get)))
+    original.copy(s = Normalized.clip(original.s.get * (1 - desaturation.get)))
   }
 
   /** Increase the alpha channel by the given relative amount. */
