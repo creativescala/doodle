@@ -118,16 +118,7 @@ object Finalised {
           continue(cont(ClosedPath(context, elts, bb)))
 
         case Image.Circle(r) =>
-          // See http://spencermortensen.com/articles/bezier-circle/ for approximation of a circle with a Bezier curve.
-          val c = 0.551915024494
-          val cR = c * r
-          val elts = List(
-            MoveTo(cartesian(0.0, r)),
-            BezierCurveTo(cartesian(cR, r), cartesian(r, cR), cartesian(r, 0.0)),
-            BezierCurveTo(cartesian(r, -cR), cartesian(cR, -r), cartesian(0.0, -r)),
-            BezierCurveTo(cartesian(-cR, -r), cartesian(-r, -cR), cartesian(-r, 0.0)),
-            BezierCurveTo(cartesian(-r, cR), cartesian(-cR, r), cartesian(0.0, r))
-          )
+          val elts = PathElement.circle(0.0, 0.0, r)
           val bb = {
             val bb = pathElementsToBoundingBox(elts)
             context.lineWidth.map(w => bb.pad(w / 2)).getOrElse(bb)

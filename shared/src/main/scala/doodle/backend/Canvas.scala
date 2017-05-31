@@ -17,4 +17,12 @@ trait Canvas {
   def openPath(context: DrawingContext, elements: List[PathElement]): Unit
   def closedPath(context: DrawingContext, elements: List[PathElement]): Unit
   def text(context: DrawingContext, tx: Transform, boundingBox: BoundingBox, characters: String): Unit
+
+  // Derived methods
+
+  /** Draw a circle on this [[Canvas]]. */
+  def circle(context: DrawingContext, tx: Transform, x: Double, y: Double, radius: Double): Unit = {
+    val elts = PathElement.circle(x, y, radius).map(_.transform(tx))
+    closedPath(context, elts)
+  }
 }
