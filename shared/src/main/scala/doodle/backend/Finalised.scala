@@ -15,6 +15,9 @@ object Finalised {
   final case class OpenPath(context: DrawingContext, elements: List[PathElement], boundingBox: BoundingBox) extends Finalised
   final case class ClosedPath(context: DrawingContext, elements: List[PathElement], boundingBox: BoundingBox) extends Finalised
   final case class Text(context: DrawingContext, characters: String, boundingBox: BoundingBox) extends Finalised
+  final case class Draw(w: Double, h: Double, f: Canvas => Unit) extends Finalised {
+    val boundingBox = BoundingBox(-w/2, h/2, w/2, -h/2)
+  }
   final case class Beside(l: Finalised, r: Finalised) extends Finalised {
     val boundingBox = l.boundingBox beside r.boundingBox
   }
@@ -165,6 +168,9 @@ object Finalised {
           val bb =
             context.font.map(f => metrics(f, txt)).getOrElse(BoundingBox.empty)
           continue(cont(Text(context, txt, bb)))
+
+        case Image.Draw(w, h, f) =>
+          continue(cont(Draw(w, h, f)))
 
         case Image.Beside(l, r) =>
           binaryStep(l, r, context, Beside.apply _, cont)

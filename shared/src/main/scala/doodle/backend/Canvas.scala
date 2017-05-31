@@ -14,6 +14,8 @@ import doodle.core.transform.Transform
   * This is essentially a Church encoding of the Finalised representation, minus the layout operators. Canvas allows *absolute* layout with minimum memory allocation, and is thus more efficient but less convenient than a deep embedding such as Finalised.
   */
 trait Canvas {
+  def pushTransform(tx: Transform): Unit
+  def popTransform(): Unit
   def openPath(context: DrawingContext, elements: List[PathElement]): Unit
   def closedPath(context: DrawingContext, elements: List[PathElement]): Unit
   def text(context: DrawingContext, tx: Transform, boundingBox: BoundingBox, characters: String): Unit
@@ -21,8 +23,8 @@ trait Canvas {
   // Derived methods
 
   /** Draw a circle on this [[Canvas]]. */
-  def circle(context: DrawingContext, tx: Transform, x: Double, y: Double, radius: Double): Unit = {
-    val elts = PathElement.circle(x, y, radius).map(_.transform(tx))
+  def circle(context: DrawingContext, x: Double, y: Double, radius: Double): Unit = {
+    val elts = PathElement.circle(x, y, radius)
     closedPath(context, elts)
   }
 }

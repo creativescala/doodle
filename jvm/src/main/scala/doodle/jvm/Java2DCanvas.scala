@@ -5,6 +5,7 @@ import doodle.core._
 import doodle.core.transform.Transform
 import doodle.backend.{BoundingBox, Canvas}
 import java.awt.Graphics2D
+import java.awt.geom.AffineTransform
 
 final class Java2DCanvas(graphics: Graphics2D, center: Point, screenCenter: Point) extends Canvas {
 
@@ -23,6 +24,25 @@ final class Java2DCanvas(graphics: Graphics2D, center: Point, screenCenter: Poin
         .andThen(Transform.translate(screenCenter.x, screenCenter.y))
     )
   )
+
+  var transforms: List[AffineTransform] = List.empty
+
+  def pushTransform(tx: Transform): Unit = {
+    val affine = Java2D.toAffineTransform(tx)
+    transforms = graphics.getTransform() :: transforms
+    graphics.transform(affine)
+  }
+
+  def popTransform(): Unit = {
+    transforms match {
+      case hd :: tl =>
+        graphics.setTransform(hd)
+        transforms = tl
+      case Nil =>
+        // No transform to pop. Do nothing.
+        ()
+    }
+  }
 
   def openPath(context: DrawingContext, elements: List[PathElement]): Unit = {
     val path = Java2D.toPath2D(elements)

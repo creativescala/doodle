@@ -2,6 +2,7 @@ package doodle
 package core
 
 import doodle.core.font.Font
+import doodle.backend.Canvas
 
 sealed abstract class Image extends Product with Serializable {
   import Image._
@@ -96,6 +97,7 @@ object Image {
   final case class Circle(r: Double) extends Image
   final case class Rectangle(w: Double, h: Double) extends Image
   final case class Triangle(w: Double, h: Double) extends Image
+  final case class Draw(w: Double, h: Double, f: Canvas => Unit) extends Image
   final case class Beside(l: Image, r: Image) extends Image
   final case class Above(l: Image, r: Image) extends Image
   final case class On(t: Image, b: Image) extends Image
@@ -308,6 +310,9 @@ object Image {
       OpenPath(PathElement.moveTo(pt0) :: iter(pt0 :: points.toList))
     }
   }
+
+  def draw(width: Double, height: Double)(f: Canvas => Unit): Image =
+    Draw(width, height, f)
 
   def empty: Image =
     Empty

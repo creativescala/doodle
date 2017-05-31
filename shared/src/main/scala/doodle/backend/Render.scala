@@ -42,6 +42,14 @@ object Render {
 
           cont()
 
+        case r @ Draw(w, h, f) =>
+          val fullTx = transform.Transform.translate(origin.toVec) andThen tx
+          canvas.pushTransform(fullTx)
+          f(canvas)
+          canvas.popTransform()
+
+          cont()
+
         case On(t, b) =>
           continue(step(b, origin, tx){ () =>
                      continue(step(t, origin, tx){ () =>
