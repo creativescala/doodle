@@ -51,4 +51,24 @@ object PathElement {
       Point.polar(toR,  toAngle)
     )
 
+
+  /** Utility to construct a `List[PathElement]` that represents a circle. */
+  def circle(center: Point, radius: Double): List[PathElement] =
+    circle(center.x, center.y, radius)
+
+  /** Utility to construct a `List[PathElement]` that represents a circle. */
+  def circle(x: Double, y: Double, radius: Double): List[PathElement] = {
+    import Point.cartesian
+    // See http://spencermortensen.com/articles/bezier-circle/ for approximation of a circle with a Bezier curve.
+    val r = radius
+    val c = 0.551915024494
+    val cR = c * r
+    List(
+      MoveTo(cartesian(x, y + radius)),
+      BezierCurveTo(cartesian(x + cR,  y + r),   cartesian(x + r,   y + cR),  cartesian(x + r,  y)),
+      BezierCurveTo(cartesian(x + r,   y + -cR), cartesian(x + cR,  y + -r),  cartesian(x,      y + -r)),
+      BezierCurveTo(cartesian(x + -cR, y + -r),  cartesian(x + -r,  y + -cR), cartesian(x + -r, y)),
+      BezierCurveTo(cartesian(x + -r,  y + cR),  cartesian(x + -cR, y + r),   cartesian(x,      y + r))
+    )
+  }
 }
