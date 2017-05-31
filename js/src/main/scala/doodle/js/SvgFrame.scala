@@ -40,9 +40,12 @@ final class SvgFrame(svgCanvas: dom.svg.SVG,
   }
 }
 object SvgFrame {
+
   def fromElementId(id: String, width: Int, height: Int): Frame.Draw =
+    fromElement(dom.document.getElementById(id).asInstanceOf[dom.svg.SVG], width, height)
+
+  def fromElement(elt: dom.svg.SVG, width: Int, height: Int): Frame.Draw =
     new Frame.Draw {
-      val elt = dom.document.getElementById(id).asInstanceOf[dom.svg.SVG]
       def setup(finaliser: Finaliser, renderer: Renderer): Interpreter[Formats.Screen,Unit] =
         new SvgFrame(elt, width, height, finaliser, renderer)
     }
