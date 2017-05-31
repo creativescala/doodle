@@ -1,4 +1,4 @@
-version in ThisBuild := "0.7.0"
+version in ThisBuild := "0.8.0"
 
 val catsVersion = "0.9.0"
 
@@ -43,9 +43,9 @@ lazy val doodle = crossProject.
   ).jsSettings(
     workbenchSettings : _*
   ).jsSettings(
-    persistLauncher         := true,
-    persistLauncher in Test := false,
-    bootSnippet             := """
+    scalaJSUseMainModuleInitializer         := true,
+    scalaJSUseMainModuleInitializer in Test := false,
+    bootSnippet                             := """
       |doodle.ScalaJSExample().main();
     """.trim.stripMargin,
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
@@ -60,8 +60,8 @@ lazy val doodleJVM = doodle.jvm
 
 lazy val doodleJS = doodle.js
 
-run     <<= run     in (doodleJVM, Compile)
+run     := { run.in(doodleJVM, Compile).inputTaskValue }
 
-console <<= console in (doodleJVM, Compile)
+console := { console.in(doodleJVM, Compile).value }
 
-publish <<= publish in (doodleJVM, Compile)
+publish := { publish.in(doodleJVM, Compile).value }
