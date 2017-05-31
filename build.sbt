@@ -10,7 +10,6 @@ lazy val doodle = crossProject.
     name          := "doodle",
     organization  := "underscoreio",
     scalaVersion  := "2.12.2",
-    scalaOrganization := "org.typelevel",
     scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import", "-Ypartial-unification"),
     scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
