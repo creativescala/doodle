@@ -1,27 +1,25 @@
 # Doodle: Compositional Graphics
 
-Copyright 2015 [Underscore](http://underscore.io).
+Copyright 2015-2017 [Underscore](http://underscore.io).
 
 A Scala library for compositional vector graphics,
-with a native back-end via Swing and Java2D,
-and an HTML SVG backend via [Scala.js](http://www.scala-js.org/).
+with a desktop back-end via Swing and Java2D,
+and an HTML SVG back-end via [Scala.js](http://www.scala-js.org/).
 
 Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
 [![Build Status](https://travis-ci.org/underscoreio/doodle.svg?branch=develop)](https://travis-ci.org/underscoreio/doodle)
 [![Join the chat at https://gitter.im/underscoreio/doodle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/underscoreio/doodle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Using Doodle 
+# Using Doodle
 
 You can use Doodle in your own project by importing the JARs published to our [Bintray repository][bintray-training]. The current release is **`0.7.0`**. To use it add the following to your `build.sbt`:
 
 [bintray-training]: https://bintray.com/underscoreio/training/doodle
 
 ~~~ scala
-scalaVersion := "2.11.8" // Doodle is compatible with Scala 2.11 only
-
+scalaVersion := "2.11.11" // Doodle is compatible with Scala 2.11 only
 resolvers += Resolver.bintrayRepo("underscoreio", "training")
-
 libraryDependencies += "underscoreio" %% "doodle" % "0.7.0"
 ~~~
 
