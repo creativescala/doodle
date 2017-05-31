@@ -2,14 +2,14 @@ version in ThisBuild := "0.7.0"
 
 val catsVersion = "0.9.0"
 
-scalaVersion in ThisBuild := "2.12.1"
+scalaVersion in ThisBuild := "2.12.2"
 
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
     name          := "doodle",
     organization  := "underscoreio",
-    scalaVersion  := "2.12.1",
+    scalaVersion  := "2.12.2",
     scalaOrganization := "org.typelevel",
     scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import", "-Ypartial-unification"),
     scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
