@@ -24,9 +24,10 @@ lazy val doodle = crossProject.
     scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(
-       "org.typelevel"  %%% "cats" % catsVersion,
-       "org.scalatest"  %%% "scalatest" % "3.0.1" % "test",
-       "org.scalacheck" %%% "scalacheck" % "1.12.6" % "test"
+       "org.typelevel"  %%% "cats-core" % catsVersion,
+       "org.typelevel"  %%% "cats-free" % catsVersion,
+       "org.scalatest"  %%% "scalatest" % "3.0.2" % "test",
+       "org.scalacheck" %%% "scalacheck" % "1.13.5" % "test"
     ),
     bintrayRepository := "training"
   ).jvmSettings(
