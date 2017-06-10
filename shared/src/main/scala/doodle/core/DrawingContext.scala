@@ -13,14 +13,18 @@ final case class DrawingContext(
   lineJoin: Option[Line.Join],
 
   fillColor: Option[Color],
+  fillGradient: Option[Gradient],
 
   font: Option[Font]
 ) {
   def stroke: Option[Stroke] =
     (lineWidth |@| lineColor |@| lineCap |@| lineJoin) map { Stroke.apply _ }
 
-  def fill: Option[Fill] =
-    fillColor.map(Fill.apply _)
+  // Prefer gradient over color
+  def fill: Option[Fill] = fillGradient match {
+    case Some(g) => Some(Fill.Gradient(g))
+    case None => fillColor.map(Fill.Color.apply _)
+  }
 
   // A lens library would help to reduce this redundancy in the
   // DrawingContext transformations. However, in the introductory
@@ -42,11 +46,17 @@ final case class DrawingContext(
   def fillColorTransform(f: Color => Color): DrawingContext =
     this.copy(fillColor = fillColor.map(f))
 
+  def fillGradient(gradient: Gradient): DrawingContext =
+    this.copy(fillGradient = Some(gradient))
+
+  def fillGradientTransform(f: Gradient => Gradient): DrawingContext =
+    this.copy(fillGradient = fillGradient.map(f))
+
   def noLine: DrawingContext =
     this.copy(lineWidth = None)
 
   def noFill: DrawingContext =
-    this.copy(fillColor = None)
+    this.copy(fillColor = None, fillGradient = None)
 
   def font(font: Font): DrawingContext =
     this.copy(font = Some(font))
@@ -60,6 +70,7 @@ object DrawingContext {
       lineCap = None,
       lineJoin = None,
       fillColor = None,
+      fillGradient = None,
       font = None
     )
   val whiteLines =
@@ -69,6 +80,7 @@ object DrawingContext {
       lineCap = Some(Line.Cap.Butt),
       lineJoin = Some(Line.Join.Miter),
       fillColor = None,
+      fillGradient = None,
       font = Some(Font.defaultSerif)
     )
   val blackLines =
@@ -78,6 +90,7 @@ object DrawingContext {
       lineCap = Some(Line.Cap.Butt),
       lineJoin = Some(Line.Join.Miter),
       fillColor = None,
+      fillGradient = None,
       font = Some(Font.defaultSerif)
     )
 }
