@@ -7,7 +7,7 @@ import doodle.backend.{BoundingBox, Canvas}
 
 import org.scalajs.dom
 
-final class SvgCanvas(root: dom.svg.G, center: Point, screenCenter: Point)
+final class SvgCanvas(root: dom.svg.G, defs: dom.svg.Defs, center: Point, screenCenter: Point)
     extends Canvas {
   import scalatags.JsDom.styles.{font => cssFont}
   import scalatags.JsDom.{svgTags => svg}
@@ -39,6 +39,8 @@ final class SvgCanvas(root: dom.svg.G, center: Point, screenCenter: Point)
     val style = Svg.toStyle(context)
     val elt = svg.path(currentTransform, svgAttrs.style:=style, svgAttrs.d:=dAttr).render
     root.appendChild(elt)
+
+    context.fillGradient.foreach(Svg.addGradientToSvg(_, defs))
   }
 
   def openPath(context: DrawingContext, elements: List[PathElement]): Unit = {
@@ -46,6 +48,8 @@ final class SvgCanvas(root: dom.svg.G, center: Point, screenCenter: Point)
     val style = Svg.toStyle(context)
     val elt = svg.path(currentTransform, svgAttrs.style:=style, svgAttrs.d:=dAttr).render
     root.appendChild(elt)
+
+    context.fillGradient.foreach(Svg.addGradientToSvg(_, defs))
   }
 
   def text(context: DrawingContext,
@@ -67,6 +71,8 @@ final class SvgCanvas(root: dom.svg.G, center: Point, screenCenter: Point)
                          cssFont:=font,
                          characters).render
       root.appendChild(elt)
+
+      context.fillGradient.foreach(Svg.addGradientToSvg(_, defs))
     }
   }
 }
