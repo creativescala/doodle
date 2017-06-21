@@ -35,7 +35,10 @@ final class SvgFrame(svgCanvas: dom.svg.SVG,
       svg.g(svgAttrs.transform:=Svg.toSvgTransform(canvasToScreen)).render
     svgCanvas.appendChild(root)
 
-    val canvas = new SvgCanvas(root, center, screenCenter)
+    val defs = svg.defs().render
+    svgCanvas.appendChild(defs)
+
+    val canvas = new SvgCanvas(root, defs, center, screenCenter)
     renderer.run(canvas)(finalised)
   }
 }

@@ -31,4 +31,10 @@ object Line {
 }
 
 final case class Stroke(width: Double, color: Color, cap: Line.Cap, join: Line.Join)
-final case class Fill(color: Color)
+
+sealed trait Fill
+
+object Fill {
+  final case class Color(color: doodle.core.Color) extends Fill
+  final case class Gradient(gradient: doodle.core.Gradient) extends Fill
+}
