@@ -6,7 +6,7 @@ object GradientSquares {
 
   val width = 100.0
 
-  val grad = Gradient.DichromaticVertical(Color.red, Color.blue, width)
+  val grad = Gradient.dichromaticVertical(Color.red, Color.blue, width)
 
   val gradientSquare = Image.square(width) fillGradient grad
 

@@ -40,9 +40,9 @@ object Java2D {
   }
 
   def toAwtCycleMethod(cycleMethod: Gradient.CycleMethod): AwtCycleMethod = cycleMethod match {
-    case _: Gradient.CycleMethod.NoCycle => AwtCycleMethod.NO_CYCLE
-    case _: Gradient.CycleMethod.Reflect => AwtCycleMethod.REFLECT
-    case _: Gradient.CycleMethod.Repeat => AwtCycleMethod.REPEAT
+    case Gradient.CycleMethod.NoCycle => AwtCycleMethod.NO_CYCLE
+    case Gradient.CycleMethod.Reflect => AwtCycleMethod.REFLECT
+    case Gradient.CycleMethod.Repeat => AwtCycleMethod.REPEAT
   }
 
   def toLinearGradientPaint(gradient: Gradient.Linear): LinearGradientPaint = {
@@ -90,12 +90,9 @@ object Java2D {
     graphics.setPaint(jColor)
   }
 
-  def setFill(graphics: Graphics2D, fill: Color) = {
-    graphics.setPaint(this.toAwtColor(fill))
-  }
-
-  def setFill(graphics: Graphics2D, fill: Gradient) = {
-    graphics.setPaint(this.toMultipleGradientPaint(fill))
+  def setFill(graphics: Graphics2D, fill: Fill) = fill match {
+    case Fill.Color(color) => graphics.setPaint(this.toAwtColor(color))
+    case Fill.Gradient(gradient) => graphics.setPaint(this.toMultipleGradientPaint(gradient))
   }
 
   /** Converts to an *open* `Path2D` */
@@ -133,11 +130,7 @@ object Java2D {
       setStroke(graphics, s)
       graphics.draw(path)
     }
-    current.fillColor.foreach { f =>
-      setFill(graphics, f)
-      graphics.fill(path)
-    }
-    current.fillGradient.foreach { f =>
+    current.fill.foreach { f =>
       setFill(graphics, f)
       graphics.fill(path)
     }

@@ -40,7 +40,7 @@ final class SvgCanvas(root: dom.svg.G, defs: dom.svg.Defs, center: Point, screen
     val elt = svg.path(currentTransform, svgAttrs.style:=style, svgAttrs.d:=dAttr).render
     root.appendChild(elt)
 
-    context.fillGradient.foreach(Svg.addGradientToSvg(_, defs))
+    reportFill(context.fill)
   }
 
   def openPath(context: DrawingContext, elements: List[PathElement]): Unit = {
@@ -49,7 +49,7 @@ final class SvgCanvas(root: dom.svg.G, defs: dom.svg.Defs, center: Point, screen
     val elt = svg.path(currentTransform, svgAttrs.style:=style, svgAttrs.d:=dAttr).render
     root.appendChild(elt)
 
-    context.fillGradient.foreach(Svg.addGradientToSvg(_, defs))
+    reportFill(context.fill)
   }
 
   def text(context: DrawingContext,
@@ -72,7 +72,12 @@ final class SvgCanvas(root: dom.svg.G, defs: dom.svg.Defs, center: Point, screen
                          characters).render
       root.appendChild(elt)
 
-      context.fillGradient.foreach(Svg.addGradientToSvg(_, defs))
+      reportFill(context.fill)
     }
+  }
+
+  private def reportFill(fill: Option[Fill]) = fill match {
+    case Some(Fill.Gradient(g)) => Svg.addGradientToSvg(g, defs)
+    case _ =>
   }
 }

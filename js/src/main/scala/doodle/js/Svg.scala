@@ -64,9 +64,9 @@ object Svg {
   }
 
   def toSvgSpreadMethod(cycleMethod: Gradient.CycleMethod): String = cycleMethod match {
-    case _: Gradient.CycleMethod.NoCycle => "pad"
-    case _: Gradient.CycleMethod.Reflect => "reflect"
-    case _: Gradient.CycleMethod.Repeat => "repeat"
+    case Gradient.CycleMethod.NoCycle => "pad"
+    case Gradient.CycleMethod.Reflect => "reflect"
+    case Gradient.CycleMethod.Repeat => "repeat"
   }
 
   def toSvgGradientStop(tuple: (Color, Double)): dom.svg.Stop = {
