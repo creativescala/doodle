@@ -2,7 +2,7 @@ package doodle
 package core
 
 import cats.instances.option._
-import cats.syntax.cartesian._
+import cats.syntax.apply._
 
 import doodle.core.font.Font
 
@@ -17,7 +17,7 @@ final case class DrawingContext(
   font: Option[Font]
 ) {
   def stroke: Option[Stroke] =
-    (lineWidth |@| lineColor |@| lineCap |@| lineJoin) map { Stroke.apply _ }
+    (lineWidth, lineColor, lineCap, lineJoin) mapN { Stroke.apply _ }
 
   // A lens library would help to reduce this redundancy in the
   // DrawingContext transformations. However, in the introductory

@@ -8,7 +8,7 @@ import doodle.random._
 
 import cats.instances.list._
 
-import cats.syntax.cartesian._
+import cats.syntax.apply._
 import cats.syntax.traverse._
 
 object BrownianMotion {
@@ -18,7 +18,7 @@ object BrownianMotion {
   def jitter(point: Point): Random[Point] = {
     val noise = Random.normal(0, 5.0)
 
-    (noise |@| noise) map { (dx, dy) =>
+    (noise, noise) mapN { (dx, dy) =>
       Point.cartesian(point.x + dx, point.y + dy)
     }
   }
@@ -32,17 +32,17 @@ object BrownianMotion {
     val saturation = Random.double.map(s => (s * 0.8).normalized)
     val lightness = Random.normal(0.4, 0.1) map (a => a.normalized)
     val color =
-      (hue |@| saturation |@| lightness |@| alpha) map {
+      (hue, saturation, lightness, alpha) mapN {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
     val points = Random.int(3,7)
     val radius = Random.normal(2, 1)
     val rotation = Random.double.map { r => r.turns }
-    val shape = (points |@| radius |@| rotation).map { (pts, r, rot) =>
+    val shape = (points, radius, rotation).mapN { (pts, r, rot) =>
       star(pts, r, r * 0.5, rot)
     }
 
-    (shape |@| color).map { (shape, line) =>
+    (shape, color).mapN { (shape, line) =>
       shape.lineColor(line).lineWidth(2).noFill
     }
   }
@@ -59,14 +59,14 @@ object BrownianMotion {
       }
 
     smoke.flatMap { shape =>
-      iter(steps, Random.always(start), shape).sequenceU.map { imgs =>
+      iter(steps, Random.always(start), shape).sequence.map { imgs =>
         imgs.foldLeft(Image.empty){ _ on _ }
       }
     }
   }
 
   def walkParticles(nParticles: Int, steps: Int): Random[Image] =
-    (1 to nParticles).toList.map { _ => walk(steps) }.sequenceU.map { imgs =>
+    (1 to nParticles).toList.map { _ => walk(steps) }.sequence.map { imgs =>
       imgs.foldLeft(Image.empty){ _ on _ }
     }
 

@@ -8,7 +8,7 @@ import doodle.random._
 
 import cats.instances.list._
 
-import cats.syntax.cartesian._
+import cats.syntax.apply._
 import cats.syntax.traverse._
 
 object Spirals {
@@ -53,7 +53,7 @@ object Spirals {
   def jitter(point: Point): Random[Point] = {
     val noise = Random.normal(0, 10.0)
 
-    (noise |@| noise) map { (dx, dy) =>
+    (noise, noise) mapN { (dx, dy) =>
       Point.cartesian(point.x + dx, point.y + dy)
     }
   }
@@ -64,12 +64,12 @@ object Spirals {
     val saturation = Random.double.map(s => (s * 0.8).normalized)
     val lightness = Random.normal(0.4, 0.1) map (a => a.normalized)
     val color =
-      (hue |@| saturation |@| lightness |@| alpha) map {
+      (hue, saturation, lightness, alpha) mapN {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
     val c = Random.normal(2, 1) map (r => circle(r))
 
-    (c |@| color) map { (circle, line) => circle.lineColor(line).noFill }
+    (c, color) mapN { (circle, line) => circle.lineColor(line).noFill }
   }
 
   val pts: Random[List[Image]] =
@@ -78,7 +78,7 @@ object Spirals {
         ((1 to 720 by 10).toList.map { angle =>
            val pt = (spiral andThen scale(200) andThen jitter)(angle.degrees)
 
-           (smoke |@| pt) map { _ at _.toVec }
+           (smoke, pt) mapN { _ at _.toVec }
          }).sequence
       }
     }.foldLeft(Random.always(List.empty[Image])){ (accum, elt) =>
