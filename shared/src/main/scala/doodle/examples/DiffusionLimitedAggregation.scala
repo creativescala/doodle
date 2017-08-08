@@ -6,7 +6,7 @@ import doodle.core.Image._
 import doodle.syntax._
 import doodle.random._
 
-import cats.syntax.cartesian._
+import cats.syntax.apply._
 
 object DiffusionLimitedAggregation {
   def brownianMotion(start: Point, drift: Vec): Random[Point] =
@@ -15,7 +15,7 @@ object DiffusionLimitedAggregation {
   def jitter(point: Point): Random[Point] = {
     val noise = Random.normal(0, 10.0)
 
-    (noise |@| noise) map { (dx, dy) =>
+    (noise, noise) mapN { (dx, dy) =>
       Point.cartesian(point.x + dx, point.y + dy)
     }
   }
@@ -82,12 +82,12 @@ object DiffusionLimitedAggregation {
     val saturation = Random.double.map(s => (s * 0.8).normalized)
     val lightness = Random.normal(0.4, 0.1) map (a => a.normalized)
     val color =
-      (hue |@| saturation |@| lightness |@| alpha) map {
+      (hue, saturation, lightness, alpha) mapN {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
     val c = Random.normal(1, 1) map (r => circle(Math.abs(r)))
 
-    (c |@| color) map { (circle, line) => circle.lineColor(line).noFill }
+    (c, color) mapN { (circle, line) => circle.lineColor(line).noFill }
   }
 
   def makeImage(nParticles: Int, maxSteps: Int): Random[Image] =

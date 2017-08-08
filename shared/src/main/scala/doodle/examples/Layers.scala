@@ -7,11 +7,11 @@ import cats.implicits._
 
 object Layers {
   val point =
-    (Random.double |@| Random.double).map((x, y) => Point(x * 800, y * 150))
+    (Random.double, Random.double).mapN((x, y) => Point(x * 800, y * 150))
 
   val radius = Random.natural(30)
 
-  val circle = (point |@| radius).map((pt, r) => Image.circle(r).at(pt.toVec))
+  val circle = (point, radius).mapN((pt, r) => Image.circle(r).at(pt.toVec))
 
   def layer = {
     List.range(0, 200).foldM(Image.empty){ (img, _) =>

@@ -1,6 +1,6 @@
 version in ThisBuild := "0.8.2"
 
-val catsVersion = "0.9.0"
+val catsVersion = "1.0.0-MF"
 
 name         in ThisBuild := "doodle"
 organization in ThisBuild := "underscoreio"

@@ -43,7 +43,7 @@ object SandSpline {
   def noise(t: Normalized): Random[Vec] = {
     val stdDev = t.get * 80
     val noise = Random.normal(0.0, stdDev)
-    (noise |@| noise).map((x, y) => Vec(x, y))
+    (noise, noise).mapN((x, y) => Vec(x, y))
   }
 
   def perturb(t: Normalized, pt: Point): Random[Point] =
