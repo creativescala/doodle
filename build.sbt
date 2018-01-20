@@ -49,13 +49,8 @@ lazy val doodle = crossProject.
       |doodle.jvm.quit()
     """.trim.stripMargin
   ).jsSettings(
-    workbenchSettings : _*
-  ).jsSettings(
     scalaJSUseMainModuleInitializer         := true,
     scalaJSUseMainModuleInitializer in Test := false,
-    bootSnippet                             := """
-      |doodle.ScalaJSExample().main();
-    """.trim.stripMargin,
     //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
       "org.scala-js"  %%% "scalajs-dom" % "0.9.2",
@@ -66,5 +61,6 @@ lazy val doodle = crossProject.
 lazy val doodleJVM = doodle.jvm
 
 lazy val doodleJS = doodle.js
+  .enablePlugins(WorkbenchPlugin)
 
 console := { console.in(doodleJVM, Compile).value }
