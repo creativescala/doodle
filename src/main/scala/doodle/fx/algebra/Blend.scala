@@ -20,15 +20,15 @@ package algebra
 
 import javafx.scene.effect.BlendMode
 
-trait Blend[A] extends doodle.algebra.Blend[WithContext, A] {
-  def screen(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.blendMode(BlendMode.SCREEN))(image)
-  def burn(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.blendMode(BlendMode.COLOR_BURN))(image)
-  def dodge(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.blendMode(BlendMode.COLOR_DODGE))(image)
-  def lighten(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.blendMode(BlendMode.LIGHTEN))(image)
-  def sourceOver(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.blendMode(BlendMode.SRC_OVER))(image)
+trait Blend[A] extends doodle.algebra.Blend[Drawing, A] {
+  def screen(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.blendMode(BlendMode.SCREEN))(image)
+  def burn(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.blendMode(BlendMode.COLOR_BURN))(image)
+  def dodge(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.blendMode(BlendMode.COLOR_DODGE))(image)
+  def lighten(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.blendMode(BlendMode.LIGHTEN))(image)
+  def sourceOver(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.blendMode(BlendMode.SRC_OVER))(image)
 }

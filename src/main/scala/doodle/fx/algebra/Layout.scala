@@ -23,8 +23,8 @@ import cats.instances.all._
 import cats.syntax.semigroup._
 import javafx.geometry.Point2D
 
-trait Layout extends doodle.algebra.Layout[WithContext,Unit] {
-  def on(top: WithContext[Unit], bottom: WithContext[Unit]): WithContext[Unit] =
+trait Layout extends doodle.algebra.Layout[Drawing,Unit] {
+  def on(top: Drawing[Unit], bottom: Drawing[Unit]): Drawing[Unit] =
     for {
       t <- top
       b <- bottom
@@ -32,7 +32,7 @@ trait Layout extends doodle.algebra.Layout[WithContext,Unit] {
       (bbB, nextB) = b
     } yield ((bbT on bbB), nextT |+| nextB)
 
-  def beside(left: WithContext[Unit], right: WithContext[Unit]): WithContext[Unit] =
+  def beside(left: Drawing[Unit], right: Drawing[Unit]): Drawing[Unit] =
     for {
       l <- left
       r <- right
@@ -46,7 +46,7 @@ trait Layout extends doodle.algebra.Layout[WithContext,Unit] {
                nextL.run(leftOrigin) |+| nextR.run(rightOrigin)
              })
 
-  def above(top: WithContext[Unit], bottom: WithContext[Unit]): WithContext[Unit] =
+  def above(top: Drawing[Unit], bottom: Drawing[Unit]): Drawing[Unit] =
     for {
       t <- top
       b <- bottom

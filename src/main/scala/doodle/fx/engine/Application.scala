@@ -20,7 +20,7 @@ package engine
 
 import cats.effect.IO
 import doodle.algebra.DrawingContext
-import doodle.fx.algebra.{Algebra,WithContext}
+import doodle.fx.algebra.{Algebra,Drawing}
 import javafx.application.{Application => FxApplication, Platform}
 import javafx.geometry.Point2D
 import javafx.stage.Stage
@@ -87,7 +87,7 @@ object FrameRequest {
 }
 
 object Application {
-  def frame[A](frame: Frame)(f: Algebra => WithContext[A]): IO[A] = {
+  def frame[A](frame: Frame)(f: Algebra => Drawing[A]): IO[A] = {
     start()
     def cbHandler(cb: Either[Throwable, A] => Unit): Unit = {
       // Assume the point at which we receive the callback is the point when the

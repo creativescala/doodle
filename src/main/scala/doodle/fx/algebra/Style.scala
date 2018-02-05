@@ -20,16 +20,16 @@ package algebra
 
 import javafx.scene.paint.{Color => FxColor}
 
-trait Style[A] extends doodle.algebra.Style[WithContext, FxColor, A] {
-  def fillColor(image: WithContext[A], fillColor: FxColor): WithContext[A] =
-      WithContext.contextTransform(dc => dc.fillColor(fillColor))(image)
+trait Style[A] extends doodle.algebra.Style[Drawing, FxColor, A] {
+  def fillColor(image: Drawing[A], fillColor: FxColor): Drawing[A] =
+      Drawing.contextTransform(dc => dc.fillColor(fillColor))(image)
 
-  def strokeColor(image: WithContext[A], strokeColor: FxColor): WithContext[A] =
-      WithContext.contextTransform(dc => dc.strokeColor(strokeColor))(image)
+  def strokeColor(image: Drawing[A], strokeColor: FxColor): Drawing[A] =
+      Drawing.contextTransform(dc => dc.strokeColor(strokeColor))(image)
 
-  def noFill(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.noFill)(image)
+  def noFill(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.noFill)(image)
 
-  def noStroke(image: WithContext[A]): WithContext[A] =
-    WithContext.contextTransform(dc => dc.noStroke)(image)
+  def noStroke(image: Drawing[A]): Drawing[A] =
+    Drawing.contextTransform(dc => dc.noStroke)(image)
 }

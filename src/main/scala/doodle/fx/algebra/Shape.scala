@@ -25,9 +25,9 @@ import javafx.geometry.Point2D
 import javafx.scene.canvas.GraphicsContext
 
 /** Higher level shape primitives */
-trait Shape extends doodle.algebra.Shape[WithContext,Unit] {
-  def rectangle(width: Double, height: Double): WithContext[Unit] =
-    WithContext.now{ (gc, dc, tx) =>
+trait Shape extends doodle.algebra.Shape[Drawing,Unit] {
+  def rectangle(width: Double, height: Double): Drawing[Unit] =
+    Drawing.now{ (gc, dc, tx) =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
       val w = width / 2.0
@@ -48,11 +48,11 @@ trait Shape extends doodle.algebra.Shape[WithContext,Unit] {
       (bb, result)
     }
 
-  def square(width: Double): WithContext[Unit] =
+  def square(width: Double): Drawing[Unit] =
     rectangle(width, width)
 
-  def triangle(width: Double, height: Double): WithContext[Unit] =
-    WithContext.now{ (gc, dc) =>
+  def triangle(width: Double, height: Double): Drawing[Unit] =
+    Drawing.now{ (gc, dc) =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
 
@@ -73,8 +73,8 @@ trait Shape extends doodle.algebra.Shape[WithContext,Unit] {
       (bb, result)
     }
 
-  def circle(radius: Double): WithContext[Unit] =
-    WithContext.now{ (gc, dc) =>
+  def circle(radius: Double): Drawing[Unit] =
+    Drawing.now{ (gc, dc) =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val diameter = radius * 2.0
       val bb = BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)

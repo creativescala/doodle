@@ -18,11 +18,9 @@ package doodle
 
 package object fx {
   type Algebra = doodle.fx.algebra.Algebra
-  type Drawing[A] = doodle.fx.algebra.WithContext[A]
+  type Drawing[A] = doodle.fx.algebra.Drawing[A]
 
   implicit val fxRender = doodle.fx.algebra.Renderer
-  implicit def imageToDrawing(image: Image)(implicit algebra: Algebra): Drawing[Unit] =
-    image(algebra)
 
   type Image = doodle.algebra.Image[Algebra,Drawing,Unit]
   object Image {

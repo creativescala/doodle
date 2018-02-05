@@ -32,5 +32,5 @@ package object algebra {
   type FxContext = DrawingContext[BlendMode,FxColor]
   type Context = (GraphicsContext, FxContext, Transform.Transform)
   type Renderable[A] = (BoundingBox, ReaderT[IO,Point2D,A])
-  type WithContext[A] = ReaderT[Eval, Context, Renderable[A]]
+  type Drawing[A] = ReaderT[Eval, Context, Renderable[A]]
 }

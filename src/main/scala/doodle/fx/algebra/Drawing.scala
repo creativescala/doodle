@@ -26,20 +26,20 @@ import javafx.geometry.Point2D
 import javafx.scene.canvas.GraphicsContext
 import doodle.fx.engine.Transform.Transform
 
-object WithContext {
-  def now[A](f: (GraphicsContext, FxContext, Transform) => (BoundingBox, ReaderT[IO,Point2D,A])): WithContext[A] =
+object Drawing {
+  def now[A](f: (GraphicsContext, FxContext, Transform) => (BoundingBox, ReaderT[IO,Point2D,A])): Drawing[A] =
     Kleisli{ (context: Context) =>
       val (gc, dc, tx) = context
       Eval.now(f(gc, dc, tx))
     }
 
-  def now[A](f: (GraphicsContext, FxContext) => (BoundingBox, ReaderT[IO,Point2D,A])): WithContext[A] =
+  def now[A](f: (GraphicsContext, FxContext) => (BoundingBox, ReaderT[IO,Point2D,A])): Drawing[A] =
     Kleisli{ (context: Context) =>
       val (gc, dc, _) = context
       Eval.now(f(gc, dc))
     }
 
-  def contextTransform[A](f: FxContext => FxContext)(around: WithContext[A]): WithContext[A] =
+  def contextTransform[A](f: FxContext => FxContext)(around: Drawing[A]): Drawing[A] =
     Kleisli{ (context: Context) =>
       val (gc, dc, tx) = context
       val newDc = f(dc)

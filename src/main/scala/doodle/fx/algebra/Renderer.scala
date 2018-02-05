@@ -22,8 +22,8 @@ import cats.effect.IO
 import doodle.algebra.Image
 import doodle.fx.engine.{Application, Frame}
 
-object Renderer extends doodle.algebra.Renderer[Algebra,WithContext] {
-  def render[A](image: Image[Algebra,WithContext,A]): IO[A] = {
+object Renderer extends doodle.algebra.Renderer[Algebra,Drawing] {
+  def render[A](image: Image[Algebra,Drawing,A]): IO[A] = {
     Application.frame(Frame.size(400,400))(algebra => image(algebra))
   }
 }
