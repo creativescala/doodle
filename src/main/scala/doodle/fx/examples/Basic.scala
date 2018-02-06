@@ -24,9 +24,9 @@ object Basic {
 
   val squares = Image{ implicit algebra =>
     import algebra._
-    val sq1 = fillColor(square(100), red)
-    val sq2 = (fillColor(square(150), green)).lighten
-    val sq3 = (fillColor(square(200), blue)).screen
+    val sq1 = square(100).fillColor(red)
+    val sq2 = square(150).fillColor(green).lighten
+    val sq3 = square(200).fillColor(blue).screen
     val squares = sq1.beside(sq2 on sq3)
 
     squares
