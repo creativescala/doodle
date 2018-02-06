@@ -16,7 +16,8 @@
 
 package doodle
 
-package object syntax extends LayoutSyntax with RendererSyntax {
+package object syntax extends BlendSyntax with LayoutSyntax with RendererSyntax {
+  object blend extends BlendSyntax
   object layout extends LayoutSyntax
   object renderer extends RendererSyntax
 }
