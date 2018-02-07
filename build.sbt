@@ -42,7 +42,7 @@ initialCommands in console := """
     """.trim.stripMargin
 
 cleanupCommands in console := """
-      |doodle.fx.engine.Application.stop()
+      |doodle.fx.engine.Engine.stop()
     """.trim.stripMargin
 
 // fork in (Compile, console) := true
