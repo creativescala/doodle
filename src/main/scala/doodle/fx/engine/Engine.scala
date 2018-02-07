@@ -21,18 +21,17 @@ package engine
 import cats.effect.IO
 import doodle.algebra.DrawingContext
 import doodle.fx.algebra.{Algebra,Drawing}
-import javafx.application.{Application => FxApplication, Platform}
+import javafx.application.{Application, Platform}
 import javafx.geometry.Point2D
 import javafx.stage.Stage
 import javafx.scene.{Group, Scene}
 import javafx.scene.canvas.{Canvas, GraphicsContext}
 import javafx.scene.effect.BlendMode
-import javafx.scene.paint.{Color => FxColor}
 import javafx.animation.AnimationTimer
 import scala.concurrent.SyncVar
 // import scala.annotation.tailrec
 
-class Application extends FxApplication {
+class Engine extends Application {
   def start(stage: Stage): Unit = {
     import Size._
 
@@ -86,19 +85,19 @@ object FrameRequest {
     channel.take(timeout)
 }
 
-object Application {
+object Engine {
   def frame[A](frame: Frame)(f: Algebra => Drawing[A]): IO[A] = {
     start()
     def cbHandler(cb: Either[Throwable, A] => Unit): Unit = {
       // Assume the point at which we receive the callback is the point when the
       // effect is being run. Hence this is the point when we ask the
-      // Application to render.
+      // Engine to render.
       val requestCallback: (GraphicsContext, Transform.Transform) => Unit =
         (context, tx) => {
           // println("Context received. Applying.")
           val a =
             f(Algebra()).
-              run((context, DrawingContext.empty[BlendMode,FxColor], tx)).
+              run((context, DrawingContext.empty[BlendMode], tx)).
               map{ case (_, next) => next.run(tx(new Point2D(0,0))) }.
               value.
               unsafeRunSync()
@@ -120,7 +119,7 @@ object Application {
       Platform.setImplicitExit(false)
       val runner = new Thread("JavaFX runner") {
         override def run(): Unit =
-          FxApplication.launch(classOf[Application])
+          Application.launch(classOf[Engine])
       }
       runner.start()
       started = true

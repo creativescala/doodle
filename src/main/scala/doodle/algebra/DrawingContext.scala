@@ -19,47 +19,47 @@ package algebra
 
 import cats.syntax.all._
 import cats.instances.option._
+import doodle.core.Color
 
-final case class Stroke[C](color: C, width: Double)
-final case class Fill[C](color: C)
+final case class Stroke(color: Color, width: Double)
+final case class Fill(color: Color)
 
 /** Stores state about the current drawing style.
   *
   * The type `B` is the type of Blends.
-  * The type `C` is the type of Colors.
   */
-final case class DrawingContext[B,C](
+final case class DrawingContext[B](
   blendMode: Option[B],
   strokeWidth: Option[Double],
-  strokeColor: Option[C],
-  fillColor: Option[C]
+  strokeColor: Option[Color],
+  fillColor: Option[Color]
 ) {
-  def blendMode(mode: B): DrawingContext[B,C] =
+  def blendMode(mode: B): DrawingContext[B] =
     this.copy(blendMode = blendMode orElse Some(mode))
 
 
-  def stroke: Option[Stroke[C]] =
+  def stroke: Option[Stroke] =
     (strokeColor, strokeWidth).mapN((c, w) => Stroke(c, w))
 
-  def strokeColor(color: C): DrawingContext[B,C] =
+  def strokeColor(color: Color): DrawingContext[B] =
     this.copy(strokeColor = strokeColor orElse Some(color))
 
-  def strokeWidth(width: Double): DrawingContext[B,C] =
+  def strokeWidth(width: Double): DrawingContext[B] =
     this.copy(strokeWidth = strokeWidth orElse { if(width <= 0) None else Some(width) })
 
-  def noStroke: DrawingContext[B,C] =
+  def noStroke: DrawingContext[B] =
     this.copy(strokeWidth = strokeWidth orElse None)
 
 
-  def fill: Option[Fill[C]] =
+  def fill: Option[Fill] =
     fillColor.map(c => Fill(c))
 
-  def fillColor(color: C): DrawingContext[B,C] =
+  def fillColor(color: Color): DrawingContext[B] =
     this.copy(fillColor = fillColor orElse Some(color))
 
-  def noFill: DrawingContext[B,C] =
+  def noFill: DrawingContext[B] =
     this.copy(fillColor = fillColor orElse None)
 }
 object DrawingContext {
-  def empty[B,C]: DrawingContext[B,C] = DrawingContext(None,None,None,None)
+  def empty[B]: DrawingContext[B] = DrawingContext(None,None,None,None)
 }

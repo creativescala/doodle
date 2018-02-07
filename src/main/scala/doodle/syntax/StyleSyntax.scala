@@ -18,29 +18,30 @@ package doodle
 package syntax
 
 import doodle.algebra.{Image,Style}
+import doodle.core.Color
 
 trait StyleSyntax {
-  implicit class StyleOps[F[_],C,A](image: F[A]) {
-    def fillColor(fillColor: C)(implicit s: Style[F,C,A]): F[A] =
+  implicit class StyleOps[F[_],A](image: F[A]) {
+    def fillColor(fillColor: Color)(implicit s: Style[F,A]): F[A] =
       s.fillColor(image, fillColor)
 
-    def strokeColor(strokeColor: C)(implicit s: Style[F,C,A]): F[A] =
+    def strokeColor(strokeColor: Color)(implicit s: Style[F,A]): F[A] =
       s.strokeColor(image, strokeColor)
 
-    def noFill(implicit s: Style[F,C,A]): F[A] =
+    def noFill(implicit s: Style[F,A]): F[A] =
       s.noFill(image)
 
-    def noStroke(implicit s: Style[F,C,A]): F[A] =
+    def noStroke(implicit s: Style[F,A]): F[A] =
       s.noStroke(image)
   }
 
-  implicit class StyleImageOps[Algebra <: Style[F,C,A],F[_],C,A](image: Image[Algebra,F,A]) {
-    def fillColor(fillColor: C): Image[Algebra,F,A] =
+  implicit class StyleImageOps[Algebra <: Style[F,A],F[_],A](image: Image[Algebra,F,A]) {
+    def fillColor(fillColor: Color): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).fillColor(fillColor)
       }
 
-    def strokeColor(strokeColor: C): Image[Algebra,F,A] =
+    def strokeColor(strokeColor: Color): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).strokeColor(strokeColor)
       }

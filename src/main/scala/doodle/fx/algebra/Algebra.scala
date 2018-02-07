@@ -22,5 +22,4 @@ final case class Algebra()
     extends Blend[Unit]
     with Shape
     with Layout
-    with Color
     with Style[Unit]

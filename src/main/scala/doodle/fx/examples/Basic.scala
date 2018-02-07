@@ -19,14 +19,15 @@ package fx
 package examples
 
 object Basic {
+  import doodle.core.Color
   import doodle.fx._
   import doodle.syntax._
 
   val squares = Image{ implicit algebra =>
     import algebra._
-    val sq1 = square(100).fillColor(red)
-    val sq2 = square(150).fillColor(green).lighten
-    val sq3 = square(200).fillColor(blue).screen
+    val sq1 = square(100).fillColor(Color.red)
+    val sq2 = square(150).fillColor(Color.green).lighten
+    val sq3 = square(200).fillColor(Color.blue).screen
     val squares = sq1.beside(sq2 on sq3)
 
     squares

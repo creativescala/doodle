@@ -15,15 +15,19 @@
  */
 
 package doodle
-package fx
-package algebra
+package syntax
 
-import javafx.scene.paint.{Color => FxColor}
+import doodle.core.Angle
 
-trait Color extends doodle.algebra.Color[FxColor] {
-  def rgb(r: Int, g: Int, b: Int): FxColor =
-    FxColor.rgb(r, g, b)
+trait AngleSyntax {
+  implicit class AngleOps(val angle: Double) {
+    def degrees: Angle =
+      Angle.degrees(angle)
 
-  def rgba(r: Int, g: Int, b: Int, a: Double): FxColor =
-    FxColor.rgb(r, g, b, a)
+    def radians: Angle =
+      Angle.radians(angle)
+
+    def turns: Angle =
+      Angle.turns(angle)
+  }
 }

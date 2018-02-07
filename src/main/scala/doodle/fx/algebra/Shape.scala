@@ -20,9 +20,11 @@ package algebra
 
 import cats.data.Kleisli
 import cats.effect.IO
+import doodle.core.Color
 import doodle.layout.BoundingBox
 import javafx.geometry.Point2D
 import javafx.scene.canvas.GraphicsContext
+import javafx.scene.paint.{Color => FxColor}
 
 /** Higher level shape primitives */
 trait Shape extends doodle.algebra.Shape[Drawing,Unit] {
@@ -101,10 +103,16 @@ trait Shape extends doodle.algebra.Shape[Drawing,Unit] {
     dc.blendMode.map(bm => gc.setGlobalBlendMode(bm))
     dc.stroke.foreach{ stroke =>
       gc.setLineWidth(stroke.width)
-      gc.setStroke(stroke.color)
+      gc.setStroke(colorToFxColor(stroke.color))
     }
     dc.fill.foreach{ fill =>
-      gc.setFill(fill.color)
+      gc.setFill(colorToFxColor(fill.color))
     }
+  }
+
+  def colorToFxColor(c: Color): FxColor = {
+    val rgba = c.toRGBA
+
+    FxColor.rgb(rgba.red, rgba.green, rgba.blue, rgba.alpha)
   }
 }

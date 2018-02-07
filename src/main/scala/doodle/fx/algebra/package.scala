@@ -25,11 +25,10 @@ import doodle.layout.BoundingBox
 import doodle.fx.engine.Transform
 import javafx.geometry.Point2D
 import javafx.scene.effect.BlendMode
-import javafx.scene.paint.{Color => FxColor}
 import javafx.scene.canvas.GraphicsContext
 
 package object algebra {
-  type FxContext = DrawingContext[BlendMode,FxColor]
+  type FxContext = DrawingContext[BlendMode]
   type Context = (GraphicsContext, FxContext, Transform.Transform)
   type Renderable[A] = (BoundingBox, ReaderT[IO,Point2D,A])
   type Drawing[A] = ReaderT[Eval, Context, Renderable[A]]

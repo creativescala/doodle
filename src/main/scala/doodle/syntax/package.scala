@@ -17,10 +17,12 @@
 package doodle
 
 package object syntax
-    extends BlendSyntax
+    extends AngleSyntax
+    with BlendSyntax
     with LayoutSyntax
     with RendererSyntax
     with StyleSyntax {
+  object angle extends AngleSyntax
   object blend extends BlendSyntax
   object layout extends LayoutSyntax
   object renderer extends RendererSyntax

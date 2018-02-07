@@ -17,13 +17,14 @@
 package doodle
 package algebra
 
+import doodle.core.Color
+
 /**
-  * Apply styling to a image. The type `C` is the type of colors, and `A`, as
-  * usual, is that of image.
+  * Apply styling to a image.
   */
-trait Style[F[_],C,A] {
-  def fillColor(image: F[A], fillColor: C): F[A]
-  def strokeColor(image: F[A], strokeColor: C): F[A]
+trait Style[F[_],A] {
+  def fillColor(image: F[A], fillColor: Color): F[A]
+  def strokeColor(image: F[A], strokeColor: Color): F[A]
 
   def noFill(image: F[A]): F[A]
   def noStroke(image: F[A]): F[A]
