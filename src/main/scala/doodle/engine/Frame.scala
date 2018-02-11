@@ -15,7 +15,6 @@
  */
 
 package doodle
-package fx
 package engine
 
 final case class Frame(size: Size, title: String = "") {

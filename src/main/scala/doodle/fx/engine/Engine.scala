@@ -20,6 +20,7 @@ package engine
 
 import cats.effect.IO
 import doodle.algebra.DrawingContext
+import doodle.engine.{Frame, Size}
 import doodle.fx.algebra.{Algebra,Drawing}
 import javafx.application.{Application, Platform}
 import javafx.geometry.Point2D

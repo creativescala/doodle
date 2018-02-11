@@ -20,7 +20,8 @@ package algebra
 
 import cats.effect.IO
 import doodle.algebra.Image
-import doodle.fx.engine.{Engine, Frame}
+import doodle.engine.Frame
+import doodle.fx.engine.Engine
 
 object Renderer extends doodle.algebra.Renderer[Algebra,Drawing] {
   def render[A](image: Image[Algebra,Drawing,A]): IO[A] = {

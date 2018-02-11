@@ -15,7 +15,6 @@
  */
 
 package doodle
-package fx
 package engine
 
 sealed abstract class Size extends Product with Serializable
