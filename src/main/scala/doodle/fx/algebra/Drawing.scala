@@ -21,19 +21,19 @@ package algebra
 import cats.Eval
 import cats.data.{Kleisli,ReaderT}
 import cats.effect.IO
+import doodle.core.Point
 import doodle.layout.BoundingBox
-import javafx.geometry.Point2D
 import javafx.scene.canvas.GraphicsContext
 import doodle.fx.engine.Transform.Transform
 
 object Drawing {
-  def now[A](f: (GraphicsContext, FxContext, Transform) => (BoundingBox, ReaderT[IO,Point2D,A])): Drawing[A] =
+  def now[A](f: (GraphicsContext, FxContext, Transform) => (BoundingBox, ReaderT[IO,Point,A])): Drawing[A] =
     Kleisli{ (context: Context) =>
       val (gc, dc, tx) = context
       Eval.now(f(gc, dc, tx))
     }
 
-  def now[A](f: (GraphicsContext, FxContext) => (BoundingBox, ReaderT[IO,Point2D,A])): Drawing[A] =
+  def now[A](f: (GraphicsContext, FxContext) => (BoundingBox, ReaderT[IO,Point,A])): Drawing[A] =
     Kleisli{ (context: Context) =>
       val (gc, dc, _) = context
       Eval.now(f(gc, dc))

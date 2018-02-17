@@ -20,10 +20,10 @@ package engine
 
 import cats.effect.IO
 import doodle.algebra.DrawingContext
+import doodle.core.Point
 import doodle.engine.{Frame, Size}
 import doodle.fx.algebra.{Algebra,Drawing}
 import javafx.application.{Application, Platform}
-import javafx.geometry.Point2D
 import javafx.stage.Stage
 import javafx.scene.{Group, Scene}
 import javafx.scene.canvas.{Canvas, GraphicsContext}
@@ -99,7 +99,7 @@ object Engine {
           val a =
             f(Algebra()).
               run((context, DrawingContext.empty[BlendMode], tx)).
-              map{ case (_, next) => next.run(tx(new Point2D(0,0))) }.
+              map{ case (_, next) => next.run(tx(Point.zero)) }.
               value.
               unsafeRunSync()
           cb(Right(a))

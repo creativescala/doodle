@@ -20,9 +20,8 @@ package algebra
 
 import cats.data.Kleisli
 import cats.effect.IO
-import doodle.core.Color
+import doodle.core.{Color,Point}
 import doodle.layout.BoundingBox
-import javafx.geometry.Point2D
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.{Color => FxColor}
 
@@ -36,9 +35,9 @@ trait Shape extends doodle.algebra.Shape[Drawing,Unit] {
       val h = height / 2.0
 
       val result =
-        Kleisli{ (origin: Point2D) =>
-          val left = origin.getX() - w
-          val top  = origin.getY() - h
+        Kleisli{ (origin: Point) =>
+          val left = origin.x - w
+          val top  = origin.y - h
           // println(s"origin: ${origin}, left: ${left}, top: ${top}, width: ${width}, height: ${height}")
           render(gc, dc){ gc =>
             gc.fillRect(left, top, width, height)
@@ -62,9 +61,9 @@ trait Shape extends doodle.algebra.Shape[Drawing,Unit] {
       val h = height / 2.0
 
       val result =
-        Kleisli{ (origin: Point2D) =>
-          val xPoints = Array[Double](origin.getX() - w, origin.getX(), origin.getX() + w)
-          val yPoints = Array[Double](origin.getY() + h, origin.getY() - h, origin.getY() + h)
+        Kleisli{ (origin: Point) =>
+          val xPoints = Array[Double](origin.x - w, origin.x, origin.x + w)
+          val yPoints = Array[Double](origin.y + h, origin.y - h, origin.y + h)
           render(gc, dc){ gc =>
             gc.fillPolygon(xPoints, yPoints, 3)
           }{ gc =>
@@ -81,11 +80,11 @@ trait Shape extends doodle.algebra.Shape[Drawing,Unit] {
       val diameter = radius * 2.0
       val bb = BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
       val result =
-        Kleisli{ (origin: Point2D) =>
+        Kleisli{ (origin: Point) =>
           render(gc, dc){ gc =>
-            gc.fillOval(origin.getX() - radius, origin.getY() - radius, radius, radius)
+            gc.fillOval(origin.x - radius, origin.y - radius, radius, radius)
           }{ gc =>
-            gc.strokeOval(origin.getX() - radius, origin.getY() - radius, radius, radius)
+            gc.strokeOval(origin.x - radius, origin.y - radius, radius, radius)
           }
         }
 

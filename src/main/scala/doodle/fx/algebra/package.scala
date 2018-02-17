@@ -21,15 +21,16 @@ import cats.Eval
 import cats.data.ReaderT
 import cats.effect.IO
 import doodle.algebra.DrawingContext
+import doodle.core.Point
 import doodle.layout.BoundingBox
 import doodle.fx.engine.Transform
-import javafx.geometry.Point2D
 import javafx.scene.effect.BlendMode
 import javafx.scene.canvas.GraphicsContext
 
 package object algebra {
   type FxContext = DrawingContext[BlendMode]
   type Context = (GraphicsContext, FxContext, Transform.Transform)
-  type Renderable[A] = (BoundingBox, ReaderT[IO,Point2D,A])
-  type Drawing[A] = ReaderT[Eval, Context, Renderable[A]]
+  type Renderable[A] = (BoundingBox, ReaderT[IO,Point,A])
+  type DrawingF[A] = ReaderT[Eval, Context, A]
+  type Drawing[A] = DrawingF[Renderable[A]]
 }

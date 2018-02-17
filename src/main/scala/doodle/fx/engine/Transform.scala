@@ -18,24 +18,24 @@ package doodle
 package fx
 package engine
 
-import javafx.geometry.Point2D
+import doodle.core.Point
 
 object Transform {
-  type Transform = Point2D => Point2D
+  type Transform = Point => Point
 
   def logicalToScreen(width: Double, height: Double): Transform =
-    (logical: Point2D) => {
-      val x = logical.getX()
-      val y = logical.getY()
+    (logical: Point) => {
+      val x = logical.x
+      val y = logical.y
 
-      new Point2D(x + (width / 2), height / 2 - y)
+      Point(x + (width / 2), height / 2 - y)
     }
 
   def screenToLogical(width: Double, height: Double): Transform =
-    (screen: Point2D) => {
-      val x = screen.getX()
-      val y = screen.getY()
+    (screen: Point) => {
+      val x = screen.x
+      val y = screen.y
 
-      new Point2D(x - (width / 2), height / 2 - y)
+      Point(x - (width / 2), height / 2 - y)
     }
 }

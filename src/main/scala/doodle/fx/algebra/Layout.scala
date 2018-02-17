@@ -18,45 +18,10 @@ package doodle
 package fx
 package algebra
 
-import cats.data.Kleisli
+import cats.{Monad,Monoid}
 import cats.instances.all._
-import cats.syntax.semigroup._
-import javafx.geometry.Point2D
 
-trait Layout extends doodle.algebra.Layout[Drawing,Unit] {
-  def on(top: Drawing[Unit], bottom: Drawing[Unit]): Drawing[Unit] =
-    for {
-      t <- top
-      b <- bottom
-      (bbT, nextT) = t
-      (bbB, nextB) = b
-    } yield ((bbT on bbB), nextT |+| nextB)
-
-  def beside(left: Drawing[Unit], right: Drawing[Unit]): Drawing[Unit] =
-    for {
-      l <- left
-      r <- right
-      (bbL, nextL) = l
-      (bbR, nextR) = r
-    } yield ((bbL beside bbR),
-             Kleisli{ origin =>
-               val leftOrigin = new Point2D(origin.getX() - bbL.right, origin.getY())
-               val rightOrigin = new Point2D(origin.getX() - bbR.left, origin.getY())
-
-               nextL.run(leftOrigin) |+| nextR.run(rightOrigin)
-             })
-
-  def above(top: Drawing[Unit], bottom: Drawing[Unit]): Drawing[Unit] =
-    for {
-      t <- top
-      b <- bottom
-      (bbT, nextT) = t
-      (bbB, nextB) = b
-    } yield ((bbT beside bbB),
-             Kleisli{ origin =>
-               val topOrigin = new Point2D(origin.getX(), origin.getY() - bbT.bottom)
-               val bottomOrigin = new Point2D(origin.getX(), origin.getY() - bbB.top)
-
-               nextT.run(topOrigin) |+| nextB.run(bottomOrigin)
-             })
+trait Layout extends doodle.algebra.generic.GenericLayout[DrawingF,Unit] {
+  implicit val monad: Monad[DrawingF] = implicitly[Monad[DrawingF]]
+  implicit val monoid: Monoid[Unit] = implicitly[Monoid[Unit]]
 }
