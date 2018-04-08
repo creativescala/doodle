@@ -15,22 +15,12 @@
  */
 
 package doodle
-package fx
+package java2d
 package algebra
 
-import doodle.core.Color
-import doodle.algebra.generic.Finalized
+import doodle.algebra.generic.GenericShape
 
-trait Style[A] extends doodle.algebra.Style[Drawing,A] {
-  def fillColor(image: Drawing[A], fillColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.fillColor(fillColor))(image)
-
-  def strokeColor(image: Drawing[A], strokeColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.strokeColor(strokeColor))(image)
-
-  def noFill(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noFill)(image)
-
-  def noStroke(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noStroke)(image)
+/** Higher level shape primitives */
+trait Shape extends GenericShape[java.awt.Graphics2D] {
+  implicit val graphicsContext = Graphics2DGraphicsContext
 }

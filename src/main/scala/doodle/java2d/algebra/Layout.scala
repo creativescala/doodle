@@ -15,22 +15,13 @@
  */
 
 package doodle
-package fx
+package java2d
 package algebra
 
-import doodle.core.Color
-import doodle.algebra.generic.Finalized
+import cats.Monoid
+import cats.instances.all._
+import java.awt.Graphics2D
 
-trait Style[A] extends doodle.algebra.Style[Drawing,A] {
-  def fillColor(image: Drawing[A], fillColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.fillColor(fillColor))(image)
-
-  def strokeColor(image: Drawing[A], strokeColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.strokeColor(strokeColor))(image)
-
-  def noFill(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noFill)(image)
-
-  def noStroke(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noStroke)(image)
+trait Layout extends doodle.algebra.generic.GenericLayout[Graphics2D,Unit] {
+  implicit val monoid: Monoid[Unit] = implicitly[Monoid[Unit]]
 }

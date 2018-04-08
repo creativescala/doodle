@@ -15,22 +15,19 @@
  */
 
 package doodle
-package fx
 package algebra
+package generic
 
-import doodle.core.Color
-import doodle.algebra.generic.Finalized
+import doodle.core.Point
 
-trait Style[A] extends doodle.algebra.Style[Drawing,A] {
-  def fillColor(image: Drawing[A], fillColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.fillColor(fillColor))(image)
+/** Render in screen space */
+trait GraphicsContext[A] {
+  def fillRect(gc: A)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit
+  def strokeRect(gc: A)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit
 
-  def strokeColor(image: Drawing[A], strokeColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.strokeColor(strokeColor))(image)
+  def fillCircle(gc: A)(dc: DrawingContext, center: Point, radius: Double): Unit
+  def strokeCircle(gc: A)(dc: DrawingContext, center: Point, radius: Double): Unit
 
-  def noFill(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noFill)(image)
-
-  def noStroke(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noStroke)(image)
+  def fillPolygon(gc: A)(dc: DrawingContext, points: Array[Point]): Unit
+  def strokePolygon(gc: A)(dc: DrawingContext, points: Array[Point]): Unit
 }

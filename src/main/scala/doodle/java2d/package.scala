@@ -16,15 +16,15 @@
 
 package doodle
 
-package object fx {
-  import javafx.scene.canvas.GraphicsContext
+import java.awt.Graphics2D
 
-  type Algebra = doodle.fx.algebra.Algebra
-  type Drawing[A] = doodle.algebra.generic.Finalized[GraphicsContext,A]
-  type Contextualized[A] = doodle.algebra.generic.Contextualized[GraphicsContext,A]
+package object java2d {
+  type Algebra = doodle.java2d.algebra.Algebra
+  type Drawing[A] = doodle.algebra.generic.Finalized[Graphics2D,A]
+  type Contextualized[A] = doodle.algebra.generic.Contextualized[Graphics2D,A]
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
-  implicit val fxRender = doodle.fx.algebra.Renderer
+  implicit val java2dRenderer = doodle.java2d.algebra.Renderer
 
   type Image = doodle.algebra.Image[Algebra,Drawing,Unit]
   object Image {

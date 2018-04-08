@@ -15,22 +15,20 @@
  */
 
 package doodle
-package fx
 package algebra
+package generic
 
-import doodle.core.Color
-import doodle.algebra.generic.Finalized
+sealed abstract class BlendMode extends Product with Serializable
+object BlendMode {
+  final case object Screen extends BlendMode
+  final case object Burn extends BlendMode
+  final case object Dodge extends BlendMode
+  final case object Lighten extends BlendMode
+  final case object SourceOver extends BlendMode
 
-trait Style[A] extends doodle.algebra.Style[Drawing,A] {
-  def fillColor(image: Drawing[A], fillColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.fillColor(fillColor))(image)
-
-  def strokeColor(image: Drawing[A], strokeColor: Color): Drawing[A] =
-    Finalized.contextTransform(dc => dc.strokeColor(strokeColor))(image)
-
-  def noFill(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noFill)(image)
-
-  def noStroke(image: Drawing[A]): Drawing[A] =
-    Finalized.contextTransform(dc => dc.noStroke)(image)
+  val screen: BlendMode = Screen
+  val burn: BlendMode = Burn
+  val dodge: BlendMode = Dodge
+  val lighten: BlendMode = Lighten
+  val sourceOver: BlendMode = SourceOver
 }

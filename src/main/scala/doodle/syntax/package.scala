@@ -20,11 +20,15 @@ package object syntax
     extends AngleSyntax
     with BlendSyntax
     with LayoutSyntax
+    with NormalizedSyntax
     with RendererSyntax
-    with StyleSyntax {
+    with StyleSyntax
+    with UnsignedByteSyntax {
   object angle extends AngleSyntax
   object blend extends BlendSyntax
   object layout extends LayoutSyntax
+  object normalized extends NormalizedSyntax
   object renderer extends RendererSyntax
   object style extends StyleSyntax
+  object unsignedByte extends UnsignedByteSyntax
 }

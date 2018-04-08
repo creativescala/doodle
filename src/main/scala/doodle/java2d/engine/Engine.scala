@@ -15,22 +15,18 @@
  */
 
 package doodle
-package fx
+package java2d
+package engine
 
-import cats.Eval
-import cats.data.ReaderT
 import cats.effect.IO
-import doodle.algebra.DrawingContext
-import doodle.core.Point
-import doodle.layout.BoundingBox
-import doodle.fx.engine.Transform
-import javafx.scene.effect.BlendMode
-import javafx.scene.canvas.GraphicsContext
+import doodle.engine.Frame
 
-package object algebra {
-  type FxContext = DrawingContext[BlendMode]
-  type Context = (GraphicsContext, FxContext, Transform.Transform)
-  type Renderable[A] = (BoundingBox, ReaderT[IO,Point,A])
-  type DrawingF[A] = ReaderT[Eval, Context, A]
-  type Drawing[A] = DrawingF[Renderable[A]]
+object Engine {
+  def frame[A](frame: Frame)(f: Algebra => Drawing[A]): IO[A] = {
+    def cbHandler(cb: Either[Throwable, A] => Unit): Unit = {
+      new Java2DFrame(frame, f, cb)
+      ()
+    }
+    IO.async(cbHandler)
+  }
 }

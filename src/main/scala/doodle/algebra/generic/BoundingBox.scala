@@ -15,9 +15,10 @@
  */
 
 package doodle
-package layout
+package algebra
+package generic
 
-/** A [[doodle.layout.BoundingBox]] represents a bounding box around an image.
+/** A [[doodle.algebra.generic.BoundingBox]] represents a bounding box around an image.
   *
   * A bounding box also defines a local coordinate system for an image. The
   * bounding box must contain the origin of the coordinate system. However the
@@ -46,7 +47,7 @@ final case class BoundingBox(left: Double,
 }
 
 object BoundingBox {
-  /** Create a [[doodle.layout.BoundingBox]] with the given width and heigh and
+  /** Create a [[doodle.algebra.generic.BoundingBox]] with the given width and heigh and
     * the origin centered within the box. */
   def centered(width: Double, height: Double): BoundingBox = {
     val w = width / 2.0

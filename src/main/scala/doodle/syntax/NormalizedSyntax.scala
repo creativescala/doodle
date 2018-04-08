@@ -15,27 +15,13 @@
  */
 
 package doodle
-package fx
-package engine
+package syntax
 
-import doodle.core.Point
+import doodle.core.Normalized
 
-object Transform {
-  type Transform = Point => Point
-
-  def logicalToScreen(width: Double, height: Double): Transform =
-    (logical: Point) => {
-      val x = logical.x
-      val y = logical.y
-
-      Point(x + (width / 2), height / 2 - y)
-    }
-
-  def screenToLogical(width: Double, height: Double): Transform =
-    (screen: Point) => {
-      val x = screen.x
-      val y = screen.y
-
-      Point(x - (width / 2), height / 2 - y)
-    }
+trait NormalizedSyntax {
+  implicit class ToNormalizedOps(val value: Double) {
+    def normalized: Normalized =
+      Normalized.clip(value)
+  }
 }

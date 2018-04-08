@@ -18,52 +18,55 @@ package doodle
 package algebra
 package generic
 
-import cats.{Monad,Monoid}
-import cats.data.{Kleisli,ReaderT}
-import cats.effect.IO
+import cats.Monoid
 import cats.syntax.all._
 import doodle.core.Point
-import doodle.layout.BoundingBox
 
-trait GenericLayout[F[_],A] extends Layout[({ type L[T] = F[(BoundingBox, ReaderT[IO,Point,T])]})#L,A] {
-  implicit val monad: Monad[F]
+trait GenericLayout[G,A] extends Layout[Finalized[G,?],A] {
   implicit val monoid: Monoid[A]
 
-  type Drawing = F[(BoundingBox, ReaderT[IO,Point,A])]
-
-  def on(top: Drawing, bottom: Drawing): Drawing =
+  def on(top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
     for {
       t <- top
       b <- bottom
-      (bbT, nextT) = t
-      (bbB, nextB) = b
-    } yield ((bbT on bbB), nextT |+| nextB)
+      (bbT, ctxT) = t
+      (bbB, ctxB) = b
+    } yield ((bbT on bbB), ctxT |+| ctxB)
 
-  def beside(left: Drawing, right: Drawing): Drawing =
+  def beside(left: Finalized[G,A], right: Finalized[G,A]): Finalized[G,A] =
     for {
       l <- left
       r <- right
-      (bbL, nextL) = l
-      (bbR, nextR) = r
+      (bbL, ctxL) = l
+      (bbR, ctxR) = r
     } yield ((bbL beside bbR),
-             Kleisli{ origin =>
-               val leftOrigin = Point(origin.x - bbL.right, origin.y)
-               val rightOrigin = Point(origin.x - bbR.left, origin.y)
+             Contextualized{ ctx =>
+               val rdrL = ctxL(ctx)
+               val rdrR = ctxR(ctx)
 
-               nextL.run(leftOrigin) |+| nextR.run(rightOrigin)
+               Renderable { origin =>
+                 val leftOrigin = Point(origin.x - bbL.right, origin.y)
+                 val rightOrigin = Point(origin.x - bbR.left, origin.y)
+                 rdrL(leftOrigin) |+| rdrR(rightOrigin)
+               }
              })
 
-  def above(top: Drawing, bottom: Drawing): Drawing =
+  def above(top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
     for {
       t <- top
       b <- bottom
-      (bbT, nextT) = t
-      (bbB, nextB) = b
+      (bbT, ctxT) = t
+      (bbB, ctxB) = b
     } yield ((bbT beside bbB),
-             Kleisli{ origin =>
-               val topOrigin = Point(origin.x, origin.y - bbT.bottom)
-               val bottomOrigin = Point(origin.x, origin.y - bbB.top)
+             Contextualized{ ctx =>
+               val rdrT = ctxT(ctx)
+               val rdrB = ctxB(ctx)
 
-               nextT.run(topOrigin) |+| nextB.run(bottomOrigin)
+               Renderable { origin =>
+                 val topOrigin = Point(origin.x, origin.y - bbT.bottom)
+                 val bottomOrigin = Point(origin.x, origin.y - bbB.top)
+
+                 rdrT(topOrigin) |+| rdrB(bottomOrigin)
+               }
              })
 }

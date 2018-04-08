@@ -15,20 +15,13 @@
  */
 
 package doodle
-package engine
+package syntax
 
-sealed abstract class Size extends Product with Serializable
-object Size {
+import doodle.core.UnsignedByte
 
-  // Algebraic data type members
-  final case class FitToImage(border: Int) extends Size
-  final case class FixedSize(width: Double, height: Double) extends Size
-  final case object FullScreen extends Size
-
-  // Smart constructors
-
-  def fixedSize(width: Double, height: Double): Size =
-    FixedSize(width, height)
-
-  val fullScreen: Size = FullScreen
+trait UnsignedByteSyntax {
+  implicit class ToUnsignedByteOps(val value: Int) {
+    def uByte: UnsignedByte =
+      UnsignedByte.clip(value)
+  }
 }

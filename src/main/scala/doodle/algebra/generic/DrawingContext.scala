@@ -16,6 +16,7 @@
 
 package doodle
 package algebra
+package generic
 
 import cats.syntax.all._
 import cats.instances.option._
@@ -24,42 +25,39 @@ import doodle.core.Color
 final case class Stroke(color: Color, width: Double)
 final case class Fill(color: Color)
 
-/** Stores state about the current drawing style.
-  *
-  * The type `B` is the type of Blends.
-  */
-final case class DrawingContext[B](
-  blendMode: Option[B],
+/** Stores state about the current drawing style. */
+final case class DrawingContext(
+  blendMode: Option[BlendMode],
   strokeWidth: Option[Double],
   strokeColor: Option[Color],
   fillColor: Option[Color]
 ) {
-  def blendMode(mode: B): DrawingContext[B] =
+  def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = blendMode orElse Some(mode))
 
 
   def stroke: Option[Stroke] =
     (strokeColor, strokeWidth).mapN((c, w) => Stroke(c, w))
 
-  def strokeColor(color: Color): DrawingContext[B] =
+  def strokeColor(color: Color): DrawingContext =
     this.copy(strokeColor = strokeColor orElse Some(color))
 
-  def strokeWidth(width: Double): DrawingContext[B] =
+  def strokeWidth(width: Double): DrawingContext =
     this.copy(strokeWidth = strokeWidth orElse { if(width <= 0) None else Some(width) })
 
-  def noStroke: DrawingContext[B] =
+  def noStroke: DrawingContext =
     this.copy(strokeWidth = strokeWidth orElse None)
 
 
   def fill: Option[Fill] =
     fillColor.map(c => Fill(c))
 
-  def fillColor(color: Color): DrawingContext[B] =
+  def fillColor(color: Color): DrawingContext =
     this.copy(fillColor = fillColor orElse Some(color))
 
-  def noFill: DrawingContext[B] =
+  def noFill: DrawingContext =
     this.copy(fillColor = fillColor orElse None)
 }
 object DrawingContext {
-  def empty[B]: DrawingContext[B] = DrawingContext(None,None,None,None)
+  def empty: DrawingContext = DrawingContext(None,None,None,None)
 }

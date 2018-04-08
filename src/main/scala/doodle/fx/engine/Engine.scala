@@ -19,17 +19,18 @@ package fx
 package engine
 
 import cats.effect.IO
-import doodle.algebra.DrawingContext
+import doodle.algebra.generic.{DrawingContext, Transform}
 import doodle.core.Point
 import doodle.engine.{Frame, Size}
-import doodle.fx.algebra.{Algebra,Drawing}
+import doodle.fx.Drawing
+import doodle.fx.algebra.Algebra
 import javafx.application.{Application, Platform}
 import javafx.stage.Stage
 import javafx.scene.{Group, Scene}
-import javafx.scene.canvas.{Canvas, GraphicsContext}
-import javafx.scene.effect.BlendMode
+import javafx.scene.canvas.Canvas
 import javafx.animation.AnimationTimer
 import scala.concurrent.SyncVar
+import scala.util.control.NonFatal
 // import scala.annotation.tailrec
 
 class Engine extends Application {
@@ -37,13 +38,17 @@ class Engine extends Application {
     import Size._
 
     val timer = new AnimationTimer {
-      def handle(now: Long): Unit = {
+      def draw[A](request: FrameRequest[A]): Unit = {
         try {
-          val request = FrameRequest.take()
+          val (bb, ctx) = request.drawing(DrawingContext.empty)
           val frame = request.frame
+
           val root = new Group()
           val scene: Scene =
             frame.size match {
+              case FitToImage(b) =>
+                new Scene(root, bb.width + b, bb.height + b)
+
               case FixedSize(w, h) =>
                 new Scene(root, w, h)
 
@@ -56,14 +61,22 @@ class Engine extends Application {
 
           val canvas: Canvas =
             new Canvas(scene.getWidth(), scene.getHeight())
-          val context = canvas.getGraphicsContext2D()
-          val transform =
-            Transform.logicalToScreen(scene.getWidth(), scene.getHeight())
+          val gc = canvas.getGraphicsContext2D()
+          val tx = Transform.logicalToScreen(scene.getWidth(), scene.getHeight())
 
-          request.cb(context, transform)
+          request.cb(Right(ctx((gc, tx))(Point.zero).unsafeRunSync))
 
           root.getChildren.add(canvas)
           stage.show()
+        } catch {
+          case NonFatal(e) => request.cb(Left(e))
+        }
+      }
+
+      def handle(now: Long): Unit = {
+        try {
+          val request: FrameRequest[A] forSome {type A} = FrameRequest.take()
+          draw(request)
         } catch {
           case _: NoSuchElementException => ()
         }
@@ -74,15 +87,14 @@ class Engine extends Application {
   }
 }
 
-final case class FrameRequest(frame: Frame,
-                              cb: (GraphicsContext, Transform.Transform) => Unit)
+final case class FrameRequest[A](frame: Frame, drawing: Drawing[A], cb: Either[Throwable,A] => Unit)
 object FrameRequest {
-  val channel: SyncVar[FrameRequest] = new SyncVar()
+  val channel: SyncVar[FrameRequest[_]] = new SyncVar()
 
-  def put(request: FrameRequest): Unit =
+  def put(request: FrameRequest[_]): Unit =
     channel.put(request)
 
-  def take(timeout: Long = 0L): FrameRequest =
+  def take(timeout: Long = 0L): FrameRequest[_] =
     channel.take(timeout)
 }
 
@@ -93,20 +105,8 @@ object Engine {
       // Assume the point at which we receive the callback is the point when the
       // effect is being run. Hence this is the point when we ask the
       // Engine to render.
-      val requestCallback: (GraphicsContext, Transform.Transform) => Unit =
-        (context, tx) => {
-          // println("Context received. Applying.")
-          val a =
-            f(Algebra()).
-              run((context, DrawingContext.empty[BlendMode], tx)).
-              map{ case (_, next) => next.run(tx(Point.zero)) }.
-              value.
-              unsafeRunSync()
-          cb(Right(a))
-        }
-
       // println("Constructing FrameRequest")
-      FrameRequest.put(FrameRequest(frame, requestCallback))
+      FrameRequest.put(FrameRequest(frame, f(Algebra()), cb))
       // println("FrameRequest has been put")
     }
     IO.async(cbHandler)

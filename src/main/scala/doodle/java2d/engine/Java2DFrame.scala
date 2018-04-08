@@ -15,20 +15,20 @@
  */
 
 package doodle
+package java2d
 package engine
 
-sealed abstract class Size extends Product with Serializable
-object Size {
+import doodle.engine._
+import javax.swing.JFrame
 
-  // Algebraic data type members
-  final case class FitToImage(border: Int) extends Size
-  final case class FixedSize(width: Double, height: Double) extends Size
-  final case object FullScreen extends Size
+final class Java2DFrame[A](frame: Frame,
+                           f: Algebra => Drawing[A],
+                           cb: Either[Throwable, A] => Unit)
+    extends JFrame {
+  val panel = new Java2DPanel(frame, f, cb)
 
-  // Smart constructors
-
-  def fixedSize(width: Double, height: Double): Size =
-    FixedSize(width, height)
-
-  val fullScreen: Size = FullScreen
+  getContentPane().add(panel)
+  pack()
+  repaint()
+  setVisible(true)
 }

@@ -18,17 +18,17 @@ package doodle
 package fx
 package algebra
 
-import javafx.scene.effect.BlendMode
+import doodle.algebra.generic.{BlendMode, Finalized}
 
 trait Blend[A] extends doodle.algebra.Blend[Drawing, A] {
   def screen(image: Drawing[A]): Drawing[A] =
-    Drawing.contextTransform(dc => dc.blendMode(BlendMode.SCREEN))(image)
+    Finalized.contextTransform(dc => dc.blendMode(BlendMode.screen))(image)
   def burn(image: Drawing[A]): Drawing[A] =
-    Drawing.contextTransform(dc => dc.blendMode(BlendMode.COLOR_BURN))(image)
+    Finalized.contextTransform(dc => dc.blendMode(BlendMode.burn))(image)
   def dodge(image: Drawing[A]): Drawing[A] =
-    Drawing.contextTransform(dc => dc.blendMode(BlendMode.COLOR_DODGE))(image)
+    Finalized.contextTransform(dc => dc.blendMode(BlendMode.dodge))(image)
   def lighten(image: Drawing[A]): Drawing[A] =
-    Drawing.contextTransform(dc => dc.blendMode(BlendMode.LIGHTEN))(image)
+    Finalized.contextTransform(dc => dc.blendMode(BlendMode.lighten))(image)
   def sourceOver(image: Drawing[A]): Drawing[A] =
-    Drawing.contextTransform(dc => dc.blendMode(BlendMode.SRC_OVER))(image)
+    Finalized.contextTransform(dc => dc.blendMode(BlendMode.sourceOver))(image)
 }

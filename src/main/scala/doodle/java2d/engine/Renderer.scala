@@ -15,20 +15,11 @@
  */
 
 package doodle
+package java2d
 package engine
 
-sealed abstract class Size extends Product with Serializable
-object Size {
-
-  // Algebraic data type members
-  final case class FitToImage(border: Int) extends Size
-  final case class FixedSize(width: Double, height: Double) extends Size
-  final case object FullScreen extends Size
-
-  // Smart constructors
-
-  def fixedSize(width: Double, height: Double): Size =
-    FixedSize(width, height)
-
-  val fullScreen: Size = FullScreen
+object Renderer {//extends doodle.algebra.Renderer[Algebra,Drawing] {
+//   def render[A](image: Image[Algebra,Drawing,A]): IO[A] = {
+//     Engine.frame(Frame.size(400,400))(algebra => image(algebra))
+//   }
 }
