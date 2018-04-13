@@ -25,19 +25,23 @@ import java.awt.Graphics2D
 /** Higher level shape primitives */
 object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   def fillRect(gc: Graphics2D)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit = {
+    println(s"fillRect(dc: $dc, center: $center)")
     dc.fill.foreach{ f =>
+      println(s"fill $f")
       Java2D.setFill(gc, f)
       val w = width.toInt
       val h = width.toInt
-      gc.fillRect(center.x.toInt - w, center.y.toInt - h, w, h)
+      gc.fillRect(center.x.toInt - (w/2), center.y.toInt - (h/2), w, h)
     }
   }
   def strokeRect(gc: Graphics2D)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit = {
+    println(s"strokeRect(dc: $dc, center: $center)")
     dc.stroke.foreach{ s =>
+      println(s"stroke $s")
       Java2D.setStroke(gc, s)
       val w = width.toInt
       val h = width.toInt
-      gc.fillRect(center.x.toInt - w, center.y.toInt - h, w, h)
+      gc.drawRect(center.x.toInt - (w/2), center.y.toInt - (h/2), w, h)
     }
   }
 

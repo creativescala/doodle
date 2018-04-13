@@ -15,19 +15,9 @@
  */
 
 package doodle
-package engine
+package java2d
+package algebra
 
-final case class Frame(size: Size, title: String = "") {
-  def title(title: String): Frame =
-    this.copy(title = title)
-}
-object Frame {
-  def fitToImage(border: Int = 20): Frame =
-    Frame(Size.fitToImage(border))
+import doodle.algebra.generic.GenericStyle
 
-  def size(width: Double, height: Double): Frame =
-    Frame(Size.fixedSize(width, height))
-
-  def fullScreen: Frame =
-    Frame(Size.fullScreen)
-}
+trait Style[A] extends GenericStyle[java.awt.Graphics2D,A]

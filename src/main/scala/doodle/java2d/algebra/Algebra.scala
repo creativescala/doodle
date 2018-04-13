@@ -18,4 +18,4 @@ package doodle
 package java2d
 package algebra
 
-final case class Algebra() extends Shape with Layout
+final case class Algebra() extends Layout with Shape with Style[Unit]

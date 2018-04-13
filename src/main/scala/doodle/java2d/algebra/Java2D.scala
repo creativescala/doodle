@@ -69,11 +69,11 @@ object Java2D {
     val jColor = Java2D.toAwtColor(stroke.color)
 
     graphics.setStroke(jStroke)
-    graphics.setPaint(jColor)
+    graphics.setColor(jColor)
   }
 
   def setFill(graphics: Graphics2D, fill: Fill) = {
-    graphics.setPaint(Java2D.toAwtColor(fill.color))
+    graphics.setColor(Java2D.toAwtColor(fill.color))
   }
 
   /** Converts to an *open* `Path2D` */

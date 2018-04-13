@@ -35,7 +35,6 @@ final case class DrawingContext(
   def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = blendMode orElse Some(mode))
 
-
   def stroke: Option[Stroke] =
     (strokeColor, strokeWidth).mapN((c, w) => Stroke(c, w))
 

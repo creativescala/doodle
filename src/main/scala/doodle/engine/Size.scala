@@ -27,6 +27,9 @@ object Size {
 
   // Smart constructors
 
+  def fitToImage(border: Int = 20): Size =
+    FitToImage(border)
+
   def fixedSize(width: Double, height: Double): Size =
     FixedSize(width, height)
 

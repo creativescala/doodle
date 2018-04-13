@@ -16,25 +16,20 @@
 
 package doodle
 package algebra
+package generic
 
-import doodle.core.Point
+import doodle.core.Color
 
-object Transform {
-  type Transform = Point => Point
+trait GenericStyle[G,A] extends Style[Finalized[G,?],A] {
+  def fillColor(image: Finalized[G,A], fillColor: Color): Finalized[G,A] =
+    Finalized.contextTransform(_.fillColor(fillColor))(image)
 
-  def logicalToScreen(width: Double, height: Double): Transform =
-    (logical: Point) => {
-      val x = logical.x
-      val y = logical.y
+  def strokeColor(image: Finalized[G,A], strokeColor: Color): Finalized[G,A] =
+    Finalized.contextTransform(_.strokeColor(strokeColor))(image)
 
-      Point(x + (width / 2), height / 2 - y)
-    }
+  def noFill(image: Finalized[G,A]): Finalized[G,A] =
+    Finalized.contextTransform(_.noFill)(image)
 
-  def screenToLogical(width: Double, height: Double): Transform =
-    (screen: Point) => {
-      val x = screen.x
-      val y = screen.y
-
-      Point(x - (width / 2), height / 2 - y)
-    }
+  def noStroke(image: Finalized[G,A]): Finalized[G,A] =
+    Finalized.contextTransform(_.noStroke)(image)
 }

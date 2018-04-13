@@ -41,13 +41,12 @@ final class Java2DPanel[A](frame: Frame,
     case FullScreen => ???
   }
 
-  val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
-
   override def paintComponent(context: Graphics): Unit = {
     val gc = context.asInstanceOf[Graphics2D]
     Java2D.setup(gc)
     SwingUtilities.windowForComponent(this).pack()
 
+    val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
     ctx((gc, tx))(Point.zero).map(a => cb(Right(a))).unsafeRunSync()
  }
 }
