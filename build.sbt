@@ -37,12 +37,13 @@ libraryDependencies += "io.monix" %% "minitest-laws" % "2.0.0" % "test"
 testFrameworks += new TestFramework("minitest.runner.Framework")
 
 initialCommands in console := """
-      |import doodle.fx._
-      |import doodle.fx.examples._
+      |import doodle.java2d._
+      |import doodle.syntax._
     """.trim.stripMargin
 
 cleanupCommands in console := """
       |doodle.fx.engine.Engine.stop()
+      |doodle.java2d.engine.Engine.stop()
     """.trim.stripMargin
 
 // fork in (Compile, console) := true

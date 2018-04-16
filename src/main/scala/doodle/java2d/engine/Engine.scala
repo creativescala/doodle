@@ -20,13 +20,24 @@ package engine
 
 import cats.effect.IO
 import doodle.engine.Frame
+import javax.swing.JFrame
 
 object Engine {
+  private var jFrames: List[JFrame] = List.empty
+
   def frame[A](frame: Frame)(f: Algebra => Drawing[A]): IO[A] = {
     def cbHandler(cb: Either[Throwable, A] => Unit): Unit = {
-      new Java2DFrame(frame, f, cb)
+      val jFrame = new Java2DFrame(frame, f, cb)
+      jFrames.synchronized{ jFrames = jFrame :: jFrames }
       ()
     }
     IO.async(cbHandler)
+  }
+
+  def stop(): Unit = {
+    jFrames.synchronized{
+      jFrames.foreach(_.dispose)
+      jFrames = List.empty
+    }
   }
 }
