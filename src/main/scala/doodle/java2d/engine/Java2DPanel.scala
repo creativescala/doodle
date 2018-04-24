@@ -30,7 +30,7 @@ final class Java2DPanel[A](frame: Frame,
                            cb: Either[Throwable, A] => Unit)
     extends JPanel {
   val drawing = f(Algebra())
-  val (bb, ctx) = drawing(DrawingContext.empty)
+  val (bb, ctx) = drawing(DrawingContext.default)
 
   import Size._
   frame.size match {

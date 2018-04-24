@@ -27,6 +27,9 @@ trait GenericStyle[G,A] extends Style[Finalized[G,?],A] {
   def strokeColor(image: Finalized[G,A], strokeColor: Color): Finalized[G,A] =
     Finalized.contextTransform(_.strokeColor(strokeColor))(image)
 
+  def strokeWidth(image: Finalized[G,A], strokeWidth: Double): Finalized[G,A] =
+    Finalized.contextTransform(_.strokeWidth(strokeWidth))(image)
+
   def noFill(image: Finalized[G,A]): Finalized[G,A] =
     Finalized.contextTransform(_.noFill)(image)
 

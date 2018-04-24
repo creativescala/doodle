@@ -28,6 +28,9 @@ trait StyleSyntax {
     def strokeColor(strokeColor: Color)(implicit s: Style[F,A]): F[A] =
       s.strokeColor(image, strokeColor)
 
+    def strokeWidth(strokeWidth: Double)(implicit s: Style[F,A]): F[A] =
+      s.strokeWidth(image, strokeWidth)
+
     def noFill(implicit s: Style[F,A]): F[A] =
       s.noFill(image)
 
@@ -44,6 +47,11 @@ trait StyleSyntax {
     def strokeColor(strokeColor: Color): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).strokeColor(strokeColor)
+      }
+
+    def strokeWidth(strokeWidth: Double): Image[Algebra,F,A] =
+      Image{ implicit algebra =>
+        image(algebra).strokeWidth(strokeWidth)
       }
 
     def noFill: Image[Algebra,F,A] =

@@ -25,6 +25,7 @@ import doodle.core.Color
 trait Style[F[_],A] {
   def fillColor(image: F[A], fillColor: Color): F[A]
   def strokeColor(image: F[A], strokeColor: Color): F[A]
+  def strokeWidth(image: F[A], strokeWidth: Double): F[A]
 
   def noFill(image: F[A]): F[A]
   def noStroke(image: F[A]): F[A]

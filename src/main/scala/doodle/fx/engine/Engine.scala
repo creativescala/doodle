@@ -40,7 +40,7 @@ class Engine extends Application {
     val timer = new AnimationTimer {
       def draw[A](request: FrameRequest[A]): Unit = {
         try {
-          val (bb, ctx) = request.drawing(DrawingContext.empty)
+          val (bb, ctx) = request.drawing(DrawingContext.default)
           val frame = request.frame
 
           val root = new Group()
