@@ -26,13 +26,13 @@ enablePlugins(AutomateHeaderPlugin)
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
 
-addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.5" cross CrossVersion.binary)
+addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.6" cross CrossVersion.binary)
 
-libraryDependencies += "org.typelevel" %% "cats-effect" % "0.8"
+libraryDependencies += "org.typelevel" %% "cats-effect" % "0.10"
 libraryDependencies += "org.typelevel" %% "cats-core" % "1.0.1"
 
-libraryDependencies += "io.monix" %% "minitest" % "2.0.0" % "test"
-libraryDependencies += "io.monix" %% "minitest-laws" % "2.0.0" % "test"
+libraryDependencies += "io.monix" %% "minitest" % "2.1.1" % "test"
+libraryDependencies += "io.monix" %% "minitest-laws" % "2.1.1" % "test"
 
 testFrameworks += new TestFramework("minitest.runner.Framework")
 
