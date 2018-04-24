@@ -44,6 +44,13 @@ final case class BoundingBox(left: Double,
                 this.top max that.top,
                 that.width,
                 this.bottom min that.bottom)
+
+  /** Add `expansion` to all sides of this bounding box. */
+  def expand(expansion: Double): BoundingBox =
+    BoundingBox(this.left - expansion,
+                this.top + expansion,
+                this.right + expansion,
+                this.bottom - expansion)
 }
 
 object BoundingBox {

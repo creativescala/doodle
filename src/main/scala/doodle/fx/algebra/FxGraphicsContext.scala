@@ -70,6 +70,38 @@ object FxGraphicsContext extends GraphicsContext[javafx.scene.canvas.GraphicsCon
     }
   }
 
+  def fillClosedPath(gc: GC)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.fill.foreach{ f =>
+      setupDrawingContext(gc, dc)
+      pathToFxPath(gc, center, elements)
+      gc.closePath()
+      gc.fill()
+    }
+  }
+  def strokeClosedPath(gc: GC)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.stroke.foreach{ s =>
+      setupDrawingContext(gc, dc)
+      pathToFxPath(gc, center, elements)
+      gc.closePath()
+      gc.stroke()
+    }
+  }
+
+  def fillOpenPath(gc: GC)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.fill.foreach{ f =>
+      setupDrawingContext(gc, dc)
+      pathToFxPath(gc, center, elements)
+      gc.fill()
+    }
+  }
+  def strokeOpenPath(gc: GC)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.stroke.foreach{ s =>
+      setupDrawingContext(gc, dc)
+      pathToFxPath(gc, center, elements)
+      gc.stroke()
+    }
+  }
+
   def setupDrawingContext(gc: GC, dc: DrawingContext): Unit = {
     import BlendMode._
 
@@ -86,6 +118,19 @@ object FxGraphicsContext extends GraphicsContext[javafx.scene.canvas.GraphicsCon
     }
     dc.fill.foreach{ fill =>
       gc.setFill(colorToFxColor(fill.color))
+    }
+  }
+
+  def pathToFxPath(gc: GC, origin: Point, path: List[PathElement]): Unit = {
+    import PathElement._
+
+    gc.beginPath()
+    gc.moveTo(origin.x, origin.y)
+    path.foreach{
+      case MoveTo(pt) => gc.moveTo(pt.x, pt.y)
+      case LineTo(pt) => gc.lineTo(pt.x, pt.y)
+      case BezierCurveTo(cp1, cp2, end) =>
+        gc.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y)
     }
   }
 

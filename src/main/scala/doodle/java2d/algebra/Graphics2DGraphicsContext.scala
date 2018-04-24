@@ -19,15 +19,13 @@ package java2d
 package algebra
 
 import doodle.algebra.generic._
-import doodle.core.Point
+import doodle.core.{PathElement, Point}
 import java.awt.Graphics2D
 
 /** Higher level shape primitives */
 object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   def fillRect(gc: Graphics2D)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit = {
-    println(s"fillRect(dc: $dc, center: $center)")
     dc.fill.foreach{ f =>
-      println(s"fill $f")
       Java2D.setFill(gc, f)
       val w = width.toInt
       val h = width.toInt
@@ -35,9 +33,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     }
   }
   def strokeRect(gc: Graphics2D)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit = {
-    println(s"strokeRect(dc: $dc, center: $center)")
     dc.stroke.foreach{ s =>
-      println(s"stroke $s")
       Java2D.setStroke(gc, s)
       val w = width.toInt
       val h = width.toInt
@@ -83,6 +79,38 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       }
       gc.drawPolygon(xs, ys, points.size)
 
+    }
+  }
+
+  def fillClosedPath(gc: Graphics2D)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.fill.foreach{ f =>
+      Java2D.setFill(gc, f)
+      val path = Java2D.toPath2D(center, elements)
+      path.closePath()
+      gc.fill(path)
+    }
+  }
+  def strokeClosedPath(gc: Graphics2D)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.stroke.foreach{ s =>
+      Java2D.setStroke(gc, s)
+      val path = Java2D.toPath2D(center, elements)
+      path.closePath()
+      gc.draw(path)
+    }
+  }
+
+  def fillOpenPath(gc: Graphics2D)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.fill.foreach{ f =>
+      Java2D.setFill(gc, f)
+      val path = Java2D.toPath2D(center, elements)
+      gc.fill(path)
+    }
+  }
+  def strokeOpenPath(gc: Graphics2D)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit = {
+    dc.stroke.foreach{ s =>
+      Java2D.setStroke(gc, s)
+      val path = Java2D.toPath2D(center, elements)
+      gc.draw(path)
     }
   }
 }

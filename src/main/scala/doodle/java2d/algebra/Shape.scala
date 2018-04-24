@@ -21,6 +21,4 @@ package algebra
 import doodle.algebra.generic.GenericShape
 
 /** Higher level shape primitives */
-trait Shape extends GenericShape[java.awt.Graphics2D] {
-  implicit val graphicsContext = Graphics2DGraphicsContext
-}
+trait Shape extends GenericShape[java.awt.Graphics2D] 

@@ -21,6 +21,7 @@ package object syntax
     with BlendSyntax
     with LayoutSyntax
     with NormalizedSyntax
+    with PathSyntax
     with RendererSyntax
     with StyleSyntax
     with UnsignedByteSyntax {
@@ -28,6 +29,7 @@ package object syntax
   object blend extends BlendSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
+  object path extends PathSyntax
   object renderer extends RendererSyntax
   object style extends StyleSyntax
   object unsignedByte extends UnsignedByteSyntax

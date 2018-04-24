@@ -17,14 +17,9 @@
 package doodle
 package algebra
 
+import doodle.core.{ClosedPath, OpenPath}
+
 trait Path[F[_],A] {
-  def beginPath(): F[A]
-  def closePath(): F[A]
-
-  def stroke(): F[A]
-  def fill(): F[A]
-
-  def lineTo(x: Double, y: Double): F[A]
-  def moveTo(x: Double, y: Double): F[A]
-  def curveTo(cp1X: Double, cp1Y: Double, cp2X: Double, cp2Y: Double, x: Double, y: Double): F[A]
+  def path(path: ClosedPath): F[A]
+  def path(path: OpenPath): F[A]
 }

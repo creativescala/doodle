@@ -77,12 +77,12 @@ object Java2D {
   }
 
   /** Converts to an *open* `Path2D` */
-  def toPath2D(elements: List[PathElement]): Path2D = {
+  def toPath2D(origin: Point, elements: List[PathElement]): Path2D = {
     import PathElement._
     import Point.extractors._
 
     val path = new Path2D.Double()
-    path.moveTo(0, 0)
+    path.moveTo(origin.x, origin.y)
     elements.foreach {
       case MoveTo(Cartesian(x, y)) =>
         path.moveTo(x, y)

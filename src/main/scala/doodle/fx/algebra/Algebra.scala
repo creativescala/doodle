@@ -22,4 +22,7 @@ final case class Algebra()
     extends Blend[Unit]
     with Shape
     with Layout
-    with Style[Unit]
+    with Path
+    with Style[Unit] {
+  implicit val graphicsContext = FxGraphicsContext
+}

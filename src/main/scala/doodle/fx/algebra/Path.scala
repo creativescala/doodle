@@ -15,9 +15,10 @@
  */
 
 package doodle
-package java2d
+package fx
 package algebra
 
-final case class Algebra() extends Layout with Path with Shape with Style[Unit] {
-  implicit val graphicsContext = Graphics2DGraphicsContext
-}
+import doodle.algebra.generic.GenericPath
+
+/** Higher level shape primitives */
+trait Path extends GenericPath[javafx.scene.canvas.GraphicsContext] 

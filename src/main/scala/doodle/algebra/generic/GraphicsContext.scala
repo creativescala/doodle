@@ -18,7 +18,7 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.Point
+import doodle.core.{PathElement, Point}
 
 /** Render in screen space */
 trait GraphicsContext[A] {
@@ -30,4 +30,11 @@ trait GraphicsContext[A] {
 
   def fillPolygon(gc: A)(dc: DrawingContext, points: Array[Point]): Unit
   def strokePolygon(gc: A)(dc: DrawingContext, points: Array[Point]): Unit
+
+  def fillClosedPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
+  def strokeClosedPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
+
+  def fillOpenPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
+  def strokeOpenPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
+
 }
