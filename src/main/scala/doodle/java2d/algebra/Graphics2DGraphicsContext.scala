@@ -60,6 +60,29 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     }
   }
 
-  def fillPolygon(gc: Graphics2D)(dc: DrawingContext, points: Array[Point]): Unit = ???
-  def strokePolygon(gc: Graphics2D)(dc: DrawingContext, points: Array[Point]): Unit = ???
+  def fillPolygon(gc: Graphics2D)(dc: DrawingContext, points: Array[Point]): Unit = {
+    dc.fill.foreach{ f =>
+      Java2D.setFill(gc, f)
+      val xs = Array.ofDim[Int](points.size)
+      val ys = Array.ofDim[Int](points.size)
+      points.zipWithIndex.foreach{ case (pt, idx) =>
+        xs(idx) = pt.x.toInt
+        ys(idx) = pt.y.toInt
+      }
+      gc.drawPolygon(xs, ys, points.size)
+    }
+  }
+  def strokePolygon(gc: Graphics2D)(dc: DrawingContext, points: Array[Point]): Unit = {
+    dc.stroke.foreach{ s =>
+      Java2D.setStroke(gc, s)
+      val xs = Array.ofDim[Int](points.size)
+      val ys = Array.ofDim[Int](points.size)
+      points.zipWithIndex.foreach{ case (pt, idx) =>
+        xs(idx) = pt.x.toInt
+        ys(idx) = pt.y.toInt
+      }
+      gc.drawPolygon(xs, ys, points.size)
+
+    }
+  }
 }
