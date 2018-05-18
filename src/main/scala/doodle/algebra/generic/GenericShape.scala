@@ -79,4 +79,12 @@ trait GenericShape[G] extends Shape[Finalized[G,?],Unit] {
          }
        })
     }
+
+  def empty: Finalized[G,Unit] =
+    Finalized{ dc =>
+      (BoundingBox.empty,
+       Contextualized{ (gc, tx) =>
+         Renderable{ origin => IO{()} }
+       })
+    }
 }

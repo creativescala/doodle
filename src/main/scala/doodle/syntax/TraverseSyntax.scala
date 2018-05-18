@@ -15,24 +15,14 @@
  */
 
 package doodle
+package syntax
 
-package object syntax
-    extends AngleSyntax
-    with BlendSyntax
-    with LayoutSyntax
-    with NormalizedSyntax
-    with PathSyntax
-    with RendererSyntax
-    with StyleSyntax
-    with TraverseSyntax
-    with UnsignedByteSyntax {
-  object angle extends AngleSyntax
-  object blend extends BlendSyntax
-  object layout extends LayoutSyntax
-  object normalized extends NormalizedSyntax
-  object path extends PathSyntax
-  object renderer extends RendererSyntax
-  object style extends StyleSyntax
-  object traverse extends TraverseSyntax
-  object unsignedByte extends UnsignedByteSyntax
+import cats.Traverse
+import doodle.algebra.{Layout, Shape}
+
+trait TraverseSyntax {
+  implicit class TraverseOps[T[_],F[_],A](val ta: T[F[A]]) {
+    def allOn(implicit layout: Layout[F,A], shape: Shape[F,A], traverse: Traverse[T]): F[A] =
+      traverse.foldLeft(ta, shape.empty){ (accum, img) => layout.on(accum, img) }
+  }
 }

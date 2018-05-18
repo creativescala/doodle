@@ -23,4 +23,5 @@ trait Shape[F[_],A] {
   def square(width: Double): F[A]
   def triangle(width: Double, height: Double): F[A]
   def circle(radius: Double): F[A]
+  def empty: F[A]
 }

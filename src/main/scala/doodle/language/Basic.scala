@@ -15,24 +15,15 @@
  */
 
 package doodle
+package language
 
-package object syntax
-    extends AngleSyntax
-    with BlendSyntax
-    with LayoutSyntax
-    with NormalizedSyntax
-    with PathSyntax
-    with RendererSyntax
-    with StyleSyntax
-    with TraverseSyntax
-    with UnsignedByteSyntax {
-  object angle extends AngleSyntax
-  object blend extends BlendSyntax
-  object layout extends LayoutSyntax
-  object normalized extends NormalizedSyntax
-  object path extends PathSyntax
-  object renderer extends RendererSyntax
-  object style extends StyleSyntax
-  object traverse extends TraverseSyntax
-  object unsignedByte extends UnsignedByteSyntax
+import doodle.algebra._
+
+trait Basic[F[_],A] extends Layout[F,A] with Path[F,A] with Shape[F,A] with Style[F,A]
+object Basic {
+  def image[F[_],A](f: Basic[F,A] => F[A]): Image[Basic[F,A],F,A] =
+    new Image[Basic[F,A],F,A] {
+      def apply(implicit algebra: Basic[F,A]): F[A] =
+        f(algebra)
+    }
 }
