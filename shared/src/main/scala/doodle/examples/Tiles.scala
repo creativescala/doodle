@@ -9,14 +9,15 @@ import cats.instances.all._
 import cats.syntax.all._
 
 object Tiles {
+
   import PathElement._
 
   // Experiments generating tiles
 
   def randomColor(meanHue: Angle): Random[Color] =
     for {
-      hue   <- Random.normal(meanHue.toDegrees, 10.0) map (_.degrees)
-      sat   <- Random.normal(0.8, 0.05) map (_.normalized)
+      hue <- Random.normal(meanHue.toDegrees, 10.0) map (_.degrees)
+      sat <- Random.normal(0.8, 0.05) map (_.normalized)
       light <- Random.normal(0.6, 0.05) map (_.normalized)
       alpha <- Random.normal(0.5, 0.1) map (_.normalized)
     } yield Color.hsla(hue, sat, light, alpha)
@@ -54,7 +55,7 @@ object Tiles {
     grid
   }
 
-  def image: Image ={
+  def image: Image = {
     tileGrid(tile(400, 20), 3).run
   }
 }

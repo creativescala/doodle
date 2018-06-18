@@ -88,7 +88,11 @@ object Volcano {
         }
       }
     val picture = pts.foldLeft(Random.always(Image.empty)){ (accum, img) =>
+<<<<<<< HEAD
       (accum, img) mapN { _ on _ }
+=======
+      ((accum, img)) mapN { _ on _ }
+>>>>>>> 881add7ac95c13be3097bc6d44185f3ab582d485
     }
     val background = (rectangle(650, 650) fillColor Color.black)
 

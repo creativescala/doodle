@@ -42,6 +42,12 @@ sealed abstract class Image extends Product with Serializable {
   def fillColorTransform(f: Color => Color): Image =
     ContextTransform(_.fillColorTransform(f), this)
 
+  def fillGradient(gradient: Gradient): Image =
+    ContextTransform(_.fillGradient(gradient), this)
+
+  def fillGradientTransform(f: Gradient => Gradient): Image =
+    ContextTransform(_.fillGradientTransform(f), this)
+
   def noLine: Image =
     ContextTransform(_.noLine, this)
 

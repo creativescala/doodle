@@ -76,7 +76,7 @@ final class Java2DCanvas(graphics: Graphics2D, center: Point, screenCenter: Poin
     context.stroke.foreach { s =>
       Java2D.setStroke(graphics, s)
     }
-    context.fillColor.foreach { f =>
+    context.fill.foreach { f =>
       Java2D.setFill(graphics, f)
     }
     context.font map { f =>

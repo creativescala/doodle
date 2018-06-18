@@ -6,7 +6,7 @@ import scala.scalajs.js.annotation._
 
 object Main {
   @JSExportTopLevel("Main.main")
-  def main(): Unit = {
+  def main(args: Array[String]): Unit = {
     import doodle.backend.StandardInterpreter._
 
     implicit val frame = SvgFrame.fromElementId("canvas", 600, 600)
