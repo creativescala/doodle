@@ -18,7 +18,7 @@ You can use Doodle in your own project by importing the JARs published to our [B
 [bintray-training]: https://bintray.com/underscoreio/training/doodle
 
 ~~~ scala
-scalaVersion := "2.12.2" // Doodle is currently published for Scala 2.12 only
+scalaVersion := "2.12.6" // Doodle is currently published for Scala 2.12 only
 resolvers += Resolver.bintrayRepo("underscoreio", "training")
 libraryDependencies += "underscoreio" %% "doodle" % "0.8.2"
 ~~~

@@ -1,6 +1,7 @@
 package doodle
 package examples
 
+import scala.math.BigDecimal
 import cats.implicits._
 import doodle.core._
 import doodle.syntax._
@@ -43,7 +44,7 @@ object SandSpline {
   def noise(t: Normalized): Random[Vec] = {
     val stdDev = t.get * 80
     val noise = Random.normal(0.0, stdDev)
-    (noise |@| noise).map((x, y) => Vec(x, y))
+    (noise, noise).mapN((x, y) => Vec(x, y))
   }
 
   def perturb(t: Normalized, pt: Point): Random[Point] =
@@ -54,8 +55,8 @@ object SandSpline {
    */
   def sandSplines(canvas: Canvas, curve: Normalized => Point, count: Int = 400): Random[List[Point]] = {
     def sample: List[Point] =
-      (0.0 to 1.0 by 0.02).foldLeft(List.empty[Point]){ (accum, t) =>
-        curve(t.normalized) :: accum
+      (BigDecimal(0.0) to 1.0 by 0.02).foldLeft(List.empty[Point]){ (accum, t) =>
+        curve(t.doubleValue().normalized) :: accum
       }
 
     def step(pts: List[Point]): Random[List[Point]] =

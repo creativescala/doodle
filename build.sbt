@@ -1,10 +1,10 @@
 version in ThisBuild := "0.8.2"
 
-val catsVersion = "0.9.0"
+val catsVersion = "1.1.0"
 
 name         in ThisBuild := "doodle"
 organization in ThisBuild := "underscoreio"
-scalaVersion in ThisBuild := "2.12.2"
+scalaVersion in ThisBuild := "2.12.6"
 bintrayOrganization in ThisBuild := Some("underscoreio")
 bintrayPackageLabels in ThisBuild := Seq("scala", "training", "creative-scala")
 licenses in ThisBuild += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0"))
@@ -26,13 +26,13 @@ lazy val doodle = crossProject.
     libraryDependencies ++= Seq(
        "org.typelevel"  %%% "cats-core" % catsVersion,
        "org.typelevel"  %%% "cats-free" % catsVersion,
-       "org.scalatest"  %%% "scalatest" % "3.0.2" % "test",
-       "org.scalacheck" %%% "scalacheck" % "1.13.5" % "test"
+       "org.scalatest"  %%% "scalatest" % "3.0.5" % "test",
+       "org.scalacheck" %%% "scalacheck" % "1.14.0" % "test"
     ),
     bintrayRepository := "training"
   ).jvmSettings(
     libraryDependencies ++= Seq(
-      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.11"
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
     initialCommands in console := """
       |import doodle.core._
@@ -49,22 +49,16 @@ lazy val doodle = crossProject.
       |doodle.jvm.quit()
     """.trim.stripMargin
   ).jsSettings(
-    workbenchSettings : _*
-  ).jsSettings(
     scalaJSUseMainModuleInitializer         := true,
     scalaJSUseMainModuleInitializer in Test := false,
-    bootSnippet                             := """
-      |doodle.ScalaJSExample().main();
-    """.trim.stripMargin,
-    //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
     libraryDependencies ++= Seq(
-      "org.scala-js"  %%% "scalajs-dom" % "0.9.2",
-      "com.lihaoyi"   %%% "scalatags"   % "0.6.3"
+      "org.scala-js"  %%% "scalajs-dom" % "0.9.6",
+      "com.lihaoyi"   %%% "scalatags"   % "0.6.7"
     )
   )
 
 lazy val doodleJVM = doodle.jvm
 
-lazy val doodleJS = doodle.js
+lazy val doodleJS = doodle.js.enablePlugins(WorkbenchPlugin)
 
 console := { console.in(doodleJVM, Compile).value }

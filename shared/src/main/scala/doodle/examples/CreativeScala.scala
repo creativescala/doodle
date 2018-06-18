@@ -250,7 +250,7 @@ object CreativeScala {
 
   object sequentialBoxes {
     import doodle.random._
-    import cats.syntax.cartesian._
+    import cats.syntax.all._
 
     val randomAngle: Random[Angle] =
       Random.double.map(x => x.turns)
@@ -318,7 +318,7 @@ object CreativeScala {
         case n =>
           val box = nextColor(color) map { c => coloredRectangle(c) }
           val boxes = noisyGradientBoxes(n-1, color.spin(15.degrees))
-          box |@| boxes map { (b, bs) =>  b beside bs }
+          (box, boxes) mapN { (b, bs) =>  b beside bs }
       }
 
     // Structural recursion with monad
@@ -370,27 +370,27 @@ object CreativeScala {
 
     val image: Random[Image] = {
       val boxes = randomColor flatMap { c => randomGradientBoxes(4, c) }
-      boxes |@| boxes |@| boxes map { (b1, b2, b3) => b1 above b2 above b3 }
+      (boxes, boxes, boxes) mapN { (b1, b2, b3) => b1 above b2 above b3 }
     }
   }
 
   object scatterPlot {
     import doodle.random._
-    import cats.syntax.cartesian._
+    import cats.syntax.all._
 
     val normal = Random.normal(50, 15)
     val uniform = Random.natural(100).map(x => x.toDouble)
     val normalSquared = Random.normal map (x => (x * x * 7.5))
 
     def makePoint(x: Random[Double], y: Random[Double]): Random[Point] =
-      x |@| y map { (x, y) => Point.cartesian(x, y) }
+      (x, y) mapN { (x, y) => Point.cartesian(x, y) }
 
     val iter = (1 to 1000).toList
 
     def allOn(points: List[Random[Image]]): Random[Image] =
       points match {
         case Nil => Random.always(Image.empty)
-        case img :: imgs => img |@| allOn(imgs) map { (i, is) => i on is }
+        case img :: imgs => (img, allOn(imgs)) mapN { (i, is) => i on is }
       }
 
     val normal2D = makePoint(normal, normal)
@@ -403,16 +403,16 @@ object CreativeScala {
     val spacer = rectangle(20, 20).noLine.noFill
 
     val image =
-      (allOn(iter.map(i => uniform2D map (point _)))  |@|
-       allOn(iter.map(i => normal2D map (point _))) |@|
-       allOn(iter.map(i => normalSquared2D map (point _)))) map {
+      (allOn(iter.map(i => uniform2D map (point _))),
+       allOn(iter.map(i => normal2D map (point _))),
+       allOn(iter.map(i => normalSquared2D map (point _)))) mapN {
         (s1, s2, s3) => s1 beside spacer beside s2 beside spacer beside s3
       }
   }
 
   object parametricNoise {
     import doodle.random._
-    import cats.syntax.cartesian._
+    import cats.syntax.all._
 
     def rose(k: Int): Angle => Point =
       (angle: Angle) => {
@@ -423,7 +423,7 @@ object CreativeScala {
       Point.polar(point.r * 400, point.angle)
 
     def perturb(point: Point): Random[Point] =
-      (Random.normal(10.0, 10.0) |@| Random.normal(10.0, 10.0)) map { (x,y) =>
+      (Random.normal(10.0, 10.0), Random.normal(10.0, 10.0)) mapN { (x,y) =>
         Point.cartesian(point.x + x, point.y + y)
       }
 
@@ -433,7 +433,7 @@ object CreativeScala {
       val lightness = Random.double map (l => l.normalized)
       val alpha = Random.double map (a => a.normalized)
 
-      (size |@| lightness |@| alpha |@| at) map { (r, l, a, at) =>
+      (size, lightness, alpha, at) mapN { (r, l, a, at) =>
         val fill = Color.hsla(hue, l, 0.4.normalized, a)
         circle(r).noFill.lineColor(fill).at(at)
       }
@@ -445,7 +445,7 @@ object CreativeScala {
     def allOn(points: List[Random[Image]]): Random[Image] =
       points match {
         case Nil => Random.always(Image.empty)
-        case img :: imgs => img |@| allOn(imgs) map { (i, is) => i on is }
+        case img :: imgs => (img, allOn(imgs)) mapN { (i, is) => i on is }
       }
 
     val image: Random[Image] =

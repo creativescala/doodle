@@ -5,7 +5,7 @@ import doodle.core._
 import doodle.syntax._
 import doodle.random._
 
-import cats.syntax.cartesian._
+import cats.syntax.all._
 
 object Windswept {
   import PathElement._
@@ -22,7 +22,7 @@ object Windswept {
     Image.rectangle(25,25) fillColor fill lineWidth 0.0
 
   def randomSquare(fill: Random[Color]): Random[Image] =
-    (fill |@| fill |@| fill |@| fill) map { (f1, f2, f3, f4) =>
+    (fill, fill, fill, fill) mapN { (f1, f2, f3, f4) =>
       (square(f1) beside square(f2)) above (square(f3) beside square(f4))
     }
 
@@ -30,7 +30,7 @@ object Windswept {
   val emeraldSquare = randomSquare(emeraldGreen)
 
   def randomColumn(one: Random[Image], two: Random[Image], three: Random[Image], four: Random[Image], five: Random[Image]): Random[Image] =
-    (one |@| two |@| three |@| four |@| five) map { _ above _ above _ above _ above _ }
+    (one, two, three, four, five) mapN { _ above _ above _ above _ above _ }
 
   val columnOne =
     randomColumn(emeraldSquare, emeraldSquare, emeraldSquare, emeraldSquare, emeraldSquare)
@@ -45,19 +45,19 @@ object Windswept {
     randomColumn(leafSquare, emeraldSquare, emeraldSquare, emeraldSquare, leafSquare)
 
   val singleRepeat: Random[Image] =
-    (columnOne |@| columnTwo |@| columnThree |@| columnFour |@| columnThree |@| columnTwo) map { _ beside _ beside _ beside _ beside _ beside _ }
+    (columnOne, columnTwo, columnThree, columnFour, columnThree, columnTwo) mapN { _ beside _ beside _ beside _ beside _ beside _ }
 
   val pattern: Random[Image] =
-    (singleRepeat |@| singleRepeat |@| singleRepeat |@| columnOne) map { _ beside _ beside _ beside _ }
+    (singleRepeat, singleRepeat, singleRepeat, columnOne) mapN { _ beside _ beside _ beside _ }
 
   def randomPoint(x: Random[Double], y: Random[Double]): Random[Point] =
-    (x |@| y) map { (x, y) => Point.cartesian(x, y) }
+    (x, y) mapN { (x, y) => Point.cartesian(x, y) }
 
   def normalPoint(point: Point, stdDev: Double = 50): Random[Point] =
     randomPoint(Random.normal(point.x, stdDev), Random.normal(point.y, stdDev))
 
   def randomBezier(cp1: Point, cp2: Point, end: Point, stdDev: Double): Random[BezierCurveTo] = {
-    (normalPoint(cp1, stdDev) |@| normalPoint(cp2, stdDev) |@| normalPoint(end, stdDev)) map {
+    (normalPoint(cp1, stdDev), normalPoint(cp2, stdDev), normalPoint(end, stdDev)) mapN {
       (cp1, cp2, end) => BezierCurveTo(cp1, cp2, end)
     }
   }

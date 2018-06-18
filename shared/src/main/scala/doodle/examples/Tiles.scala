@@ -5,9 +5,8 @@ import doodle.core._
 import doodle.syntax._
 import doodle.random._
 
-import cats.instances.list._
-import cats.syntax.cartesian._
-import cats.syntax.traverse._
+import cats.instances.all._
+import cats.syntax.all._
 
 object Tiles {
   import PathElement._
@@ -24,7 +23,7 @@ object Tiles {
 
   def randomTriangle(width: Double): Random[Image] = {
     val coord = Random.natural(width.floor.toInt)
-    val point = (coord |@| coord) map { (x, y) => Point.cartesian(x, y) }
+    val point = (coord, coord) mapN { (x, y) => Point.cartesian(x, y) }
     for {
       pt1 <- point
       pt2 <- point
@@ -37,19 +36,19 @@ object Tiles {
 
   def randomTile(n: Int, color: Random[Color]): Random[Image] =
     (1 to n).toList.map{ _ =>
-      (randomTriangle(100) |@| color) map { _ fillColor _ }
-    }.sequenceU.map(images => images.foldLeft(Image.empty){ _ on _ })
+      (randomTriangle(100), color) mapN { _ fillColor _ }
+    }.sequence.map(images => images.foldLeft(Image.empty){ _ on _ })
 
   def tile(baseN: Int, topN: Int): Random[Image] =
-    (randomTile(baseN, aquamarine) |@| randomTile(topN, leafGreen)) map { _ under _ }
+    (randomTile(baseN, aquamarine), randomTile(topN, leafGreen)) mapN { _ under _ }
 
   def tileGrid(tile: Random[Image], sideLength: Int): Random[Image] = {
     val row: Random[Image] =
-      (1 to sideLength).map(_ => tile).toList.sequenceU.map(images =>
+      (1 to sideLength).map(_ => tile).toList.sequence.map(images =>
         images.foldLeft(Image.empty){ (row, img) => row beside img }
       )
     val grid: Random[Image] =
-      (1 to sideLength).map(_ => row).toList.sequenceU.map(rows =>
+      (1 to sideLength).map(_ => row).toList.sequence.map(rows =>
         rows.foldLeft(Image.empty){ (grid, row) => grid above row }
       )
     grid

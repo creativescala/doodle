@@ -5,8 +5,8 @@ import doodle.core.{DrawingContext,Image,Point}
 import doodle.backend._
 import doodle.backend.Formats._
 
-import de.erichseifert.vectorgraphics2d.SVGGraphics2D
-import de.erichseifert.vectorgraphics2d.PDFGraphics2D
+import de.erichseifert.vectorgraphics2d.{Processors, VectorGraphics2D}
+import de.erichseifert.vectorgraphics2d.util.PageSize
 
 import java.io.{File, FileOutputStream}
 import java.awt.{Graphics2D}
@@ -15,17 +15,24 @@ import javax.imageio.ImageIO
 
 object FileFrame {
   implicit val pdfSave: Frame.Save[Pdf] =
-    makeFileSave[Pdf, PDFGraphics2D, Unit](
-      bb => (new PDFGraphics2D(0, 0, bb.width, bb.height, true), ()),
-      (fileName, graphics, _) => graphics.writeTo(new FileOutputStream(fileName))
+    makeFileSave[Pdf, VectorGraphics2D, Unit](
+      _ => (new VectorGraphics2D(), ()),
+      (fileName, bb, graphics, _) =>
+        Processors.get("pdf")
+          .getDocument(graphics.getCommands(), new PageSize(bb.width, bb.height))
+          .writeTo(new FileOutputStream(fileName))
     )
 
   implicit val svgSave: Frame.Save[Svg] =
-    makeFileSave[Svg, SVGGraphics2D, Unit](
-      bb => (new SVGGraphics2D(0, 0, bb.width, bb.height), ()),
-      (fileName, graphics, _) => graphics.writeTo(new FileOutputStream(fileName))
+    makeFileSave[Svg, VectorGraphics2D, Unit](
+      bb => (new VectorGraphics2D(), ()),
+      (fileName, bb, graphics, _) =>
+        Processors.get("svg")
+          .getDocument(graphics.getCommands(), new PageSize(bb.width, bb.height))
+          .writeTo(new FileOutputStream(fileName))
     )
   implicit val pdfAndSvgSave: Frame.Save[PdfAndSvg] = PdfAndSvgSave
+
   implicit val pngSave: Frame.Save[Png] =
     makeFileSave[Png, Graphics2D, BufferedImage](
       bb => {
@@ -34,7 +41,7 @@ object FileFrame {
 
         (graphics, buffer)
       },
-      (fileName, _, buffer) => {
+      (fileName, _, _, buffer) => {
         val file = new File(fileName)
         ImageIO.write(buffer, "png", file)
       }
@@ -47,7 +54,7 @@ object FileFrame {
 
         (graphics, buffer)
       },
-      (fileName, _, buffer) => {
+      (fileName, _, _, buffer) => {
         val file = new File(fileName)
         ImageIO.write(buffer, "gif", file)
       }
@@ -55,7 +62,7 @@ object FileFrame {
 
   def makeFileSave[Format, G <: Graphics2D, A](
     makeGraphics: BoundingBox => (G, A),
-    save: (String, G, A) => Unit
+    save: (String, BoundingBox, G, A) => Unit
   ): Frame.Save[Format] = {
     new Frame.Save[Format] {
       def setup(finaliser: Finaliser, renderer: Renderer): Interpreter.Save[Format] =
@@ -72,7 +79,7 @@ object FileFrame {
             renderer.run(canvas)(finalised)
 
             (fileName: String) => {
-              save(fileName, graphics, resource)
+              save(fileName, bb, graphics, resource)
             }
           }
         }

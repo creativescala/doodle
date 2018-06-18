@@ -74,9 +74,27 @@ object Parametric {
   def circle(radius: Double): AngularCurve =
     AngularCurve((theta: Angle) => Point(radius, theta))
 
+
+  /** A sinusoid */
+  def sine(amplitude: Double, frequency: Double): AngularCurve =
+    AngularCurve{ (theta: Angle) =>
+      Point(theta.toTurns, amplitude * (theta * frequency).sin)
+    }
+
   /** Rose curve */
   def rose(k: Double, scale: Double = 1.0): AngularCurve =
     AngularCurve((theta: Angle) => Point(scale * (theta * k).cos, theta))
+
+  /**
+    * A hypotrochoid is the curve sketched out by a point `offset` from the centre of a circle of radius `innerRadius` rolling around the inside of a circle of radius `outerRadius`.
+    */
+  def hypotrochoid(outerRadius: Double, innerRadius: Double, offset: Double): AngularCurve = {
+    val difference = outerRadius - innerRadius
+    val differenceRatio = difference / innerRadius
+    AngularCurve((theta: Angle) =>
+      Point(theta.cos * difference + ((theta * differenceRatio).cos * offset),
+            theta.sin * difference - ((theta * differenceRatio).sin * offset)))
+  }
 
   /** Logarithmic spiral */
   def logarithmicSpiral(a: Double, b: Double): AngularCurve =
