@@ -376,11 +376,7 @@ object CreativeScala {
 
   object scatterPlot {
     import doodle.random._
-<<<<<<< HEAD
     import cats.syntax.all._
-=======
-    import cats.syntax.apply._
->>>>>>> 881add7ac95c13be3097bc6d44185f3ab582d485
 
     val normal = Random.normal(50, 15)
     val uniform = Random.natural(100).map(x => x.toDouble)
@@ -416,11 +412,7 @@ object CreativeScala {
 
   object parametricNoise {
     import doodle.random._
-<<<<<<< HEAD
     import cats.syntax.all._
-=======
-    import cats.syntax.apply._
->>>>>>> 881add7ac95c13be3097bc6d44185f3ab582d485
 
     def rose(k: Int): Angle => Point =
       (angle: Angle) => {

@@ -19,9 +19,6 @@ final case class DrawingContext(
   def stroke: Option[Stroke] =
     (lineWidth, lineColor, lineCap, lineJoin) mapN { Stroke.apply _ }
 
-  def fill: Option[Fill] =
-    fillColor.map(Fill.apply _)
-
   // A lens library would help to reduce this redundancy in the
   // DrawingContext transformations. However, in the introductory
   // context we're developing this code I don't want to add the
