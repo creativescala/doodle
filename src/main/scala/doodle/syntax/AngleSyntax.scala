@@ -20,7 +20,7 @@ package syntax
 import doodle.core.Angle
 
 trait AngleSyntax {
-  implicit class AngleOps(val angle: Double) {
+  implicit class AngleDoubleOps(val angle: Double) {
     def degrees: Angle =
       Angle.degrees(angle)
 
@@ -29,5 +29,16 @@ trait AngleSyntax {
 
     def turns: Angle =
       Angle.turns(angle)
+  }
+
+  implicit class AngleIntOps(val angle: Int) {
+    def degrees: Angle =
+      Angle.degrees(angle.toDouble)
+
+    def radians: Angle =
+      Angle.radians(angle.toDouble)
+
+    def turns: Angle =
+      Angle.turns(angle.toDouble)
   }
 }
