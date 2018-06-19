@@ -16,7 +16,7 @@
 
 organization := "noelwelsh"
 name := "doodle"
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
 
 startYear := Some(2015)
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
@@ -26,10 +26,10 @@ enablePlugins(AutomateHeaderPlugin)
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
 
-addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.6" cross CrossVersion.binary)
+addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
 
-libraryDependencies += "org.typelevel" %% "cats-effect" % "0.10"
-libraryDependencies += "org.typelevel" %% "cats-core" % "1.0.1"
+libraryDependencies += "org.typelevel" %% "cats-effect" % "0.10.1"
+libraryDependencies += "org.typelevel" %% "cats-core" % "1.1.0"
 
 libraryDependencies += "io.monix" %% "minitest" % "2.1.1" % "test"
 libraryDependencies += "io.monix" %% "minitest-laws" % "2.1.1" % "test"
