@@ -39,6 +39,7 @@ testFrameworks += new TestFramework("minitest.runner.Framework")
 initialCommands in console := """
       |import doodle.java2d._
       |import doodle.syntax._
+      |import doodle.examples._
     """.trim.stripMargin
 
 cleanupCommands in console := """
