@@ -18,6 +18,8 @@ package doodle
 package java2d
 package algebra
 
-final case class Algebra() extends Layout with Path with Shape with Style[Unit] {
+import doodle.language.Basic
+
+final case class Algebra() extends Layout with Path with Shape with Style with Basic[Drawing] {
   implicit val graphicsContext = Graphics2DGraphicsContext
 }

@@ -20,4 +20,4 @@ package algebra
 
 import doodle.algebra.generic.GenericStyle
 
-trait Style[A] extends GenericStyle[javafx.scene.canvas.GraphicsContext,A]
+trait Style extends GenericStyle[javafx.scene.canvas.GraphicsContext]

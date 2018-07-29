@@ -17,48 +17,49 @@
 package doodle
 package syntax
 
+import cats.Semigroup
 import doodle.algebra.{Image,Layout}
 
 trait LayoutSyntax {
   implicit class LayoutOps[F[_],A](image: F[A]) {
-    def on(that: F[A])(implicit l: Layout[F,A]): F[A] =
+    def on(that: F[A])(implicit l: Layout[F], s: Semigroup[A]): F[A] =
       l.on(image, that)
 
-    def beside(that: F[A])(implicit l: Layout[F,A]): F[A] =
+    def beside(that: F[A])(implicit l: Layout[F], s: Semigroup[A]): F[A] =
       l.beside(image, that)
 
-    def above(that: F[A])(implicit l: Layout[F,A]): F[A] =
+    def above(that: F[A])(implicit l: Layout[F], s: Semigroup[A]): F[A] =
       l.above(image, that)
 
-    def under(that: F[A])(implicit l: Layout[F,A]): F[A] =
+    def under(that: F[A])(implicit l: Layout[F], s: Semigroup[A]): F[A] =
       l.under(image, that)
 
-    def below(that: F[A])(implicit l: Layout[F,A]): F[A] =
+    def below(that: F[A])(implicit l: Layout[F], s: Semigroup[A]): F[A] =
       l.below(image, that)
   }
 
-  implicit class LayoutImageOps[Algebra <: Layout[F,A],F[_],A](image: Image[Algebra,F,A]) {
-    def on(that: Image[Algebra,F,A]): Image[Algebra,F,A] =
+  implicit class LayoutImageOps[Algebra <: Layout[F],F[_],A](image: Image[Algebra,F,A]) {
+    def on(that: Image[Algebra,F,A])(implicit s: Semigroup[A]): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).on(that(algebra))
       }
 
-    def beside(that: Image[Algebra,F,A]): Image[Algebra,F,A] =
+    def beside(that: Image[Algebra,F,A])(implicit s: Semigroup[A]): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).beside(that(algebra))
       }
 
-    def above(that: Image[Algebra,F,A]): Image[Algebra,F,A] =
+    def above(that: Image[Algebra,F,A])(implicit s: Semigroup[A]): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).above(that(algebra))
       }
 
-    def under(that: Image[Algebra,F,A]): Image[Algebra,F,A] =
+    def under(that: Image[Algebra,F,A])(implicit s: Semigroup[A]): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).under(that(algebra))
       }
 
-    def below(that: Image[Algebra,F,A]): Image[Algebra,F,A] =
+    def below(that: Image[Algebra,F,A])(implicit s: Semigroup[A]): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).below(that(algebra))
       }

@@ -17,6 +17,7 @@
 package doodle
 
 import java.awt.Graphics2D
+import doodle.algebra.Renderer
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
@@ -24,12 +25,12 @@ package object java2d {
   type Contextualized[A] = doodle.algebra.generic.Contextualized[Graphics2D,A]
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
-  implicit val java2dRenderer = doodle.java2d.algebra.Renderer
+  implicit val java2dRenderer: Renderer[Algebra,Drawing] = doodle.java2d.algebra.Renderer
 
-  type Image = doodle.algebra.Image[Algebra,Drawing,Unit]
+  type Image[A] = doodle.algebra.Image[Algebra,Drawing,A]
   object Image {
-    def apply(f: Algebra => Drawing[Unit]): Image = {
-      new Image {
+    def apply(f: Algebra => Drawing[Unit]): Image[Unit] = {
+      new Image[Unit] {
         def apply(implicit algebra: Algebra): Drawing[Unit] =
           f(algebra)
       }

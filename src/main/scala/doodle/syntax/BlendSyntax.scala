@@ -21,23 +21,23 @@ import doodle.algebra.{Image,Blend}
 
 trait BlendSyntax {
   implicit class BlendOps[F[_],A](image: F[A]) {
-    def screen(implicit b: Blend[F,A]): F[A] =
+    def screen(implicit b: Blend[F]): F[A] =
       b.screen(image)
 
-    def burn(implicit b: Blend[F,A]): F[A] =
+    def burn(implicit b: Blend[F]): F[A] =
       b.burn(image)
 
-    def dodge(implicit b: Blend[F,A]): F[A] =
+    def dodge(implicit b: Blend[F]): F[A] =
       b.dodge(image)
 
-    def lighten(implicit b: Blend[F,A]): F[A] =
+    def lighten(implicit b: Blend[F]): F[A] =
       b.lighten(image)
 
-    def sourceOver(implicit b: Blend[F,A]): F[A] =
+    def sourceOver(implicit b: Blend[F]): F[A] =
       b.sourceOver(image)
   }
 
-  implicit class BlendImageOps[Algebra <: Blend[F,A],F[_],A](image: Image[Algebra,F,A]) {
+  implicit class BlendImageOps[Algebra <: Blend[F],F[_],A](image: Image[Algebra,F,A]) {
     def screen: Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).screen

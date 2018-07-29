@@ -17,27 +17,17 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Image,Path}
+import doodle.algebra.Path
 import doodle.core.{ClosedPath, OpenPath}
 
 trait PathSyntax {
-  implicit class PathOps[F[_],A](image: F[A]) {
-    def path(closedPath: ClosedPath)(implicit s: Path[F,A]): F[A] =
+  implicit class ClosedPathOps[F[_]](closedPath: ClosedPath) {
+    def path(implicit s: Path[F]): F[Unit] =
       s.path(closedPath)
-
-    def path(openPath: OpenPath)(implicit s: Path[F,A]): F[A] =
-      s.path(openPath)
   }
 
-  implicit class PathImageOps[Algebra <: Path[F,A],F[_],A](image: Image[Algebra,F,A]) {
-    def path(closedPath: ClosedPath): Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
-        image(algebra).path(closedPath)
-      }
-
-    def path(openPath: OpenPath): Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
-        image(algebra).path(openPath)
-      }
+  implicit class OpenPathOps[F[_]](openPath: OpenPath) {
+    def path(implicit s: Path[F]): F[Unit] =
+      s.path(openPath)
   }
 }

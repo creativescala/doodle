@@ -19,10 +19,10 @@ package fx
 package algebra
 
 final case class Algebra()
-    extends Blend[Unit]
+    extends Blend
     with Shape
     with Layout
     with Path
-    with Style[Unit] {
+    with Style {
   implicit val graphicsContext = FxGraphicsContext
 }

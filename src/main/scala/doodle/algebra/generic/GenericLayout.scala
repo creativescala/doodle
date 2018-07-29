@@ -18,14 +18,12 @@ package doodle
 package algebra
 package generic
 
-import cats.Monoid
+import cats.Semigroup
 import cats.syntax.all._
 import doodle.core.Point
 
-trait GenericLayout[G,A] extends Layout[Finalized[G,?],A] {
-  implicit val monoid: Monoid[A]
-
-  def on(top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
+trait GenericLayout[G] extends Layout[Finalized[G,?]] {
+  def on[A: Semigroup](top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
     for {
       t <- top
       b <- bottom
@@ -33,7 +31,7 @@ trait GenericLayout[G,A] extends Layout[Finalized[G,?],A] {
       (bbB, ctxB) = b
     } yield ((bbT on bbB), ctxT |+| ctxB)
 
-  def beside(left: Finalized[G,A], right: Finalized[G,A]): Finalized[G,A] =
+  def beside[A: Semigroup](left: Finalized[G,A], right: Finalized[G,A]): Finalized[G,A] =
     for {
       l <- left
       r <- right
@@ -51,7 +49,7 @@ trait GenericLayout[G,A] extends Layout[Finalized[G,?],A] {
                }
              })
 
-  def above(top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
+  def above[A: Semigroup](top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
     for {
       t <- top
       b <- bottom

@@ -19,6 +19,6 @@ package algebra
 
 import cats.effect.IO
 
-trait Renderer[Algebra,F[_]] {
-  def render[A](f: Image[Algebra,F,A]): IO[A]
+trait Renderer[+Algebra, F[_]] {
+  def render[A, Alg >: Algebra](f: Image[Alg, F, A]): IO[A]
 }

@@ -18,14 +18,10 @@ package doodle
 package algebra
 package generic
 
-import cats.Monoid
-import cats.instances.all._
-
 final case class TestAlgebra()
-    extends GenericLayout[TestGraphicsContext.Log,Unit]
+    extends GenericLayout[TestGraphicsContext.Log]
     with GenericPath[TestGraphicsContext.Log]
     with GenericShape[TestGraphicsContext.Log]
-    with GenericStyle[TestGraphicsContext.Log,Unit] {
-  implicit val monoid: Monoid[Unit] = implicitly[Monoid[Unit]]
+    with GenericStyle[TestGraphicsContext.Log] {
   implicit val graphicsContext: GraphicsContext[TestGraphicsContext.Log] = TestGraphicsContext.logGraphicsContext
 }

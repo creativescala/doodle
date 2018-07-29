@@ -19,6 +19,7 @@ package fx
 package examples
 
 object Basic {
+  import cats.instances.all._
   import doodle.core.Color
   import doodle.fx._
   import doodle.syntax._

@@ -23,7 +23,7 @@ import org.scalacheck.Prop._
 import doodle.core._
 
 object StyleSpec extends Properties("Style properties") {
-  val style = new GenericStyle[TestGraphicsContext.Log,Unit] {}
+  val style = new GenericStyle[TestGraphicsContext.Log] {}
 
   def impossible: Nothing = {
     println("Oops")

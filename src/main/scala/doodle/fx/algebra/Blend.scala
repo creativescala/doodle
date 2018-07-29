@@ -20,15 +20,15 @@ package algebra
 
 import doodle.algebra.generic.{BlendMode, Finalized}
 
-trait Blend[A] extends doodle.algebra.Blend[Drawing, A] {
-  def screen(image: Drawing[A]): Drawing[A] =
+trait Blend extends doodle.algebra.Blend[Drawing] {
+  def screen[A](image: Drawing[A]): Drawing[A] =
     Finalized.contextTransform(dc => dc.blendMode(BlendMode.screen))(image)
-  def burn(image: Drawing[A]): Drawing[A] =
+  def burn[A](image: Drawing[A]): Drawing[A] =
     Finalized.contextTransform(dc => dc.blendMode(BlendMode.burn))(image)
-  def dodge(image: Drawing[A]): Drawing[A] =
+  def dodge[A](image: Drawing[A]): Drawing[A] =
     Finalized.contextTransform(dc => dc.blendMode(BlendMode.dodge))(image)
-  def lighten(image: Drawing[A]): Drawing[A] =
+  def lighten[A](image: Drawing[A]): Drawing[A] =
     Finalized.contextTransform(dc => dc.blendMode(BlendMode.lighten))(image)
-  def sourceOver(image: Drawing[A]): Drawing[A] =
+  def sourceOver[A](image: Drawing[A]): Drawing[A] =
     Finalized.contextTransform(dc => dc.blendMode(BlendMode.sourceOver))(image)
 }

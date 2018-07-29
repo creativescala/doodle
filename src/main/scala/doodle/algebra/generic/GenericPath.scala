@@ -22,7 +22,7 @@ import cats.effect.IO
 import doodle.core._
 import scala.annotation.tailrec
 
-trait GenericPath[G] extends Path[Finalized[G,?],Unit] {
+trait GenericPath[G] extends Path[Finalized[G,?]] {
   implicit val graphicsContext: GraphicsContext[G]
   import PathElement._
 

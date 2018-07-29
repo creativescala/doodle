@@ -18,10 +18,10 @@ package doodle
 package algebra
 
 /** Algebra describing color blending modes. */
-trait Blend[F[_],A] {
-  def screen(image: F[A]): F[A]
-  def burn(image: F[A]): F[A]
-  def dodge(image: F[A]): F[A]
-  def lighten(image: F[A]): F[A]
-  def sourceOver(image: F[A]): F[A]
+trait Blend[F[_]] {
+  def screen[A](image: F[A]): F[A]
+  def burn[A](image: F[A]): F[A]
+  def dodge[A](image: F[A]): F[A]
+  def lighten[A](image: F[A]): F[A]
+  def sourceOver[A](image: F[A]): F[A]
 }

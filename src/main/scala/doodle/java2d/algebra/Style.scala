@@ -20,4 +20,4 @@ package algebra
 
 import doodle.algebra.generic.GenericStyle
 
-trait Style[A] extends GenericStyle[java.awt.Graphics2D,A]
+trait Style extends GenericStyle[java.awt.Graphics2D]

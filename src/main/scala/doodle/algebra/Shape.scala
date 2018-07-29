@@ -18,10 +18,10 @@ package doodle
 package algebra
 
 /** Higher level shape primitives */
-trait Shape[F[_],A] {
-  def rectangle(width: Double, height: Double): F[A]
-  def square(width: Double): F[A]
-  def triangle(width: Double, height: Double): F[A]
-  def circle(radius: Double): F[A]
-  def empty: F[A]
+trait Shape[F[_]] {
+  def rectangle(width: Double, height: Double): F[Unit]
+  def square(width: Double): F[Unit]
+  def triangle(width: Double, height: Double): F[Unit]
+  def circle(radius: Double): F[Unit]
+  def empty: F[Unit]
 }

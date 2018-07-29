@@ -21,7 +21,7 @@ package generic
 import cats.effect.IO
 import doodle.core._
 
-trait GenericShape[G] extends Shape[Finalized[G,?],Unit] {
+trait GenericShape[G] extends Shape[Finalized[G,?]] {
   implicit val graphicsContext: GraphicsContext[G]
 
   def rectangle(width: Double, height: Double): Finalized[G,Unit] =

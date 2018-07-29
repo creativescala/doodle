@@ -18,8 +18,13 @@ package doodle
 package java2d
 package engine
 
-object Renderer {//extends doodle.algebra.Renderer[Algebra,Drawing] {
-//   def render[A](image: Image[Algebra,Drawing,A]): IO[A] = {
+// import cats.effect.IO
+// import doodle.engine.Frame
+
+object Renderer
+// Defined in doodle.java2d.algebra
+// object Renderer extends doodle.algebra.Renderer[Algebra,Drawing,Unit] {
+//   def render[AA >: Algebra](image: Image[Unit]): IO[Unit] = {
 //     Engine.frame(Frame.size(400,400))(algebra => image(algebra))
 //   }
-}
+// }

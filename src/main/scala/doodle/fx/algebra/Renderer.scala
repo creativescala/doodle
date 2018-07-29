@@ -23,8 +23,8 @@ import doodle.algebra.Image
 import doodle.engine.Frame
 import doodle.fx.engine.Engine
 
-object Renderer extends doodle.algebra.Renderer[Algebra,Drawing] {
-  def render[A](image: Image[Algebra,Drawing,A]): IO[A] = {
+object Renderer extends doodle.algebra.Renderer[Algebra, Drawing] {
+  def render[A, Alg >: Algebra](image: Image[Alg, Drawing, A]): IO[A] = {
     Engine.frame(Frame.size(400,400))(algebra => image(algebra))
   }
 }

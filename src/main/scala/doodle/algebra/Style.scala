@@ -22,11 +22,11 @@ import doodle.core.Color
 /**
   * Apply styling to a image.
   */
-trait Style[F[_],A] {
-  def fillColor(image: F[A], fillColor: Color): F[A]
-  def strokeColor(image: F[A], strokeColor: Color): F[A]
-  def strokeWidth(image: F[A], strokeWidth: Double): F[A]
+trait Style[F[_]] {
+  def fillColor[A](image: F[A], fillColor: Color): F[A]
+  def strokeColor[A](image: F[A], strokeColor: Color): F[A]
+  def strokeWidth[A](image: F[A], strokeWidth: Double): F[A]
 
-  def noFill(image: F[A]): F[A]
-  def noStroke(image: F[A]): F[A]
+  def noFill[A](image: F[A]): F[A]
+  def noStroke[A](image: F[A]): F[A]
 }

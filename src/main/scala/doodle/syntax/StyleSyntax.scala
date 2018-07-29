@@ -22,23 +22,23 @@ import doodle.core.Color
 
 trait StyleSyntax {
   implicit class StyleOps[F[_],A](image: F[A]) {
-    def fillColor(fillColor: Color)(implicit s: Style[F,A]): F[A] =
+    def fillColor(fillColor: Color)(implicit s: Style[F]): F[A] =
       s.fillColor(image, fillColor)
 
-    def strokeColor(strokeColor: Color)(implicit s: Style[F,A]): F[A] =
+    def strokeColor(strokeColor: Color)(implicit s: Style[F]): F[A] =
       s.strokeColor(image, strokeColor)
 
-    def strokeWidth(strokeWidth: Double)(implicit s: Style[F,A]): F[A] =
+    def strokeWidth(strokeWidth: Double)(implicit s: Style[F]): F[A] =
       s.strokeWidth(image, strokeWidth)
 
-    def noFill(implicit s: Style[F,A]): F[A] =
+    def noFill(implicit s: Style[F]): F[A] =
       s.noFill(image)
 
-    def noStroke(implicit s: Style[F,A]): F[A] =
+    def noStroke(implicit s: Style[F]): F[A] =
       s.noStroke(image)
   }
 
-  implicit class StyleImageOps[Algebra <: Style[F,A],F[_],A](image: Image[Algebra,F,A]) {
+  implicit class StyleImageOps[Algebra <: Style[F],F[_],A](image: Image[Algebra,F,A]) {
     def fillColor(fillColor: Color): Image[Algebra,F,A] =
       Image{ implicit algebra: Algebra =>
         image(algebra).fillColor(fillColor)

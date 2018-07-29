@@ -18,10 +18,6 @@ package doodle
 package fx
 package algebra
 
-import cats.Monoid
-import cats.instances.all._
 import javafx.scene.canvas.GraphicsContext
 
-trait Layout extends doodle.algebra.generic.GenericLayout[GraphicsContext,Unit] {
-  implicit val monoid: Monoid[Unit] = implicitly[Monoid[Unit]]
-}
+trait Layout extends doodle.algebra.generic.GenericLayout[GraphicsContext]

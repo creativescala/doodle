@@ -17,13 +17,15 @@
 package doodle
 package algebra
 
-trait Layout[F[_],A] {
-  def on(top: F[A], bottom: F[A]): F[A]
-  def beside(left: F[A], right: F[A]): F[A]
-  def above(top: F[A], bottom: F[A]): F[A]
+import cats.Semigroup
 
-  def under(bottom: F[A], top: F[A]): F[A] =
+trait Layout[F[_]] {
+  def on[A: Semigroup](top: F[A], bottom: F[A]): F[A]
+  def beside[A: Semigroup](left: F[A], right: F[A]): F[A]
+  def above[A: Semigroup](top: F[A], bottom: F[A]): F[A]
+
+  def under[A: Semigroup](bottom: F[A], top: F[A]): F[A] =
     on(top, bottom)
-  def below(bottom: F[A], top: F[A]): F[A] =
+  def below[A: Semigroup](bottom: F[A], top: F[A]): F[A] =
     above(top, bottom)
 }
