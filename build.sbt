@@ -16,7 +16,7 @@
 
 organization := "noelwelsh"
 name := "doodle"
-scalaVersion := "2.12.6"
+scalaVersion in ThisBuild := "2.12.6"
 
 startYear := Some(2015)
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
