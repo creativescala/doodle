@@ -28,7 +28,7 @@ coursierChecksums := Nil      // workaround for nexus sync bugs
 
 addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
 
-libraryDependencies += "org.typelevel" %% "cats-effect" % "1.0.0-RC2"
+libraryDependencies += "org.typelevel" %% "cats-effect" % "0.10.1"
 libraryDependencies += "org.typelevel" %% "cats-core" % "1.2.0"
 
 libraryDependencies += "io.monix" %% "minitest" % "2.1.1" % "test"

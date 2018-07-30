@@ -24,4 +24,5 @@ trait RendererSyntax {
     def draw(implicit renderer: Renderer[Algebra,F]): A =
       renderer.render(image).unsafeRunSync()
   }
+
 }

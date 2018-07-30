@@ -18,35 +18,86 @@ package doodle
 package java2d
 package engine
 
-import doodle.algebra.generic.{DrawingContext,Transform}
+import java.awt.{Dimension, Graphics, Graphics2D}
+import cats.effect.IO
+import doodle.algebra.generic.{BoundingBox, DrawingContext, Transform}
 import doodle.core.Point
 import doodle.engine._
 import doodle.java2d.algebra.{Algebra,Java2D}
 import java.awt.{Dimension,Graphics,Graphics2D}
+import java.util.NoSuchElementException
 import javax.swing.{JPanel, SwingUtilities}
+import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.SyncVar
 
-final class Java2DPanel[A](frame: Frame,
-                           f: Algebra => Drawing[A],
-                           cb: Either[Throwable, A] => Unit)
-    extends JPanel {
-  val drawing = f(Algebra())
-  val (bb, ctx) = drawing(DrawingContext.default)
+final class Java2DPanel(frame: Frame) extends JPanel {
+  import doodle.engine.Size._
+  import Java2DPanel.RenderRequest
 
-  import Size._
+  private val images: ArrayBuffer[Contextualized[_]] = ArrayBuffer.empty
+  private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
+
   frame.size match {
-    case FitToImage(b) =>
-      setPreferredSize(new Dimension(bb.width.toInt + b, bb.height.toInt + b))
     case FixedSize(w, h) =>
       setPreferredSize(new Dimension(w.toInt, h.toInt))
-    case FullScreen => ???
+      SwingUtilities.windowForComponent(this).pack()
+
+    case _ => ()
+  }
+
+  def maybeResize(bb: BoundingBox): Unit = {
+    frame.size match {
+      case FitToImage(border) =>
+        setPreferredSize(new Dimension(bb.width.toInt + border, bb.height.toInt + border))
+        SwingUtilities.windowForComponent(this).pack()
+
+      case FixedSize(_, _) =>
+        // Should have set this at start up
+        ()
+
+      case FullScreen => ???
+    }
+  }
+
+  def render[A](f: Algebra => Drawing[A]): IO[A] = {
+    def register(cb: Either[Throwable, A] => Unit): Unit = {
+      val drawing   = f(Algebra())
+      val (bb, ctx) = drawing(DrawingContext.default)
+
+      val rr = RenderRequest(bb, ctx, cb)
+      channel.put(rr)
+      this.repaint()
+    }
+
+    IO.async(register)
   }
 
   override def paintComponent(context: Graphics): Unit = {
     val gc = context.asInstanceOf[Graphics2D]
     Java2D.setup(gc)
-    SwingUtilities.windowForComponent(this).pack()
 
-    val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
-    ctx((gc, tx))(Point.zero).map(a => cb(Right(a))).unsafeRunSync()
- }
+    try {
+      val rr = channel.take(10L)
+      val bb = rr.boundingBox
+      maybeResize(bb)
+
+      images += rr.context
+      rr.render(gc, getWidth, getHeight).unsafeRunSync()
+    } catch {
+      case _: NoSuchElementException => ()
+        val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
+        images.foreach(context => context((gc, tx))(Point.zero).unsafeRunSync())
+        ()
+    }
+  }
+}
+object Java2DPanel {
+  final case class RenderRequest[A](boundingBox: BoundingBox, context: Contextualized[A], cb: Either[Throwable, A] => Unit) {
+    def render(gc: Graphics2D, width: Int, height: Int): IO[Unit] = {
+      val tx = Transform.logicalToScreen(width.toDouble, height.toDouble)
+      for {
+        a <- context((gc, tx))(Point.zero)
+      } yield cb(Right(a))
+    }
+  }
 }

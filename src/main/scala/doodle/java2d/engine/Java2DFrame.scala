@@ -18,17 +18,18 @@ package doodle
 package java2d
 package engine
 
+import cats.effect.IO
 import doodle.engine._
 import javax.swing.JFrame
 
-final class Java2DFrame[A](frame: Frame,
-                           f: Algebra => Drawing[A],
-                           cb: Either[Throwable, A] => Unit)
-    extends JFrame {
-  val panel = new Java2DPanel(frame, f, cb)
+final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
+  val panel = new Java2DPanel(frame)
 
   getContentPane().add(panel)
   pack()
   repaint()
   setVisible(true)
+
+  def render[A](f: Algebra => Drawing[A]): IO[A] =
+    panel.render(f)
 }

@@ -15,18 +15,17 @@
  */
 
 package doodle
-package java2d
-package algebra
+package syntax
 
-import cats.effect.IO
 import doodle.algebra.Image
-import doodle.engine.Frame
-import doodle.java2d.engine.Engine
+import doodle.engine.{Engine,Frame}
 
-object Renderer extends doodle.algebra.Renderer[Algebra, Drawing] {
-  def render[A, Alg >: Algebra](image: Image[Alg, Drawing, A]): IO[A] = {
-    Engine.frame(Frame.fitToImage()).flatMap(canvas =>
-      Engine.render(canvas)(algebra => image(algebra))
-    )
+trait EngineSyntax {
+  implicit class EngineRendererOps[Algebra,F[_],A](image: Image[Algebra,F,A]) {
+    def draw[C](implicit engine: Engine[Algebra, F, C]): A =
+      (for {
+        canvas <- engine.frame(Frame.fitToImage())
+        a      <- engine.render(canvas)(algebra => image(algebra))
+      } yield a).unsafeRunSync()
   }
 }

@@ -15,18 +15,15 @@
  */
 
 package doodle
-package java2d
-package algebra
+package engine
 
 import cats.effect.IO
-import doodle.algebra.Image
-import doodle.engine.Frame
-import doodle.java2d.engine.Engine
 
-object Renderer extends doodle.algebra.Renderer[Algebra, Drawing] {
-  def render[A, Alg >: Algebra](image: Image[Alg, Drawing, A]): IO[A] = {
-    Engine.frame(Frame.fitToImage()).flatMap(canvas =>
-      Engine.render(canvas)(algebra => image(algebra))
-    )
-  }
+/**
+  * The `Engine` typeclass describes a data type that can create an area to
+  * render an image (a Canvas) and render an image to that Canvas.
+  */
+trait Engine[Algebra, F[_], Canvas]{
+  def frame(description: Frame): IO[Canvas]
+  def render[A](canvas: Canvas)(f: Algebra => F[A]): IO[A]
 }

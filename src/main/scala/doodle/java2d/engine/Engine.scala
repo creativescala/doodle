@@ -22,17 +22,18 @@ import cats.effect.IO
 import doodle.engine.Frame
 import javax.swing.JFrame
 
-object Engine {
+object Engine extends doodle.engine.Engine[Algebra, Drawing, Java2DFrame] {
   private var jFrames: List[JFrame] = List.empty
 
-  def frame[A](frame: Frame)(f: Algebra => Drawing[A]): IO[A] = {
-    def cbHandler(cb: Either[Throwable, A] => Unit): Unit = {
-      val jFrame = new Java2DFrame(frame, f, cb)
+  def frame(description: Frame): IO[Java2DFrame] =
+    IO{
+      val jFrame = new Java2DFrame(description)
       jFrames.synchronized{ jFrames = jFrame :: jFrames }
-      ()
+      jFrame
     }
-    IO.async(cbHandler)
-  }
+
+  def render[A](canvas: Java2DFrame)(f: Algebra => Drawing[A]): IO[A] =
+    canvas.render(f)
 
   def stop(): Unit = {
     jFrames.synchronized{
