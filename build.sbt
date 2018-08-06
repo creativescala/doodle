@@ -1,10 +1,12 @@
 version in ThisBuild := "0.8.2"
 
-val catsVersion = "1.1.0"
+val catsVersion = "1.2.0"
+val Scala212 = "2.12.6"
 
 name         in ThisBuild := "doodle"
 organization in ThisBuild := "underscoreio"
-scalaVersion in ThisBuild := "2.12.6"
+scalaVersion in ThisBuild := Scala212
+crossScalaVersions in ThisBuild := Seq(Scala212, "2.13.0-M4")
 bintrayOrganization in ThisBuild := Some("underscoreio")
 bintrayPackageLabels in ThisBuild := Seq("scala", "training", "creative-scala")
 licenses in ThisBuild += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0"))
@@ -20,13 +22,32 @@ lazy val root = project.in(file(".")).
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
-    scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import", "-Ypartial-unification"),
-    scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
+    scalacOptions ++= Seq("-feature", "-deprecation", "-unchecked", "-Ywarn-unused-import"),
+    scalacOptions ++= (
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, v)) if v <= 12 => Seq(
+          "-Xfatal-warnings",
+          "-Ypartial-unification"
+        )
+        case _ => Seq(
+        )
+      }
+    ),
+    scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked"),
+    scalacOptions in (Compile, console) ++= (
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, v)) if v <= 12 => Seq(
+          "-Ypartial-unification"
+        )
+        case _ => Seq(
+        )
+      }
+    ),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(
        "org.typelevel"  %%% "cats-core" % catsVersion,
        "org.typelevel"  %%% "cats-free" % catsVersion,
-       "org.scalatest"  %%% "scalatest" % "3.0.5" % "test",
+       "org.scalatest"  %%% "scalatest" % "3.0.6-SNAP1" % "test",
        "org.scalacheck" %%% "scalacheck" % "1.14.0" % "test"
     ),
     bintrayRepository := "training"
