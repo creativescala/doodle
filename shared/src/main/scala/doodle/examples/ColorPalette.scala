@@ -27,7 +27,7 @@ object ColorPalette {
   def column(hue: Int, lStep: Double, cell: CellFunc): Image = {
     val cells =
       (BigDecimal(0.0) until 1.0 by lStep).toList map { lightness =>
-        cell(hue, lightness.doubleValue())
+        cell(hue, lightness.doubleValue)
       }
 
     allAbove(cells)

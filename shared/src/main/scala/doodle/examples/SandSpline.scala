@@ -56,7 +56,7 @@ object SandSpline {
   def sandSplines(canvas: Canvas, curve: Normalized => Point, count: Int = 400): Random[List[Point]] = {
     def sample: List[Point] =
       (BigDecimal(0.0) to 1.0 by 0.02).foldLeft(List.empty[Point]){ (accum, t) =>
-        curve(t.doubleValue().normalized) :: accum
+        curve(t.doubleValue.normalized) :: accum
       }
 
     def step(pts: List[Point]): Random[List[Point]] =
