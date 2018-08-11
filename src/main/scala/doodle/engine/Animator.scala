@@ -15,29 +15,14 @@
  */
 
 package doodle
-package java2d
 package engine
 
-import cats.effect.IO
-import doodle.engine._
-import java.awt.event.{ActionEvent, ActionListener}
-import javax.swing.{JFrame, Timer}
-
-final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
-  val panel = new Java2DPanel(frame)
-
-  getContentPane().add(panel)
-  pack()
-  repaint()
-  setVisible(true)
-
-  def render[A](f: Algebra => Drawing[A]): IO[A] =
-    panel.render(f)
-
-  val timer = new Timer(16, Java2DFrame.nullListener)
-}
-object Java2DFrame {
-  val nullListener = new ActionListener {
-    def actionPerformed(evt: ActionEvent): Unit = ()
-  }
+/**
+  * The `Animator` typeclass describes a data type that can create an area to
+  * render an image (a Canvas) and render an image to that Canvas.
+  */
+trait Animator[Canvas]{
+  /** Register a callback that is called the whenever a frame should be rendered.
+    * The result is a function that can cancel this callback. */
+  def onFrame(canvas: Canvas)(cb: => Unit): () => Unit
 }

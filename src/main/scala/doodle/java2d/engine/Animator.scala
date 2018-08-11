@@ -18,26 +18,18 @@ package doodle
 package java2d
 package engine
 
-import cats.effect.IO
-import doodle.engine._
 import java.awt.event.{ActionEvent, ActionListener}
-import javax.swing.{JFrame, Timer}
 
-final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
-  val panel = new Java2DPanel(frame)
+object Animator extends doodle.engine.Animator[Java2DFrame] {
+  def onFrame(canvas: Java2DFrame)(cb: => Unit): () => Unit = {
+    val listener =
+      new ActionListener {
+        def actionPerformed(evt: ActionEvent): Unit = cb
+      }
 
-  getContentPane().add(panel)
-  pack()
-  repaint()
-  setVisible(true)
+    val cancel = () => canvas.timer.removeActionListener(listener)
 
-  def render[A](f: Algebra => Drawing[A]): IO[A] =
-    panel.render(f)
-
-  val timer = new Timer(16, Java2DFrame.nullListener)
-}
-object Java2DFrame {
-  val nullListener = new ActionListener {
-    def actionPerformed(evt: ActionEvent): Unit = ()
+    canvas.timer.addActionListener(listener)
+    cancel
   }
 }
