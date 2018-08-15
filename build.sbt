@@ -35,7 +35,12 @@ lazy val commonSettings = Seq(
     Dependencies.miniTestLaws
   ),
 
-  testFrameworks += new TestFramework("minitest.runner.Framework"),
+libraryDependencies += "io.monix" %% "monix" % "3.0.0-RC1"
+
+libraryDependencies += "com.propensive" %% "magnolia" % "0.10.0"
+
+libraryDependencies += "io.monix" %% "minitest" % "2.1.1" % "test"
+libraryDependencies += "io.monix" %% "minitest-laws" % "2.1.1" % "test"
 
   initialCommands in console := """
       |import doodle.java2d._
@@ -43,7 +48,7 @@ lazy val commonSettings = Seq(
       |import doodle.examples._
     """.trim.stripMargin,
 
-  cleanupCommands in console := """
+cleanupCommands in console := """
       |doodle.java2d.engine.Engine.stop()
     """.trim.stripMargin,
 
