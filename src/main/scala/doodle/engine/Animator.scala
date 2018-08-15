@@ -26,3 +26,6 @@ trait Animator[Canvas]{
     * The result is a function that can cancel this callback. */
   def onFrame(canvas: Canvas)(cb: => Unit): () => Unit
 }
+object Animator {
+  def apply[Canvas](implicit animator: Animator[Canvas]): Animator[Canvas] = animator
+}

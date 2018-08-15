@@ -18,6 +18,7 @@ package doodle
 
 package object syntax
     extends AngleSyntax
+    with AnimatorSyntax
     with BlendSyntax
     with EngineSyntax
     with LayoutSyntax
@@ -27,6 +28,7 @@ package object syntax
     with TraverseSyntax
     with UnsignedByteSyntax {
   object angle extends AngleSyntax
+  object animator extends AnimatorSyntax
   object blend extends BlendSyntax
   object engine extends EngineSyntax
   object layout extends LayoutSyntax

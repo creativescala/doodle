@@ -27,33 +27,24 @@ import doodle.java2d.algebra.{Algebra,Java2D}
 import java.awt.{Dimension,Graphics,Graphics2D}
 import java.util.NoSuchElementException
 import javax.swing.{JPanel, SwingUtilities}
-import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.SyncVar
 
 final class Java2DPanel(frame: Frame) extends JPanel {
   import doodle.engine.Size._
   import Java2DPanel.RenderRequest
 
-  private val images: ArrayBuffer[Contextualized[_]] = ArrayBuffer.empty
+  private var lastImage: Contextualized[_] = _
   private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
 
-  frame.size match {
-    case FixedSize(w, h) =>
-      setPreferredSize(new Dimension(w.toInt, h.toInt))
-      SwingUtilities.windowForComponent(this).pack()
-
-    case _ => ()
-  }
-
-  def maybeResize(bb: BoundingBox): Unit = {
+  def resize(bb: BoundingBox): Unit = {
     frame.size match {
       case FitToImage(border) =>
         setPreferredSize(new Dimension(bb.width.toInt + border, bb.height.toInt + border))
         SwingUtilities.windowForComponent(this).pack()
 
-      case FixedSize(_, _) =>
-        // Should have set this at start up
-        ()
+      case FixedSize(w, h) =>
+        setPreferredSize(new Dimension(w.toInt, h.toInt))
+        SwingUtilities.windowForComponent(this).pack()
 
       case FullScreen => ???
     }
@@ -65,28 +56,36 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       val (bb, ctx) = drawing(DrawingContext.default)
 
       val rr = RenderRequest(bb, ctx, cb)
+      // println("Java2DPanel attempting to put in the channel")
       channel.put(rr)
+      // println("Java2DPanel put in the channel")
       this.repaint()
+      // println("Java2DPanel repaint request sent")
     }
 
     IO.async(register)
   }
 
   override def paintComponent(context: Graphics): Unit = {
+    // println("Java2DPanel painting")
     val gc = context.asInstanceOf[Graphics2D]
     Java2D.setup(gc)
 
     try {
       val rr = channel.take(10L)
+      // println("Java2DPanel got new rr to paint")
       val bb = rr.boundingBox
-      maybeResize(bb)
+      resize(bb)
 
-      images += rr.context
+      lastImage = rr.context
       rr.render(gc, getWidth, getHeight).unsafeRunSync()
     } catch {
       case _: NoSuchElementException => ()
-        val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
-        images.foreach(context => context((gc, tx))(Point.zero).unsafeRunSync())
+        // println("Java2DPanel no new rr to paint")
+        if(lastImage != null) {
+          val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
+          lastImage((gc, tx))(Point.zero).unsafeRunSync()
+        }
         ()
     }
   }

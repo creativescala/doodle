@@ -20,21 +20,30 @@ package engine
 
 import cats.effect.IO
 import doodle.engine._
-import java.awt.event.{ActionEvent, ActionListener}
-import javax.swing.{JFrame, Timer}
+import java.awt.event._
+import javax.swing.{JFrame, WindowConstants}
+import java.util.concurrent.ScheduledThreadPoolExecutor
 
 final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
 
   getContentPane().add(panel)
   pack()
-  repaint()
   setVisible(true)
+  setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
+  repaint()
+
+  this.addWindowListener(
+    new WindowAdapter {
+      override def windowClosed(evt: WindowEvent): Unit =
+        timer.shutdown()
+    }
+  )
 
   def render[A](f: Algebra => Drawing[A]): IO[A] =
     panel.render(f)
 
-  val timer = new Timer(16, Java2DFrame.nullListener)
+  val timer = new ScheduledThreadPoolExecutor(4)
 }
 object Java2DFrame {
   val nullListener = new ActionListener {

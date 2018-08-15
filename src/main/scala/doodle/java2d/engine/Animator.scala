@@ -18,18 +18,21 @@ package doodle
 package java2d
 package engine
 
-import java.awt.event.{ActionEvent, ActionListener}
+import java.util.concurrent.TimeUnit
 
 object Animator extends doodle.engine.Animator[Java2DFrame] {
   def onFrame(canvas: Java2DFrame)(cb: => Unit): () => Unit = {
-    val listener =
-      new ActionListener {
-        def actionPerformed(evt: ActionEvent): Unit = cb
+    val command =
+      new Runnable {
+        def run(): Unit = {
+          // println("Runnable fired")
+          cb
+        }
       }
 
-    val cancel = () => canvas.timer.removeActionListener(listener)
 
-    canvas.timer.addActionListener(listener)
+    val future = canvas.timer.scheduleWithFixedDelay(command, 0, 16, TimeUnit.MILLISECONDS)
+    val cancel = () => { future.cancel(false); () }
     cancel
   }
 }

@@ -19,7 +19,7 @@ package syntax
 
 import cats.{Monoid,Traverse}
 import doodle.algebra.Image
-import doodle.engine.{Animator,Engine }
+import doodle.engine.{Animator,Engine}
 import scala.concurrent.SyncVar
 
 trait AnimatorSyntax {
@@ -30,14 +30,29 @@ trait AnimatorSyntax {
 
       val cancel =
         a.onFrame(canvas){
-          val ioa = e.render(canvas){ algebra => frame.take().apply(algebra) }
-          ioa.map(a => result.put(a)).unsafeRunSync()
+          val ioa = e.render(canvas){ algebra =>
+            // println("Frame handler attempting to take")
+            val image = frame.take()
+            // println("Frame handler took")
+            val fa = image(algebra)
+            // println("Frame handler rendered")
+            fa
+          }
+          ioa.map{ a =>
+            // println("Frame handler putting result")
+            result.put(a)
+            // println("Frame handler put result")
+          }.unsafeRunSync()
         }
 
       val answer =
         t.foldLeft(frames, m.empty){(accum, image) =>
+          // println("Got element")
           frame.put(image)
-          m.combine(accum, result.take())
+          // println("Put element")
+          val r = result.take()
+          // println("Got result")
+          m.combine(accum, r)
         }
       cancel()
       answer

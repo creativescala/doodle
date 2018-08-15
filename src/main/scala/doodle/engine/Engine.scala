@@ -23,7 +23,10 @@ import cats.effect.IO
   * The `Engine` typeclass describes a data type that can create an area to
   * render an image (a Canvas) and render an image to that Canvas.
   */
-trait Engine[Algebra, F[_], Canvas]{
+trait Engine[+Algebra, F[_], Canvas]{
   def frame(description: Frame): IO[Canvas]
   def render[A](canvas: Canvas)(f: Algebra => F[A]): IO[A]
+}
+object Engine {
+  def apply[Algebra, F[_], Canvas](implicit engine: Engine[Algebra, F, Canvas]): Engine[Algebra, F, Canvas] = engine
 }
