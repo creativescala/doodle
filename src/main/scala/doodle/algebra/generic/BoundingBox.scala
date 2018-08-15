@@ -45,6 +45,15 @@ final case class BoundingBox(left: Double,
                 that.width,
                 this.bottom min that.bottom)
 
+  def at(x: Double, y: Double): BoundingBox = {
+    val newLeft = (left + x) min 0
+    val newTop = (top + y) max 0
+    val newRight = (right + x) max 0
+    val newBottom = (bottom + x) min 0
+
+    BoundingBox(newLeft, newTop, newRight, newBottom)
+  }
+
   /** Add `expansion` to all sides of this bounding box. */
   def expand(expansion: Double): BoundingBox =
     BoundingBox(this.left - expansion,

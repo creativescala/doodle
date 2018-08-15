@@ -20,7 +20,7 @@ package generic
 
 import cats.Semigroup
 import cats.syntax.all._
-import doodle.core.Point
+import doodle.core.{Point,Vec}
 
 trait GenericLayout[G] extends Layout[Finalized[G,?]] {
   def on[A: Semigroup](top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
@@ -67,4 +67,17 @@ trait GenericLayout[G] extends Layout[Finalized[G,?]] {
                  rdrT(topOrigin) |+| rdrB(bottomOrigin)
                }
              })
+
+  def at[A](img: Finalized[G,A], x: Double, y: Double): Finalized[G,A] =
+    img.map{ case (bb, ctx) =>
+      (bb.at(x, y),
+       Contextualized{ c =>
+         val rdr = ctx(c)
+
+         Renderable{ origin =>
+           rdr(origin + Vec(x, y))
+         }
+       })
+    }
+
 }

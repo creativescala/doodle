@@ -19,6 +19,7 @@ package syntax
 
 import cats.Semigroup
 import doodle.algebra.{Image,Layout}
+import doodle.core.{Point,Vec}
 
 trait LayoutSyntax {
   implicit class LayoutOps[F[_],A](image: F[A]) {
@@ -36,6 +37,15 @@ trait LayoutSyntax {
 
     def below(that: F[A])(implicit l: Layout[F], s: Semigroup[A]): F[A] =
       l.below(image, that)
+
+    def at(x: Double, y: Double)(implicit l: Layout[F]): F[A] =
+      l.at(image, x, y)
+
+    def at(offset: Vec)(implicit l: Layout[F]): F[A] =
+      l.at(image, offset)
+
+    def at(offset: Point)(implicit l: Layout[F]): F[A] =
+      l.at(image, offset)
   }
 
   implicit class LayoutImageOps[Algebra <: Layout[F],F[_],A](image: Image[Algebra,F,A]) {
