@@ -15,6 +15,7 @@
  */
 
 package doodle
+package animation
 package examples
 
 import doodle.algebra.Image
@@ -22,25 +23,16 @@ import doodle.core._
 import doodle.language.Basic
 import doodle.syntax._
 
-object Animation {
+object Orbit {
   def image[F[_]](angle: Angle): Image[Basic[F],F,Unit] =
     Basic.image[F,Unit]{ implicit algebra: Basic[F] =>
       import algebra._
 
-      circle(10).at(angle.sin * 200, 0)
+      circle(10).at(angle.sin * 200, angle.cos * 200).fillColor(Color.cornSilk)
     }
 
   def frames[F[_]]: List[Image[Basic[F],F,Unit]] =
     List.range(0, 3600)
       .map{ angle => angle.degrees }
       .map{ angle => image[F](angle) }
-
-
-  /*
-  import doodle.engine._
-  import cats.instances.all._
-  val engine = Engine.apply
-  val frame = engine.frame(Frame.size(400, 400))
-  frame.map{ f => Animation.frames.animate(f) }
-   */
 }

@@ -26,25 +26,51 @@ enablePlugins(AutomateHeaderPlugin)
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
 
-addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
 
-libraryDependencies += "org.typelevel" %% "cats-effect" % "0.10.1"
-libraryDependencies += "org.typelevel" %% "cats-core" % "1.2.0"
+lazy val commonSettings = Seq(
+  libraryDependencies ++= Seq(
+    Dependencies.catsCore,
+    Dependencies.catsEffect,
+    Dependencies.miniTest,
+    Dependencies.miniTestLaws
+  ),
 
-libraryDependencies += "io.monix" %% "minitest" % "2.1.1" % "test"
-libraryDependencies += "io.monix" %% "minitest-laws" % "2.1.1" % "test"
+  testFrameworks += new TestFramework("minitest.runner.Framework"),
 
-testFrameworks += new TestFramework("minitest.runner.Framework")
-
-initialCommands in console := """
+  initialCommands in console := """
       |import doodle.java2d._
       |import doodle.syntax._
       |import doodle.examples._
-    """.trim.stripMargin
+    """.trim.stripMargin,
 
-cleanupCommands in console := """
-      |doodle.fx.engine.Engine.stop()
+  cleanupCommands in console := """
       |doodle.java2d.engine.Engine.stop()
-    """.trim.stripMargin
+    """.trim.stripMargin,
 
-// fork in (Compile, console) := true
+  addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
+)
+
+lazy val root = (project in file("."))
+  .settings(commonSettings)
+  .settings(
+    initialCommands in console := """
+      |import cats.instances.all._
+      |import doodle.java2d._
+      |import doodle.syntax._
+      |import doodle.examples._
+      |import doodle.animation.java2d._
+      |import doodle.animation.syntax._
+      |import doodle.animation.examples._
+    """.trim.stripMargin
+  )
+  .dependsOn(animation, core)
+
+lazy val core = (project in file("core"))
+  .settings(commonSettings)
+
+lazy val animation = (project in file("animation"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.monix)
+  .dependsOn(core)
+
+

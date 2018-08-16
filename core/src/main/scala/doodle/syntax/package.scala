@@ -15,24 +15,24 @@
  */
 
 package doodle
-package java2d
-package engine
 
-import java.util.concurrent.TimeUnit
-
-object Animator extends doodle.engine.Animator[Java2DFrame] {
-  def onFrame(canvas: Java2DFrame)(cb: => Unit): () => Unit = {
-    val command =
-      new Runnable {
-        def run(): Unit = {
-          // println("Runnable fired")
-          cb
-        }
-      }
-
-
-    val future = canvas.timer.scheduleWithFixedDelay(command, 0, 16, TimeUnit.MILLISECONDS)
-    val cancel = () => { future.cancel(false); () }
-    cancel
-  }
+package object syntax
+    extends AngleSyntax
+    with BlendSyntax
+    with EngineSyntax
+    with LayoutSyntax
+    with NormalizedSyntax
+    with PathSyntax
+    with StyleSyntax
+    with TraverseSyntax
+    with UnsignedByteSyntax {
+  object angle extends AngleSyntax
+  object blend extends BlendSyntax
+  object engine extends EngineSyntax
+  object layout extends LayoutSyntax
+  object normalized extends NormalizedSyntax
+  object path extends PathSyntax
+  object style extends StyleSyntax
+  object traverse extends TraverseSyntax
+  object unsignedByte extends UnsignedByteSyntax
 }

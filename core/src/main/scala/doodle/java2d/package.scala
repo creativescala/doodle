@@ -17,7 +17,7 @@
 package doodle
 
 import java.awt.Graphics2D
-import doodle.engine.{Animator,Engine}
+import doodle.engine.Engine
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
@@ -28,8 +28,6 @@ package object java2d {
   type Java2DFrame = doodle.java2d.engine.Java2DFrame
   implicit val java2DEngine: Engine[Algebra, Drawing, Java2DFrame] =
     doodle.java2d.engine.Engine
-  implicit val java2DAnimator: Animator[Java2DFrame] =
-    doodle.java2d.engine.Animator
 
   type Image[A] = doodle.algebra.Image[Algebra,Drawing,A]
   object Image {
