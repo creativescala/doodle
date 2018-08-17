@@ -22,49 +22,15 @@ import cats.Monoid
 import doodle.algebra.Image
 import doodle.animate.Animator
 import doodle.engine.{Engine,Frame}
-import monix.execution._
-import monix.reactive._
-import monix.reactive.subjects.ConcurrentSubject
-// import scala.concurrent.SyncVar
 
 trait ExploreSyntax {
   implicit class ExploreFunctionOps[A,Algebra,F[_],B](f: A => Image[Algebra,F,B]) {
-    def explore[C](implicit ex: ExplorerFactory[_,A], a: Animator[C], e: Engine[Algebra,F,C], m: Monoid[B]): Unit = {
-      implicit val scheduler = monix.execution.Scheduler.fixedPool("Explorer animation", 4)
-
-      // val frame = new SyncVar[Image[Algebra,F,B]]
-      // val result = new SyncVar[B]
-
-      val canvas = e.frame(Frame.size(600, 600)).unsafeRunSync()
-
-      val explorer = ex.create
-      val value = explorer.render.unsafeRunSync()
-
-      val frames: ConcurrentSubject[Unit,Unit] =
-        ConcurrentSubject.publish(new OverflowStrategy.DropOld(2))
-
-      val cancel: () => Unit =
-        a.onFrame(canvas){
-          // println("Frame requested")
-          frames.onNext(()) match {
-            case Ack.Continue => ()
-            case Ack.Stop => ()
-          }
-          // println("Frame request published")
-        }
-
-      value
-        .combineLatest(frames)
-        .map{ case(r, _) => r }
-        .map(f)
-        .foldLeftF(m.empty){(accum, image) =>
-          val result = e.render(canvas)(algebra => image(algebra)).unsafeRunSync()
-          m.combine(accum, result)
-        }
-        .runAsyncGetFirst
-        .onComplete(_ => cancel())
-
-      ()
+    def explore[C](implicit ex: ExplorerFactory[_,A], a: Animator[C], e: Engine[Algebra,F,C], m: Monoid[B]): B = {
+      (for {
+          canvas <- e.frame(Frame.size(600, 600))
+          values <- ex.create.render
+          b      <- a.animateObservable(canvas)(values.map(f))
+        } yield b).unsafeRunSync()
     }
   }
 }

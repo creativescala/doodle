@@ -25,8 +25,6 @@ import javax.swing.event.{ChangeEvent, ChangeListener}
 import monix.execution.{Ack, Scheduler}
 import monix.reactive._
 import monix.reactive.subjects.Var
-import magnolia._
-import scala.language.experimental.macros
 
 trait Java2dExplorer[A] extends Explorer[JComponent,A] {
   def render: IO[Observable[A]] =
@@ -41,36 +39,8 @@ trait Java2dExplorer[A] extends Explorer[JComponent,A] {
       value
     }
 }
-/** Generic derivation of Explorer with Java2D interface. */
-object Java2dExplorer {
-  implicit val java2dExplorerScheduler: Scheduler =
-    Scheduler.fixedPool("Java2dExplorer", 1)
-
-  type Typeclass[A] = ExplorerFactory[JComponent,A]
-  def combine[A](caseClass: CaseClass[Typeclass, A]): Typeclass[A] =
-    new ExplorerFactory[JComponent,A] {
-      def create =
-        new Java2dExplorer[A] {
-          val children = caseClass.parameters.map(p => p.typeclass.create)
-
-          val ui: JComponent = {
-            val container = Box.createVerticalBox()
-            children.foreach(c => container.add(c.ui, -1))
-            container.revalidate()
-            container
-          }
-
-          val value: Observable[A] = {
-            Observable
-              .combineLatestList(children.map(c => c.value): _*)
-              .map(v => caseClass.rawConstruct(v))
-          }
-        }
-    }
-
-  def dispatch[A](sealedTrait: SealedTrait[Typeclass, A]): Typeclass[A] = ???
-
-  implicit def gen[A]: Typeclass[A] = macro Magnolia.gen[A]
+trait Java2dExplorerAtoms {
+  implicit val java2dExplorerScheduler: Scheduler = Scheduler.fixedPool("Java2dExplorer", 1)
 
   /** Explore Double with a Java2D interface */
   implicit val doubleExplorer =
@@ -84,6 +54,26 @@ object Java2dExplorer {
             new ChangeListener {
               def stateChanged(evt: ChangeEvent): Unit =
                 value := (ui.getValue().toDouble) match {
+                  case Ack.Continue => ()
+                  case Ack.Stop => ui.setEnabled(false)
+                }
+            }
+          )
+        }
+    }
+
+  /** Explore Int with a Java2D interface */
+  implicit val intExplorer =
+    new ExplorerFactory[JComponent,Int] {
+      def create =
+        new Java2dExplorer[Int] {
+          val ui: JSlider = new JSlider(-100, 100)
+          val value: Var[Int] = Var(ui.getValue())
+
+          ui.addChangeListener(
+            new ChangeListener {
+              def stateChanged(evt: ChangeEvent): Unit =
+                value := (ui.getValue()) match {
                   case Ack.Continue => ()
                   case Ack.Stop => ui.setEnabled(false)
                 }
@@ -112,5 +102,4 @@ object Java2dExplorer {
           )
         }
     }
-
 }

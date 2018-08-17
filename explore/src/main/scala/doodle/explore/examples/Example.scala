@@ -16,15 +16,18 @@
 
 package doodle
 package explore
+package examples
 
-object Example {
+object Sine {
   import doodle.core._
   import doodle.syntax._
   import doodle.language.Basic
 
   import doodle.java2d._
 
-  import doodle.explore.java2d.Java2dExplorer._
+  import doodle.animate.java2d._
+
+  import doodle.explore.java2d._
   import doodle.explore.syntax._
 
   import cats.instances.all._
