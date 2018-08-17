@@ -35,20 +35,13 @@ lazy val commonSettings = Seq(
     Dependencies.miniTestLaws
   ),
 
-libraryDependencies += "io.monix" %% "monix" % "3.0.0-RC1"
-
-libraryDependencies += "com.propensive" %% "magnolia" % "0.10.0"
-
-libraryDependencies += "io.monix" %% "minitest" % "2.1.1" % "test"
-libraryDependencies += "io.monix" %% "minitest-laws" % "2.1.1" % "test"
-
   initialCommands in console := """
       |import doodle.java2d._
       |import doodle.syntax._
       |import doodle.examples._
     """.trim.stripMargin,
 
-cleanupCommands in console := """
+  cleanupCommands in console := """
       |doodle.java2d.engine.Engine.stop()
     """.trim.stripMargin,
 
@@ -68,7 +61,7 @@ lazy val root = (project in file("."))
       |import doodle.animation.examples._
     """.trim.stripMargin
   )
-  .dependsOn(animation, core)
+  .dependsOn(animation, core, explore)
 
 lazy val core = (project in file("core"))
   .settings(commonSettings)
@@ -78,4 +71,7 @@ lazy val animation = (project in file("animation"))
             libraryDependencies += Dependencies.monix)
   .dependsOn(core)
 
-
+lazy val explore = (project in file("explore"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.magnolia)
+  .dependsOn(core, animation)

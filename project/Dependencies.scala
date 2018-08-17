@@ -5,6 +5,8 @@ object Dependencies {
   val catsVersion       = "1.2.0"
   val catsEffectVersion = "0.10.1"
 
+  val magnoliaVersion = "0.10.0"
+
   val monixVersion = "3.0.0-RC1"
 
   val miniTestVersion   = "2.1.1"
@@ -19,4 +21,6 @@ object Dependencies {
   val miniTestLaws = "io.monix" %% "minitest-laws" % miniTestVersion % "test"
 
   val monix = "io.monix" %% "monix" % monixVersion
+
+  val magnolia = "com.propensive" %% "magnolia" % "0.10.0"
 }
