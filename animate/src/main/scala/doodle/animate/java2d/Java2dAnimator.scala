@@ -15,7 +15,7 @@
  */
 
 package doodle
-package animation
+package animate
 package java2d
 
 import cats.Monoid
@@ -28,7 +28,7 @@ import monix.reactive.{Consumer,Observable}
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
-object Animation extends doodle.animation.Animation[Java2DFrame] {
+object Java2dAnimator extends Animator[Java2DFrame] {
   val frameRate = 16.milliseconds
 
   def animateIterable[Algebra,F[_],A](canvas: Java2DFrame)(frames: Iterable[Image[Algebra,F,A]])(implicit e: Engine[Algebra,F,Java2DFrame], m: Monoid[A]): IO[A] =
@@ -42,5 +42,4 @@ object Animation extends doodle.animation.Animation[Java2DFrame] {
       .consumeWith(Consumer.foldLeft(m.empty){ (accum, a) => m.combine(accum, a)})
       .toIO(Scheduler(canvas.timer, ExecutionContext.fromExecutor(canvas.timer)))
   }
-
 }

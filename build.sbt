@@ -56,17 +56,17 @@ lazy val root = (project in file("."))
       |import doodle.java2d._
       |import doodle.syntax._
       |import doodle.examples._
-      |import doodle.animation.java2d._
-      |import doodle.animation.syntax._
-      |import doodle.animation.examples._
+      |import doodle.animate.java2d._
+      |import doodle.animate.syntax._
+      |import doodle.animate.examples._
     """.trim.stripMargin
   )
-  .dependsOn(animation, core, explore)
+  .dependsOn(animate, core, explore)
 
 lazy val core = (project in file("core"))
   .settings(commonSettings)
 
-lazy val animation = (project in file("animation"))
+lazy val animate = (project in file("animate"))
   .settings(commonSettings,
             libraryDependencies += Dependencies.monix)
   .dependsOn(core)
@@ -74,4 +74,4 @@ lazy val animation = (project in file("animation"))
 lazy val explore = (project in file("explore"))
   .settings(commonSettings,
             libraryDependencies += Dependencies.magnolia)
-  .dependsOn(core, animation)
+  .dependsOn(core, animate)

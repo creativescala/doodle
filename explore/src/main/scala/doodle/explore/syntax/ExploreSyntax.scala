@@ -20,7 +20,8 @@ package syntax
 
 import cats.Monoid
 import doodle.algebra.Image
-import doodle.engine.{Animator,Engine,Frame}
+import doodle.animate.Animator
+import doodle.engine.{Engine,Frame}
 import monix.execution._
 import monix.reactive._
 import monix.reactive.subjects.ConcurrentSubject

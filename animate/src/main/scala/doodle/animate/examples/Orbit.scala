@@ -15,7 +15,7 @@
  */
 
 package doodle
-package animation
+package animate
 package examples
 
 import doodle.algebra.Image
