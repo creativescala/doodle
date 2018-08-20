@@ -28,6 +28,9 @@ package object java2d {
   type Java2DFrame = doodle.java2d.engine.Java2DFrame
   implicit val java2DEngine: Engine[Algebra, Drawing, Java2DFrame] =
     doodle.java2d.engine.Engine
+  implicit val java2dGifWriter = doodle.java2d.engine.Java2dGifWriter
+  implicit val java2dPngWriter = doodle.java2d.engine.Java2dPngWriter
+  implicit val java2dJpgWriter = doodle.java2d.engine.Java2dJpgWriter
 
   type Image[A] = doodle.algebra.Image[Algebra,Drawing,A]
   object Image {

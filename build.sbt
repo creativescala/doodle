@@ -55,10 +55,14 @@ lazy val root = (project in file("."))
       |import cats.instances.all._
       |import doodle.java2d._
       |import doodle.syntax._
+      |import doodle.engine.Writer._
       |import doodle.examples._
       |import doodle.animate.java2d._
       |import doodle.animate.syntax._
       |import doodle.animate.examples._
+      |import doodle.explore.java2d._
+      |import doodle.explore.syntax._
+      |import doodle.explore.examples._
     """.trim.stripMargin
   )
   .dependsOn(animate, core, explore)

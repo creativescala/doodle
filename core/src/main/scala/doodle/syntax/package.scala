@@ -25,7 +25,8 @@ package object syntax
     with PathSyntax
     with StyleSyntax
     with TraverseSyntax
-    with UnsignedByteSyntax {
+    with UnsignedByteSyntax
+    with WriterSyntax {
   object angle extends AngleSyntax
   object blend extends BlendSyntax
   object engine extends EngineSyntax
@@ -35,4 +36,5 @@ package object syntax
   object style extends StyleSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
+  object writer extends WriterSyntax
 }

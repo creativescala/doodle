@@ -18,4 +18,6 @@ object Writer {
   sealed trait Png
   /* Standard format type for SVG writer */
   sealed trait Svg
+  /* Standard format type for JPEG writer */
+  sealed trait Jpg
 }

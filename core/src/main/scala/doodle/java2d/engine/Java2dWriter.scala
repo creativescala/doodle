@@ -12,13 +12,14 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-object Java2dGifWriter extends Writer[Algebra,Drawing,Writer.Gif] {
-  def write[A, Alg >: Algebra](file: File, frame: Frame, image: Image[Alg,Drawing,A]): IO[A] = {
-    val drawing = image(Algebra())
-    val (bb, ctx) = drawing(DrawingContext.default)
+trait Java2dWriter[Format] extends Writer[Algebra,Drawing,Format] {
+  def format: String
 
+  def write[A, Alg >: Algebra](file: File, frame: Frame, image: Image[Alg,Drawing,A]): IO[A] = {
     for {
-      image <- IO {
+      drawing <- IO { image(Algebra()) }
+      (bb, ctx) = drawing(DrawingContext.default)
+      image   <- IO {
         frame.size match {
           case Size.FitToImage(border) =>
             new BufferedImage(bb.width.toInt + border, bb.height.toInt + border, BufferedImage.TYPE_INT_ARGB)
@@ -29,10 +30,19 @@ object Java2dGifWriter extends Writer[Algebra,Drawing,Writer.Gif] {
           case Size.FullScreen => ???
         }
       }
-     gc = image.createGraphics()
-     tx = Transform.logicalToScreen(image.getWidth.toDouble, image.getHeight.toDouble)
+      gc = image.createGraphics()
+      tx = Transform.logicalToScreen(image.getWidth.toDouble, image.getHeight.toDouble)
       a <- ctx((gc, tx))(Point.zero)
-      _ = ImageIO.write(image, "gif", file)
+      _ = ImageIO.write(image, format, file)
     } yield a
   }
+}
+object Java2dGifWriter extends Java2dWriter[Writer.Gif] {
+  val format = "gif"
+}
+object Java2dPngWriter extends Java2dWriter[Writer.Png] {
+  val format = "png"
+}
+object Java2dJpgWriter extends Java2dWriter[Writer.Jpg] {
+  val format = "jpg"
 }
