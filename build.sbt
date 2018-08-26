@@ -1,39 +1,67 @@
-version in ThisBuild := "0.7.0"
+version in ThisBuild := "0.8.3"
 
-val catsVersion = "0.9.0"
+val catsVersion = "1.2.0"
+val Scala212 = "2.12.6"
 
-scalaVersion in ThisBuild := "2.11.8"
+name         in ThisBuild := "doodle"
+organization in ThisBuild := "underscoreio"
+scalaVersion in ThisBuild := Scala212
+crossScalaVersions in ThisBuild := Seq(Scala212, "2.13.0-M4")
+bintrayOrganization in ThisBuild := Some("underscoreio")
+bintrayPackageLabels in ThisBuild := Seq("scala", "training", "creative-scala")
+licenses in ThisBuild += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0"))
+
+lazy val root = project.in(file(".")).
+  aggregate(doodleJS, doodleJVM).
+  settings(
+    publish := {},
+    publishLocal := {},
+    bintrayRepository := "training"
+  )
 
 lazy val doodle = crossProject.
   crossType(DoodleCrossType).
   settings(
-    name          := "doodle",
-    organization  := "underscoreio",
-    scalaVersion  := "2.11.8",
-    scalaOrganization := "org.typelevel",
-    scalacOptions ++= Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ywarn-unused-import", "-Ypartial-unification"),
-    scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked", "-Ypartial-unification"),
+    scalacOptions ++= Seq("-feature", "-deprecation", "-unchecked", "-Ywarn-unused-import"),
+    scalacOptions ++= (
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, v)) if v <= 12 => Seq(
+          "-Xfatal-warnings",
+          "-Ypartial-unification"
+        )
+        case _ => Seq(
+        )
+      }
+    ),
+    scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked"),
+    scalacOptions in (Compile, console) ++= (
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, v)) if v <= 12 => Seq(
+          "-Ypartial-unification"
+        )
+        case _ => Seq(
+        )
+      }
+    ),
     licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     libraryDependencies ++= Seq(
-       "org.typelevel" %% "cats" % catsVersion,
-       "org.scalatest" %% "scalatest" % "3.0.0" % "test",
-       "org.scalacheck" %% "scalacheck" % "1.12.1" % "test"
-    )
+       "org.typelevel"  %%% "cats-core" % catsVersion,
+       "org.typelevel"  %%% "cats-free" % catsVersion,
+       "org.scalatest"  %%% "scalatest" % "3.0.6-SNAP1" % "test",
+       "org.scalacheck" %%% "scalacheck" % "1.14.0" % "test"
+    ),
+    bintrayRepository := "training"
   ).jvmSettings(
     libraryDependencies ++= Seq(
-      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.11"
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
-    bintrayOrganization := Some("underscoreio"),
-    bintrayPackageLabels := Seq("scala", "training", "creative-scala"),
-    bintrayRepository := "training",
-    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
     initialCommands in console := """
       |import doodle.core._
       |import doodle.core.Image._
       |import doodle.random._
       |import doodle.syntax._
-      |import doodle.jvm.FileCanvas._
-      |import doodle.jvm.Java2DCanvas._
+      |import doodle.jvm.FileFrame._
+      |import doodle.jvm.Java2DFrame._
       |import doodle.backend.StandardInterpreter._
       |import doodle.backend.Formats._
       |import doodle.examples._
@@ -42,30 +70,16 @@ lazy val doodle = crossProject.
       |doodle.jvm.quit()
     """.trim.stripMargin
   ).jsSettings(
-    workbenchSettings : _*
-  ).jsSettings(
-    persistLauncher         := true,
-    persistLauncher in Test := false,
-    bootSnippet             := """
-      |doodle.ScalaJSExample().main();
-    """.trim.stripMargin,
-    testFrameworks          += new TestFramework("utest.runner.Framework"),
-    //refreshBrowsers <<= refreshBrowsers.triggeredBy(packageJS in Compile)
+    scalaJSUseMainModuleInitializer         := true,
+    scalaJSUseMainModuleInitializer in Test := false,
     libraryDependencies ++= Seq(
-      "org.typelevel"             %%% "cats"        % catsVersion,
-      "org.scala-js"              %%% "scalajs-dom" % "0.9.0",
-      "com.lihaoyi"               %%% "scalatags"   % "0.5.5",
-      "com.lihaoyi"               %%% "utest"       % "0.3.0" % "test",
-      "com.github.japgolly.nyaya" %%% "nyaya-test"  % "0.5.3" % "test"
+      "org.scala-js"  %%% "scalajs-dom" % "0.9.6",
+      "com.lihaoyi"   %%% "scalatags"   % "0.6.7"
     )
   )
 
 lazy val doodleJVM = doodle.jvm
 
-lazy val doodleJS = doodle.js
+lazy val doodleJS = doodle.js.enablePlugins(WorkbenchPlugin)
 
-run     <<= run     in (doodleJVM, Compile)
-
-console <<= console in (doodleJVM, Compile)
-
-publish <<= publish in (doodleJVM, Compile)
+console := { console.in(doodleJVM, Compile).value }

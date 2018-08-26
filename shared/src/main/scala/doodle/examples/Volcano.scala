@@ -5,7 +5,7 @@ import doodle.core._
 import doodle.core.Image._
 import doodle.syntax._
 import doodle.random._
-import cats.syntax.cartesian._
+import cats.syntax.all._
 
 object Volcano {
   def rose(k: Int): Angle => Point =
@@ -21,23 +21,23 @@ object Volcano {
   def jitter(point: Point): Random[Point] = {
     val noise = Random.normal(0, 10.0)
 
-    (noise |@| noise) map { (dx, dy) =>
+    (noise, noise) mapN { (dx, dy) =>
       Point.cartesian(point.x + dx, point.y + dy)
     }
   }
 
   def smoke(r: Normalized): Random[Image] = {
-    val alpha = Random.normal(0.5, 0.1) map (a => a.normalized)
+    val alpha = Random.normal(0.7, 0.3) map (a => a.normalized)
     val hue = Random.double.map(h => (h * 0.1).turns)
     val saturation = Random.double.map(s => (s * 0.8).normalized)
-    val lightness = Random.normal(0.4, 0.1) map (a => a.normalized)
+    val lightness = Random.normal(0.8, 0.4) map (a => a.normalized)
     val color =
-      (hue |@| saturation |@| lightness |@| alpha) map {
+      (hue, saturation, lightness, alpha) mapN {
         (h, s, l, a) => Color.hsla(h, s, l, a)
       }
     val c = Random.normal(5, 5) map (r => circle(r))
 
-    (c |@| color) map { (circle, line) => circle.lineColor(line).noFill }
+    (c, color) mapN { (circle, line) => circle.lineColor(line).noFill }
   }
 
   def point(
@@ -55,7 +55,7 @@ object Volcano {
       val r = pt.r.normalized
       val img = image(r)
 
-      (img |@| jitteredPt) map { (i, pt) =>
+      (img, jitteredPt) mapN { (i, pt) =>
         i at pt.toVec.rotate(rotation)
       }
     }
@@ -67,7 +67,7 @@ object Volcano {
         if(angle > Angle.one)
           Random.always(Image.empty)
         else
-          point(angle) |@| iter(angle + step) map { _ on _ }
+          (point(angle), iter(angle + step)) mapN { _ on _ }
       }
 
       iter(Angle.zero)
@@ -88,7 +88,7 @@ object Volcano {
         }
       }
     val picture = pts.foldLeft(Random.always(Image.empty)){ (accum, img) =>
-      (accum |@| img) map { _ on _ }
+      (accum, img) mapN { _ on _ }
     }
     val background = (rectangle(650, 650) fillColor Color.black)
 

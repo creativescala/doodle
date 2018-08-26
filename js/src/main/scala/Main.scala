@@ -1,15 +1,15 @@
 import doodle.examples._
 import doodle.syntax.image._
-import doodle.js.SvgCanvas
+import doodle.js.SvgFrame
 
-import scala.scalajs.js.JSApp
-import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js.annotation._
 
-@JSExport object Main extends JSApp {
-  @JSExport def main(): Unit = {
+object Main {
+  @JSExportTopLevel("Main.main")
+  def main(args: Array[String]): Unit = {
     import doodle.backend.StandardInterpreter._
 
-    implicit val canvas = SvgCanvas.fromElementId("canvas", 600, 600)
+    implicit val frame = SvgFrame.fromElementId("canvas", 600, 600)
     Tree.image.draw
     //ChristmasTree.image.draw
   }

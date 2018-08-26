@@ -26,15 +26,18 @@ object ColorsAndShapes {
     (n: Int) =>
       shape(n) lineWidth 10 lineColor color(n)
 
-  def manyShapes(n: Int, singleShape: Int => Image): Image =
-    if(n == 1) {
-      singleShape(n)
-    } else {
-      singleShape(n) on manyShapes(n - 1, singleShape)
+  def concentricShapes(count: Int, singleShape: Int => Image): Image =
+    count match {
+      case 0 => Image.empty
+      case n => singleShape(n) on concentricShapes(n-1, singleShape)
     }
 
+  val spacer = Image.square(10).noFill.noLine
+
   def image =
-    manyShapes(10, colored(circle, spinning)) beside
-    manyShapes(10, colored(triangle, fading)) beside
-    manyShapes(10, colored(square, spinning))
+    concentricShapes(10, colored(circle, spinning)) beside
+    spacer beside
+    concentricShapes(10, colored(triangle, fading)) beside
+    spacer beside
+    concentricShapes(10, colored(square, spinning))
 }

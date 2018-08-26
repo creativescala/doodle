@@ -1,5 +1,7 @@
 package doodle.examples
 
+import scala.math.BigDecimal
+
 import doodle.core._
 import doodle.syntax._
 
@@ -24,8 +26,8 @@ object ColorPalette {
 
   def column(hue: Int, lStep: Double, cell: CellFunc): Image = {
     val cells =
-      (0.0 until 1.0 by lStep).toList map { lightness =>
-        cell(hue, lightness)
+      (BigDecimal(0.0) until 1.0 by lStep).toList map { lightness =>
+        cell(hue, lightness.doubleValue)
       }
 
     allAbove(cells)
