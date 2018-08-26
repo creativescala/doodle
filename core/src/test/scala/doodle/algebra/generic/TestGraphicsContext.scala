@@ -45,11 +45,11 @@ object TestGraphicsContext {
       gc.add(Reify.GraphicsContext.strokeRect(dc, center, width, height))
 
     def fillCircle(
-        gc: Log)(dc: DrawingContext, center: Point, radius: Double): Unit =
-      gc.add(Reify.GraphicsContext.fillCircle(dc, center, radius))
+        gc: Log)(dc: DrawingContext, center: Point, diameter: Double): Unit =
+      gc.add(Reify.GraphicsContext.fillCircle(dc, center, diameter))
     def strokeCircle(
-        gc: Log)(dc: DrawingContext, center: Point, radius: Double): Unit =
-      gc.add(Reify.GraphicsContext.strokeCircle(dc, center, radius))
+        gc: Log)(dc: DrawingContext, center: Point, diameter: Double): Unit =
+      gc.add(Reify.GraphicsContext.strokeCircle(dc, center, diameter))
 
     def fillPolygon(gc: Log)(dc: DrawingContext, points: Array[Point]): Unit =
       gc.add(Reify.GraphicsContext.fillPolygon(dc, points))

@@ -70,19 +70,19 @@ object PathElement {
 
 
   /** Utility to construct a `List[PathElement]` that represents a circle. */
-  def circle(center: Point, radius: Double): List[PathElement] =
-    circle(center.x, center.y, radius)
+  def circle(center: Point, diameter: Double): List[PathElement] =
+    circle(center.x, center.y, diameter)
 
   /** Utility to construct a `List[PathElement]` that represents a circle. */
-  def circle(x: Double, y: Double, radius: Double): List[PathElement] = {
+  def circle(x: Double, y: Double, diameter: Double): List[PathElement] = {
     import Point.cartesian
     // See http://spencermortensen.com/articles/bezier-circle/ for approximation
     // of a circle with a Bezier curve.
-    val r = radius
+    val r = diameter / 2.0
     val c = 0.551915024494
     val cR = c * r
     List(
-      MoveTo(cartesian(x, y + radius)),
+      MoveTo(cartesian(x, y + r)),
       BezierCurveTo(cartesian(x + cR,  y + r),   cartesian(x + r,   y + cR),  cartesian(x + r,  y)),
       BezierCurveTo(cartesian(x + r,   y + -cR), cartesian(x + cR,  y + -r),  cartesian(x,      y + -r)),
       BezierCurveTo(cartesian(x + -cR, y + -r),  cartesian(x + -r,  y + -cR), cartesian(x + -r, y)),

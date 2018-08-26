@@ -45,14 +45,16 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     dc.fill.foreach{ f =>
       Java2D.setFill(gc, f)
       val r = radius.toInt
-      gc.fillOval(center.x.toInt - r, center.y.toInt - r, r, r)
+      val d = (radius * 2).toInt
+      gc.fillOval(center.x.toInt - r, center.y.toInt - r, d, d)
     }
   }
   def strokeCircle(gc: Graphics2D)(dc: DrawingContext, center: Point, radius: Double): Unit = {
     dc.stroke.foreach{ s =>
       Java2D.setStroke(gc, s)
       val r = radius.toInt
-      gc.drawOval(center.x.toInt - r, center.y.toInt - r, r, r)
+      val d = (radius * 2).toInt
+      gc.drawOval(center.x.toInt - r, center.y.toInt - r, d, d)
     }
   }
 

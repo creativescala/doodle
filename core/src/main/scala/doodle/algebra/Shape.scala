@@ -17,11 +17,18 @@
 package doodle
 package algebra
 
-/** Higher level shape primitives */
+/** Higher level shape primitives. These draw common geometric shapes with the
+  * center of the shape the origin of the bounding box. */
 trait Shape[F[_]] {
+  /** A rectangle with the given width and height. */
   def rectangle(width: Double, height: Double): F[Unit]
+  /** A square with the given side length. */
   def square(width: Double): F[Unit]
+  /** An isoceles triangle with the given width and height. */
   def triangle(width: Double, height: Double): F[Unit]
-  def circle(radius: Double): F[Unit]
+  /** A circle with the given diameter. We use diamter rather than radius so
+    * circle(100) has the same size as square(100) */
+  def circle(diameter: Double): F[Unit]
+  /** The empty shape, which is no shape at all. */
   def empty: F[Unit]
 }

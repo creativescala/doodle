@@ -37,11 +37,11 @@ object Reify {
         extends GraphicsContext
     final case class FillCircle(dc: DrawingContext,
                                 center: Point,
-                                radius: Double)
+                                diameter: Double)
         extends GraphicsContext
     final case class StrokeCircle(dc: DrawingContext,
                                   center: Point,
-                                  radius: Double)
+                                  diameter: Double)
         extends GraphicsContext
     final case class FillPolygon(dc: DrawingContext, points: Array[Point])
         extends GraphicsContext
@@ -77,12 +77,12 @@ object Reify {
 
     def fillCircle(dc: DrawingContext,
                    center: Point,
-                   radius: Double): GraphicsContext =
-      FillCircle(dc, center, radius)
+                   diameter: Double): GraphicsContext =
+      FillCircle(dc, center, diameter)
     def strokeCircle(dc: DrawingContext,
                      center: Point,
-                     radius: Double): GraphicsContext =
-      StrokeCircle(dc, center, radius)
+                     diameter: Double): GraphicsContext =
+      StrokeCircle(dc, center, diameter)
 
     def fillPolygon(dc: DrawingContext, points: Array[Point]): GraphicsContext =
       FillPolygon(dc, points)

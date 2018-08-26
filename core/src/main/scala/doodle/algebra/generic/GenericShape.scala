@@ -63,18 +63,17 @@ trait GenericShape[G] extends Shape[Finalized[G,?]] {
        })
     }
 
-  def circle(radius: Double): Finalized[G,Unit] =
+  def circle(diameter: Double): Finalized[G,Unit] =
     Finalized{ dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
-      val diameter = radius * 2.0
       val bb = BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
       (bb,
        Contextualized{ (gc, tx) =>
          Renderable { origin =>
            val o = tx(origin)
            IO {
-             graphicsContext.fillCircle(gc)(dc, o, radius)
-             graphicsContext.strokeCircle(gc)(dc, o, radius)
+             graphicsContext.fillCircle(gc)(dc, o, diameter / 2.0)
+             graphicsContext.strokeCircle(gc)(dc, o, diameter / 2.0)
            }
          }
        })

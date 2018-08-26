@@ -111,7 +111,7 @@ object Image {
     final case class OpenPath(elements: List[PathElement]) extends Path
     final case class ClosedPath(elements: List[PathElement]) extends Path
     // final case class Text(get: String) extends Image
-    final case class Circle(r: Double) extends Image
+    final case class Circle(d: Double) extends Image
     final case class Rectangle(w: Double, h: Double) extends Image
     final case class Triangle(w: Double, h: Double) extends Image
     // final case class Draw(w: Double, h: Double, f: Canvas => Unit) extends Image
@@ -162,8 +162,8 @@ object Image {
     )
   }
 
-  def circle(r: Double): Image =
-    Circle(r)
+  def circle(d: Double): Image =
+    Circle(d)
 
   def rectangle(w: Double, h: Double): Image =
     Rectangle(w,h)
@@ -227,7 +227,7 @@ object Image {
       else
         r
 
-    // Magic number of drawing circles with bezier curves
+    // Magic number for drawing circles with bezier curves
     // See http://spencermortensen.com/articles/bezier-circle/ for approximation
     // of a circle with a Bezier curve.
     val c = (4.0/3.0) * (Math.sqrt(2) - 1)
@@ -350,25 +350,40 @@ object Image {
 
     doodle.algebra.Image[Algebra[F],F,Unit]{ algebra =>
       image match {
-        case OpenPath(elements) => algebra.path(doodle.core.OpenPath(elements.reverse))
-        case ClosedPath(elements) => algebra.path(doodle.core.ClosedPath(elements.reverse))
+        case OpenPath(elements) =>
+          algebra.path(doodle.core.OpenPath(elements.reverse))
+        case ClosedPath(elements) =>
+          algebra.path(doodle.core.ClosedPath(elements.reverse))
 
-        case Circle(r) => algebra.circle(r)
-        case Rectangle(w, h) => algebra.rectangle(w, h)
-        case Triangle(w, h) => algebra.triangle(w, h)
+        case Circle(d) =>
+          algebra.circle(d)
+        case Rectangle(w, h) =>
+          algebra.rectangle(w, h)
+        case Triangle(w, h) =>
+          algebra.triangle(w, h)
 
-        case Beside(l, r) => algebra.beside(compile(l)(algebra), compile(r)(algebra))
-        case Above(l, r) => algebra.above(compile(l)(algebra), compile(r)(algebra))
-        case On(t, b) => algebra.on(compile(t)(algebra), compile(b)(algebra))
-        case At(image, x, y) => algebra.at(compile(image)(algebra), x, y)
+        case Beside(l, r) =>
+          algebra.beside(compile(l)(algebra), compile(r)(algebra))
+        case Above(l, r) =>
+          algebra.above(compile(l)(algebra), compile(r)(algebra))
+        case On(t, b) =>
+          algebra.on(compile(t)(algebra), compile(b)(algebra))
+        case At(image, x, y) =>
+          algebra.at(compile(image)(algebra), x, y)
 
-        case StrokeWidth(image, width) => algebra.strokeWidth(compile(image)(algebra), width)
-        case StrokeColor(image, color) => algebra.strokeColor(compile(image)(algebra), color)
-        case FillColor(image, color) => algebra.fillColor(compile(image)(algebra), color)
-        case NoStroke(image) => algebra.noStroke(compile(image)(algebra))
-        case NoFill(image) => algebra.noFill(compile(image)(algebra))
+        case StrokeWidth(image, width) =>
+          algebra.strokeWidth(compile(image)(algebra), width)
+        case StrokeColor(image, color) =>
+          algebra.strokeColor(compile(image)(algebra), color)
+        case FillColor(image, color) =>
+          algebra.fillColor(compile(image)(algebra), color)
+        case NoStroke(image) =>
+          algebra.noStroke(compile(image)(algebra))
+        case NoFill(image) =>
+          algebra.noFill(compile(image)(algebra))
 
-        case Empty => algebra.empty
+        case Empty =>
+          algebra.empty
       }
     }
   }

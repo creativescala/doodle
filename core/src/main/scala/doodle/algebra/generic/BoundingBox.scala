@@ -65,8 +65,8 @@ final case class BoundingBox(left: Double,
 object BoundingBox {
   val empty = BoundingBox(0,0,0,0)
 
-  /** Create a [[doodle.algebra.generic.BoundingBox]] with the given width and heigh and
-    * the origin centered within the box. */
+  /** Create a [[doodle.algebra.generic.BoundingBox]] with the given width and
+    * height and the origin centered within the box. */
   def centered(width: Double, height: Double): BoundingBox = {
     val w = width / 2.0
     val h = height / 2.0
