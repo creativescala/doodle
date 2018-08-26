@@ -20,6 +20,7 @@ package object syntax
     extends AngleSyntax
     with BlendSyntax
     with EngineSyntax
+    with ImageSyntax
     with LayoutSyntax
     with NormalizedSyntax
     with PathSyntax
@@ -30,6 +31,7 @@ package object syntax
   object angle extends AngleSyntax
   object blend extends BlendSyntax
   object engine extends EngineSyntax
+  object image extends ImageSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
