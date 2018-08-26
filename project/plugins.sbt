@@ -1,5 +1,6 @@
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.23")
-addSbtPlugin("com.lihaoyi" % "workbench" % "0.4.1")
-addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.4")
-// addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
-
+addSbtPlugin("io.get-coursier"           % "sbt-coursier" % "1.0.0-RC13")
+addSbtPlugin("com.dwijnand"              % "sbt-travisci" % "1.1.0")
+addSbtPlugin("com.typesafe.sbt"          % "sbt-git"      % "0.9.3")
+addSbtPlugin("de.heikoseeberger"         % "sbt-header"   % "4.1.0")
+addSbtPlugin("com.timushev.sbt"          % "sbt-updates"  % "0.3.4")
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.3")

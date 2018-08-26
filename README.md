@@ -1,4 +1,4 @@
-# Doodle: Compositional Graphics
+# Doodle: Compositional Vector Graphics
 
 Copyright [Noel Welsh](http://noelwelsh.com).
 
