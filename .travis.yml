@@ -1,5 +1,10 @@
 jdk: oraclejdk8
 language: scala
 
-scala:
-- 2.12.2
+matrix:
+  include:
+  - scala: 2.12.6
+  - scala: 2.13.0-M4
+    script:
+    # TODO scalatags for Scala 2.13.0-M4
+    - sbt "++ ${TRAVIS_SCALA_VERSION}!" doodleJVM/test
