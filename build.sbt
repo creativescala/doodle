@@ -68,6 +68,7 @@ lazy val root = (project in file("."))
     """.trim.stripMargin
   )
   .dependsOn(animate, core, explore)
+  .aggregate(animate, core, explore)
 
 lazy val core = (project in file("core"))
   .settings(commonSettings)
