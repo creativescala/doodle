@@ -35,6 +35,13 @@ lazy val commonSettings = Seq(
     Dependencies.miniTestLaws
   ),
 
+  testFrameworks += new TestFramework("minitest.runner.Framework"),
+
+  credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential"),
+
+  startYear := Some(2015),
+  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
+
   initialCommands in console := """
       |import doodle.java2d._
       |import doodle.image._

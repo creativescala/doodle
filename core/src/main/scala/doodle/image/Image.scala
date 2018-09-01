@@ -340,7 +340,7 @@ object Image {
 //  def draw(width: Double, height: Double)(f: Canvas => Unit): Image =
 //    Draw(width, height, f)
 
-  def empty: Image =
+  val empty: Image =
     Empty
 
   /** Compile an `Image` to a `doodle.algebra.Image` */
