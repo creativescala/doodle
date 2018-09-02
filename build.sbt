@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-organization := "noelwelsh"
-name := "doodle"
 scalaVersion in ThisBuild := "2.12.6"
-
-startYear := Some(2015)
-licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 
 enablePlugins(AutomateHeaderPlugin)
 
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
 
+isSnapshot := true
+useGpg := true
+pgpSecretRing := pgpPublicRing.value
 
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     Dependencies.catsCore,
     Dependencies.catsEffect,
+    Dependencies.catsFree,
     Dependencies.miniTest,
     Dependencies.miniTestLaws
   ),
@@ -72,20 +72,24 @@ lazy val root = (project in file("."))
       |import doodle.explore.java2d._
       |import doodle.explore.syntax._
       |import doodle.explore.examples._
-    """.trim.stripMargin
+    """.trim.stripMargin,
+    moduleName := "doodle"
   )
   .dependsOn(animate, core, explore)
   .aggregate(animate, core, explore)
 
 lazy val core = (project in file("core"))
-  .settings(commonSettings)
+  .settings(commonSettings,
+            moduleName := "doodle-core")
 
 lazy val animate = (project in file("animate"))
   .settings(commonSettings,
-            libraryDependencies += Dependencies.monix)
+            libraryDependencies += Dependencies.monix,
+            moduleName := "doodle-animate")
   .dependsOn(core)
 
 lazy val explore = (project in file("explore"))
   .settings(commonSettings,
-            libraryDependencies += Dependencies.magnolia)
+            libraryDependencies += Dependencies.magnolia,
+            moduleName := "doodle-explore")
   .dependsOn(core, animate)
