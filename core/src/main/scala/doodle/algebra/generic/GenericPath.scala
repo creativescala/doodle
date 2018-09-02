@@ -36,7 +36,7 @@ trait GenericPath[G] extends Path[Finalized[G,?]] {
        Contextualized{ (gc, tx) =>
          Renderable{ origin =>
            val o = tx(origin)
-           val txed = transform(elements, tx)
+           val txed = transform(elements, origin.toVec, tx)
            IO {
              graphicsContext.fillClosedPath(gc)(dc, o, txed)
              graphicsContext.strokeClosedPath(gc)(dc, o, txed)
@@ -55,7 +55,7 @@ trait GenericPath[G] extends Path[Finalized[G,?]] {
        Contextualized{ (gc, tx) =>
          Renderable{ origin =>
            val o = tx(origin)
-           val txed = transform(elements, tx)
+           val txed = transform(elements, origin.toVec, tx)
            IO {
              graphicsContext.fillOpenPath(gc)(dc, o, txed)
              graphicsContext.strokeOpenPath(gc)(dc, o, txed)
@@ -64,11 +64,12 @@ trait GenericPath[G] extends Path[Finalized[G,?]] {
        })
     }
 
-  def transform(elements: List[PathElement], tx: Transform): List[PathElement] =
+  def transform(elements: List[PathElement], origin: Vec, tx: Transform): List[PathElement] =
     elements.map{
-      case MoveTo(to) => MoveTo(tx(to))
-      case LineTo(to) => LineTo(tx(to))
-      case BezierCurveTo(cp1, cp2, to) => BezierCurveTo(tx(cp1), tx(cp2), tx(to))
+      case MoveTo(to) => MoveTo(tx(to + origin))
+      case LineTo(to) => LineTo(tx(to + origin))
+      case BezierCurveTo(cp1, cp2, to) =>
+        BezierCurveTo(tx(cp1 + origin), tx(cp2 + origin), tx(to + origin))
     }
 
   def boundingBox(elements: List[PathElement]): BoundingBox = {

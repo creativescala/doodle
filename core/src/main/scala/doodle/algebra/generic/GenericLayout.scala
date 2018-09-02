@@ -29,7 +29,7 @@ trait GenericLayout[G] extends Layout[Finalized[G,?]] {
       b <- bottom
       (bbT, ctxT) = t
       (bbB, ctxB) = b
-    } yield ((bbT on bbB), ctxT |+| ctxB)
+    } yield ((bbT on bbB), ctxB |+| ctxT)
 
   def beside[A: Semigroup](left: Finalized[G,A], right: Finalized[G,A]): Finalized[G,A] =
     for {
@@ -37,17 +37,20 @@ trait GenericLayout[G] extends Layout[Finalized[G,?]] {
       r <- right
       (bbL, ctxL) = l
       (bbR, ctxR) = r
-    } yield ((bbL beside bbR),
-             Contextualized{ ctx =>
-               val rdrL = ctxL(ctx)
-               val rdrR = ctxR(ctx)
+    } yield {
+      val bb = bbL.beside(bbR)
+      (bb,
+       Contextualized{ ctx =>
+         val rdrL = ctxL(ctx)
+         val rdrR = ctxR(ctx)
 
-               Renderable { origin =>
-                 val leftOrigin = Point(origin.x - bbL.right, origin.y)
-                 val rightOrigin = Point(origin.x - bbR.left, origin.y)
-                 rdrL(leftOrigin) |+| rdrR(rightOrigin)
-               }
-             })
+         Renderable { origin =>
+           val leftOrigin = Point(origin.x + bb.left - bbL.left, origin.y)
+           val rightOrigin = Point(origin.x + bb.right - bbR.right, origin.y)
+           rdrL(leftOrigin) |+| rdrR(rightOrigin)
+         }
+       })
+    }
 
   def above[A: Semigroup](top: Finalized[G,A], bottom: Finalized[G,A]): Finalized[G,A] =
     for {
@@ -55,18 +58,21 @@ trait GenericLayout[G] extends Layout[Finalized[G,?]] {
       b <- bottom
       (bbT, ctxT) = t
       (bbB, ctxB) = b
-    } yield ((bbT beside bbB),
-             Contextualized{ ctx =>
-               val rdrT = ctxT(ctx)
-               val rdrB = ctxB(ctx)
+    } yield {
+      val bb = bbT.above(bbB)
+      (bb,
+       Contextualized{ ctx =>
+         val rdrT = ctxT(ctx)
+         val rdrB = ctxB(ctx)
 
-               Renderable { origin =>
-                 val topOrigin = Point(origin.x, origin.y - bbT.bottom)
-                 val bottomOrigin = Point(origin.x, origin.y - bbB.top)
+         Renderable { origin =>
+           val topOrigin = Point(origin.x, origin.y + bb.top - bbT.top)
+           val bottomOrigin = Point(origin.x, origin.y + bb.bottom - bbB.bottom)
 
-                 rdrT(topOrigin) |+| rdrB(bottomOrigin)
-               }
-             })
+           rdrT(topOrigin) |+| rdrB(bottomOrigin)
+         }
+       })
+    }
 
   def at[A](img: Finalized[G,A], x: Double, y: Double): Finalized[G,A] =
     img.map{ case (bb, ctx) =>

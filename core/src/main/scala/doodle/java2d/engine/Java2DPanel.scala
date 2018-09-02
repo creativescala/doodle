@@ -75,6 +75,7 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       val rr = channel.take(10L)
       // println("Java2DPanel got new rr to paint")
       val bb = rr.boundingBox
+      // lastBoundingBox = bb
       resize(bb)
 
       lastImage = rr.context

@@ -36,6 +36,6 @@ object Layout {
       )
     ).on(boundingBox(150, 100, Vec(75, 50)))
 
-  val vertical = triangle above (addOrigin(Image.circle(100)).on(boundingBox(200, 200, Vec.zero)))
-  val horizontal = triangle beside (addOrigin(Image.circle(100)).on(boundingBox(200, 200, Vec.zero)))
+  val vertical = triangle above (addOrigin(Image.circle(200)).on(boundingBox(200, 200, Vec.zero)))
+  val horizontal = triangle beside (addOrigin(Image.circle(200)).on(boundingBox(200, 200, Vec.zero)))
 }

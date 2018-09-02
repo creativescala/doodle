@@ -40,10 +40,24 @@ final case class BoundingBox(left: Double,
                 this.bottom min that.bottom)
 
   def beside(that: BoundingBox): BoundingBox =
-    BoundingBox(-this.width,
+    BoundingBox(-(this.width + that.width)/2.0,
                 this.top max that.top,
-                that.width,
+                (this.width + that.width)/2.0,
                 this.bottom min that.bottom)
+    // BoundingBox(-this.width,
+    //             this.top max that.top,
+    //             that.width,
+    //             this.bottom min that.bottom)
+
+  def above(that: BoundingBox): BoundingBox =
+    BoundingBox(this.left min that.left,
+                (this.height + that.height)/2.0,
+                this.right max that.right,
+                -(this.height + that.height)/2.0)
+    // BoundingBox(this.left min that.left,
+    //             this.height,
+    //             this.right max that.right,
+    //             -that.height)
 
   def at(x: Double, y: Double): BoundingBox = {
     val newLeft = (left + x) min 0

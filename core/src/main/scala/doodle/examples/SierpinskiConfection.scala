@@ -23,7 +23,7 @@ object SierpinskiConfection {
     Image.triangle(size, size)
   }
   def circle(size: Double): Image = {
-    Image.circle(size / 2)
+    Image.circle(size)
   }
 
   def shape(size: Double): Random[Image] = {

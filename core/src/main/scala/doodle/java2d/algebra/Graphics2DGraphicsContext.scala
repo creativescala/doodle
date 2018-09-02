@@ -28,7 +28,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     dc.fill.foreach{ f =>
       Java2D.setFill(gc, f)
       val w = width.toInt
-      val h = width.toInt
+      val h = height.toInt
       gc.fillRect(center.x.toInt - (w/2), center.y.toInt - (h/2), w, h)
     }
   }
@@ -36,7 +36,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     dc.stroke.foreach{ s =>
       Java2D.setStroke(gc, s)
       val w = width.toInt
-      val h = width.toInt
+      val h = height.toInt
       gc.drawRect(center.x.toInt - (w/2), center.y.toInt - (h/2), w, h)
     }
   }
@@ -67,7 +67,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
         xs(idx) = pt.x.toInt
         ys(idx) = pt.y.toInt
       }
-      gc.drawPolygon(xs, ys, points.size)
+      gc.fillPolygon(xs, ys, points.size)
     }
   }
   def strokePolygon(gc: Graphics2D)(dc: DrawingContext, points: Array[Point]): Unit = {

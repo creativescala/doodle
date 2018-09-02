@@ -46,13 +46,9 @@ object Tiles {
 
   def tileGrid(tile: Random[Image], sideLength: Int): Random[Image] = {
     val row: Random[Image] =
-      (1 to sideLength).map(_ => tile).toList.sequence.map(images =>
-        images.foldLeft(Image.empty){ (row, img) => row beside img }
-      )
+      (1 to sideLength).map(_ => tile).toList.sequence.map(_.allBeside)
     val grid: Random[Image] =
-      (1 to sideLength).map(_ => row).toList.sequence.map(rows =>
-        rows.foldLeft(Image.empty){ (grid, row) => grid above row }
-      )
+      (1 to sideLength).map(_ => row).toList.sequence.map(_.allAbove)
     grid
   }
 
