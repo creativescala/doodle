@@ -1,6 +1,5 @@
 package doodle
 package core
-package transform
 
 import org.scalacheck._
 import org.scalacheck.Prop._
@@ -29,5 +28,23 @@ class TransformSpec extends Properties("Transform") {
         Transform.translate(translate.x, translate.y).andThen(Transform.rotate(rotate.angle))
 
       tx(point) ~= expected
+    }
+
+  property("logicalToScreen") =
+    forAll{ (screen: Screen, point: Point) =>
+      val expected = Point(point.x + (screen.width.toDouble / 2.0), (screen.height.toDouble / 2.0) - point.y)
+      val tx = Transform.logicalToScreen(screen.width.toDouble, screen.height.toDouble)
+      val actual = tx(point)
+
+      (actual ~= expected) :| s"actual: $actual\nexpected: $expected"
+    }
+
+  property("screenToLogical") =
+    forAll{ (screen: Screen, point: Point) =>
+      val expected = Point(point.x - (screen.width.toDouble  / 2.0), (screen.height.toDouble / 2.0) - point.y)
+      val tx = Transform.screenToLogical(screen.width.toDouble, screen.height.toDouble)
+      val actual = tx(point)
+
+      (actual ~= expected) :| s"actual: $actual\nexpected: $expected"
     }
 }

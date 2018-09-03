@@ -34,7 +34,7 @@ object StyleSpec extends Properties("Style properties") {
     forAll(Generators.finalized, Generators.color){ (f, c) =>
       val log = TestGraphicsContext.log()
       val (_, ctx) = style.fillColor(f, c)(DrawingContext.default)
-      ctx((log, identity))(Point.zero).unsafeRunSync()
+      ctx((log, Transform.identity))(Point.zero).unsafeRunSync()
 
       val rendered = log.log
       rendered.foldLeft(true: Prop){ (prop, elt) =>

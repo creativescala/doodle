@@ -60,7 +60,7 @@ sealed abstract class Image extends Product with Serializable {
 
   // Affine Transform -------------------------------------------------
 
-  // def transform(tx: core.transform.Transform): Image =
+  // def transform(tx: core.Transform): Image =
   //   Transform(tx, this)
 
   // def rotate(angle: Angle): Image =

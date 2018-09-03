@@ -20,8 +20,8 @@ package engine
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.algebra.generic.{BoundingBox, DrawingContext, Transform}
-import doodle.core.Point
+import doodle.algebra.generic.{BoundingBox, DrawingContext}
+import doodle.core.{Point,Transform}
 import doodle.engine._
 import doodle.java2d.algebra.{Algebra,Java2D}
 import java.awt.{Dimension,Graphics,Graphics2D}

@@ -40,6 +40,14 @@ object arbitrary {
   final case class Translate(x: Double, y: Double)
   final case class Scale(x: Double, y: Double)
   final case class Rotate(angle: Angle)
+  /** The dimensions of a screen: positive integers greater than 0 and less than or equal to 4000. */
+  final case class Screen(width: Int, height: Int)
+
+  val genScreen: Gen[Screen] =
+    for {
+      w <- Gen.choose(1, 4000)
+      h <- Gen.choose(1, 4000)
+    } yield Screen(w, h)
 
   implicit val arbitraryPoint: Arbitrary[Point] = Arbitrary(
     genPoint
@@ -59,6 +67,10 @@ object arbitrary {
 
   implicit val arbitraryTranslate: Arbitrary[Translate] = Arbitrary(
     genPoint.map { pt => Translate(pt.x, pt.y) }
+  )
+
+  implicit val arbitraryScreen: Arbitrary[Screen] = Arbitrary(
+    genScreen
   )
 
   implicit val arbitraryHSLA: Arbitrary[HSLA] = Arbitrary(

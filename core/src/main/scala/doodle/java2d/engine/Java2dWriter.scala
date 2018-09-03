@@ -5,7 +5,7 @@ package engine
 import cats.effect.IO
 import doodle.algebra.Image
 import doodle.algebra.generic._
-import doodle.core.Point
+import doodle.core.{Point,Transform}
 import doodle.engine._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage

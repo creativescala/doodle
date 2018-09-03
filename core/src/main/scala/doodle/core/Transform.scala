@@ -1,6 +1,5 @@
 package doodle
 package core
-package transform
 
 /** Representation of an affine transformation as an augmented matrix. */
 final case class Transform(elements: Array[Double]) {
@@ -48,15 +47,34 @@ object Transform {
   def translate(v: Vec): Transform =
     translate(v.x, v.y)
 
-  /** Reflect horizontally (around the X-axis) */
+  /** Reflect horizontally (around the Y-axis) */
   val horizontalReflection: Transform =
     Transform(Array(1,  0, 0,
                     0, -1, 0,
                     0,  0, 1))
 
-  /** Reflect vertically (around the Y-axis) */
+  /** Reflect vertically (around the X-axis) */
   val verticalReflection: Transform =
     Transform(Array(-1, 0, 0,
                      0, 1, 0,
                      0, 0, 1))
+
+
+  /** Convert from the usual cartesian coordinate system (origin in the center, x
+    * and y increase towards the top right) to usual screen coordinate system
+    * (origin in the top left, x and y increase to the bottom right). */
+  def logicalToScreen(width: Double, height: Double): Transform =
+    // A composition of a reflection and a translation
+    Transform(Array(1,  0, width / 2.0,
+                    0, -1, height / 2.0,
+                    0,  0, 1))
+
+  /** Convert from the usual screen coordinate system (origin in the top left, x
+    * and y increase to the bottom right) to the usual cartesian coordinate
+    * system (origin in the center, x and y increase towards the top right). */
+  def screenToLogical(width: Double, height: Double): Transform =
+    // A composition of a reflection and a translation
+    Transform(Array(1,  0, -width / 2.0,
+                    0, -1, height / 2.0,
+                    0,  0, 1))
 }

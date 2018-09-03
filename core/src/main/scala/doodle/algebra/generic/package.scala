@@ -20,11 +20,9 @@ package algebra
 import cats.Id
 import cats.data.{Kleisli,Reader}
 import cats.effect.IO
-import doodle.core.Point
+import doodle.core.{Point,Transform}
 
 package object generic {
-  type Transform = Point => Point
-
   /** Given a [[DrawingContext]] return a [[BoundingBox]] around a drawing and a [[Contextualized]] rendering of that drawing. */
   type Finalized[G,A] = Reader[DrawingContext,(BoundingBox, Contextualized[G,A])]
   object Finalized {
