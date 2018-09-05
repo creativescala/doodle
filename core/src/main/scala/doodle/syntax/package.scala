@@ -19,7 +19,7 @@ package doodle
 package object syntax
     extends AngleSyntax
     with BlendSyntax
-    with EngineSyntax
+    with RendererSyntax
     with ImageSyntax
     with LayoutSyntax
     with NormalizedSyntax
@@ -30,7 +30,7 @@ package object syntax
     with WriterSyntax {
   object angle extends AngleSyntax
   object blend extends BlendSyntax
-  object engine extends EngineSyntax
+  object renderer extends RendererSyntax
   object image extends ImageSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax

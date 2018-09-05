@@ -17,16 +17,16 @@
 package doodle
 package syntax
 
-import doodle.engine.{Engine,Frame}
+import doodle.effect.{Renderer,Frame}
 import doodle.image.Image
 import doodle.language.Basic
 
 trait ImageSyntax {
   implicit class ImageOps(image: Image) {
-    def draw[Algebra[A[?]] <: Basic[A[?]],F[_],C](implicit engine: Engine[Algebra[F], F, C]): Unit =
+    def draw[Algebra[A[?]] <: Basic[A[?]],F[_],C](implicit renderer: Renderer[Algebra[F], F, C]): Unit =
     (for {
-       canvas <- engine.frame(Frame.fitToImage())
-       a      <- engine.render(canvas)(algebra => image.compile(algebra))
+       canvas <- renderer.frame(Frame.fitToImage())
+       a      <- renderer.render(canvas)(algebra => image.compile(algebra))
      } yield a).unsafeRunSync()
   }
 }

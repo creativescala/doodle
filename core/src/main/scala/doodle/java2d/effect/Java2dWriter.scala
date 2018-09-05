@@ -1,12 +1,12 @@
 package doodle
 package java2d
-package engine
+package effect
 
 import cats.effect.IO
 import doodle.algebra.Image
 import doodle.algebra.generic._
 import doodle.core.{Point,Transform}
-import doodle.engine._
+import doodle.effect._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
 import java.io.File

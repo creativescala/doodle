@@ -21,8 +21,8 @@ package java2d
 import cats.Monoid
 import cats.effect.IO
 import doodle.algebra.Image
-import doodle.engine.Engine
-import doodle.java2d.engine.Java2DFrame
+import doodle.effect.Renderer
+import doodle.java2d.effect.Java2DFrame
 import monix.execution.Scheduler
 import monix.reactive.{Consumer,Observable}
 import scala.concurrent.ExecutionContext
@@ -31,11 +31,11 @@ import scala.concurrent.duration._
 object Java2dAnimator extends Animator[Java2DFrame] {
   val frameRate = 16.milliseconds
 
-  def animateIterable[Algebra,F[_],A](canvas: Java2DFrame)(frames: Iterable[Image[Algebra,F,A]])(implicit e: Engine[Algebra,F,Java2DFrame], m: Monoid[A]): IO[A] =
+  def animateIterable[Algebra,F[_],A](canvas: Java2DFrame)(frames: Iterable[Image[Algebra,F,A]])(implicit e: Renderer[Algebra,F,Java2DFrame], m: Monoid[A]): IO[A] =
     animateObservable(canvas)(Observable.fromIterable(frames).delayOnNext(frameRate))
 
 
-  def animateObservable[Algebra,F[_],A](canvas: Java2DFrame)(frames: Observable[Image[Algebra, F, A]])(implicit e: Engine[Algebra,F,Java2DFrame], m: Monoid[A]): IO[A] = {
+  def animateObservable[Algebra,F[_],A](canvas: Java2DFrame)(frames: Observable[Image[Algebra, F, A]])(implicit e: Renderer[Algebra,F,Java2DFrame], m: Monoid[A]): IO[A] = {
     frames
       .sampleRepeated(frameRate)
       .mapEval(img => e.render(canvas)(algebra => img(algebra)))

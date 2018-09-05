@@ -15,17 +15,19 @@
  */
 
 package doodle
-package syntax
+package effect
 
-import doodle.algebra.Image
-import doodle.engine.{Engine,Frame}
+final case class Frame(size: Size, title: String = "") {
+  def title(title: String): Frame =
+    this.copy(title = title)
+}
+object Frame {
+  def fitToImage(border: Int = 20): Frame =
+    Frame(Size.fitToImage(border))
 
-trait EngineSyntax {
-  implicit class EngineRendererOps[Algebra,F[_],A](image: Image[Algebra,F,A]) {
-    def draw[C](implicit engine: Engine[Algebra, F, C]): A =
-      (for {
-        canvas <- engine.frame(Frame.fitToImage())
-        a      <- engine.render(canvas)(algebra => image(algebra))
-      } yield a).unsafeRunSync()
-  }
+  def size(width: Double, height: Double): Frame =
+    Frame(Size.fixedSize(width, height))
+
+  def fullScreen: Frame =
+    Frame(Size.fullScreen)
 }

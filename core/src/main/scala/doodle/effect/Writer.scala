@@ -1,5 +1,5 @@
 package doodle
-package engine
+package effect
 
 import cats.effect.IO
 import doodle.algebra.Image

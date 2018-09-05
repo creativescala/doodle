@@ -50,7 +50,7 @@ lazy val commonSettings = Seq(
     """.trim.stripMargin,
 
   cleanupCommands in console := """
-      |doodle.java2d.engine.Engine.stop()
+      |doodle.java2d.effect.Renderer.stop()
     """.trim.stripMargin,
 
   addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
@@ -64,7 +64,7 @@ lazy val root = (project in file("."))
       |import doodle.java2d._
       |import doodle.image._
       |import doodle.syntax._
-      |import doodle.engine.Writer._
+      |import doodle.effect.Writer._
       |import doodle.examples._
       |import doodle.animate.java2d._
       |import doodle.animate.syntax._

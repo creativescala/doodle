@@ -17,7 +17,7 @@
 package doodle
 
 import java.awt.Graphics2D
-import doodle.engine.Engine
+import doodle.effect.Renderer
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
@@ -25,12 +25,12 @@ package object java2d {
   type Contextualized[A] = doodle.algebra.generic.Contextualized[Graphics2D,A]
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
-  type Java2DFrame = doodle.java2d.engine.Java2DFrame
-  implicit val java2DEngine: Engine[Algebra, Drawing, Java2DFrame] =
-    doodle.java2d.engine.Engine
-  implicit val java2dGifWriter = doodle.java2d.engine.Java2dGifWriter
-  implicit val java2dPngWriter = doodle.java2d.engine.Java2dPngWriter
-  implicit val java2dJpgWriter = doodle.java2d.engine.Java2dJpgWriter
+  type Java2DFrame = doodle.java2d.effect.Java2DFrame
+  implicit val java2DRenderer: Renderer[Algebra, Drawing, Java2DFrame] =
+    doodle.java2d.effect.Java2dRenderer
+  implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
+  implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
+  implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
 
   type Image[A] = doodle.algebra.Image[Algebra,Drawing,A]
   object Image {

@@ -15,19 +15,18 @@
  */
 
 package doodle
-package engine
+package effect
 
-final case class Frame(size: Size, title: String = "") {
-  def title(title: String): Frame =
-    this.copy(title = title)
+import cats.effect.IO
+
+/**
+  * The `Renderer` typeclass describes a data type that can create an area to
+  * render an image (a Canvas) and render an image to that Canvas.
+  */
+trait Renderer[+Algebra, F[_], Canvas]{
+  def frame(description: Frame): IO[Canvas]
+  def render[A](canvas: Canvas)(f: Algebra => F[A]): IO[A]
 }
-object Frame {
-  def fitToImage(border: Int = 20): Frame =
-    Frame(Size.fitToImage(border))
-
-  def size(width: Double, height: Double): Frame =
-    Frame(Size.fixedSize(width, height))
-
-  def fullScreen: Frame =
-    Frame(Size.fullScreen)
+object Renderer {
+  def apply[Algebra, F[_], Canvas](implicit renderer: Renderer[Algebra, F, Canvas]): Renderer[Algebra, F, Canvas] = renderer
 }

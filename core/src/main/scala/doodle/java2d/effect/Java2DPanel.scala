@@ -16,13 +16,13 @@
 
 package doodle
 package java2d
-package engine
+package effect
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
 import doodle.algebra.generic.{BoundingBox, DrawingContext}
 import doodle.core.{Point,Transform}
-import doodle.engine._
+import doodle.effect._
 import doodle.java2d.algebra.{Algebra,Java2D}
 import java.awt.{Dimension,Graphics,Graphics2D}
 import java.util.NoSuchElementException
@@ -30,7 +30,7 @@ import javax.swing.{JPanel, SwingUtilities}
 import scala.concurrent.SyncVar
 
 final class Java2DPanel(frame: Frame) extends JPanel {
-  import doodle.engine.Size._
+  import doodle.effect.Size._
   import Java2DPanel.RenderRequest
 
   private var lastImage: Contextualized[_] = _

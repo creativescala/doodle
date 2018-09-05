@@ -20,18 +20,18 @@ package syntax
 
 import cats.Monoid
 import doodle.algebra.Image
-import doodle.engine.Engine
+import doodle.effect.Renderer
 import monix.reactive.Observable
 
 trait AnimateSyntax {
   implicit class AnimateIterableOps[Algebra,F[_],A](frames: Iterable[Image[Algebra,F,A]]) {
-    def animate[C](canvas: C)(implicit a: Animator[C], e: Engine[Algebra, F, C], m: Monoid[A]): A = {
+    def animate[C](canvas: C)(implicit a: Animator[C], e: Renderer[Algebra, F, C], m: Monoid[A]): A = {
       a.animateIterable(canvas)(frames).unsafeRunSync()
     }
   }
 
   implicit class AnimateObservableOps[Algebra,F[_],A](frames: Observable[Image[Algebra,F,A]]) {
-    def animate[C](canvas: C)(implicit a: Animator[C], e: Engine[Algebra, F, C], m: Monoid[A]): A = {
+    def animate[C](canvas: C)(implicit a: Animator[C], e: Renderer[Algebra, F, C], m: Monoid[A]): A = {
       a.animateObservable(canvas)(frames).unsafeRunSync()
     }
   }

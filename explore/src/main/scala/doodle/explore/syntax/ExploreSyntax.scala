@@ -21,11 +21,11 @@ package syntax
 import cats.Monoid
 import doodle.algebra.Image
 import doodle.animate.Animator
-import doodle.engine.{Engine,Frame}
+import doodle.effect.{Renderer,Frame}
 
 trait ExploreSyntax {
   implicit class ExploreFunctionOps[A,Algebra,F[_],B](f: A => Image[Algebra,F,B]) {
-    def explore[C](implicit ex: ExplorerFactory[_,A], a: Animator[C], e: Engine[Algebra,F,C], m: Monoid[B]): B = {
+    def explore[C](implicit ex: ExplorerFactory[_,A], a: Animator[C], e: Renderer[Algebra,F,C], m: Monoid[B]): B = {
       (for {
           canvas <- e.frame(Frame.size(600, 600))
           values <- ex.create.render

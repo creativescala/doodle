@@ -18,7 +18,7 @@ package doodle
 package syntax
 
 import doodle.algebra.Image
-import doodle.engine.{Frame,Writer}
+import doodle.effect.{Frame,Writer}
 import java.io.File
 
 trait WriterSyntax {

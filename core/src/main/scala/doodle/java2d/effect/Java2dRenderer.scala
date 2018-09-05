@@ -16,17 +16,29 @@
 
 package doodle
 package java2d
-package algebra
+package effect
 
 import cats.effect.IO
-import doodle.algebra.Image
-import doodle.engine.Frame
-import doodle.java2d.engine.Engine
+import doodle.effect.{Frame,Renderer}
+import javax.swing.JFrame
 
-object Renderer extends doodle.algebra.Renderer[Algebra, Drawing] {
-  def render[A, Alg >: Algebra](image: Image[Alg, Drawing, A]): IO[A] = {
-    Engine.frame(Frame.fitToImage()).flatMap(canvas =>
-      Engine.render(canvas)(algebra => image(algebra))
-    )
+object Java2dRenderer extends Renderer[Algebra, Drawing, Java2DFrame] {
+  private var jFrames: List[JFrame] = List.empty
+
+  def frame(description: Frame): IO[Java2DFrame] =
+    IO{
+      val jFrame = new Java2DFrame(description)
+      jFrames.synchronized{ jFrames = jFrame :: jFrames }
+      jFrame
+    }
+
+  def render[A](canvas: Java2DFrame)(f: Algebra => Drawing[A]): IO[A] =
+    canvas.render(f)
+
+  def stop(): Unit = {
+    jFrames.synchronized{
+      jFrames.foreach(_.dispose)
+      jFrames = List.empty
+    }
   }
 }
