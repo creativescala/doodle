@@ -50,7 +50,7 @@ lazy val commonSettings = Seq(
     """.trim.stripMargin,
 
   cleanupCommands in console := """
-      |doodle.java2d.effect.Renderer.stop()
+      |doodle.java2d.effect.Java2dRenderer.stop()
     """.trim.stripMargin,
 
   addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
