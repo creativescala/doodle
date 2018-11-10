@@ -45,7 +45,7 @@ object Sine {
     }
 
   def draw(): Unit = {
-    wave(50, 300, Color.cornflowerBlue).draw
+    wave(50, 300, Color.cornflowerBlue).draw()
   }
 
   def explore(): Unit = {
