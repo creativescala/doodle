@@ -23,9 +23,9 @@ import doodle.language.Basic
 
 trait ImageSyntax {
   implicit class ImageOps(image: Image) {
-    def draw[Algebra[A[?]] <: Basic[A[?]],F[_],C](implicit renderer: Renderer[Algebra[F], F, C]): Unit =
+    def draw[Algebra[A[?]] <: Basic[A[?]],F[_],C](frame: Frame = Frame.fitToImage())(implicit renderer: Renderer[Algebra[F], F, C]): Unit =
     (for {
-       canvas <- renderer.frame(Frame.fitToImage())
+       canvas <- renderer.frame(frame)
        a      <- renderer.render(canvas)(algebra => image.compile(algebra))
      } yield a).unsafeRunSync()
   }

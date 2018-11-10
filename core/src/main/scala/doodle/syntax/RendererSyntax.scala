@@ -22,10 +22,11 @@ import doodle.effect.{Renderer,Frame}
 
 trait RendererSyntax {
   implicit class RendererImageOps[Algebra,F[_],A](image: Image[Algebra,F,A]) {
-    def draw[C](implicit renderer: Renderer[Algebra, F, C]): A =
+    def draw[C](frame: Frame = Frame.fitToImage())(implicit renderer: Renderer[Algebra, F, C]): A =
       (for {
-        canvas <- renderer.frame(Frame.fitToImage())
+        canvas <- renderer.frame(frame)
         a      <- renderer.render(canvas)(algebra => image(algebra))
       } yield a).unsafeRunSync()
+
   }
 }
