@@ -17,7 +17,14 @@
 package doodle
 package effect
 
-final case class Frame(size: Size, title: String = "") {
+import doodle.core.Color
+
+final case class Frame(size: Size,
+                       title: String = "",
+                       background: Option[Color] = None) {
+  def background(color: Color): Frame =
+    this.copy(background = Some(color))
+
   def title(title: String): Frame =
     this.copy(title = title)
 }

@@ -36,6 +36,8 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   private var lastImage: Contextualized[_] = _
   private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
 
+  frame.background.foreach(color => this.setBackground(Java2D.toAwtColor(color)))
+
   def resize(bb: BoundingBox): Unit = {
     frame.size match {
       case FitToImage(border) =>
@@ -79,12 +81,19 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       resize(bb)
 
       lastImage = rr.context
+      frame.background.foreach(color => gc.setBackground(Java2D.toAwtColor(color)))
+      gc.clearRect(0, 0, getWidth, getHeight)
       rr.render(gc, getWidth, getHeight).unsafeRunSync()
     } catch {
       case _: NoSuchElementException => ()
         // println("Java2DPanel no new rr to paint")
         if(lastImage != null) {
+          // Render again without passing result to the callback. This is a
+          // hack. We need to reify the low-level rendering commands so we can
+          // rerun them without rerunning any other effects.
           val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
+          frame.background.foreach(color => gc.setBackground(Java2D.toAwtColor(color)))
+          gc.clearRect(0, 0, getWidth, getHeight)
           lastImage((gc, tx))(Point.zero).unsafeRunSync()
         }
         ()
