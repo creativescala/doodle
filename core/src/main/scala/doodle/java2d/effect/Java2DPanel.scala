@@ -20,7 +20,7 @@ package effect
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.algebra.generic.{BoundingBox, DrawingContext}
+import doodle.algebra.generic.BoundingBox
 import doodle.core.{Point,Transform}
 import doodle.effect._
 import doodle.java2d.algebra.{Algebra,Java2D}
@@ -55,7 +55,7 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   def render[A](f: Algebra => Drawing[A]): IO[A] = {
     def register(cb: Either[Throwable, A] => Unit): Unit = {
       val drawing   = f(Algebra())
-      val (bb, ctx) = drawing(DrawingContext.default)
+      val (bb, ctx) = drawing(List.empty)
 
       val rr = RenderRequest(bb, ctx, cb)
       // println("Java2DPanel attempting to put in the channel")

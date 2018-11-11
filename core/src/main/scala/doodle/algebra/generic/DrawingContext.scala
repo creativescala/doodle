@@ -27,43 +27,43 @@ final case class Fill(color: Color)
 
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
-  blendMode: Cell[BlendMode],
-  strokeWidth: Cell[Double],
-  strokeColor: Cell[Color],
-  fillColor: Cell[Color]
+  blendMode: Option[BlendMode],
+  strokeWidth: Option[Double],
+  strokeColor: Option[Color],
+  fillColor: Option[Color]
 ) {
   def blendMode(mode: BlendMode): DrawingContext =
-    this.copy(blendMode = blendMode.set(mode))
+    this.copy(blendMode = Some(mode))
 
 
   def stroke: Option[Stroke] =
-    (strokeColor.toOption, strokeWidth.toOption).mapN((c, w) => Stroke(c, w))
+    (strokeColor, strokeWidth).mapN((c, w) => Stroke(c, w))
 
   def strokeColor(color: Color): DrawingContext =
-    this.copy(strokeColor = strokeColor.set(color))
+    this.copy(strokeColor = Some(color))
 
   def strokeWidth(width: Double): DrawingContext =
-    this.copy(strokeWidth = if(width <= 0) strokeWidth.unset else strokeWidth.set(width))
+    this.copy(strokeWidth = if(width <= 0) None else Some(width))
 
   def noStroke: DrawingContext =
-    this.copy(strokeWidth = strokeWidth.unset)
+    this.copy(strokeWidth = None)
 
 
   def fill: Option[Fill] =
-    fillColor.toOption.map(c => Fill(c))
+    fillColor.map(c => Fill(c))
 
   def fillColor(color: Color): DrawingContext =
-    this.copy(fillColor = fillColor.set(color))
+    this.copy(fillColor = Some(color))
 
   def noFill: DrawingContext =
-    this.copy(fillColor = fillColor.unset)
+    this.copy(fillColor = None)
 }
 object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
-      Cell.default(BlendMode.sourceOver),
-      Cell.default(1.0),
-      Cell.default(Color.black),
-      Cell.defaultUnset
+      Option(BlendMode.sourceOver),
+      Option(1.0),
+      Option(Color.black),
+      Option.empty
     )
 }

@@ -27,7 +27,7 @@ trait GenericPath[G] extends Path[Finalized[G,?]] {
   import PathElement._
 
   def path(path: ClosedPath): Finalized[G,Unit] =
-    Finalized{ dc =>
+    Finalized.leaf{ dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
@@ -46,7 +46,7 @@ trait GenericPath[G] extends Path[Finalized[G,?]] {
     }
 
   def path(path: OpenPath): Finalized[G,Unit] =
-    Finalized{ dc =>
+    Finalized.leaf{ dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)

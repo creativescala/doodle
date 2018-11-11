@@ -25,20 +25,15 @@ import doodle.core._
 object StyleSpec extends Properties("Style properties") {
   val style = new GenericStyle[TestGraphicsContext.Log] {}
 
-  def impossible: Nothing = {
-    println("Oops")
-    throw new IllegalStateException("This case should never occur")
-  }
-
   property("last fillColor takes effect") =
     forAll(Generators.finalized, Generators.color){ (f, c) =>
       val log = TestGraphicsContext.log()
-      val (_, ctx) = style.fillColor(f, c)(DrawingContext.default)
+      val (_, ctx) = style.fillColor(f, c)(List.empty)
       ctx((log, Transform.identity))(Point.zero).unsafeRunSync()
 
       val rendered = log.log
       rendered.foldLeft(true: Prop){ (prop, elt) =>
-        prop && (elt.dc.fillColor.toOption.map(_ ?= c).getOrElse(exception))
+        prop && (elt.dc.fillColor.map(_ ?= c).getOrElse(exception))
       }
     }
 }

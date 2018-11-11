@@ -20,31 +20,47 @@ package algebra
 import cats.Id
 import cats.data.{Kleisli,Reader}
 import cats.effect.IO
-import doodle.core.{Point,Transform}
+import doodle.core.{Point,Transform => Tx}
 
 package object generic {
-  /** Given a [[DrawingContext]] return a [[BoundingBox]] around a drawing and a [[Contextualized]] rendering of that drawing. */
-  type Finalized[G,A] = Reader[DrawingContext,(BoundingBox, Contextualized[G,A])]
+  type ContextTransform = DrawingContext => DrawingContext
+
+  /** Given a List of [[ContextTransform]] return a [[BoundingBox]] around a drawing and a
+    * [[Contextualized]] rendering of that drawing.
+    *
+    * The List of ContextTransform's are supplied in the order they should be
+    * applied: the innermost transform is at the head of the list.
+    */
+  type Finalized[G,A] =
+    Reader[List[ContextTransform],(BoundingBox, Contextualized[G,A])]
   object Finalized {
-    def apply[G,A](f: DrawingContext => (BoundingBox, Contextualized[G,A])): Finalized[G,A] =
-      Kleisli[Id, DrawingContext, (BoundingBox, Contextualized[G,A])](f)
+    def apply[G,A](f: List[ContextTransform] => (BoundingBox, Contextualized[G,A])): Finalized[G,A] =
+      Kleisli[Id, List[ContextTransform], (BoundingBox, Contextualized[G,A])](f)
+
+    /** Create a leaf [[Finalized]]. It will be passed a [[DrawingContext]] with all
+      * transforms applied in the correct order.
+      */
+    def leaf[G,A](f: DrawingContext => (BoundingBox, Contextualized[G,A])): Finalized[G,A] =
+      Kleisli[Id, List[ContextTransform], (BoundingBox, Contextualized[G,A])]{ ctxTxs =>
+        val dc = ctxTxs.foldLeft(DrawingContext.default){ (dc, f) => f(dc) }
+        f(dc)
+      }
 
     def contextTransform[G,A](f: DrawingContext => DrawingContext)(child: Finalized[G,A]): Finalized[G,A] = {
-      apply{ dc =>
-        val transformed = f(dc)
-        child(transformed)
+      apply{ ctxTxs: List[ContextTransform] =>
+        child(f :: ctxTxs)
       }
     }
   }
 
-  /** Construct a [[Renderable]] given a graphics context of type `G` and a [[Transform]] from logical to screen space. */
-  type Contextualized[G,A] = Reader[(G, Transform),Renderable[A]]
+  /** Construct a [[Renderable]] given a graphics context of type `G` and a [[doodle.core.Transform]] from logical to screen space. */
+  type Contextualized[G,A] = Reader[(G, Tx),Renderable[A]]
   object Contextualized {
-    def apply[G,A](f: (G, Transform) => Renderable[A]): Contextualized[G,A] =
+    def apply[G,A](f: (G, Tx) => Renderable[A]): Contextualized[G,A] =
       Kleisli{ case (gc, tx) => f(gc, tx) }
 
-    def apply[G,A](f: ((G, Transform)) => Renderable[A]): Contextualized[G,A] =
-      Kleisli[Id, (G, Transform), Renderable[A]]{ f }
+    def apply[G,A](f: ((G, Tx)) => Renderable[A]): Contextualized[G,A] =
+      Kleisli[Id, (G, Tx), Renderable[A]]{ f }
   }
 
   /** Given an origin point returns an effect that renders a drawing and returns

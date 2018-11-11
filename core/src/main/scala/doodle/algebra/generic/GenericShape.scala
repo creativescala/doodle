@@ -25,7 +25,7 @@ trait GenericShape[G] extends Shape[Finalized[G,?]] {
   implicit val graphicsContext: GraphicsContext[G]
 
   def rectangle(width: Double, height: Double): Finalized[G,Unit] =
-    Finalized{ dc =>
+    Finalized.leaf{ dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
       (bb,
@@ -44,7 +44,7 @@ trait GenericShape[G] extends Shape[Finalized[G,?]] {
     rectangle(width, width)
 
   def triangle(width: Double, height: Double): Finalized[G,Unit] =
-    Finalized{ dc =>
+    Finalized.leaf{ dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
       (bb,
@@ -64,7 +64,7 @@ trait GenericShape[G] extends Shape[Finalized[G,?]] {
     }
 
   def circle(diameter: Double): Finalized[G,Unit] =
-    Finalized{ dc =>
+    Finalized.leaf{ dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
       (bb,
@@ -80,7 +80,7 @@ trait GenericShape[G] extends Shape[Finalized[G,?]] {
     }
 
   def empty: Finalized[G,Unit] =
-    Finalized{ dc =>
+    Finalized.leaf{ dc =>
       (BoundingBox.empty,
        Contextualized{ (gc, tx) =>
          Renderable{ origin => IO{()} }

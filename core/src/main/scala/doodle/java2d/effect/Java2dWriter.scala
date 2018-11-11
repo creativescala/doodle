@@ -4,7 +4,6 @@ package effect
 
 import cats.effect.IO
 import doodle.algebra.Image
-import doodle.algebra.generic._
 import doodle.core.{Point,Transform}
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
@@ -18,7 +17,7 @@ trait Java2dWriter[Format] extends Writer[Algebra,Drawing,Format] {
   def write[A, Alg >: Algebra](file: File, frame: Frame, image: Image[Alg,Drawing,A]): IO[A] = {
     for {
       drawing <- IO { image(Algebra()) }
-      (bb, ctx) = drawing(DrawingContext.default)
+      (bb, ctx) = drawing(List.empty)
       image   <- IO {
         frame.size match {
           case Size.FitToImage(border) =>
