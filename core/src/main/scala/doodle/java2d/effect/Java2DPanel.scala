@@ -101,7 +101,8 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       frame.background.foreach(color =>
         gc.setBackground(Java2D.toAwtColor(color)))
       gc.clearRect(0, 0, getWidth, getHeight)
-      val finalTx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
+      val finalTx =
+        Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
       lastImage.foreach(reified =>
         reified.render(gc, finalTx)(Graphics2DGraphicsContext))
     }

@@ -28,7 +28,8 @@ sealed abstract class Reified extends Product with Serializable {
 
   /** finalTransform gives an transform applied after any other reified transform.
     * Usually this is a transfrom from logical to screen coordinates. */
-  def render[A](gc: A, finalTransform: Tx)(implicit ctx: GraphicsContext[A]): Unit =
+  def render[A](gc: A, finalTransform: Tx)(
+      implicit ctx: GraphicsContext[A]): Unit =
     this match {
       case FillOpenPath(tx, fill, elements) =>
         ctx.fillOpenPath(gc)(tx.andThen(finalTransform), fill, elements)
@@ -72,20 +73,30 @@ object Reified {
       tx(pt)
     }
 
-  def renderable(dc: DrawingContext)(fill: (Tx, Fill) => Reified)(stroke: (Tx, Stroke) => Reified): Renderable[Unit] =
-    Renderable{ tx =>
+  def renderable(dc: DrawingContext)(fill: (Tx, Fill) => Reified)(
+      stroke: (Tx, Stroke) => Reified): Renderable[Unit] =
+    Renderable { tx =>
       val txDc = dc.addTransform(tx)
 
-      val f = txDc.fill.map{ f => List(fill(txDc.transform, f)) }
-      val s = txDc.stroke.map{ s => List(stroke(txDc.transform, s)) }
+      val f = txDc.fill.map { f =>
+        List(fill(txDc.transform, f))
+      }
+      val s = txDc.stroke.map { s =>
+        List(stroke(txDc.transform, s))
+      }
 
       (f |+| s).getOrElse(List.empty[Reified])
     }
 
-
-  final case class FillRect(transform: Tx, fill: Fill, width: Double, height: Double)
+  final case class FillRect(transform: Tx,
+                            fill: Fill,
+                            width: Double,
+                            height: Double)
       extends Reified
-  final case class StrokeRect(transform: Tx, stroke: Stroke, width: Double, height: Double)
+  final case class StrokeRect(transform: Tx,
+                              stroke: Stroke,
+                              width: Double,
+                              height: Double)
       extends Reified
 
   final case class FillCircle(transform: Tx, fill: Fill, diameter: Double)
@@ -95,25 +106,38 @@ object Reified {
 
   final case class FillPolygon(transform: Tx, fill: Fill, points: Array[Point])
       extends Reified
-  final case class StrokePolygon(transform: Tx, stroke: Stroke, points: Array[Point])
+  final case class StrokePolygon(transform: Tx,
+                                 stroke: Stroke,
+                                 points: Array[Point])
       extends Reified
 
-  final case class FillClosedPath(transform: Tx, fill: Fill,
+  final case class FillClosedPath(transform: Tx,
+                                  fill: Fill,
                                   elements: List[PathElement])
       extends Reified
-  final case class StrokeClosedPath(transform: Tx, stroke: Stroke,
+  final case class StrokeClosedPath(transform: Tx,
+                                    stroke: Stroke,
                                     elements: List[PathElement])
       extends Reified
 
-  final case class FillOpenPath(transform: Tx, fill: Fill, elements: List[PathElement])
+  final case class FillOpenPath(transform: Tx,
+                                fill: Fill,
+                                elements: List[PathElement])
       extends Reified
-  final case class StrokeOpenPath(transform: Tx, stroke: Stroke,
+  final case class StrokeOpenPath(transform: Tx,
+                                  stroke: Stroke,
                                   elements: List[PathElement])
       extends Reified
 
-  def fillRect(transform: Tx, fill: Fill, width: Double, height: Double): Reified =
+  def fillRect(transform: Tx,
+               fill: Fill,
+               width: Double,
+               height: Double): Reified =
     FillRect(transform, fill, width, height)
-  def strokeRect(transform: Tx, stroke: Stroke, width: Double, height: Double): Reified =
+  def strokeRect(transform: Tx,
+                 stroke: Stroke,
+                 width: Double,
+                 height: Double): Reified =
     StrokeRect(transform, stroke, width, height)
 
   def fillCircle(transform: Tx, fill: Fill, diameter: Double): Reified =
@@ -123,17 +147,26 @@ object Reified {
 
   def fillPolygon(transform: Tx, fill: Fill, points: Array[Point]): Reified =
     FillPolygon(transform, fill, points)
-  def strokePolygon(transform: Tx, stroke: Stroke, points: Array[Point]): Reified =
+  def strokePolygon(transform: Tx,
+                    stroke: Stroke,
+                    points: Array[Point]): Reified =
     StrokePolygon(transform, stroke, points)
 
-  def fillClosedPath(transform: Tx, fill: Fill, elements: List[PathElement]): Reified =
+  def fillClosedPath(transform: Tx,
+                     fill: Fill,
+                     elements: List[PathElement]): Reified =
     FillClosedPath(transform, fill, elements)
-  def strokeClosedPath(transform: Tx, stroke: Stroke,
+  def strokeClosedPath(transform: Tx,
+                       stroke: Stroke,
                        elements: List[PathElement]): Reified =
     StrokeClosedPath(transform, stroke, elements)
 
-  def fillOpenPath(transform: Tx, fill: Fill, elements: List[PathElement]): Reified =
+  def fillOpenPath(transform: Tx,
+                   fill: Fill,
+                   elements: List[PathElement]): Reified =
     FillOpenPath(transform, fill, elements)
-  def strokeOpenPath(transform: Tx, stroke: Stroke, elements: List[PathElement]): Reified =
+  def strokeOpenPath(transform: Tx,
+                     stroke: Stroke,
+                     elements: List[PathElement]): Reified =
     StrokeOpenPath(transform, stroke, elements)
 }

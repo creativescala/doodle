@@ -30,11 +30,11 @@ trait GenericPath[G] extends Path[Finalized[G, ?]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb, Reified.renderable(dc){ (tx, f) =>
-         Reified.fillClosedPath(tx, f, elements)
-       }{ (tx, s) =>
-         Reified.strokeClosedPath(tx, s, elements)
-       })
+      (bb, Reified.renderable(dc) { (tx, f) =>
+        Reified.fillClosedPath(tx, f, elements)
+      } { (tx, s) =>
+        Reified.strokeClosedPath(tx, s, elements)
+      })
     }
 
   def path(path: OpenPath): Finalized[G, Unit] =
@@ -43,11 +43,11 @@ trait GenericPath[G] extends Path[Finalized[G, ?]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb, Reified.renderable(dc){ (tx, f) =>
-         Reified.fillOpenPath(tx, f, elements)
-       }{ (tx, s) =>
-         Reified.strokeOpenPath(tx, s, elements)
-       })
+      (bb, Reified.renderable(dc) { (tx, f) =>
+        Reified.fillOpenPath(tx, f, elements)
+      } { (tx, s) =>
+        Reified.strokeOpenPath(tx, s, elements)
+      })
     }
 
   def boundingBox(elements: List[PathElement]): BoundingBox = {

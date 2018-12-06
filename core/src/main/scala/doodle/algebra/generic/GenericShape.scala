@@ -27,11 +27,11 @@ trait GenericShape[G] extends Shape[Finalized[G, ?]] {
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
-      (bb, Reified.renderable(dc){ (tx, f) =>
-         Reified.fillRect(tx, f, width, height)
-       }{ (tx, s) =>
-         Reified.strokeRect(tx, s, width, height)
-       })
+      (bb, Reified.renderable(dc) { (tx, f) =>
+        Reified.fillRect(tx, f, width, height)
+      } { (tx, s) =>
+        Reified.strokeRect(tx, s, width, height)
+      })
     }
 
   def square(width: Double): Finalized[G, Unit] =
@@ -45,15 +45,15 @@ trait GenericShape[G] extends Shape[Finalized[G, ?]] {
       val h = height / 2.0
       val points = Array(Point(-w, -h), Point(0, h), Point(w, -h))
 
-      (bb, Reified.renderable(dc){ (tx, f) =>
-         Reified.fillPolygon(tx, f, points)
-       }{ (tx, s) =>
-          Reified.strokePolygon(tx, s, points)
-       })
-      // IO {
-      //   graphicsContext.fillPolygon(gc)(dc, points)
-      //   graphicsContext.strokePolygon(gc)(dc, points)
-      // }
+      (bb, Reified.renderable(dc) { (tx, f) =>
+        Reified.fillPolygon(tx, f, points)
+      } { (tx, s) =>
+        Reified.strokePolygon(tx, s, points)
+      })
+    // IO {
+    //   graphicsContext.fillPolygon(gc)(dc, points)
+    //   graphicsContext.strokePolygon(gc)(dc, points)
+    // }
     }
 
   def circle(diameter: Double): Finalized[G, Unit] =
@@ -61,15 +61,15 @@ trait GenericShape[G] extends Shape[Finalized[G, ?]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb =
         BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
-      (bb, Reified.renderable(dc){ (tx, f) =>
-         Reified.fillCircle(tx, f, diameter)
-       }{ (tx, s) =>
-         Reified.strokeCircle(tx, s, diameter)
-       })
-      // IO {
-      //   graphicsContext.fillCircle(gc)(dc, o, diameter / 2.0)
-      //   graphicsContext.strokeCircle(gc)(dc, o, diameter / 2.0)
-      // }
+      (bb, Reified.renderable(dc) { (tx, f) =>
+        Reified.fillCircle(tx, f, diameter)
+      } { (tx, s) =>
+        Reified.strokeCircle(tx, s, diameter)
+      })
+    // IO {
+    //   graphicsContext.fillCircle(gc)(dc, o, diameter / 2.0)
+    //   graphicsContext.strokeCircle(gc)(dc, o, diameter / 2.0)
+    // }
     }
 
   def empty: Finalized[G, Unit] =

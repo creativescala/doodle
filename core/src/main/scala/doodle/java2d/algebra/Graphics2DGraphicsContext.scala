@@ -29,10 +29,10 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
                                width: Double,
                                height: Double): Unit = {
     Java2D.setFill(gc, fill)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val w = width.toInt
       val h = height.toInt
-      gc.fillRect(- (w / 2), - (h / 2), w, h)
+      gc.fillRect(-(w / 2), -(h / 2), w, h)
     }
   }
   def strokeRect(gc: Graphics2D)(transform: Tx,
@@ -40,35 +40,36 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
                                  width: Double,
                                  height: Double): Unit = {
     Java2D.setStroke(gc, stroke)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val w = width.toInt
       val h = height.toInt
-      gc.drawRect(- (w / 2), - (h / 2), w, h)
+      gc.drawRect(-(w / 2), -(h / 2), w, h)
     }
   }
 
   def fillCircle(
       gc: Graphics2D)(transform: Tx, fill: Fill, radius: Double): Unit = {
     Java2D.setFill(gc, fill)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val r = radius.toInt
       val d = (radius * 2).toInt
-      gc.fillOval(- r, - r, d, d)
+      gc.fillOval(-r, -r, d, d)
     }
   }
   def strokeCircle(
       gc: Graphics2D)(transform: Tx, stroke: Stroke, diameter: Double): Unit = {
     Java2D.setStroke(gc, stroke)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val r = (diameter / 2.0).toInt
       val d = diameter.toInt
-      gc.drawOval(- r, - r, d, d)
+      gc.drawOval(-r, -r, d, d)
     }
   }
 
-  def fillPolygon(gc: Graphics2D)(transform: Tx, fill: Fill, points: Array[Point]): Unit = {
+  def fillPolygon(
+      gc: Graphics2D)(transform: Tx, fill: Fill, points: Array[Point]): Unit = {
     Java2D.setFill(gc, fill)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val xs = Array.ofDim[Int](points.size)
       val ys = Array.ofDim[Int](points.size)
       points.zipWithIndex.foreach {
@@ -79,10 +80,11 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       gc.fillPolygon(xs, ys, points.size)
     }
   }
-  def strokePolygon(gc: Graphics2D)(transform: Tx, stroke: Stroke,
+  def strokePolygon(gc: Graphics2D)(transform: Tx,
+                                    stroke: Stroke,
                                     points: Array[Point]): Unit = {
     Java2D.setStroke(gc, stroke)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val xs = Array.ofDim[Int](points.size)
       val ys = Array.ofDim[Int](points.size)
       points.zipWithIndex.foreach {
@@ -94,37 +96,41 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     }
   }
 
-  def fillClosedPath(gc: Graphics2D)(transform: Tx, fill: Fill,
+  def fillClosedPath(gc: Graphics2D)(transform: Tx,
+                                     fill: Fill,
                                      elements: List[PathElement]): Unit = {
     Java2D.setFill(gc, fill)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
       path.closePath()
       gc.fill(path)
     }
   }
-  def strokeClosedPath(gc: Graphics2D)(transform: Tx, stroke: Stroke,
+  def strokeClosedPath(gc: Graphics2D)(transform: Tx,
+                                       stroke: Stroke,
                                        elements: List[PathElement]): Unit = {
     Java2D.setStroke(gc, stroke)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
       path.closePath()
       gc.draw(path)
     }
   }
 
-  def fillOpenPath(gc: Graphics2D)(transform: Tx, fill: Fill,
+  def fillOpenPath(gc: Graphics2D)(transform: Tx,
+                                   fill: Fill,
                                    elements: List[PathElement]): Unit = {
     Java2D.setFill(gc, fill)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
       gc.fill(path)
     }
   }
-  def strokeOpenPath(gc: Graphics2D)(transform: Tx, stroke: Stroke,
+  def strokeOpenPath(gc: Graphics2D)(transform: Tx,
+                                     stroke: Stroke,
                                      elements: List[PathElement]): Unit = {
     Java2D.setStroke(gc, stroke)
-    Java2D.withTransform(gc, transform){
+    Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
       gc.draw(path)
     }

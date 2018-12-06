@@ -69,11 +69,11 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
     } yield {
       val bb = bbT.above(bbB)
       (bb, Renderable.make { tx =>
-         val txTop = tx.translate(0, bb.top - bbT.top)
-         val txBottom = tx.translate(0, bb.bottom - bbB.bottom)
+        val txTop = tx.translate(0, bb.top - bbT.top)
+        val txBottom = tx.translate(0, bb.bottom - bbB.bottom)
 
-         rdrT.run(txTop) |+| rdrB.run(txBottom)
-       })
+        rdrT.run(txTop) |+| rdrB.run(txBottom)
+      })
       // Contextualized{ ctx =>
       //   val rdrT = ctxT(ctx)
       //   val rdrB = ctxB(ctx)
