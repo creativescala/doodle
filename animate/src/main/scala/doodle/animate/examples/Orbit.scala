@@ -24,15 +24,20 @@ import doodle.language.Basic
 import doodle.syntax._
 
 object Orbit {
-  def image[F[_]](angle: Angle): Image[Basic[F],F,Unit] =
-    Basic.image[F,Unit]{ implicit algebra: Basic[F] =>
+  def image[F[_]](angle: Angle): Image[Basic[F], F, Unit] =
+    Basic.image[F, Unit] { implicit algebra: Basic[F] =>
       import algebra._
 
       circle(10).at(angle.sin * 200, angle.cos * 200).fillColor(Color.cornSilk)
     }
 
-  def frames[F[_]]: List[Image[Basic[F],F,Unit]] =
-    List.range(0, 3600)
-      .map{ angle => angle.degrees }
-      .map{ angle => image[F](angle) }
+  def frames[F[_]]: List[Image[Basic[F], F, Unit]] =
+    List
+      .range(0, 3600)
+      .map { angle =>
+        angle.degrees
+      }
+      .map { angle =>
+        image[F](angle)
+      }
 }

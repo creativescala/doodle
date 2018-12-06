@@ -17,10 +17,10 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Image,Blend}
+import doodle.algebra.{Image, Blend}
 
 trait BlendSyntax {
-  implicit class BlendOps[F[_],A](image: F[A]) {
+  implicit class BlendOps[F[_], A](image: F[A]) {
     def screen(implicit b: Blend[F]): F[A] =
       b.screen(image)
 
@@ -37,29 +37,30 @@ trait BlendSyntax {
       b.sourceOver(image)
   }
 
-  implicit class BlendImageOps[Algebra <: Blend[F],F[_],A](image: Image[Algebra,F,A]) {
-    def screen: Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
+  implicit class BlendImageOps[Algebra <: Blend[F], F[_], A](
+      image: Image[Algebra, F, A]) {
+    def screen: Image[Algebra, F, A] =
+      Image { implicit algebra: Algebra =>
         image(algebra).screen
       }
 
-    def burn: Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
+    def burn: Image[Algebra, F, A] =
+      Image { implicit algebra: Algebra =>
         image(algebra).burn
       }
 
-    def dodge: Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
+    def dodge: Image[Algebra, F, A] =
+      Image { implicit algebra: Algebra =>
         image(algebra).dodge
       }
 
-    def lighten: Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
+    def lighten: Image[Algebra, F, A] =
+      Image { implicit algebra: Algebra =>
         image(algebra).lighten
       }
 
-    def sourceOver: Image[Algebra,F,A] =
-      Image{ implicit algebra: Algebra =>
+    def sourceOver: Image[Algebra, F, A] =
+      Image { implicit algebra: Algebra =>
         image(algebra).sourceOver
       }
   }

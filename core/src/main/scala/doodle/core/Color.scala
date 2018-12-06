@@ -68,7 +68,6 @@ sealed abstract class Color extends Product with Serializable {
   def alpha(a: Normalized): Color =
     this.toHSLA.copy(a = a)
 
-
   /** Rotate hue by the given angle */
   def spin(angle: Angle) = {
     val original = this.toHSLA
@@ -174,9 +173,9 @@ sealed abstract class Color extends Product with Serializable {
     (this.toRGBA, that.toRGBA) match {
       case (RGBA(r1, g1, b1, a1), RGBA(r2, g2, b2, a2)) =>
         Math.abs(r1 - r2) < 2 &&
-        Math.abs(g1 - g2) < 2 &&
-        Math.abs(b1 - b2) < 2 &&
-        Math.abs(a1 - a2) < 0.1
+          Math.abs(g1 - g2) < 2 &&
+          Math.abs(b1 - b2) < 2 &&
+          Math.abs(a1 - a2) < 0.1
     }
 
   def toHSLA: HSLA =
@@ -190,9 +189,9 @@ sealed abstract class Color extends Product with Serializable {
         val delta = cMax - cMin
 
         val unnormalizedHue =
-          if(cMax == rNormalized)
+          if (cMax == rNormalized)
             60 * (((gNormalized - bNormalized) / delta))
-          else if(cMax == gNormalized)
+          else if (cMax == gNormalized)
             60 * (((bNormalized - rNormalized) / delta) + 2)
           else
             60 * (((rNormalized - gNormalized) / delta) + 4)
@@ -201,7 +200,7 @@ sealed abstract class Color extends Product with Serializable {
         val lightness = Normalized.clip((cMax + cMin) / 2)
 
         val saturation =
-          if(delta == 0.0)
+          if (delta == 0.0)
             Normalized.MinValue
           else
             Normalized.clip(delta / (1 - Math.abs(2 * lightness.get - 1)))
@@ -222,16 +221,16 @@ sealed abstract class Color extends Product with Serializable {
           case s =>
             def hueToRgb(p: Double, q: Double, t: Normalized): Normalized = {
               Normalized.wrap(t.get match {
-                case t if t < 1.0/6.0 => p + (q - p) * 6 * t
-                case t if t < 0.5 => q
-                case t if t < 2.0/3.0 => p + (q - p) * (2.0/3.0 - t) * 6
-                case _ => p
+                case t if t < 1.0 / 6.0 => p + (q - p) * 6 * t
+                case t if t < 0.5       => q
+                case t if t < 2.0 / 3.0 => p + (q - p) * (2.0 / 3.0 - t) * 6
+                case _                  => p
               })
             }
 
             val lightness = l.get
             val q =
-              if(lightness < 0.5)
+              if (lightness < 0.5)
                 lightness * (1 + s)
               else
                 lightness + s - (lightness * s)
@@ -245,10 +244,18 @@ sealed abstract class Color extends Product with Serializable {
     }
 }
 object Color extends CommonColors {
-  final case class RGBA(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalized) extends Color
-  final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized) extends Color
+  final case class RGBA(r: UnsignedByte,
+                        g: UnsignedByte,
+                        b: UnsignedByte,
+                        a: Normalized)
+      extends Color
+  final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized)
+      extends Color
 
-  def rgba(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte, a: Normalized): Color =
+  def rgba(r: UnsignedByte,
+           g: UnsignedByte,
+           b: UnsignedByte,
+           a: Normalized): Color =
     RGBA(r, g, b, a)
 
   def rgba(r: Int, g: Int, b: Int, a: Double): Color =
@@ -256,7 +263,6 @@ object Color extends CommonColors {
 
   def hsla(h: Angle, s: Double, l: Double, a: Double): Color =
     HSLA(h, s.normalized, l.normalized, a.normalized)
-
 
   def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
     rgba(r, g, b, 1.0.normalized)

@@ -8,13 +8,19 @@ import doodle.syntax._
 
 object Interpolation {
   val pts =
-    for(x <- 1 to 400 by 20) yield Point.cartesian(x.toDouble, (x / 100.0).turns.sin * 100)
+    for (x <- 1 to 400 by 20)
+      yield Point.cartesian(x.toDouble, (x / 100.0).turns.sin * 100)
 
   val dot =
     circle(5).fillColor(Color.red)
 
   val dots =
-    (pts.map { pt => dot.at(pt.toVec) }).toList.allOn
+    (pts
+      .map { pt =>
+        dot.at(pt.toVec)
+      })
+      .toList
+      .allOn
 
   val default =
     interpolatingSpline(pts).strokeColor(Color.cornflowerBlue).strokeWidth(3.0)
@@ -27,4 +33,3 @@ object Interpolation {
 
   val image = (default on dots) above (tight on dots) above (loose on dots)
 }
-

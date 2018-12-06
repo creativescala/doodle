@@ -25,19 +25,19 @@ final case class Vec(x: Double, y: Double) {
   def unary_- : Vec =
     Vec(-x, -y)
 
-  def *(d: Double): Vec = Vec(x*d, y*d)
-  def /(d: Double): Vec = Vec(x/d, y/d)
+  def *(d: Double): Vec = Vec(x * d, y * d)
+  def /(d: Double): Vec = Vec(x / d, y / d)
 
-  def left: Vec  = Vec(-y, x)
+  def left: Vec = Vec(-y, x)
   def right: Vec = Vec(y, -x)
 
   def angle: Angle = Angle.radians(math.atan2(y, x))
 
-  def length: Double = math.sqrt(x*x + y*y)
+  def length: Double = math.sqrt(x * x + y * y)
 
   def normalize: Vec = {
     val len = length
-    if(len == 0) Vec(1, 0) else this / len
+    if (len == 0) Vec(1, 0) else this / len
   }
 
   def rotate(by: Angle): Vec =
@@ -55,7 +55,7 @@ final case class Vec(x: Double, y: Double) {
 }
 
 object Vec {
-  val zero  = Vec(0, 0)
+  val zero = Vec(0, 0)
   val unitX = Vec(1, 0)
   val unitY = Vec(0, 1)
 

@@ -18,58 +18,36 @@ package doodle
 package algebra
 package generic
 
-import cats.effect.IO
 import doodle.core._
 import scala.annotation.tailrec
 
-trait GenericPath[G] extends Path[Finalized[G,?]] {
+trait GenericPath[G] extends Path[Finalized[G, ?]] {
   implicit val graphicsContext: GraphicsContext[G]
-  import PathElement._
 
-  def path(path: ClosedPath): Finalized[G,Unit] =
-    Finalized.leaf{ dc =>
+  def path(path: ClosedPath): Finalized[G, Unit] =
+    Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb,
-       Contextualized{ (gc, tx) =>
-         Renderable{ origin =>
-           val o = tx(origin)
-           val txed = transform(elements, origin.toVec, tx)
-           IO {
-             graphicsContext.fillClosedPath(gc)(dc, o, txed)
-             graphicsContext.strokeClosedPath(gc)(dc, o, txed)
-           }
-         }
+      (bb, Reified.renderable(dc){ (tx, f) =>
+         Reified.fillClosedPath(tx, f, elements)
+       }{ (tx, s) =>
+         Reified.strokeClosedPath(tx, s, elements)
        })
     }
 
-  def path(path: OpenPath): Finalized[G,Unit] =
-    Finalized.leaf{ dc =>
+  def path(path: OpenPath): Finalized[G, Unit] =
+    Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb,
-       Contextualized{ (gc, tx) =>
-         Renderable{ origin =>
-           val o = tx(origin)
-           val txed = transform(elements, origin.toVec, tx)
-           IO {
-             graphicsContext.fillOpenPath(gc)(dc, o, txed)
-             graphicsContext.strokeOpenPath(gc)(dc, o, txed)
-           }
-         }
+      (bb, Reified.renderable(dc){ (tx, f) =>
+         Reified.fillOpenPath(tx, f, elements)
+       }{ (tx, s) =>
+         Reified.strokeOpenPath(tx, s, elements)
        })
-    }
-
-  def transform(elements: List[PathElement], origin: Vec, tx: Transform): List[PathElement] =
-    elements.map{
-      case MoveTo(to) => MoveTo(tx(to + origin))
-      case LineTo(to) => LineTo(tx(to + origin))
-      case BezierCurveTo(cp1, cp2, to) =>
-        BezierCurveTo(tx(cp1 + origin), tx(cp2 + origin), tx(to + origin))
     }
 
   def boundingBox(elements: List[PathElement]): BoundingBox = {

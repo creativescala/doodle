@@ -12,10 +12,11 @@ object Layers {
 
   val radius = Random.natural(30)
 
-  val circle = (point, radius).mapN((pt, r) => Image.circle(r.toDouble).at(pt.toVec))
+  val circle =
+    (point, radius).mapN((pt, r) => Image.circle(r.toDouble).at(pt.toVec))
 
   def layer = {
-    List.range(0, 200).foldM(Image.empty){ (img, _) =>
+    List.range(0, 200).foldM(Image.empty) { (img, _) =>
       circle.map(_ on img)
     }
   }
@@ -25,9 +26,11 @@ object Layers {
       top <- layer
       mid <- layer
       bot <- layer
-    } yield (top.noFill.strokeColor(Color.deepPink))
-      .above(mid.noFill.strokeColor(Color.yellowGreen))
-      .above(bot.noFill.strokeColor(Color.dodgerBlue))
+    } yield
+      (top.noFill
+        .strokeColor(Color.deepPink))
+        .above(mid.noFill.strokeColor(Color.yellowGreen))
+        .above(bot.noFill.strokeColor(Color.dodgerBlue))
 
   val image = cake.run
 }

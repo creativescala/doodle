@@ -28,8 +28,8 @@ object StyleSpec extends Properties("Style properties") {
   property("last fillColor takes effect") =
     forAll(Generators.finalized, Generators.color){ (f, c) =>
       val log = TestGraphicsContext.log()
-      val (_, ctx) = style.fillColor(f, c)(List.empty)
-      ctx((log, Transform.identity))(Point.zero).unsafeRunSync()
+      val (_, rdr) = style.fillColor(f, c)(List.empty)
+      rdr.run(Transform.identity).value
 
       val rendered = log.log
       rendered.foldLeft(true: Prop){ (prop, elt) =>

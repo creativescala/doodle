@@ -19,10 +19,15 @@ package language
 
 import doodle.algebra._
 
-trait Basic[F[_]] extends Layout[F] with Path[F] with Shape[F] with Style[F]
+trait Basic[F[_]]
+    extends Layout[F]
+    with Path[F]
+    with Shape[F]
+    with Style[F]
+    with Transform[F]
 object Basic {
-  def image[F[_],A](f: Basic[F] => F[A]): Image[Basic[F],F,A] =
-    new Image[Basic[F],F,A] {
+  def image[F[_], A](f: Basic[F] => F[A]): Image[Basic[F], F, A] =
+    new Image[Basic[F], F, A] {
       def apply(implicit algebra: Basic[F]): F[A] =
         f(algebra)
     }

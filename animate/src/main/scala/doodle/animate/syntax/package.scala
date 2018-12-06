@@ -1,7 +1,6 @@
 package doodle
 package animate
 
-package object syntax
-  extends AnimateSyntax {
+package object syntax extends AnimateSyntax {
   object animate extends AnimateSyntax
 }

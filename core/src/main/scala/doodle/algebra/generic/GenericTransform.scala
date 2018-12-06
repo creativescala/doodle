@@ -15,8 +15,12 @@
  */
 
 package doodle
-package explore
+package algebra
+package generic
 
-package object syntax extends ExploreSyntax {
-  object explore extends ExploreSyntax
+import doodle.core.{Transform => Tx}
+
+trait GenericTransform[G] extends Transform[Finalized[G, ?]] {
+  def transform[A](img: Finalized[G, A], tx: Tx): Finalized[G, A] =
+    Finalized.transform(tx)(img)
 }

@@ -26,7 +26,7 @@ import monix.execution.{Ack, Scheduler}
 import monix.reactive._
 import monix.reactive.subjects.Var
 
-trait Java2dExplorer[A] extends Explorer[JComponent,A] {
+trait Java2dExplorer[A] extends Explorer[JComponent, A] {
   def render: IO[Observable[A]] =
     IO {
       val frame = new JFrame("Explorer")
@@ -40,11 +40,12 @@ trait Java2dExplorer[A] extends Explorer[JComponent,A] {
     }
 }
 trait Java2dExplorerAtoms {
-  implicit val java2dExplorerScheduler: Scheduler = Scheduler.fixedPool("Java2dExplorer", 1)
+  implicit val java2dExplorerScheduler: Scheduler =
+    Scheduler.fixedPool("Java2dExplorer", 1)
 
   /** Explore Double with a Java2D interface */
   implicit val doubleExplorer =
-    new ExplorerFactory[JComponent,Double] {
+    new ExplorerFactory[JComponent, Double] {
       def create =
         new Java2dExplorer[Double] {
           val ui: JSlider = new JSlider(-100, 100)
@@ -55,7 +56,7 @@ trait Java2dExplorerAtoms {
               def stateChanged(evt: ChangeEvent): Unit =
                 value := (ui.getValue().toDouble) match {
                   case Ack.Continue => ()
-                  case Ack.Stop => ui.setEnabled(false)
+                  case Ack.Stop     => ui.setEnabled(false)
                 }
             }
           )
@@ -64,7 +65,7 @@ trait Java2dExplorerAtoms {
 
   /** Explore Int with a Java2D interface */
   implicit val intExplorer =
-    new ExplorerFactory[JComponent,Int] {
+    new ExplorerFactory[JComponent, Int] {
       def create =
         new Java2dExplorer[Int] {
           val ui: JSlider = new JSlider(-100, 100)
@@ -75,7 +76,7 @@ trait Java2dExplorerAtoms {
               def stateChanged(evt: ChangeEvent): Unit =
                 value := (ui.getValue()) match {
                   case Ack.Continue => ()
-                  case Ack.Stop => ui.setEnabled(false)
+                  case Ack.Stop     => ui.setEnabled(false)
                 }
             }
           )
@@ -84,22 +85,28 @@ trait Java2dExplorerAtoms {
 
   /** Explore Color with a Java2D interface */
   implicit val colorExplorer =
-    new ExplorerFactory[JComponent,Color] {
+    new ExplorerFactory[JComponent, Color] {
       def create =
         new Java2dExplorer[Color] {
           val ui = new JColorChooser(java.awt.Color.black)
           val source = Var(ui.getColor)
-          val value = source.map(c => Color.rgba(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha().toDouble / 255.0))
+          val value = source.map(
+            c =>
+              Color.rgba(c.getRed(),
+                         c.getGreen(),
+                         c.getBlue(),
+                         c.getAlpha().toDouble / 255.0))
 
-          ui.getSelectionModel().addChangeListener(
-            new ChangeListener {
-              def stateChanged(evt: ChangeEvent): Unit =
-                source := (ui.getColor()) match {
-                  case Ack.Continue => ()
-                  case Ack.Stop => ui.setEnabled(false)
-                }
-            }
-          )
+          ui.getSelectionModel()
+            .addChangeListener(
+              new ChangeListener {
+                def stateChanged(evt: ChangeEvent): Unit =
+                  source := (ui.getColor()) match {
+                    case Ack.Continue => ()
+                    case Ack.Stop     => ui.setEnabled(false)
+                  }
+              }
+            )
         }
     }
 }

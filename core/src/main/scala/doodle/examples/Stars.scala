@@ -13,21 +13,22 @@ object Stars {
 
     val elements = (0 to sides) map { index =>
       val pt = Point.polar(radius, centerAngle * index.toDouble)
-      if(index == 0)
+      if (index == 0)
         moveTo(pt)
       else
         lineTo(pt)
     }
 
-    Image.openPath(elements).
-      strokeWidth(2).
-      strokeColor(Color.hsl(centerAngle, 1, .25)).
-      fillColor(Color.hsl(centerAngle, 1, .75))
+    Image
+      .openPath(elements)
+      .strokeWidth(2)
+      .strokeColor(Color.hsl(centerAngle, 1, .25))
+      .fillColor(Color.hsl(centerAngle, 1, .75))
   }
 
   val image =
     ((3 to 33 by 2) map { sides =>
-      ((1 to sides/2) map { skip =>
+      ((1 to sides / 2) map { skip =>
         star(sides, skip, 20)
       }).toList.allBeside
     }).toList.allAbove

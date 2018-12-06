@@ -21,4 +21,4 @@ package algebra
 import doodle.algebra.generic.GenericPath
 
 /** Higher level path primitives */
-trait Path extends GenericPath[java.awt.Graphics2D] 
+trait Path extends GenericPath[java.awt.Graphics2D]

@@ -31,42 +31,49 @@ final case class OpenPath(reversed: List[PathElement]) {
 
   def close: ClosedPath = ClosedPath(reversed)
 
-
   def moveTo(point: Point): OpenPath =
     add(PathElement.moveTo(point))
 
   def moveTo(x: Double, y: Double): OpenPath =
-    moveTo(Point.cartesian(x,y))
+    moveTo(Point.cartesian(x, y))
 
   def moveTo(r: Double, angle: Angle): OpenPath =
-    moveTo(Point.polar(r,angle))
-
+    moveTo(Point.polar(r, angle))
 
   def lineTo(point: Point): OpenPath =
     add(PathElement.lineTo(point))
 
   def lineTo(x: Double, y: Double): OpenPath =
-    lineTo(Point.cartesian(x,y))
+    lineTo(Point.cartesian(x, y))
 
   def lineTo(r: Double, angle: Angle): OpenPath =
-    lineTo(Point.polar(r,angle))
-
+    lineTo(Point.polar(r, angle))
 
   def curveTo(cp1: Point, cp2: Point, to: Point): OpenPath =
     add(PathElement.curveTo(cp1, cp2, to))
 
-  def curveTo(cp1X: Double, cp1Y: Double, cp2X: Double, cp2Y: Double, toX: Double, toY: Double): OpenPath =
+  def curveTo(cp1X: Double,
+              cp1Y: Double,
+              cp2X: Double,
+              cp2Y: Double,
+              toX: Double,
+              toY: Double): OpenPath =
     curveTo(
       Point(cp1X, cp1Y),
       Point(cp2X, cp2Y),
-      Point(toX,  toY)
+      Point(toX, toY)
     )
 
-  def curveTo(cp1R: Double, cp1Angle: Angle, cp2R: Double, cp2Angle: Angle, toR: Double, toAngle: Angle): OpenPath =
+  def curveTo(cp1R: Double,
+              cp1Angle: Angle,
+              cp2R: Double,
+              cp2Angle: Angle,
+              toR: Double,
+              toAngle: Angle): OpenPath =
     curveTo(
       Point(cp1R, cp1Angle),
       Point(cp2R, cp2Angle),
-      Point(toR,  toAngle)
+      Point(toR, toAngle)
     )
 }
 object OpenPath {

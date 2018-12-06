@@ -10,7 +10,8 @@ import cats.syntax.all._
 object Volcano {
   def rose(k: Int): Angle => Point =
     (angle: Angle) => {
-      Point.cartesian((angle * k.toDouble).cos * angle.cos, (angle * k.toDouble).cos * angle.sin)
+      Point.cartesian((angle * k.toDouble).cos * angle.cos,
+                      (angle * k.toDouble).cos * angle.sin)
     }
 
   def scale(factor: Double): Point => Point =
@@ -32,22 +33,24 @@ object Volcano {
     val saturation = Random.double.map(s => (s * 0.8))
     val lightness = Random.normal(0.8, 0.4)
     val color =
-      (hue, saturation, lightness, alpha) mapN {
-        (h, s, l, a) => Color.hsla(h, s, l, a)
+      (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
+        Color.hsla(h, s, l, a)
       }
     val c = Random.normal(5, 5) map (r => Image.circle(r))
 
-    (c, color) mapN { (circle, stroke) => circle.strokeColor(stroke).noFill }
+    (c, color) mapN { (circle, stroke) =>
+      circle.strokeColor(stroke).noFill
+    }
   }
 
   def point(
-    position: Angle => Point,
-    scale: Point => Point,
-    jitter: Point => Random[Point],
-    image: Random[Image],
-    rotation: Angle
-  ): Angle => Random[Image] = {
-    (angle: Angle) => {
+      position: Angle => Point,
+      scale: Point => Point,
+      jitter: Point => Random[Point],
+      image: Random[Image],
+      rotation: Angle
+  ): Angle => Random[Image] = { (angle: Angle) =>
+    {
       val pt = position(angle)
       val scaledPt = scale(pt)
       val jitteredPt = jitter(scaledPt)
@@ -59,22 +62,23 @@ object Volcano {
   }
 
   def iterate(step: Angle): (Angle => Random[Image]) => Random[Image] = {
-    (point: Angle => Random[Image]) => {
-      def iter(angle: Angle): Random[Image] = {
-        if(angle > Angle.one)
-          Random.always(Image.empty)
-        else
-          (point(angle), iter(angle + step)) mapN { _ on _ }
-      }
+    (point: Angle => Random[Image]) =>
+      {
+        def iter(angle: Angle): Random[Image] = {
+          if (angle > Angle.one)
+            Random.always(Image.empty)
+          else
+            (point(angle), iter(angle + step)) mapN { _ on _ }
+        }
 
-      iter(Angle.zero)
-    }
+        iter(Angle.zero)
+      }
   }
 
   val image: Random[Image] = {
     val pts =
-      for(i <- 28 to 360 by 39) yield {
-        iterate(1.degrees){
+      for (i <- 28 to 360 by 39) yield {
+        iterate(1.degrees) {
           point(
             rose(5),
             scale(i.toDouble),
@@ -84,7 +88,7 @@ object Volcano {
           )
         }
       }
-    val picture = pts.foldLeft(Random.always(Image.empty)){ (accum, img) =>
+    val picture = pts.foldLeft(Random.always(Image.empty)) { (accum, img) =>
       (accum, img) mapN { _ on _ }
     }
     val background = (Image.rectangle(650, 650).fillColor(Color.black))

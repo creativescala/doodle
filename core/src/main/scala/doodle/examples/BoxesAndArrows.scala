@@ -15,9 +15,10 @@ object BoxesAndArrows {
 
   val spacer = rectangle(size * 0.2, size).noFill.noStroke
 
-  val box = roundedRectangle(size, size, size*.12).strokeWidth(size*.12).noFill
+  val box =
+    roundedRectangle(size, size, size * .12).strokeWidth(size * .12).noFill
 
-  val font = Font(SansSerif, Normal, Points((size/2.0).toInt))
+  val font = Font(SansSerif, Normal, Points((size / 2.0).toInt))
   // val equals = text("=").font(font)
 
   val c = circle(size * 0.3).fillColor(Color.black)
@@ -25,7 +26,9 @@ object BoxesAndArrows {
 
   val circleBox = box on c
   val triangleBox = box on t
-  val circleAndTriangleBox = box on (circle(size * 0.15) beside triangle(size * 0.3, size * 0.3))
+  val circleAndTriangleBox = box on (circle(size * 0.15) beside triangle(
+    size * 0.3,
+    size * 0.3))
 
   val circleToTriangle =
     c beside spacer beside rightArrow(size, size).fillColor(Color.black) beside spacer beside t
@@ -34,28 +37,31 @@ object BoxesAndArrows {
     c beside spacer beside rightArrow(size, size).fillColor(Color.black) beside spacer beside triangleBox
 
   def besideWithSpace(elts: List[Image]): Image =
-    elts.foldLeft(Image.empty){ (accum, elt) =>
+    elts.foldLeft(Image.empty) { (accum, elt) =>
       accum beside spacer beside elt
     }
 
   val map: Image =
     besideWithSpace(
       List(
-        circleBox, /*text("map").font(font),*/ circleToTriangle, /*equals,*/ triangleBox
+        circleBox, /*text("map").font(font),*/ circleToTriangle,
+        /*equals,*/ triangleBox
       )
     )
 
   val applicative: Image =
     besideWithSpace(
       List(
-        circleBox, /* text("|@|").font(font), */ triangleBox, /*equals,*/ circleAndTriangleBox
+        circleBox, /* text("|@|").font(font), */ triangleBox,
+        /*equals,*/ circleAndTriangleBox
       )
     )
 
   val flatMap: Image =
     besideWithSpace(
       List(
-        circleBox, /*text("flatMap").font(font),*/ circleToTriangleBox, /*equals,*/ triangleBox
+        circleBox, /*text("flatMap").font(font),*/ circleToTriangleBox,
+        /*equals,*/ triangleBox
       )
     )
 }

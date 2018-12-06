@@ -9,12 +9,14 @@ import doodle.syntax.angle._
 // Contributed by Mat Moore -- https://github.com/MatMoore
 
 final case class Complex(real: Double, imaginary: Double) {
-  def +(other: Complex) = Complex(real + other.real, imaginary + other.imaginary)
+  def +(other: Complex) =
+    Complex(real + other.real, imaginary + other.imaginary)
 
   def *(other: Complex) = {
     //   (a + bi) * (c + di)
     // = ac - bd + bci + adi
-    Complex(real * other.real - imaginary * other.imaginary, imaginary * other.real + real * other.imaginary)
+    Complex(real * other.real - imaginary * other.imaginary,
+            imaginary * other.real + real * other.imaginary)
   }
 
   def /(factor: Double) = {
@@ -32,23 +34,22 @@ final case class Complex(real: Double, imaginary: Double) {
   }
 }
 
-
 object Mandelbrot {
   val maxApplys: Int = 50
 
   trait CellRenderer {
     def color(count: Int): Color
     def shape(size: Int): Image
-    def apply(size: Int, count: Int) = shape(size) strokeWidth(0) fillColor color(count)
+    def apply(size: Int, count: Int) =
+      shape(size) strokeWidth (0) fillColor color(count)
   }
 
   class PaletteCellRenderer(val palette: List[Color]) extends CellRenderer {
     def color(count: Int) = {
-      if(count == maxApplys) {
+      if (count == maxApplys) {
         // Use the first colour for points in the Mandelbrot set
         palette(0)
-      }
-      else {
+      } else {
         // Cycle through the rest of the palette for points outside the set
         palette.tail((count - 1) % palette.length)
       }
@@ -57,7 +58,7 @@ object Mandelbrot {
     def shape(size: Int) = Image.rectangle(size.toDouble, size.toDouble)
   }
 
-  val defaultPalette = Color.black :: (0 to 360 by 5).map{ angle =>
+  val defaultPalette = Color.black :: (0 to 360 by 5).map { angle =>
     Color.hsl(angle.degrees, 1, 0.4)
   }.toList
   val defaultRenderer = new PaletteCellRenderer(defaultPalette)
@@ -72,9 +73,12 @@ object Mandelbrot {
     renderer(size, count)
   }
 
-  def mandlebrot(fractalCenter: Complex, domainSize: Complex, displaySize: Int,
-                 renderer: CellRenderer = defaultRenderer, minSize: Int = 4): Image = {
-    if(displaySize <= minSize) {
+  def mandlebrot(fractalCenter: Complex,
+                 domainSize: Complex,
+                 displaySize: Int,
+                 renderer: CellRenderer = defaultRenderer,
+                 minSize: Int = 4): Image = {
+    if (displaySize <= minSize) {
       cell(fractalCenter, displaySize, renderer)
     } else {
       val cellDisplaySize = displaySize / 2
@@ -114,4 +118,3 @@ object Mandelbrot {
 
   val image = mandlebrot(Complex(-0.5, 0), Complex(3, 3), 512)
 }
-

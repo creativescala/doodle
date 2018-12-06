@@ -18,7 +18,7 @@ package doodle
 package algebra
 
 import cats.Semigroup
-import doodle.core.{Point,Vec}
+import doodle.core.{Point, Vec}
 
 trait Layout[F[_]] {
   def on[A: Semigroup](top: F[A], bottom: F[A]): F[A]

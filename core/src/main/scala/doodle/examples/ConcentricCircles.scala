@@ -11,7 +11,7 @@ object ConcentricCircles {
   def gradient(n: Int): Image =
     singleCircle(n).strokeColor(Color.royalBlue.spin((n * 15).degrees))
 
- def singleCircle(n: Int): Image =
+  def singleCircle(n: Int): Image =
     Image.circle(50.0 + 7 * n).strokeWidth(3.0)
 
   def concentricCircles(n: Int): Image =

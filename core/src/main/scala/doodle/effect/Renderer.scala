@@ -23,10 +23,12 @@ import cats.effect.IO
   * The `Renderer` typeclass describes a data type that can create an area to
   * render an image (a Canvas) and render an image to that Canvas.
   */
-trait Renderer[+Algebra, F[_], Canvas]{
+trait Renderer[+Algebra, F[_], Canvas] {
   def frame(description: Frame): IO[Canvas]
   def render[A](canvas: Canvas)(f: Algebra => F[A]): IO[A]
 }
 object Renderer {
-  def apply[Algebra, F[_], Canvas](implicit renderer: Renderer[Algebra, F, Canvas]): Renderer[Algebra, F, Canvas] = renderer
+  def apply[Algebra, F[_], Canvas](
+      implicit renderer: Renderer[Algebra, F, Canvas])
+    : Renderer[Algebra, F, Canvas] = renderer
 }

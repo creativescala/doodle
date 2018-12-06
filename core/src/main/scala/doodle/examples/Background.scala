@@ -12,7 +12,8 @@ object Background {
       case 0 => Image.empty
       case n =>
         val here =
-          Image.circle((n * 10).toDouble)
+          Image
+            .circle((n * 10).toDouble)
             .strokeWidth(3.0)
             .strokeColor(color)
         here.on(rainbowCircles(n - 1, color.spin(33.degrees)))

@@ -8,7 +8,7 @@ import doodle.syntax.normalized._
 object ChristmasTree {
   import Color._
 
-  val redBauble  = Image.circle(7)  strokeWidth 0 fillColor red
+  val redBauble = Image.circle(7) strokeWidth 0 fillColor red
   val goldBauble = Image.circle(10) strokeWidth 0 fillColor gold
 
   def treeElement = {
@@ -32,9 +32,9 @@ object ChristmasTree {
       case n => row(n) below tree(n - 1)
     }
 
-  val levels  = 4
+  val levels = 4
   val foliage = Image.triangle(40.0 * levels, 40.0 * levels) fillColor darkGreen
-  val trunk   = Image.rectangle(20.0, 40.0) strokeColor brown fillColor brown
+  val trunk = Image.rectangle(20.0, 40.0) strokeColor brown fillColor brown
 
-  val image = goldBauble above ( tree(levels) on foliage ) above trunk
+  val image = goldBauble above (tree(levels) on foliage) above trunk
 }

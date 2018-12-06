@@ -21,8 +21,7 @@ import doodle.effect.Renderer
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
-  type Drawing[A] = doodle.algebra.generic.Finalized[Graphics2D,A]
-  type Contextualized[A] = doodle.algebra.generic.Contextualized[Graphics2D,A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[Graphics2D, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
   type Java2DFrame = doodle.java2d.effect.Java2DFrame
@@ -32,7 +31,7 @@ package object java2d {
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
   implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
 
-  type Image[A] = doodle.algebra.Image[Algebra,Drawing,A]
+  type Image[A] = doodle.algebra.Image[Algebra, Drawing, A]
   object Image {
     def apply(f: Algebra => Drawing[Unit]): Image[Unit] = {
       new Image[Unit] {

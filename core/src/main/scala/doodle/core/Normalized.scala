@@ -30,13 +30,13 @@ final case class Normalized(get: Double) extends AnyVal {
     this.get - that.get
 
   def max(that: Normalized): Normalized =
-    if(this.get > that.get)
+    if (this.get > that.get)
       this
     else
       that
 
   def min(that: Normalized): Normalized =
-    if(this.get < that.get)
+    if (this.get < that.get)
       this
     else
       that
@@ -56,17 +56,16 @@ object Normalized {
     value match {
       case _ if value < 0.0 => MinValue
       case _ if value > 1.0 => MaxValue
-      case v => Normalized(v)
+      case v                => Normalized(v)
     }
 
   def wrap(value: Double): Normalized = {
     @tailrec def loop(value: Double): Normalized = value match {
       case v if v > 1.0 => loop(v - 1.0)
       case v if v < 0.0 => loop(v + 1.0)
-      case v => Normalized(v)
+      case v            => Normalized(v)
     }
 
     loop(value)
   }
 }
-

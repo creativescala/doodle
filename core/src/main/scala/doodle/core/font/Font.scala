@@ -33,7 +33,6 @@ object FontSize {
   def points(pts: Int): FontSize = Points(pts)
 }
 
-
 final case class Font(family: FontFamily, face: FontFace, size: FontSize)
 object Font {
   import FontFamily._

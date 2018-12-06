@@ -25,24 +25,32 @@ object Tiles {
 
   def randomTriangle(width: Double): Random[Image] = {
     val coord = Random.natural(width.floor.toInt).map(_.toDouble)
-    val point = (coord, coord) mapN { (x, y) => Point.cartesian(x, y) }
+    val point = (coord, coord) mapN { (x, y) =>
+      Point.cartesian(x, y)
+    }
     for {
       pt1 <- point
       pt2 <- point
       pt3 <- point
-    } yield Image.closedPath(Seq(moveTo(pt1), lineTo(pt2), lineTo(pt3), lineTo(pt1)))
+    } yield
+      Image.closedPath(Seq(moveTo(pt1), lineTo(pt2), lineTo(pt3), lineTo(pt1)))
   }
 
   val leafGreen: Random[Color] = randomColor(80.degrees)
   val aquamarine: Random[Color] = randomColor(160.degrees)
 
   def randomTile(n: Int, color: Random[Color]): Random[Image] =
-    (1 to n).toList.map{ _ =>
-      (randomTriangle(100), color) mapN { _ fillColor _ }
-    }.sequence.map(images => images.foldLeft(Image.empty){ _ on _ })
+    (1 to n).toList
+      .map { _ =>
+        (randomTriangle(100), color) mapN { _ fillColor _ }
+      }
+      .sequence
+      .map(images => images.foldLeft(Image.empty) { _ on _ })
 
   def tile(baseN: Int, topN: Int): Random[Image] =
-    (randomTile(baseN, aquamarine), randomTile(topN, leafGreen)) mapN { _ under _ }
+    (randomTile(baseN, aquamarine), randomTile(topN, leafGreen)) mapN {
+      _ under _
+    }
 
   def tileGrid(tile: Random[Image], sideLength: Int): Random[Image] = {
     val row: Random[Image] =

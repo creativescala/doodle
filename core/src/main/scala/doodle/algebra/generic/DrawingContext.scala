@@ -20,21 +20,27 @@ package generic
 
 import cats.syntax.all._
 import cats.instances.option._
-import doodle.core.Color
+import doodle.core.{Color, Transform}
 
 final case class Stroke(color: Color, width: Double)
 final case class Fill(color: Color)
 
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
-  blendMode: Option[BlendMode],
-  strokeWidth: Option[Double],
-  strokeColor: Option[Color],
-  fillColor: Option[Color]
+    transform: Transform,
+    blendMode: Option[BlendMode],
+    strokeWidth: Option[Double],
+    strokeColor: Option[Color],
+    fillColor: Option[Color]
 ) {
+  def addTransform(tx: Transform): DrawingContext =
+    transform(transform.andThen(tx))
+
+  def transform(tx: Transform): DrawingContext =
+    this.copy(transform = tx)
+
   def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = Some(mode))
-
 
   def stroke: Option[Stroke] =
     (strokeColor, strokeWidth).mapN((c, w) => Stroke(c, w))
@@ -43,11 +49,10 @@ final case class DrawingContext(
     this.copy(strokeColor = Some(color))
 
   def strokeWidth(width: Double): DrawingContext =
-    this.copy(strokeWidth = if(width <= 0) None else Some(width))
+    this.copy(strokeWidth = if (width <= 0) None else Some(width))
 
   def noStroke: DrawingContext =
     this.copy(strokeWidth = None)
-
 
   def fill: Option[Fill] =
     fillColor.map(c => Fill(c))
@@ -61,6 +66,7 @@ final case class DrawingContext(
 object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
+      Transform.identity,
       Option(BlendMode.sourceOver),
       Option(1.0),
       Option(Color.black),

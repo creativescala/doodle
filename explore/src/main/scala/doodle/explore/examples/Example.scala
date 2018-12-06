@@ -33,16 +33,16 @@ object Sine {
   import cats.instances.all._
 
   val wave = (period: Double, amplitude: Double, color: Color) =>
-    Basic.image[Drawing,Unit]{ implicit algebra: Basic[Drawing] =>
+    Basic.image[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
       import algebra._
 
-      (-300 to 300).toList.map{x =>
+      (-300 to 300).toList.map { x =>
         val y = Math.sin(x / period) * amplitude
-        circle(10).
-          fillColor(color)
+        circle(10)
+          .fillColor(color)
           .at(x.toDouble, y)
       }.allOn
-    }
+  }
 
   def draw(): Unit = {
     wave(50, 300, Color.cornflowerBlue).draw()

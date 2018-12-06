@@ -2,15 +2,15 @@ package doodle
 package explore
 
 import magnolia._
-import javax.swing.{Box,JComponent}
+import javax.swing.{Box, JComponent}
 import monix.reactive.Observable
 import scala.language.experimental.macros
 
 package object java2d extends Java2dExplorerAtoms {
-  type Typeclass[A] = ExplorerFactory[JComponent,A]
+  type Typeclass[A] = ExplorerFactory[JComponent, A]
 
   def combine[A](caseClass: CaseClass[Typeclass, A]): Typeclass[A] =
-    new ExplorerFactory[JComponent,A] {
+    new ExplorerFactory[JComponent, A] {
       def create =
         new Java2dExplorer[A] {
           val children = caseClass.parameters.map(p => p.typeclass.create)

@@ -18,72 +18,64 @@ package doodle
 package algebra
 package generic
 
-import cats.effect.IO
 import doodle.core._
 
-trait GenericShape[G] extends Shape[Finalized[G,?]] {
+trait GenericShape[G] extends Shape[Finalized[G, ?]] {
   implicit val graphicsContext: GraphicsContext[G]
 
-  def rectangle(width: Double, height: Double): Finalized[G,Unit] =
-    Finalized.leaf{ dc =>
+  def rectangle(width: Double, height: Double): Finalized[G, Unit] =
+    Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
-      (bb,
-       Contextualized{ (gc, tx) =>
-         Renderable{ origin =>
-           val o = tx(origin)
-           IO {
-             graphicsContext.fillRect(gc)(dc, o, width, height)
-             graphicsContext.strokeRect(gc)(dc, o, width, height)
-           }
-         }
+      (bb, Reified.renderable(dc){ (tx, f) =>
+         Reified.fillRect(tx, f, width, height)
+       }{ (tx, s) =>
+         Reified.strokeRect(tx, s, width, height)
        })
     }
 
-  def square(width: Double): Finalized[G,Unit] =
+  def square(width: Double): Finalized[G, Unit] =
     rectangle(width, width)
 
-  def triangle(width: Double, height: Double): Finalized[G,Unit] =
-    Finalized.leaf{ dc =>
+  def triangle(width: Double, height: Double): Finalized[G, Unit] =
+    Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
-      (bb,
-       Contextualized{ (gc, tx) =>
-         Renderable { origin =>
-           val w = width / 2.0
-           val h = height / 2.0
-           val points = Array(tx(origin + Vec(-w, -h)),
-                              tx(origin + Vec(0, h)),
-                              tx(origin + Vec(w, -h)))
-           IO {
-             graphicsContext.fillPolygon(gc)(dc, points)
-             graphicsContext.strokePolygon(gc)(dc, points)
-           }
-         }
+      val w = width / 2.0
+      val h = height / 2.0
+      val points = Array(Point(-w, -h), Point(0, h), Point(w, -h))
+
+      (bb, Reified.renderable(dc){ (tx, f) =>
+         Reified.fillPolygon(tx, f, points)
+       }{ (tx, s) =>
+          Reified.strokePolygon(tx, s, points)
        })
+      // IO {
+      //   graphicsContext.fillPolygon(gc)(dc, points)
+      //   graphicsContext.strokePolygon(gc)(dc, points)
+      // }
     }
 
-  def circle(diameter: Double): Finalized[G,Unit] =
-    Finalized.leaf{ dc =>
+  def circle(diameter: Double): Finalized[G, Unit] =
+    Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
-      val bb = BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
-      (bb,
-       Contextualized{ (gc, tx) =>
-         Renderable { origin =>
-           val o = tx(origin)
-           IO {
-             graphicsContext.fillCircle(gc)(dc, o, diameter / 2.0)
-             graphicsContext.strokeCircle(gc)(dc, o, diameter / 2.0)
-           }
-         }
+      val bb =
+        BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
+      (bb, Reified.renderable(dc){ (tx, f) =>
+         Reified.fillCircle(tx, f, diameter)
+       }{ (tx, s) =>
+         Reified.strokeCircle(tx, s, diameter)
        })
+      // IO {
+      //   graphicsContext.fillCircle(gc)(dc, o, diameter / 2.0)
+      //   graphicsContext.strokeCircle(gc)(dc, o, diameter / 2.0)
+      // }
     }
 
-  def empty: Finalized[G,Unit] =
-    Finalized.leaf{ dc =>
-      (BoundingBox.empty,
-       Contextualized{ (gc, tx) =>
-         Renderable{ origin => IO{()} }
-       })
+  def empty: Finalized[G, Unit] =
+    Finalized.leaf { dc =>
+      (BoundingBox.empty, Renderable { tx =>
+        List.empty[Reified]
+      })
     }
 }

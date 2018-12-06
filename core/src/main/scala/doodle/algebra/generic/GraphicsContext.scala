@@ -18,23 +18,24 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{PathElement, Point}
+import doodle.core.{PathElement, Point, Transform}
 
 /** Render in screen space */
 trait GraphicsContext[A] {
-  def fillRect(gc: A)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit
-  def strokeRect(gc: A)(dc: DrawingContext, center: Point, width: Double, height: Double): Unit
+  def fillRect(
+      gc: A)(transform: Transform, fill: Fill, width: Double, height: Double): Unit
+  def strokeRect(
+      gc: A)(transform: Transform, stroke: Stroke, width: Double, height: Double): Unit
 
-  def fillCircle(gc: A)(dc: DrawingContext, center: Point, radius: Double): Unit
-  def strokeCircle(gc: A)(dc: DrawingContext, center: Point, radius: Double): Unit
+  def fillCircle(gc: A)(transform: Transform, fill: Fill, diameter: Double): Unit
+  def strokeCircle(gc: A)(transform: Transform, stroke: Stroke, diameter: Double): Unit
 
-  def fillPolygon(gc: A)(dc: DrawingContext, points: Array[Point]): Unit
-  def strokePolygon(gc: A)(dc: DrawingContext, points: Array[Point]): Unit
+  def fillPolygon(gc: A)(transform: Transform, fill: Fill, points: Array[Point]): Unit
+  def strokePolygon(gc: A)(transform: Transform, stroke: Stroke, points: Array[Point]): Unit
 
-  def fillClosedPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
-  def strokeClosedPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
+  def fillClosedPath(gc: A)(transform: Transform, fill: Fill, elements: List[PathElement]): Unit
+  def strokeClosedPath(gc: A)(transform: Transform, stroke: Stroke, elements: List[PathElement]): Unit
 
-  def fillOpenPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
-  def strokeOpenPath(gc: A)(dc: DrawingContext, center: Point, elements: List[PathElement]): Unit
-
+  def fillOpenPath(gc: A)(transform: Transform, fill: Fill, elements: List[PathElement]): Unit
+  def strokeOpenPath(gc: A)(transform: Transform, stroke: Stroke, elements: List[PathElement]): Unit
 }

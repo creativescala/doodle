@@ -18,21 +18,23 @@ package doodle
 package syntax
 
 import doodle.algebra.Image
-import doodle.effect.{Frame,Writer}
+import doodle.effect.{Frame, Writer}
 import java.io.File
 
 trait WriterSyntax {
-  implicit class WriterOps[Algebra,F[_],A](image: Image[Algebra,F,A]) {
-    def write[Format](file: String)(implicit w: Writer[Algebra,F,Format]): A =
+  implicit class WriterOps[Algebra, F[_], A](image: Image[Algebra, F, A]) {
+    def write[Format](file: String)(implicit w: Writer[Algebra, F, Format]): A =
       write(new File(file))
 
-    def write[Format](file: File)(implicit w: Writer[Algebra,F,Format]): A =
+    def write[Format](file: File)(implicit w: Writer[Algebra, F, Format]): A =
       write(file, Frame.fitToImage())
 
-    def write[Format](file: String, frame: Frame)(implicit w: Writer[Algebra,F,Format]): A =
+    def write[Format](file: String, frame: Frame)(
+        implicit w: Writer[Algebra, F, Format]): A =
       write(new File(file), frame)
 
-    def write[Format](file: File, frame: Frame)(implicit w: Writer[Algebra,F,Format]): A =
+    def write[Format](file: File, frame: Frame)(
+        implicit w: Writer[Algebra, F, Format]): A =
       w.write(file, frame, image).unsafeRunSync()
   }
 }

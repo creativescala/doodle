@@ -37,8 +37,8 @@ object UnsignedByte {
 
   def clip(value: Int): UnsignedByte =
     value match {
-      case _ if value < 0 => MinValue
+      case _ if value < 0   => MinValue
       case _ if value > 255 => MaxValue
-      case v => UnsignedByte((v - 128).toByte)
+      case v                => UnsignedByte((v - 128).toByte)
     }
 }

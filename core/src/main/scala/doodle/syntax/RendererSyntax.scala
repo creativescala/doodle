@@ -18,14 +18,16 @@ package doodle
 package syntax
 
 import doodle.algebra.Image
-import doodle.effect.{Renderer,Frame}
+import doodle.effect.{Renderer, Frame}
 
 trait RendererSyntax {
-  implicit class RendererImageOps[Algebra,F[_],A](image: Image[Algebra,F,A]) {
-    def draw[C](frame: Frame = Frame.fitToImage())(implicit renderer: Renderer[Algebra, F, C]): A =
+  implicit class RendererImageOps[Algebra, F[_], A](
+      image: Image[Algebra, F, A]) {
+    def draw[C](frame: Frame = Frame.fitToImage())(
+        implicit renderer: Renderer[Algebra, F, C]): A =
       (for {
         canvas <- renderer.frame(frame)
-        a      <- renderer.render(canvas)(algebra => image(algebra))
+        a <- renderer.render(canvas)(algebra => image(algebra))
       } yield a).unsafeRunSync()
 
   }

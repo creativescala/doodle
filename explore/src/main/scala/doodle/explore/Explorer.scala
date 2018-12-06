@@ -20,12 +20,12 @@ package explore
 import cats.effect.IO
 import monix.reactive.Observable
 
-trait Explorer[UI,A] {
+trait Explorer[UI, A] {
   def ui: UI
   def value: Observable[A]
   def render: IO[Observable[A]]
 }
 
-trait ExplorerFactory[UI,A] {
-  def create: Explorer[UI,A]
+trait ExplorerFactory[UI, A] {
+  def create: Explorer[UI, A]
 }

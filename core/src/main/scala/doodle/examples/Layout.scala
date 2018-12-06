@@ -22,20 +22,24 @@ object Layout {
   // Examples of paths that are not centered in their bounding box
   val triangle =
     addOrigin(
-      Image.openPath(List(
-                       lineTo(cartesian(50, 100)),
-                       lineTo(cartesian(100, 0)),
-                       lineTo(cartesian(0, 0))
-                     ))
+      Image.openPath(
+        List(
+          lineTo(cartesian(50, 100)),
+          lineTo(cartesian(100, 0)),
+          lineTo(cartesian(0, 0))
+        ))
     ).on(boundingBox(100, 100, Vec(50, 50)))
 
   val curve =
     addOrigin(
       Image.openPath(
-        List(curveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
+        List(
+          curveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
       )
     ).on(boundingBox(150, 100, Vec(75, 50)))
 
-  val vertical = triangle above (addOrigin(Image.circle(200)).on(boundingBox(200, 200, Vec.zero)))
-  val horizontal = triangle beside (addOrigin(Image.circle(200)).on(boundingBox(200, 200, Vec.zero)))
+  val vertical = triangle above (addOrigin(Image.circle(200))
+    .on(boundingBox(200, 200, Vec.zero)))
+  val horizontal = triangle beside (addOrigin(Image.circle(200))
+    .on(boundingBox(200, 200, Vec.zero)))
 }

@@ -4,8 +4,8 @@ package core
 import doodle.syntax._
 import scala.annotation.tailrec
 
-
 trait Parametric[A] extends (A => Point) {
+
   /** Sample `count` points uniformly along this parametric curve */
   def sample(count: Int): List[Point]
 }
@@ -36,7 +36,7 @@ object Parametric {
       def loop(count: Int, accum: List[Point]): List[Point] =
         count match {
           case 0 => accum
-          case n => loop(n-1, f((n * step).radians) :: accum)
+          case n => loop(n - 1, f((n * step).radians) :: accum)
         }
 
       loop(count, List.empty)
@@ -49,7 +49,8 @@ object Parametric {
   /**
     * A parametric curve that maps normalized to points
     */
-  final case class NormalizedCurve(f: Normalized => Point) extends Parametric[Normalized] {
+  final case class NormalizedCurve(f: Normalized => Point)
+      extends Parametric[Normalized] {
     def apply(t: Normalized): Point = f(t)
 
     /** Convert to an `AngularCurve` where the angle ranges from 0 to 360 degrees */
@@ -63,7 +64,7 @@ object Parametric {
       def loop(count: Int, accum: List[Point]): List[Point] =
         count match {
           case 0 => accum
-          case n => loop(n-1, f((n * step).normalized) :: accum)
+          case n => loop(n - 1, f((n * step).normalized) :: accum)
         }
 
       loop(count, List.empty)
@@ -74,10 +75,9 @@ object Parametric {
   def circle(radius: Double): AngularCurve =
     AngularCurve((theta: Angle) => Point(radius, theta))
 
-
   /** A sinusoid */
   def sine(amplitude: Double, frequency: Double): AngularCurve =
-    AngularCurve{ (theta: Angle) =>
+    AngularCurve { (theta: Angle) =>
       Point(theta.toTurns, amplitude * (theta * frequency).sin)
     }
 
@@ -88,7 +88,9 @@ object Parametric {
   /**
     * A hypotrochoid is the curve sketched out by a point `offset` from the centre of a circle of radius `innerRadius` rolling around the inside of a circle of radius `outerRadius`.
     */
-  def hypotrochoid(outerRadius: Double, innerRadius: Double, offset: Double): AngularCurve = {
+  def hypotrochoid(outerRadius: Double,
+                   innerRadius: Double,
+                   offset: Double): AngularCurve = {
     val difference = outerRadius - innerRadius
     val differenceRatio = difference / innerRadius
     AngularCurve((theta: Angle) =>
@@ -98,7 +100,8 @@ object Parametric {
 
   /** Logarithmic spiral */
   def logarithmicSpiral(a: Double, b: Double): AngularCurve =
-    AngularCurve((theta: Angle) => Point(a * Math.exp(theta.toRadians * b), theta))
+    AngularCurve(
+      (theta: Angle) => Point(a * Math.exp(theta.toRadians * b), theta))
 
   /** Quadratic bezier curve */
   def quadraticBezier(start: Point, cp: Point, end: Point): NormalizedCurve = {
@@ -115,7 +118,10 @@ object Parametric {
     )
   }
 
-  def cubicBezier(start: Point, cp1: Point, cp2: Point, end: Point): NormalizedCurve = {
+  def cubicBezier(start: Point,
+                  cp1: Point,
+                  cp2: Point,
+                  end: Point): NormalizedCurve = {
     NormalizedCurve(
       (t: Normalized) => {
         val tD = t.get
@@ -142,7 +148,8 @@ object Parametric {
     *
     * If `points` has less than two elements an empty `Path` is returned.
     */
-  def interpolate(points: Seq[Point], tension: Double = 0.5): NormalizedCurve = {
+  def interpolate(points: Seq[Point],
+                  tension: Double = 0.5): NormalizedCurve = {
     /*
     To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
 
@@ -166,26 +173,25 @@ object Parametric {
                                0,            tension/3.0, 1,           -tension/3.0,
                                0,            0,           1,           0)
      */
-    def toCurve(pt0: Point, pt1: Point, pt2: Point, pt3: Point): NormalizedCurve =
+    def toCurve(pt0: Point,
+                pt1: Point,
+                pt2: Point,
+                pt3: Point): NormalizedCurve =
       cubicBezier(
         pt1,
-
         Point(
-          ((-tension * pt0.x) + 3*pt1.x + (tension * pt2.x)) / 3.0,
-          ((-tension * pt0.y) + 3*pt1.y + (tension * pt2.y)) / 3.0
+          ((-tension * pt0.x) + 3 * pt1.x + (tension * pt2.x)) / 3.0,
+          ((-tension * pt0.y) + 3 * pt1.y + (tension * pt2.y)) / 3.0
         ),
-
         Point(
-          ((tension * pt1.x) + 3*pt2.x - (tension * pt3.x)) / 3.0,
-          ((tension * pt1.y) + 3*pt2.y - (tension * pt3.y)) / 3.0
+          ((tension * pt1.x) + 3 * pt2.x - (tension * pt3.x)) / 3.0,
+          ((tension * pt1.y) + 3 * pt2.y - (tension * pt3.y)) / 3.0
         ),
-
         pt2
       )
-
-
     @tailrec
-    def iter(points: Seq[Point], accum: Seq[NormalizedCurve]): Seq[NormalizedCurve] = {
+    def iter(points: Seq[Point],
+             accum: Seq[NormalizedCurve]): Seq[NormalizedCurve] = {
       points match {
         case pt0 +: pt1 +: pt2 +: pt3 +: pts =>
           iter(
@@ -210,14 +216,14 @@ object Parametric {
 
     /* Get the index into the curves array from t, where each curve has a 1/size share of the space */
     def index(t: Normalized): Int = {
-      if(t.get == 1.0)
+      if (t.get == 1.0)
         size - 1
       else
         Math.floor(t.get * size).toInt
     }
 
-    NormalizedCurve {
-      (t: Normalized) => {
+    NormalizedCurve { (t: Normalized) =>
+      {
         val curve = curves(index(t))
         val offset = (t.get * size) - index(t)
         curve(offset.normalized)

@@ -17,13 +17,15 @@ object ColorPalette {
 
   def squareCell(size: Int): CellFunc =
     (hue: Int, lightness: Double) =>
-      Image.rectangle(size.toDouble, size.toDouble)
+      Image
+        .rectangle(size.toDouble, size.toDouble)
         .strokeWidth(0)
         .fillColor(Color.hsl(hue.degrees, 1.0, lightness))
 
   def circleCell(size: Int): CellFunc =
     (hue: Int, lightness: Double) =>
-      Image.circle(size/2.0)
+      Image
+        .circle(size / 2.0)
         .strokeWidth(0)
         .fillColor(Color.hsl(hue.degrees, 1.0, lightness))
 

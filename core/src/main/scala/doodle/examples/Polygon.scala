@@ -14,14 +14,14 @@ object Polygon {
 
     val elements = (0 until sides) map { index =>
       val point = Point.polar(radius, centerAngle * index.toDouble)
-      if(index == 0) moveTo(point) else lineTo(point)
+      if (index == 0) moveTo(point) else lineTo(point)
     }
 
-    Image.closedPath(elements)
+    Image
+      .closedPath(elements)
       .strokeWidth(5)
       .strokeColor(Color.hsl(centerAngle, 1.0, .5))
   }
 
   def image = ((3 to 20) map (polygon(_, 100))).toList.allOn
 }
-

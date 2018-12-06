@@ -22,27 +22,45 @@ import doodle.algebra.{Layout, Shape}
 import doodle.image.Image
 
 trait TraverseSyntax {
-  implicit class TraverseOps[T[_],F[_]](val t: T[F[Unit]]) {
+  implicit class TraverseOps[T[_], F[_]](val t: T[F[Unit]]) {
     import cats.instances.unit._
 
-    def allOn(implicit layout: Layout[F], shape: Shape[F], traverse: Traverse[T]): F[Unit] =
-      traverse.foldLeft(t, shape.empty){ (accum, img) => layout.on(accum, img) }
+    def allOn(implicit layout: Layout[F],
+              shape: Shape[F],
+              traverse: Traverse[T]): F[Unit] =
+      traverse.foldLeft(t, shape.empty) { (accum, img) =>
+        layout.on(accum, img)
+      }
 
-    def allBeside(implicit layout: Layout[F], shape: Shape[F], traverse: Traverse[T]): F[Unit] =
-      traverse.foldLeft(t, shape.empty){ (accum, img) => layout.beside(accum, img) }
+    def allBeside(implicit layout: Layout[F],
+                  shape: Shape[F],
+                  traverse: Traverse[T]): F[Unit] =
+      traverse.foldLeft(t, shape.empty) { (accum, img) =>
+        layout.beside(accum, img)
+      }
 
-    def allAbove(implicit layout: Layout[F], shape: Shape[F], traverse: Traverse[T]): F[Unit] =
-      traverse.foldLeft(t, shape.empty){ (accum, img) => layout.above(accum, img) }
+    def allAbove(implicit layout: Layout[F],
+                 shape: Shape[F],
+                 traverse: Traverse[T]): F[Unit] =
+      traverse.foldLeft(t, shape.empty) { (accum, img) =>
+        layout.above(accum, img)
+      }
   }
 
   implicit class TraverseImageOps[T[_]](val t: T[Image]) {
     def allOn(implicit traverse: Traverse[T]): Image =
-      traverse.foldLeft(t, Image.empty){ (accum, img) => accum.on(img) }
+      traverse.foldLeft(t, Image.empty) { (accum, img) =>
+        accum.on(img)
+      }
 
     def allBeside(implicit traverse: Traverse[T]): Image =
-      traverse.foldLeft(t, Image.empty){ (accum, img) => accum.beside(img) }
+      traverse.foldLeft(t, Image.empty) { (accum, img) =>
+        accum.beside(img)
+      }
 
     def allAbove(implicit traverse: Traverse[T]): Image =
-      traverse.foldLeft(t, Image.empty){ (accum, img) => accum.above(img) }
+      traverse.foldLeft(t, Image.empty) { (accum, img) =>
+        accum.above(img)
+      }
   }
 }

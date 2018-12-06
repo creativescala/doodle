@@ -18,11 +18,14 @@ package doodle
 package algebra
 package generic
 
-/** A [[doodle.algebra.generic.BoundingBox]] represents a bounding box around an image.
+import doodle.core.{Point, Transform}
+
+/** A [[doodle.algebra.generic.BoundingBox]] represents a bounding box around an
+  * image.
   *
   * A bounding box also defines a local coordinate system for an image. The
   * bounding box must contain the origin of the coordinate system. However the
-  * origin need not be centered within the box. 
+  * origin need not be centered within the box.
   *
   * No particular guarantees are made about the tightness of the bounding box,
   * though it can assumed to be reasonably tight. */
@@ -40,24 +43,24 @@ final case class BoundingBox(left: Double,
                 this.bottom min that.bottom)
 
   def beside(that: BoundingBox): BoundingBox =
-    BoundingBox(-(this.width + that.width)/2.0,
+    BoundingBox(-(this.width + that.width) / 2.0,
                 this.top max that.top,
-                (this.width + that.width)/2.0,
+                (this.width + that.width) / 2.0,
                 this.bottom min that.bottom)
-    // BoundingBox(-this.width,
-    //             this.top max that.top,
-    //             that.width,
-    //             this.bottom min that.bottom)
+  // BoundingBox(-this.width,
+  //             this.top max that.top,
+  //             that.width,
+  //             this.bottom min that.bottom)
 
   def above(that: BoundingBox): BoundingBox =
     BoundingBox(this.left min that.left,
-                (this.height + that.height)/2.0,
+                (this.height + that.height) / 2.0,
                 this.right max that.right,
-                -(this.height + that.height)/2.0)
-    // BoundingBox(this.left min that.left,
-    //             this.height,
-    //             this.right max that.right,
-    //             -that.height)
+                -(this.height + that.height) / 2.0)
+  // BoundingBox(this.left min that.left,
+  //             this.height,
+  //             this.right max that.right,
+  //             -that.height)
 
   def at(x: Double, y: Double): BoundingBox = {
     val newLeft = (left + x) min 0
@@ -68,16 +71,33 @@ final case class BoundingBox(left: Double,
     BoundingBox(newLeft, newTop, newRight, newBottom)
   }
 
+  /** Expand bounding box to enclose the given `Point`. */
+  def enclose(toInclude: Point): BoundingBox =
+    BoundingBox(
+      left min toInclude.x,
+      top max toInclude.y,
+      right max toInclude.x,
+      bottom min toInclude.y
+    )
+
   /** Add `expansion` to all sides of this bounding box. */
   def expand(expansion: Double): BoundingBox =
     BoundingBox(this.left - expansion,
                 this.top + expansion,
                 this.right + expansion,
                 this.bottom - expansion)
+
+  def transform(tx: Transform): BoundingBox = {
+    BoundingBox.empty
+      .enclose(tx(Point(left, top)))
+      .enclose(tx(Point(right, top)))
+      .enclose(tx(Point(left, bottom)))
+      .enclose(tx(Point(right, bottom)))
+  }
 }
 
 object BoundingBox {
-  val empty = BoundingBox(0,0,0,0)
+  val empty = BoundingBox(0, 0, 0, 0)
 
   /** Create a [[doodle.algebra.generic.BoundingBox]] with the given width and
     * height and the origin centered within the box. */

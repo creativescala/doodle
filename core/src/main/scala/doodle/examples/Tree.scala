@@ -8,13 +8,16 @@ object Tree {
   import PathElement._
 
   def leaf(angle: Angle, length: Double): Image =
-    Image.openPath(Seq(
-      moveTo(Point.zero),
-      lineTo(Point.polar(length, angle))
-    )).strokeColor(Color.hsl(angle, .5, .5))
+    Image
+      .openPath(
+        Seq(
+          moveTo(Point.zero),
+          lineTo(Point.polar(length, angle))
+        ))
+      .strokeColor(Color.hsl(angle, .5, .5))
 
   def branch(depth: Int, angle: Angle, length: Double): Image = {
-    if(depth == 0) {
+    if (depth == 0) {
       leaf(angle, length)
     } else {
       val l = branch(depth - 1, angle + 20.degrees, length * 0.8)

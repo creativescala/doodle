@@ -27,13 +27,21 @@ import monix.reactive.Observable
   * The `Animator` typeclass describes a data type that can render an animation
   * to a Canvas.
   */
-trait Animator[Canvas]{
+trait Animator[Canvas] {
+
   /** Animate frames that are contained in an `Iterable` structure. */
-  def animateIterable[Algebra,F[_],A](canvas: Canvas)(frames: Iterable[Image[Algebra,F,A]])(implicit e: Renderer[Algebra,F,Canvas], m: Monoid[A]): IO[A]
+  def animateIterable[Algebra, F[_], A](canvas: Canvas)(
+      frames: Iterable[Image[Algebra, F, A]])(
+      implicit e: Renderer[Algebra, F, Canvas],
+      m: Monoid[A]): IO[A]
 
   /** Animate frames that are produced by an `Observable`. */
-  def animateObservable[Algebra,F[_],A](canvas: Canvas)(frames: Observable[Image[Algebra,F,A]])(implicit e: Renderer[Algebra,F,Canvas], m: Monoid[A]): IO[A]
+  def animateObservable[Algebra, F[_], A](canvas: Canvas)(
+      frames: Observable[Image[Algebra, F, A]])(
+      implicit e: Renderer[Algebra, F, Canvas],
+      m: Monoid[A]): IO[A]
 }
 object Animator {
-  def apply[Canvas](implicit animator: Animator[Canvas]): Animator[Canvas] = animator
+  def apply[Canvas](implicit animator: Animator[Canvas]): Animator[Canvas] =
+    animator
 }

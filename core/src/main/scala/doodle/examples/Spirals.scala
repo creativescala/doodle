@@ -32,7 +32,7 @@ object Spirals {
     angle => {
       val turns = {
         val t = angle.toTurns
-        if(t < 0.5) t else (t - 0.5)
+        if (t < 0.5) t else (t - 0.5)
       }
 
       (1 - turns)
@@ -63,28 +63,35 @@ object Spirals {
     val saturation = Random.double.map(s => (s * 0.8))
     val lightness = Random.normal(0.4, 0.1)
     val color =
-      (hue, saturation, lightness, alpha) mapN {
-        (h, s, l, a) => Color.hsla(h, s, l, a)
+      (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
+        Color.hsla(h, s, l, a)
       }
     val c = Random.normal(2, 1) map (r => circle(r))
 
-    (c, color) mapN { (circle, stroke) => circle.strokeColor(stroke).noFill }
+    (c, color) mapN { (circle, stroke) =>
+      circle.strokeColor(stroke).noFill
+    }
   }
 
   val pts: Random[List[Image]] =
-    (1 to 3).toList.map { (i: Int) =>
-      randomSpiral flatMap { spiral =>
-        ((1 to 720 by 10).toList.map { angle =>
-           val pt = (spiral andThen scale(200) andThen jitter)(angle.degrees)
+    (1 to 3).toList
+      .map { (i: Int) =>
+        randomSpiral flatMap { spiral =>
+          ((1 to 720 by 10).toList.map { angle =>
+            val pt = (spiral andThen scale(200) andThen jitter)(angle.degrees)
 
-           (smoke, pt) mapN { _ at _.toVec }
-         }).sequence
+            (smoke, pt) mapN { _ at _.toVec }
+          }).sequence
+        }
       }
-    }.foldLeft(Random.always(List.empty[Image])){ (accum, elt) =>
-      accum.flatMap { imgs1 =>
-        elt.map { imgs2 => imgs1 ++ imgs2}}
-    }
+      .foldLeft(Random.always(List.empty[Image])) { (accum, elt) =>
+        accum.flatMap { imgs1 =>
+          elt.map { imgs2 =>
+            imgs1 ++ imgs2
+          }
+        }
+      }
 
   val image: Random[Image] =
-    pts.map(pt => pt.foldLeft(Image.empty){ _ on _ })
+    pts.map(pt => pt.foldLeft(Image.empty) { _ on _ })
 }

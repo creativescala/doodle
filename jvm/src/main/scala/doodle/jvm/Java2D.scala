@@ -71,6 +71,13 @@ object Java2D {
     case radial: Gradient.Radial => this.toRadialGradientPaint(radial)
   }
 
+  def withTransform(graphics: Graphics2D, transform: Transform)(f: => Unit): Unit = {
+    val original = graphics.getTransform()
+    graphics.transform(toAffineTransform(transform))
+    f
+    graphics.setTransform(original)
+  }
+
   def setStroke(graphics: Graphics2D, stroke: Stroke) = {
     val width = stroke.width.toFloat
     val cap = stroke.cap match {

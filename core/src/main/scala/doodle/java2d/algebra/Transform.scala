@@ -15,8 +15,9 @@
  */
 
 package doodle
-package explore
+package java2d
+package algebra
 
-package object syntax extends ExploreSyntax {
-  object explore extends ExploreSyntax
-}
+import doodle.algebra.generic.GenericTransform
+
+trait Transform extends GenericTransform[java.awt.Graphics2D]

@@ -8,9 +8,15 @@ import doodle.syntax._
 
 object SierpinskiConfection {
   val reddish: Random[Color] = {
-    val hue = Random.double map { d => (d - 0.5) * 0.2 }
-    val saturation = Random.double map { s => s * 0.3 + 0.4 }
-    val lightness = Random.double map { l => l * 0.3 + 0.3 }
+    val hue = Random.double map { d =>
+      (d - 0.5) * 0.2
+    }
+    val saturation = Random.double map { s =>
+      s * 0.3 + 0.4
+    }
+    val lightness = Random.double map { l =>
+      l * 0.3 + 0.3
+    }
 
     for {
       h <- hue
@@ -34,10 +40,10 @@ object SierpinskiConfection {
   }
 
   def sierpinski(n: Int, size: Double): Random[Image] = {
-    if(n == 1) {
+    if (n == 1) {
       shape(size)
     } else {
-      val smaller = sierpinski(n - 1, size/2)
+      val smaller = sierpinski(n - 1, size / 2)
       for {
         a <- smaller
         b <- smaller

@@ -24,7 +24,6 @@ sealed abstract class Image extends Product with Serializable {
   def below(top: Image): Image =
     Above(top, this)
 
-
   // Context Transform ------------------------------------------------
 
   def strokeColor(color: Color): Image =
@@ -57,14 +56,13 @@ sealed abstract class Image extends Product with Serializable {
   // def font(font: Font): Image =
   //   ContextTransform(_.font(font), this)
 
-
   // Affine Transform -------------------------------------------------
 
-  // def transform(tx: core.Transform): Image =
-  //   Transform(tx, this)
+  def transform(tx: core.Transform): Image =
+    Transform(tx, this)
 
-  // def rotate(angle: Angle): Image =
-  //   this.transform(core.transform.Transform.rotate(angle))
+  def rotate(angle: Angle): Image =
+    this.transform(core.Transform.rotate(angle))
 
   def at(vec: Vec): Image =
     // Transform(core.transform.Transform.translate(vec.x, vec.y), this)
@@ -76,7 +74,8 @@ sealed abstract class Image extends Product with Serializable {
 
   // Convert to tagless final format
 
-  def compile[Algebra[A[?]] <: Basic[A[?]],F[_]]: doodle.algebra.Image[Algebra[F],F,Unit] =
+  def compile[Algebra[A[?]] <: Basic[A[?]], F[_]]
+    : doodle.algebra.Image[Algebra[F], F, Unit] =
     Image.compile(this)
 }
 sealed abstract class Path extends Image {
@@ -104,6 +103,7 @@ sealed abstract class Path extends Image {
     }
 }
 object Image {
+
   /** Contains the leaves of the Image algebraic data type. Packaged here so they
     * don't pollute the namespace when importing Image to access to the smart
     * constructors. */
@@ -119,7 +119,7 @@ object Image {
     final case class Above(l: Image, r: Image) extends Image
     final case class On(t: Image, b: Image) extends Image
     final case class At(image: Image, x: Double, y: Double) extends Image
-    // final case class Transform(tx: transform.Transform, i: Image) extends Image
+    final case class Transform(tx: core.Transform, i: Image) extends Image
     // Style
     final case class StrokeWidth(image: Image, width: Double) extends Image
     final case class StrokeColor(image: Image, color: Color) extends Image
@@ -136,24 +136,23 @@ object Image {
   def closedPath(elements: Seq[PathElement]): Path = {
     // Paths must start at the origin. Thus we always move to the origin to
     // start.
-    ClosedPath((PathElement.moveTo(0,0) +: elements).toList)
+    ClosedPath((PathElement.moveTo(0, 0) +: elements).toList)
   }
-
 
   def openPath(elements: Seq[PathElement]): Path = {
     // Paths must start at the origin. Thus we always move to the origin to
     // start.
-    OpenPath((PathElement.moveTo(0,0) +: elements).toList)
+    OpenPath((PathElement.moveTo(0, 0) +: elements).toList)
   }
 
   // def text(characters: String): Image =
   //   Text(characters)
 
   def line(x: Double, y: Double): Image = {
-    val startX = -x/2
-    val startY = -y/2
-    val endX = x/2
-    val endY = y/2
+    val startX = -x / 2
+    val startY = -y / 2
+    val endX = x / 2
+    val endY = y / 2
     openPath(
       List(
         PathElement.moveTo(startX, startY),
@@ -166,7 +165,7 @@ object Image {
     Circle(d)
 
   def rectangle(w: Double, h: Double): Image =
-    Rectangle(w,h)
+    Rectangle(w, h)
 
   def square(side: Double): Image =
     rectangle(side, side)
@@ -177,19 +176,22 @@ object Image {
     val rotation = Angle.one / sides.toDouble
     val path =
       (1 to sides).map { n =>
-          lineTo(radius, rotation * n.toDouble + angle)
+        lineTo(radius, rotation * n.toDouble + angle)
       }.toList
 
     closedPath(moveTo(radius, angle) +: path)
   }
 
-  def star(points: Int, outerRadius: Double, innerRadius: Double, angle: Angle): Image = {
+  def star(points: Int,
+           outerRadius: Double,
+           innerRadius: Double,
+           angle: Angle): Image = {
     import PathElement._
 
     val rotation = Angle.one / (points * 2.0)
     val path =
       (1 to (points * 2)).map { n =>
-        if(n % 2 == 0)
+        if (n % 2 == 0)
           lineTo(outerRadius, rotation * n.toDouble + angle)
         else
           lineTo(innerRadius, rotation * n.toDouble + angle)
@@ -202,16 +204,14 @@ object Image {
     import PathElement._
 
     val path = List(
-      moveTo(w/2, 0),
-      lineTo(0, h/2),
-
+      moveTo(w / 2, 0),
+      lineTo(0, h / 2),
       lineTo(0, h * 0.2),
-      lineTo(-w/2, h * 0.2),
-      lineTo(-w/2, -h * 0.2),
+      lineTo(-w / 2, h * 0.2),
+      lineTo(-w / 2, -h * 0.2),
       lineTo(0, -h * 0.2),
-
-      lineTo(0, -h/2),
-      lineTo(w/2, 0)
+      lineTo(0, -h / 2),
+      lineTo(w / 2, 0)
     )
 
     closedPath(path)
@@ -222,42 +222,54 @@ object Image {
 
     // Clamp radius to the smallest of width and height
     val radius =
-      if(r > w/2 || r > h/2)
-        (w/2) min (h/2)
+      if (r > w / 2 || r > h / 2)
+        (w / 2) min (h / 2)
       else
         r
 
     // Magic number for drawing circles with bezier curves
     // See http://spencermortensen.com/articles/bezier-circle/ for approximation
     // of a circle with a Bezier curve.
-    val c = (4.0/3.0) * (Math.sqrt(2) - 1)
+    val c = (4.0 / 3.0) * (Math.sqrt(2) - 1)
     val cR = c * radius
 
     val elts = List(
-      moveTo(w/2 - radius, h/2),
-      curveTo(w/2 - radius + cR, h/2,
-              w/2, h/2 - radius + cR,
-              w/2, h/2 - radius),
-      lineTo(w/2, -h/2 + radius),
-      curveTo(w/2, -h/2 + radius - cR,
-              w/2 - radius + cR, -h/2,
-              w/2 - radius, -h/2),
-      lineTo(-w/2 + radius, -h/2),
-      curveTo(-w/2 + radius - cR, -h/2,
-              -w/2, -h/2 + radius - cR,
-              -w/2, -h/2 + radius),
-      lineTo(-w/2, h/2 - radius),
-      curveTo(-w/2, h/2 - radius + cR,
-              -w/2 + radius - cR, h/2,
-              -w/2 + radius, h/2),
-      lineTo(w/2 - radius, h/2)
+      moveTo(w / 2 - radius, h / 2),
+      curveTo(w / 2 - radius + cR,
+              h / 2,
+              w / 2,
+              h / 2 - radius + cR,
+              w / 2,
+              h / 2 - radius),
+      lineTo(w / 2, -h / 2 + radius),
+      curveTo(w / 2,
+              -h / 2 + radius - cR,
+              w / 2 - radius + cR,
+              -h / 2,
+              w / 2 - radius,
+              -h / 2),
+      lineTo(-w / 2 + radius, -h / 2),
+      curveTo(-w / 2 + radius - cR,
+              -h / 2,
+              -w / 2,
+              -h / 2 + radius - cR,
+              -w / 2,
+              -h / 2 + radius),
+      lineTo(-w / 2, h / 2 - radius),
+      curveTo(-w / 2,
+              h / 2 - radius + cR,
+              -w / 2 + radius - cR,
+              h / 2,
+              -w / 2 + radius,
+              h / 2),
+      lineTo(w / 2 - radius, h / 2)
     )
 
     closedPath(elts)
   }
 
   def triangle(w: Double, h: Double): Image =
-    Triangle(w,h)
+    Triangle(w, h)
 
   /**
     * Construct an open path of bezier curves that intersects all the given
@@ -304,16 +316,13 @@ object Image {
      */
     def toCurve(pt0: Point, pt1: Point, pt2: Point, pt3: Point): PathElement =
       PathElement.curveTo(
-        ((-tension * pt0.x) + 3*pt1.x + (tension * pt2.x)) / 3.0,
-        ((-tension * pt0.y) + 3*pt1.y + (tension * pt2.y)) / 3.0,
-
-        ((tension * pt1.x) + 3*pt2.x - (tension * pt3.x)) / 3.0,
-        ((tension * pt1.y) + 3*pt2.y - (tension * pt3.y)) / 3.0,
-
+        ((-tension * pt0.x) + 3 * pt1.x + (tension * pt2.x)) / 3.0,
+        ((-tension * pt0.y) + 3 * pt1.y + (tension * pt2.y)) / 3.0,
+        ((tension * pt1.x) + 3 * pt2.x - (tension * pt3.x)) / 3.0,
+        ((tension * pt1.y) + 3 * pt2.y - (tension * pt3.y)) / 3.0,
         pt2.x,
         pt2.y
       )
-
 
     def iter(points: List[Point]): List[PathElement] = {
       points match {
@@ -332,7 +341,7 @@ object Image {
       }
     }
 
-    points.headOption.fold(OpenPath(List.empty)){ pt0 =>
+    points.headOption.fold(OpenPath(List.empty)) { pt0 =>
       OpenPath(PathElement.moveTo(pt0) :: iter(pt0 :: points.toList))
     }
   }
@@ -344,11 +353,12 @@ object Image {
     Empty
 
   /** Compile an `Image` to a `doodle.algebra.Image` */
-  def compile[Algebra[A[?]] <: Basic[A[?]],F[_]](image: Image): doodle.algebra.Image[Algebra[F],F,Unit] = {
+  def compile[Algebra[A[?]] <: Basic[A[?]], F[_]](
+      image: Image): doodle.algebra.Image[Algebra[F], F, Unit] = {
     import cats.instances.unit._
     import Elements._
 
-    doodle.algebra.Image[Algebra[F],F,Unit]{ algebra =>
+    doodle.algebra.Image[Algebra[F], F, Unit] { algebra =>
       image match {
         case OpenPath(elements) =>
           algebra.path(doodle.core.OpenPath(elements.reverse))
@@ -370,6 +380,9 @@ object Image {
           algebra.on(compile(t)(algebra), compile(b)(algebra))
         case At(image, x, y) =>
           algebra.at(compile(image)(algebra), x, y)
+
+        case Transform(tx, i) =>
+          algebra.transform(compile(i)(algebra), tx)
 
         case StrokeWidth(image, width) =>
           algebra.strokeWidth(compile(image)(algebra), width)

@@ -6,13 +6,20 @@ import doodle.turtle.Instruction._
 object Geometry {
   val instructions =
     List(
-      forward(100), turn(45.degrees),
-      forward(100), turn(45.degrees),
-      forward(100), turn(45.degrees),
-      forward(100), turn(45.degrees),
-      forward(100), turn(45.degrees),
-      forward(100), turn(45.degrees),
-      forward(100), turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
+      forward(100),
+      turn(45.degrees),
       forward(100)
     )
 

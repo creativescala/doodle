@@ -17,8 +17,8 @@ object Hypocycloid {
         case Nil => Vec.zero
         case (weight, freq, flipped) :: tail => {
           val angle = (t * freq)
-          (if(flipped) Vec(weight * angle.sin, weight * angle.cos)
-          else Vec(weight * angle.cos, weight * angle.sin)) + loop(tail)
+          (if (flipped) Vec(weight * angle.sin, weight * angle.cos)
+           else Vec(weight * angle.cos, weight * angle.sin)) + loop(tail)
         }
       }
 
@@ -34,7 +34,7 @@ object Hypocycloid {
       } yield (w, f.toDouble, p)
 
     for {
-      n    <- Random.int(1, 7)
+      n <- Random.int(1, 7)
       elts <- (0 until n).toList.map(_ => elt).sequence
     } yield elts
   }
@@ -42,10 +42,10 @@ object Hypocycloid {
   def render(epicycloid: Hypocycloid): Image =
     Image.closedPath(
       PathElement.moveTo(eval(Angle.zero, epicycloid).toPoint) ::
-        (BigDecimal(0.0) to 1.0 by 0.001).map{ t =>
-          val angle = Angle.turns(t.doubleValue)
-          PathElement.lineTo(eval(angle, epicycloid).toPoint)
-        }.toList
+        (BigDecimal(0.0) to 1.0 by 0.001).map { t =>
+        val angle = Angle.turns(t.doubleValue)
+        PathElement.lineTo(eval(angle, epicycloid).toPoint)
+      }.toList
     )
 
   def image: Image =

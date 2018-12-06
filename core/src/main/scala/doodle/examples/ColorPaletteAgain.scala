@@ -23,7 +23,7 @@ object ColorPaletteAgain {
 
   def complementCircles(n: Int, c: Color): Image = {
     val color = complement(c)
-    if(n == 1) {
+    if (n == 1) {
       singleCircle(n, color)
     } else {
       complementCircles(n - 1, color) on singleCircle(n, color)
@@ -32,7 +32,7 @@ object ColorPaletteAgain {
 
   def nearComplementCircles(n: Int, c: Color): Image = {
     val color = nearComplement(c)
-    if(n == 1) {
+    if (n == 1) {
       singleCircle(n, color)
     } else {
       nearComplementCircles(n - 1, color) on singleCircle(n, color)
@@ -41,7 +41,7 @@ object ColorPaletteAgain {
 
   def coloredCircles(n: Int, c: Color, palette: Color => Color): Image = {
     val color = palette(c)
-    if(n == 1) {
+    if (n == 1) {
       singleCircle(n, color)
     } else {
       coloredCircles(n - 1, color, palette) on singleCircle(n, color)
@@ -57,7 +57,7 @@ object ColorPaletteAgain {
     val a = 8121
     val c = 28411
     val m = 134456
-      (a * input + c) % m 
+    (a * input + c) % m
   }
 
   def lcg2(input: Int): Int = {
@@ -74,7 +74,7 @@ object ColorPaletteAgain {
     val r = m % a
 
     val result = a * (input % q) - r * (input / q)
-    if(result <= 0)
+    if (result <= 0)
       result + m
     else
       result
@@ -88,8 +88,12 @@ object ColorPaletteAgain {
 
   def lcgColor(c: Color): Color = {
     val spun = c.spin(169.degrees)
-    val saturation = rescale(normalize(lcg1(spun.hue.toDegrees.toInt), 134456), 0.25, 0.75)
-    val lightness = rescale(normalize(lcg2(spun.hue.toDegrees.toInt), Int.MaxValue), 0.25, 0.5)
+    val saturation =
+      rescale(normalize(lcg1(spun.hue.toDegrees.toInt), 134456), 0.25, 0.75)
+    val lightness = rescale(
+      normalize(lcg2(spun.hue.toDegrees.toInt), Int.MaxValue),
+      0.25,
+      0.5)
     println(s"saturation ${saturation} lightness ${lightness}")
     spun.saturation(saturation).lightness(lightness)
   }
@@ -105,6 +109,6 @@ object ColorPaletteAgain {
 
   def image =
     complementCircles(10, Color.seaGreen) beside
-    nearComplementCircles(10, Color.seaGreen) beside
-    coloredCircles(10, Color.seaGreen, lcgColor)
+      nearComplementCircles(10, Color.seaGreen) beside
+      coloredCircles(10, Color.seaGreen, lcgColor)
 }

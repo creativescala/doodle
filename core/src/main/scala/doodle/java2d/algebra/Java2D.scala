@@ -18,11 +18,11 @@ package doodle
 package java2d
 package algebra
 
-import doodle.core.{Color,PathElement,Point}
+import doodle.core.{Color, PathElement, Point, Transform => Tx}
 import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
 import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, RenderingHints}
 // import java.awt.image.BufferedImage
-// import java.awt.geom.{AffineTransform, Path2D}
+import java.awt.geom.{AffineTransform, Path2D}
 import java.awt.geom.Path2D
 
 /** Various utilities for using Java2D */
@@ -65,7 +65,8 @@ object Java2D {
     //   case Line.Join.Miter => BasicStroke.JOIN_MITER
     //   case Line.Join.Round => BasicStroke.JOIN_ROUND
     // }
-    val jStroke = new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER)
+    val jStroke =
+      new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER)
     val jColor = Java2D.toAwtColor(stroke.color)
 
     graphics.setStroke(jStroke)
@@ -77,32 +78,44 @@ object Java2D {
   }
 
   /** Converts to an *open* `Path2D` */
-  def toPath2D(origin: Point, elements: List[PathElement]): Path2D = {
+  def toPath2D(elements: List[PathElement]): Path2D = {
     import PathElement._
     import Point.extractors._
 
     val path = new Path2D.Double()
-    path.moveTo(origin.x, origin.y)
+    // path.moveTo(origin.x, origin.y)
     elements.foreach {
       case MoveTo(Cartesian(x, y)) =>
         path.moveTo(x, y)
       case LineTo(Cartesian(x, y)) =>
         path.lineTo(x, y)
 
-      case BezierCurveTo(Cartesian(cp1x, cp1y), Cartesian(cp2x, cp2y), Cartesian(endX, endY)) =>
+      case BezierCurveTo(Cartesian(cp1x, cp1y),
+                         Cartesian(cp2x, cp2y),
+                         Cartesian(endX, endY)) =>
         path.curveTo(
-          cp1x , cp1y,
-          cp2x , cp2y,
-          endX , endY
+          cp1x,
+          cp1y,
+          cp2x,
+          cp2y,
+          endX,
+          endY
         )
     }
     path
   }
 
-  // def toAffineTransform(transform: Transform): AffineTransform = {
-  //   val elts = transform.elements
-  //   new AffineTransform(elts(0), elts(3), elts(1), elts(4), elts(2), elts(5))
-  // }
+  def toAffineTransform(transform: Tx): AffineTransform = {
+    val elts = transform.elements
+    new AffineTransform(elts(0), elts(3), elts(1), elts(4), elts(2), elts(5))
+  }
+
+  def withTransform(graphics: Graphics2D, transform: Tx)(f: => Unit): Unit = {
+    val original = graphics.getTransform()
+    graphics.transform(toAffineTransform(transform))
+    f
+    graphics.setTransform(original)
+  }
 
   def strokeAndFill(graphics: Graphics2D,
                     path: Path2D,

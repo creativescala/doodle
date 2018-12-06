@@ -20,6 +20,12 @@ package algebra
 
 import doodle.language.Basic
 
-final case class Algebra() extends Layout with Path with Shape with Style with Basic[Drawing] {
+final case class Algebra()
+    extends Layout
+    with Path
+    with Shape
+    with Style
+    with Transform
+    with Basic[Drawing] {
   implicit val graphicsContext = Graphics2DGraphicsContext
 }

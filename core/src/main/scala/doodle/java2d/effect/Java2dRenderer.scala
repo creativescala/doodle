@@ -19,16 +19,16 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.effect.{Frame,Renderer}
+import doodle.effect.{Frame, Renderer}
 import javax.swing.JFrame
 
 object Java2dRenderer extends Renderer[Algebra, Drawing, Java2DFrame] {
   private var jFrames: List[JFrame] = List.empty
 
   def frame(description: Frame): IO[Java2DFrame] =
-    IO{
+    IO {
       val jFrame = new Java2DFrame(description)
-      jFrames.synchronized{ jFrames = jFrame :: jFrames }
+      jFrames.synchronized { jFrames = jFrame :: jFrames }
       jFrame
     }
 
@@ -36,7 +36,7 @@ object Java2dRenderer extends Renderer[Algebra, Drawing, Java2DFrame] {
     canvas.render(f)
 
   def stop(): Unit = {
-    jFrames.synchronized{
+    jFrames.synchronized {
       jFrames.foreach(_.dispose)
       jFrames = List.empty
     }

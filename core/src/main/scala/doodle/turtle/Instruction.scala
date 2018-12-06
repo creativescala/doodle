@@ -3,7 +3,7 @@ package turtle
 
 import doodle.core.Angle
 
-sealed abstract class Instruction extends Product with Serializable 
+sealed abstract class Instruction extends Product with Serializable
 object Instruction {
   final case class Forward(distance: Double) extends Instruction
   final case class Turn(angle: Angle) extends Instruction

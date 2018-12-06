@@ -20,11 +20,11 @@ package effect
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.algebra.generic.BoundingBox
-import doodle.core.{Point,Transform}
+import doodle.algebra.generic.{BoundingBox, Reified}
+import doodle.core.{Transform}
 import doodle.effect._
-import doodle.java2d.algebra.{Algebra,Java2D}
-import java.awt.{Dimension,Graphics,Graphics2D}
+import doodle.java2d.algebra.{Algebra, Java2D, Graphics2DGraphicsContext}
+import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.NoSuchElementException
 import javax.swing.{JPanel, SwingUtilities}
 import scala.concurrent.SyncVar
@@ -33,15 +33,17 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   import doodle.effect.Size._
   import Java2DPanel.RenderRequest
 
-  private var lastImage: Contextualized[_] = _
   private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
+  private var lastImage: List[Reified] = _
 
-  frame.background.foreach(color => this.setBackground(Java2D.toAwtColor(color)))
+  frame.background.foreach(color =>
+    this.setBackground(Java2D.toAwtColor(color)))
 
   def resize(bb: BoundingBox): Unit = {
     frame.size match {
       case FitToImage(border) =>
-        setPreferredSize(new Dimension(bb.width.toInt + border, bb.height.toInt + border))
+        setPreferredSize(
+          new Dimension(bb.width.toInt + border, bb.height.toInt + border))
         SwingUtilities.windowForComponent(this).pack()
 
       case FixedSize(w, h) =>
@@ -54,10 +56,10 @@ final class Java2DPanel(frame: Frame) extends JPanel {
 
   def render[A](f: Algebra => Drawing[A]): IO[A] = {
     def register(cb: Either[Throwable, A] => Unit): Unit = {
-      val drawing   = f(Algebra())
-      val (bb, ctx) = drawing(List.empty)
+      val drawing = f(Algebra())
+      val (bb, rdr) = drawing(List.empty)
 
-      val rr = RenderRequest(bb, ctx, cb)
+      val rr = RenderRequest(bb, rdr, cb)
       // println("Java2DPanel attempting to put in the channel")
       channel.put(rr)
       // println("Java2DPanel put in the channel")
@@ -80,33 +82,42 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       // lastBoundingBox = bb
       resize(bb)
 
-      lastImage = rr.context
-      frame.background.foreach(color => gc.setBackground(Java2D.toAwtColor(color)))
-      gc.clearRect(0, 0, getWidth, getHeight)
-      rr.render(gc, getWidth, getHeight).unsafeRunSync()
+      lastImage = rr.reify.unsafeRunSync()
     } catch {
       case _: NoSuchElementException => ()
-        // println("Java2DPanel no new rr to paint")
-        if(lastImage != null) {
-          // Render again without passing result to the callback. This is a
-          // hack. We need to reify the low-level rendering commands so we can
-          // rerun them without rerunning any other effects.
-          val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
-          frame.background.foreach(color => gc.setBackground(Java2D.toAwtColor(color)))
-          gc.clearRect(0, 0, getWidth, getHeight)
-          lastImage((gc, tx))(Point.zero).unsafeRunSync()
-        }
-        ()
+      // println("Java2DPanel no new rr to paint")
+      // if(lastImage != null) {
+      // Render again without passing result to the callback. This is a
+      // hack. We need to reify the low-level rendering commands so we can
+      // rerun them without rerunning any other effects.
+      //   val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
+      //   frame.background.foreach(color => gc.setBackground(Java2D.toAwtColor(color)))
+      //   gc.clearRect(0, 0, getWidth, getHeight)
+      //   lastImage((gc, tx))(Point.zero).unsafeRunSync()
+      // }
+      // ()
+    }
+    if (lastImage != null) {
+      frame.background.foreach(color =>
+        gc.setBackground(Java2D.toAwtColor(color)))
+      gc.clearRect(0, 0, getWidth, getHeight)
+      val finalTx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
+      lastImage.foreach(reified =>
+        reified.render(gc, finalTx)(Graphics2DGraphicsContext))
     }
   }
 }
 object Java2DPanel {
-  final case class RenderRequest[A](boundingBox: BoundingBox, context: Contextualized[A], cb: Either[Throwable, A] => Unit) {
-    def render(gc: Graphics2D, width: Int, height: Int): IO[Unit] = {
-      val tx = Transform.logicalToScreen(width.toDouble, height.toDouble)
-      for {
-        a <- context((gc, tx))(Point.zero)
-      } yield cb(Right(a))
+  final case class RenderRequest[A](boundingBox: BoundingBox,
+                                    renderable: Renderable[A],
+                                    cb: Either[Throwable, A] => Unit) {
+    def reify: IO[List[Reified]] = {
+      IO {
+        val (reified, a) = renderable.run(Transform.identity).value
+        cb(Right(a))
+
+        reified
+      }
     }
   }
 }

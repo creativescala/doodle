@@ -74,7 +74,9 @@ final class Angle(val toRadians: Double) {
     new Angle(toRadians)
 
   override def equals(that: Any): Boolean =
-    (that.isInstanceOf[Angle] && that.asInstanceOf[Angle].toRadians == this.toRadians)
+    (that.isInstanceOf[Angle] && that
+      .asInstanceOf[Angle]
+      .toRadians == this.toRadians)
 
   override def hashCode: Int =
     this.toRadians.hashCode
@@ -99,7 +101,7 @@ object Angle {
     Angle(t * TwoPi)
 
   def apply(radians: Double): Angle =
-    if(radians.isNaN)
+    if (radians.isNaN)
       new Angle(0.0)
     else
       new Angle(radians)
