@@ -18,6 +18,7 @@ package doodle
 package algebra
 package generic
 
+import cats.Eval
 import cats.implicits._
 import doodle.core.{PathElement, Point, Transform => Tx}
 
@@ -76,16 +77,14 @@ object Reified {
   def renderable(dc: DrawingContext)(fill: (Tx, Fill) => Reified)(
       stroke: (Tx, Stroke) => Reified): Renderable[Unit] =
     Renderable { tx =>
-      val txDc = dc.addTransform(tx)
-
-      val f = txDc.fill.map { f =>
-        List(fill(txDc.transform, f))
+      val f = dc.fill.map { f =>
+        List(fill(tx, f))
       }
-      val s = txDc.stroke.map { s =>
-        List(stroke(txDc.transform, s))
+      val s = dc.stroke.map { s =>
+        List(stroke(tx, s))
       }
 
-      (f |+| s).getOrElse(List.empty[Reified])
+      Eval.now(((f |+| s).getOrElse(List.empty[Reified]), ()))
     }
 
   final case class FillRect(transform: Tx,

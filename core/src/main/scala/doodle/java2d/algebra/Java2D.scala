@@ -19,6 +19,7 @@ package java2d
 package algebra
 
 import doodle.core.{Color, PathElement, Point, Transform => Tx}
+import doodle.algebra.generic.{BoundingBox, Reified}
 import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
 import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, RenderingHints}
 // import java.awt.image.BufferedImage
@@ -36,6 +37,15 @@ object Java2D {
     )
 
     graphics
+  }
+
+  def renderCentered(gc: Graphics2D, bb: BoundingBox, image: List[Reified], width: Double, height: Double): Unit = {
+    // Work out the center of the bounding box, in logical local coordinates
+    val centerX = bb.left + (bb.width / 2.0)
+    val centerY = bb.bottom + (bb.height / 2.0)
+    val tx = Tx.translate(-centerX, -centerY).andThen(Tx.logicalToScreen(width, height))
+
+    image.foreach{ _.render(gc, tx)(Graphics2DGraphicsContext) }
   }
 
   // def fontMetrics(graphics: Graphics2D): Metrics =
@@ -83,6 +93,7 @@ object Java2D {
     import Point.extractors._
 
     val path = new Path2D.Double()
+    path.moveTo(0, 0)
     // path.moveTo(origin.x, origin.y)
     elements.foreach {
       case MoveTo(Cartesian(x, y)) =>

@@ -30,26 +30,26 @@ package object generic {
     * - for each shape work out its [[DrawingContext]] from which we can work
     *   out a [[BoundingBox]].
     *
-    * - apply transforms at the point they are defined so each transformed
-    *   subtree is laid out in its local coordinate system.
+    * - apply transforms to bounding boxes at the point they are defined so each
+    *   transformed subtree is laid out in its local coordinate system.
     *
     * The List of ContextTransform's are supplied in the order they should be
     * applied: the innermost transform is at the head of the list.
     */
   type Finalized[G, A] =
-    Reader[List[ContextTransform], (BoundingBox, Renderable[A])]
+    State[List[ContextTransform], (BoundingBox, Renderable[A])]
 
   object Finalized {
-    def apply[G, A](f: List[ContextTransform] => (BoundingBox, Renderable[A]))
+    def apply[G, A](f: List[ContextTransform] => (List[ContextTransform], (BoundingBox, Renderable[A])))
       : Finalized[G, A] =
-      Kleisli[Id, List[ContextTransform], (BoundingBox, Renderable[A])] { f }
+      State[List[ContextTransform], (BoundingBox, Renderable[A])] { f }
 
     /** Create a leaf [[Finalized]]. It will be passed a [[DrawingContext]] with all
       * transforms applied in the correct order.
       */
     def leaf[G, A](
         f: DrawingContext => (BoundingBox, Renderable[A])): Finalized[G, A] =
-      Kleisli[Id, List[ContextTransform], (BoundingBox, Renderable[A])] {
+      State.inspect{
         ctxTxs =>
           val dc = ctxTxs.foldLeft(DrawingContext.default) { (dc, f) =>
             f(dc)
@@ -59,57 +59,56 @@ package object generic {
 
     def contextTransform[G, A](f: DrawingContext => DrawingContext)(
         child: Finalized[G, A]): Finalized[G, A] = {
-      apply { ctxTxs =>
-        child(f :: ctxTxs)
-      }
+      for {
+        _ <- State.modify { (ctxTxs: List[ContextTransform]) => f :: ctxTxs }
+        a <- child
+      } yield a
     }
 
-    def transform[G, A](tx: Tx)(child: Finalized[G, A]): Finalized[G, A] =
-      apply { ctxTxs =>
-        val txCtxTx = (dc: DrawingContext) => dc.addTransform(tx)
-        val (bb, ctxized) = child(txCtxTx :: ctxTxs)
-
-        (bb.transform(tx), ctxized)
-      }
+    def transform[G, A](transform: Tx)(child: Finalized[G, A]): Finalized[G, A] =
+      child.map{ case (bb, rdr) =>
+        (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx))) }
   }
 
-  /** Construct a [[Renderable]] given a [[doodle.core.Transform]] from logical to
-    * screen space. */
-  // type Contextualized[A] = Reader[Tx,Renderable[A]]
-  // object Contextualized {
-  //   def apply[A](f: (Tx) => Renderable[A]): Contextualized[G,A] =
-  //     Kleisli{ f }
-
-  //   def transform[A](tx: Tx)(child: Contextualized[G,A]): Contextualized[G,A] =
-  //     apply{ initialTx => child((g, initialTx.andThen(tx))) }
-  // }
-
-  /** Given a transform from logical to screen, writes a list of reified drawing
-    * commands and evalutes an effect of type `A`. */
-  type Renderable[A] = ReaderWriterState[Tx, List[Reified], Unit, A]
+  /** A [[Renderable]] represents some effect producing a value of type A and also
+    * producing a [[Reified]] representation of a drawing. Invoking a
+    * [[Renderable]] does any layout (usually using bounding box information
+    * calculated in [[Finalized]]) and as such requires a
+    * [[doodle.core.Transform]]. Transforms should be applied outermost last. So
+    * any transformation in a [[Renderable]] should be applied before the
+    * trasform it receives from its surrounding context. */
+  type Renderable[A] = ReaderWriterState[Unit, List[Reified], Tx, A]
   object Renderable {
-    def apply(f: Tx => List[Reified]): Renderable[Unit] =
-      ReaderWriterState.apply((tx, _) => (f(tx), (), ()))
+    def parallel[A: Semigroup](txLeft: Tx, txRight: Tx)(left: Renderable[A])(right: Renderable[A]): Renderable[A] =
+      left.contramap(tx => txLeft.andThen(tx)) |+| right.contramap(tx => txRight.andThen(tx))
 
-    def make[A](f: Tx => Eval[(List[Reified], A)]): Renderable[A] =
-      IndexedReaderWriterStateT.apply { (tx, _) =>
-        f(tx).map { case (r, a) => (r, (), a) }
+    def unit(reified: List[Reified]): Renderable[Unit] =
+      apply{ tx => Eval.now((reified, ())) }
+
+    def transform[A](transform: Tx)(child: Renderable[A]): Renderable[A] =
+      child.contramap(tx => transform.andThen(tx))
+
+    def apply[A](f: Tx => Eval[(List[Reified], A)]): Renderable[A] =
+      IndexedReaderWriterStateT.apply { (_, tx) =>
+        f(tx).map { case (r, a) => (r, tx, a) }
       }
-
-    def tell(reified: Reified): Renderable[Unit] =
-      ReaderWriterState.tell(List(reified))
 
     implicit def renderableSemigroup[A](
         implicit m: Semigroup[A]): Semigroup[Renderable[A]] =
       new Semigroup[Renderable[A]] {
         def combine(x: Renderable[A], y: Renderable[A]): Renderable[A] =
-          Renderable.make { tx =>
-            x.run(tx) |+| y.run(tx)
+          Renderable{ tx =>
+            (x.run((), tx), y.run((), tx)).mapN{ (x, y) =>
+              val (reifiedX, _, aX) = x
+              val (reifiedY, _, aY) = y
+
+              (reifiedX |+| reifiedY, aX |+| aY)
+            }
           }
       }
   }
-  implicit class RenderableOps[A](renderable: Renderable[A]) {
-    def run(transform: Tx): Eval[(List[Reified], A)] =
-      renderable.run(transform, ()).map { case (r, _, a) => (r, a) }
-  }
+  // implicit class RenderableOps[A](renderable: Renderable[A]) {
+  //   def run(transform: Tx): Eval[(List[Reified], A)] =
+  //     renderable.run(transform, ()).map { case (r, _, a) => (r, a) }
+  // }
 }

@@ -19,84 +19,76 @@ package algebra
 package generic
 
 import cats._
+import cats.data.IndexedStateT
 import cats.implicits._
+import doodle.core.Transform
 
 trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
   import Renderable._
   def on[A: Semigroup](top: Finalized[G, A],
                        bottom: Finalized[G, A]): Finalized[G, A] =
-    for {
-      t <- top
-      b <- bottom
-      (bbT, rdrT) = t
-      (bbB, rdrB) = b
-    } yield ((bbT on bbB), rdrB |+| rdrT)
+    IndexedStateT{ ctxTxs =>
+      val t = top.runA(ctxTxs)
+      val b = bottom.runA(ctxTxs)
+
+      (t, b).mapN{ (t, b) =>
+        val (bbT, rdrT) = t
+        val (bbB, rdrB) = b
+        (ctxTxs, ((bbT.on(bbB)), rdrB |+| rdrT))
+      }
+    }
 
   def beside[A: Semigroup](left: Finalized[G, A],
                            right: Finalized[G, A]): Finalized[G, A] =
-    for {
-      l <- left
-      r <- right
-      (bbL, rdrL) = l
-      (bbR, rdrR) = r
-    } yield {
-      val bb = bbL.beside(bbR)
-      (bb, Renderable.make { tx =>
-        val txLeft = tx.translate(bb.left - bbL.left, 0)
-        val txRight = tx.translate(bb.right - bbR.right, 0)
+    IndexedStateT{ ctxTxs =>
+      val l = left.runA(ctxTxs)
+      val r = right.runA(ctxTxs)
 
-        rdrL.run(txLeft) |+| rdrR.run(txRight)
-      })
-      // Contextualized{ ctx =>
-      //   val rdrL = ctxL(ctx)
-      //   val rdrR = ctxR(ctx)
+      (l, r).mapN{ (l, r) =>
+        val (bbL, rdrL) = l
+        val (bbR, rdrR) = r
+        val bb = bbL.beside(bbR)
 
-      //   Renderable { origin =>
-      //     val leftOrigin = Point(origin.x + bb.left - bbL.left, origin.y)
-      //     val rightOrigin = Point(origin.x + bb.right - bbR.right, origin.y)
-      //     rdrL(leftOrigin) |+| rdrR(rightOrigin)
-      //   }
-      // })
+        val txLeft = Transform.translate(bb.left - bbL.left, 0)
+        val txRight = Transform.translate(bb.right - bbR.right, 0)
+        val rdr = Renderable.parallel(txLeft, txRight)(rdrL)(rdrR)
+
+        (ctxTxs, (bb, rdr))
+      }
     }
 
   def above[A: Semigroup](top: Finalized[G, A],
                           bottom: Finalized[G, A]): Finalized[G, A] =
-    for {
-      t <- top
-      b <- bottom
-      (bbT, rdrT) = t
-      (bbB, rdrB) = b
-    } yield {
-      val bb = bbT.above(bbB)
-      (bb, Renderable.make { tx =>
-        val txTop = tx.translate(0, bb.top - bbT.top)
-        val txBottom = tx.translate(0, bb.bottom - bbB.bottom)
+    IndexedStateT{ ctxTxs =>
+      val t = top.runA(ctxTxs)
+      val b = bottom.runA(ctxTxs)
 
-        rdrT.run(txTop) |+| rdrB.run(txBottom)
-      })
-      // Contextualized{ ctx =>
-      //   val rdrT = ctxT(ctx)
-      //   val rdrB = ctxB(ctx)
+      (t, b).mapN{ (t, b) =>
+        val (bbT, rdrT) = t
+        val (bbB, rdrB) = b
+        val bb = bbT.above(bbB)
 
-      //   Renderable { origin =>
-      //     val topOrigin = Point(origin.x, origin.y + bb.top - bbT.top)
-      //     val bottomOrigin = Point(origin.x, origin.y + bb.bottom - bbB.bottom)
+        val txTop = Transform.translate(0, bb.top - bbT.top)
+        val txBottom = Transform.translate(0, bb.bottom - bbB.bottom)
+        val rdr = Renderable.parallel(txTop, txBottom)(rdrT)(rdrB)
 
-      //     rdrT(topOrigin) |+| rdrB(bottomOrigin)
-      //   }
-      // })
+        (ctxTxs, (bb, rdr))
+      }
     }
 
   def at[A](img: Finalized[G, A], x: Double, y: Double): Finalized[G, A] =
-    img.map {
-      case (bb, rdr) =>
-        (bb.at(x, y), Renderable.make { tx =>
-          rdr.run(tx.translate(x, y))
+    img.map{ case (bb, rdr) =>
+      (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
+    }
+    // img.map {
+    //   case (bb, rdr) =>
+    //     (bb.at(x, y), Renderable.make { tx =>
+    //       rdr.run(Transform.translate(x, y).andThen(tx))
         // val rdr = ctx(c)
 
         // Renderable{ origin =>
         //   rdr(origin + Vec(x, y))
         // }
-        })
-    }
+        // })
+    // }
 }

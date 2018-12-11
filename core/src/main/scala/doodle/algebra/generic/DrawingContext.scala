@@ -20,25 +20,18 @@ package generic
 
 import cats.syntax.all._
 import cats.instances.option._
-import doodle.core.{Color, Transform}
+import doodle.core.Color
 
 final case class Stroke(color: Color, width: Double)
 final case class Fill(color: Color)
 
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
-    transform: Transform,
     blendMode: Option[BlendMode],
     strokeWidth: Option[Double],
     strokeColor: Option[Color],
     fillColor: Option[Color]
 ) {
-  def addTransform(tx: Transform): DrawingContext =
-    transform(transform.andThen(tx))
-
-  def transform(tx: Transform): DrawingContext =
-    this.copy(transform = tx)
-
   def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = Some(mode))
 
@@ -66,7 +59,6 @@ final case class DrawingContext(
 object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
-      Transform.identity,
       Option(BlendMode.sourceOver),
       Option(1.0),
       Option(Color.black),

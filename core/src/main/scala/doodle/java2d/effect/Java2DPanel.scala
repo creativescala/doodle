@@ -23,7 +23,7 @@ import cats.effect.IO
 import doodle.algebra.generic.{BoundingBox, Reified}
 import doodle.core.{Transform}
 import doodle.effect._
-import doodle.java2d.algebra.{Algebra, Java2D, Graphics2DGraphicsContext}
+import doodle.java2d.algebra.{Algebra, Java2D}
 import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.NoSuchElementException
 import javax.swing.{JPanel, SwingUtilities}
@@ -34,6 +34,7 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   import Java2DPanel.RenderRequest
 
   private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
+  private var lastBoundingBox: BoundingBox = _
   private var lastImage: List[Reified] = _
 
   frame.background.foreach(color =>
@@ -57,7 +58,7 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   def render[A](f: Algebra => Drawing[A]): IO[A] = {
     def register(cb: Either[Throwable, A] => Unit): Unit = {
       val drawing = f(Algebra())
-      val (bb, rdr) = drawing(List.empty)
+      val (bb, rdr) = drawing.runA(List.empty).value
 
       val rr = RenderRequest(bb, rdr, cb)
       // println("Java2DPanel attempting to put in the channel")
@@ -78,33 +79,17 @@ final class Java2DPanel(frame: Frame) extends JPanel {
     try {
       val rr = channel.take(10L)
       // println("Java2DPanel got new rr to paint")
-      val bb = rr.boundingBox
-      // lastBoundingBox = bb
-      resize(bb)
-
+      lastBoundingBox = rr.boundingBox
+      resize(lastBoundingBox)
       lastImage = rr.reify.unsafeRunSync()
     } catch {
       case _: NoSuchElementException => ()
-      // println("Java2DPanel no new rr to paint")
-      // if(lastImage != null) {
-      // Render again without passing result to the callback. This is a
-      // hack. We need to reify the low-level rendering commands so we can
-      // rerun them without rerunning any other effects.
-      //   val tx = Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
-      //   frame.background.foreach(color => gc.setBackground(Java2D.toAwtColor(color)))
-      //   gc.clearRect(0, 0, getWidth, getHeight)
-      //   lastImage((gc, tx))(Point.zero).unsafeRunSync()
-      // }
-      // ()
     }
     if (lastImage != null) {
       frame.background.foreach(color =>
         gc.setBackground(Java2D.toAwtColor(color)))
       gc.clearRect(0, 0, getWidth, getHeight)
-      val finalTx =
-        Transform.logicalToScreen(getWidth.toDouble, getHeight.toDouble)
-      lastImage.foreach(reified =>
-        reified.render(gc, finalTx)(Graphics2DGraphicsContext))
+      Java2D.renderCentered(gc, lastBoundingBox, lastImage, getWidth.toDouble, getHeight.toDouble)
     }
   }
 }
@@ -114,7 +99,7 @@ object Java2DPanel {
                                     cb: Either[Throwable, A] => Unit) {
     def reify: IO[List[Reified]] = {
       IO {
-        val (reified, a) = renderable.run(Transform.identity).value
+        val (reified, _, a) = renderable.run((), Transform.identity).value
         cb(Right(a))
 
         reified

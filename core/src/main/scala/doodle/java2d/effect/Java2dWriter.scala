@@ -6,7 +6,7 @@ import cats.effect.IO
 import doodle.algebra.Image
 import doodle.core.Transform
 import doodle.effect._
-import doodle.java2d.algebra.{Algebra, Graphics2DGraphicsContext}
+import doodle.java2d.algebra.{Algebra, Java2D}
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -19,7 +19,7 @@ trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Format] {
                                image: Image[Alg, Drawing, A]): IO[A] = {
     for {
       drawing <- IO { image(Algebra()) }
-      (bb, rdr) = drawing(List.empty)
+      (bb, rdr) = drawing.runA(List.empty).value
       image <- IO {
         frame.size match {
           case Size.FitToImage(border) =>
@@ -34,10 +34,8 @@ trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Format] {
         }
       }
       gc = image.createGraphics()
-      tx = Transform.logicalToScreen(image.getWidth.toDouble,
-                                     image.getHeight.toDouble)
-      (r, a) = rdr.run(Transform.identity).value
-      _ = r.foreach(r => r.render(gc, tx)(Graphics2DGraphicsContext))
+      (r, _, a) = rdr.run((), Transform.identity).value
+      _ = Java2D.renderCentered(gc, bb, r, bb.width, bb.height)
       _ = ImageIO.write(image, format, file)
     } yield a
   }
