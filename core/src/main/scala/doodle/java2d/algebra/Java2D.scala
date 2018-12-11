@@ -39,13 +39,19 @@ object Java2D {
     graphics
   }
 
-  def renderCentered(gc: Graphics2D, bb: BoundingBox, image: List[Reified], width: Double, height: Double): Unit = {
+  def renderCentered(gc: Graphics2D,
+                     bb: BoundingBox,
+                     image: List[Reified],
+                     width: Double,
+                     height: Double): Unit = {
     // Work out the center of the bounding box, in logical local coordinates
     val centerX = bb.left + (bb.width / 2.0)
     val centerY = bb.bottom + (bb.height / 2.0)
-    val tx = Tx.translate(-centerX, -centerY).andThen(Tx.logicalToScreen(width, height))
+    val tx = Tx
+      .translate(-centerX, -centerY)
+      .andThen(Tx.logicalToScreen(width, height))
 
-    image.foreach{ _.render(gc, tx)(Graphics2DGraphicsContext) }
+    image.foreach { _.render(gc, tx)(Graphics2DGraphicsContext) }
   }
 
   // def fontMetrics(graphics: Graphics2D): Metrics =

@@ -40,7 +40,9 @@ package object generic {
     State[List[ContextTransform], (BoundingBox, Renderable[A])]
 
   object Finalized {
-    def apply[G, A](f: List[ContextTransform] => (List[ContextTransform], (BoundingBox, Renderable[A])))
+    def apply[G, A](
+        f: List[ContextTransform] => (List[ContextTransform],
+                                      (BoundingBox, Renderable[A])))
       : Finalized[G, A] =
       State[List[ContextTransform], (BoundingBox, Renderable[A])] { f }
 
@@ -49,25 +51,29 @@ package object generic {
       */
     def leaf[G, A](
         f: DrawingContext => (BoundingBox, Renderable[A])): Finalized[G, A] =
-      State.inspect{
-        ctxTxs =>
-          val dc = ctxTxs.foldLeft(DrawingContext.default) { (dc, f) =>
-            f(dc)
-          }
+      State.inspect { ctxTxs =>
+        val dc = ctxTxs.foldLeft(DrawingContext.default) { (dc, f) =>
           f(dc)
+        }
+        f(dc)
       }
 
     def contextTransform[G, A](f: DrawingContext => DrawingContext)(
         child: Finalized[G, A]): Finalized[G, A] = {
       for {
-        _ <- State.modify { (ctxTxs: List[ContextTransform]) => f :: ctxTxs }
+        _ <- State.modify { (ctxTxs: List[ContextTransform]) =>
+          f :: ctxTxs
+        }
         a <- child
       } yield a
     }
 
-    def transform[G, A](transform: Tx)(child: Finalized[G, A]): Finalized[G, A] =
-      child.map{ case (bb, rdr) =>
-        (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx))) }
+    def transform[G, A](transform: Tx)(
+        child: Finalized[G, A]): Finalized[G, A] =
+      child.map {
+        case (bb, rdr) =>
+          (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
+      }
   }
 
   /** A [[Renderable]] represents some effect producing a value of type A and also
@@ -79,11 +85,15 @@ package object generic {
     * trasform it receives from its surrounding context. */
   type Renderable[A] = ReaderWriterState[Unit, List[Reified], Tx, A]
   object Renderable {
-    def parallel[A: Semigroup](txLeft: Tx, txRight: Tx)(left: Renderable[A])(right: Renderable[A]): Renderable[A] =
-      left.contramap(tx => txLeft.andThen(tx)) |+| right.contramap(tx => txRight.andThen(tx))
+    def parallel[A: Semigroup](txLeft: Tx, txRight: Tx)(left: Renderable[A])(
+        right: Renderable[A]): Renderable[A] =
+      left.contramap(tx => txLeft.andThen(tx)) |+| right.contramap(tx =>
+        txRight.andThen(tx))
 
     def unit(reified: List[Reified]): Renderable[Unit] =
-      apply{ tx => Eval.now((reified, ())) }
+      apply { tx =>
+        Eval.now((reified, ()))
+      }
 
     def transform[A](transform: Tx)(child: Renderable[A]): Renderable[A] =
       child.contramap(tx => transform.andThen(tx))
@@ -97,8 +107,8 @@ package object generic {
         implicit m: Semigroup[A]): Semigroup[Renderable[A]] =
       new Semigroup[Renderable[A]] {
         def combine(x: Renderable[A], y: Renderable[A]): Renderable[A] =
-          Renderable{ tx =>
-            (x.run((), tx), y.run((), tx)).mapN{ (x, y) =>
+          Renderable { tx =>
+            (x.run((), tx), y.run((), tx)).mapN { (x, y) =>
               val (reifiedX, _, aX) = x
               val (reifiedY, _, aY) = y
 

@@ -27,11 +27,11 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
   import Renderable._
   def on[A: Semigroup](top: Finalized[G, A],
                        bottom: Finalized[G, A]): Finalized[G, A] =
-    IndexedStateT{ ctxTxs =>
+    IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
 
-      (t, b).mapN{ (t, b) =>
+      (t, b).mapN { (t, b) =>
         val (bbT, rdrT) = t
         val (bbB, rdrB) = b
         (ctxTxs, ((bbT.on(bbB)), rdrB |+| rdrT))
@@ -40,11 +40,11 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
 
   def beside[A: Semigroup](left: Finalized[G, A],
                            right: Finalized[G, A]): Finalized[G, A] =
-    IndexedStateT{ ctxTxs =>
+    IndexedStateT { ctxTxs =>
       val l = left.runA(ctxTxs)
       val r = right.runA(ctxTxs)
 
-      (l, r).mapN{ (l, r) =>
+      (l, r).mapN { (l, r) =>
         val (bbL, rdrL) = l
         val (bbR, rdrR) = r
         val bb = bbL.beside(bbR)
@@ -59,11 +59,11 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
 
   def above[A: Semigroup](top: Finalized[G, A],
                           bottom: Finalized[G, A]): Finalized[G, A] =
-    IndexedStateT{ ctxTxs =>
+    IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
 
-      (t, b).mapN{ (t, b) =>
+      (t, b).mapN { (t, b) =>
         val (bbT, rdrT) = t
         val (bbB, rdrB) = b
         val bb = bbT.above(bbB)
@@ -77,18 +77,19 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
     }
 
   def at[A](img: Finalized[G, A], x: Double, y: Double): Finalized[G, A] =
-    img.map{ case (bb, rdr) =>
-      (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
+    img.map {
+      case (bb, rdr) =>
+        (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
     }
-    // img.map {
-    //   case (bb, rdr) =>
-    //     (bb.at(x, y), Renderable.make { tx =>
-    //       rdr.run(Transform.translate(x, y).andThen(tx))
-        // val rdr = ctx(c)
+  // img.map {
+  //   case (bb, rdr) =>
+  //     (bb.at(x, y), Renderable.make { tx =>
+  //       rdr.run(Transform.translate(x, y).andThen(tx))
+  // val rdr = ctx(c)
 
-        // Renderable{ origin =>
-        //   rdr(origin + Vec(x, y))
-        // }
-        // })
-    // }
+  // Renderable{ origin =>
+  //   rdr(origin + Vec(x, y))
+  // }
+  // })
+  // }
 }

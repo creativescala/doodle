@@ -89,7 +89,11 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       frame.background.foreach(color =>
         gc.setBackground(Java2D.toAwtColor(color)))
       gc.clearRect(0, 0, getWidth, getHeight)
-      Java2D.renderCentered(gc, lastBoundingBox, lastImage, getWidth.toDouble, getHeight.toDouble)
+      Java2D.renderCentered(gc,
+                            lastBoundingBox,
+                            lastImage,
+                            getWidth.toDouble,
+                            getHeight.toDouble)
     }
   }
 }
