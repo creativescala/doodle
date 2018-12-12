@@ -18,9 +18,10 @@ package doodle
 package image
 package syntax
 
-import doodle.effect.{Renderer, Frame}
+import doodle.effect.{Renderer, Frame, Writer}
 import doodle.image.Image
 import doodle.language.Basic
+import java.io.File
 
 trait ImageSyntax {
   implicit class ImageOps(image: Image) {
@@ -31,5 +32,25 @@ trait ImageSyntax {
         canvas <- renderer.frame(frame)
         a <- renderer.render(canvas)(algebra => image.compile(algebra))
       } yield a).unsafeRunSync()
+
+    def write[Format] = new ImageWriterOps[Format](image)
+  }
+
+  /** This strange construction allows the user to write `anImage.write[AFormat](filename)`
+    * without having to specify other, mostly irrelevant to the user, type parameters. */
+  final class ImageWriterOps[Format](image: Image) {
+    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: String)(implicit w: Writer[Algebra[F], F, Format]): Unit =
+      apply(new File(file))
+
+    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: File)(implicit w: Writer[Algebra[F], F, Format]): Unit =
+      apply(file, Frame.fitToImage())
+
+    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: String, frame: Frame)(
+        implicit w: Writer[Algebra[F], F, Format]): Unit =
+      apply(new File(file), frame)
+
+    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: File, frame: Frame)(
+        implicit w: Writer[Algebra[F], F, Format]): Unit =
+      w.write(file, frame, doodle.algebra.Image((algebra: Algebra[F]) => image.compile(algebra))).unsafeRunSync()
   }
 }
