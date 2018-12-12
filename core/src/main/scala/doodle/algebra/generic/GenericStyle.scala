@@ -20,21 +20,21 @@ package generic
 
 import doodle.core.Color
 
-trait GenericStyle[G] extends Style[Finalized[G, ?]] {
-  def fillColor[A](image: Finalized[G, A], fillColor: Color): Finalized[G, A] =
+trait GenericStyle extends Style[Finalized[?]] {
+  def fillColor[A](image: Finalized[A], fillColor: Color): Finalized[A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
 
-  def strokeColor[A](image: Finalized[G, A],
-                     strokeColor: Color): Finalized[G, A] =
+  def strokeColor[A](image: Finalized[A],
+                     strokeColor: Color): Finalized[A] =
     Finalized.contextTransform(_.strokeColor(strokeColor))(image)
 
-  def strokeWidth[A](image: Finalized[G, A],
-                     strokeWidth: Double): Finalized[G, A] =
+  def strokeWidth[A](image: Finalized[A],
+                     strokeWidth: Double): Finalized[A] =
     Finalized.contextTransform(_.strokeWidth(strokeWidth))(image)
 
-  def noFill[A](image: Finalized[G, A]): Finalized[G, A] =
+  def noFill[A](image: Finalized[A]): Finalized[A] =
     Finalized.contextTransform(_.noFill)(image)
 
-  def noStroke[A](image: Finalized[G, A]): Finalized[G, A] =
+  def noStroke[A](image: Finalized[A]): Finalized[A] =
     Finalized.contextTransform(_.noStroke)(image)
 }

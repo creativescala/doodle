@@ -20,10 +20,8 @@ package generic
 
 import doodle.core._
 
-trait GenericShape[G] extends Shape[Finalized[G, ?]] {
-  implicit val graphicsContext: GraphicsContext[G]
-
-  def rectangle(width: Double, height: Double): Finalized[G, Unit] =
+trait GenericShape extends Shape[Finalized[?]] {
+  def rectangle(width: Double, height: Double): Finalized[Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
@@ -34,10 +32,10 @@ trait GenericShape[G] extends Shape[Finalized[G, ?]] {
       })
     }
 
-  def square(width: Double): Finalized[G, Unit] =
+  def square(width: Double): Finalized[Unit] =
     rectangle(width, width)
 
-  def triangle(width: Double, height: Double): Finalized[G, Unit] =
+  def triangle(width: Double, height: Double): Finalized[Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
@@ -50,13 +48,9 @@ trait GenericShape[G] extends Shape[Finalized[G, ?]] {
       } { (tx, s) =>
         Reified.strokePolygon(tx, s, points)
       })
-    // IO {
-    //   graphicsContext.fillPolygon(gc)(dc, points)
-    //   graphicsContext.strokePolygon(gc)(dc, points)
-    // }
     }
 
-  def circle(diameter: Double): Finalized[G, Unit] =
+  def circle(diameter: Double): Finalized[Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb =
@@ -66,13 +60,9 @@ trait GenericShape[G] extends Shape[Finalized[G, ?]] {
       } { (tx, s) =>
         Reified.strokeCircle(tx, s, diameter)
       })
-    // IO {
-    //   graphicsContext.fillCircle(gc)(dc, o, diameter / 2.0)
-    //   graphicsContext.strokeCircle(gc)(dc, o, diameter / 2.0)
-    // }
     }
 
-  def empty: Finalized[G, Unit] =
+  def empty: Finalized[Unit] =
     Finalized.leaf { dc =>
       (BoundingBox.empty, Renderable.unit(List.empty[Reified]))
     }

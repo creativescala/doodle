@@ -26,6 +26,4 @@ final case class Algebra()
     with Shape
     with Style
     with Transform
-    with Basic[Drawing] {
-  implicit val graphicsContext = Graphics2DGraphicsContext
-}
+    with Basic[Drawing]

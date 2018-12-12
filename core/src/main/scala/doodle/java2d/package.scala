@@ -16,12 +16,11 @@
 
 package doodle
 
-import java.awt.Graphics2D
 import doodle.effect.Renderer
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
-  type Drawing[A] = doodle.algebra.generic.Finalized[Graphics2D, A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[A]
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
   type Java2DFrame = doodle.java2d.effect.Java2DFrame

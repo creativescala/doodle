@@ -20,4 +20,4 @@ package algebra
 
 import doodle.algebra.generic.GenericTransform
 
-trait Transform extends GenericTransform[java.awt.Graphics2D]
+trait Transform extends GenericTransform

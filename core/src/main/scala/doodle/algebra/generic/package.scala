@@ -25,7 +25,10 @@ import doodle.core.{Transform => Tx}
 package object generic {
   type ContextTransform = DrawingContext => DrawingContext
 
-  /** Gather the information needed to layout a drawing. This means:
+  /** A [[Finalized]] represents an effect that, when run, produces all the
+    * information needed to layout an image (it "finalizes" all the information
+    * needed for this process) and can eventually produce a value of type `A`
+    * (once it is rendered). Algorithmically this means:
     *
     * - for each shape work out its [[DrawingContext]] from which we can work
     *   out a [[BoundingBox]].
@@ -36,21 +39,21 @@ package object generic {
     * The List of ContextTransform's are supplied in the order they should be
     * applied: the innermost transform is at the head of the list.
     */
-  type Finalized[G, A] =
+  type Finalized[A] =
     State[List[ContextTransform], (BoundingBox, Renderable[A])]
 
   object Finalized {
-    def apply[G, A](
+    def apply[A](
         f: List[ContextTransform] => (List[ContextTransform],
                                       (BoundingBox, Renderable[A])))
-      : Finalized[G, A] =
+      : Finalized[A] =
       State[List[ContextTransform], (BoundingBox, Renderable[A])] { f }
 
     /** Create a leaf [[Finalized]]. It will be passed a [[DrawingContext]] with all
       * transforms applied in the correct order.
       */
-    def leaf[G, A](
-        f: DrawingContext => (BoundingBox, Renderable[A])): Finalized[G, A] =
+    def leaf[A](
+        f: DrawingContext => (BoundingBox, Renderable[A])): Finalized[A] =
       State.inspect { ctxTxs =>
         val dc = ctxTxs.foldLeft(DrawingContext.default) { (dc, f) =>
           f(dc)
@@ -58,8 +61,8 @@ package object generic {
         f(dc)
       }
 
-    def contextTransform[G, A](f: DrawingContext => DrawingContext)(
-        child: Finalized[G, A]): Finalized[G, A] = {
+    def contextTransform[A](f: DrawingContext => DrawingContext)(
+        child: Finalized[A]): Finalized[A] = {
       for {
         _ <- State.modify { (ctxTxs: List[ContextTransform]) =>
           f :: ctxTxs
@@ -68,8 +71,8 @@ package object generic {
       } yield a
     }
 
-    def transform[G, A](transform: Tx)(
-        child: Finalized[G, A]): Finalized[G, A] =
+    def transform[A](transform: Tx)(
+        child: Finalized[A]): Finalized[A] =
       child.map {
         case (bb, rdr) =>
           (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
@@ -77,9 +80,10 @@ package object generic {
   }
 
   /** A [[Renderable]] represents some effect producing a value of type A and also
-    * producing a [[Reified]] representation of a drawing. Invoking a
-    * [[Renderable]] does any layout (usually using bounding box information
-    * calculated in [[Finalized]]) and as such requires a
+    * producing a [[Reified]] representation of a drawing.
+    *
+    * Invoking a [[Renderable]] does any layout (usually using bounding box
+    * information calculated in [[Finalized]]) and as such requires a
     * [[doodle.core.Transform]]. Transforms should be applied outermost last. So
     * any transformation in a [[Renderable]] should be applied before the
     * trasform it receives from its surrounding context. */
@@ -117,8 +121,4 @@ package object generic {
           }
       }
   }
-  // implicit class RenderableOps[A](renderable: Renderable[A]) {
-  //   def run(transform: Tx): Eval[(List[Reified], A)] =
-  //     renderable.run(transform, ()).map { case (r, _, a) => (r, a) }
-  // }
 }

@@ -21,10 +21,8 @@ package generic
 import doodle.core._
 import scala.annotation.tailrec
 
-trait GenericPath[G] extends Path[Finalized[G, ?]] {
-  implicit val graphicsContext: GraphicsContext[G]
-
-  def path(path: ClosedPath): Finalized[G, Unit] =
+trait GenericPath extends Path[Finalized[?]] {
+  def path(path: ClosedPath): Finalized[Unit] =
     Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
@@ -37,7 +35,7 @@ trait GenericPath[G] extends Path[Finalized[G, ?]] {
       })
     }
 
-  def path(path: OpenPath): Finalized[G, Unit] =
+  def path(path: OpenPath): Finalized[Unit] =
     Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)

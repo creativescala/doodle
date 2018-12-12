@@ -23,10 +23,10 @@ import cats.data.IndexedStateT
 import cats.implicits._
 import doodle.core.Transform
 
-trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
+trait GenericLayout extends Layout[Finalized[?]] {
   import Renderable._
-  def on[A: Semigroup](top: Finalized[G, A],
-                       bottom: Finalized[G, A]): Finalized[G, A] =
+  def on[A: Semigroup](top: Finalized[A],
+                       bottom: Finalized[A]): Finalized[A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
@@ -38,8 +38,8 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
       }
     }
 
-  def beside[A: Semigroup](left: Finalized[G, A],
-                           right: Finalized[G, A]): Finalized[G, A] =
+  def beside[A: Semigroup](left: Finalized[A],
+                           right: Finalized[A]): Finalized[A] =
     IndexedStateT { ctxTxs =>
       val l = left.runA(ctxTxs)
       val r = right.runA(ctxTxs)
@@ -57,8 +57,8 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
       }
     }
 
-  def above[A: Semigroup](top: Finalized[G, A],
-                          bottom: Finalized[G, A]): Finalized[G, A] =
+  def above[A: Semigroup](top: Finalized[A],
+                          bottom: Finalized[A]): Finalized[A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
@@ -76,20 +76,9 @@ trait GenericLayout[G] extends Layout[Finalized[G, ?]] {
       }
     }
 
-  def at[A](img: Finalized[G, A], x: Double, y: Double): Finalized[G, A] =
+  def at[A](img: Finalized[A], x: Double, y: Double): Finalized[A] =
     img.map {
       case (bb, rdr) =>
         (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
     }
-  // img.map {
-  //   case (bb, rdr) =>
-  //     (bb.at(x, y), Renderable.make { tx =>
-  //       rdr.run(Transform.translate(x, y).andThen(tx))
-  // val rdr = ctx(c)
-
-  // Renderable{ origin =>
-  //   rdr(origin + Vec(x, y))
-  // }
-  // })
-  // }
 }

@@ -18,6 +18,4 @@ package doodle
 package java2d
 package algebra
 
-import java.awt.Graphics2D
-
-trait Layout extends doodle.algebra.generic.GenericLayout[Graphics2D]
+trait Layout extends doodle.algebra.generic.GenericLayout
