@@ -20,20 +20,23 @@ package generic
 
 import org.scalacheck._
 import org.scalacheck.Prop._
-import doodle.core._
 
 object StyleSpec extends Properties("Style properties") {
-  val style = new GenericStyle[TestGraphicsContext.Log] {}
+  val style = TestAlgebra()
 
   property("last fillColor takes effect") =
     forAll(Generators.finalized, Generators.color){ (f, c) =>
-      val log = TestGraphicsContext.log()
-      val (_, rdr) = style.fillColor(f, c)(List.empty)
-      rdr.run(Transform.identity).value
-
-      val rendered = log.log
-      rendered.foldLeft(true: Prop){ (prop, elt) =>
-        prop && (elt.dc.fillColor.map(_ ?= c).getOrElse(exception))
+      import Reified._
+      val reified = Generators.reify(style.fillColor(f, c))
+      reified.foldLeft(true: Prop){ (prop, elt) =>
+        prop && (elt match {
+                   case FillOpenPath(_, fill, _) => (fill.color ?= c)
+                   case FillClosedPath(_, fill, _) => (fill.color ?= c)
+                   case FillCircle(_, fill, _) => (fill.color ?= c)
+                   case FillRect(_, fill, _, _) => (fill.color ?= c)
+                   case FillPolygon(_, fill, _) => (fill.color ?= c)
+                   case _ => true
+                 })
       }
     }
 }

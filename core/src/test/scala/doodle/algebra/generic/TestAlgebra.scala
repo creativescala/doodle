@@ -19,9 +19,7 @@ package algebra
 package generic
 
 final case class TestAlgebra()
-    extends GenericLayout[TestGraphicsContext.Log]
-    with GenericPath[TestGraphicsContext.Log]
-    with GenericShape[TestGraphicsContext.Log]
-    with GenericStyle[TestGraphicsContext.Log] {
-  implicit val graphicsContext: GraphicsContext[TestGraphicsContext.Log] = TestGraphicsContext.logGraphicsContext
-}
+    extends GenericLayout
+    with GenericPath
+    with GenericShape
+    with GenericStyle

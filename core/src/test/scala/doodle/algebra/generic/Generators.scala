@@ -20,10 +20,9 @@ package generic
 
 import cats.instances.unit._
 import org.scalacheck._
+import doodle.core.{Transform => Tx}
 
 trait Generators extends doodle.core.Generators {
-  type TestFinalized = Finalized[TestGraphicsContext.Log, Unit]
-
   val width: Gen[Double] = Gen.posNum[Double]
   val height = width
 
@@ -31,7 +30,7 @@ trait Generators extends doodle.core.Generators {
     (Math.log(size.toDouble) / Math.log(2.0)).toInt
 
   /*
-  def blend(algebra: TestAlgebra, depth: Int): Gen[TestFinalized] = {
+  def blend(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] = {
     val child = finalizedOfDepth(algebra, depth - 1)
     for {
       one  <- child
@@ -46,7 +45,7 @@ trait Generators extends doodle.core.Generators {
   }
    */
 
-  def layout(algebra: TestAlgebra, depth: Int): Gen[TestFinalized] = {
+  def layout(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] = {
     val child = finalizedOfDepth(algebra, depth - 1)
     for {
       one  <- child
@@ -61,7 +60,7 @@ trait Generators extends doodle.core.Generators {
     } yield node
   }
 
-  def shape(algebra: TestAlgebra): Gen[TestFinalized] =
+  def shape(algebra: TestAlgebra): Gen[Finalized[Unit]] =
     Gen.oneOf(
       Gen.zip(width, height).map{ case (w, h) => algebra.rectangle(w,h) },
       width.map(w => algebra.square(w)),
@@ -70,7 +69,7 @@ trait Generators extends doodle.core.Generators {
       Gen.const(algebra.empty)
     )
 
-  def style(algebra: TestAlgebra, depth: Int): Gen[TestFinalized] = {
+  def style(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] = {
     val child = finalizedOfDepth(algebra, depth - 1)
     for {
       one  <- child
@@ -84,15 +83,21 @@ trait Generators extends doodle.core.Generators {
     } yield node
   }
 
-  def finalizedOfDepth(algebra: TestAlgebra, depth: Int): Gen[TestFinalized] =
+  def finalizedOfDepth(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] =
     if(depth <= 0) shape(algebra)
     else Gen.oneOf(/*blend(algebra, depth),*/ layout(algebra, depth), shape(algebra), style(algebra, depth))
 
 
-  val finalized: Gen[TestFinalized] =
+  val finalized: Gen[Finalized[Unit]] =
     Gen.sized{ size =>
       val depth = sizeToDepth(size)
       finalizedOfDepth(TestAlgebra(), depth)
     }
+
+  def reify[A](finalized: Finalized[A]): List[Reified] = {
+    val (_, rdr) = finalized.runA(List.empty).value
+    val (reified, _, _) = rdr.run((), Tx.identity).value
+    reified
+  }
 }
 object Generators extends Generators
