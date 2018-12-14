@@ -25,8 +25,7 @@ import doodle.core.Transform
 
 trait GenericLayout extends Layout[Finalized[?]] {
   import Renderable._
-  def on[A: Semigroup](top: Finalized[A],
-                       bottom: Finalized[A]): Finalized[A] =
+  def on[A: Semigroup](top: Finalized[A], bottom: Finalized[A]): Finalized[A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)

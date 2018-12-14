@@ -18,7 +18,7 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{Cap,Color,Join}
+import doodle.core.{Cap, Color, Join}
 
 final case class Stroke(color: Color, width: Double, cap: Cap, join: Join)
 final case class Fill(color: Color)

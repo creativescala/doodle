@@ -39,10 +39,12 @@ trait ImageSyntax {
   /** This strange construction allows the user to write `anImage.write[AFormat](filename)`
     * without having to specify other, mostly irrelevant to the user, type parameters. */
   final class ImageWriterOps[Format](image: Image) {
-    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: String)(implicit w: Writer[Algebra[F], F, Format]): Unit =
+    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: String)(
+        implicit w: Writer[Algebra[F], F, Format]): Unit =
       apply(new File(file))
 
-    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: File)(implicit w: Writer[Algebra[F], F, Format]): Unit =
+    def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: File)(
+        implicit w: Writer[Algebra[F], F, Format]): Unit =
       apply(file, Frame.fitToImage())
 
     def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: String, frame: Frame)(
@@ -51,6 +53,10 @@ trait ImageSyntax {
 
     def apply[Algebra[A[?]] <: Basic[A[?]], F[_]](file: File, frame: Frame)(
         implicit w: Writer[Algebra[F], F, Format]): Unit =
-      w.write(file, frame, doodle.algebra.Image((algebra: Algebra[F]) => image.compile(algebra))).unsafeRunSync()
+      w.write(
+          file,
+          frame,
+          doodle.algebra.Image((algebra: Algebra[F]) => image.compile(algebra)))
+        .unsafeRunSync()
   }
 }

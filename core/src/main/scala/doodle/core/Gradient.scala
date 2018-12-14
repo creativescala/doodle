@@ -15,10 +15,17 @@ object Gradient {
                           cycleMethod: CycleMethod)
       extends Gradient
 
-  def linear(start: Point, end: Point, stops: Seq[(Color, Double)], cycleMethod: CycleMethod): Gradient =
+  def linear(start: Point,
+             end: Point,
+             stops: Seq[(Color, Double)],
+             cycleMethod: CycleMethod): Gradient =
     Linear(start, end, stops, cycleMethod)
 
-  def radial(outer: Point, inner: Point, radius: Double, stops: Seq[(Color, Double)], cycleMethod: CycleMethod): Gradient =
+  def radial(outer: Point,
+             inner: Point,
+             radius: Double,
+             stops: Seq[(Color, Double)],
+             cycleMethod: CycleMethod): Gradient =
     Radial(outer, inner, radius, stops, cycleMethod)
 
   def dichromaticVertical(color1: Color, color2: Color, length: Double) =

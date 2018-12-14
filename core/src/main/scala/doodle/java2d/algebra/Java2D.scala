@@ -72,8 +72,8 @@ object Java2D {
   def setStroke(graphics: Graphics2D, stroke: Stroke) = {
     val width = stroke.width.toFloat
     val cap = stroke.cap match {
-      case Cap.Butt => BasicStroke.CAP_BUTT
-      case Cap.Round => BasicStroke.CAP_ROUND
+      case Cap.Butt   => BasicStroke.CAP_BUTT
+      case Cap.Round  => BasicStroke.CAP_ROUND
       case Cap.Square => BasicStroke.CAP_SQUARE
     }
     val join = stroke.join match {

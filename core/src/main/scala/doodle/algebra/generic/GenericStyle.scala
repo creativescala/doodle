@@ -24,12 +24,10 @@ trait GenericStyle extends Style[Finalized[?]] {
   def fillColor[A](image: Finalized[A], fillColor: Color): Finalized[A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
 
-  def strokeColor[A](image: Finalized[A],
-                     strokeColor: Color): Finalized[A] =
+  def strokeColor[A](image: Finalized[A], strokeColor: Color): Finalized[A] =
     Finalized.contextTransform(_.strokeColor(strokeColor))(image)
 
-  def strokeWidth[A](image: Finalized[A],
-                     strokeWidth: Double): Finalized[A] =
+  def strokeWidth[A](image: Finalized[A], strokeWidth: Double): Finalized[A] =
     Finalized.contextTransform(_.strokeWidth(strokeWidth))(image)
 
   def strokeCap[A](image: Finalized[A], cap: Cap): Finalized[A] =

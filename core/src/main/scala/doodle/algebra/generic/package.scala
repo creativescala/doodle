@@ -71,8 +71,7 @@ package object generic {
       } yield a
     }
 
-    def transform[A](transform: Tx)(
-        child: Finalized[A]): Finalized[A] =
+    def transform[A](transform: Tx)(child: Finalized[A]): Finalized[A] =
       child.map {
         case (bb, rdr) =>
           (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
