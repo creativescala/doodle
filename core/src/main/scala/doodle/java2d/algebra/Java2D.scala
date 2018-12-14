@@ -18,7 +18,7 @@ package doodle
 package java2d
 package algebra
 
-import doodle.core.{Color, PathElement, Point, Transform => Tx}
+import doodle.core.{Cap, Color, Join, PathElement, Point, Transform => Tx}
 import doodle.algebra.generic.{BoundingBox, Reified}
 import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
 import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, RenderingHints}
@@ -71,18 +71,18 @@ object Java2D {
 
   def setStroke(graphics: Graphics2D, stroke: Stroke) = {
     val width = stroke.width.toFloat
-    // val cap = stroke.cap match {
-    //   case Line.Cap.Butt => BasicStroke.CAP_BUTT
-    //   case Line.Cap.Round => BasicStroke.CAP_ROUND
-    //   case Line.Cap.Square => BasicStroke.CAP_SQUARE
-    // }
-    // val join = stroke.join match {
-    //   case Line.Join.Bevel => BasicStroke.JOIN_BEVEL
-    //   case Line.Join.Miter => BasicStroke.JOIN_MITER
-    //   case Line.Join.Round => BasicStroke.JOIN_ROUND
-    // }
+    val cap = stroke.cap match {
+      case Cap.Butt => BasicStroke.CAP_BUTT
+      case Cap.Round => BasicStroke.CAP_ROUND
+      case Cap.Square => BasicStroke.CAP_SQUARE
+    }
+    val join = stroke.join match {
+      case Join.Bevel => BasicStroke.JOIN_BEVEL
+      case Join.Miter => BasicStroke.JOIN_MITER
+      case Join.Round => BasicStroke.JOIN_ROUND
+    }
     val jStroke =
-      new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER)
+      new BasicStroke(width, cap, join)
     val jColor = Java2D.toAwtColor(stroke.color)
 
     graphics.setStroke(jStroke)

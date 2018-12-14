@@ -18,31 +18,37 @@ package doodle
 package algebra
 package generic
 
-import cats.syntax.all._
-import cats.instances.option._
-import doodle.core.Color
+import doodle.core.{Cap,Color,Join}
 
-final case class Stroke(color: Color, width: Double)
+final case class Stroke(color: Color, width: Double, cap: Cap, join: Join)
 final case class Fill(color: Color)
 
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
-    blendMode: Option[BlendMode],
-    strokeWidth: Option[Double],
-    strokeColor: Option[Color],
+    blendMode: BlendMode,
+    strokeColor: Color,
+    strokeWidth: Option[Double], // We use strokeWidth to determine if there is a stroke or not
+    strokeCap: Cap,
+    strokeJoin: Join,
     fillColor: Option[Color]
 ) {
   def blendMode(mode: BlendMode): DrawingContext =
-    this.copy(blendMode = Some(mode))
+    this.copy(blendMode = mode)
 
   def stroke: Option[Stroke] =
-    (strokeColor, strokeWidth).mapN((c, w) => Stroke(c, w))
+    (strokeWidth).map(w => Stroke(strokeColor, w, strokeCap, strokeJoin))
 
   def strokeColor(color: Color): DrawingContext =
-    this.copy(strokeColor = Some(color))
+    this.copy(strokeColor = color)
 
   def strokeWidth(width: Double): DrawingContext =
     this.copy(strokeWidth = if (width <= 0) None else Some(width))
+
+  def strokeCap(cap: Cap): DrawingContext =
+    this.copy(strokeCap = cap)
+
+  def strokeJoin(join: Join): DrawingContext =
+    this.copy(strokeJoin = join)
 
   def noStroke: DrawingContext =
     this.copy(strokeWidth = None)
@@ -59,9 +65,11 @@ final case class DrawingContext(
 object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
-      Option(BlendMode.sourceOver),
+      BlendMode.sourceOver,
+      Color.black,
       Option(1.0),
-      Option(Color.black),
+      Cap.butt,
+      Join.miter,
       Option.empty
     )
 }
