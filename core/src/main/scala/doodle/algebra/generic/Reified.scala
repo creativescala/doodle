@@ -40,7 +40,7 @@ sealed abstract class Reified extends Product with Serializable {
       case FillClosedPath(tx, fill, elements) =>
         ctx.fillClosedPath(gc)(tx.andThen(finalTransform), fill, elements)
       case StrokeClosedPath(tx, stroke, elements) =>
-        ctx.strokeOpenPath(gc)(tx.andThen(finalTransform), stroke, elements)
+        ctx.strokeClosedPath(gc)(tx.andThen(finalTransform), stroke, elements)
 
       case FillCircle(tx, fill, diameter) =>
         ctx.fillCircle(gc)(tx.andThen(finalTransform), fill, diameter)
