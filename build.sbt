@@ -1,6 +1,6 @@
 version in ThisBuild := "0.8.3"
 
-val catsVersion = "1.2.0"
+val catsVersion = "1.4.0"
 val Scala212 = "2.12.6"
 
 name         in ThisBuild := "doodle"
