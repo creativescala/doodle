@@ -26,7 +26,7 @@ object Street {
 
   val street =
     (
-      (0 to 105 by 45) map { i =>
+      (0 to 105 by 45) map { _ =>
         (Image.rectangle(30, 3) fillColor yellow) beside
           (Image.rectangle(15, 3) fillColor black) above
           (Image.rectangle(45, 7) fillColor black)

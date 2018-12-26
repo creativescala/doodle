@@ -63,7 +63,7 @@ trait GenericShape extends Shape[Finalized[?]] {
     }
 
   def empty: Finalized[Unit] =
-    Finalized.leaf { dc =>
+    Finalized.leaf { _ =>
       (BoundingBox.empty, Renderable.unit(List.empty[Reified]))
     }
 }

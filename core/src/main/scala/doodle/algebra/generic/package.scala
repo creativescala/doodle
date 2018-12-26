@@ -94,7 +94,7 @@ package object generic {
         txRight.andThen(tx))
 
     def unit(reified: List[Reified]): Renderable[Unit] =
-      apply { tx =>
+      apply { _ =>
         Eval.now((reified, ()))
       }
 

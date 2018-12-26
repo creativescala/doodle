@@ -15,7 +15,7 @@
  */
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-scalaVersion in ThisBuild := "2.12.6"
+scalaVersion in ThisBuild := "2.12.7"
 
 enablePlugins(AutomateHeaderPlugin)
 

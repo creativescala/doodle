@@ -3,7 +3,6 @@ package image
 package examples
 
 import cats.implicits._
-import doodle.syntax._
 import doodle.image.syntax._
 import doodle.random._
 

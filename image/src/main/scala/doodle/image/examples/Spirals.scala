@@ -76,7 +76,7 @@ object Spirals {
 
   val pts: Random[List[Image]] =
     (1 to 3).toList
-      .map { (i: Int) =>
+      .map { (_: Int) =>
         randomSpiral flatMap { spiral =>
           ((1 to 720 by 10).toList.map { angle =>
             val pt = (spiral andThen scale(200) andThen jitter)(angle.degrees)

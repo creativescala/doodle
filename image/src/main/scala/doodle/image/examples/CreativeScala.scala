@@ -450,9 +450,9 @@ object CreativeScala {
     val spacer = rectangle(20, 20).noStroke.noFill
 
     val image =
-      (allOn(iter.map(i => uniform2D map (point _))),
-       allOn(iter.map(i => normal2D map (point _))),
-       allOn(iter.map(i => normalSquared2D map (point _)))) mapN {
+      (allOn(iter.map(_ => uniform2D map (point _))),
+       allOn(iter.map(_ => normal2D map (point _))),
+       allOn(iter.map(_ => normalSquared2D map (point _)))) mapN {
         (s1, s2, s3) =>
           s1 beside spacer beside s2 beside spacer beside s3
       }

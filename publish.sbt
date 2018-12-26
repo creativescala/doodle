@@ -9,8 +9,8 @@ ThisBuild / pgpSecretRing := pgpPublicRing.value
 
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/creative-scala/doodle"),
-    "scm:git@github.com:creative-scala/doodle.git"
+    url("https://github.com/creativescala/doodle"),
+    "scm:git@github.com:creativescala/doodle.git"
   )
 )
 ThisBuild / developers := List(
