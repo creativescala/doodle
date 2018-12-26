@@ -11,11 +11,13 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 # Using Doodle
 
-You can use Doodle in your own project by importing the JARs published to Maven Central. The current release is **`0.9.0`**. To use it add the following to your `build.sbt`:
+This is the development branch of Doodle. The current release is **`0.9.0-SNAPSHOT`**. The `master` branch has the released version.
+
+You can use Doodle in your own project by importing the JARs published to Maven Central. To use it add the following to your `build.sbt`:
 
 ~~~ scala
-scalaVersion := "2.12.6" // Doodle is currently published for Scala 2.12 only
-libraryDependencies += "creativescala.org" %% "doodle" % "0.9.0"
+scalaVersion := "2.12.7" // Doodle is currently published for Scala 2.12 only
+libraryDependencies += "creativescala.org" %% "doodle" % "0.9.0-SNAPSHOT"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
@@ -23,9 +25,9 @@ Alternatively you can `git clone` or download Doodle and use it directly from th
 
 # Documentation
 
-[Creative Scala][creative-scala] is currently the main documentation for Doodle. Creative Scala is a free introductory Scala ebook. Follow the link to download your copy from our web site.
+[Creative Scala][creativescala] is currently the main documentation for Doodle. Creative Scala is a free introductory Scala ebook. Follow the link to download your copy from our web site.
 
-[creative-scala]: http://creativescala.org/
+[creativescala]: http://creativescala.org/
 
 Below we have a few tips to get you started.
 
