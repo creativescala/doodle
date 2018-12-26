@@ -15,6 +15,8 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+project/target
+project/project
 
 # Scala-IDE specific
 .scala_dependencies
@@ -127,4 +129,3 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
-

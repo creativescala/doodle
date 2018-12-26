@@ -1,85 +1,107 @@
-version in ThisBuild := "0.8.3"
+/*
+ * Copyright 2017 Noel Welsh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-val catsVersion = "1.2.0"
-val Scala212 = "2.12.6"
+scalaVersion in ThisBuild := "2.12.7"
 
-name         in ThisBuild := "doodle"
-organization in ThisBuild := "underscoreio"
-scalaVersion in ThisBuild := Scala212
-crossScalaVersions in ThisBuild := Seq(Scala212, "2.13.0-M4")
-bintrayOrganization in ThisBuild := Some("underscoreio")
-bintrayPackageLabels in ThisBuild := Seq("scala", "training", "creative-scala")
-licenses in ThisBuild += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0"))
+enablePlugins(AutomateHeaderPlugin)
 
-lazy val root = project.in(file(".")).
-  aggregate(doodleJS, doodleJVM).
-  settings(
-    publish := {},
-    publishLocal := {},
-    bintrayRepository := "training"
-  )
+coursierUseSbtCredentials := true
+coursierChecksums := Nil      // workaround for nexus sync bugs
 
-lazy val doodle = crossProject.
-  crossType(DoodleCrossType).
-  settings(
-    scalacOptions ++= Seq("-feature", "-deprecation", "-unchecked", "-Ywarn-unused-import"),
-    scalacOptions ++= (
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, v)) if v <= 12 => Seq(
-          "-Xfatal-warnings",
-          "-Ypartial-unification"
-        )
-        case _ => Seq(
-        )
-      }
-    ),
-    scalacOptions in (Compile, console) := Seq("-feature", "-Xfatal-warnings", "-deprecation", "-unchecked"),
-    scalacOptions in (Compile, console) ++= (
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, v)) if v <= 12 => Seq(
-          "-Ypartial-unification"
-        )
-        case _ => Seq(
-        )
-      }
-    ),
-    licenses += ("Apache-2.0", url("http://apache.org/licenses/LICENSE-2.0")),
-    libraryDependencies ++= Seq(
-       "org.typelevel"  %%% "cats-core" % catsVersion,
-       "org.typelevel"  %%% "cats-free" % catsVersion,
-       "org.scalatest"  %%% "scalatest" % "3.0.6-SNAP1" % "test",
-       "org.scalacheck" %%% "scalacheck" % "1.14.0" % "test"
-    ),
-    bintrayRepository := "training"
-  ).jvmSettings(
-    libraryDependencies ++= Seq(
-      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
-    ),
-    initialCommands in console := """
-      |import doodle.core._
-      |import doodle.core.Image._
-      |import doodle.random._
+isSnapshot := true
+useGpg := true
+pgpSecretRing := pgpPublicRing.value
+
+lazy val commonSettings = Seq(
+  libraryDependencies ++= Seq(
+    Dependencies.catsCore,
+    Dependencies.catsEffect,
+    Dependencies.catsFree,
+    Dependencies.miniTest,
+    Dependencies.miniTestLaws
+  ),
+
+  testFrameworks += new TestFramework("minitest.runner.Framework"),
+
+  credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential"),
+
+  startYear := Some(2015),
+  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
+
+  initialCommands in console := """
+      |import doodle.java2d._
+      |import doodle.image._
       |import doodle.syntax._
-      |import doodle.jvm.FileFrame._
-      |import doodle.jvm.Java2DFrame._
-      |import doodle.backend.StandardInterpreter._
-      |import doodle.backend.Formats._
       |import doodle.examples._
     """.trim.stripMargin,
-    cleanupCommands in console := """
-      |doodle.jvm.quit()
-    """.trim.stripMargin
-  ).jsSettings(
-    scalaJSUseMainModuleInitializer         := true,
-    scalaJSUseMainModuleInitializer in Test := false,
-    libraryDependencies ++= Seq(
-      "org.scala-js"  %%% "scalajs-dom" % "0.9.6",
-      "com.lihaoyi"   %%% "scalatags"   % "0.6.7"
-    )
+
+  cleanupCommands in console := """
+      |doodle.java2d.effect.Java2dRenderer.stop()
+    """.trim.stripMargin,
+
+  addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
+)
+
+lazy val root = (project in file("."))
+  .settings(commonSettings)
+  .settings(
+    initialCommands in console := """
+      |import cats.instances.all._
+      |import doodle.java2d._
+      |import doodle.syntax._
+      |import doodle.effect.Writer._
+      |import doodle.examples._
+      |import doodle.image._
+      |import doodle.image.syntax._
+      |import doodle.image.examples._
+      |import doodle.animate.java2d._
+      |import doodle.animate.syntax._
+      |import doodle.animate.examples._
+      |import doodle.explore.java2d._
+      |import doodle.explore.syntax._
+      |import doodle.explore.examples._
+    """.trim.stripMargin,
+    moduleName := "doodle"
   )
+  .dependsOn(animate, core, explore, image, turtle)
+  .aggregate(animate, core, explore, image, turtle)
 
-lazy val doodleJVM = doodle.jvm
+lazy val core = (project in file("core"))
+  .settings(commonSettings,
+            moduleName := "doodle-core")
 
-lazy val doodleJS = doodle.js.enablePlugins(WorkbenchPlugin)
+lazy val image = (project in file("image"))
+  .settings(commonSettings,
+            moduleName := "doodle-image")
+  .dependsOn(core)
 
-console := { console.in(doodleJVM, Compile).value }
+lazy val animate = (project in file("animate"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.monix,
+            moduleName := "doodle-animate")
+  .dependsOn(core)
+
+lazy val explore = (project in file("explore"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.magnolia,
+            moduleName := "doodle-explore")
+  .dependsOn(core, animate)
+
+lazy val turtle = (project in file("turtle"))
+  .settings(commonSettings,
+            moduleName := "doodle-turtle")
+  .dependsOn(core, image)
