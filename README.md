@@ -44,7 +44,7 @@ Below we have a few tips to get you started.
 2.  Start the console:
 
     ~~~ coffee
-    > console
+    > rootJVM/console
 
     scala> # This is the Scala prompt. Press Ctrl+D to quit to SBT.
     ~~~
@@ -52,7 +52,7 @@ Below we have a few tips to get you started.
 3.  Use Scala commands to draw a shape in a native window:
 
     ~~~ scala
-    scala> (Image.circle(10).fillColor(Color.red)).draw
+    scala> (Image.circle(10).fillColor(Color.red)).draw()
     ~~~
 
     A window should appear containing a red circle.

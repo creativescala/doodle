@@ -1,6 +1,6 @@
 ThisBuild / name := "doodle"
 ThisBuild / organization := "org.creativescala"
-ThisBuild / organizationName := "Creative Scala"
+ThisBuild / organizationName := "Noel Welsh"
 ThisBuild / organizationHomepage := Some(url("http://creativescala.org/"))
 ThisBuild / version := "0.9.0-SNAPSHOT"
 
