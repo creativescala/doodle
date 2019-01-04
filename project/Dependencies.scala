@@ -2,14 +2,14 @@ import sbt._
 
 object Dependencies {
   // Library Versions
-  val catsVersion       = "1.2.0"
-  val catsEffectVersion = "0.10.1"
+  val catsVersion       = "1.5.0"
+  val catsEffectVersion = "1.1.0"
 
   val magnoliaVersion = "0.10.0"
 
-  val monixVersion = "3.0.0-RC1"
+  val monixVersion = "3.0.0-RC2"
 
-  val miniTestVersion   = "2.1.1"
+  val miniTestVersion   = "2.2.2"
   val scalaCheckVersion = "1.14.0"
 
 

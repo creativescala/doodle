@@ -23,6 +23,7 @@ import cats.effect.IO
 import doodle.algebra.Image
 import doodle.effect.Renderer
 import doodle.java2d.effect.Java2DFrame
+import monix.eval.Task
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
 import scala.concurrent.ExecutionContext
@@ -44,11 +45,12 @@ object Java2dAnimator extends Animator[Java2DFrame] {
       m: Monoid[A]): IO[A] = {
     frames
       .sampleRepeated(frameRate)
-      .mapEval(img => e.render(canvas)(algebra => img(algebra)))
+      .mapEval(img => Task.fromIO(e.render(canvas)(algebra => img(algebra))))
       .consumeWith(Consumer.foldLeft(m.empty) { (accum, a) =>
         m.combine(accum, a)
       })
       .toIO(
-        Scheduler(canvas.timer, ExecutionContext.fromExecutor(canvas.timer)))
+        Task.catsEffect(Scheduler(canvas.timer, ExecutionContext.fromExecutor(canvas.timer)))
+      )
   }
 }
