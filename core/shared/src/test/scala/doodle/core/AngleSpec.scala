@@ -16,4 +16,10 @@ object AngleSpec extends Properties("Angle properties") {
 
   property("angle has bijection to Double as turns") =
     forAll{ (a: Angle) => a ~= Angle.turns(a.toTurns) }
+
+  property("angle negation is inverse") =
+    forAll{ (a: Angle) => (a + (-a)) ~= Angle.zero }
+
+  property("angle double negation is identity") =
+    forAll{ (a: Angle) => a ~= -(-a) }
 }

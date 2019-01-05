@@ -27,6 +27,9 @@ final class Angle(val toRadians: Double) {
   def -(that: Angle): Angle =
     Angle.radians(this.toRadians - that.toRadians)
 
+  def unary_- : Angle =
+    Angle.radians(-this.toRadians)
+
   def *(m: Double): Angle =
     Angle.radians(this.toRadians * m)
 
