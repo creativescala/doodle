@@ -26,11 +26,11 @@ pgpSecretRing := pgpPublicRing.value
 
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
-    Dependencies.catsCore,
-    Dependencies.catsEffect,
-    Dependencies.catsFree,
-    Dependencies.miniTest,
-    Dependencies.miniTestLaws
+    Dependencies.catsCore.value,
+    Dependencies.catsEffect.value,
+    Dependencies.catsFree.value,
+    Dependencies.miniTest.value,
+    Dependencies.miniTestLaws.value
   ),
 
   testFrameworks += new TestFramework("minitest.runner.Framework"),
@@ -91,6 +91,15 @@ lazy val java2d = project
             moduleName := "doodle-java2d")
   .dependsOn(coreJvm)
 
+lazy val svg = crossProject
+  .in(file("svg"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.scalaTags.value,
+            moduleName := "doodle-svg")
+
+lazy val svgJvm = svg.jvm.dependsOn(coreJvm)
+lazy val svgJs  = svg.js.dependsOn(coreJs)
+
 
 lazy val image = crossProject
   .in(file("image"))
@@ -104,7 +113,7 @@ lazy val imageJs  = image.js.dependsOn(coreJs)
 lazy val animate = crossProject
   .in(file("animate"))
   .settings(commonSettings,
-            libraryDependencies += Dependencies.monix,
+            libraryDependencies += Dependencies.monix.value,
             moduleName := "doodle-animate")
 
 lazy val animateJvm = animate.jvm.dependsOn(coreJvm, java2d)
@@ -114,7 +123,7 @@ lazy val animateJs  = animate.js.dependsOn(coreJs)
 lazy val explore = crossProject
   .in(file("explore"))
   .settings(commonSettings,
-            libraryDependencies += Dependencies.magnolia,
+            libraryDependencies += Dependencies.magnolia.value,
             moduleName := "doodle-explore")
   .dependsOn(core, animate)
 

@@ -1,4 +1,8 @@
 import sbt._
+import org.scalajs.sbtplugin.ScalaJSPlugin
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
+
 
 object Dependencies {
   // Library Versions
@@ -14,14 +18,16 @@ object Dependencies {
 
 
   // Libraries
-  val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
-  val catsCore   = "org.typelevel" %% "cats-core"   % catsVersion
-  val catsFree   = "org.typelevel" %% "cats-free"   % catsVersion
+  val catsEffect = Def.setting("org.typelevel" %%% "cats-effect" % catsEffectVersion)
+  val catsCore   = Def.setting("org.typelevel" %%% "cats-core"   % catsVersion)
+  val catsFree   = Def.setting("org.typelevel" %%% "cats-free"   % catsVersion)
 
-  val miniTest     = "io.monix" %% "minitest"      % miniTestVersion % "test"
-  val miniTestLaws = "io.monix" %% "minitest-laws" % miniTestVersion % "test"
+  val miniTest     = Def.setting("io.monix" %%% "minitest"      % miniTestVersion % "test")
+  val miniTestLaws = Def.setting("io.monix" %%% "minitest-laws" % miniTestVersion % "test")
 
-  val monix = "io.monix" %% "monix" % monixVersion
+  val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
 
-  val magnolia = "com.propensive" %% "magnolia" % "0.10.0"
+  val magnolia = Def.setting("com.propensive" %%% "magnolia" % "0.10.0")
+
+  val scalaTags = Def.setting("com.lihaoyi" %%% "scalatags" % "0.6.7")
 }
