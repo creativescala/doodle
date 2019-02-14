@@ -106,7 +106,7 @@ lazy val image = crossProject
   .settings(commonSettings,
             moduleName := "doodle-image")
 
-lazy val imageJvm = image.jvm.dependsOn(coreJvm)
+lazy val imageJvm = image.jvm.dependsOn(coreJvm, java2d)
 lazy val imageJs  = image.js.dependsOn(coreJs)
 
 

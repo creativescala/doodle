@@ -21,17 +21,17 @@ package syntax
 import cats.Monoid
 import doodle.algebra.Image
 import doodle.animate.Animator
-import doodle.effect.{Renderer, Frame}
+import doodle.effect.DefaultRenderer
 
 trait ExploreSyntax {
   implicit class ExploreFunctionOps[A, Algebra, F[_], B](
       f: A => Image[Algebra, F, B]) {
-    def explore[C](implicit ex: ExplorerFactory[_, A],
-                   a: Animator[C],
-                   e: Renderer[Algebra, F, C],
+    def explore[Frame, Canvas](implicit ex: ExplorerFactory[_, A],
+                   a: Animator[Canvas],
+                   e: DefaultRenderer[Algebra, F, Frame, Canvas],
                    m: Monoid[B]): B = {
       (for {
-        canvas <- e.frame(Frame.size(600, 600))
+        canvas <- e.frame(e.default)
         values <- ex.create.render
         b <- a.animateObservable(canvas)(values.map(f))
       } yield b).unsafeRunSync()

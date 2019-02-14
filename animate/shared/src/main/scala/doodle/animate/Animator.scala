@@ -30,15 +30,15 @@ import monix.reactive.Observable
 trait Animator[Canvas] {
 
   /** Animate frames that are contained in an `Iterable` structure. */
-  def animateIterable[Algebra, F[_], A](canvas: Canvas)(
+  def animateIterable[Algebra, F[_], A, Frame](canvas: Canvas)(
       frames: Iterable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Canvas],
+      implicit e: Renderer[Algebra, F, Frame, Canvas],
       m: Monoid[A]): IO[A]
 
   /** Animate frames that are produced by an `Observable`. */
-  def animateObservable[Algebra, F[_], A](canvas: Canvas)(
+  def animateObservable[Algebra, F[_], A, Frame](canvas: Canvas)(
       frames: Observable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Canvas],
+      implicit e: Renderer[Algebra, F, Frame, Canvas],
       m: Monoid[A]): IO[A]
 }
 object Animator {

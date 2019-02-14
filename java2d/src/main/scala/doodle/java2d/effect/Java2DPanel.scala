@@ -22,7 +22,6 @@ import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
 import doodle.algebra.generic.{BoundingBox, Reified}
 import doodle.core.{Transform}
-import doodle.effect._
 import doodle.java2d.algebra.{Algebra, Java2D}
 import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.NoSuchElementException
@@ -30,7 +29,7 @@ import javax.swing.{JPanel, SwingUtilities}
 import scala.concurrent.SyncVar
 
 final class Java2DPanel(frame: Frame) extends JPanel {
-  import doodle.effect.Size._
+  import Size._
   import Java2DPanel.RenderRequest
 
   private val channel: SyncVar[RenderRequest[_]] = new SyncVar()

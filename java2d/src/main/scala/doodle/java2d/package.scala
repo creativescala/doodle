@@ -16,7 +16,7 @@
 
 package doodle
 
-import doodle.effect.Renderer
+import doodle.effect.DefaultRenderer
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
@@ -24,7 +24,7 @@ package object java2d {
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
   type Java2DFrame = doodle.java2d.effect.Java2DFrame
-  implicit val java2DRenderer: Renderer[Algebra, Drawing, Java2DFrame] =
+  implicit val java2DRenderer: DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Java2DFrame] =
     doodle.java2d.effect.Java2dRenderer
   implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter

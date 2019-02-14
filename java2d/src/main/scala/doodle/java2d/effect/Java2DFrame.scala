@@ -19,7 +19,6 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.effect._
 import java.awt.event._
 import javax.swing.{JFrame, WindowConstants}
 import java.util.concurrent.ScheduledThreadPoolExecutor

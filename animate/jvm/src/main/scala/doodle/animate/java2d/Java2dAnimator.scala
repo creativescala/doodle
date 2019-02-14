@@ -32,16 +32,16 @@ import scala.concurrent.duration._
 object Java2dAnimator extends Animator[Java2DFrame] {
   val frameRate = 16.milliseconds
 
-  def animateIterable[Algebra, F[_], A](canvas: Java2DFrame)(
+  def animateIterable[Algebra, F[_], A, Frame](canvas: Java2DFrame)(
       frames: Iterable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Java2DFrame],
+      implicit e: Renderer[Algebra, F, Frame, Java2DFrame],
       m: Monoid[A]): IO[A] =
     animateObservable(canvas)(
       Observable.fromIterable(frames).delayOnNext(frameRate))
 
-  def animateObservable[Algebra, F[_], A](canvas: Java2DFrame)(
+  def animateObservable[Algebra, F[_], A, Frame](canvas: Java2DFrame)(
       frames: Observable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Java2DFrame],
+      implicit e: Renderer[Algebra, F, Frame, Java2DFrame],
       m: Monoid[A]): IO[A] = {
     frames
       .sampleRepeated(frameRate)

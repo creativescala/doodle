@@ -27,8 +27,13 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Format] {
+trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Frame, Format] {
   def format: String
+
+  def write[A, Alg >: Algebra](file: File,
+                               image: Image[Alg, Drawing, A]): IO[A] = {
+    write(file, Frame.fitToImage(), image)
+  }
 
   def write[A, Alg >: Algebra](file: File,
                                frame: Frame,

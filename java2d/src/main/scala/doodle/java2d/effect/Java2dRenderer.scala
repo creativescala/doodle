@@ -19,11 +19,13 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.effect.{Frame, Renderer}
+import doodle.effect.DefaultRenderer
 import javax.swing.JFrame
 
-object Java2dRenderer extends Renderer[Algebra, Drawing, Java2DFrame] {
+object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Java2DFrame] {
   private var jFrames: List[JFrame] = List.empty
+
+  val default: Frame = Frame.fitToImage()
 
   def frame(description: Frame): IO[Java2DFrame] =
     IO {

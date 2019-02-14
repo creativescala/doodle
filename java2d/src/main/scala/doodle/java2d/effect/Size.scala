@@ -15,26 +15,24 @@
  */
 
 package doodle
+package java2d
 package effect
 
-import doodle.core.Color
+sealed abstract class Size extends Product with Serializable
+object Size {
 
-final case class Frame(size: Size,
-                       title: String = "",
-                       background: Option[Color] = None) {
-  def background(color: Color): Frame =
-    this.copy(background = Some(color))
+  // Algebraic data type members
+  final case class FitToImage(border: Int) extends Size
+  final case class FixedSize(width: Double, height: Double) extends Size
+  final case object FullScreen extends Size
 
-  def title(title: String): Frame =
-    this.copy(title = title)
-}
-object Frame {
-  def fitToImage(border: Int = 20): Frame =
-    Frame(Size.fitToImage(border))
+  // Smart constructors
 
-  def size(width: Double, height: Double): Frame =
-    Frame(Size.fixedSize(width, height))
+  def fitToImage(border: Int = 20): Size =
+    FitToImage(border)
 
-  def fullScreen: Frame =
-    Frame(Size.fullScreen)
+  def fixedSize(width: Double, height: Double): Size =
+    FixedSize(width, height)
+
+  val fullScreen: Size = FullScreen
 }

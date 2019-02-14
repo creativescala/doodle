@@ -17,19 +17,14 @@
 package doodle
 package effect
 
-import cats.effect.IO
-
 /**
-  * The `Renderer` typeclass describes a data type that can create an area to
-  * render an image (a Canvas) from a description (a Frame) and render an
-  * image to that Canvas.
+  * The `DefaultRenderer` typeclass is a `Renderer` that has a reasonable default frame.
   */
-trait Renderer[+Algebra, F[_], Frame, Canvas] {
-  def frame(description: Frame): IO[Canvas]
-  def render[A](canvas: Canvas)(f: Algebra => F[A]): IO[A]
+trait DefaultRenderer[+Algebra, F[_], Frame, Canvas] extends Renderer[Algebra, F, Frame, Canvas] {
+  def default: Frame
 }
-object Renderer {
+object DefaultRenderer {
   def apply[Algebra, F[_], Frame, Canvas](
-      implicit renderer: Renderer[Algebra, F, Frame, Canvas])
-    : Renderer[Algebra, F, Frame, Canvas] = renderer
+      implicit renderer: DefaultRenderer[Algebra, F, Frame, Canvas])
+    : DefaultRenderer[Algebra, F, Frame, Canvas] = renderer
 }
