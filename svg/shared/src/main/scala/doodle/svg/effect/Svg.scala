@@ -3,12 +3,23 @@ package svg
 package effect
 
 import doodle.core._
-import doodle.algebra.generic.{Fill, Reified, Stroke}
-import scalatags.generic.{AttrValue, Bundle}
+import doodle.algebra.generic.{BoundingBox, Fill, Reified, Stroke}
+import scalatags.generic.Bundle
 
-class Svg[Builder, Output, FragT](bundle: Bundle[Builder, Output, FragT])(implicit stringAsAttr: AttrValue[Builder, String], doubleAsAttr: AttrValue[Builder, Double]) {
+case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT])/*(implicit stringAsAttr: AttrValue[Builder, String], doubleAsAttr: AttrValue[Builder, Double])*/ {
+  def render(boundingBox: BoundingBox, instructions: List[Reified]) = {
+    import bundle.{svgTags => svg}
+    import bundle.svgAttrs
+    import bundle.implicits._
+
+    svg.svg(svgAttrs.width:=boundingBox.width, svgAttrs.height:=boundingBox.height)(
+      instructions.map(reifiedToSvg(_)):_*
+    )
+  }
+
   def reifiedToSvg(reified: Reified) = {
     import Reified._
+    import bundle.implicits._
     import bundle.{svgTags => svg}
     import bundle.svgAttrs
 
@@ -76,12 +87,6 @@ class Svg[Builder, Output, FragT](bundle: Bundle[Builder, Output, FragT])(implic
   }
 }
 object Svg {
-  import Reified._
-
-  def render[Builder, Output, FragT](instructions: List[Reified], bundle: Bundle[Builder, Output, FragT]): Output =
-    ???
-
-
   def toStyle(stroke: Stroke): String = {
     val builder = new StringBuilder(64)
 
