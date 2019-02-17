@@ -16,7 +16,7 @@ This is the development branch of Doodle. The current release is **`0.9.0-SNAPSH
 You can use Doodle in your own project by importing the JARs published to Maven Central. To use it add the following to your `build.sbt`:
 
 ~~~ scala
-scalaVersion := "2.12.7" // Doodle is currently published for Scala 2.12 only
+scalaVersion := "2.12.8" // Doodle is currently published for Scala 2.12 only
 libraryDependencies += "creativescala.org" %% "doodle" % "0.9.0-SNAPSHOT"
 ~~~
 
