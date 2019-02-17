@@ -40,7 +40,7 @@ lazy val commonSettings = Seq(
   startYear := Some(2015),
   licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
 
-  addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
+  addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.9" cross CrossVersion.binary)
 )
 
 lazy val root = crossProject
