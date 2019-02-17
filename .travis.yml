@@ -3,8 +3,8 @@ language: scala
 
 matrix:
   include:
-  - scala: 2.12.6
-  - scala: 2.13.0-M4
+  - scala: 2.12.8
+  - scala: 2.13.0-M5
     script:
     # TODO scalatags for Scala 2.13.0-M4
-    - sbt "++ ${TRAVIS_SCALA_VERSION}!" root/test
+    - sbt "++ ${TRAVIS_SCALA_VERSION}!" code/test
