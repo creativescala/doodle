@@ -94,9 +94,11 @@ lazy val java2d = project
 
 lazy val svg = crossProject
   .in(file("svg"))
+  .enablePlugins(WorkbenchPlugin)
   .settings(commonSettings,
+            moduleName := "doodle-svg",
             libraryDependencies += Dependencies.scalaTags.value,
-            moduleName := "doodle-svg")
+            workbenchDefaultRootObject := Some(("svg/example.html", "svg/")))
 
 lazy val svgJvm = svg.jvm.dependsOn(coreJvm)
 lazy val svgJs  = svg.js.dependsOn(coreJs)

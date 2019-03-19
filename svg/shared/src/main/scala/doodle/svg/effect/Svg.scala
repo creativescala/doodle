@@ -4,87 +4,96 @@ package effect
 
 import doodle.core._
 import doodle.algebra.generic.{BoundingBox, Fill, Reified, Stroke}
-import scalatags.generic.Bundle
+import scalatags.generic.{Bundle, TypedTag}
+import scala.collection.mutable.ListBuffer
 
-case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT])/*(implicit stringAsAttr: AttrValue[Builder, String], doubleAsAttr: AttrValue[Builder, Double])*/ {
+final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT]) {
+  implicit val context = SvgGraphicsContext(bundle)
+
   def render(boundingBox: BoundingBox, instructions: List[Reified]) = {
     import bundle.{svgTags => svg}
     import bundle.svgAttrs
     import bundle.implicits._
 
-    svg.svg(svgAttrs.width:=boundingBox.width, svgAttrs.height:=boundingBox.height)(
-      instructions.map(reifiedToSvg(_)):_*
+    val tx = Transform.logicalToScreen(boundingBox.width, boundingBox.height)
+    val elts: ListBuffer[TypedTag[Builder, Output, FragT]] = new ListBuffer()
+    instructions.foreach(_.render(elts, tx)(context))
+
+    svg.svg(svgAttrs.width:=boundingBox.width,
+            svgAttrs.height:=boundingBox.height,
+            svgAttrs.viewBox:=s"0 0 ${boundingBox.width} ${boundingBox.height}")(
+      elts:_*
     )
   }
 
-  def reifiedToSvg(reified: Reified) = {
-    import Reified._
-    import bundle.implicits._
-    import bundle.{svgTags => svg}
-    import bundle.svgAttrs
+  // def reifiedToSvg(reified: Reified) = {
+  //   import Reified._
+  //   import bundle.implicits._
+  //   import bundle.{svgTags => svg}
+  //   import bundle.svgAttrs
 
-    reified match {
-      case FillOpenPath(tx, fill, elements) =>
-        val dAttr = Svg.toSvgPath(elements, Svg.Open)
-        val style = Svg.toStyle(fill)
-        svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+  //   reified match {
+  //     case FillOpenPath(tx, fill, elements) =>
+  //       val dAttr = Svg.toSvgPath(elements, Svg.Open)
+  //       val style = Svg.toStyle(fill)
+  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
 
-      case StrokeOpenPath(tx, stroke, elements) =>
-        val dAttr = Svg.toSvgPath(elements, Svg.Open)
-        val style = Svg.toStyle(stroke)
-        svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
-
-
-      case FillClosedPath(tx, fill, elements) =>
-        val dAttr = Svg.toSvgPath(elements, Svg.Closed)
-        val style = Svg.toStyle(fill)
-        svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
-
-      case StrokeClosedPath(tx, stroke, elements) =>
-        val dAttr = Svg.toSvgPath(elements, Svg.Closed)
-        val style = Svg.toStyle(stroke)
-        svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+  //     case StrokeOpenPath(tx, stroke, elements) =>
+  //       val dAttr = Svg.toSvgPath(elements, Svg.Open)
+  //       val style = Svg.toStyle(stroke)
+  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
 
 
-      case FillCircle(tx, fill, diameter) =>
-        val style = Svg.toStyle(fill)
-        svg.circle(svgAttrs.transform:=Svg.toSvgTransform(tx),
-                   svgAttrs.style:=style,
-                   svgAttrs.r:=(diameter/2.0))
+  //     case FillClosedPath(tx, fill, elements) =>
+  //       val dAttr = Svg.toSvgPath(elements, Svg.Closed)
+  //       val style = Svg.toStyle(fill)
+  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
 
-      case StrokeCircle(tx, stroke, diameter) =>
-        val style = Svg.toStyle(stroke)
-        svg.circle(svgAttrs.transform:=Svg.toSvgTransform(tx),
-                   svgAttrs.style:=style,
-                   svgAttrs.r:=(diameter/2.0))
+  //     case StrokeClosedPath(tx, stroke, elements) =>
+  //       val dAttr = Svg.toSvgPath(elements, Svg.Closed)
+  //       val style = Svg.toStyle(stroke)
+  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
 
 
-      case FillRect(tx, fill, width, height) =>
-        val style = Svg.toStyle(fill)
-        svg.rect(svgAttrs.transform:=Svg.toSvgTransform(tx),
-                 svgAttrs.style:=style,
-                 svgAttrs.width:=width,
-                 svgAttrs.height:=height)
+  //     case FillCircle(tx, fill, diameter) =>
+  //       val style = Svg.toStyle(fill)
+  //       svg.circle(svgAttrs.transform:=Svg.toSvgTransform(tx),
+  //                  svgAttrs.style:=style,
+  //                  svgAttrs.r:=(diameter/2.0))
 
-      case StrokeRect(tx, stroke, width, height) =>
-        val style = Svg.toStyle(stroke)
-        svg.rect(svgAttrs.transform:=Svg.toSvgTransform(tx),
-                 svgAttrs.style:=style,
-                 svgAttrs.width:=width,
-                 svgAttrs.height:=height)
+  //     case StrokeCircle(tx, stroke, diameter) =>
+  //       val style = Svg.toStyle(stroke)
+  //       svg.circle(svgAttrs.transform:=Svg.toSvgTransform(tx),
+  //                  svgAttrs.style:=style,
+  //                  svgAttrs.r:=(diameter/2.0))
 
 
-      case FillPolygon(tx, fill, points) =>
-        val dAttr = Svg.toSvgPath(points, Svg.Closed)
-        val style = Svg.toStyle(fill)
-        svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+  //     case FillRect(tx, fill, width, height) =>
+  //       val style = Svg.toStyle(fill)
+  //       svg.rect(svgAttrs.transform:=Svg.toSvgTransform(tx),
+  //                svgAttrs.style:=style,
+  //                svgAttrs.width:=width,
+  //                svgAttrs.height:=height)
 
-      case StrokePolygon(tx, stroke, points) =>
-        val dAttr = Svg.toSvgPath(points, Svg.Closed)
-        val style = Svg.toStyle(stroke)
-        svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
-    }
-  }
+  //     case StrokeRect(tx, stroke, width, height) =>
+  //       val style = Svg.toStyle(stroke)
+  //       svg.rect(svgAttrs.transform:=Svg.toSvgTransform(tx),
+  //                svgAttrs.style:=style,
+  //                svgAttrs.width:=width,
+  //                svgAttrs.height:=height)
+
+
+  //     case FillPolygon(tx, fill, points) =>
+  //       val dAttr = Svg.toSvgPath(points, Svg.Closed)
+  //       val style = Svg.toStyle(fill)
+  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+
+  //     case StrokePolygon(tx, stroke, points) =>
+  //       val dAttr = Svg.toSvgPath(points, Svg.Closed)
+  //       val style = Svg.toStyle(stroke)
+  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+  //   }
+  // }
 }
 object Svg {
   def toStyle(stroke: Stroke): String = {
@@ -104,6 +113,7 @@ object Svg {
     builder ++= s"stroke: ${toHSLA(stroke.color)};"
     builder ++= s"stroke-linecap: ${linecap}; "
     builder ++= s"stroke-linejoin: ${linejoin}; "
+    builder ++= "fill: none;"
 
     builder.toString
   }

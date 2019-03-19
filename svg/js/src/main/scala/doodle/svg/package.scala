@@ -7,10 +7,12 @@ package object svg {
   type Drawing[A] = doodle.algebra.generic.Finalized[A]
   type Renderable[A] = doodle.algebra.generic.Renderable[A]
 
-  type SvgFrame = doodle.svg.effect.SvgFrame
-  type SvgCanvas = doodle.svg.effect.SvgCanvas
-  implicit val svgRenderer: Renderer[Algebra, Drawing, SvgFrame, SvgCanvas] =
+  type Frame = doodle.svg.effect.Frame
+  type Canvas = doodle.svg.effect.Canvas
+  implicit val svgRenderer: Renderer[Algebra, Drawing, Frame, Canvas] =
     doodle.svg.effect.SvgRenderer
+
+  val Frame = doodle.svg.effect.Frame
 
   type Image[A] = doodle.algebra.Image[Algebra, Drawing, A]
   object Image {

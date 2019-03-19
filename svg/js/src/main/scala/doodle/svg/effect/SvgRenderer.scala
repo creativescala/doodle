@@ -8,13 +8,13 @@ import doodle.effect.Renderer
 import doodle.svg.algebra.Algebra
 import scalatags.JsDom
 
-object SvgRenderer extends Renderer[Algebra, Drawing, SvgFrame, SvgCanvas] {
+object SvgRenderer extends Renderer[Algebra, Drawing, Frame, Canvas] {
   val svg = Svg(JsDom)
 
-  def frame(description: SvgFrame): IO[SvgCanvas] =
-    ???
+  def frame(description: Frame): IO[Canvas] =
+    IO{ Canvas.fromFrame(description) }
 
-  def render[A](canvas: SvgCanvas)(f: Algebra => Drawing[A]): IO[A] =
+  def render[A](canvas: Canvas)(f: Algebra => Drawing[A]): IO[A] =
     for {
       drawing <- IO { f(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
