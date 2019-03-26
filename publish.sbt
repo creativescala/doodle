@@ -2,7 +2,8 @@ ThisBuild / name := "doodle"
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Noel Welsh"
 ThisBuild / organizationHomepage := Some(url("http://creativescala.org/"))
-ThisBuild / version := "0.9.0-SNAPSHOT"
+ThisBuild / version := "0.9.0"
+ThisBuild / isSnapshot := false
 
 ThisBuild / useGpg := true
 ThisBuild / pgpSecretRing := pgpPublicRing.value
@@ -17,7 +18,7 @@ ThisBuild / developers := List(
   Developer(
     id    = "noelwelsh",
     name  = "Noel Welsh",
-    email = "noel@underscore.io",
+    email = "noel@noelwelsh.com",
     url   = url("http://noelwelsh.com")
   )
 )

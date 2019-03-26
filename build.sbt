@@ -20,9 +20,6 @@ scalaVersion in ThisBuild := "2.12.8"
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
 
-isSnapshot := true
-useGpg := true
-pgpSecretRing := pgpPublicRing.value
 
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
