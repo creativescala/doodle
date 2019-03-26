@@ -1,0 +1,56 @@
+# Image
+
+@@@ index
+
+* [Paths](path.md)
+
+@@@
+
+The Image DSL is the easiest way to create images using Doodle. The tradeoff the Image library makes is that it only support a (large but limited) subset of operations that are supported across all the backends.
+
+## Getting Starting
+
+To use Image you'll need the following imports:
+
+```scala
+import doodle.image._
+import doodle.image.syntax._
+import doodle.core._
+```
+
+
+## Basic Shapes
+
+The basic shapes are on the `Image` companion object. This includes:
+
+* `Image.empty` creates the empty Image that takes up no space and renders nothing. Useful for that sweet monoid identity and for the base case in recursions.
+* `Image.square(sideLength)` creates a square with the given side length.
+* `Image.rectangle(width, height)` creates a rectangle with the given width and height.
+* `Image.circle(diameter)` creates a circle with the given diameter. Specified in terms of diameter rather than radius so that `Image.square(100)` and `Image.circle(100)` take up the same space.
+* `Image.triangle(width, height)` creates an isoceles triangle with the given width and height.
+
+## Complex Shapes
+
+Some more complex shapes are also available on the `Image` companion object:
+
+* `Image.regularPolygon(sides, radius, angle)` creates a regular polygon with the given number of sides and radius. The `angle` specifies the rotation of the polygon relative to the x-axis.
+* `Image.star(points, outerRadius, innerRadius, angle)` creates a star with the given number of points. The points extend as far as `outerRadius` and go in to `innerRadius`. The `angle` specifies the rotation of the star relative to the x-axis.
+* `Image.rightArrow(width, height)` creates an arrow points to the right with the given width and height.
+* `Image.roundedRectangle(width, height, radius)` creates a rectangle of the given width and height, with rounded corners with size given by `radius`.
+
+## Paths
+
+Paths allow construction of custom shapes. They are described in @ref[their own section](path.md). There are three methods on the `Image` companion object that deal with paths:
+
+* `Image.openPath(pathElements)` converts a `Seq[PathElement]` into an `Image` representing an open path (a path that does not end where it begins).
+* `Image.closedPath` converts a `Seq[PathElement]` to an `Image` representing a closed path (a path that ends where it begins; a straight line will be inserted if to make this the case if needed.)
+* `Image.interpolatingSpline` converts a `Seq[Point]` to an `Image` by interpolating a smooth curve between the points using the [Catmull-Rom][catmull-rom] algorithm.
+
+
+## Layout
+
+## Transformations
+
+## Styling
+
+[catmull-rom]: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline

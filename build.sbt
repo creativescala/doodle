@@ -43,7 +43,8 @@ lazy val commonSettings = Seq(
 lazy val root = crossProject
   .in(file("."))
   .settings(commonSettings,
-            moduleName := "doodle")
+            moduleName := "doodle",
+            paradoxTheme := Some(builtinParadoxTheme("generic")))
   .jvmSettings(
     initialCommands in console := """
       |import cats.instances.all._
@@ -83,6 +84,11 @@ lazy val coreJvm = core.jvm
 lazy val coreJs  = core.js
 
 
+lazy val site = project
+  .in(file("site"))
+  .enablePlugins(ParadoxPlugin)
+
+
 lazy val java2d = project
   .in(file("java2d"))
   .settings(commonSettings,
@@ -91,11 +97,12 @@ lazy val java2d = project
 
 lazy val svg = crossProject
   .in(file("svg"))
-  .enablePlugins(WorkbenchPlugin)
+//.enablePlugins(WorkbenchPlugin)
   .settings(commonSettings,
             moduleName := "doodle-svg",
-            libraryDependencies += Dependencies.scalaTags.value,
-            workbenchDefaultRootObject := Some(("svg/example.html", "svg/")))
+            libraryDependencies += Dependencies.scalaTags.value
+//            workbenchDefaultRootObject := Some(("svg/example.html", "svg/"))
+            )
 
 lazy val svgJvm = svg.jvm.dependsOn(coreJvm)
 lazy val svgJs  = svg.js.dependsOn(coreJs)
