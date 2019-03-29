@@ -25,13 +25,17 @@ Alternatively you can `git clone` or download Doodle and use it directly from th
 
 # Documentation
 
-[Creative Scala][creativescala] is currently the main documentation for Doodle. Creative Scala is a free introductory Scala ebook. Follow the link to download your copy from our web site.
+[Documentation](https://www.creativescala.org/doodle/) is still a work-in-progress.
+
+[Creative Scala][creativescala] provides another source of documentation for Doodle. Creative Scala is a free introductory Scala ebook. 
 
 [creativescala]: http://creativescala.org/
 
 Below we have a few tips to get you started.
 
 ## Getting Started from SBT
+
+If you downloaded Doodle, rather than adding it to an existing Scala project, you can play around with it as follows.
 
 1.  Start SBT:
 
