@@ -87,10 +87,16 @@ lazy val coreJvm = core.jvm
 lazy val coreJs  = core.js
 
 
-lazy val doc = project
-  .in(file("doc"))
-  .settings(mdocIn := file("doc/src/main/mdoc"),
-            mdocOut := file("doc/src/main/paradox"))
+lazy val documentation = taskKey[Unit]("Generate documentation")
+documentation := {
+  (rootJvm / Compile / unidoc).value
+  (docs / Compile / mdoc).inputTaskValue
+  (docs / Compile / paradox).value
+}
+lazy val docs = project
+  .in(file("docs"))
+  .settings(mdocIn := file("docs/src/main/mdoc"),
+            mdocOut := file("docs/src/main/paradox"))
   .enablePlugins(MdocPlugin, ParadoxPlugin)
   .dependsOn(rootJvm)
 
