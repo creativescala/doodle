@@ -22,6 +22,8 @@ project/project
 .scala_dependencies
 .worksheet
 
+# Documentation intermediate files
+docs/src/main/paradox
 
 ### SublimeText ###
 # cache files for sublime text
