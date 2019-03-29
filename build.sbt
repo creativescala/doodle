@@ -87,8 +87,8 @@ lazy val coreJvm = core.jvm
 lazy val coreJs  = core.js
 
 
-lazy val site = project
-  .in(file("site"))
+lazy val doc = project
+  .in(file("doc"))
   .enablePlugins(ParadoxPlugin)
 
 
