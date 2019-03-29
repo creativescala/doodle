@@ -21,7 +21,10 @@ libraryDependencies += "org.creativescala" %% "doodle" % "0.9.0"
 
 ## Quick Example
 
-```scala
+The following example creates a Chessboard, by first creating a 2x2 board, then a 4x4 board from the 2x2 board, and finally the complete 8x8 board from the 4x4 board.
+
+
+```scala mdoc
 // The "Image" DSL is the easiest way to create images
 import doodle.image._
 // Extension methods
@@ -46,7 +49,12 @@ val fourByFour =
 val chessboard =
   (fourByFour.beside(fourByFour))
     .above(fourByFour.beside(fourByFour))
+```
 
+To draw these Images call the `draw` method like so
+
+
+```scala
 chessboard.draw()
 ```
 

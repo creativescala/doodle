@@ -16,7 +16,7 @@ The Image DSL is the easiest way to create images using Doodle. The tradeoff the
 
 To use Image you'll need the following imports:
 
-```scala
+```scala mdoc
 import doodle.image._
 import doodle.image.syntax._
 import doodle.core._
@@ -24,19 +24,22 @@ import doodle.core._
 
 ## Basic Concepts
 
-Image is based on *composition* and the *interpreter pattern*. Composition basically means that you build big Images out of small Images. For example, if you have an Image describing a red square and an Image describing a blue square
+Image is based on *composition* and the *interpreter pattern*. 
 
-```scala
+Composition basically means that we build big Images out of small Images. For example, if we have an Image describing a red square and an Image describing a blue square
+
+```scala mdoc
 val redSquare = Image.square(100).fillColor(Color.red)
 val blueSquare = Image.square(100).fillColor(Color.blue)
 ```
 
-you can create an Image describing a red square next to a blue square by combining them together.
+we can create an Image describing a red square next to a blue square by combining them together.
 
-```scala
+```scala mdoc
 val combination = redSquare.beside(blueSquare)
 ```
 
+The interpreter pattern means that we separate describing the Image from rendering it. Writing `Image.square(100)` doesn't draw anything. To draw an image we need to call the `draw()` method. This separation is important for composition; if we were to immediately draw we would lose composition. 
 
 
 [catmull-rom]: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline

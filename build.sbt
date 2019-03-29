@@ -89,7 +89,10 @@ lazy val coreJs  = core.js
 
 lazy val doc = project
   .in(file("doc"))
-  .enablePlugins(ParadoxPlugin)
+  .settings(mdocIn := file("doc/src/main/mdoc"),
+            mdocOut := file("doc/src/main/paradox"))
+  .enablePlugins(MdocPlugin, ParadoxPlugin)
+  .dependsOn(rootJvm)
 
 
 lazy val java2d = project
