@@ -44,7 +44,9 @@ lazy val root = crossProject
   .in(file("."))
   .settings(commonSettings,
             moduleName := "doodle",
-            paradoxTheme := Some(builtinParadoxTheme("generic")))
+            paradoxTheme := Some(builtinParadoxTheme("generic")),
+            unidocProjectFilter in ( ScalaUnidoc, unidoc ) :=
+              inAnyProject -- inProjects( animateJs, coreJs, exploreJs, imageJs, svgJs, turtleJs ))
   .jvmSettings(
     initialCommands in console := """
       |import cats.instances.all._
@@ -67,12 +69,13 @@ lazy val root = crossProject
       |doodle.java2d.effect.Java2dRenderer.stop()
     """.trim.stripMargin
   )
+  .enablePlugins(ScalaUnidocPlugin)
 lazy val rootJvm = root.jvm
-  .dependsOn(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, turtleJvm)
-  .aggregate(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, turtleJvm)
+  .dependsOn(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, svgJvm, turtleJvm)
+  .aggregate(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, svgJvm, turtleJvm)
 lazy val rootJs = root.js
-  .dependsOn(animateJs, coreJs, exploreJs, imageJs, turtleJs)
-  .aggregate(animateJs, coreJs, exploreJs, imageJs, turtleJs)
+  .dependsOn(animateJs, coreJs, exploreJs, imageJs, svgJs, turtleJs)
+  .aggregate(animateJs, coreJs, exploreJs, imageJs, svgJs, turtleJs)
 
 
 lazy val core = crossProject
