@@ -87,16 +87,40 @@ lazy val coreJvm = core.jvm
 lazy val coreJs  = core.js
 
 
-lazy val documentation = taskKey[Unit]("Generate documentation")
-documentation := {
-  (rootJvm / Compile / unidoc).value
-  (docs / Compile / mdoc).inputTaskValue
-  (docs / Compile / paradox).value
+lazy val copyFiles1 = taskKey[Unit]("SBT is a pile of bullshit")
+copyFiles1 := {
 }
+
+// Why can't I mix normal code and Task .value in the same task?
+// When I do the normal code doesn't run. SBT is a pile of shit
+lazy val copyScalaDoc = taskKey[Unit]("SBT is bullshit")
+copyScalaDoc := {
+  println("Copying Scaladoc")
+  sbt.io.IO.copyDirectory(file("js/target/scala-2.12/unidoc/"),
+                          file("docs/src/main/mdoc/api"))
+}
+lazy val copyFinalDoc = taskKey[Unit]("SBT is a pile of shit")
+copyFinalDoc := {
+  println("Copying documentation to docs/target/docs/site/main")
+  sbt.io.IO.copyDirectory(file("docs/target/paradox/site/main"),
+                          file("docs/target/docs"))
+}
+lazy val documentation = taskKey[Unit]("Generate documentation")
+documentation :=
+  Def.sequential(
+  (rootJvm / Compile / unidoc),
+  copyScalaDoc,
+  (docs / Compile / mdoc).toTask(""),
+  (docs / Compile / paradox).toTask,
+  copyFinalDoc
+).value
 lazy val docs = project
   .in(file("docs"))
   .settings(mdocIn := file("docs/src/main/mdoc"),
-            mdocOut := file("docs/src/main/paradox"))
+            mdocOut := file("docs/src/main/paradox"),
+            (paradoxProperties in Compile) ++= Map(
+              "scaladoc.base_url" -> ".../api/"
+            ))
   .enablePlugins(MdocPlugin, ParadoxPlugin)
   .dependsOn(rootJvm)
 

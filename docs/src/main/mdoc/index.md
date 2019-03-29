@@ -18,6 +18,9 @@ To use Doodle, add to your `build.sbt`
 libraryDependencies += "org.creativescala" %% "doodle" % "0.9.0"
 ```
 
+## ScalaDoc
+
+ScalaDoc is @scaladoc[here](doodle.index)
 
 ## Quick Example
 
@@ -27,12 +30,8 @@ The following example creates a Chessboard, by first creating a 2x2 board, then 
 ```scala mdoc
 // The "Image" DSL is the easiest way to create images
 import doodle.image._
-// Extension methods
-import doodle.image.syntax._
 // Colors and other useful stuff
 import doodle.core._
-// Render to a window using Java2D (must be running in the JVM)
-import doodle.java2d._
 
 val blackSquare = Image.rectangle(30, 30).fillColor(Color.black)
 val redSquare = Image.rectangle(30, 30).fillColor(Color.red)
@@ -55,6 +54,11 @@ To draw these Images call the `draw` method like so
 
 
 ```scala
+// Extension methods
+import doodle.image.syntax._
+// Render to a window using Java2D (must be running in the JVM)
+import doodle.java2d._
+
 chessboard.draw()
 ```
 
