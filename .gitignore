@@ -24,6 +24,8 @@ project/project
 
 # Documentation intermediate files
 docs/src/main/paradox
+docs/src/main/mdoc/api
+
 
 ### SublimeText ###
 # cache files for sublime text
