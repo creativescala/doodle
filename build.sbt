@@ -108,12 +108,12 @@ copyFinalDoc := {
 lazy val documentation = taskKey[Unit]("Generate documentation")
 documentation :=
   Def.sequential(
-  (rootJvm / Compile / unidoc),
-  copyScalaDoc,
-  (docs / Compile / mdoc).toTask(""),
-  (docs / Compile / paradox).toTask,
-  copyFinalDoc
-).value
+    (rootJvm / Compile / unidoc),
+    copyScalaDoc,
+    (docs / Compile / mdoc).toTask(""),
+    (docs / Compile / paradox).toTask,
+    copyFinalDoc
+  ).value
 lazy val docs = project
   .in(file("docs"))
   .settings(mdocIn := file("docs/src/main/mdoc"),
