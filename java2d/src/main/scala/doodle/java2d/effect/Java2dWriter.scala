@@ -39,9 +39,19 @@ trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Frame, Format] {
                                frame: Frame,
                                image: Image[Alg, Drawing, A]): IO[A] = {
     for {
+      result <- Java2dWriter.renderBufferedImage(frame, image)
+      (bi, a) = result
+      _ = ImageIO.write(bi, format, file)
+    } yield a
+  }
+}
+object Java2dWriter {
+  def renderBufferedImage[A, Alg >: Algebra](frame: Frame,
+                                             image: Image[Alg, Drawing, A]): IO[(BufferedImage,A)] =
+    for {
       drawing <- IO { image(Algebra()) }
       (bb, rdr) = drawing.runA(List.empty).value
-      image <- IO {
+      bi <- IO {
         frame.size match {
           case Size.FitToImage(border) =>
             new BufferedImage(bb.width.toInt + border,
@@ -54,12 +64,10 @@ trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Frame, Format] {
           case Size.FullScreen => ???
         }
       }
-      gc = image.createGraphics()
+      gc = bi.createGraphics()
       (r, _, a) = rdr.run((), Transform.identity).value
       _ = Java2D.renderCentered(gc, bb, r, bb.width, bb.height)
-      _ = ImageIO.write(image, format, file)
-    } yield a
-  }
+    } yield (bi, a)
 }
 object Java2dGifWriter extends Java2dWriter[Writer.Gif] {
   val format = "gif"

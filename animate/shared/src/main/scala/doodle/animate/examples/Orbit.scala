@@ -23,12 +23,19 @@ import doodle.core._
 import doodle.language.Basic
 import doodle.syntax._
 
+// To animate
+// import doodle.java2d.effect._
+// val canvas = Java2dRenderer.frame(Frame.size(500, 500))
+// canvas.map(c => Orbit.frames.animate(c)).unsafeRunSync()
+//
+// To write to a file
+// doodle.animate.java2d.Java2dWriter.writeIterable(new java.io.File("orbit.gif"), Frame.size(600, 600), Orbit.frames).unsafeRunSync()
 object Orbit {
   def image[F[_]](angle: Angle): Image[Basic[F], F, Unit] =
     Basic.image[F, Unit] { implicit algebra: Basic[F] =>
       import algebra._
 
-      circle(10).at(angle.sin * 200, angle.cos * 200).fillColor(Color.cornSilk)
+      circle(10).at(angle.cos * 200, angle.sin * 200).fillColor(Color.cornSilk)
     }
 
   def frames[F[_]]: List[Image[Basic[F], F, Unit]] =
