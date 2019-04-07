@@ -21,18 +21,25 @@ package effect
 import doodle.core.Color
 
 final case class Frame(size: Size,
-                       title: String = "",
+                       title: String = "Doodle",
+                       center: Center,
                        background: Option[Color] = None) {
   def background(color: Color): Frame =
     this.copy(background = Some(color))
 
   def title(title: String): Frame =
     this.copy(title = title)
+
+  def centerOnImage: Frame =
+    this.copy(center = Center.centeredOnImage)
+
+  def centerAtOrigin: Frame =
+    this.copy(center = Center.atOrigin)
 }
 object Frame {
   def fitToImage(border: Int = 20): Frame =
-    Frame(Size.fitToImage(border))
+    Frame(Size.fitToImage(border), center=Center.centeredOnImage)
 
   def size(width: Double, height: Double): Frame =
-    Frame(Size.fixedSize(width, height))
+    Frame(Size.fixedSize(width, height), center=Center.atOrigin)
 }

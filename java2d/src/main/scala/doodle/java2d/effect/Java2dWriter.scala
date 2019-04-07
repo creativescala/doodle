@@ -22,7 +22,7 @@ import cats.effect.IO
 import doodle.algebra.Image
 import doodle.core.Transform
 import doodle.effect._
-import doodle.java2d.algebra.{Algebra, Java2D}
+import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -66,7 +66,7 @@ object Java2dWriter {
       }
       gc = bi.createGraphics()
       (r, _, a) = rdr.run((), Transform.identity).value
-      _ = Java2D.renderCentered(gc, bb, r, bb.width, bb.height)
+      _ = Java2d.render(gc, bb, r, bb.width, bb.height, frame.center)
     } yield (bi, a)
 }
 object Java2dGifWriter extends Java2dWriter[Writer.Gif] {

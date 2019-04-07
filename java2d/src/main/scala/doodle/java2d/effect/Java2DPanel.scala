@@ -73,7 +73,7 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   override def paintComponent(context: Graphics): Unit = {
     // println("Java2DPanel painting")
     val gc = context.asInstanceOf[Graphics2D]
-    Java2D.setup(gc)
+    Java2d.setup(gc)
 
     try {
       val rr = channel.take(10L)
@@ -88,11 +88,12 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       frame.background.foreach(color =>
         gc.setBackground(Java2D.toAwtColor(color)))
       gc.clearRect(0, 0, getWidth, getHeight)
-      Java2D.renderCentered(gc,
-                            lastBoundingBox,
-                            lastImage,
-                            getWidth.toDouble,
-                            getHeight.toDouble)
+      Java2d.render(gc,
+                    lastBoundingBox,
+                    lastImage,
+                    getWidth.toDouble,
+                    getHeight.toDouble,
+                    frame.center)
     }
   }
 }
