@@ -267,9 +267,13 @@ object Color extends CommonColors {
   def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
     rgba(r, g, b, 1.0.normalized)
 
+  /** Construct a [[Color]] in terms of red, green, and blue components. The alpha
+    * value defaults to 1.0 (fully opaque). */
   def rgb(r: Int, g: Int, b: Int): Color =
     rgba(r, g, b, 1.0)
 
+  /** Construct a [[Color]] in terms of hue, saturation, and lightness components.
+    * The alpha value defaults to 1.0 (fully opaque). */
   def hsl(h: Angle, s: Double, l: Double): Color =
     hsla(h, s, l, 1.0)
 

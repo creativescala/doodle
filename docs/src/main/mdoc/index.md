@@ -2,6 +2,7 @@
 
 @@@ index
 
+- [Core](core/index.md)
 - [Image](image/index.md)
 
 @@@
