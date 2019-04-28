@@ -20,25 +20,25 @@ package generic
 
 import doodle.core.{Cap, Color, Join}
 
-trait GenericStyle extends Style[Finalized[?]] {
-  def fillColor[A](image: Finalized[A], fillColor: Color): Finalized[A] =
+trait GenericStyle[F[_]] extends Style[Finalized[F,?]] {
+  def fillColor[A](image: Finalized[F,A], fillColor: Color): Finalized[F,A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
 
-  def strokeColor[A](image: Finalized[A], strokeColor: Color): Finalized[A] =
+  def strokeColor[A](image: Finalized[F,A], strokeColor: Color): Finalized[F,A] =
     Finalized.contextTransform(_.strokeColor(strokeColor))(image)
 
-  def strokeWidth[A](image: Finalized[A], strokeWidth: Double): Finalized[A] =
+  def strokeWidth[A](image: Finalized[F,A], strokeWidth: Double): Finalized[F,A] =
     Finalized.contextTransform(_.strokeWidth(strokeWidth))(image)
 
-  def strokeCap[A](image: Finalized[A], cap: Cap): Finalized[A] =
+  def strokeCap[A](image: Finalized[F,A], cap: Cap): Finalized[F,A] =
     Finalized.contextTransform(_.strokeCap(cap))(image)
 
-  def strokeJoin[A](image: Finalized[A], join: Join): Finalized[A] =
+  def strokeJoin[A](image: Finalized[F,A], join: Join): Finalized[F,A] =
     Finalized.contextTransform(_.strokeJoin(join))(image)
 
-  def noFill[A](image: Finalized[A]): Finalized[A] =
+  def noFill[A](image: Finalized[F,A]): Finalized[F,A] =
     Finalized.contextTransform(_.noFill)(image)
 
-  def noStroke[A](image: Finalized[A]): Finalized[A] =
+  def noStroke[A](image: Finalized[F,A]): Finalized[F,A] =
     Finalized.contextTransform(_.noStroke)(image)
 }

@@ -3,7 +3,8 @@ package svg
 package effect
 
 import doodle.core._
-import doodle.algebra.generic.{BoundingBox, Fill, Reified, Stroke}
+import doodle.algebra.generic.{BoundingBox, Fill, Stroke}
+import doodle.algebra.generic.reified.Reified
 import scalatags.generic.{Bundle, TypedTag}
 import scala.collection.mutable.ListBuffer
 

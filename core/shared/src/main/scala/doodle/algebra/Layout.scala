@@ -21,16 +21,16 @@ import cats.Semigroup
 import doodle.core.{Point, Vec}
 
 trait Layout[F[_]] {
-  def on[A: Semigroup](top: F[A], bottom: F[A]): F[A]
-  def beside[A: Semigroup](left: F[A], right: F[A]): F[A]
-  def above[A: Semigroup](top: F[A], bottom: F[A]): F[A]
+  def on[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
+  def beside[A](left: F[A], right: F[A])(implicit s: Semigroup[A]): F[A]
+  def above[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
   def at[A](img: F[A], x: Double, y: Double): F[A]
 
   // Derived methods
 
-  def under[A: Semigroup](bottom: F[A], top: F[A]): F[A] =
+  def under[A](bottom: F[A], top: F[A])(implicit s: Semigroup[A]): F[A] =
     on(top, bottom)
-  def below[A: Semigroup](bottom: F[A], top: F[A]): F[A] =
+  def below[A](bottom: F[A], top: F[A])(implicit s: Semigroup[A]): F[A] =
     above(top, bottom)
 
   def at[A](img: F[A], offset: Vec): F[A] =

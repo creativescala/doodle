@@ -18,6 +18,8 @@ package doodle
 package java2d
 package algebra
 
+import cats.data.Writer
 import doodle.algebra.generic.GenericStyle
+import doodle.algebra.generic.reified.Reified
 
-trait Style extends GenericStyle
+trait Style extends GenericStyle[Writer[List[Reified],?]]

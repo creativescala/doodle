@@ -18,15 +18,14 @@ package doodle
 package syntax
 
 import cats.Traverse
+import cats.instances.unit._
 import doodle.algebra.{Layout, Shape}
 
 trait TraverseSyntax {
   implicit class TraverseOps[T[_], F[_]](val t: T[F[Unit]]) {
-    import cats.instances.unit._
-
     def allOn(implicit layout: Layout[F],
               shape: Shape[F],
-              traverse: Traverse[T]): F[Unit] =
+              traverse: Traverse[T]) : F[Unit] =
       traverse.foldLeft(t, shape.empty) { (accum, img) =>
         layout.on(accum, img)
       }

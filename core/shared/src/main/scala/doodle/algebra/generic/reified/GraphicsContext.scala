@@ -17,6 +17,7 @@
 package doodle
 package algebra
 package generic
+package reified
 
 import doodle.core.{PathElement, Point, Transform}
 

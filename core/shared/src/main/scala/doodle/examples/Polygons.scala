@@ -18,25 +18,27 @@ package doodle
 package examples
 
 import cats.instances.list._
+import doodle.algebra.Image
 import doodle.core._
 import doodle.language.Basic
 import doodle.syntax._
 
 object Polygons {
-  def image[F[_], A] = Basic.image { implicit algebra: Basic[F] =>
-    import algebra._
+  def image[F[_]]: Image[Basic[F],F,Unit] =
+    Basic.image { implicit algebra: Basic[F] =>
+      import algebra._
 
-    def polygon(sides: Int, radius: Double) = {
-      val centerAngle = 360.degrees / sides.toDouble
+      def polygon(sides: Int, radius: Double) = {
+        val centerAngle = 360.degrees / sides.toDouble
 
-      val shape = (0 until sides).foldLeft(ClosedPath.empty) { (path, index) =>
-        val point = Point.polar(radius, centerAngle * index.toDouble)
-        if (index == 0) path.moveTo(point) else path.lineTo(point)
+        val shape = (0 until sides).foldLeft(ClosedPath.empty) { (path, index) =>
+          val point = Point.polar(radius, centerAngle * index.toDouble)
+          if (index == 0) path.moveTo(point) else path.lineTo(point)
+        }
+
+        path(shape).strokeWidth(3).strokeColor(Color.hsl(centerAngle, 1, .5))
       }
 
-      path(shape).strokeWidth(3).strokeColor(Color.hsl(centerAngle, 1, .5))
+      ((3 to 10) map (polygon(_, 200))).toList.allOn
     }
-
-    ((3 to 10) map (polygon(_, 200))).toList.allOn
-  }
 }

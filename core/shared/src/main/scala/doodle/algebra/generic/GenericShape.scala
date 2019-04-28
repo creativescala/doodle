@@ -18,52 +18,48 @@ package doodle
 package algebra
 package generic
 
-import doodle.core._
+import cats.data.State
+import doodle.core.{Transform => Tx}
 
-trait GenericShape extends Shape[Finalized[?]] {
-  def rectangle(width: Double, height: Double): Finalized[Unit] =
+trait GenericShape[F[_]] extends Shape[Finalized[F,?]] {
+
+  trait ShapeApi {
+    def rectangle(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], width: Double, height: Double): F[Unit]
+    def triangle(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], width: Double, height: Double): F[Unit]
+    def circle(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], diameter: Double): F[Unit]
+    def unit: F[Unit]
+  }
+
+  def ShapeApi: ShapeApi
+
+  def rectangle(width: Double, height: Double): Finalized[F,Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
-      (bb, Reified.renderable(dc) { (tx, f) =>
-        Reified.fillRect(tx, f, width, height)
-      } { (tx, s) =>
-        Reified.strokeRect(tx, s, width, height)
-      })
+      (bb, State.inspect(tx => ShapeApi.rectangle(tx, dc.fill, dc.stroke, width, height)))
     }
 
-  def square(width: Double): Finalized[Unit] =
+  def square(width: Double): Finalized[F,Unit] =
     rectangle(width, width)
 
-  def triangle(width: Double, height: Double): Finalized[Unit] =
+  def triangle(width: Double, height: Double): Finalized[F,Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
-      val w = width / 2.0
-      val h = height / 2.0
-      val points = Array(Point(-w, -h), Point(0, h), Point(w, -h))
 
-      (bb, Reified.renderable(dc) { (tx, f) =>
-        Reified.fillPolygon(tx, f, points)
-      } { (tx, s) =>
-        Reified.strokePolygon(tx, s, points)
-      })
+      (bb, State.inspect(tx => ShapeApi.triangle(tx, dc.fill, dc.stroke, width, height)))
     }
 
-  def circle(diameter: Double): Finalized[Unit] =
+  def circle(diameter: Double): Finalized[F,Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb =
         BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
-      (bb, Reified.renderable(dc) { (tx, f) =>
-        Reified.fillCircle(tx, f, diameter)
-      } { (tx, s) =>
-        Reified.strokeCircle(tx, s, diameter)
-      })
+      (bb, State.inspect(tx => ShapeApi.circle(tx, dc.fill, dc.stroke, diameter)))
     }
 
-  def empty: Finalized[Unit] =
+  def empty: Finalized[F,Unit] =
     Finalized.leaf { _ =>
-      (BoundingBox.empty, Renderable.unit(List.empty[Reified]))
+      (BoundingBox.empty, Renderable.unit(ShapeApi.unit))
     }
 }

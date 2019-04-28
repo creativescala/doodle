@@ -18,6 +18,8 @@ package doodle
 package java2d
 package algebra
 
+import cats.data.Writer
 import doodle.algebra.generic.GenericTransform
+import doodle.algebra.generic.reified.Reified
 
-trait Transform extends GenericTransform
+trait Transform extends GenericTransform[Writer[List[Reified],?]]

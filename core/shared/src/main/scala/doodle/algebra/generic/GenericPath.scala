@@ -18,34 +18,36 @@ package doodle
 package algebra
 package generic
 
+import cats.data.State
 import doodle.core._
+import doodle.core.{Transform=>Tx}
 import scala.annotation.tailrec
 
-trait GenericPath extends Path[Finalized[?]] {
-  def path(path: ClosedPath): Finalized[Unit] =
+trait GenericPath[F[_]] extends Path[Finalized[F,?]] {
+
+  trait PathApi {
+    def closedPath(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], elements: List[PathElement]): F[Unit]
+    def openPath(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], elements: List[PathElement]): F[Unit]
+  }
+
+  def PathApi: PathApi
+
+  def path(path: ClosedPath): Finalized[F,Unit] =
     Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb, Reified.renderable(dc) { (tx, f) =>
-        Reified.fillClosedPath(tx, f, elements)
-      } { (tx, s) =>
-        Reified.strokeClosedPath(tx, s, elements)
-      })
+      (bb, State.inspect(tx => PathApi.closedPath(tx, dc.fill, dc.stroke, elements)))
     }
 
-  def path(path: OpenPath): Finalized[Unit] =
+  def path(path: OpenPath): Finalized[F,Unit] =
     Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb, Reified.renderable(dc) { (tx, f) =>
-        Reified.fillOpenPath(tx, f, elements)
-      } { (tx, s) =>
-        Reified.strokeOpenPath(tx, s, elements)
-      })
+      (bb, State.inspect(tx => PathApi.openPath(tx, dc.fill, dc.stroke, elements)))
     }
 
   def boundingBox(elements: List[PathElement]): BoundingBox = {

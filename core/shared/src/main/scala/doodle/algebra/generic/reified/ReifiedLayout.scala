@@ -15,10 +15,14 @@
  */
 
 package doodle
-package java2d
 package algebra
+package generic
+package reified
 
-import doodle.algebra.generic.reified.ReifiedShape
+import cats.Apply
+import cats.data.Writer
 
-/** Higher level shape primitives */
-trait Shape extends ReifiedShape
+trait ReifiedLayout extends GenericLayout[Writer[List[Reified],?]] {
+  implicit val applyF: Apply[Writer[List[Reified],?]] =
+    Apply[Writer[List[Reified],?]]
+}

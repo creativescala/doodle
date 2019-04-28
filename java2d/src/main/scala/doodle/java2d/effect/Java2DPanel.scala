@@ -20,7 +20,8 @@ package effect
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.algebra.generic.{BoundingBox, Reified}
+import doodle.algebra.generic.BoundingBox
+import doodle.algebra.generic.reified.Reified
 import doodle.core.{Transform}
 import doodle.java2d.algebra.{Algebra, Java2D}
 import java.awt.{Dimension, Graphics, Graphics2D}
@@ -103,7 +104,8 @@ object Java2DPanel {
                                     cb: Either[Throwable, A] => Unit) {
     def reify: IO[List[Reified]] = {
       IO {
-        val (reified, _, a) = renderable.run((), Transform.identity).value
+        val (_, fa) = renderable.run(Transform.identity).value
+        val (reified, a) = fa.run
         cb(Right(a))
 
         reified

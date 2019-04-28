@@ -39,21 +39,21 @@ package object generic {
     * The List of ContextTransform's are supplied in the order they should be
     * applied: the innermost transform is at the head of the list.
     */
-  type Finalized[A] =
-    State[List[ContextTransform], (BoundingBox, Renderable[A])]
+  type Finalized[F[_],A] =
+    State[List[ContextTransform], (BoundingBox, Renderable[F,A])]
 
   object Finalized {
-    def apply[A](
+    def apply[F[_],A](
         f: List[ContextTransform] => (List[ContextTransform],
-                                      (BoundingBox, Renderable[A])))
-      : Finalized[A] =
-      State[List[ContextTransform], (BoundingBox, Renderable[A])] { f }
+                                      (BoundingBox, Renderable[F,A])))
+      : Finalized[F,A] =
+      State[List[ContextTransform], (BoundingBox, Renderable[F,A])] { f }
 
     /** Create a leaf [[Finalized]]. It will be passed a [[DrawingContext]] with all
       * transforms applied in the correct order.
       */
-    def leaf[A](
-        f: DrawingContext => (BoundingBox, Renderable[A])): Finalized[A] =
+    def leaf[F[_],A](
+        f: DrawingContext => (BoundingBox, Renderable[F,A])): Finalized[F,A] =
       State.inspect { ctxTxs =>
         val dc = ctxTxs.foldLeft(DrawingContext.default) { (dc, f) =>
           f(dc)
@@ -61,8 +61,8 @@ package object generic {
         f(dc)
       }
 
-    def contextTransform[A](f: DrawingContext => DrawingContext)(
-        child: Finalized[A]): Finalized[A] = {
+    def contextTransform[F[_],A](f: DrawingContext => DrawingContext)(
+        child: Finalized[F,A]): Finalized[F,A] = {
       for {
         _ <- State.modify { (ctxTxs: List[ContextTransform]) =>
           f :: ctxTxs
@@ -71,7 +71,7 @@ package object generic {
       } yield a
     }
 
-    def transform[A](transform: Tx)(child: Finalized[A]): Finalized[A] =
+    def transform[F[_],A](transform: Tx)(child: Finalized[F,A]): Finalized[F,A] =
       child.map {
         case (bb, rdr) =>
           (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
@@ -79,45 +79,37 @@ package object generic {
   }
 
   /** A [[Renderable]] represents some effect producing a value of type A and also
-    * producing a [[Reified]] representation of a drawing.
+    * creating a concrete implementation specific drawing.
     *
     * Invoking a [[Renderable]] does any layout (usually using bounding box
     * information calculated in [[Finalized]]) and as such requires a
     * [[doodle.core.Transform]]. Transforms should be applied outermost last. So
     * any transformation in a [[Renderable]] should be applied before the
     * trasform it receives from its surrounding context. */
-  type Renderable[A] = ReaderWriterState[Unit, List[Reified], Tx, A]
+  type Renderable[F[_],A] = State[Tx, F[A]]
   object Renderable {
-    def parallel[A: Semigroup](txLeft: Tx, txRight: Tx)(left: Renderable[A])(
-        right: Renderable[A]): Renderable[A] =
-      left.contramap(tx => txLeft.andThen(tx)) |+| right.contramap(tx =>
-        txRight.andThen(tx))
-
-    def unit(reified: List[Reified]): Renderable[Unit] =
-      apply { _ =>
-        Eval.now((reified, ()))
+    def parallel[F[_]: Apply,A: Semigroup](txLeft: Tx, txRight: Tx)(left: Renderable[F,A])(
+        right: Renderable[F,A]): Renderable[F,A] =
+      (left.contramap(tx => txLeft.andThen(tx)),
+       right.contramap(tx => txRight.andThen(tx))).mapN{ (fx, fy) =>
+        (fx, fy).mapN((a,b) => a |+| b)
       }
 
-    def transform[A](transform: Tx)(child: Renderable[A]): Renderable[A] =
+    def unit[F[_]](fUnit: F[Unit]): Renderable[F,Unit] =
+      State.pure(fUnit)
+
+    def transform[F[_],A](transform: Tx)(child: Renderable[F,A]): Renderable[F,A] =
       child.contramap(tx => transform.andThen(tx))
 
-    def apply[A](f: Tx => Eval[(List[Reified], A)]): Renderable[A] =
-      IndexedReaderWriterStateT.apply { (_, tx) =>
-        f(tx).map { case (r, a) => (r, tx, a) }
-      }
+    def apply[F[_],A](f: Tx => Eval[F[A]]): Renderable[F,A] =
+      IndexedStateT.inspectF(f)
 
-    implicit def renderableSemigroup[A](
-        implicit m: Semigroup[A]): Semigroup[Renderable[A]] =
-      new Semigroup[Renderable[A]] {
-        def combine(x: Renderable[A], y: Renderable[A]): Renderable[A] =
-          Renderable { tx =>
-            (x.run((), tx), y.run((), tx)).mapN { (x, y) =>
-              val (reifiedX, _, aX) = x
-              val (reifiedY, _, aY) = y
-
-              (reifiedX |+| reifiedY, aX |+| aY)
-            }
-          }
+    implicit def renderableSemigroup[F[_]: Apply,A: Semigroup]: Semigroup[Renderable[F,A]] =
+      new Semigroup[Renderable[F,A]] {
+        def combine(x: Renderable[F,A], y: Renderable[F,A]): Renderable[F,A] =
+          Renderable(tx => (x.runA(tx), y.runA(tx)).mapN{ (fx, fy) =>
+                       (fx, fy).mapN((a,b) => a |+| b)
+                     })
       }
   }
 }

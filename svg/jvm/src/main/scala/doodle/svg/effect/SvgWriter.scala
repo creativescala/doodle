@@ -25,11 +25,12 @@ object SvgWriter extends Writer[Algebra.type, Drawing, SvgFrame, Writer.Svg] {
   def write[A, Alg >: Algebra.type](file: File,
                                image: Image[Alg,Drawing,A]): IO[A] =
     for {
-      drawing <- IO { image(Algebra) }
+      drawing  <- IO { image(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
-      (r, _, a) = rdr.run((), Transform.identity).value
-      text = svg.render(bb, r).render
-      _ = Files.write(file.toPath, text.getBytes())
+      (tx, fa)  = rdr.run(Transform.identity).value
+      (r, a)    = fa.run
+      text      = svg.render(bb, r).render
+      _         = Files.write(file.toPath, text.getBytes())
     } yield a
 
 }

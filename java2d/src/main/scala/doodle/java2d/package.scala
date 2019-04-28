@@ -16,12 +16,14 @@
 
 package doodle
 
+import cats.data.Writer
+import doodle.algebra.generic.reified.Reified
 import doodle.effect.DefaultRenderer
 
 package object java2d {
   type Algebra = doodle.java2d.algebra.Algebra
-  type Drawing[A] = doodle.algebra.generic.Finalized[A]
-  type Renderable[A] = doodle.algebra.generic.Renderable[A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[Writer[List[Reified],?],A]
+  type Renderable[A] = doodle.algebra.generic.Renderable[Writer[List[Reified],?],A]
 
   type Java2DFrame = doodle.java2d.effect.Java2DFrame
   implicit val java2DRenderer: DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Java2DFrame] =

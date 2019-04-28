@@ -18,7 +18,7 @@ package doodle
 package java2d
 package algebra
 
-import doodle.algebra.generic.GenericPath
+import doodle.algebra.generic.reified.ReifiedPath
 
 /** Higher level path primitives */
-trait Path extends GenericPath
+trait Path extends ReifiedPath
