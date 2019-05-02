@@ -3,6 +3,7 @@ package svg
 package effect
 
 import doodle.algebra.generic._
+import doodle.algebra.generic.reified.Reified
 import doodle.core._
 import org.scalacheck._
 import org.scalacheck.Prop._

@@ -19,7 +19,7 @@ object SvgRenderer extends Renderer[Algebra, Drawing, Frame, Canvas] {
       drawing <- IO { f(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
       (_, fa) = rdr.run(Transform.identity).value
-      (r, a) = fa.run
+      (r, a) = fa.run.value
       nodes = svg.render(bb, r).render
       _ = canvas.setSvg(nodes)
     } yield a

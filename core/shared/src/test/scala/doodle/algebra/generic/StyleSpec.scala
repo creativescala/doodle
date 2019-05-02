@@ -26,7 +26,7 @@ object StyleSpec extends Properties("Style properties") {
 
   property("last fillColor takes effect") =
     forAll(Generators.finalized, Generators.color){ (f, c) =>
-      import Reified._
+      import doodle.algebra.generic.reified.Reified._
       val reified = Generators.reify(style.fillColor(f, c))
       reified.foldLeft(true: Prop){ (prop, elt) =>
         prop && (elt match {

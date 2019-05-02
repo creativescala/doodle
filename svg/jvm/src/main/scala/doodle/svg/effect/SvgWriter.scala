@@ -28,7 +28,7 @@ object SvgWriter extends Writer[Algebra.type, Drawing, SvgFrame, Writer.Svg] {
       drawing  <- IO { image(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
       (tx, fa)  = rdr.run(Transform.identity).value
-      (r, a)    = fa.run
+      (r, a)    = fa.run.value
       text      = svg.render(bb, r).render
       _         = Files.write(file.toPath, text.getBytes())
     } yield a

@@ -19,11 +19,13 @@ package java2d
 package algebra
 
 import doodle.language.Basic
+import doodle.algebra.generic._
+import doodle.algebra.generic.reified._
 
 final case class Algebra()
-    extends Layout
-    with Path
-    with Shape
-    with Style
-    with Transform
-    with Basic[Drawing]
+  extends ReifiedLayout
+  with ReifiedPath
+  with ReifiedShape
+  with GenericStyle[Reification]
+  with GenericTransform[Reification]
+  with Basic[Drawing]

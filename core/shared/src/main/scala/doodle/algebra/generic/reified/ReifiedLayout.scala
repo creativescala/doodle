@@ -20,9 +20,8 @@ package generic
 package reified
 
 import cats.Apply
-import cats.data.Writer
 
-trait ReifiedLayout extends GenericLayout[Writer[List[Reified],?]] {
-  implicit val applyF: Apply[Writer[List[Reified],?]] =
-    Apply[Writer[List[Reified],?]]
+trait ReifiedLayout extends GenericLayout[Reification] {
+  val applyF: Apply[Reification] =
+    Apply.apply[Reification]
 }

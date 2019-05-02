@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2019 Creative Scala
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 
 package doodle
-package java2d
 package algebra
+package generic
 
-import doodle.algebra.generic.reified.ReifiedShape
+import cats.Eval
+import cats.data.WriterT
 
-/** Higher level shape primitives */
-trait Shape extends ReifiedShape
+package object reified {
+  type Reification[A] = WriterT[Eval,List[Reified],A]
+}

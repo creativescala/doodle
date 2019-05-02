@@ -105,7 +105,7 @@ object Java2DPanel {
     def reify: IO[List[Reified]] = {
       IO {
         val (_, fa) = renderable.run(Transform.identity).value
-        val (reified, a) = fa.run
+        val (reified, a) = fa.run.value
         cb(Right(a))
 
         reified

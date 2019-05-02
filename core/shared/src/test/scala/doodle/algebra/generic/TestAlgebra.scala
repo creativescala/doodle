@@ -18,8 +18,10 @@ package doodle
 package algebra
 package generic
 
+import doodle.algebra.generic.reified._
+
 final case class TestAlgebra()
-    extends GenericLayout
-    with GenericPath
-    with GenericShape
-    with GenericStyle
+    extends ReifiedLayout
+    with ReifiedPath
+    with ReifiedShape
+    with GenericStyle[Reification]

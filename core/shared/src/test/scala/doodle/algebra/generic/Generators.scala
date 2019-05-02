@@ -21,8 +21,12 @@ package generic
 import cats.instances.unit._
 import org.scalacheck._
 import doodle.core.{Transform => Tx}
+import doodle.algebra.generic.reified.{Reification,Reified}
 
 trait Generators extends doodle.core.Generators {
+
+  type FinalReification[A] = Finalized[Reification,A]
+
   val width: Gen[Double] = Gen.posNum[Double]
   val height = width
 
@@ -45,7 +49,7 @@ trait Generators extends doodle.core.Generators {
   }
    */
 
-  def layout(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] = {
+  def layout(algebra: TestAlgebra, depth: Int): Gen[FinalReification[Unit]] = {
     val child = finalizedOfDepth(algebra, depth - 1)
     for {
       one  <- child
@@ -60,7 +64,7 @@ trait Generators extends doodle.core.Generators {
     } yield node
   }
 
-  def shape(algebra: TestAlgebra): Gen[Finalized[Unit]] =
+  def shape(algebra: TestAlgebra): Gen[FinalReification[Unit]] =
     Gen.oneOf(
       Gen.zip(width, height).map{ case (w, h) => algebra.rectangle(w,h) },
       width.map(w => algebra.square(w)),
@@ -69,7 +73,7 @@ trait Generators extends doodle.core.Generators {
       Gen.const(algebra.empty)
     )
 
-  def style(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] = {
+  def style(algebra: TestAlgebra, depth: Int): Gen[FinalReification[Unit]] = {
     val child = finalizedOfDepth(algebra, depth - 1)
     for {
       one  <- child
@@ -83,20 +87,21 @@ trait Generators extends doodle.core.Generators {
     } yield node
   }
 
-  def finalizedOfDepth(algebra: TestAlgebra, depth: Int): Gen[Finalized[Unit]] =
+  def finalizedOfDepth(algebra: TestAlgebra, depth: Int): Gen[FinalReification[Unit]] =
     if(depth <= 0) shape(algebra)
     else Gen.oneOf(/*blend(algebra, depth),*/ layout(algebra, depth), shape(algebra), style(algebra, depth))
 
 
-  val finalized: Gen[Finalized[Unit]] =
+  val finalized: Gen[FinalReification[Unit]] =
     Gen.sized{ size =>
       val depth = sizeToDepth(size)
       finalizedOfDepth(TestAlgebra(), depth)
     }
 
-  def reify[A](finalized: Finalized[A]): List[Reified] = {
+  def reify[A](finalized: FinalReification[A]): List[Reified] = {
     val (_, rdr) = finalized.runA(List.empty).value
-    val (reified, _, _) = rdr.run((), Tx.identity).value
+    val (_, fa) = rdr.run(Tx.identity).value
+    val (reified, _) = fa.run.value
     reified
   }
 }

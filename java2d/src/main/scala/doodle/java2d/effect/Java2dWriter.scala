@@ -66,7 +66,7 @@ object Java2dWriter {
       }
       gc = bi.createGraphics()
       (tx, fa) = rdr.run(Transform.identity).value
-      (r, a) = fa.run
+      (r, a) = fa.run.value
       _ = Java2d.render(gc, bb, r, bb.width, bb.height, frame.center)
     } yield (bi, a)
 }

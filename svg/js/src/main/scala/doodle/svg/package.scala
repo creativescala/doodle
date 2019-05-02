@@ -1,13 +1,12 @@
 package doodle
 
-import cats.data.Writer
 import doodle.effect.Renderer
-import doodle.algebra.generic.reified.Reified
+import doodle.algebra.generic.reified.Reification
 
 package object svg {
   type Algebra = doodle.svg.algebra.Algebra.type
-  type Drawing[A] = doodle.algebra.generic.Finalized[Writer[List[Reified],?],A]
-  type Renderable[A] = doodle.algebra.generic.Renderable[Writer[List[Reified],?],A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[Reification,A]
+  type Renderable[A] = doodle.algebra.generic.Renderable[Reification,A]
 
   type Frame = doodle.svg.effect.Frame
   type Canvas = doodle.svg.effect.Canvas

@@ -26,11 +26,11 @@ import doodle.core.Transform
 trait GenericLayout[F[_]] extends Layout[Finalized[F,?]] {
   import Renderable._
 
-  implicit val applyF: Apply[F]
+  def applyF: Apply[F]
+  implicit lazy val applyFInstance = applyF
 
   def on[A](top: Finalized[F,A], bottom: Finalized[F,A])(implicit s: Semigroup[A]): Finalized[F,A] =
     IndexedStateT { ctxTxs =>
-      // implicit val foo: Semigroup[Renderable[F,A]] = Renderable.renderableSemigroup(applyF,s)
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
 
