@@ -17,7 +17,7 @@ You can use Doodle in your own project by importing the JARs published to Maven 
 
 ~~~ scala
 scalaVersion := "2.12.8" // Doodle is currently published for Scala 2.12 only
-libraryDependencies += "creativescala.org" %% "doodle" % "0.9.0-SNAPSHOT"
+libraryDependencies += "org.creativescala" %% "doodle" % "0.9.0"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
