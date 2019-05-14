@@ -20,23 +20,24 @@ package syntax
 
 import doodle.effect.{DefaultRenderer, Renderer, Writer}
 import doodle.image.Image
+import doodle.algebra.{Image=>Img}
 import doodle.language.Basic
 import java.io.File
 
 trait ImageSyntax {
   implicit class ImageOps(image: Image) {
-    def draw[Algebra[A[?]] <: Basic[A[?]], F[_], Frame, Canvas](frame: Frame)(
-        implicit renderer: Renderer[Algebra[F], F, Frame, Canvas]): Unit =
+    def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
+        implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.frame(frame)
-        a <- renderer.render(canvas)(algebra => image.compile(algebra))
+        a <- renderer.render(canvas)(Img(algebra => image.compile(algebra)))
       } yield a).unsafeRunSync()
 
-    def draw[Algebra[A[?]] <: Basic[A[?]], F[_], Frame, Canvas]()(
-        implicit renderer: DefaultRenderer[Algebra[F], F, Frame, Canvas]): Unit =
+    def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
+        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.frame(renderer.default)
-        a <- renderer.render(canvas)(algebra => image.compile(algebra))
+        a <- renderer.render(canvas)(Img(algebra => image.compile(algebra)))
       } yield a).unsafeRunSync()
 
     def write[Format] = new ImageWriterOps[Format](image)
@@ -45,25 +46,25 @@ trait ImageSyntax {
   /** This strange construction allows the user to write `anImage.write[AFormat](filename)`
     * without having to specify other, mostly irrelevant to the user, type parameters. */
   final class ImageWriterOps[Format](image: Image) {
-    def apply[Algebra[A[?]] <: Basic[A[?]], F[_], Frame](file: String)(
-        implicit w: Writer[Algebra[F], F, Frame, Format]): Unit =
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String)(
+        implicit w: Writer[Alg, F, Frame, Format]): Unit =
       apply(new File(file))
 
-    def apply[Algebra[A[?]] <: Basic[A[?]], F[_], Frame](file: File)(
-        implicit w: Writer[Algebra[F], F, Frame, Format]): Unit =
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File)(
+        implicit w: Writer[Alg, F, Frame, Format]): Unit =
       w.write(file,
-              doodle.algebra.Image((algebra: Algebra[F]) => image.compile(algebra))).unsafeRunSync()
+              Img((algebra: Alg[F]) => image.compile(algebra))).unsafeRunSync()
 
-    def apply[Algebra[A[?]] <: Basic[A[?]], F[_], Frame](file: String, frame: Frame)(
-        implicit w: Writer[Algebra[F], F, Frame, Format]): Unit =
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
+        implicit w: Writer[Alg, F, Frame, Format]): Unit =
       apply(new File(file), frame)
 
-    def apply[Algebra[A[?]] <: Basic[A[?]], F[_], Frame](file: File, frame: Frame)(
-        implicit w: Writer[Algebra[F], F, Frame, Format]): Unit =
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File, frame: Frame)(
+        implicit w: Writer[Alg, F, Frame, Format]): Unit =
       w.write(
           file,
           frame,
-          doodle.algebra.Image((algebra: Algebra[F]) => image.compile(algebra)))
+          Img((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunSync()
   }
 }

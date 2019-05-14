@@ -24,7 +24,7 @@ import doodle.language.Basic
 import doodle.syntax._
 
 object Polygons {
-  def image[F[_]]: Image[Basic[F],F,Unit] =
+  def image[F[_]]: Image[Basic,F,Unit] =
     Basic.image { implicit algebra: Basic[F] =>
       import algebra._
 

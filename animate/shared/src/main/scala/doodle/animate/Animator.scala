@@ -19,7 +19,7 @@ package animate
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.Image
+import doodle.algebra.{Algebra,Image}
 import doodle.effect.Renderer
 import monix.reactive.Observable
 
@@ -30,15 +30,15 @@ import monix.reactive.Observable
 trait Animator[Canvas] {
 
   /** Animate frames that are contained in an `Iterable` structure. */
-  def animateIterable[Algebra, F[_], A, Frame](canvas: Canvas)(
-      frames: Iterable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Frame, Canvas],
+  def animateIterable[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Canvas)(
+      frames: Iterable[Image[Alg, F, A]])(
+      implicit e: Renderer[Alg, F, Frame, Canvas],
       m: Monoid[A]): IO[A]
 
   /** Animate frames that are produced by an `Observable`. */
-  def animateObservable[Algebra, F[_], A, Frame](canvas: Canvas)(
-      frames: Observable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Frame, Canvas],
+  def animateObservable[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Canvas)(
+      frames: Observable[Image[Alg, F, A]])(
+      implicit e: Renderer[Alg, F, Frame, Canvas],
       m: Monoid[A]): IO[A]
 }
 object Animator {

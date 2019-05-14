@@ -18,10 +18,27 @@ package doodle
 package algebra
 package generic
 
+import cats.Semigroup
+import doodle.algebra.Layout
 import doodle.algebra.generic.reified._
 
 final case class TestAlgebra()
-    extends ReifiedLayout
+    extends Layout[Finalized[Reification,?]]
     with ReifiedPath
     with ReifiedShape
     with GenericStyle[Reification]
+{
+    val layout = ReifiedLayout.instance
+
+    def on[A](top: Finalized[Reification,A], bottom: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
+        layout.on(top, bottom)(s)
+
+    def beside[A](left: Finalized[Reification,A], right: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
+        layout.beside(left, right)(s)
+
+    def above[A](top: Finalized[Reification,A], bottom: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
+        layout.above(top, bottom)(s)
+
+    def at[A](img: Finalized[Reification,A], x: Double, y: Double): Finalized[Reification,A] =
+        layout.at(img, x, y)
+}

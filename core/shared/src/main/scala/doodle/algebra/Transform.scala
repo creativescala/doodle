@@ -19,7 +19,7 @@ package algebra
 
 import doodle.core.{Angle, Transform => Tx, Vec}
 
-trait Transform[F[_]] {
+trait Transform[F[_]] extends Algebra[F] {
   def transform[A](img: F[A], tx: Tx): F[A]
 
   // Derived methods

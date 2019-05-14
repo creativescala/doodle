@@ -19,7 +19,7 @@ package algebra
 
 import doodle.core.{ClosedPath, OpenPath}
 
-trait Path[F[_]] {
+trait Path[F[_]] extends Algebra[F] {
   def path(path: ClosedPath): F[Unit]
   def path(path: OpenPath): F[Unit]
 }

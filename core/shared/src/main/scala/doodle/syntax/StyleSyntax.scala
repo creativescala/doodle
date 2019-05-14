@@ -38,30 +38,30 @@ trait StyleSyntax {
       s.noStroke(image)
   }
 
-  implicit class StyleImageOps[Algebra <: Style[F], F[_], A](
-      image: Image[Algebra, F, A]) {
-    def fillColor(fillColor: Color): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+  implicit class StyleImageOps[Alg[x[_]] <: Style[x], F[_], A](
+      image: Image[Alg, F, A]) {
+    def fillColor(fillColor: Color): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).fillColor(fillColor)
       }
 
-    def strokeColor(strokeColor: Color): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def strokeColor(strokeColor: Color): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).strokeColor(strokeColor)
       }
 
-    def strokeWidth(strokeWidth: Double): Image[Algebra, F, A] =
-      Image { implicit algebra =>
+    def strokeWidth(strokeWidth: Double): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).strokeWidth(strokeWidth)
       }
 
-    def noFill: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def noFill: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).noFill
       }
 
-    def noStroke: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def noStroke: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).noStroke
       }
   }

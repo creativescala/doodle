@@ -19,7 +19,7 @@ package animate
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.Image
+import doodle.algebra.{Algebra,Image}
 import java.io.File
 import monix.reactive.Observable
 
@@ -27,11 +27,11 @@ import monix.reactive.Observable
   * The `Writer` typeclass describes a data type that can render an animation
   * to a file.
   */
-trait Writer[+Algebra, F[_], Frame, Format] {
-  def writeIterable[A, Alg >: Algebra](file: File,
-                               description: Frame,
-                               frames: Iterable[Image[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
-  def writeObservable[A, Alg >: Algebra](file: File,
-                               description: Frame,
-                               image: Observable[Image[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
+trait Writer[Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
+  def writeIterable[A](file: File,
+                       description: Frame,
+                       frames: Iterable[Image[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
+  def writeObservable[A](file: File,
+                         description: Frame,
+                         image: Observable[Image[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
 }

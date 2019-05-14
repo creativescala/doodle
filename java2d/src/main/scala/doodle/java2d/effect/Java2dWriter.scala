@@ -19,7 +19,6 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.algebra.Image
 import doodle.core.Transform
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
@@ -27,17 +26,16 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Frame, Format] {
+trait Java2dWriter[Format] extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format] {
   def format: String
 
-  def write[A, Alg >: Algebra](file: File,
-                               image: Image[Alg, Drawing, A]): IO[A] = {
+  def write[A](file: File, image: Image[A]): IO[A] = {
     write(file, Frame.fitToImage(), image)
   }
 
-  def write[A, Alg >: Algebra](file: File,
-                               frame: Frame,
-                               image: Image[Alg, Drawing, A]): IO[A] = {
+  def write[A](file: File,
+               frame: Frame,
+               image: Image[A]): IO[A] = {
     for {
       result <- Java2dWriter.renderBufferedImage(frame, image)
       (bi, a) = result
@@ -46,8 +44,8 @@ trait Java2dWriter[Format] extends Writer[Algebra, Drawing, Frame, Format] {
   }
 }
 object Java2dWriter {
-  def renderBufferedImage[A, Alg >: Algebra](frame: Frame,
-                                             image: Image[Alg, Drawing, A]): IO[(BufferedImage,A)] =
+  def renderBufferedImage[A](frame: Frame,
+                             image: Image[A]): IO[(BufferedImage,A)] =
     for {
       drawing <- IO { image(Algebra()) }
       (bb, rdr) = drawing.runA(List.empty).value

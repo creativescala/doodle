@@ -17,27 +17,27 @@
 package doodle
 package syntax
 
-import doodle.algebra.Image
+import doodle.algebra.{Algebra,Image}
 import doodle.effect.Writer
 import java.io.File
 
 trait WriterSyntax {
-  implicit class WriterOps[Algebra, F[_], A](image: Image[Algebra, F, A]) {
+  implicit class WriterOps[Alg[x[_]] <: Algebra[x], F[_], A](image: Image[Alg, F, A]) {
     // This class exists solely so the user doesn't have to provide the `Frame`
     // type parameter when calling syntax methods.
-    class WriterOpsHelper[Format](image: Image[Algebra, F, A]) {
-      def apply[Frame](file: String)(implicit w: Writer[Algebra, F, Frame, Format]): A =
+    class WriterOpsHelper[Format](image: Image[Alg, F, A]) {
+      def apply[Frame](file: String)(implicit w: Writer[Alg, F, Frame, Format]): A =
         apply(new File(file))
 
-      def apply[Frame](file: File)(implicit w: Writer[Algebra, F, Frame, Format]): A =
+      def apply[Frame](file: File)(implicit w: Writer[Alg, F, Frame, Format]): A =
         w.write(file, image).unsafeRunSync()
 
       def apply[Frame](file: String, frame: Frame)(
-        implicit w: Writer[Algebra, F, Frame, Format]): A =
+        implicit w: Writer[Alg, F, Frame, Format]): A =
         apply(new File(file), frame)
 
       def apply[Frame](file: File, frame: Frame)(
-        implicit w: Writer[Algebra, F, Frame, Format]): A =
+        implicit w: Writer[Alg, F, Frame, Format]): A =
         w.write(file, frame, image).unsafeRunSync()
     }
 

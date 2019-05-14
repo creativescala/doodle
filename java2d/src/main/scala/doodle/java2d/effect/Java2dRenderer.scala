@@ -34,8 +34,8 @@ object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Java2DFra
       jFrame
     }
 
-  def render[A](canvas: Java2DFrame)(f: Algebra => Drawing[A]): IO[A] =
-    canvas.render(f)
+  def render[A](canvas: Java2DFrame)(image: Image[A]): IO[A] =
+    canvas.render(image)
 
   def stop(): Unit = {
     jFrames.synchronized {

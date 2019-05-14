@@ -48,35 +48,35 @@ trait LayoutSyntax {
       l.at(image, offset)
   }
 
-  implicit class LayoutImageOps[Algebra <: Layout[F], F[_], A](
-      image: Image[Algebra, F, A]) {
-    def on(that: Image[Algebra, F, A])(
-        implicit s: Semigroup[A]): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+  implicit class LayoutImageOps[Alg[x[_]] <: Layout[x], F[_], A](
+      image: Image[Alg, F, A]) {
+    def on(that: Image[Alg, F, A])(
+        implicit s: Semigroup[A]): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).on(that(algebra))
       }
 
-    def beside(that: Image[Algebra, F, A])(
-        implicit s: Semigroup[A]): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def beside(that: Image[Alg, F, A])(
+        implicit s: Semigroup[A]): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).beside(that(algebra))
       }
 
-    def above(that: Image[Algebra, F, A])(
-        implicit s: Semigroup[A]): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def above(that: Image[Alg, F, A])(
+        implicit s: Semigroup[A]): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).above(that(algebra))
       }
 
-    def under(that: Image[Algebra, F, A])(
-        implicit s: Semigroup[A]): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def under(that: Image[Alg, F, A])(
+        implicit s: Semigroup[A]): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).under(that(algebra))
       }
 
-    def below(that: Image[Algebra, F, A])(
-        implicit s: Semigroup[A]): Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def below(that: Image[Alg, F, A])(
+        implicit s: Semigroup[A]): Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).below(that(algebra))
       }
   }

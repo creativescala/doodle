@@ -18,18 +18,19 @@ package doodle
 package effect
 
 import cats.effect.IO
+import doodle.algebra.{Algebra,Image}
 
 /**
   * The `Renderer` typeclass describes a data type that can create an area to
   * render an image (a Canvas) from a description (a Frame) and render an
   * image to that Canvas.
   */
-trait Renderer[+Algebra, F[_], Frame, Canvas] {
+trait Renderer[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
   def frame(description: Frame): IO[Canvas]
-  def render[A](canvas: Canvas)(f: Algebra => F[A]): IO[A]
+  def render[A](canvas: Canvas)(image: Image[Alg,F,A]): IO[A]
 }
 object Renderer {
-  def apply[Algebra, F[_], Frame, Canvas](
-      implicit renderer: Renderer[Algebra, F, Frame, Canvas])
-    : Renderer[Algebra, F, Frame, Canvas] = renderer
+  def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](
+      implicit renderer: Renderer[Alg, F, Frame, Canvas])
+    : Renderer[Alg, F, Frame, Canvas] = renderer
 }

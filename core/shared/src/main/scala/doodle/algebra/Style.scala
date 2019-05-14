@@ -22,7 +22,7 @@ import doodle.core.{Cap, Color, Join}
 /**
   * Apply styling to a image.
   */
-trait Style[F[_]] {
+trait Style[F[_]] extends Algebra[F] {
   def fillColor[A](image: F[A], fillColor: Color): F[A]
 
   def strokeColor[A](image: F[A], strokeColor: Color): F[A]

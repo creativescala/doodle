@@ -11,19 +11,19 @@ import java.io.File
 import java.nio.file.Files
 import scalatags.Text
 
-object SvgWriter extends Writer[Algebra.type, Drawing, SvgFrame, Writer.Svg] {
+object SvgWriter extends Writer[doodle.svg.Algebra, Drawing, SvgFrame, Writer.Svg] {
   val svg = Svg(Text)
 
-  def write[A, Alg >: Algebra.type](file: File,
-                               description: SvgFrame,
-                               image: Image[Alg,Drawing,A]): IO[A] = {
+  def write[A](file: File,
+               description: SvgFrame,
+               image: Image[Algebra,Drawing,A]): IO[A] = {
     // Frame is (currently) meaningless for writing
     val _ = description
     write(file, image)
   }
 
-  def write[A, Alg >: Algebra.type](file: File,
-                               image: Image[Alg,Drawing,A]): IO[A] =
+  def write[A](file: File,
+               image: Image[Algebra,Drawing,A]): IO[A] =
     for {
       drawing  <- IO { image(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
@@ -32,5 +32,4 @@ object SvgWriter extends Writer[Algebra.type, Drawing, SvgFrame, Writer.Svg] {
       text      = svg.render(bb, r).render
       _         = Files.write(file.toPath, text.getBytes())
     } yield a
-
 }

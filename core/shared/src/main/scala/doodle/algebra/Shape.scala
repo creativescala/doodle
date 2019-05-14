@@ -19,7 +19,7 @@ package algebra
 
 /** Higher level shape primitives. These draw common geometric shapes with the
   * center of the shape the origin of the bounding box. */
-trait Shape[F[_]] {
+trait Shape[F[_]] extends Algebra[F] {
 
   /** A rectangle with the given width and height. */
   def rectangle(width: Double, height: Double): F[Unit]

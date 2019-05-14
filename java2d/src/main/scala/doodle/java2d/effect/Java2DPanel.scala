@@ -55,9 +55,9 @@ final class Java2DPanel(frame: Frame) extends JPanel {
     }
   }
 
-  def render[A](f: Algebra => Drawing[A]): IO[A] = {
+  def render[A](image: Image[A]): IO[A] = {
     def register(cb: Either[Throwable, A] => Unit): Unit = {
-      val drawing = f(Algebra())
+      val drawing = image(Algebra())
       val (bb, rdr) = drawing.runA(List.empty).value
 
       val rr = RenderRequest(bb, rdr, cb)

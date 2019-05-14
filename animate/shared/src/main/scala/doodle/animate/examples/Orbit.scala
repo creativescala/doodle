@@ -31,14 +31,14 @@ import doodle.syntax._
 // To write to a file
 // doodle.animate.java2d.Java2dWriter.writeIterable(new java.io.File("orbit.gif"), Frame.size(600, 600), Orbit.frames).unsafeRunSync()
 object Orbit {
-  def image[F[_]](angle: Angle): Image[Basic[F], F, Unit] =
+  def image[F[_]](angle: Angle): Image[Basic, F, Unit] =
     Basic.image[F, Unit] { implicit algebra: Basic[F] =>
       import algebra._
 
       circle(10).at(angle.cos * 200, angle.sin * 200).fillColor(Color.cornSilk)
     }
 
-  def frames[F[_]]: List[Image[Basic[F], F, Unit]] =
+  def frames[F[_]]: List[Image[Basic, F, Unit]] =
     List
       .range(0, 3600)
       .map { angle =>

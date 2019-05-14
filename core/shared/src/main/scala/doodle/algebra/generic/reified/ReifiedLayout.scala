@@ -20,8 +20,8 @@ package generic
 package reified
 
 import cats.Apply
+import cats.implicits._
 
-trait ReifiedLayout extends GenericLayout[Reification] {
-  val applyF: Apply[Reification] =
-    Apply.apply[Reification]
+object ReifiedLayout {
+  val instance: Layout[Finalized[Reification,?]] = new GenericLayout()(Apply.apply[Reification])
 }

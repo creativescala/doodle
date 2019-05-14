@@ -17,14 +17,16 @@
 package doodle
 package effect
 
+import doodle.algebra.Algebra
+
 /**
   * The `DefaultRenderer` typeclass is a `Renderer` that has a reasonable default frame.
   */
-trait DefaultRenderer[+Algebra, F[_], Frame, Canvas] extends Renderer[Algebra, F, Frame, Canvas] {
+trait DefaultRenderer[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] extends Renderer[Alg, F, Frame, Canvas] {
   def default: Frame
 }
 object DefaultRenderer {
-  def apply[Algebra, F[_], Frame, Canvas](
-      implicit renderer: DefaultRenderer[Algebra, F, Frame, Canvas])
-    : DefaultRenderer[Algebra, F, Frame, Canvas] = renderer
+  def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](
+      implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas])
+    : DefaultRenderer[Alg, F, Frame, Canvas] = renderer
 }

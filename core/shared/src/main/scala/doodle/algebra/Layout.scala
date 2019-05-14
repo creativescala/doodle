@@ -20,7 +20,7 @@ package algebra
 import cats.Semigroup
 import doodle.core.{Point, Vec}
 
-trait Layout[F[_]] {
+trait Layout[F[_]] extends Algebra[F] {
   def on[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
   def beside[A](left: F[A], right: F[A])(implicit s: Semigroup[A]): F[A]
   def above[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]

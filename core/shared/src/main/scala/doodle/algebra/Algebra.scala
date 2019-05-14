@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2019 Creative Scala
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 
 package doodle
-package java2d
 package algebra
 
-import doodle.algebra.generic.reified.ReifiedLayout
-
-trait Layout extends ReifiedLayout
+/** Base type for algebras that produce results in some effect type F. This type
+  * serves to make sure algebras are internally consistent. E.g. they all
+  * produce an effect with the same type. */
+trait Algebra[+F[_]]

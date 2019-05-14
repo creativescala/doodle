@@ -17,24 +17,24 @@
 package doodle
 package syntax
 
-import doodle.algebra.Image
+import doodle.algebra.{Algebra,Image}
 import doodle.effect.{DefaultRenderer, Renderer}
 
 trait RendererSyntax {
-  implicit class RendererImageOps[Algebra, F[_], A](
-      image: Image[Algebra, F, A]) {
+  implicit class RendererImageOps[Alg[x[_]] <: Algebra[x], F[_], A](
+      image: Image[Alg, F, A]) {
     def draw[Frame, Canvas](frame: Frame)(
-        implicit renderer: Renderer[Algebra, F, Frame, Canvas]): A =
+        implicit renderer: Renderer[Alg, F, Frame, Canvas]): A =
       (for {
         canvas <- renderer.frame(frame)
-        a <- renderer.render(canvas)(algebra => image(algebra))
+        a <- renderer.render(canvas)(image)
       } yield a).unsafeRunSync()
 
     def draw[Frame, Canvas]()(
-        implicit renderer: DefaultRenderer[Algebra, F, Frame, Canvas]): A =
+        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): A =
       (for {
         canvas <- renderer.frame(renderer.default)
-        a <- renderer.render(canvas)(algebra => image(algebra))
+        a <- renderer.render(canvas)(image)
       } yield a).unsafeRunSync()
   }
 }

@@ -22,8 +22,7 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.algebra.Image
 import doodle.effect.Writer.Gif
-import doodle.java2d.Drawing
-import doodle.java2d.algebra.Algebra
+import doodle.java2d.{Algebra,Drawing}
 import doodle.java2d.effect.Frame
 import java.io.File
 import javax.imageio.{IIOImage,ImageIO,ImageWriter}
@@ -38,9 +37,9 @@ object Java2dWriter extends Writer[Algebra, Drawing, Frame, Gif] {
   val imageWriter: IO[ImageWriter] =
     IO { ImageIO.getImageWritersByFormatName("gif").next() }
 
-  def writeIterable[A, Alg >: Algebra](file: File,
-                                       description: Frame,
-                                       frames: Iterable[Image[Alg, Drawing, A]])(
+  def writeIterable[A](file: File,
+                       description: Frame,
+                       frames: Iterable[Image[Algebra, Drawing, A]])(
     implicit m: Monoid[A]): IO[A] = {
     for {
       iw <- imageWriter
@@ -59,8 +58,8 @@ object Java2dWriter extends Writer[Algebra, Drawing, Frame, Gif] {
     } yield a
   }
 
-  def writeObservable[A, Alg >: Algebra](file: File,
-                                         description: Frame,
-                                         frames: Observable[Image[Alg, Drawing, A]])(implicit m: Monoid[A]) =
+  def writeObservable[A](file: File,
+                         description: Frame,
+                         frames: Observable[Image[Algebra, Drawing, A]])(implicit m: Monoid[A]) =
     ???
 }

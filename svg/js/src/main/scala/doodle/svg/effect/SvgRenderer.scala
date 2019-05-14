@@ -14,9 +14,9 @@ object SvgRenderer extends Renderer[Algebra, Drawing, Frame, Canvas] {
   def frame(description: Frame): IO[Canvas] =
     IO{ Canvas.fromFrame(description) }
 
-  def render[A](canvas: Canvas)(f: Algebra => Drawing[A]): IO[A] =
+  def render[A](canvas: Canvas)(image: Image[A]): IO[A] =
     for {
-      drawing <- IO { f(Algebra) }
+      drawing <- IO { image(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
       (_, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value

@@ -20,7 +20,7 @@ package java2d
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.Image
+import doodle.algebra.{Algebra,Image}
 import doodle.effect.Renderer
 import doodle.java2d.effect.Java2DFrame
 import monix.eval.Task
@@ -32,20 +32,20 @@ import scala.concurrent.duration._
 object Java2dAnimator extends Animator[Java2DFrame] {
   val frameRate = 16.milliseconds
 
-  def animateIterable[Algebra, F[_], A, Frame](canvas: Java2DFrame)(
-      frames: Iterable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Frame, Java2DFrame],
+  def animateIterable[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Java2DFrame)(
+      frames: Iterable[Image[Alg, F, A]])(
+      implicit e: Renderer[Alg, F, Frame, Java2DFrame],
       m: Monoid[A]): IO[A] =
     animateObservable(canvas)(
       Observable.fromIterable(frames).delayOnNext(frameRate))
 
-  def animateObservable[Algebra, F[_], A, Frame](canvas: Java2DFrame)(
-      frames: Observable[Image[Algebra, F, A]])(
-      implicit e: Renderer[Algebra, F, Frame, Java2DFrame],
+  def animateObservable[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Java2DFrame)(
+      frames: Observable[Image[Alg, F, A]])(
+      implicit e: Renderer[Alg, F, Frame, Java2DFrame],
       m: Monoid[A]): IO[A] = {
     frames
       .sampleRepeated(frameRate)
-      .mapEval(img => Task.fromIO(e.render(canvas)(algebra => img(algebra))))
+      .mapEval(img => Task.fromIO(e.render(canvas)(img)))
       .consumeWith(Consumer.foldLeft(m.empty) { (accum, a) =>
         m.combine(accum, a)
       })

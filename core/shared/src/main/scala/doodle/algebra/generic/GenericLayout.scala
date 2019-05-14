@@ -23,11 +23,8 @@ import cats.data.IndexedStateT
 import cats.implicits._
 import doodle.core.Transform
 
-trait GenericLayout[F[_]] extends Layout[Finalized[F,?]] {
+class GenericLayout[F[_]]()(implicit val applyF: Apply[F]) extends Layout[Finalized[F,?]] {
   import Renderable._
-
-  def applyF: Apply[F]
-  implicit lazy val applyFInstance = applyF
 
   def on[A](top: Finalized[F,A], bottom: Finalized[F,A])(implicit s: Semigroup[A]): Finalized[F,A] =
     IndexedStateT { ctxTxs =>

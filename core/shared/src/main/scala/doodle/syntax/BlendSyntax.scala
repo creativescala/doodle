@@ -37,30 +37,30 @@ trait BlendSyntax {
       b.sourceOver(image)
   }
 
-  implicit class BlendImageOps[Algebra <: Blend[F], F[_], A](
-      image: Image[Algebra, F, A]) {
-    def screen: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+  implicit class BlendImageOps[Alg[x[_]] <: Blend[x], F[_], A](
+      image: Image[Alg, F, A]) {
+    def screen: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).screen
       }
 
-    def burn: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def burn: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).burn
       }
 
-    def dodge: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def dodge: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).dodge
       }
 
-    def lighten: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def lighten: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).lighten
       }
 
-    def sourceOver: Image[Algebra, F, A] =
-      Image { implicit algebra: Algebra =>
+    def sourceOver: Image[Alg, F, A] =
+      Image { implicit algebra: Alg[F] =>
         image(algebra).sourceOver
       }
   }
