@@ -5,7 +5,7 @@ package effect
 import cats.effect.IO
 import doodle.core.Transform
 import doodle.effect._
-import doodle.algebra.Image
+import doodle.algebra.Picture
 import doodle.svg.algebra.Algebra
 import java.io.File
 import java.nio.file.Files
@@ -16,16 +16,16 @@ object SvgWriter extends Writer[doodle.svg.Algebra, Drawing, SvgFrame, Writer.Sv
 
   def write[A](file: File,
                description: SvgFrame,
-               image: Image[Algebra,Drawing,A]): IO[A] = {
+               picture: Picture[Algebra,Drawing,A]): IO[A] = {
     // Frame is (currently) meaningless for writing
     val _ = description
-    write(file, image)
+    write(file, picture)
   }
 
   def write[A](file: File,
-               image: Image[Algebra,Drawing,A]): IO[A] =
+               picture: Picture[Algebra,Drawing,A]): IO[A] =
     for {
-      drawing  <- IO { image(Algebra) }
+      drawing  <- IO { picture(Algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
       (tx, fa)  = rdr.run(Transform.identity).value
       (r, a)    = fa.run.value

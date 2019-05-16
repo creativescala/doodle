@@ -27,8 +27,8 @@ trait Basic[F[_]]
         with Style[F]
         with Transform[F]
 object Basic {
-  def image[F[_], A](f: Basic[F] => F[A]): Image[Basic, F, A] =
-    new Image[Basic, F, A] {
+  def picture[F[_], A](f: Basic[F] => F[A]): Picture[Basic, F, A] =
+    new Picture[Basic, F, A] {
       def apply(implicit algebra: Basic[F]): F[A] =
         f(algebra)
     }

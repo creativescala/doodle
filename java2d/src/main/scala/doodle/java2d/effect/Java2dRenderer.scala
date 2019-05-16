@@ -25,7 +25,7 @@ import javax.swing.JFrame
 object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Java2DFrame] {
   private var jFrames: List[JFrame] = List.empty
 
-  val default: Frame = Frame.fitToImage()
+  val default: Frame = Frame.fitToPicture()
 
   def frame(description: Frame): IO[Java2DFrame] =
     IO {
@@ -34,8 +34,8 @@ object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Java2DFra
       jFrame
     }
 
-  def render[A](canvas: Java2DFrame)(image: Image[A]): IO[A] =
-    canvas.render(image)
+  def render[A](canvas: Java2DFrame)(picture: Picture[A]): IO[A] =
+    canvas.render(picture)
 
   def stop(): Unit = {
     jFrames.synchronized {

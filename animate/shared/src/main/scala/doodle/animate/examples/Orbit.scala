@@ -18,7 +18,7 @@ package doodle
 package animate
 package examples
 
-import doodle.algebra.Image
+import doodle.algebra.Picture
 import doodle.core._
 import doodle.language.Basic
 import doodle.syntax._
@@ -31,20 +31,20 @@ import doodle.syntax._
 // To write to a file
 // doodle.animate.java2d.Java2dWriter.writeIterable(new java.io.File("orbit.gif"), Frame.size(600, 600), Orbit.frames).unsafeRunSync()
 object Orbit {
-  def image[F[_]](angle: Angle): Image[Basic, F, Unit] =
-    Basic.image[F, Unit] { implicit algebra: Basic[F] =>
+  def picture[F[_]](angle: Angle): Picture[Basic, F, Unit] =
+    Basic.picture[F, Unit] { implicit algebra: Basic[F] =>
       import algebra._
 
       circle(10).at(angle.cos * 200, angle.sin * 200).fillColor(Color.cornSilk)
     }
 
-  def frames[F[_]]: List[Image[Basic, F, Unit]] =
+  def frames[F[_]]: List[Picture[Basic, F, Unit]] =
     List
       .range(0, 3600)
       .map { angle =>
         angle.degrees
       }
       .map { angle =>
-        image[F](angle)
+        picture[F](angle)
       }
 }

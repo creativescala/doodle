@@ -19,7 +19,7 @@ package animate
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.{Algebra,Image}
+import doodle.algebra.{Algebra,Picture}
 import java.io.File
 import monix.reactive.Observable
 
@@ -30,8 +30,8 @@ import monix.reactive.Observable
 trait Writer[Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
   def writeIterable[A](file: File,
                        description: Frame,
-                       frames: Iterable[Image[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
+                       frames: Iterable[Picture[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
   def writeObservable[A](file: File,
                          description: Frame,
-                         image: Observable[Image[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
+                         picture: Observable[Picture[Alg, F, A]])(implicit m: Monoid[A]): IO[A]
 }

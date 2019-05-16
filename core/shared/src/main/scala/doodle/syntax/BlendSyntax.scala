@@ -17,51 +17,51 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Image, Blend}
+import doodle.algebra.{Picture, Blend}
 
 trait BlendSyntax {
-  implicit class BlendOps[F[_], A](image: F[A]) {
+  implicit class BlendOps[F[_], A](picture: F[A]) {
     def screen(implicit b: Blend[F]): F[A] =
-      b.screen(image)
+      b.screen(picture)
 
     def burn(implicit b: Blend[F]): F[A] =
-      b.burn(image)
+      b.burn(picture)
 
     def dodge(implicit b: Blend[F]): F[A] =
-      b.dodge(image)
+      b.dodge(picture)
 
     def lighten(implicit b: Blend[F]): F[A] =
-      b.lighten(image)
+      b.lighten(picture)
 
     def sourceOver(implicit b: Blend[F]): F[A] =
-      b.sourceOver(image)
+      b.sourceOver(picture)
   }
 
-  implicit class BlendImageOps[Alg[x[_]] <: Blend[x], F[_], A](
-      image: Image[Alg, F, A]) {
-    def screen: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).screen
+  implicit class BlendPictureOps[Alg[x[_]] <: Blend[x], F[_], A](
+      picture: Picture[Alg, F, A]) {
+    def screen: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).screen
       }
 
-    def burn: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).burn
+    def burn: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).burn
       }
 
-    def dodge: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).dodge
+    def dodge: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).dodge
       }
 
-    def lighten: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).lighten
+    def lighten: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).lighten
       }
 
-    def sourceOver: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).sourceOver
+    def sourceOver: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).sourceOver
       }
   }
 }

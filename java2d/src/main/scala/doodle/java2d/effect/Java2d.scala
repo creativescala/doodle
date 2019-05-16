@@ -45,7 +45,7 @@ object Java2d {
              center: Center): Unit = {
     val tx =
       center match {
-        case Center.CenteredOnImage =>
+        case Center.CenteredOnPicture =>
           // Work out the center of the bounding box, in logical local coordinates
           val centerX = bb.left + (bb.width / 2.0)
           val centerY = bb.bottom + (bb.height / 2.0)

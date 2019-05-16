@@ -78,7 +78,7 @@ sealed abstract class Image extends Product with Serializable {
   // Convert to tagless final format
 
   def compile[Algebra[x[?]] <: Basic[x], F[_]]
-    : doodle.algebra.Image[Algebra, F, Unit] =
+    : doodle.algebra.Picture[Algebra, F, Unit] =
     Image.compile(this)
 }
 sealed abstract class Path extends Image {
@@ -355,13 +355,13 @@ object Image {
   val empty: Image =
     Empty
 
-  /** Compile an `Image` to a `doodle.algebra.Image` */
+  /** Compile an `Image` to a `doodle.algebra.Picture` */
   def compile[Alg[x[_]] <: Basic[x], F[_]](
-      image: Image): doodle.algebra.Image[Alg, F, Unit] = {
+      image: Image): doodle.algebra.Picture[Alg, F, Unit] = {
     import cats.instances.unit._
     import Elements._
 
-    doodle.algebra.Image[Alg, F, Unit] { algebra =>
+    doodle.algebra.Picture[Alg, F, Unit] { algebra =>
       image match {
         case OpenPath(elements) =>
           algebra.path(doodle.core.OpenPath(elements.reverse))

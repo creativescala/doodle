@@ -17,52 +17,52 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Image, Style}
+import doodle.algebra.{Picture, Style}
 import doodle.core.Color
 
 trait StyleSyntax {
-  implicit class StyleOps[F[_], A](image: F[A]) {
+  implicit class StyleOps[F[_], A](picture: F[A]) {
     def fillColor(fillColor: Color)(implicit s: Style[F]): F[A] =
-      s.fillColor(image, fillColor)
+      s.fillColor(picture, fillColor)
 
     def strokeColor(strokeColor: Color)(implicit s: Style[F]): F[A] =
-      s.strokeColor(image, strokeColor)
+      s.strokeColor(picture, strokeColor)
 
     def strokeWidth(strokeWidth: Double)(implicit s: Style[F]): F[A] =
-      s.strokeWidth(image, strokeWidth)
+      s.strokeWidth(picture, strokeWidth)
 
     def noFill(implicit s: Style[F]): F[A] =
-      s.noFill(image)
+      s.noFill(picture)
 
     def noStroke(implicit s: Style[F]): F[A] =
-      s.noStroke(image)
+      s.noStroke(picture)
   }
 
-  implicit class StyleImageOps[Alg[x[_]] <: Style[x], F[_], A](
-      image: Image[Alg, F, A]) {
-    def fillColor(fillColor: Color): Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).fillColor(fillColor)
+  implicit class StylePictureOps[Alg[x[_]] <: Style[x], F[_], A](
+      picture: Picture[Alg, F, A]) {
+    def fillColor(fillColor: Color): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).fillColor(fillColor)
       }
 
-    def strokeColor(strokeColor: Color): Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).strokeColor(strokeColor)
+    def strokeColor(strokeColor: Color): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).strokeColor(strokeColor)
       }
 
-    def strokeWidth(strokeWidth: Double): Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).strokeWidth(strokeWidth)
+    def strokeWidth(strokeWidth: Double): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).strokeWidth(strokeWidth)
       }
 
-    def noFill: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).noFill
+    def noFill: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).noFill
       }
 
-    def noStroke: Image[Alg, F, A] =
-      Image { implicit algebra: Alg[F] =>
-        image(algebra).noStroke
+    def noStroke: Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).noStroke
       }
   }
 }

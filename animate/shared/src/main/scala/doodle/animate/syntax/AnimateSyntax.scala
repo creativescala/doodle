@@ -19,13 +19,13 @@ package animate
 package syntax
 
 import cats.Monoid
-import doodle.algebra.{Algebra,Image}
+import doodle.algebra.{Algebra,Picture}
 import doodle.effect.Renderer
 import monix.reactive.Observable
 
 trait AnimateSyntax {
   implicit class AnimateIterableOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Iterable[Image[Algebra, F, A]]) {
+      frames: Iterable[Picture[Algebra, F, A]]) {
     def animate[Frame, Canvas](canvas: Canvas)(implicit a: Animator[Canvas],
                               e: Renderer[Algebra, F, Frame, Canvas],
                               m: Monoid[A]): A = {
@@ -34,7 +34,7 @@ trait AnimateSyntax {
   }
 
   implicit class AnimateObservableOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Observable[Image[Algebra, F, A]]) {
+      frames: Observable[Picture[Algebra, F, A]]) {
     def animate[Frame, Canvas](canvas: Canvas)(implicit a: Animator[Canvas],
                               e: Renderer[Algebra, F, Frame, Canvas],
                               m: Monoid[A]): A = {

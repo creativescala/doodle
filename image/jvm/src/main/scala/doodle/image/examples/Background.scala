@@ -8,7 +8,7 @@ import doodle.syntax._
 import doodle.java2d.effect.Frame
 
 object Background {
-  val frame = Frame.fitToImage().background(Color.black)
+  val frame = Frame.fitToPicture().background(Color.black)
 
   def rainbowCircles(count: Int, color: Color): Image =
     count match {

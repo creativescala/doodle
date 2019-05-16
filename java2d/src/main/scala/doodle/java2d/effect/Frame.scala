@@ -30,15 +30,15 @@ final case class Frame(size: Size,
   def title(title: String): Frame =
     this.copy(title = title)
 
-  def centerOnImage: Frame =
-    this.copy(center = Center.centeredOnImage)
+  def centerOnPicture: Frame =
+    this.copy(center = Center.centeredOnPicture)
 
   def centerAtOrigin: Frame =
     this.copy(center = Center.atOrigin)
 }
 object Frame {
-  def fitToImage(border: Int = 20): Frame =
-    Frame(Size.fitToImage(border), center=Center.centeredOnImage)
+  def fitToPicture(border: Int = 20): Frame =
+    Frame(Size.fitToPicture(border), center=Center.centeredOnPicture)
 
   def size(width: Double, height: Double): Frame =
     Frame(Size.fixedSize(width, height), center=Center.atOrigin)

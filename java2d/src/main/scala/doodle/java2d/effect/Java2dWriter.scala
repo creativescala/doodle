@@ -29,15 +29,15 @@ import javax.imageio.ImageIO
 trait Java2dWriter[Format] extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format] {
   def format: String
 
-  def write[A](file: File, image: Image[A]): IO[A] = {
-    write(file, Frame.fitToImage(), image)
+  def write[A](file: File, picture: Picture[A]): IO[A] = {
+    write(file, Frame.fitToPicture(), picture)
   }
 
   def write[A](file: File,
                frame: Frame,
-               image: Image[A]): IO[A] = {
+               picture: Picture[A]): IO[A] = {
     for {
-      result <- Java2dWriter.renderBufferedImage(frame, image)
+      result <- Java2dWriter.renderBufferedImage(frame, picture)
       (bi, a) = result
       _ = ImageIO.write(bi, format, file)
     } yield a
@@ -45,9 +45,9 @@ trait Java2dWriter[Format] extends Writer[doodle.java2d.Algebra, Drawing, Frame,
 }
 object Java2dWriter {
   def renderBufferedImage[A](frame: Frame,
-                             image: Image[A]): IO[(BufferedImage,A)] =
+                             picture: Picture[A]): IO[(BufferedImage,A)] =
     for {
-      drawing <- IO { image(Algebra()) }
+      drawing <- IO { picture(Algebra()) }
       (bb, rdr) = drawing.runA(List.empty).value
       bi <- IO {
         frame.size match {

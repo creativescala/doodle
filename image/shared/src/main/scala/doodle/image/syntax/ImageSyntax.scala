@@ -20,7 +20,7 @@ package syntax
 
 import doodle.effect.{DefaultRenderer, Renderer, Writer}
 import doodle.image.Image
-import doodle.algebra.{Image=>Img}
+import doodle.algebra.Picture
 import doodle.language.Basic
 import java.io.File
 
@@ -30,14 +30,14 @@ trait ImageSyntax {
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.frame(frame)
-        a <- renderer.render(canvas)(Img(algebra => image.compile(algebra)))
+        a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
       } yield a).unsafeRunSync()
 
     def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
         implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.frame(renderer.default)
-        a <- renderer.render(canvas)(Img(algebra => image.compile(algebra)))
+        a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
       } yield a).unsafeRunSync()
 
     def write[Format] = new ImageWriterOps[Format](image)
@@ -53,7 +53,7 @@ trait ImageSyntax {
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
       w.write(file,
-              Img((algebra: Alg[F]) => image.compile(algebra))).unsafeRunSync()
+              Picture((algebra: Alg[F]) => image.compile(algebra))).unsafeRunSync()
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
@@ -64,7 +64,7 @@ trait ImageSyntax {
       w.write(
           file,
           frame,
-          Img((algebra: Alg[F]) => image.compile(algebra)))
+          Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunSync()
   }
 }

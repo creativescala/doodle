@@ -17,12 +17,12 @@
 package doodle
 package algebra
 
-trait Image[-Alg[x[_]] <: Algebra[x], F[_], A] {
+trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A] {
   def apply(implicit algebra: Alg[F]): F[A]
 }
-object Image {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], A](f: Alg[F] => F[A]): Image[Alg, F, A] = {
-    new Image[Alg, F, A] {
+object Picture {
+  def apply[Alg[x[_]] <: Algebra[x], F[_], A](f: Alg[F] => F[A]): Picture[Alg, F, A] = {
+    new Picture[Alg, F, A] {
       def apply(implicit algebra: Alg[F]): F[A] =
         f(algebra)
     }

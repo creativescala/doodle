@@ -23,13 +23,13 @@ sealed abstract class Center extends Product with Serializable
 object Center {
 
   // Algebraic data type members
-  final case object CenteredOnImage extends Center
+  final case object CenteredOnPicture extends Center
   final case object AtOrigin extends Center
 
   // Smart constructors
 
-  /** The center of the canvas is centered on the image. */
-  val centeredOnImage: Center = CenteredOnImage
+  /** The center of the canvas is centered on the picture. */
+  val centeredOnPicture: Center = CenteredOnPicture
   /** The center of the canvas is the origin. */
   val atOrigin: Center = AtOrigin
 }

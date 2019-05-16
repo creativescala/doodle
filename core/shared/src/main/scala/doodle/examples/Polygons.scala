@@ -18,14 +18,14 @@ package doodle
 package examples
 
 import cats.instances.list._
-import doodle.algebra.Image
+import doodle.algebra.Picture
 import doodle.core._
 import doodle.language.Basic
 import doodle.syntax._
 
 object Polygons {
-  def image[F[_]]: Image[Basic,F,Unit] =
-    Basic.image { implicit algebra: Basic[F] =>
+  def picture[F[_]]: Picture[Basic,F,Unit] =
+    Basic.picture { implicit algebra: Basic[F] =>
       import algebra._
 
       def polygon(sides: Int, radius: Double) = {

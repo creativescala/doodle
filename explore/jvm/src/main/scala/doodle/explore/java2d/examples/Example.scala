@@ -33,7 +33,7 @@ object Sine {
   import cats.instances.all._
 
   val wave = (period: Double, amplitude: Double, color: Color) =>
-    Basic.image[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
+    Basic.picture[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
       import algebra._
 
       (-300 to 300).toList.map { x =>

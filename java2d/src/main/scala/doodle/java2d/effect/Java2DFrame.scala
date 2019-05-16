@@ -39,8 +39,8 @@ final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
     }
   )
 
-  def render[A](image: Image[A]): IO[A] =
-    panel.render(image)
+  def render[A](picture: Picture[A]): IO[A] =
+    panel.render(picture)
 
   val timer = new ScheduledThreadPoolExecutor(4)
 }

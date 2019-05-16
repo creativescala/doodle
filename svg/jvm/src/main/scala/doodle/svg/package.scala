@@ -12,10 +12,10 @@ package object svg {
   type SvgFrame = Unit
   implicit val svgWriter = doodle.svg.effect.SvgWriter
 
-  type Image[A] = doodle.algebra.Image[Algebra, Drawing, A]
-  object Image {
-    def apply(f: Algebra[Drawing] => Drawing[Unit]): Image[Unit] = {
-      new Image[Unit] {
+  type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
+  object Picture {
+    def apply(f: Algebra[Drawing] => Drawing[Unit]): Picture[Unit] = {
+      new Picture[Unit] {
         def apply(implicit algebra: Algebra[Drawing]): Drawing[Unit] =
           f(algebra)
       }

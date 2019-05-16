@@ -10,8 +10,8 @@ final case class Frame(id: String,
   def background(color: Color): Frame =
     this.copy(background = Some(color))
 
-  def fitToImage(border: Int = 20): Frame =
-    this.copy(size = Size.fitToImage(border))
+  def fitToPicture(border: Int = 20): Frame =
+    this.copy(size = Size.fitToPicture(border))
 
   def size(width: Double, height: Double): Frame =
     this.copy(size = Size.fixedSize(width, height))
@@ -19,5 +19,5 @@ final case class Frame(id: String,
 }
 object Frame {
   def apply(id: String): Frame =
-    Frame(id, Size.fitToImage(), None)
+    Frame(id, Size.fitToPicture(), None)
 }

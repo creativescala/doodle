@@ -32,10 +32,10 @@ package object java2d {
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
   implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
 
-  type Image[A] = doodle.algebra.Image[Algebra, Drawing, A]
-  object Image {
-    def apply(f: Algebra[Drawing] => Drawing[Unit]): Image[Unit] = {
-      new Image[Unit] {
+  type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
+  object Picture {
+    def apply(f: Algebra[Drawing] => Drawing[Unit]): Picture[Unit] = {
+      new Picture[Unit] {
         def apply(implicit algebra: Algebra[Drawing]): Drawing[Unit] =
           f(algebra)
       }

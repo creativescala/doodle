@@ -20,7 +20,7 @@ package java2d
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.Image
+import doodle.algebra.Picture
 import doodle.effect.Writer.Gif
 import doodle.java2d.{Algebra,Drawing}
 import doodle.java2d.effect.Frame
@@ -39,16 +39,16 @@ object Java2dWriter extends Writer[Algebra, Drawing, Frame, Gif] {
 
   def writeIterable[A](file: File,
                        description: Frame,
-                       frames: Iterable[Image[Algebra, Drawing, A]])(
+                       frames: Iterable[Picture[Algebra, Drawing, A]])(
     implicit m: Monoid[A]): IO[A] = {
     for {
       iw <- imageWriter
       _ = iw.setOutput(new FileImageOutputStream(file))
       _ = iw.prepareWriteSequence(null)
-      a <- frames.foldLeft(IO(m.empty)){ (ioa, image) =>
+      a <- frames.foldLeft(IO(m.empty)){ (ioa, picture) =>
         for {
           a  <- ioa
-          result <- doodle.java2d.effect.Java2dWriter.renderBufferedImage(description, image)
+          result <- doodle.java2d.effect.Java2dWriter.renderBufferedImage(description, picture)
           (bi, a2) = result
           _ = iw.writeToSequence(new IIOImage(bi, null, null), null)
         } yield m.combine(a, a2)
@@ -60,6 +60,6 @@ object Java2dWriter extends Writer[Algebra, Drawing, Frame, Gif] {
 
   def writeObservable[A](file: File,
                          description: Frame,
-                         frames: Observable[Image[Algebra, Drawing, A]])(implicit m: Monoid[A]) =
+                         frames: Observable[Picture[Algebra, Drawing, A]])(implicit m: Monoid[A]) =
     ???
 }
