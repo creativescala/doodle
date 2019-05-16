@@ -59,6 +59,30 @@ final case class Transform(elements: Array[Double]) {
 
   def translate(v: Vec): Transform =
     this.andThen(Transform.translate(v))
+
+  override def toString(): String = {
+    val elts = this.elements
+    s"""Transform([${elts(0)}, ${elts(1)}, ${elts(2)},
+                   ${elts(3)}, ${elts(4)}, ${elts(5)},
+                   ${elts(6)}, ${elts(7)}, ${elts(8)}}])"""
+  }
+
+  override def equals(that: Any): Boolean = {
+    that.isInstanceOf[Transform] &&
+    {
+      val other = that.asInstanceOf[Transform]
+      var i = 0
+      var isEqual = true
+      while(i < elements.length) {
+        if (this.elements(i) != other.elements(i))
+          isEqual = false
+
+        i = i + 1
+      }
+      isEqual
+    }
+  }
+
 }
 object Transform {
   val identity = scale(1.0, 1.0)

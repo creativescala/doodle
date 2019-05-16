@@ -90,9 +90,15 @@ package object generic {
   object Renderable {
     def parallel[F[_]: Apply,A: Semigroup](txLeft: Tx, txRight: Tx)(left: Renderable[F,A])(
         right: Renderable[F,A]): Renderable[F,A] =
-      (left.contramap(tx => txLeft.andThen(tx)),
-       right.contramap(tx => txRight.andThen(tx))).mapN{ (fx, fy) =>
-        (fx, fy).mapN((a,b) => a |+| b)
+      // Can't use the Applicative instance here as that will sequentially
+      // compose the left and right, which will result in the transforms being
+      // sequentially composed, which is wrong. Couldn't get `parMapN` to
+      // compile to wrote it by hand.
+      IndexedStateT.inspectF{ tx =>
+        val l = left.runA(txLeft.andThen(tx))
+        val r = right.runA(txRight.andThen(tx))
+
+        (l, r).mapN((fx,fy) => (fx,fy).mapN((a,b) => a |+| b))
       }
 
     def unit[F[_]](fUnit: F[Unit]): Renderable[F,Unit] =
