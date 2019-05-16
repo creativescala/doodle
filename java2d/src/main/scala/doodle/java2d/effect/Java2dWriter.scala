@@ -62,7 +62,7 @@ object Java2dWriter {
           case Size.FullScreen => ???
         }
       }
-      gc = bi.createGraphics()
+      gc = Java2d.setup(bi.createGraphics())
       (tx, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value
       _ = Java2d.render(gc, bb, r, bb.width, bb.height, frame.center)
