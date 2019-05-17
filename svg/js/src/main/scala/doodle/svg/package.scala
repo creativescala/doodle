@@ -1,13 +1,12 @@
 package doodle
 
 import doodle.effect.Renderer
-import doodle.algebra.generic.reified.Reification
 import doodle.language.Basic
+import scalatags.JsDom
 
 package object svg {
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
-  type Drawing[A] = doodle.algebra.generic.Finalized[Reification,A]
-  type Renderable[A] = doodle.algebra.generic.Renderable[Reification,A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[(JsDom.Tag, ?),A]
 
   type Frame = doodle.svg.effect.Frame
   type Canvas = doodle.svg.effect.Canvas
