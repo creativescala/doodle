@@ -8,7 +8,6 @@ import org.scalajs.dom
 final case class Canvas(target: dom.Node,
                         size: Size,
                         background: Option[Color]) {
-
   def setSvg(svg: dom.Node): Unit = {
     val _ = target.appendChild(svg)
     ()

@@ -114,13 +114,12 @@ object Svg {
     builder ++= s"stroke: ${toHSLA(stroke.color)};"
     builder ++= s"stroke-linecap: ${linecap}; "
     builder ++= s"stroke-linejoin: ${linejoin}; "
-    builder ++= "fill: none;"
 
     builder.toString
   }
 
   def toStyle(fill: Fill): String = {
-    s"fill: ${toHSLA(fill.color)}"
+    s"fill: ${toHSLA(fill.color)};"
   }
 
   def toSvgTransform(tx: Transform): String = {
