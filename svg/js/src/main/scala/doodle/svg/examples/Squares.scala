@@ -11,7 +11,7 @@ object Squares {
   import scala.scalajs.js.annotation._
 
   val squares =
-    Basic.image[Drawing, Unit]{ implicit algebra: Basic[Drawing] =>
+    Basic.picture[Drawing, Unit]{ implicit algebra: Basic[Drawing] =>
       import algebra._
 
       val red = square(100).fillColor(Color.red)
