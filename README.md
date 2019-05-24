@@ -93,6 +93,7 @@ To publish a snapshot:
 
 * update the version number on `develop` in `publish.sbt`
 * run `publishSigned`
+* run `sonatypeRelease`
 * update version number in this `README.md`
 * tag `develop` with the snapshot version
 * push tags to `origin`.
