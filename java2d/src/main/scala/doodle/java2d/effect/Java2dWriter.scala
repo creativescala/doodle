@@ -65,7 +65,7 @@ object Java2dWriter {
       gc = Java2d.setup(bi.createGraphics())
       (tx, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value
-      _ = Java2d.render(gc, bb, r, bb.width, bb.height, frame.center)
+      _ = Java2d.render(gc, bb, r, bi.getWidth.toDouble, bi.getHeight.toDouble, frame.center)
     } yield (bi, a)
 }
 object Java2dGifWriter extends Java2dWriter[Writer.Gif] {
