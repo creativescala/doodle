@@ -49,11 +49,11 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   }
 
   def fillCircle(
-      gc: Graphics2D)(transform: Tx, fill: Fill, radius: Double): Unit = {
+      gc: Graphics2D)(transform: Tx, fill: Fill, diameter: Double): Unit = {
     Java2D.setFill(gc, fill)
     Java2D.withTransform(gc, transform) {
-      val r = radius.toInt
-      val d = (radius * 2).toInt
+      val r = (diameter / 2.0).toInt
+      val d = diameter.toInt
       gc.fillOval(-r, -r, d, d)
     }
   }
