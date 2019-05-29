@@ -22,7 +22,7 @@ import doodle.algebra.Algebra
 /**
   * The `DefaultRenderer` typeclass is a `Renderer` that has a reasonable default frame.
   */
-trait DefaultRenderer[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] extends Renderer[Alg, F, Frame, Canvas] {
+trait DefaultRenderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] extends Renderer[Alg, F, Frame, Canvas] {
   def default: Frame
 }
 object DefaultRenderer {

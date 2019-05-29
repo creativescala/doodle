@@ -17,6 +17,7 @@
 package doodle
 package syntax
 
+import cats.effect.IO
 import doodle.algebra.{Algebra,Picture}
 import doodle.effect.{DefaultRenderer, Renderer}
 
@@ -36,5 +37,11 @@ trait RendererSyntax {
         canvas <- renderer.frame(renderer.default)
         a <- renderer.render(canvas)(picture)
       } yield a).unsafeRunSync()
+  }
+
+  implicit class RendererFrameOps[Frame](frame: Frame) {
+    def canvas[Alg[x[_]] <: Algebra[x], F[_], Canvas]()(
+      implicit renderer: Renderer[Alg, F, Frame, Canvas]): IO[Canvas] =
+      renderer.frame(frame)
   }
 }

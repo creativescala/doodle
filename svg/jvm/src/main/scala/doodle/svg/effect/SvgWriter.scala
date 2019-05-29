@@ -11,6 +11,10 @@ import java.nio.file.Files
 import scalatags.Text
 
 object SvgWriter extends Writer[Algebra, Drawing, SvgFrame, Writer.Svg] {
+  import Text.implicits._
+  import Text.{svgTags => svg}
+  import Text.svgAttrs
+
   val algebra = doodle.svg.algebra.Algebra(Text)
 
   def write[A](file: File,
@@ -26,7 +30,11 @@ object SvgWriter extends Writer[Algebra, Drawing, SvgFrame, Writer.Svg] {
     for {
       drawing <- IO { picture(algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
-      (_, (txt, a)) = rdr.run(Transform.identity).value
-      _ = Files.write(file.toPath, txt.render.getBytes())
+      (_, (tags, a)) = rdr.run(Transform.identity).value
+      nodes = svg.svg(svgAttrs.width:=bb.width,
+                      svgAttrs.height:=bb.height,
+                      svgAttrs.viewBox:=s"${bb.left} ${bb.bottom} ${bb.width} ${bb.height}",
+                      tags).render
+      _ = Files.write(file.toPath, nodes.render.getBytes())
     } yield a
 }

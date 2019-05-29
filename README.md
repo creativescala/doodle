@@ -11,13 +11,14 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 ## Using Doodle
 
-This is the release branch of Doodle. The current release is **`0.9.2`**. The `develop` branch has the development version.
+* The current release is **0.9.2** and is on the `master` branch.
+* The current snapshot is **0.9.3-SNAPSHOT** and is on the `develop` branch.
 
-You can use Doodle in your own project by importing the JARs published to Maven Central. To use it add the following to your `build.sbt`:
+To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
 scalaVersion := "2.12.8" // Doodle is currently published for Scala 2.12 only
-libraryDependencies += "creativescala.org" %% "doodle" % "0.9.2"
+libraryDependencies += "org.creativescala" %% "doodle" % "0.9.2"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
