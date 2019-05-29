@@ -12,7 +12,7 @@ object SvgRenderer extends Renderer[Algebra, Drawing, Frame, Canvas] {
   import JsDom.{svgTags => svg}
   import JsDom.svgAttrs
 
-  val algebra = doodle.svg.algebra.Algebra(JsDom)
+  val algebra = doodle.svg.algebra.Algebra
 
   def frame(description: Frame): IO[Canvas] =
     IO{ Canvas.fromFrame(description) }

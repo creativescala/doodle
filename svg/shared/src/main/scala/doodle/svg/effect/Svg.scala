@@ -144,9 +144,9 @@ object Svg {
     val builder = new StringBuilder(64)
     elts.foreach {
       case MoveTo(end) =>
-        builder ++= s"M ${end.x} ${end.y} "
+        builder ++= s"M ${end.x},${end.y} "
       case LineTo(end) =>
-        builder ++= s"L ${end.x} ${end.y} "
+        builder ++= s"L ${end.x},${end.y} "
       case BezierCurveTo(cp1, cp2, end) =>
         builder ++= s"C ${cp1.x} ${cp1.y}, ${cp2.x} ${cp2.y}, ${end.x} ${end.y} "
     }
@@ -161,7 +161,7 @@ object Svg {
 
     val builder = new StringBuilder(points.size * 10)
     points.foreach { pt =>
-      builder ++= s"L ${pt.x} ${pt.y}"
+      builder ++= s"L ${pt.x},${pt.y} "
     }
 
     pathType match {

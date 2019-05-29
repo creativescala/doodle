@@ -25,7 +25,7 @@ import doodle.algebra.{Algebra,Picture}
   * render a picture (a Canvas) from a description (a Frame) and render a picture
   * to that Canvas.
   */
-trait Renderer[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
+trait Renderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
   def frame(description: Frame): IO[Canvas]
   def render[A](canvas: Canvas)(picture: Picture[Alg,F,A]): IO[A]
 }

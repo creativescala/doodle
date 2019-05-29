@@ -15,7 +15,6 @@ final case class Frame(id: String,
 
   def size(width: Double, height: Double): Frame =
     this.copy(size = Size.fixedSize(width, height))
-
 }
 object Frame {
   def apply(id: String): Frame =

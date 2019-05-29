@@ -41,7 +41,6 @@ package object generic {
     */
   type Finalized[F[_],A] =
     State[List[ContextTransform], (BoundingBox, Renderable[F,A])]
-
   object Finalized {
     def apply[F[_],A](
         f: List[ContextTransform] => (List[ContextTransform],

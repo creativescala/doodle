@@ -71,11 +71,11 @@ lazy val root = crossProject
   )
   .enablePlugins(ScalaUnidocPlugin)
 lazy val rootJvm = root.jvm
-  .dependsOn(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, svgJvm, turtleJvm)
-  .aggregate(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, svgJvm, turtleJvm)
+  .dependsOn(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
+  .aggregate(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
 lazy val rootJs = root.js
-  .dependsOn(animateJs, coreJs, exploreJs, imageJs, svgJs, turtleJs)
-  .aggregate(animateJs, coreJs, exploreJs, imageJs, svgJs, turtleJs)
+  .dependsOn(animateJs, coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
+  .aggregate(animateJs, coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
 
 
 lazy val core = crossProject
@@ -131,18 +131,6 @@ lazy val java2d = project
             moduleName := "doodle-java2d")
   .dependsOn(coreJvm)
 
-lazy val svg = crossProject
-  .in(file("svg"))
-//.enablePlugins(WorkbenchPlugin)
-  .settings(commonSettings,
-            moduleName := "doodle-svg",
-            libraryDependencies += Dependencies.scalaTags.value
-//            workbenchDefaultRootObject := Some(("svg/example.html", "svg/"))
-            )
-
-lazy val svgJvm = svg.jvm.dependsOn(coreJvm)
-lazy val svgJs  = svg.js.dependsOn(coreJs)
-
 
 lazy val image = crossProject
   .in(file("image"))
@@ -172,6 +160,29 @@ lazy val explore = crossProject
 
 lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, animateJvm)
 lazy val exploreJs  = explore.js.dependsOn(coreJs, animateJs)
+
+
+lazy val interact = crossProject
+  .in(file("interact"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.monix.value,
+            moduleName := "doodle-interact")
+
+lazy val interactJvm = interact.jvm.dependsOn(coreJvm, java2d)
+lazy val interactJs  = interact.js.dependsOn(coreJs)
+
+
+lazy val svg = crossProject
+  .in(file("svg"))
+//.enablePlugins(WorkbenchPlugin)
+  .settings(commonSettings,
+            moduleName := "doodle-svg",
+            libraryDependencies += Dependencies.scalaTags.value
+//            workbenchDefaultRootObject := Some(("svg/example.html", "svg/"))
+            )
+
+lazy val svgJvm = svg.jvm.dependsOn(coreJvm, interactJvm)
+lazy val svgJs  = svg.js.dependsOn(coreJs, interactJs)
 
 
 lazy val turtle = crossProject
