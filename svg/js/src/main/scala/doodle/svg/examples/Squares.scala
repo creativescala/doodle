@@ -8,7 +8,6 @@ object Squares {
   import doodle.syntax._
   import doodle.language.Basic
   import doodle.svg._
-  import doodle.interact.syntax._
   import scala.scalajs.js.annotation._
 
   val squares =
