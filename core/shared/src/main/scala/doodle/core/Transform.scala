@@ -101,11 +101,11 @@ object Transform {
 
   /** Reflect horizontally (around the Y-axis) */
   val horizontalReflection: Transform =
-    Transform(Array(1, 0, 0, 0, -1, 0, 0, 0, 1))
+    Transform(Array(-1, 0, 0, 0, 1, 0, 0, 0, 1))
 
   /** Reflect vertically (around the X-axis) */
   val verticalReflection: Transform =
-    Transform(Array(-1, 0, 0, 0, 1, 0, 0, 0, 1))
+    Transform(Array(1, 0, 0, 0, -1, 0, 0, 0, 1))
 
   /** Convert from the usual cartesian coordinate system (origin in the center, x
     * and y increase towards the top right) to usual screen coordinate system
