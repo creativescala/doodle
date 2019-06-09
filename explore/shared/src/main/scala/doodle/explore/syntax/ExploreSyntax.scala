@@ -31,7 +31,7 @@ trait ExploreSyntax {
                    e: DefaultRenderer[Alg, F, Frame, Canvas],
                    m: Monoid[B]): B = {
       (for {
-        canvas <- e.frame(e.default)
+        canvas <- e.canvas(e.default)
         values <- ex.create.render
         b <- a.animateObservable(canvas)(values.map(f))
       } yield b).unsafeRunSync()

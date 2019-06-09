@@ -29,14 +29,14 @@ trait ImageSyntax {
     def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
-        canvas <- renderer.frame(frame)
+        canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
       } yield a).unsafeRunSync()
 
     def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
         implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
       (for {
-        canvas <- renderer.frame(renderer.default)
+        canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
       } yield a).unsafeRunSync()
 

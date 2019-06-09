@@ -27,14 +27,14 @@ trait RendererSyntax {
     def draw[Frame, Canvas](frame: Frame)(
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): A =
       (for {
-        canvas <- renderer.frame(frame)
+        canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(picture)
       } yield a).unsafeRunSync()
 
     def draw[Frame, Canvas]()(
         implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): A =
       (for {
-        canvas <- renderer.frame(renderer.default)
+        canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(picture)
       } yield a).unsafeRunSync()
   }
@@ -42,6 +42,6 @@ trait RendererSyntax {
   implicit class RendererFrameOps[Frame](frame: Frame) {
     def canvas[Alg[x[_]] <: Algebra[x], F[_], Canvas]()(
       implicit renderer: Renderer[Alg, F, Frame, Canvas]): IO[Canvas] =
-      renderer.frame(frame)
+      renderer.canvas(frame)
   }
 }

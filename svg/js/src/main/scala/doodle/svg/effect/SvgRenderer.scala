@@ -14,7 +14,7 @@ object SvgRenderer extends Renderer[Algebra, Drawing, Frame, Canvas] {
 
   val algebra = doodle.svg.algebra.Algebra
 
-  def frame(description: Frame): IO[Canvas] =
+  def canvas(description: Frame): IO[Canvas] =
     IO{ Canvas.fromFrame(description) }
 
   def render[A](canvas: Canvas)(image: Picture[A]): IO[A] =

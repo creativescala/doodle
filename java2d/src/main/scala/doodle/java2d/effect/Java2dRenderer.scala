@@ -27,7 +27,7 @@ object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Java2DFra
 
   val default: Frame = Frame.fitToPicture()
 
-  def frame(description: Frame): IO[Java2DFrame] =
+  def canvas(description: Frame): IO[Java2DFrame] =
     IO {
       val jFrame = new Java2DFrame(description)
       jFrames.synchronized { jFrames = jFrame :: jFrames }
