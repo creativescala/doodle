@@ -21,7 +21,7 @@ object SvgRenderer extends Renderer[Algebra, Drawing, Frame, Canvas] {
     for {
       drawing <- IO { image(algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
-      (_, (tags, a)) = rdr.run(Transform.identity).value
+      (_, (tags, a)) = rdr.run(Transform.verticalReflection).value
       nodes = svg.svg(svgAttrs.width:=bb.width,
                       svgAttrs.height:=bb.height,
                       svgAttrs.viewBox:=s"${bb.left} ${bb.bottom} ${bb.width} ${bb.height}",
