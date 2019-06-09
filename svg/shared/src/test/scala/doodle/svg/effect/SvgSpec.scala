@@ -29,4 +29,19 @@ object SvgSpec extends Properties("SVG Properties") {
       circle.render(elt, Transform.identity)(svg.context)
       elt.head.render ?= expected.render
     }
+
+  property("paths of path elements render correctly") = {
+    import doodle.core.PathElement._
+    (Svg.toSvgPath(List(moveTo(5,5), lineTo(10, 10), curveTo(20, 20, 30, 30, 40, 40)), Svg.Open) ?=
+        "M 0,0 M 5,5 L 10,10 C 20,20 30,30 40,40 ") &&
+    (Svg.toSvgPath(List(moveTo(5,5), lineTo(10, 10), curveTo(20, 20, 30, 30, 40, 40)), Svg.Closed) ?=
+       "M 0,0 M 5,5 L 10,10 C 20,20 30,30 40,40 Z")
+  }
+
+  property("paths of points render correctly") = {
+    (Svg.toSvgPath(Array(Point(5,5), Point(10, 10), Point(20, 20)), Svg.Open) ?=
+        "M 5,5 L 10,10 L 20,20 ") &&
+    (Svg.toSvgPath(Array(Point(5,5), Point(10, 10), Point(20, 20)), Svg.Closed) ?=
+       "M 5,5 L 10,10 L 20,20 Z")
+  }
 }

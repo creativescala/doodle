@@ -141,14 +141,14 @@ object Svg {
     import PathElement._
     import scala.collection.mutable.StringBuilder
 
-    val builder = new StringBuilder(64)
+    val builder = new StringBuilder(64, "M 0,0 ")
     elts.foreach {
       case MoveTo(end) =>
         builder ++= s"M ${end.x},${end.y} "
       case LineTo(end) =>
         builder ++= s"L ${end.x},${end.y} "
       case BezierCurveTo(cp1, cp2, end) =>
-        builder ++= s"C ${cp1.x} ${cp1.y}, ${cp2.x} ${cp2.y}, ${end.x} ${end.y} "
+        builder ++= s"C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${end.x},${end.y} "
     }
     pathType match {
       case Open => builder.toString
@@ -160,8 +160,12 @@ object Svg {
     import scala.collection.mutable.StringBuilder
 
     val builder = new StringBuilder(points.size * 10)
+    var first = true
     points.foreach { pt =>
-      builder ++= s"L ${pt.x},${pt.y} "
+      if(first) {
+        first = false
+        builder ++= s"M ${pt.x},${pt.y} "
+      } else builder ++= s"L ${pt.x},${pt.y} "
     }
 
     pathType match {
