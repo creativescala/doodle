@@ -16,6 +16,7 @@
 
 package doodle
 package explore
+package effect
 
 import cats.effect.IO
 import monix.reactive.Observable

@@ -18,22 +18,21 @@ object Example {
     //
     // GradientCircle.image.draw(frame)
     //
-    // import doodle.interact.syntax._
-    // import cats.implicits._
-    // import scala.concurrent.duration._
-    // (
-    //   for {
-    //     canvas <- frame.canvas()
-    //   } yield Orbit.frames.delayOnNext(10.milliseconds).animate(canvas)
-    // ).unsafeRunAsync(println _)
-    //
     import doodle.interact.syntax._
     import cats.implicits._
-    import doodle.svg._
     (
       for {
-        canvas <- MouseOver.frame.canvas()
-      } yield MouseOver.frames.animate(canvas)
+        canvas <- frame.canvas()
+      } yield Orbit.frames.sampleRepeatedBy(canvas.redraw).animate(canvas)
     ).unsafeRunAsync(println _)
+    //
+    // import doodle.interact.syntax._
+    // import cats.implicits._
+    // import doodle.svg._
+    // (
+    //   for {
+    //     canvas <- MouseOver.frame.canvas()
+    //   } yield MouseOver.frames.animate(canvas)
+    // ).unsafeRunAsync(println _)
   }
 }

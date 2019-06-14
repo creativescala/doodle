@@ -46,7 +46,7 @@ lazy val root = crossProject
             moduleName := "doodle",
             paradoxTheme := Some(builtinParadoxTheme("generic")),
             unidocProjectFilter in ( ScalaUnidoc, unidoc ) :=
-              inAnyProject -- inProjects( animateJs, coreJs, exploreJs, imageJs, svgJs, turtleJs ))
+              inAnyProject -- inProjects(coreJs, interactJs, exploreJs, imageJs, svgJs, turtleJs ))
   .jvmSettings(
     initialCommands in console := """
       |import cats.instances.all._
@@ -57,9 +57,7 @@ lazy val root = crossProject
       |import doodle.image._
       |import doodle.image.syntax._
       |import doodle.image.examples._
-      |import doodle.animate.syntax._
-      |import doodle.animate.java2d._
-      |import doodle.animate.examples._
+      |import doodle.interact.syntax._
       |import doodle.explore.syntax._
       |import doodle.explore.java2d._
       |import doodle.explore.java2d.examples._
@@ -71,11 +69,11 @@ lazy val root = crossProject
   )
   .enablePlugins(ScalaUnidocPlugin)
 lazy val rootJvm = root.jvm
-  .dependsOn(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
-  .aggregate(animateJvm, coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
+  .dependsOn(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
+  .aggregate(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
 lazy val rootJs = root.js
-  .dependsOn(animateJs, coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
-  .aggregate(animateJs, coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
+  .dependsOn(coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
+  .aggregate(coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
 
 
 lazy val core = crossProject
@@ -125,11 +123,21 @@ lazy val docs = project
   .dependsOn(rootJvm)
 
 
+lazy val interact = crossProject
+  .in(file("interact"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.monix.value,
+            moduleName := "doodle-interact")
+
+lazy val interactJvm = interact.jvm.dependsOn(coreJvm)
+lazy val interactJs  = interact.js.dependsOn(coreJs)
+
+
 lazy val java2d = project
   .in(file("java2d"))
   .settings(commonSettings,
             moduleName := "doodle-java2d")
-  .dependsOn(coreJvm)
+  .dependsOn(coreJvm, exploreJvm, interactJvm)
 
 
 lazy val image = crossProject
@@ -141,14 +149,14 @@ lazy val imageJvm = image.jvm.dependsOn(coreJvm, java2d)
 lazy val imageJs  = image.js.dependsOn(coreJs)
 
 
-lazy val animate = crossProject
-  .in(file("animate"))
-  .settings(commonSettings,
-            libraryDependencies += Dependencies.monix.value,
-            moduleName := "doodle-animate")
+// lazy val animate = crossProject
+//   .in(file("animate"))
+//   .settings(commonSettings,
+//             libraryDependencies += Dependencies.monix.value,
+//             moduleName := "doodle-animate")
 
-lazy val animateJvm = animate.jvm.dependsOn(coreJvm, java2d)
-lazy val animateJs  = animate.js.dependsOn(coreJs)
+// lazy val animateJvm = animate.jvm.dependsOn(coreJvm, java2d)
+// lazy val animateJs  = animate.js.dependsOn(coreJs)
 
 
 lazy val explore = crossProject
@@ -156,20 +164,12 @@ lazy val explore = crossProject
   .settings(commonSettings,
             libraryDependencies += Dependencies.magnolia.value,
             moduleName := "doodle-explore")
-  .dependsOn(core, animate)
+  .dependsOn(core, interact)
 
-lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, animateJvm)
-lazy val exploreJs  = explore.js.dependsOn(coreJs, animateJs)
+lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, interactJvm)
+lazy val exploreJs  = explore.js.dependsOn(coreJs, interactJs)
 
 
-lazy val interact = crossProject
-  .in(file("interact"))
-  .settings(commonSettings,
-            libraryDependencies += Dependencies.monix.value,
-            moduleName := "doodle-interact")
-
-lazy val interactJvm = interact.jvm.dependsOn(coreJvm, java2d)
-lazy val interactJs  = interact.js.dependsOn(coreJs)
 
 
 lazy val svg = crossProject

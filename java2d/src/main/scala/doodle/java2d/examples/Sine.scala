@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 noelwelsh
+ * Copyright 2019 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 
 package doodle
-package explore
 package java2d
 package examples
 
@@ -23,10 +22,6 @@ object Sine {
   import doodle.core._
   import doodle.syntax._
   import doodle.language.Basic
-
-  import doodle.java2d._
-
-  import doodle.animate.java2d._
 
   import doodle.explore.syntax._
 
@@ -49,6 +44,6 @@ object Sine {
   }
 
   def explore(): Unit = {
-    wave.tupled.explore
+    wave.tupled.explore()
   }
 }

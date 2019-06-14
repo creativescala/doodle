@@ -11,7 +11,6 @@ import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
 
 object SvgAnimator extends Animator[Canvas] {
-
   def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](canvas: Canvas)(
     frames: Observable[doodle.algebra.Picture[Alg, F, A]])(
     implicit e: Renderer[Alg, F, Frm, Canvas],

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 noelwelsh
+ * Copyright 2019 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,19 @@
  */
 
 package doodle
-package explore
 package java2d
+package effect
 
 import cats.effect.IO
 import doodle.core.Color
+import doodle.explore.effect.{Explorer,ExplorerFactory}
 import javax.swing._
 import javax.swing.event.{ChangeEvent, ChangeListener}
+import magnolia._
 import monix.execution.{Ack, Scheduler}
 import monix.reactive._
 import monix.reactive.subjects.Var
+import scala.language.experimental.macros
 
 trait Java2dExplorer[A] extends Explorer[JComponent, A] {
   def render: IO[Observable[A]] =
@@ -109,4 +112,33 @@ trait Java2dExplorerAtoms {
             )
         }
     }
+}
+
+object Java2dExplorer extends Java2dExplorerAtoms {
+  type Typeclass[A] = ExplorerFactory[JComponent, A]
+
+  def combine[A](caseClass: CaseClass[Typeclass, A]): Typeclass[A] =
+    new ExplorerFactory[JComponent, A] {
+      def create =
+        new Java2dExplorer[A] {
+          val children = caseClass.parameters.map(p => p.typeclass.create)
+
+          val ui: JComponent = {
+            val container = Box.createVerticalBox()
+            children.foreach(c => container.add(c.ui, -1))
+            container.revalidate()
+            container
+          }
+
+          val value: Observable[A] = {
+            Observable
+              .combineLatestList(children.map(c => c.value): _*)
+              .map(v => caseClass.rawConstruct(v))
+          }
+        }
+    }
+
+  def dispatch[A](sealedTrait: SealedTrait[Typeclass, A]): Typeclass[A] = ???
+
+  def gen[A]: Typeclass[A] = macro Magnolia.gen[A]
 }

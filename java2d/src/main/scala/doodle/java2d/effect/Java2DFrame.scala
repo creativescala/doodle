@@ -20,29 +20,50 @@ package effect
 
 import cats.effect.IO
 import java.awt.event._
-import javax.swing.{JFrame, WindowConstants}
-import java.util.concurrent.ScheduledThreadPoolExecutor
+import javax.swing.{JFrame, Timer, WindowConstants}
+import monix.reactive.subjects.PublishSubject
 
 final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
 
-  getContentPane().add(panel)
-  pack()
-  setVisible(true)
-  setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
-  repaint()
+  val redraw = PublishSubject[Int]()
+  /** Delay between frames when rendering at 60fps */
+  val frameRateMs = (1000.0 * (1 / 60.0)).toInt
+  var firstFrame = true
+  var lastFrameTime = 0L
+  val frameEvent = new ActionListener {
+    def actionPerformed(e: ActionEvent): Unit = {
+      val now = e.getWhen()
+      if(firstFrame) {
+        firstFrame = false
+        lastFrameTime = now
+        redraw.onNext(0)
+        ()
+      } else {
+        redraw.onNext((now - lastFrameTime).toInt)
+        lastFrameTime = now
+      }
+    }
+  }
+  val timer = new Timer(frameRateMs, frameEvent)
 
   this.addWindowListener(
     new WindowAdapter {
       override def windowClosed(evt: WindowEvent): Unit =
-        timer.shutdown()
+        timer.stop()
     }
   )
 
   def render[A](picture: Picture[A]): IO[A] =
     panel.render(picture)
 
-  val timer = new ScheduledThreadPoolExecutor(4)
+  getContentPane().add(panel)
+  pack()
+  setVisible(true)
+  setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
+  repaint()
+  timer.start()
+
 }
 object Java2DFrame {
   val nullListener = new ActionListener {
