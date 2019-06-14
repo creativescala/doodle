@@ -4,12 +4,12 @@ import doodle.effect.Renderer
 import doodle.interact.algebra.MouseOver
 import doodle.interact.effect.Animator
 import doodle.language.Basic
+// import monix.reactive.Observer
 import org.scalajs.dom
-import scalatags.generic.TypedTag
 
 package object svg {
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F] with MouseOver[F]
-  type Tag = TypedTag[dom.Element, dom.Element, dom.Node]
+  type Tag = scalatags.generic.TypedTag[dom.Element, dom.Element, dom.Node]
   type SvgResult[A] = (Tag, A)
   type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
 

@@ -2,30 +2,48 @@ package doodle
 package svg
 package effect
 
+import cats.effect.IO
 import doodle.core._
+import doodle.algebra.{Algebra,Picture}
 import doodle.algebra.generic.{BoundingBox, Fill, Stroke}
-import doodle.algebra.generic.reified.Reified
 import scalatags.generic.{Bundle, TypedTag}
-import scala.collection.mutable.ListBuffer
 
-final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT]) {
+final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT]{ type Tag <: TypedTag[Builder, Output, FragT] }) {
+  import bundle.{svgTags => svg}
+  import bundle.svgAttrs
+  import bundle.implicits._
+
+  type SvgResult[A] = (bundle.Tag,A)
+  type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult,A]
+
   implicit val context = SvgGraphicsContext(bundle)
 
-  def render(boundingBox: BoundingBox, instructions: List[Reified]) = {
-    import bundle.{svgTags => svg}
-    import bundle.svgAttrs
-    import bundle.implicits._
-
-    val tx = Transform.logicalToScreen(boundingBox.width, boundingBox.height)
-    val elts: ListBuffer[TypedTag[Builder, Output, FragT]] = new ListBuffer()
-    instructions.foreach(_.render(elts, tx)(context))
-
-    svg.svg(svgAttrs.width:=boundingBox.width,
-            svgAttrs.height:=boundingBox.height,
-            svgAttrs.viewBox:=s"0 0 ${boundingBox.width} ${boundingBox.height}")(
-      elts:_*
-    )
+  def render[Alg[x[_]] <: Algebra[x],A](size: Size, algebra: Alg[Drawing], picture: Picture[Alg,Drawing,A]): IO[(Output,A)] = {
+    for {
+      drawing <- IO{picture(algebra)}
+      (bb, rdr) = drawing.runA(List.empty).value
+      (_, (tags, a)) = rdr.run(Transform.verticalReflection).value
+      nodes = svgTag(bb, size, tags).render
+    } yield (nodes, a)
   }
+
+  /** Given a bounding box and a size specification create a SVG tag that has the
+    * correct size and viewbox */
+  def svgTag(bb: BoundingBox, size: Size, tags: bundle.Tag): bundle.Tag =
+    size match {
+      case Size.FitToPicture(border) =>
+        val w = bb.width + (2 * border)
+        val h = bb.height + (2 * border)
+        svg.svg(svgAttrs.width:=w,
+                svgAttrs.height:=h,
+                svgAttrs.viewBox:=s"${bb.left - border} ${bb.bottom - border} ${w} ${h}")(tags)
+
+      case Size.FixedSize(w, h) =>
+        svg.svg(svgAttrs.width:=w,
+                svgAttrs.height:=h,
+                svgAttrs.viewBox:=s"${-w/2} ${-h/2} ${w} ${h}")(tags)
+
+    }
 }
 object Svg {
   def toStyle(stroke: Stroke): String = {
