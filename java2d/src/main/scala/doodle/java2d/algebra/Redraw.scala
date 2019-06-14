@@ -1,5 +1,5 @@
 package doodle
-package svg
+package java2d
 package algebra
 
 import doodle.java2d.effect.Canvas

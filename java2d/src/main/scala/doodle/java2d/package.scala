@@ -29,6 +29,8 @@ package object java2d extends effect.Java2dExplorerAtoms {
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification,A]
 
   type Canvas = doodle.java2d.effect.Canvas
+  implicit val java2dCanvasAlgebra = doodle.java2d.algebra.CanvasAlgebra
+
   implicit val java2dAnimator: Animator[Canvas] = doodle.java2d.effect.Java2dAnimator
 
   // Magnolia doesn't work if I just define
