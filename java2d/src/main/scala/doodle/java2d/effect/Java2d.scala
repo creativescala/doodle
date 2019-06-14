@@ -37,26 +37,21 @@ object Java2d {
     graphics
   }
 
-  def render(gc: Graphics2D,
-             bb: BoundingBox,
-             image: List[Reified],
-             width: Double,
-             height: Double,
-             center: Center): Unit = {
-    val tx =
-      center match {
-        case Center.CenteredOnPicture =>
-          // Work out the center of the bounding box, in logical local coordinates
-          val centerX = bb.left + (bb.width / 2.0)
-          val centerY = bb.bottom + (bb.height / 2.0)
-          Tx.translate(-centerX, -centerY)
-            .andThen(Tx.logicalToScreen(width, height))
+  def transform(bb: BoundingBox, width: Double, height: Double, center: Center): Tx =
+    center match {
+      case Center.CenteredOnPicture =>
+        // Work out the center of the bounding box, in logical local coordinates
+        val centerX = bb.left + (bb.width / 2.0)
+        val centerY = bb.bottom + (bb.height / 2.0)
+        Tx.translate(-centerX, -centerY)
+          .andThen(Tx.logicalToScreen(width, height))
 
-        case Center.AtOrigin =>
-          Tx.logicalToScreen(width, height)
-      }
+      case Center.AtOrigin =>
+        Tx.logicalToScreen(width, height)
+    }
 
-    image.foreach { _.render(gc, tx)(Graphics2DGraphicsContext) }
+  def render(gc: Graphics2D, image: List[Reified], transform: Tx): Unit = {
+    image.foreach { _.render(gc, transform)(Graphics2DGraphicsContext) }
   }
 
 }
