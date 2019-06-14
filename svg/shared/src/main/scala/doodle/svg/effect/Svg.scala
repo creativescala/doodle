@@ -19,29 +19,35 @@ final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Ou
   implicit val context = SvgGraphicsContext(bundle)
 
   def render[Alg[x[_]] <: Algebra[x],A](size: Size, algebra: Alg[Drawing], picture: Picture[Alg,Drawing,A]): IO[(Output,A)] = {
+    renderWithoutRootTag(algebra, picture)
+    .map{ case (bb, tags, a) => (svgTag(bb, size)(tags).render, a) }
+  }
+
+  /** Render to SVG without wrapping with a root <svg> tag. */
+  def renderWithoutRootTag[Alg[x[_]] <: Algebra[x],A](algebra: Alg[Drawing], picture: Picture[Alg,Drawing,A]): IO[(BoundingBox, bundle.Tag,A)] = {
     for {
       drawing <- IO{picture(algebra)}
       (bb, rdr) = drawing.runA(List.empty).value
       (_, (tags, a)) = rdr.run(Transform.verticalReflection).value
-      nodes = svgTag(bb, size, tags).render
-    } yield (nodes, a)
+      // nodes = svgTag(bb, size, tags).render
+    } yield (bb, tags, a)
   }
 
-  /** Given a bounding box and a size specification create a SVG tag that has the
+  /** Given a bounding box and a size specification create a <svg> tag that has the
     * correct size and viewbox */
-  def svgTag(bb: BoundingBox, size: Size, tags: bundle.Tag): bundle.Tag =
+  def svgTag(bb: BoundingBox, size: Size): bundle.Tag =
     size match {
       case Size.FitToPicture(border) =>
         val w = bb.width + (2 * border)
         val h = bb.height + (2 * border)
         svg.svg(svgAttrs.width:=w,
                 svgAttrs.height:=h,
-                svgAttrs.viewBox:=s"${bb.left - border} ${bb.bottom - border} ${w} ${h}")(tags)
+                svgAttrs.viewBox:=s"${bb.left - border} ${bb.bottom - border} ${w} ${h}")
 
       case Size.FixedSize(w, h) =>
         svg.svg(svgAttrs.width:=w,
                 svgAttrs.height:=h,
-                svgAttrs.viewBox:=s"${-w/2} ${-h/2} ${w} ${h}")(tags)
+                svgAttrs.viewBox:=s"${-w/2} ${-h/2} ${w} ${h}")
 
     }
 }

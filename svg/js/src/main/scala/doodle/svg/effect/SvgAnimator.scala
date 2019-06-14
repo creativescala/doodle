@@ -17,9 +17,8 @@ object SvgAnimator extends Animator[Canvas] {
     implicit e: Renderer[Alg, F, Frm, Canvas],
     m: Monoid[A]): IO[A] =
     frames
-      .mapEval{img => println("blasting a rendering job"); Task.fromIO(e.render(canvas)(img))}
+      .mapEval{img => Task.fromIO(e.render(canvas)(img))}
       .consumeWith(Consumer.foldLeft(m.empty) { (accum, a) =>
-                     println("combining like a boss")
         m.combine(accum, a)
       })
       .toIO(

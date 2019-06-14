@@ -2,7 +2,8 @@ package doodle
 package svg
 package algebra
 
-import cats.{Apply,Semigroup}
+import cats._
+import cats.implicits._
 import doodle.language.Basic
 import doodle.algebra.Layout
 import doodle.algebra.generic._
@@ -24,9 +25,6 @@ object Algebra
     def combine(x: Tag, y: Tag): Tag =
       JsDom.svgTags.g(x, y)
   }
-  // I don't understand why the compiler cannot derive this itself
-  implicit val tagApply: Apply[SvgResult] =
-    cats.instances.tuple.catsStdFlatMapForTuple2(tagSemigroup)
 
   val layout = new GenericLayout[SvgResult]()(Apply.apply[SvgResult])
 
