@@ -26,10 +26,10 @@ import monix.eval.Task
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
 
-object Java2dAnimator extends Animator[Java2DFrame] {
-    def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](canvas: Java2DFrame)(
+object Java2dAnimator extends Animator[Canvas] {
+    def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](canvas: Canvas)(
       frames: Observable[doodle.algebra.Picture[Alg, F, A]])(
-      implicit e: Renderer[Alg, F, Frm, Java2DFrame],
+      implicit e: Renderer[Alg, F, Frm, Canvas],
       m: Monoid[A]): IO[A] =
       frames
         .mapEval{img => Task.fromIO(e.render(canvas)(img))}

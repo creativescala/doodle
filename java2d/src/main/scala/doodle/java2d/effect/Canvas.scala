@@ -24,7 +24,7 @@ import java.awt.event._
 import javax.swing.{JFrame, Timer, WindowConstants}
 import monix.reactive.subjects.PublishSubject
 
-final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
+final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
 
   val redraw = PublishSubject[Int]()
@@ -81,9 +81,4 @@ final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
   repaint()
   timer.start()
 
-}
-object Java2DFrame {
-  val nullListener = new ActionListener {
-    def actionPerformed(evt: ActionEvent): Unit = ()
-  }
 }

@@ -22,19 +22,19 @@ import cats.effect.IO
 import doodle.effect.DefaultRenderer
 import javax.swing.JFrame
 
-object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Java2DFrame] {
+object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Canvas] {
   private var jFrames: List[JFrame] = List.empty
 
   val default: Frame = Frame.fitToPicture()
 
-  def canvas(description: Frame): IO[Java2DFrame] =
+  def canvas(description: Frame): IO[Canvas] =
     IO {
-      val jFrame = new Java2DFrame(description)
+      val jFrame = new Canvas(description)
       jFrames.synchronized { jFrames = jFrame :: jFrames }
       jFrame
     }
 
-  def render[A](canvas: Java2DFrame)(picture: Picture[A]): IO[A] =
+  def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =
     canvas.render(picture)
 
   def stop(): Unit = {

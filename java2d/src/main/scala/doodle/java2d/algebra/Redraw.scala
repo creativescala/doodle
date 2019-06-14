@@ -2,11 +2,11 @@ package doodle
 package svg
 package algebra
 
-import doodle.java2d.effect.Java2DFrame
+import doodle.java2d.effect.Canvas
 import monix.reactive.Observable
 
-trait Redraw extends doodle.interact.algebra.Redraw[Java2DFrame] {
-  def redraw(canvas: Java2DFrame): Observable[Int] = {
+trait Redraw extends doodle.interact.algebra.Redraw[Canvas] {
+  def redraw(canvas: Canvas): Observable[Int] = {
     canvas.redraw
   }
 }
