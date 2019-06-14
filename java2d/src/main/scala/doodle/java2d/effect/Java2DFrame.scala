@@ -19,6 +19,7 @@ package java2d
 package effect
 
 import cats.effect.IO
+import doodle.core.Point
 import java.awt.event._
 import javax.swing.{JFrame, Timer, WindowConstants}
 import monix.reactive.subjects.PublishSubject
@@ -46,6 +47,20 @@ final class Java2DFrame(frame: Frame) extends JFrame(frame.title) {
     }
   }
   val timer = new Timer(frameRateMs, frameEvent)
+
+
+  val mouseMove = PublishSubject[Point]()
+  this.addMouseMotionListener(
+    new MouseMotionListener {
+      def mouseDragged(e: MouseEvent): Unit = ()
+      def mouseMoved(e: MouseEvent): Unit = {
+        val pt = e.getPoint()
+        // TODO: Transform to Doodle's coordinate system
+        mouseMove.onNext(Point(pt.getX(), pt.getY()))
+        ()
+      }
+    }
+  )
 
   this.addWindowListener(
     new WindowAdapter {
