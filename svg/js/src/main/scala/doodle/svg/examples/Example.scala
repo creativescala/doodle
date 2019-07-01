@@ -23,7 +23,7 @@ object Example {
     (
       for {
         canvas <- frame.canvas()
-      } yield Orbit.frames.sampleRepeatedBy(canvas.redraw).animate(canvas)
+      } yield Orbit.frames.animateFrames(canvas)
     ).unsafeRunAsync(println _)
     //
     // import doodle.interact.syntax._

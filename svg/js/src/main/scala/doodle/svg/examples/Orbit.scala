@@ -2,13 +2,13 @@ package doodle
 package svg
 package examples
 
+import doodle.core._
+import doodle.syntax._
+import doodle.language.Basic
+import doodle.svg._
 import monix.reactive.Observable
 
 object Orbit {
-  import doodle.core._
-  import doodle.syntax._
-  import doodle.language.Basic
-  import doodle.svg._
 
   def planet(angle: Angle) =
     Basic.picture[Drawing, Unit]{ implicit algebra: Basic[Drawing] =>
@@ -18,7 +18,11 @@ object Orbit {
     }
 
   val frames =
-    Observable.range(0, 360, 1)
-      .map(a => a.toDouble.degrees)
-      .map(planet _)
+    Observable
+      .repeat(1)
+      .scan(0){ (angle, inc) =>
+        if(angle >= 360) 0 + inc
+        else angle + inc
+      }
+      .map(a => planet(a.toDouble.degrees))
 }

@@ -22,6 +22,7 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.algebra.{Algebra,Picture}
 import doodle.effect.Renderer
+import monix.execution.Scheduler
 import monix.reactive.Observable
 
 /**
@@ -34,6 +35,7 @@ trait Animator[Canvas] {
   def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Canvas)(
       frames: Observable[Picture[Alg, F, A]])(
       implicit e: Renderer[Alg, F, Frame, Canvas],
+      s: Scheduler,
       m: Monoid[A]): IO[A]
 }
 object Animator {

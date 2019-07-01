@@ -21,22 +21,23 @@ final case class Canvas(target: dom.Node,
     val subject = PublishSubject[Int]()
     var started = false
     var lastTs = 0.0
-    val callback: (Double => Unit) = (ts: Double) => {
-      if(started) {
-        subject.onNext((ts - lastTs).toInt)
-      } else {
-        subject.onNext(0)
-        started = true
+    def register(): Unit = {
+      val callback: (Double => Unit) = (ts: Double) => {
+        if(started) {
+          subject.onNext((ts - lastTs).toInt)
+        } else {
+          subject.onNext(0)
+          started = true
+        }
+        lastTs = ts
+        register()
+        ()
       }
-      lastTs = ts
-      ()
-    }
-    val register: (Unit => Unit) = _ => {
       val _ = dom.window.requestAnimationFrame(callback)
       ()
     }
 
-    dom.window.requestAnimationFrame(callback.andThen(register))
+    register()
     subject
   }
 

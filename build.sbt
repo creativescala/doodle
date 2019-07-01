@@ -59,8 +59,6 @@ lazy val root = crossProject
       |import doodle.image.examples._
       |import doodle.interact.syntax._
       |import doodle.explore.syntax._
-      |import doodle.explore.java2d._
-      |import doodle.explore.java2d.examples._
       |import doodle.core._
     """.trim.stripMargin,
     cleanupCommands in console := """
