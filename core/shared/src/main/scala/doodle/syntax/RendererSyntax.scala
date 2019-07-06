@@ -22,21 +22,45 @@ import doodle.algebra.{Algebra,Picture}
 import doodle.effect.{DefaultRenderer, Renderer}
 
 trait RendererSyntax {
+
+  def nullCallback[A](r: Either[Throwable, A]): Unit =
+    r match {
+      case Left(err) =>
+        println("There was an error rendering a picture")
+        err.printStackTrace()
+
+      case Right(_) => ()
+    }
+
   implicit class RendererPictureOps[Alg[x[_]] <: Algebra[x], F[_], A](
       picture: Picture[Alg, F, A]) {
-    def draw[Frame, Canvas](frame: Frame)(
-        implicit renderer: Renderer[Alg, F, Frame, Canvas]): A =
-      (for {
-        canvas <- renderer.canvas(frame)
-        a <- renderer.render(canvas)(picture)
-      } yield a).unsafeRunSync()
 
-    def draw[Frame, Canvas]()(
-        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): A =
+    /** Convenience to immediately render a `Picture`, using the default `Frame` options for this `Renderer`. */
+    def draw[Frame, Canvas](cb: Either[Throwable, A] => Unit = nullCallback _)(
+        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(picture)
-      } yield a).unsafeRunSync()
+      } yield a).unsafeRunAsync(cb)
+
+    /** Convenience to immediately render a `Picture`, using the given `Frame` options for this `Renderer`. */
+    def drawToFrame[Frame, Canvas](frame: Frame, cb: Either[Throwable, A] => Unit = nullCallback _)(
+        implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
+      (for {
+        canvas <- renderer.canvas(frame)
+        a <- renderer.render(canvas)(picture)
+       } yield a).unsafeRunAsync(cb)
+
+    /** Convenience to immediately render a `Picture`, using the given `Canvas` for this `Renderer`. */
+    def drawToCanvas[Canvas](canvas: Canvas, cb: Either[Throwable, A] => Unit = nullCallback _)(
+        implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
+      (for {
+        a <- renderer.render(canvas)(picture)
+       } yield a).unsafeRunAsync(cb)
+
+    /** Convenience that passes through to the render method on Renderer. Nothing is rendered until the IO result is run. */
+    def render[Canvas](canvas: Canvas)(implicit renderer: Renderer[Alg, F, _, Canvas]): IO[A] =
+      renderer.render(canvas)(picture)
   }
 
   implicit class RendererFrameOps[Frame](frame: Frame) {

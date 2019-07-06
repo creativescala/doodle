@@ -45,8 +45,6 @@ object PulsingCircle {
       .map{ case (_, d) => circle(d) }
 
   def go() =
-    (for {
-      canvas <- frame.canvas
-      frames  = animation
-    } yield frames.animateFrames(canvas)).unsafeRunAsync(println _)
+    // animation.animateFrames(frame)(x => println(x))(java2dAnimator, java2dRenderer, java2dCanvasAlgebra, monix.execution.Scheduler.global, implicitly[monix.reactive.ObservableLike[Observable]], implicitly[cats.Monoid[Unit]])
+    animation.animateFrames(frame)
 }

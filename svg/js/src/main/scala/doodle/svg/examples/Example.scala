@@ -3,7 +3,6 @@ package svg
 package examples
 
 import scala.scalajs.js.annotation._
-import doodle.syntax._
 import doodle.svg._
 
 // Wrapper to run an example in a web page
@@ -20,11 +19,8 @@ object Example {
     //
     import doodle.interact.syntax._
     import cats.implicits._
-    (
-      for {
-        canvas <- frame.canvas()
-      } yield Orbit.frames.animateFrames(canvas)
-    ).unsafeRunAsync(println _)
+
+    Orbit.frames.animateFrames(frame)
     //
     // import doodle.interact.syntax._
     // import cats.implicits._
