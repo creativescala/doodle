@@ -37,7 +37,7 @@ object Sine {
           .fillColor(color)
           .at(x.toDouble, y)
       }.allOn
-    }
+  }
 
   def draw(): Unit = {
     wave(50, 300, Color.cornflowerBlue).draw()

@@ -20,12 +20,12 @@ package language
 import doodle.algebra._
 
 trait Basic[F[_]]
-        extends Algebra[F]
-        with Layout[F]
-        with Path[F]
-        with Shape[F]
-        with Style[F]
-        with Transform[F]
+    extends Algebra[F]
+    with Layout[F]
+    with Path[F]
+    with Shape[F]
+    with Style[F]
+    with Transform[F]
 object Basic {
   def picture[F[_], A](f: Basic[F] => F[A]): Picture[Basic, F, A] =
     new Picture[Basic, F, A] {

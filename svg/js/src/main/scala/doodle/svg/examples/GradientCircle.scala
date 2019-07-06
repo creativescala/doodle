@@ -12,11 +12,15 @@ object GradientCircle {
   import doodle.svg._
 
   val image =
-    Basic.picture[Drawing, Unit]{ implicit algebra: Basic[Drawing] =>
+    Basic.picture[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
       import algebra._
 
       (0 to 360 by 15)
-        .map(x => circle(50).fillColor(Color.hsl(x.degrees, 0.7, 0.7)).at(Point(200, x.degrees)))
+        .map(
+          x =>
+            circle(50)
+              .fillColor(Color.hsl(x.degrees, 0.7, 0.7))
+              .at(Point(200, x.degrees)))
         .toList
         .allOn
     }

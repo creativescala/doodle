@@ -18,7 +18,7 @@ package doodle
 package syntax
 
 import cats.effect.IO
-import doodle.algebra.{Algebra,Picture}
+import doodle.algebra.{Algebra, Picture}
 import doodle.effect.{DefaultRenderer, Renderer}
 
 trait RendererSyntax {
@@ -44,28 +44,32 @@ trait RendererSyntax {
       } yield a).unsafeRunAsync(cb)
 
     /** Convenience to immediately render a `Picture`, using the given `Frame` options for this `Renderer`. */
-    def drawToFrame[Frame, Canvas](frame: Frame, cb: Either[Throwable, A] => Unit = nullCallback _)(
+    def drawToFrame[Frame, Canvas](frame: Frame,
+                                   cb: Either[Throwable, A] => Unit =
+                                     nullCallback _)(
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(picture)
-       } yield a).unsafeRunAsync(cb)
+      } yield a).unsafeRunAsync(cb)
 
     /** Convenience to immediately render a `Picture`, using the given `Canvas` for this `Renderer`. */
-    def drawToCanvas[Canvas](canvas: Canvas, cb: Either[Throwable, A] => Unit = nullCallback _)(
+    def drawToCanvas[Canvas](canvas: Canvas,
+                             cb: Either[Throwable, A] => Unit = nullCallback _)(
         implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
       (for {
         a <- renderer.render(canvas)(picture)
-       } yield a).unsafeRunAsync(cb)
+      } yield a).unsafeRunAsync(cb)
 
     /** Convenience that passes through to the render method on Renderer. Nothing is rendered until the IO result is run. */
-    def render[Canvas](canvas: Canvas)(implicit renderer: Renderer[Alg, F, _, Canvas]): IO[A] =
+    def render[Canvas](canvas: Canvas)(
+        implicit renderer: Renderer[Alg, F, _, Canvas]): IO[A] =
       renderer.render(canvas)(picture)
   }
 
   implicit class RendererFrameOps[Frame](frame: Frame) {
     def canvas[Alg[x[_]] <: Algebra[x], F[_], Canvas]()(
-      implicit renderer: Renderer[Alg, F, Frame, Canvas]): IO[Canvas] =
+        implicit renderer: Renderer[Alg, F, Frame, Canvas]): IO[Canvas] =
       renderer.canvas(frame)
   }
 }

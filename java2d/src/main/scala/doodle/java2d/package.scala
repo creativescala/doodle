@@ -25,13 +25,14 @@ import javax.swing.JComponent
 
 package object java2d extends effect.Java2dExplorerAtoms {
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
-  type Drawing[A] = doodle.algebra.generic.Finalized[Reification,A]
-  type Renderable[A] = doodle.algebra.generic.Renderable[Reification,A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
+  type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 
   type Canvas = doodle.java2d.effect.Canvas
   implicit val java2dCanvasAlgebra = doodle.java2d.algebra.CanvasAlgebra
 
-  implicit val java2dAnimator: Animator[Canvas] = doodle.java2d.effect.Java2dAnimator
+  implicit val java2dAnimator: Animator[Canvas] =
+    doodle.java2d.effect.Java2dAnimator
 
   // Magnolia doesn't work if I just define
   //   def gen[A] = Java2dExplorer.gen[A]
@@ -42,10 +43,11 @@ package object java2d extends effect.Java2dExplorerAtoms {
     effect.Java2dExplorer.combine(caseClass)
   def dispatch[A](sealedTrait: SealedTrait[Typeclass, A]): Typeclass[A] =
     effect.Java2dExplorer.dispatch(sealedTrait)
-  implicit def java2dExplorerFactory[A]: ExplorerFactory[JComponent,A] =
+  implicit def java2dExplorerFactory[A]: ExplorerFactory[JComponent, A] =
     macro Magnolia.gen[A]
 
-  implicit val java2dRenderer: DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
+  implicit val java2dRenderer
+    : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
   implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter

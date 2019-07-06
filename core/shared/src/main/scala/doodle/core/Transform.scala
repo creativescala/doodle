@@ -68,12 +68,11 @@ final case class Transform(elements: Array[Double]) {
   }
 
   override def equals(that: Any): Boolean = {
-    that.isInstanceOf[Transform] &&
-    {
+    that.isInstanceOf[Transform] && {
       val other = that.asInstanceOf[Transform]
       var i = 0
       var isEqual = true
-      while(i < elements.length) {
+      while (i < elements.length) {
         if (this.elements(i) != other.elements(i))
           isEqual = false
 

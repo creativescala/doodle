@@ -5,7 +5,7 @@ import scalatags.Text
 
 package object svg {
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
-  type Drawing[A] = doodle.algebra.generic.Finalized[(Text.Tag, ?),A]
+  type Drawing[A] = doodle.algebra.generic.Finalized[(Text.Tag, ?), A]
 
   type Frame = Unit
   implicit val svgWriter = doodle.svg.effect.SvgWriter

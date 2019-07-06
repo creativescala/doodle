@@ -20,7 +20,7 @@ package effect
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.{Algebra,Picture}
+import doodle.algebra.{Algebra, Picture}
 import doodle.effect.Renderer
 import monix.execution.Scheduler
 import monix.reactive.Observable

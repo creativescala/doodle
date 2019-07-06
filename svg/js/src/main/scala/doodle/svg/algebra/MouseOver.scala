@@ -21,12 +21,12 @@ trait MouseOver extends doodle.interact.algebra.MouseOver[Drawing] {
     }
 
     val result =
-      img.map{ case (bb, rdr) =>
-        (bb,
-         rdr.map{ case (tags, a) =>
-           (tags(onmouseover:=callback) : JsDom.Tag, a)
-         }
-        )
+      img.map {
+        case (bb, rdr) =>
+          (bb, rdr.map {
+            case (tags, a) =>
+              (tags(onmouseover := callback): JsDom.Tag, a)
+          })
       }
 
     import monix.eval.Task

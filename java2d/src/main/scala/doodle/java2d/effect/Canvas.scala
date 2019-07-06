@@ -30,13 +30,14 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val redraw = PublishSubject[Int]()
   val frameRateMs = (1000.0 * (1 / 60.0)).toInt
   val frameEvent = {
+
     /** Delay between frames when rendering at 60fps */
     var firstFrame = true
     var lastFrameTime = 0L
     new ActionListener {
       def actionPerformed(e: ActionEvent): Unit = {
         val now = e.getWhen()
-        if(firstFrame) {
+        if (firstFrame) {
           firstFrame = false
           lastFrameTime = now
           redraw.onNext(0)
@@ -49,7 +50,6 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
     }
   }
   val timer = new Timer(frameRateMs, frameEvent)
-
 
   val mouseMove = PublishSubject[Point]()
   this.addMouseMotionListener(

@@ -11,6 +11,7 @@ import monix.reactive.Observable
   * mouse location in the canvas rather than relative to any Picture rendered on
   * the canvas. */
 trait MouseMove[Canvas] {
+
   /** Return an Observable that has an event every time the mouse moves across the
     * canvas. The coordinate system used is the global coordinate system used by
     * the Canvas, which usually means the origin is centered on the canvas. */

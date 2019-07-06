@@ -19,7 +19,7 @@ package explore
 package syntax
 
 import cats.Monoid
-import doodle.algebra.{Algebra,Picture}
+import doodle.algebra.{Algebra, Picture}
 import doodle.effect.DefaultRenderer
 import doodle.explore.effect.ExplorerFactory
 import doodle.interact.effect.Animator
@@ -29,10 +29,10 @@ trait ExploreSyntax {
   implicit class ExploreFunctionOps[A, Alg[x[_]] <: Algebra[x], F[_], B](
       f: A => Picture[Alg, F, B]) {
     def explore[Frame, Canvas]()(implicit ex: ExplorerFactory[_, A],
-                   a: Animator[Canvas],
-                   e: DefaultRenderer[Alg, F, Frame, Canvas],
-                   s: Scheduler,
-                   m: Monoid[B]): B = {
+                                 a: Animator[Canvas],
+                                 e: DefaultRenderer[Alg, F, Frame, Canvas],
+                                 s: Scheduler,
+                                 m: Monoid[B]): B = {
       (for {
         canvas <- e.canvas(e.default)
         values <- ex.create.render

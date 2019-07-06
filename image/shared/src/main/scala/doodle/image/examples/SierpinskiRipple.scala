@@ -15,9 +15,10 @@ object SierpinskiRipple {
     if (n == 1) {
       triangle(size, color)
     } else {
-      sierpinski(n-1, size / 2, color.spin(-10.degrees))
-        .above(sierpinski(n-1, size / 2, color.spin(37.degrees))
-                 .beside(sierpinski(n-1, size / 2, color.spin(79.degrees))))
+      sierpinski(n - 1, size / 2, color.spin(-10.degrees))
+        .above(
+          sierpinski(n - 1, size / 2, color.spin(37.degrees))
+            .beside(sierpinski(n - 1, size / 2, color.spin(79.degrees))))
     }
   }
 

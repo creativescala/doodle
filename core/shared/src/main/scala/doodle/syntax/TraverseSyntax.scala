@@ -25,7 +25,7 @@ trait TraverseSyntax {
   implicit class TraverseOps[T[_], F[_]](val t: T[F[Unit]]) {
     def allOn(implicit layout: Layout[F],
               shape: Shape[F],
-              traverse: Traverse[T]) : F[Unit] =
+              traverse: Traverse[T]): F[Unit] =
       traverse.foldLeft(t, shape.empty) { (accum, img) =>
         layout.on(accum, img)
       }

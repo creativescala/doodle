@@ -18,6 +18,4 @@ package doodle
 package java2d
 package algebra
 
-final case object CanvasAlgebra
-  extends Redraw
-  with MouseMove
+final case object CanvasAlgebra extends Redraw with MouseMove

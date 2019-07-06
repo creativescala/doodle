@@ -23,7 +23,7 @@ final case class Canvas(target: dom.Node,
     var lastTs = 0.0
     def register(): Unit = {
       val callback: (Double => Unit) = (ts: Double) => {
-        if(started) {
+        if (started) {
           subject.onNext((ts - lastTs).toInt)
         } else {
           subject.onNext(0)
@@ -42,9 +42,10 @@ final case class Canvas(target: dom.Node,
   }
 
   var svgRoot: dom.Node = _
+
   /** Get the root <svg> node, creating one if needed. */
   def svgRoot(bb: BoundingBox): dom.Node =
-    if(svgRoot == null) {
+    if (svgRoot == null) {
       svgRoot = target.appendChild(svg.svgTag(bb, size).render)
       svgRoot
     } else {
@@ -60,7 +61,7 @@ final case class Canvas(target: dom.Node,
 
   var svgChild: dom.Node = _
   def renderChild(svgRoot: dom.Node, nodes: dom.Node): Unit = {
-    if(svgChild == null) {
+    if (svgChild == null) {
       svgRoot.appendChild(nodes)
       svgChild = nodes
     } else {
@@ -71,7 +72,7 @@ final case class Canvas(target: dom.Node,
 
   def render[A](picture: Picture[A]): IO[A] = {
     for {
-      result <- svg.renderWithoutRootTag[Algebra,A](algebra, picture)
+      result <- svg.renderWithoutRootTag[Algebra, A](algebra, picture)
     } yield {
       val (bb, tags, a) = result
       val root = svgRoot(bb)

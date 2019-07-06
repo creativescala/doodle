@@ -10,7 +10,7 @@ object Squares {
   import doodle.svg._
 
   val squares =
-    Basic.picture[Drawing, Unit]{ implicit algebra: Basic[Drawing] =>
+    Basic.picture[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
       import algebra._
 
       val red = square(100).fillColor(Color.red)

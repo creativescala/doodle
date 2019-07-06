@@ -8,7 +8,7 @@ import doodle.syntax._
 
 object SierpinskiRipple {
   def base(size: Double, color: Color): Picture[Unit] = {
-    Picture{ implicit algebra =>
+    Picture { implicit algebra =>
       import algebra._
       triangle(size, size).fillColor(color).strokeColor(color)
     }
@@ -18,9 +18,10 @@ object SierpinskiRipple {
     if (n == 1) {
       base(size, color)
     } else {
-      sierpinski(n-1, size / 2, color.spin(-10.degrees))
-        .above(sierpinski(n-1, size / 2, color.spin(37.degrees))
-                 .beside(sierpinski(n-1, size / 2, color.spin(79.degrees))))
+      sierpinski(n - 1, size / 2, color.spin(-10.degrees))
+        .above(
+          sierpinski(n - 1, size / 2, color.spin(37.degrees))
+            .beside(sierpinski(n - 1, size / 2, color.spin(79.degrees))))
     }
   }
 

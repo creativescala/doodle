@@ -15,19 +15,20 @@ object SvgWriter extends Writer[Algebra, Drawing, Frame, Writer.Svg] {
 
   def write[A](file: File,
                description: Frame,
-               picture: Picture[Algebra,Drawing,A]): IO[A] = {
+               picture: Picture[Algebra, Drawing, A]): IO[A] = {
     // Frame is (currently) meaningless for writing
     val _ = description
     write(file, picture)
   }
 
-  def write[A](file: File,
-               picture: Picture[Algebra,Drawing,A]): IO[A] =
-    svg.render[Algebra,A](Size.fitToPicture(), algebra, picture)
-      .flatMap{ case (nodes, a) =>
-        IO{
-          Files.write(file.toPath, nodes.getBytes())
-          a
-        }
+  def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
+    svg
+      .render[Algebra, A](Size.fitToPicture(), algebra, picture)
+      .flatMap {
+        case (nodes, a) =>
+          IO {
+            Files.write(file.toPath, nodes.getBytes())
+            a
+          }
       }
 }

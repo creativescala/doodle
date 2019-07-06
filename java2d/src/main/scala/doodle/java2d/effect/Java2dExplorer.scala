@@ -20,7 +20,7 @@ package effect
 
 import cats.effect.IO
 import doodle.core.Color
-import doodle.explore.effect.{Explorer,ExplorerFactory}
+import doodle.explore.effect.{Explorer, ExplorerFactory}
 import javax.swing._
 import javax.swing.event.{ChangeEvent, ChangeListener}
 import magnolia._

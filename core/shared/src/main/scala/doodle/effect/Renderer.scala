@@ -18,7 +18,7 @@ package doodle
 package effect
 
 import cats.effect.IO
-import doodle.algebra.{Algebra,Picture}
+import doodle.algebra.{Algebra, Picture}
 
 /**
   * The `Renderer` typeclass describes a data type that can create an area to
@@ -26,10 +26,12 @@ import doodle.algebra.{Algebra,Picture}
   * to that Canvas.
   */
 trait Renderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
+
   /** Construct a Canvas from a description. */
   def canvas(description: Frame): IO[Canvas]
+
   /** Render a picture to a Canvas. */
-  def render[A](canvas: Canvas)(picture: Picture[Alg,F,A]): IO[A]
+  def render[A](canvas: Canvas)(picture: Picture[Alg, F, A]): IO[A]
 }
 object Renderer {
   def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](

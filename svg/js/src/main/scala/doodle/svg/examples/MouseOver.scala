@@ -12,7 +12,7 @@ object MouseOver {
   val initialColor = Color.royalBlue
 
   def coloredCircle(color: Color): Picture[Unit] =
-    Picture{ implicit algebra =>
+    Picture { implicit algebra =>
       import algebra._
 
       circle(300).fillColor(color)
@@ -28,12 +28,12 @@ object MouseOver {
     Observable.cons(p2,
                     // makeFrames(color.spin(15.degrees)))
                     obs.flatMap(_ => makeFrames(color.spin(15.degrees))))
-                    // obs.map(_ => coloredCircle(initialColor.spin(15.degrees))))
-                    // obs.map{a => println(s"snooped on $a"); a}.flatMap{_ => println("mouse move invoked"); makeFrames(color.spin(10.degrees))})
+    // obs.map(_ => coloredCircle(initialColor.spin(15.degrees))))
+    // obs.map{a => println(s"snooped on $a"); a}.flatMap{_ => println("mouse move invoked"); makeFrames(color.spin(10.degrees))})
   }
 
   val frames = makeFrames(initialColor)
 
-  val frame = Frame("canvas").size(600,600)
+  val frame = Frame("canvas").size(600, 600)
   //frames.animate(canvas)
 }

@@ -38,8 +38,8 @@ final case class Frame(size: Size,
 }
 object Frame {
   def fitToPicture(border: Int = 20): Frame =
-    Frame(Size.fitToPicture(border), center=Center.centeredOnPicture)
+    Frame(Size.fitToPicture(border), center = Center.centeredOnPicture)
 
   def size(width: Double, height: Double): Frame =
-    Frame(Size.fixedSize(width, height), center=Center.atOrigin)
+    Frame(Size.fixedSize(width, height), center = Center.atOrigin)
 }

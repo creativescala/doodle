@@ -52,8 +52,8 @@ trait ImageSyntax {
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
-      w.write(file,
-              Picture((algebra: Alg[F]) => image.compile(algebra))).unsafeRunSync()
+      w.write(file, Picture((algebra: Alg[F]) => image.compile(algebra)))
+        .unsafeRunSync()
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
@@ -61,10 +61,9 @@ trait ImageSyntax {
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File, frame: Frame)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
-      w.write(
-          file,
-          frame,
-          Picture((algebra: Alg[F]) => image.compile(algebra)))
+      w.write(file,
+               frame,
+               Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunSync()
   }
 }

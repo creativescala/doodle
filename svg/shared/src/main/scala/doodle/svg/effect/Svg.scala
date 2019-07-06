@@ -4,29 +4,37 @@ package effect
 
 import cats.effect.IO
 import doodle.core._
-import doodle.algebra.{Algebra,Picture}
+import doodle.algebra.{Algebra, Picture}
 import doodle.algebra.generic.{BoundingBox, Fill, Stroke}
 import scalatags.generic.{Bundle, TypedTag}
 
-final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT]{ type Tag <: TypedTag[Builder, Output, FragT] }) {
+final case class Svg[Builder, Output <: FragT, FragT](
+    bundle: Bundle[Builder, Output, FragT] {
+      type Tag <: TypedTag[Builder, Output, FragT]
+    }) {
   import bundle.{svgTags => svg}
   import bundle.svgAttrs
   import bundle.implicits._
 
-  type SvgResult[A] = (bundle.Tag,A)
-  type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult,A]
+  type SvgResult[A] = (bundle.Tag, A)
+  type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
 
   implicit val context = SvgGraphicsContext(bundle)
 
-  def render[Alg[x[_]] <: Algebra[x],A](size: Size, algebra: Alg[Drawing], picture: Picture[Alg,Drawing,A]): IO[(Output,A)] = {
+  def render[Alg[x[_]] <: Algebra[x], A](
+      size: Size,
+      algebra: Alg[Drawing],
+      picture: Picture[Alg, Drawing, A]): IO[(Output, A)] = {
     renderWithoutRootTag(algebra, picture)
-    .map{ case (bb, tags, a) => (svgTag(bb, size)(tags).render, a) }
+      .map { case (bb, tags, a) => (svgTag(bb, size)(tags).render, a) }
   }
 
   /** Render to SVG without wrapping with a root <svg> tag. */
-  def renderWithoutRootTag[Alg[x[_]] <: Algebra[x],A](algebra: Alg[Drawing], picture: Picture[Alg,Drawing,A]): IO[(BoundingBox, bundle.Tag,A)] = {
+  def renderWithoutRootTag[Alg[x[_]] <: Algebra[x], A](
+      algebra: Alg[Drawing],
+      picture: Picture[Alg, Drawing, A]): IO[(BoundingBox, bundle.Tag, A)] = {
     for {
-      drawing <- IO{picture(algebra)}
+      drawing <- IO { picture(algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
       (_, (tags, a)) = rdr.run(Transform.verticalReflection).value
       // nodes = svgTag(bb, size, tags).render
@@ -40,14 +48,15 @@ final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Ou
       case Size.FitToPicture(border) =>
         val w = bb.width + (2 * border)
         val h = bb.height + (2 * border)
-        svg.svg(svgAttrs.width:=w,
-                svgAttrs.height:=h,
-                svgAttrs.viewBox:=s"${bb.left - border} ${bb.bottom - border} ${w} ${h}")
+        svg.svg(
+          svgAttrs.width := w,
+          svgAttrs.height := h,
+          svgAttrs.viewBox := s"${bb.left - border} ${bb.bottom - border} ${w} ${h}")
 
       case Size.FixedSize(w, h) =>
-        svg.svg(svgAttrs.width:=w,
-                svgAttrs.height:=h,
-                svgAttrs.viewBox:=s"${-w/2} ${-h/2} ${w} ${h}")
+        svg.svg(svgAttrs.width := w,
+                svgAttrs.height := h,
+                svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}")
 
     }
 }
@@ -56,8 +65,8 @@ object Svg {
     val builder = new StringBuilder(64)
 
     val linecap = stroke.cap match {
-      case Cap.Butt => "butt"
-      case Cap.Round => "round"
+      case Cap.Butt   => "butt"
+      case Cap.Round  => "round"
       case Cap.Square => "square"
     }
     val linejoin = stroke.join match {
@@ -106,7 +115,7 @@ object Svg {
         builder ++= s"C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${end.x},${end.y} "
     }
     pathType match {
-      case Open => builder.toString
+      case Open   => builder.toString
       case Closed => (builder += 'Z').toString
     }
   }
@@ -117,22 +126,22 @@ object Svg {
     val builder = new StringBuilder(points.size * 10)
     var first = true
     points.foreach { pt =>
-      if(first) {
+      if (first) {
         first = false
         builder ++= s"M ${pt.x},${pt.y} "
       } else builder ++= s"L ${pt.x},${pt.y} "
     }
 
     pathType match {
-      case Open => builder.toString
+      case Open   => builder.toString
       case Closed => (builder += 'Z').toString
     }
   }
 
-
   def toHSLA(color: Color): String = {
-    val (h, s, l, a) = (color.hue, color.saturation, color.lightness, color.alpha)
-    s"hsla(${h.toDegrees}, ${s.get*100}%, ${l.get*100}%, ${a.get})"
+    val (h, s, l, a) =
+      (color.hue, color.saturation, color.lightness, color.alpha)
+    s"hsla(${h.toDegrees}, ${s.get * 100}%, ${l.get * 100}%, ${a.get})"
   }
 
   def toRGB(color: Color): String = {

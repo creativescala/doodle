@@ -29,20 +29,23 @@ object PulsingCircle {
   val frame = Frame.size(600, 600)
 
   def circle(diameter: Int): Picture[Unit] =
-    Picture{ implicit algebra =>
-      algebra.circle(diameter.toDouble).strokeColor(Color.crimson).strokeWidth(3.0)
+    Picture { implicit algebra =>
+      algebra
+        .circle(diameter.toDouble)
+        .strokeColor(Color.crimson)
+        .strokeWidth(3.0)
     }
 
   val animation: Observable[Picture[Unit]] =
     Observable
       .repeat(1)
-      .scan((3, 10)){ (state, _) =>
+      .scan((3, 10)) { (state, _) =>
         val (inc, diameter) = state
-        if(diameter >= 500) (-3, diameter - 3)
-        else if(diameter <= 10) (1, diameter + 3)
+        if (diameter >= 500) (-3, diameter - 3)
+        else if (diameter <= 10) (1, diameter + 3)
         else (inc, diameter + inc)
       }
-      .map{ case (_, d) => circle(d) }
+      .map { case (_, d) => circle(d) }
 
   def go() =
     // animation.animateFrames(frame)(x => println(x))(java2dAnimator, java2dRenderer, java2dCanvasAlgebra, monix.execution.Scheduler.global, implicitly[monix.reactive.ObservableLike[Observable]], implicitly[cats.Monoid[Unit]])

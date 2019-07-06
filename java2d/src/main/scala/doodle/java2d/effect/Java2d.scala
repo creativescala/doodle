@@ -20,7 +20,7 @@ package effect
 
 import doodle.algebra.generic.BoundingBox
 import doodle.algebra.generic.reified.Reified
-import doodle.core.{Transform=>Tx}
+import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.Graphics2DGraphicsContext
 import java.awt.{Graphics2D, RenderingHints}
 
@@ -37,7 +37,10 @@ object Java2d {
     graphics
   }
 
-  def transform(bb: BoundingBox, width: Double, height: Double, center: Center): Tx =
+  def transform(bb: BoundingBox,
+                width: Double,
+                height: Double,
+                center: Center): Tx =
     center match {
       case Center.CenteredOnPicture =>
         // Work out the center of the bounding box, in logical local coordinates

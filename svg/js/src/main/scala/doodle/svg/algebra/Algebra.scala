@@ -17,8 +17,7 @@ object Algebra
     with Path[dom.Element, dom.Element, dom.Node]
     with GenericStyle[SvgResult]
     with GenericTransform[SvgResult]
-    with Basic[Drawing]
-{
+    with Basic[Drawing] {
   val bundle = JsDom
 
   implicit val tagSemigroup = new Semigroup[Tag] {
@@ -28,15 +27,20 @@ object Algebra
 
   val layout = new GenericLayout[SvgResult]()(Apply.apply[SvgResult])
 
-  def on[A](top: Finalized[SvgResult,A], bottom: Finalized[SvgResult,A])(implicit s: Semigroup[A]): Finalized[SvgResult,A] =
+  def on[A](top: Finalized[SvgResult, A], bottom: Finalized[SvgResult, A])(
+      implicit s: Semigroup[A]): Finalized[SvgResult, A] =
     layout.on(top, bottom)(s)
 
-  def beside[A](left: Finalized[SvgResult,A], right: Finalized[SvgResult,A])(implicit s: Semigroup[A]): Finalized[SvgResult,A] =
+  def beside[A](left: Finalized[SvgResult, A], right: Finalized[SvgResult, A])(
+      implicit s: Semigroup[A]): Finalized[SvgResult, A] =
     layout.beside(left, right)(s)
 
-  def above[A](top: Finalized[SvgResult,A], bottom: Finalized[SvgResult,A])(implicit s: Semigroup[A]): Finalized[SvgResult,A] =
+  def above[A](top: Finalized[SvgResult, A], bottom: Finalized[SvgResult, A])(
+      implicit s: Semigroup[A]): Finalized[SvgResult, A] =
     layout.above(top, bottom)(s)
 
-  def at[A](img: Finalized[SvgResult,A], x: Double, y: Double): Finalized[SvgResult,A] =
+  def at[A](img: Finalized[SvgResult, A],
+            x: Double,
+            y: Double): Finalized[SvgResult, A] =
     layout.at(img, x, y)
 }

@@ -7,7 +7,7 @@ import doodle.svg._
 
 // Wrapper to run an example in a web page
 object Example {
-  val frame = Frame("canvas").size(600,600)
+  val frame = Frame("canvas").size(600, 600)
 
   @JSExportTopLevel("Main")
   def main(): Unit = {

@@ -89,7 +89,10 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       frame.background.foreach(color =>
         gc.setBackground(Java2D.toAwtColor(color)))
       gc.clearRect(0, 0, getWidth, getHeight)
-      val tx = Java2d.transform(lastBoundingBox, getWidth.toDouble, getHeight.toDouble, frame.center)
+      val tx = Java2d.transform(lastBoundingBox,
+                                getWidth.toDouble,
+                                getHeight.toDouble,
+                                frame.center)
       Java2d.render(gc, lastImage, tx)
     }
   }

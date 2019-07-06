@@ -24,16 +24,17 @@ import doodle.language.Basic
 import doodle.syntax._
 
 object Polygons {
-  def picture[F[_]]: Picture[Basic,F,Unit] =
+  def picture[F[_]]: Picture[Basic, F, Unit] =
     Basic.picture { implicit algebra: Basic[F] =>
       import algebra._
 
       def polygon(sides: Int, radius: Double) = {
         val centerAngle = 360.degrees / sides.toDouble
 
-        val shape = (0 until sides).foldLeft(ClosedPath.empty) { (path, index) =>
-          val point = Point.polar(radius, centerAngle * index.toDouble)
-          if (index == 0) path.moveTo(point) else path.lineTo(point)
+        val shape = (0 until sides).foldLeft(ClosedPath.empty) {
+          (path, index) =>
+            val point = Point.polar(radius, centerAngle * index.toDouble)
+            if (index == 0) path.moveTo(point) else path.lineTo(point)
         }
 
         path(shape).strokeWidth(3).strokeColor(Color.hsl(centerAngle, 1, .5))

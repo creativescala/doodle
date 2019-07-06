@@ -23,5 +23,6 @@ import cats.Apply
 import cats.implicits._
 
 object ReifiedLayout {
-  val instance: Layout[Finalized[Reification,?]] = new GenericLayout()(Apply.apply[Reification])
+  val instance: Layout[Finalized[Reification, ?]] =
+    new GenericLayout()(Apply.apply[Reification])
 }
