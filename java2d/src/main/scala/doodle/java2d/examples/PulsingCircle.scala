@@ -33,16 +33,23 @@ object PulsingCircle {
       algebra
         .circle(diameter.toDouble)
         .strokeColor(Color.crimson)
+        .on(algebra
+              .circle((diameter - 9).toDouble)
+              .strokeColor(Color.crimson.spin(30.degrees)))
+        .on(algebra
+              .circle((diameter - 18).toDouble)
+              .strokeColor(Color.crimson.spin(60.degrees)))
         .strokeWidth(3.0)
+        .noFill
     }
 
   val animation: Observable[Picture[Unit]] =
     Observable
       .repeat(1)
-      .scan((3, 10)) { (state, _) =>
+      .scan((3, 18)) { (state, _) =>
         val (inc, diameter) = state
         if (diameter >= 500) (-3, diameter - 3)
-        else if (diameter <= 10) (1, diameter + 3)
+        else if (diameter <= 18) (3, diameter + 3)
         else (inc, diameter + inc)
       }
       .map { case (_, d) => circle(d) }
