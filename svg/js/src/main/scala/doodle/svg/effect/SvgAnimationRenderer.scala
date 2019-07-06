@@ -5,12 +5,12 @@ package effect
 import cats.Monoid
 import cats.effect.IO
 import doodle.effect.Renderer
-import doodle.interact.effect.Animator
+import doodle.interact.effect.AnimationRenderer
 import monix.eval.{Task, TaskLift}
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
 
-object SvgAnimator extends Animator[Canvas] {
+object SvgAnimationRenderer extends AnimationRenderer[Canvas] {
   def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](
       canvas: Canvas)(frames: Observable[doodle.algebra.Picture[Alg, F, A]])(
       implicit e: Renderer[Alg, F, Frm, Canvas],

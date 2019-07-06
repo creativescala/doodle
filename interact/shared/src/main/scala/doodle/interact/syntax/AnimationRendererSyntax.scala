@@ -6,11 +6,11 @@ import cats.Monoid
 import doodle.algebra.{Algebra, Picture}
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
-import doodle.interact.effect.Animator
+import doodle.interact.effect.AnimationRenderer
 import monix.execution.Scheduler
 import monix.reactive.{Observable, ObservableLike}
 
-trait AnimatorSyntax {
+trait AnimationRendererSyntax {
   def nullCallback[A](r: Either[Throwable, A]): Unit =
     r match {
       case Left(err) =>
@@ -27,7 +27,7 @@ trait AnimatorSyntax {
     def animate[Frame, Canvas](
         frame: Frame,
         cb: Either[Throwable, A] => Unit = nullCallback _)(
-        implicit a: Animator[Canvas],
+        implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         s: Scheduler,
         m: Monoid[A]): Unit =
@@ -40,7 +40,7 @@ trait AnimatorSyntax {
     def animateToCanvas[Canvas](canvas: Canvas,
                                 cb: Either[Throwable, A] => Unit =
                                   nullCallback _)(
-        implicit a: Animator[Canvas],
+        implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         s: Scheduler,
         m: Monoid[A]): Unit = {
@@ -55,7 +55,7 @@ trait AnimatorSyntax {
     def animateFrames[Frame, Canvas](frame: Frame,
                                      cb: Either[Throwable, A] => Unit =
                                        nullCallback _)(
-        implicit a: Animator[Canvas],
+        implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         r: Redraw[Canvas],
         s: Scheduler,
@@ -73,7 +73,7 @@ trait AnimatorSyntax {
     def animateFramesToCanvas[Canvas](canvas: Canvas,
                                       cb: Either[Throwable, A] => Unit =
                                         nullCallback _)(
-        implicit a: Animator[Canvas],
+        implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         r: Redraw[Canvas],
         s: Scheduler,

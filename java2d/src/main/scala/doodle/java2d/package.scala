@@ -19,7 +19,7 @@ package doodle
 import doodle.algebra.generic.reified.Reification
 import doodle.effect.DefaultRenderer
 import doodle.explore.effect.ExplorerFactory
-import doodle.interact.effect.Animator
+import doodle.interact.effect.AnimationRenderer
 import doodle.language.Basic
 import javax.swing.JComponent
 
@@ -31,8 +31,8 @@ package object java2d extends effect.Java2dExplorerAtoms {
   type Canvas = doodle.java2d.effect.Canvas
   implicit val java2dCanvasAlgebra = doodle.java2d.algebra.CanvasAlgebra
 
-  implicit val java2dAnimator: Animator[Canvas] =
-    doodle.java2d.effect.Java2dAnimator
+  implicit val java2dAnimationRenderer: AnimationRenderer[Canvas] =
+    doodle.java2d.effect.Java2dAnimationRenderer
 
   // Magnolia doesn't work if I just define
   //   def gen[A] = Java2dExplorer.gen[A]

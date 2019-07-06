@@ -2,7 +2,7 @@ package doodle
 
 import doodle.effect.Renderer
 import doodle.interact.algebra.MouseOver
-import doodle.interact.effect.Animator
+import doodle.interact.effect.AnimationRenderer
 import doodle.language.Basic
 // import monix.reactive.Observer
 import org.scalajs.dom
@@ -18,8 +18,8 @@ package object svg {
   type Canvas = doodle.svg.effect.Canvas
   implicit val svgRenderer: Renderer[Algebra, Drawing, Frame, Canvas] =
     doodle.svg.effect.SvgRenderer
-  implicit val svgAnimator: Animator[Canvas] =
-    doodle.svg.effect.SvgAnimator
+  implicit val svgAnimationRenderer: AnimationRenderer[Canvas] =
+    doodle.svg.effect.SvgAnimationRenderer
   implicit val svgRedraw: Redraw[Canvas] =
     doodle.svg.algebra.Redraw
 

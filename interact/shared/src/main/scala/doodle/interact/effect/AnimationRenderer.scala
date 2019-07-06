@@ -26,10 +26,10 @@ import monix.execution.Scheduler
 import monix.reactive.Observable
 
 /**
-  * The `Animator` typeclass describes a data type that can render an animation
-  * to a Canvas.
+  * The `AnimationRenderer` typeclass describes a data type that can render an
+  * animation to a Canvas.
   */
-trait Animator[Canvas] {
+trait AnimationRenderer[Canvas] {
 
   /** Animate frames that are produced by an `Observable`. */
   def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Canvas)(
@@ -38,7 +38,7 @@ trait Animator[Canvas] {
       s: Scheduler,
       m: Monoid[A]): IO[A]
 }
-object Animator {
-  def apply[Canvas](implicit animator: Animator[Canvas]): Animator[Canvas] =
+object AnimationRenderer {
+  def apply[Canvas](implicit animator: AnimationRenderer[Canvas]): AnimationRenderer[Canvas] =
     animator
 }

@@ -22,14 +22,14 @@ import cats.Monoid
 import doodle.algebra.{Algebra, Picture}
 import doodle.effect.DefaultRenderer
 import doodle.explore.effect.ExplorerFactory
-import doodle.interact.effect.Animator
+import doodle.interact.effect.AnimationRenderer
 import monix.execution.Scheduler
 
 trait ExploreSyntax {
   implicit class ExploreFunctionOps[A, Alg[x[_]] <: Algebra[x], F[_], B](
       f: A => Picture[Alg, F, B]) {
     def explore[Frame, Canvas]()(implicit ex: ExplorerFactory[_, A],
-                                 a: Animator[Canvas],
+                                 a: AnimationRenderer[Canvas],
                                  e: DefaultRenderer[Alg, F, Frame, Canvas],
                                  s: Scheduler,
                                  m: Monoid[B]): B = {
