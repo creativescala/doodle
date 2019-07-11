@@ -26,7 +26,7 @@ object PulsingCircle {
   import doodle.interact.syntax._
   import monix.reactive.Observable
 
-  val frame = Frame.size(600, 600)
+  val frame = Frame.size(600, 600).background(Color.midnightBlue)
 
   def circle(diameter: Int): Picture[Unit] =
     Picture { implicit algebra =>
@@ -56,4 +56,11 @@ object PulsingCircle {
 
   def go() =
     animation.animateFrames(frame)
+
+
+  import doodle.java2d.effect._
+  import java.io.File
+  println("About to save")
+  Java2dAnimationWriter.write(new File("pulsing-circle-2.gif"), Frame.size(600, 600), doodle.java2d.examples.PulsingCircle.animation.take(100)).unsafeRunSync()
+  println("Saved")
 }
