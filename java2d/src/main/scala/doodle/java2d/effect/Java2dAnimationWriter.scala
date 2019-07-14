@@ -22,7 +22,7 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.effect.Writer.Gif
 import doodle.interact.effect.AnimationWriter
-import java.io.{File,FileOutputStream}
+import java.io.{File, FileOutputStream}
 // import java.awt.image.BufferedImage
 // import javax.imageio.{IIOImage,ImageIO,ImageWriter,ImageTypeSpecifier}
 // import javax.imageio.metadata.IIOMetadataNode
@@ -31,7 +31,8 @@ import monix.eval.{Task, TaskLift}
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
 
-object Java2dAnimationWriter extends AnimationWriter[doodle.java2d.Algebra, Drawing, Frame, Gif] {
+object Java2dAnimationWriter
+    extends AnimationWriter[doodle.java2d.Algebra, Drawing, Frame, Gif] {
   // val imageWriter: IO[ImageWriter] =
   //   IO { ImageIO.getImageWritersByFormatName("gif").next() }
 
@@ -55,19 +56,25 @@ object Java2dAnimationWriter extends AnimationWriter[doodle.java2d.Algebra, Draw
   //   metadata.mergeTree("javax_imageio_gif_image_1.0", root)
   // }
 
-  def write[A](file: File, frame: Frame, frames: Observable[Picture[A]])(implicit s: Scheduler, m: Monoid[A]): IO[A] = {
+  def write[A](file: File, frame: Frame, frames: Observable[Picture[A]])(
+      implicit s: Scheduler,
+      m: Monoid[A]): IO[A] = {
     for {
       ge <- gifEncoder
       _ = ge.start(new FileOutputStream(file))
       _ = ge.setDelay(13)
-      a <- frames.consumeWith(Consumer.foldLeft(IO(m.empty)) { (accum, picture) =>
-                                for {
-                                  a <- accum
-                                  result <- doodle.java2d.effect.Java2dWriter.renderBufferedImage(frame, picture)
-                                  (bi, a2) = result
-                                  _ = ge.addFrame(bi)
-                                } yield m.combine(a, a2)
-                              }).to[IO](TaskLift.toIO(Task.catsEffect(s))).flatMap(ioa => ioa)
+      a <- frames
+        .consumeWith(Consumer.foldLeft(IO(m.empty)) { (accum, picture) =>
+          for {
+            a <- accum
+            result <- doodle.java2d.effect.Java2dWriter
+              .renderBufferedImage(frame, picture)
+            (bi, a2) = result
+            _ = ge.addFrame(bi)
+          } yield m.combine(a, a2)
+        })
+        .to[IO](TaskLift.toIO(Task.catsEffect(s)))
+        .flatMap(ioa => ioa)
 
       _ = ge.finish()
     } yield a

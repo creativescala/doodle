@@ -37,14 +37,16 @@ object PulsingCircle {
   def circle(count: Int): Picture[Unit] =
     count match {
       case 0 =>
-        Picture{ implicit algebra =>
-          algebra.circle(minimumDiameter.toDouble)
+        Picture { implicit algebra =>
+          algebra
+            .circle(minimumDiameter.toDouble)
             .noFill
             .strokeWidth(strokeWidth)
         }
       case n =>
-        Picture{ implicit algebra =>
-          algebra.circle((n * 2 * (strokeWidth + gapWidth) + minimumDiameter))
+        Picture { implicit algebra =>
+          algebra
+            .circle((n * 2 * (strokeWidth + gapWidth) + minimumDiameter))
             .noFill
             .strokeWidth(strokeWidth)
         }
@@ -72,10 +74,10 @@ object PulsingCircle {
       case n =>
         circle(n)
           .strokeColor(Color.crimson)
-          .on(circle(n-1)
-                .strokeColor(Color.crimson.spin(30.degrees)))
-          .on(circle(n-2)
-                .strokeColor(Color.crimson.spin(60.degrees)))
+          .on(circle(n - 1)
+            .strokeColor(Color.crimson.spin(30.degrees)))
+          .on(circle(n - 2)
+            .strokeColor(Color.crimson.spin(60.degrees)))
     }
 
   val animation: Observable[Picture[Unit]] =

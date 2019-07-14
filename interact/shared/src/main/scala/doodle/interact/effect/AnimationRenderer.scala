@@ -39,6 +39,7 @@ trait AnimationRenderer[Canvas] {
       m: Monoid[A]): IO[A]
 }
 object AnimationRenderer {
-  def apply[Canvas](implicit animator: AnimationRenderer[Canvas]): AnimationRenderer[Canvas] =
+  def apply[Canvas](
+      implicit animator: AnimationRenderer[Canvas]): AnimationRenderer[Canvas] =
     animator
 }

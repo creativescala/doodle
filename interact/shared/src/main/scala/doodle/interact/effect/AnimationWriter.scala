@@ -31,5 +31,8 @@ import monix.reactive.Observable
   */
 trait AnimationWriter[Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
 
-  def write[A](file: File, description: Frame, frames: Observable[Picture[Alg, F, A]])(implicit s: Scheduler, m: Monoid[A]): IO[A]
+  def write[A](file: File,
+               description: Frame,
+               frames: Observable[Picture[Alg, F, A]])(implicit s: Scheduler,
+                                                       m: Monoid[A]): IO[A]
 }
