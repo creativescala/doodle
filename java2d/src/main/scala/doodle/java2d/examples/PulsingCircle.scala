@@ -21,6 +21,7 @@ package examples
 object PulsingCircle {
   import cats.instances.all._
   import doodle.core._
+  import doodle.effect.Writer.Gif
   import doodle.syntax._
   import doodle.java2d.effect._
   import doodle.interact.syntax._
@@ -91,10 +92,6 @@ object PulsingCircle {
   def go() =
     animation.animateFrames(frame)
 
-
-  // import doodle.java2d.effect._
-  // import java.io.File
-  // println("About to save")
-  // Java2dAnimationWriter.write(new File("pulsing-circle-2.gif"), Frame.size(600, 600), doodle.java2d.examples.PulsingCircle.animation.take(112)).unsafeRunSync()
-  // println("Saved")
+  def write() =
+    animation.write[Gif]("pulsing-circle-2.gif", frame)
 }

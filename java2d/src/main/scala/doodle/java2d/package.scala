@@ -33,6 +33,7 @@ package object java2d extends effect.Java2dExplorerAtoms {
 
   implicit val java2dAnimationRenderer: AnimationRenderer[Canvas] =
     doodle.java2d.effect.Java2dAnimationRenderer
+  implicit val java2dGifAnimationWriter = doodle.java2d.effect.Java2dAnimationWriter
 
   // Magnolia doesn't work if I just define
   //   def gen[A] = Java2dExplorer.gen[A]
