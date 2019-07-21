@@ -24,7 +24,7 @@ object Size {
   // Algebraic data type members
   final case class FitToImage(border: Int) extends Size
   final case class FixedSize(width: Double, height: Double) extends Size
-  final case object FullScreen extends Size
+  // final case object FullScreen extends Size
 
   // Smart constructors
 
@@ -34,5 +34,5 @@ object Size {
   def fixedSize(width: Double, height: Double): Size =
     FixedSize(width, height)
 
-  val fullScreen: Size = FullScreen
+  // val fullScreen: Size = FullScreen
 }

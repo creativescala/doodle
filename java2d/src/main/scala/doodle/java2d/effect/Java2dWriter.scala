@@ -49,17 +49,10 @@ object Java2dWriter {
       drawing <- IO { picture(Algebra()) }
       (bb, rdr) = drawing.runA(List.empty).value
       bi <- IO {
-        frame.size match {
-          case Size.FitToImage(border) =>
-            new BufferedImage(bb.width.toInt + border,
-                              bb.height.toInt + border,
-                              BufferedImage.TYPE_INT_ARGB)
-
-          case Size.FixedSize(w, h) =>
-            new BufferedImage(w.toInt, h.toInt, BufferedImage.TYPE_INT_ARGB)
-
-          case Size.FullScreen => ???
-        }
+        val (w, h) = Java2d.size(bb, frame.size)
+        new BufferedImage(w.toInt,
+                          h.toInt,
+                          BufferedImage.TYPE_INT_ARGB)
       }
       gc = Java2d.setup(bi.createGraphics())
       (_, fa) = rdr.run(Transform.identity).value

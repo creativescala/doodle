@@ -19,13 +19,39 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.core.Point
+import doodle.core.{Point,Transform}
+import doodle.java2d.algebra.Algebra
 import java.awt.event._
+import java.util.concurrent.atomic.AtomicReference
 import javax.swing.{JFrame, Timer, WindowConstants}
 import monix.reactive.subjects.PublishSubject
 
 final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
+  val algebra = Algebra()
+
+  /**
+   * The current global transform from logical to screen coordinates
+   */
+  private val currentInverseTx: AtomicReference[Transform] =
+    new AtomicReference(Transform.identity)
+
+  def render[A](picture: Picture[A]): IO[A] = {
+    // Possible race condition here setting the currentInverseTx
+    def register(cb: Either[Throwable, A] => Unit): Unit = {
+      val drawing = picture(algebra)
+      val (bb, rdr) = drawing.runA(List.empty).value
+      val (w, h) = Java2d.size(bb, frame.size)
+
+      val inverseTx = Java2d.inverseTransform(bb, w, h, frame.center)
+      currentInverseTx.set(inverseTx)
+
+      val rr = Java2DPanel.RenderRequest(bb, w, h, rdr, cb)
+      panel.render(rr)
+    }
+
+    IO.async(register)
+  }
 
   val redraw = PublishSubject[Int]()
   val frameRateMs = (1000.0 * (1 / 60.0)).toInt
@@ -57,8 +83,8 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
       def mouseDragged(e: MouseEvent): Unit = ()
       def mouseMoved(e: MouseEvent): Unit = {
         val pt = e.getPoint()
-        // TODO: Transform to Doodle's coordinate system
-        mouseMove.onNext(Point(pt.getX(), pt.getY()))
+        val inverseTx = currentInverseTx.get()
+        mouseMove.onNext(inverseTx(Point(pt.getX(), pt.getY())))
         ()
       }
     }
@@ -71,8 +97,6 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
     }
   )
 
-  def render[A](picture: Picture[A]): IO[A] =
-    panel.render(picture)
 
   getContentPane().add(panel)
   pack()
