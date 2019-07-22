@@ -44,7 +44,7 @@ trait Java2dExplorer[A] extends Explorer[JComponent, A] {
 }
 trait Java2dExplorerAtoms {
   implicit val java2dExplorerScheduler: Scheduler =
-    Scheduler.fixedPool("Java2dExplorer", 1)
+    monix.execution.Scheduler.global
 
   /** Explore Double with a Java2D interface */
   implicit val doubleExplorer =
