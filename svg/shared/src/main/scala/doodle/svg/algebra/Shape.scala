@@ -2,7 +2,6 @@ package doodle
 package svg
 package algebra
 
-import cats.implicits._
 import doodle.algebra.generic._
 import doodle.core.{Point, Transform => Tx}
 import scalatags.generic.{Bundle, TypedTag}
@@ -25,8 +24,7 @@ trait Shape[Builder, Output <: FragT, FragT]
                   height: Double): (TypedTag[Builder, Output, FragT], Unit) = {
       val x = -(width / 2.0)
       val y = -(height / 2.0)
-      val style =
-        (fill.map(Svg.toStyle _) |+| stroke.map(Svg.toStyle _)).getOrElse("")
+      val style = Svg.toStyle(stroke, fill)
       val elt = svg.rect(svgAttrs.transform := Svg.toSvgTransform(tx),
                          svgAttrs.style := style,
                          svgAttrs.x := x,
@@ -46,8 +44,7 @@ trait Shape[Builder, Output <: FragT, FragT]
       val h = height / 2.0
       val points = Array(Point(-w, -h), Point(0, h), Point(w, -h))
       val dAttr = Svg.toSvgPath(points, Svg.Closed)
-      val style =
-        (fill.map(Svg.toStyle _) |+| stroke.map(Svg.toStyle _)).getOrElse("")
+      val style = Svg.toStyle(stroke, fill)
       val elt = svg.path(svgAttrs.transform := Svg.toSvgTransform(tx),
                          svgAttrs.style := style,
                          svgAttrs.d := dAttr)
@@ -59,8 +56,7 @@ trait Shape[Builder, Output <: FragT, FragT]
                fill: Option[Fill],
                stroke: Option[Stroke],
                diameter: Double): (TypedTag[Builder, Output, FragT], Unit) = {
-      val style =
-        (fill.map(Svg.toStyle _) |+| stroke.map(Svg.toStyle _)).getOrElse("")
+      val style = Svg.toStyle(stroke, fill)
       val elt = svg.circle(svgAttrs.transform := Svg.toSvgTransform(tx),
                            svgAttrs.style := style,
                            svgAttrs.r := (diameter / 2.0))

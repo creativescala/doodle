@@ -101,6 +101,10 @@ object Svg {
     s"fill: ${toHSLA(fill.color)};"
   }
 
+  def toStyle(stroke: Option[Stroke], fill: Option[Fill]): String = {
+    stroke.fold("stroke: none;")(this.toStyle(_)) ++ " " ++ fill.fold("fill: none;")(this.toStyle(_))
+  }
+
   def toSvgTransform(tx: Transform): String = {
     val elt = tx.elements
     val a = elt(0)

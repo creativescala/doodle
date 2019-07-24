@@ -2,7 +2,6 @@ package doodle
 package svg
 package algebra
 
-import cats.implicits._
 import doodle.algebra.generic._
 import doodle.core.{PathElement, Transform => Tx}
 import scalatags.generic.{Bundle, TypedTag}
@@ -24,8 +23,7 @@ trait Path[Builder, Output <: FragT, FragT]
                    elements: List[PathElement])
       : (TypedTag[Builder, Output, FragT], Unit) = {
       val dAttr = Svg.toSvgPath(elements, Svg.Closed)
-      val style =
-        (fill.map(Svg.toStyle _) |+| stroke.map(Svg.toStyle _)).getOrElse("")
+      val style = Svg.toStyle(stroke, fill)
       val elt = svg.path(svgAttrs.transform := Svg.toSvgTransform(tx),
                          svgAttrs.style := style,
                          svgAttrs.d := dAttr)
@@ -39,8 +37,7 @@ trait Path[Builder, Output <: FragT, FragT]
                  elements: List[PathElement])
       : (TypedTag[Builder, Output, FragT], Unit) = {
       val dAttr = Svg.toSvgPath(elements, Svg.Open)
-      val style =
-        (fill.map(Svg.toStyle _) |+| stroke.map(Svg.toStyle _)).getOrElse("")
+      val style = Svg.toStyle(stroke, fill)
       val elt = svg.path(svgAttrs.transform := Svg.toSvgTransform(tx),
                          svgAttrs.style := style,
                          svgAttrs.d := dAttr)
