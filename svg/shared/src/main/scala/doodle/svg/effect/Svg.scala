@@ -59,6 +59,21 @@ final case class Svg[Builder, Output <: FragT, FragT](
                 svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}")
 
     }
+
+  /**
+   * Transform from client coordinates to local coordinates
+   */
+  def inverseClientTransform(bb: BoundingBox, size: Size): Transform = {
+    size match {
+      case Size.FitToPicture(border) =>
+        val w = bb.width + (2 * border)
+        val h = bb.height + (2 * border)
+        Transform.screenToLogical(w, h)
+
+      case Size.FixedSize(w, h) =>
+        Transform.screenToLogical(w, h)
+    }
+  }
 }
 object Svg {
   def toStyle(stroke: Stroke): String = {

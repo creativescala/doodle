@@ -3,7 +3,7 @@ package svg
 package effect
 
 import cats.effect.IO
-import doodle.core.Color
+import doodle.core.{Color,Point}
 import doodle.algebra.generic.BoundingBox
 import monix.reactive.Observable
 import monix.reactive.subjects.PublishSubject
@@ -13,6 +13,7 @@ import scalatags.JsDom
 final case class Canvas(target: dom.Node,
                         size: Size,
                         background: Option[Color]) {
+  import JsDom.all._
 
   val algebra = doodle.svg.algebra.Algebra
   val svg = Svg(JsDom)
@@ -41,25 +42,43 @@ final case class Canvas(target: dom.Node,
     subject
   }
 
-  var svgRoot: dom.Node = _
+  private val mouseMoveSubject = PublishSubject[Point]
+  private def mouseMoveCallback(evt: dom.MouseEvent): Boolean = {
+    val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
+    val x = evt.clientX - rect.left; //x position within the element.
+    val y = evt.clientY - rect.top;
+    val tx = svg.inverseClientTransform(currentBB, size)
+    mouseMoveSubject.onNext(tx(doodle.core.Point(x, y)))
+    true
+  }
 
+  val mouseMove: Observable[Point] = mouseMoveSubject
+
+  private var currentBB: BoundingBox = _
+  private var svgRoot: dom.Node = _
   /** Get the root <svg> node, creating one if needed. */
-  def svgRoot(bb: BoundingBox): dom.Node =
+  def svgRoot(bb: BoundingBox): dom.Node = {
+    def addCallback(tag: Tag): Tag =
+      tag(onmousemove := (mouseMoveCallback _))
+
+    currentBB = bb
     if (svgRoot == null) {
-      svgRoot = target.appendChild(svg.svgTag(bb, size).render)
+      val newRoot = addCallback(svg.svgTag(bb, size))
+      svgRoot = target.appendChild(newRoot.render)
       svgRoot
     } else {
       size match {
         case Size.FixedSize(_, _) => svgRoot
         case Size.FitToPicture(_) =>
-          val newRoot = svg.svgTag(bb, size).render
+          val newRoot = addCallback(svg.svgTag(bb, size)).render
           target.replaceChild(newRoot, svgRoot)
           svgRoot = newRoot
           svgRoot
       }
     }
+  }
 
-  var svgChild: dom.Node = _
+  private var svgChild: dom.Node = _
   def renderChild(svgRoot: dom.Node, nodes: dom.Node): Unit = {
     if (svgChild == null) {
       svgRoot.appendChild(nodes)

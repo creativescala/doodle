@@ -8,7 +8,6 @@ import doodle.language.Basic
 import org.scalajs.dom
 
 package object svg {
-  import doodle.interact.algebra.Redraw
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F] with MouseOver[F]
   type Tag = scalatags.generic.TypedTag[dom.Element, dom.Element, dom.Node]
   type SvgResult[A] = (Tag, A)
@@ -20,8 +19,8 @@ package object svg {
     doodle.svg.effect.SvgRenderer
   implicit val svgAnimationRenderer: AnimationRenderer[Canvas] =
     doodle.svg.effect.SvgAnimationRenderer
-  implicit val svgRedraw: Redraw[Canvas] =
-    doodle.svg.algebra.Redraw
+  implicit val svgCanvas: doodle.svg.algebra.CanvasAlgebra =
+    doodle.svg.algebra.CanvasAlgebra
 
   implicit val svgScheduler = monix.execution.Scheduler.global
 

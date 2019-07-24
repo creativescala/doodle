@@ -17,10 +17,19 @@ object Example {
     //
     // GradientCircle.image.draw(frame)
     //
-    import doodle.interact.syntax._
-    import cats.implicits._
+    // import doodle.interact.syntax._
+    // import cats.implicits._
 
-    Orbit.frames.animateFrames(frame)
+    // Orbit.frames.animateFrames(frame)
+    //
+      import cats.effect.IO
+      import cats.instances.all._
+      import doodle.svg.effect.Canvas
+      import doodle.interact.syntax._
+      (for {
+          canvas <- IO{ Canvas.fromFrame(frame) }
+          frames <- Ripples.ripples(canvas)
+      } yield frames.animateToCanvas(canvas)).unsafeRunAsync(println _)
     //
     // import doodle.interact.syntax._
     // import cats.implicits._
