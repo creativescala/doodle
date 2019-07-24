@@ -3,7 +3,7 @@ package svg
 package effect
 
 import cats.effect.IO
-import doodle.core.{Color,Point}
+import doodle.core.{Color,Point,Transform}
 import doodle.algebra.generic.BoundingBox
 import monix.reactive.Observable
 import monix.reactive.subjects.PublishSubject
@@ -43,14 +43,14 @@ final case class Canvas(target: dom.Node,
   }
 
   private val mouseMoveSubject = PublishSubject[Point]
-  private def mouseMoveCallback(evt: dom.MouseEvent): Boolean = {
-    val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
-    val x = evt.clientX - rect.left; //x position within the element.
-    val y = evt.clientY - rect.top;
-    val tx = svg.inverseClientTransform(currentBB, size)
-    mouseMoveSubject.onNext(tx(doodle.core.Point(x, y)))
-    true
-  }
+  private def mouseMoveCallback(tx: Transform): dom.MouseEvent => Unit =
+    (evt: dom.MouseEvent) => {
+      val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
+      val x = evt.clientX - rect.left; //x position within the element.
+      val y = evt.clientY - rect.top;
+      mouseMoveSubject.onNext(tx(doodle.core.Point(x, y)))
+      ()
+    }
 
   val mouseMove: Observable[Point] = mouseMoveSubject
 
@@ -58,19 +58,20 @@ final case class Canvas(target: dom.Node,
   private var svgRoot: dom.Node = _
   /** Get the root <svg> node, creating one if needed. */
   def svgRoot(bb: BoundingBox): dom.Node = {
-    def addCallback(tag: Tag): Tag =
-      tag(onmousemove := (mouseMoveCallback _))
+    def addCallback(tag: Tag, tx: Transform): Tag =
+      tag(onmousemove := (mouseMoveCallback(tx)))
 
     currentBB = bb
+    val tx = svg.inverseClientTransform(currentBB, size)
     if (svgRoot == null) {
-      val newRoot = addCallback(svg.svgTag(bb, size))
+      val newRoot = addCallback(svg.svgTag(bb, size), tx)
       svgRoot = target.appendChild(newRoot.render)
       svgRoot
     } else {
       size match {
         case Size.FixedSize(_, _) => svgRoot
         case Size.FitToPicture(_) =>
-          val newRoot = addCallback(svg.svgTag(bb, size)).render
+          val newRoot = addCallback(svg.svgTag(bb, size), tx).render
           target.replaceChild(newRoot, svgRoot)
           svgRoot = newRoot
           svgRoot
