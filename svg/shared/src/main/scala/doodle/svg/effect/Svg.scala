@@ -2,107 +2,89 @@ package doodle
 package svg
 package effect
 
+import cats.effect.IO
 import doodle.core._
+import doodle.algebra.{Algebra, Picture}
 import doodle.algebra.generic.{BoundingBox, Fill, Stroke}
-import doodle.algebra.generic.reified.Reified
 import scalatags.generic.{Bundle, TypedTag}
-import scala.collection.mutable.ListBuffer
 
-final case class Svg[Builder, Output <: FragT, FragT](bundle: Bundle[Builder, Output, FragT]) {
+final case class Svg[Builder, Output <: FragT, FragT](
+    bundle: Bundle[Builder, Output, FragT] {
+      type Tag <: TypedTag[Builder, Output, FragT]
+    }) {
+  import bundle.{svgTags => svg}
+  import bundle.svgAttrs
+  import bundle.implicits._
+
+  type SvgResult[A] = (bundle.Tag, A)
+  type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
+
   implicit val context = SvgGraphicsContext(bundle)
 
-  def render(boundingBox: BoundingBox, instructions: List[Reified]) = {
-    import bundle.{svgTags => svg}
-    import bundle.svgAttrs
-    import bundle.implicits._
-
-    val tx = Transform.logicalToScreen(boundingBox.width, boundingBox.height)
-    val elts: ListBuffer[TypedTag[Builder, Output, FragT]] = new ListBuffer()
-    instructions.foreach(_.render(elts, tx)(context))
-
-    svg.svg(svgAttrs.width:=boundingBox.width,
-            svgAttrs.height:=boundingBox.height,
-            svgAttrs.viewBox:=s"0 0 ${boundingBox.width} ${boundingBox.height}")(
-      elts:_*
-    )
+  def render[Alg[x[_]] <: Algebra[x], A](
+      frame: Frame,
+      algebra: Alg[Drawing],
+      picture: Picture[Alg, Drawing, A]): IO[(Output, A)] = {
+    renderWithoutRootTag(algebra, picture)
+      .map { case (bb, tags, a) => (svgTag(bb, frame)(tags).render, a) }
   }
 
-  // def reifiedToSvg(reified: Reified) = {
-  //   import Reified._
-  //   import bundle.implicits._
-  //   import bundle.{svgTags => svg}
-  //   import bundle.svgAttrs
+  /** Render to SVG without wrapping with a root <svg> tag. */
+  def renderWithoutRootTag[Alg[x[_]] <: Algebra[x], A](
+      algebra: Alg[Drawing],
+      picture: Picture[Alg, Drawing, A]): IO[(BoundingBox, bundle.Tag, A)] = {
+    for {
+      drawing <- IO { picture(algebra) }
+      (bb, rdr) = drawing.runA(List.empty).value
+      (_, (tags, a)) = rdr.run(Transform.verticalReflection).value
+    } yield (bb, tags, a)
+  }
 
-  //   reified match {
-  //     case FillOpenPath(tx, fill, elements) =>
-  //       val dAttr = Svg.toSvgPath(elements, Svg.Open)
-  //       val style = Svg.toStyle(fill)
-  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+  /** Given a bounding box and a size specification create a <svg> tag that has the
+    * correct size and viewbox */
+  def svgTag(bb: BoundingBox, frame: Frame): bundle.Tag =
+    frame.size match {
+      case Size.FitToPicture(border) =>
+        val w = bb.width + (2 * border)
+        val h = bb.height + (2 * border)
+        svg.svg(
+          svgAttrs.width := w,
+          svgAttrs.height := h,
+          svgAttrs.viewBox := s"${bb.left - border} ${bb.bottom - border} ${w} ${h}",
+          bundle.attrs.style :=
+            frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
 
-  //     case StrokeOpenPath(tx, stroke, elements) =>
-  //       val dAttr = Svg.toSvgPath(elements, Svg.Open)
-  //       val style = Svg.toStyle(stroke)
-  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+      case Size.FixedSize(w, h) =>
+        svg.svg(svgAttrs.width := w,
+                svgAttrs.height := h,
+                svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
+                bundle.attrs.style :=
+                  frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
 
+    }
 
-  //     case FillClosedPath(tx, fill, elements) =>
-  //       val dAttr = Svg.toSvgPath(elements, Svg.Closed)
-  //       val style = Svg.toStyle(fill)
-  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
+  /**
+   * Transform from client coordinates to local coordinates
+   */
+  def inverseClientTransform(bb: BoundingBox, size: Size): Transform = {
+    size match {
+      case Size.FitToPicture(border) =>
+        val w = bb.width + (2 * border)
+        val h = bb.height + (2 * border)
+        Transform.screenToLogical(w, h)
 
-  //     case StrokeClosedPath(tx, stroke, elements) =>
-  //       val dAttr = Svg.toSvgPath(elements, Svg.Closed)
-  //       val style = Svg.toStyle(stroke)
-  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
-
-
-  //     case FillCircle(tx, fill, diameter) =>
-  //       val style = Svg.toStyle(fill)
-  //       svg.circle(svgAttrs.transform:=Svg.toSvgTransform(tx),
-  //                  svgAttrs.style:=style,
-  //                  svgAttrs.r:=(diameter/2.0))
-
-  //     case StrokeCircle(tx, stroke, diameter) =>
-  //       val style = Svg.toStyle(stroke)
-  //       svg.circle(svgAttrs.transform:=Svg.toSvgTransform(tx),
-  //                  svgAttrs.style:=style,
-  //                  svgAttrs.r:=(diameter/2.0))
-
-
-  //     case FillRect(tx, fill, width, height) =>
-  //       val style = Svg.toStyle(fill)
-  //       svg.rect(svgAttrs.transform:=Svg.toSvgTransform(tx),
-  //                svgAttrs.style:=style,
-  //                svgAttrs.width:=width,
-  //                svgAttrs.height:=height)
-
-  //     case StrokeRect(tx, stroke, width, height) =>
-  //       val style = Svg.toStyle(stroke)
-  //       svg.rect(svgAttrs.transform:=Svg.toSvgTransform(tx),
-  //                svgAttrs.style:=style,
-  //                svgAttrs.width:=width,
-  //                svgAttrs.height:=height)
-
-
-  //     case FillPolygon(tx, fill, points) =>
-  //       val dAttr = Svg.toSvgPath(points, Svg.Closed)
-  //       val style = Svg.toStyle(fill)
-  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
-
-  //     case StrokePolygon(tx, stroke, points) =>
-  //       val dAttr = Svg.toSvgPath(points, Svg.Closed)
-  //       val style = Svg.toStyle(stroke)
-  //       svg.path(svgAttrs.transform:=Svg.toSvgTransform(tx), svgAttrs.style:=style, svgAttrs.d:=dAttr)
-  //   }
-  // }
+      case Size.FixedSize(w, h) =>
+        Transform.screenToLogical(w, h)
+    }
+  }
 }
 object Svg {
   def toStyle(stroke: Stroke): String = {
     val builder = new StringBuilder(64)
 
     val linecap = stroke.cap match {
-      case Cap.Butt => "butt"
-      case Cap.Round => "round"
+      case Cap.Butt   => "butt"
+      case Cap.Round  => "round"
       case Cap.Square => "square"
     }
     val linejoin = stroke.join match {
@@ -120,6 +102,10 @@ object Svg {
 
   def toStyle(fill: Fill): String = {
     s"fill: ${toHSLA(fill.color)};"
+  }
+
+  def toStyle(stroke: Option[Stroke], fill: Option[Fill]): String = {
+    stroke.fold("stroke: none;")(this.toStyle(_)) ++ " " ++ fill.fold("fill: none;")(this.toStyle(_))
   }
 
   def toSvgTransform(tx: Transform): String = {
@@ -141,17 +127,17 @@ object Svg {
     import PathElement._
     import scala.collection.mutable.StringBuilder
 
-    val builder = new StringBuilder(64)
+    val builder = new StringBuilder(64, "M 0,0 ")
     elts.foreach {
       case MoveTo(end) =>
         builder ++= s"M ${end.x},${end.y} "
       case LineTo(end) =>
         builder ++= s"L ${end.x},${end.y} "
       case BezierCurveTo(cp1, cp2, end) =>
-        builder ++= s"C ${cp1.x} ${cp1.y}, ${cp2.x} ${cp2.y}, ${end.x} ${end.y} "
+        builder ++= s"C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${end.x},${end.y} "
     }
     pathType match {
-      case Open => builder.toString
+      case Open   => builder.toString
       case Closed => (builder += 'Z').toString
     }
   }
@@ -160,20 +146,24 @@ object Svg {
     import scala.collection.mutable.StringBuilder
 
     val builder = new StringBuilder(points.size * 10)
+    var first = true
     points.foreach { pt =>
-      builder ++= s"L ${pt.x},${pt.y} "
+      if (first) {
+        first = false
+        builder ++= s"M ${pt.x},${pt.y} "
+      } else builder ++= s"L ${pt.x},${pt.y} "
     }
 
     pathType match {
-      case Open => builder.toString
+      case Open   => builder.toString
       case Closed => (builder += 'Z').toString
     }
   }
 
-
   def toHSLA(color: Color): String = {
-    val (h, s, l, a) = (color.hue, color.saturation, color.lightness, color.alpha)
-    s"hsla(${h.toDegrees}, ${s.get*100}%, ${l.get*100}%, ${a.get})"
+    val (h, s, l, a) =
+      (color.hue, color.saturation, color.lightness, color.alpha)
+    s"hsla(${h.toDegrees}, ${s.get * 100}%, ${l.get * 100}%, ${a.get})"
   }
 
   def toRGB(color: Color): String = {

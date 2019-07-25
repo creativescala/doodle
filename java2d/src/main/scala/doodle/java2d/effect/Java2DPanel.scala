@@ -23,14 +23,13 @@ import cats.effect.IO
 import doodle.algebra.generic.BoundingBox
 import doodle.algebra.generic.reified.Reified
 import doodle.core.{Transform}
-import doodle.java2d.algebra.{Algebra, Java2D}
+import doodle.java2d.algebra.Java2D
 import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.NoSuchElementException
 import javax.swing.{JPanel, SwingUtilities}
 import scala.concurrent.SyncVar
 
 final class Java2DPanel(frame: Frame) extends JPanel {
-  import Size._
   import Java2DPanel.RenderRequest
 
   private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
@@ -40,35 +39,16 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   frame.background.foreach(color =>
     this.setBackground(Java2D.toAwtColor(color)))
 
-  def resize(bb: BoundingBox): Unit = {
-    frame.size match {
-      case FitToImage(border) =>
-        setPreferredSize(
-          new Dimension(bb.width.toInt + border, bb.height.toInt + border))
-        SwingUtilities.windowForComponent(this).pack()
-
-      case FixedSize(w, h) =>
-        setPreferredSize(new Dimension(w.toInt, h.toInt))
-        SwingUtilities.windowForComponent(this).pack()
-
-      case FullScreen => ???
-    }
+  def resize(width: Double, height: Double): Unit = {
+    setPreferredSize(new Dimension(width.toInt, height.toInt))
+    SwingUtilities.windowForComponent(this).pack()
   }
 
-  def render[A](picture: Picture[A]): IO[A] = {
-    def register(cb: Either[Throwable, A] => Unit): Unit = {
-      val drawing = picture(Algebra())
-      val (bb, rdr) = drawing.runA(List.empty).value
-
-      val rr = RenderRequest(bb, rdr, cb)
-      // println("Java2DPanel attempting to put in the channel")
-      channel.put(rr)
-      // println("Java2DPanel put in the channel")
-      this.repaint()
-      // println("Java2DPanel repaint request sent")
-    }
-
-    IO.async(register)
+  def render[A](request: RenderRequest[A]): Unit = {
+    channel.put(request)
+    // println("Java2DPanel put in the channel")
+    this.repaint()
+    // println("Java2DPanel repaint request sent")
   }
 
   override def paintComponent(context: Graphics): Unit = {
@@ -80,7 +60,7 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       val rr = channel.take(10L)
       // println("Java2DPanel got new rr to paint")
       lastBoundingBox = rr.boundingBox
-      resize(lastBoundingBox)
+      resize(rr.width, rr.height)
       lastImage = rr.reify.unsafeRunSync()
     } catch {
       case _: NoSuchElementException => ()
@@ -89,17 +69,18 @@ final class Java2DPanel(frame: Frame) extends JPanel {
       frame.background.foreach(color =>
         gc.setBackground(Java2D.toAwtColor(color)))
       gc.clearRect(0, 0, getWidth, getHeight)
-      Java2d.render(gc,
-                    lastBoundingBox,
-                    lastImage,
-                    getWidth.toDouble,
-                    getHeight.toDouble,
-                    frame.center)
+      val tx = Java2d.transform(lastBoundingBox,
+                                getWidth.toDouble,
+                                getHeight.toDouble,
+                                frame.center)
+      Java2d.render(gc, lastImage, tx)
     }
   }
 }
 object Java2DPanel {
   final case class RenderRequest[A](boundingBox: BoundingBox,
+                                    width: Double,
+                                    height: Double,
                                     renderable: Renderable[A],
                                     cb: Either[Throwable, A] => Unit) {
     def reify: IO[List[Reified]] = {

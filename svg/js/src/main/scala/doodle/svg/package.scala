@@ -2,14 +2,14 @@ package doodle
 
 import doodle.effect.Renderer
 import doodle.interact.algebra.MouseOver
-import doodle.interact.effect.Animator
+import doodle.interact.effect.AnimationRenderer
 import doodle.language.Basic
+// import monix.reactive.Observer
 import org.scalajs.dom
-import scalatags.generic.TypedTag
 
 package object svg {
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F] with MouseOver[F]
-  type Tag = TypedTag[dom.Element, dom.Element, dom.Node]
+  type Tag = scalatags.generic.TypedTag[dom.Element, dom.Element, dom.Node]
   type SvgResult[A] = (Tag, A)
   type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
 
@@ -17,8 +17,12 @@ package object svg {
   type Canvas = doodle.svg.effect.Canvas
   implicit val svgRenderer: Renderer[Algebra, Drawing, Frame, Canvas] =
     doodle.svg.effect.SvgRenderer
-  implicit val svgAnimator: Animator[Canvas] =
-    doodle.svg.effect.SvgAnimator
+  implicit val svgAnimationRenderer: AnimationRenderer[Canvas] =
+    doodle.svg.effect.SvgAnimationRenderer
+  implicit val svgCanvas: doodle.svg.algebra.CanvasAlgebra =
+    doodle.svg.algebra.CanvasAlgebra
+
+  implicit val svgScheduler = monix.execution.Scheduler.global
 
   val Frame = doodle.svg.effect.Frame
 

@@ -8,10 +8,9 @@ object Squares {
   import doodle.syntax._
   import doodle.language.Basic
   import doodle.svg._
-  import scala.scalajs.js.annotation._
 
   val squares =
-    Basic.picture[Drawing, Unit]{ implicit algebra: Basic[Drawing] =>
+    Basic.picture[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
       import algebra._
 
       val red = square(100).fillColor(Color.red)
@@ -21,11 +20,4 @@ object Squares {
 
       red.beside(green).above(blue.beside(yellow))
     }
-
-  val frame = Frame("canvas")
-
-  @JSExportTopLevel("Main")
-  def main(): Unit = {
-    squares.draw(frame)
-  }
 }

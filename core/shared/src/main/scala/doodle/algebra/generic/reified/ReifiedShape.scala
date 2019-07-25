@@ -20,20 +20,28 @@ package generic
 package reified
 
 import cats.data.WriterT
-import doodle.core.{Point,Transform => Tx}
+import doodle.core.{Point, Transform => Tx}
 
 trait ReifiedShape extends GenericShape[Reification] {
   object ShapeApi extends ShapeApi {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =
       WriterT.tell(a.toList ++ b.toList)
 
-    def rectangle(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], width: Double, height: Double): Reification[Unit] =
+    def rectangle(tx: Tx,
+                  fill: Option[Fill],
+                  stroke: Option[Stroke],
+                  width: Double,
+                  height: Double): Reification[Unit] =
       append(
         fill.map(f => Reified.fillRect(tx, f, width, height)),
         stroke.map(s => Reified.strokeRect(tx, s, width, height))
       )
 
-    def triangle(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], width: Double, height: Double): Reification[Unit] = {
+    def triangle(tx: Tx,
+                 fill: Option[Fill],
+                 stroke: Option[Stroke],
+                 width: Double,
+                 height: Double): Reification[Unit] = {
       val w = width / 2.0
       val h = height / 2.0
       val points = Array(Point(-w, -h), Point(0, h), Point(w, -h))
@@ -43,7 +51,10 @@ trait ReifiedShape extends GenericShape[Reification] {
       )
     }
 
-    def circle(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], diameter: Double): Reification[Unit] =
+    def circle(tx: Tx,
+               fill: Option[Fill],
+               stroke: Option[Stroke],
+               diameter: Double): Reification[Unit] =
       append(
         fill.map(f => Reified.fillCircle(tx, f, diameter)),
         stroke.map(s => Reified.strokeCircle(tx, s, diameter))

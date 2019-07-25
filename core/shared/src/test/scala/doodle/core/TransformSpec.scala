@@ -30,6 +30,16 @@ class TransformSpec extends Properties("Transform") {
       tx(point) ~= expected
     }
 
+  property("horizontalReflection") =
+    forAll{ (point: Point) =>
+      Transform.horizontalReflection(point) ?= Point(-point.x, point.y)
+    }
+
+  property("verticalReflection") =
+    forAll{ (point: Point) =>
+      Transform.verticalReflection(point) ?= Point(point.x, -point.y)
+    }
+
   property("logicalToScreen") =
     forAll{ (screen: Screen, point: Point) =>
       val expected = Point(point.x + (screen.width.toDouble / 2.0), (screen.height.toDouble / 2.0) - point.y)

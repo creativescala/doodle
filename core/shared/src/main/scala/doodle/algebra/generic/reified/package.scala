@@ -22,5 +22,5 @@ import cats.Eval
 import cats.data.WriterT
 
 package object reified {
-  type Reification[A] = WriterT[Eval,List[Reified],A]
+  type Reification[A] = WriterT[Eval, List[Reified], A]
 }

@@ -20,7 +20,7 @@ package effect
 
 import doodle.algebra.generic.BoundingBox
 import doodle.algebra.generic.reified.Reified
-import doodle.core.{Transform=>Tx}
+import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.Graphics2DGraphicsContext
 import java.awt.{Graphics2D, RenderingHints}
 
@@ -37,26 +37,64 @@ object Java2d {
     graphics
   }
 
-  def render(gc: Graphics2D,
-             bb: BoundingBox,
-             image: List[Reified],
-             width: Double,
-             height: Double,
-             center: Center): Unit = {
-    val tx =
-      center match {
-        case Center.CenteredOnPicture =>
-          // Work out the center of the bounding box, in logical local coordinates
-          val centerX = bb.left + (bb.width / 2.0)
-          val centerY = bb.bottom + (bb.height / 2.0)
-          Tx.translate(-centerX, -centerY)
-            .andThen(Tx.logicalToScreen(width, height))
+  /**
+   * Create a transform from local logical coordinates to screen coordinates
+   * given the bounding box for a picture, the screen size, and descriptino of
+   * the relationship between screen and picture.
+   */
+  def transform(bb: BoundingBox,
+                width: Double,
+                height: Double,
+                center: Center): Tx =
+    center match {
+      case Center.CenteredOnPicture =>
+        // Work out the center of the bounding box, in logical local coordinates
+        val centerX = bb.left + (bb.width / 2.0)
+        val centerY = bb.bottom + (bb.height / 2.0)
+        Tx.translate(-centerX, -centerY)
+          .andThen(Tx.logicalToScreen(width, height))
 
-        case Center.AtOrigin =>
-          Tx.logicalToScreen(width, height)
-      }
+      case Center.AtOrigin =>
+        Tx.logicalToScreen(width, height)
+    }
 
-    image.foreach { _.render(gc, tx)(Graphics2DGraphicsContext) }
+  /**
+   * Create a transform from screen coordinates to local logical coordinates
+   * given the bounding box for a picture, the screen size, and descriptino of
+   * the relationship between screen and picture.
+   */
+  def inverseTransform(bb: BoundingBox,
+                width: Double,
+                height: Double,
+                center: Center): Tx =
+    center match {
+      case Center.CenteredOnPicture =>
+        // Work out the center of the bounding box, in logical local coordinates
+        val centerX = bb.left + (bb.width / 2.0)
+        val centerY = bb.bottom + (bb.height / 2.0)
+        Tx.screenToLogical(width, height)
+          .andThen(Tx.translate(centerX, centerY))
+
+      case Center.AtOrigin =>
+        Tx.screenToLogical(width, height)
+    }
+
+  /**
+   * Calculate the size the panel or buffer should be given picture's bounding
+   * box and the frame description.
+   */
+  def size(bb: BoundingBox, size: Size): (Double, Double) = {
+    size match {
+      case Size.FitToImage(border) =>
+        (bb.width + border, bb.height + border)
+
+      case Size.FixedSize(w, h) =>
+        (w, h)
+    }
+  }
+
+  def render(gc: Graphics2D, image: List[Reified], transform: Tx): Unit = {
+    image.foreach { _.render(gc, transform)(Graphics2DGraphicsContext) }
   }
 
 }

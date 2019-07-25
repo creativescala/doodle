@@ -21,7 +21,8 @@ trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A] {
   def apply(implicit algebra: Alg[F]): F[A]
 }
 object Picture {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], A](f: Alg[F] => F[A]): Picture[Alg, F, A] = {
+  def apply[Alg[x[_]] <: Algebra[x], F[_], A](
+      f: Alg[F] => F[A]): Picture[Alg, F, A] = {
     new Picture[Alg, F, A] {
       def apply(implicit algebra: Alg[F]): F[A] =
         f(algebra)

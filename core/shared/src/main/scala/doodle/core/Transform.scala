@@ -68,12 +68,11 @@ final case class Transform(elements: Array[Double]) {
   }
 
   override def equals(that: Any): Boolean = {
-    that.isInstanceOf[Transform] &&
-    {
+    that.isInstanceOf[Transform] && {
       val other = that.asInstanceOf[Transform]
       var i = 0
       var isEqual = true
-      while(i < elements.length) {
+      while (i < elements.length) {
         if (this.elements(i) != other.elements(i))
           isEqual = false
 
@@ -101,11 +100,11 @@ object Transform {
 
   /** Reflect horizontally (around the Y-axis) */
   val horizontalReflection: Transform =
-    Transform(Array(1, 0, 0, 0, -1, 0, 0, 0, 1))
+    Transform(Array(-1, 0, 0, 0, 1, 0, 0, 0, 1))
 
   /** Reflect vertically (around the X-axis) */
   val verticalReflection: Transform =
-    Transform(Array(-1, 0, 0, 0, 1, 0, 0, 0, 1))
+    Transform(Array(1, 0, 0, 0, -1, 0, 0, 0, 1))
 
   /** Convert from the usual cartesian coordinate system (origin in the center, x
     * and y increase towards the top right) to usual screen coordinate system

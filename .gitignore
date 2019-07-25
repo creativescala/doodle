@@ -133,3 +133,7 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# Metals and Bloop
+.metals
+.bloop

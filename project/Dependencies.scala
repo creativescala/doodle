@@ -6,12 +6,12 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object Dependencies {
   // Library Versions
-  val catsVersion       = "1.5.0"
-  val catsEffectVersion = "1.1.0"
+  val catsVersion       = "1.6.0"
+  val catsEffectVersion = "1.3.1"
 
   val magnoliaVersion = "0.10.0"
 
-  val monixVersion = "3.0.0-RC2"
+  val monixVersion = "3.0.0-RC3"
 
   val miniTestVersion   = "2.2.2"
   val scalaCheckVersion = "1.14.0"

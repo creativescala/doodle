@@ -26,16 +26,15 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-trait Java2dWriter[Format] extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format] {
+trait Java2dWriter[Format]
+    extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format] {
   def format: String
 
   def write[A](file: File, picture: Picture[A]): IO[A] = {
     write(file, Frame.fitToPicture(), picture)
   }
 
-  def write[A](file: File,
-               frame: Frame,
-               picture: Picture[A]): IO[A] = {
+  def write[A](file: File, frame: Frame, picture: Picture[A]): IO[A] = {
     for {
       result <- Java2dWriter.renderBufferedImage(frame, picture)
       (bi, a) = result
@@ -45,27 +44,24 @@ trait Java2dWriter[Format] extends Writer[doodle.java2d.Algebra, Drawing, Frame,
 }
 object Java2dWriter {
   def renderBufferedImage[A](frame: Frame,
-                             picture: Picture[A]): IO[(BufferedImage,A)] =
+                             picture: Picture[A]): IO[(BufferedImage, A)] =
     for {
       drawing <- IO { picture(Algebra()) }
       (bb, rdr) = drawing.runA(List.empty).value
       bi <- IO {
-        frame.size match {
-          case Size.FitToImage(border) =>
-            new BufferedImage(bb.width.toInt + border,
-                              bb.height.toInt + border,
-                              BufferedImage.TYPE_INT_ARGB)
-
-          case Size.FixedSize(w, h) =>
-            new BufferedImage(w.toInt, h.toInt, BufferedImage.TYPE_INT_ARGB)
-
-          case Size.FullScreen => ???
-        }
+        val (w, h) = Java2d.size(bb, frame.size)
+        new BufferedImage(w.toInt,
+                          h.toInt,
+                          BufferedImage.TYPE_INT_ARGB)
       }
       gc = Java2d.setup(bi.createGraphics())
-      (tx, fa) = rdr.run(Transform.identity).value
+      (_, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value
-      _ = Java2d.render(gc, bb, r, bi.getWidth.toDouble, bi.getHeight.toDouble, frame.center)
+      tx = Java2d.transform(bb,
+                            bi.getWidth.toDouble,
+                            bi.getHeight.toDouble,
+                            frame.center)
+      _ = Java2d.render(gc, r, tx)
     } yield (bi, a)
 }
 object Java2dGifWriter extends Java2dWriter[Writer.Gif] {

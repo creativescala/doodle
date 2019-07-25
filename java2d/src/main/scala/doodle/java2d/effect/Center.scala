@@ -30,6 +30,7 @@ object Center {
 
   /** The center of the canvas is centered on the picture. */
   val centeredOnPicture: Center = CenteredOnPicture
+
   /** The center of the canvas is the origin. */
   val atOrigin: Center = AtOrigin
 }

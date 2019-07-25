@@ -11,8 +11,8 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 ## Using Doodle
 
-* The current release is **0.9.3** and is on the `master` branch.
-* The current snapshot is **0.9.3-SNAPSHOT** and is on the `develop` branch.
+* The current release is **0.9.4** and is on the `master` branch.
+* The current snapshot is **0.9.4-SNAPSHOT** and is on the `develop` branch.
 
 To use doodle add the following to your `build.sbt`:
 
