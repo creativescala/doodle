@@ -22,11 +22,11 @@ final case class Svg[Builder, Output <: FragT, FragT](
   implicit val context = SvgGraphicsContext(bundle)
 
   def render[Alg[x[_]] <: Algebra[x], A](
-      size: Size,
+      frame: Frame,
       algebra: Alg[Drawing],
       picture: Picture[Alg, Drawing, A]): IO[(Output, A)] = {
     renderWithoutRootTag(algebra, picture)
-      .map { case (bb, tags, a) => (svgTag(bb, size)(tags).render, a) }
+      .map { case (bb, tags, a) => (svgTag(bb, frame)(tags).render, a) }
   }
 
   /** Render to SVG without wrapping with a root <svg> tag. */
@@ -37,26 +37,29 @@ final case class Svg[Builder, Output <: FragT, FragT](
       drawing <- IO { picture(algebra) }
       (bb, rdr) = drawing.runA(List.empty).value
       (_, (tags, a)) = rdr.run(Transform.verticalReflection).value
-      // nodes = svgTag(bb, size, tags).render
     } yield (bb, tags, a)
   }
 
   /** Given a bounding box and a size specification create a <svg> tag that has the
     * correct size and viewbox */
-  def svgTag(bb: BoundingBox, size: Size): bundle.Tag =
-    size match {
+  def svgTag(bb: BoundingBox, frame: Frame): bundle.Tag =
+    frame.size match {
       case Size.FitToPicture(border) =>
         val w = bb.width + (2 * border)
         val h = bb.height + (2 * border)
         svg.svg(
           svgAttrs.width := w,
           svgAttrs.height := h,
-          svgAttrs.viewBox := s"${bb.left - border} ${bb.bottom - border} ${w} ${h}")
+          svgAttrs.viewBox := s"${bb.left - border} ${bb.bottom - border} ${w} ${h}",
+          bundle.attrs.style :=
+            frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
 
       case Size.FixedSize(w, h) =>
         svg.svg(svgAttrs.width := w,
                 svgAttrs.height := h,
-                svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}")
+                svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
+                bundle.attrs.style :=
+                  frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
 
     }
 

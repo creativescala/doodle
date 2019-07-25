@@ -11,7 +11,7 @@ import org.scalajs.dom
 import scalatags.JsDom
 
 final case class Canvas(target: dom.Node,
-                        size: Size,
+                        frame: Frame,
                         background: Option[Color]) {
   import JsDom.all._
 
@@ -62,16 +62,16 @@ final case class Canvas(target: dom.Node,
       tag(onmousemove := (mouseMoveCallback(tx)))
 
     currentBB = bb
-    val tx = svg.inverseClientTransform(currentBB, size)
+    val tx = svg.inverseClientTransform(currentBB, frame.size)
     if (svgRoot == null) {
-      val newRoot = addCallback(svg.svgTag(bb, size), tx)
+      val newRoot = addCallback(svg.svgTag(bb, frame), tx)
       svgRoot = target.appendChild(newRoot.render)
       svgRoot
     } else {
-      size match {
+      frame.size match {
         case Size.FixedSize(_, _) => svgRoot
         case Size.FitToPicture(_) =>
-          val newRoot = addCallback(svg.svgTag(bb, size), tx).render
+          val newRoot = addCallback(svg.svgTag(bb, frame), tx).render
           target.replaceChild(newRoot, svgRoot)
           svgRoot = newRoot
           svgRoot
@@ -104,6 +104,6 @@ final case class Canvas(target: dom.Node,
 object Canvas {
   def fromFrame(frame: Frame): Canvas = {
     val target = dom.document.getElementById(frame.id)
-    Canvas(target, frame.size, frame.background)
+    Canvas(target, frame, frame.background)
   }
 }

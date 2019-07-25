@@ -3,11 +3,15 @@ package svg
 package examples
 
 import scala.scalajs.js.annotation._
+import doodle.core.Color
 import doodle.svg._
 
 // Wrapper to run an example in a web page
 object Example {
-  val frame = Frame("canvas").size(600, 600)
+  val frame =
+    Frame("canvas")
+      .size(600, 600)
+      .background(Color.midnightBlue)
 
   @JSExportTopLevel("Main")
   def main(): Unit = {

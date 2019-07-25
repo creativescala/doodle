@@ -23,7 +23,7 @@ object SvgWriter extends Writer[Algebra, Drawing, Frame, Writer.Svg] {
 
   def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
     svg
-      .render[Algebra, A](Size.fitToPicture(), algebra, picture)
+      .render[Algebra, A](Frame("").fitToPicture(), algebra, picture)
       .flatMap {
         case (nodes, a) =>
           IO {
