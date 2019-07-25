@@ -16,14 +16,8 @@ object SvgWriter extends Writer[Algebra, Drawing, Frame, Writer.Svg] {
   def write[A](file: File,
                description: Frame,
                picture: Picture[Algebra, Drawing, A]): IO[A] = {
-    // Frame is (currently) meaningless for writing
-    val _ = description
-    write(file, picture)
-  }
-
-  def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
     svg
-      .render[Algebra, A](Frame("").fitToPicture(), algebra, picture)
+      .render[Algebra, A](description, algebra, picture)
       .flatMap {
         case (nodes, a) =>
           IO {
@@ -31,4 +25,8 @@ object SvgWriter extends Writer[Algebra, Drawing, Frame, Writer.Svg] {
             a
           }
       }
+  }
+
+  def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
+    write(file, Frame("").fitToPicture(), picture)
 }
