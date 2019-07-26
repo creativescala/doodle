@@ -80,11 +80,15 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val mouseMove = PublishSubject[Point]()
   this.addMouseMotionListener(
     new MouseMotionListener {
+      import scala.concurrent.duration.Duration
+      import scala.concurrent.Await
+
       def mouseDragged(e: MouseEvent): Unit = ()
       def mouseMoved(e: MouseEvent): Unit = {
         val pt = e.getPoint()
         val inverseTx = currentInverseTx.get()
-        mouseMove.onNext(inverseTx(Point(pt.getX(), pt.getY())))
+        val ack = mouseMove.onNext(inverseTx(Point(pt.getX(), pt.getY())))
+        Await.ready(ack, Duration.Inf)
         ()
       }
     }
