@@ -18,7 +18,7 @@ package doodle
 package java2d
 package examples
 
-object Interact {
+object Ripples {
   import doodle.core._
   import doodle.syntax._
   import doodle.interact.syntax._
