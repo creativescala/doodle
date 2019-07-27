@@ -50,7 +50,7 @@ object Ripples {
 
     ConcurrentQueue[IO]
       .bounded[Option[Ripple]](5)
-      .map { queue =>
+      .map{ queue =>
         canvas
           .redraw
           .map(_ => none[Ripple])

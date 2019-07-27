@@ -19,6 +19,7 @@ package java2d
 package examples
 
 object Ripples {
+  import cats.effect.IO
   import doodle.core._
   import doodle.syntax._
   import doodle.interact.syntax._
@@ -48,44 +49,46 @@ object Ripples {
       }
   }
 
-  def ripples(canvas: Canvas): Observable[Picture[Unit]] = {
-    import monix.eval.Task
+  def ripples(canvas: Canvas): IO[Observable[Picture[Unit]]] = {
+    implicit val cs = IO.contextShift(java2dExplorerScheduler)
 
-    val queue =
-      ConcurrentQueue[Task]
-        .bounded[Option[Ripple]](5)
-        .runSyncUnsafe()
+    ConcurrentQueue[IO]
+      .bounded[Option[Ripple]](5)
+      .map{ queue =>
+        canvas
+          .redraw
+          .map(_ => none[Ripple])
+          .mapEvalF(r => queue.offer(r))
+          .subscribe()
 
-    canvas
-      .redraw
-      .map(_ => none[Ripple])
-      .mapEval(r => queue.offer(r))
-      .subscribe()
+        canvas
+          .mouseMove
+          .throttleFirst(FiniteDuration(100, MILLISECONDS)) // Stop spamming with too many mouse events
+          .map(pt => Ripple(0, pt.x, pt.y).some)
+          .mapEvalF(r => queue.offer(r))
+          .subscribe()
 
-    canvas
-      .mouseMove
-      .throttleFirst(FiniteDuration(100, MILLISECONDS)) // Stop spamming with too many mouse events
-      .map(pt => Ripple(0, pt.x, pt.y).some)
-      .mapEval(r => queue.offer(r))
-      .subscribe()
-
-    Observable
-      .repeatEvalF(queue.poll)
-      .scan(List.empty[Ripple]){(ripples, ripple) =>
-        ripple match {
-          case Some(r) => r :: ripples
-          case None => ripples.filter(_.alive).map(_.older)
-        }
+        Observable
+          .repeatEvalF(queue.poll)
+          .scan(List.empty[Ripple]){(ripples, ripple) =>
+            ripple match {
+              case Some(r) => r :: ripples
+              case None => ripples.filter(_.alive).map(_.older)
+            }
+          }
+          .map(ripples => Picture{ implicit algebra =>
+                 ripples.map(_.picture(algebra)).allOn
+               })
       }
-      .map(ripples => Picture{ implicit algebra =>
-             ripples.map(_.picture(algebra)).allOn
-           })
   }
 
 
   def go(): Unit = {
     // frame.canvas.flatMap(canvas => ripples(canvas.mouseMove).map(_.animateToCanvas(canvas))).unsafeRunSync()
-    val canvas = frame.canvas.unsafeRunSync()
-    ripples(canvas).animateToCanvas(canvas)
+    (for {
+      canvas <- frame.canvas
+      frames <- ripples(canvas)
+      a <- frames.animateWithCanvasToIO(canvas)
+    } yield a).unsafeRunAsync(println _)
   }
 }
