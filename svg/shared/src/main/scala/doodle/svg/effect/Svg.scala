@@ -123,6 +123,8 @@ object Svg {
   case object Open extends PathType
   case object Closed extends PathType
 
+  private def format(d: Double): String = d.toString.replaceFirst("\\.0+$","")
+
   def toSvgPath(elts: List[PathElement], pathType: PathType): String = {
     import PathElement._
     import scala.collection.mutable.StringBuilder
@@ -130,11 +132,11 @@ object Svg {
     val builder = new StringBuilder(64, "M 0,0 ")
     elts.foreach {
       case MoveTo(end) =>
-        builder ++= s"M ${end.x},${end.y} "
+        builder ++= s"M ${format(end.x)},${format(end.y)} "
       case LineTo(end) =>
-        builder ++= s"L ${end.x},${end.y} "
+        builder ++= s"L ${format(end.x)},${format(end.y)} "
       case BezierCurveTo(cp1, cp2, end) =>
-        builder ++= s"C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${end.x},${end.y} "
+        builder ++= s"C ${format(cp1.x)},${format(cp1.y)} ${format(cp2.x)},${format(cp2.y)} ${format(end.x)},${format(end.y)} "
     }
     pathType match {
       case Open   => builder.toString
@@ -150,8 +152,8 @@ object Svg {
     points.foreach { pt =>
       if (first) {
         first = false
-        builder ++= s"M ${pt.x},${pt.y} "
-      } else builder ++= s"L ${pt.x},${pt.y} "
+        builder ++= s"M ${format(pt.x)},${format(pt.y)} "
+      } else builder ++= s"L ${format(pt.x)},${format(pt.y)} "
     }
 
     pathType match {
