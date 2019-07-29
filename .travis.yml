@@ -18,9 +18,9 @@ matrix:
   - scala: 2.12.8
     env:
       - ADOPTOPENJDK=8
-  - scala: 2.13.0-M5
-    env:
-      - ADOPTOPENJDK=8
-    script:
-    # TODO scalatags for Scala 2.13.0-M4
-    - sbt "++ ${TRAVIS_SCALA_VERSION}!" test
+#  - scala: 2.13.0-M5
+#    env:
+#      - ADOPTOPENJDK=8
+#    script:
+#    # TODO scalatags for Scala 2.13.0-M4
+#    - sbt "++ ${TRAVIS_SCALA_VERSION}!" test
