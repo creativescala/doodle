@@ -32,7 +32,8 @@ object Example {
       (for {
          canvas <- frame.canvas
          frames <- Ripples.ripples(canvas)
-       } yield frames.animateWithCanvasToIO(canvas)).unsafeRunAsync(println _)
+         a <- frames.animateWithCanvasToIO(canvas)
+       } yield a).unsafeRunAsync(println _)
     //
     // import doodle.interact.syntax._
     // import cats.implicits._

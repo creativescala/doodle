@@ -17,6 +17,14 @@ object Orbit {
       circle(20).fillColor(Color.brown.spin(angle)).at(Point(200, angle))
     }
 
+  val background =
+    Picture{ implicit algebra =>
+      algebra
+        .circle(400)
+        .strokeDash(Array(5.0, 5.0))
+        .strokeColor(Color.midnightBlue)
+    }
+
   val frames =
     Observable
       .repeat(1)

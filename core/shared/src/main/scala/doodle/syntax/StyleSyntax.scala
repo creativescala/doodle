@@ -31,6 +31,9 @@ trait StyleSyntax {
     def strokeWidth(strokeWidth: Double)(implicit s: Style[F]): F[A] =
       s.strokeWidth(picture, strokeWidth)
 
+    def strokeDash(pattern: Array[Double])(implicit s: Style[F]): F[A] =
+      s.strokeDash(picture, pattern)
+
     def noFill(implicit s: Style[F]): F[A] =
       s.noFill(picture)
 
@@ -53,6 +56,11 @@ trait StyleSyntax {
     def strokeWidth(strokeWidth: Double): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         picture(algebra).strokeWidth(strokeWidth)
+      }
+
+    def strokeDash(pattern: Array[Double]): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        picture(algebra).strokeDash(pattern)
       }
 
     def noFill: Picture[Alg, F, A] =

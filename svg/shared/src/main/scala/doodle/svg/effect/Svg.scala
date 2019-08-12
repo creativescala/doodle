@@ -96,6 +96,10 @@ object Svg {
     builder ++= s"stroke: ${toHSLA(stroke.color)};"
     builder ++= s"stroke-linecap: ${linecap}; "
     builder ++= s"stroke-linejoin: ${linejoin}; "
+    builder ++= (stroke.dash match {
+      case Some(d) => d.map(a => f"stroke-dasharray: $a%.2f; ").mkString(" ")
+      case None => ""
+    })
 
     builder.toString
   }

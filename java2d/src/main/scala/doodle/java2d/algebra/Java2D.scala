@@ -54,8 +54,15 @@ object Java2D {
       case Join.Miter => BasicStroke.JOIN_MITER
       case Join.Round => BasicStroke.JOIN_ROUND
     }
+
     val jStroke =
-      new BasicStroke(width, cap, join)
+      stroke.dash match {
+        case None =>
+          new BasicStroke(width, cap, join)
+
+        case Some(dash) =>
+          new BasicStroke(width, cap, join, 1.0f, dash, 0.0f)
+      }
     val jColor = Java2D.toAwtColor(stroke.color)
 
     graphics.setStroke(jStroke)

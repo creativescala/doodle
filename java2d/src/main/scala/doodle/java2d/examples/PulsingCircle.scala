@@ -95,5 +95,5 @@ object PulsingCircle {
     animation.animateFrames(frame)
 
   def write() =
-    animation.write[Gif]("pulsing-circle-2.gif", frame)
+    animation.take(100).write[Gif]("pulsing-circle-2.gif", frame)
 }

@@ -20,7 +20,7 @@ package generic
 
 import doodle.core.{Cap, Color, Join}
 
-final case class Stroke(color: Color, width: Double, cap: Cap, join: Join)
+final case class Stroke(color: Color, width: Double, cap: Cap, join: Join, dash: Option[Array[Float]])
 final case class Fill(color: Color)
 
 /** Stores state about the current drawing style. */
@@ -30,13 +30,14 @@ final case class DrawingContext(
     strokeWidth: Option[Double], // We use strokeWidth to determine if there is a stroke or not
     strokeCap: Cap,
     strokeJoin: Join,
+    strokeDash: Option[Array[Float]], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
     fillColor: Option[Color]
 ) {
   def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = mode)
 
   def stroke: Option[Stroke] =
-    (strokeWidth).map(w => Stroke(strokeColor, w, strokeCap, strokeJoin))
+    (strokeWidth).map(w => Stroke(strokeColor, w, strokeCap, strokeJoin, strokeDash))
 
   def strokeColor(color: Color): DrawingContext =
     this.copy(strokeColor = color)
@@ -49,6 +50,12 @@ final case class DrawingContext(
 
   def strokeJoin(join: Join): DrawingContext =
     this.copy(strokeJoin = join)
+
+  def strokeDash(pattern: Array[Float]): DrawingContext =
+    this.copy(strokeDash = Some(pattern))
+
+  def noDash: DrawingContext =
+    this.copy(strokeDash = None)
 
   def noStroke: DrawingContext =
     this.copy(strokeWidth = None)
@@ -70,6 +77,7 @@ object DrawingContext {
       Option(1.0),
       Cap.butt,
       Join.miter,
+      None,
       Option.empty
     )
 }
