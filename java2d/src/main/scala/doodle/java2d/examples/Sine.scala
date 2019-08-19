@@ -21,23 +21,18 @@ package examples
 object Sine {
   import doodle.core._
   import doodle.syntax._
-  import doodle.language.Basic
 
   import doodle.explore.syntax._
 
   import cats.instances.all._
 
   val wave = (period: Double, amplitude: Double, color: Color) =>
-    Basic.picture[Drawing, Unit] { implicit algebra: Basic[Drawing] =>
-      import algebra._
-
       (-300 to 300).toList.map { x =>
         val y = Math.sin(x / period) * amplitude
-        circle(10)
+        circle[Algebra,Drawing](10)
           .fillColor(color)
           .at(x.toDouble, y)
       }.allOn
-  }
 
   def draw(): Unit = {
     wave(50, 300, Color.cornflowerBlue).draw()

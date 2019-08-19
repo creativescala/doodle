@@ -4,7 +4,6 @@ package examples
 
 import doodle.core._
 import doodle.syntax._
-import doodle.image.Image._
 
 object CreativeScala {
   // Images from Creative Scala
@@ -28,12 +27,12 @@ object CreativeScala {
       image.strokeWidth(6.0).strokeColor(royalBlue).fillColor(skyBlue)
 
     val openPaths =
-      style(openPath(triangle) beside openPath(curve))
+      style(Image.openPath(triangle).beside(Image.openPath(curve)))
 
     val closedPaths =
-      style(closedPath(triangle) beside closedPath(curve))
+      style(Image.closedPath(triangle).beside(Image.closedPath(curve)))
 
-    val image = openPaths above closedPaths
+    val image = openPaths.above(closedPaths)
   }
 
   object polygons {
@@ -42,7 +41,7 @@ object CreativeScala {
     import doodle.core.Color._
 
     val triangle =
-      closedPath(
+      Image.closedPath(
         List(
           moveTo(polar(50, 0.degrees)),
           lineTo(polar(50, 120.degrees)),
@@ -50,7 +49,7 @@ object CreativeScala {
         ))
 
     val square =
-      closedPath(
+      Image.closedPath(
         List(
           moveTo(polar(50, 45.degrees)),
           lineTo(polar(50, 135.degrees)),
@@ -59,7 +58,7 @@ object CreativeScala {
         ))
 
     val pentagon =
-      closedPath(
+      Image.closedPath(
         (
           List(
             moveTo(polar(50, 72.degrees)),
@@ -71,7 +70,7 @@ object CreativeScala {
         ))
 
     val spacer =
-      rectangle(10, 100).noStroke.noFill
+      Image.rectangle(10, 100).noStroke.noFill
 
     def style(image: Image): Image =
       image.strokeWidth(6.0).strokeColor(paleTurquoise).fillColor(turquoise)
@@ -94,7 +93,7 @@ object CreativeScala {
     }
 
     val triangle =
-      closedPath(
+      Image.closedPath(
         List(
           moveTo(polar(50, 0.degrees)),
           curve(50, 0.degrees, 120.degrees),
@@ -103,7 +102,7 @@ object CreativeScala {
         ))
 
     val square =
-      closedPath(
+      Image.closedPath(
         List(
           moveTo(polar(50, 45.degrees)),
           curve(50, 45.degrees, 90.degrees),
@@ -113,7 +112,7 @@ object CreativeScala {
         ))
 
     val pentagon =
-      closedPath(
+      Image.closedPath(
         (
           List(
             moveTo(polar(50, 72.degrees)),
@@ -126,7 +125,7 @@ object CreativeScala {
         ))
 
     val spacer =
-      rectangle(10, 100).noStroke.noFill
+      Image.rectangle(10, 100).noStroke.noFill
 
     def style(image: Image): Image =
       image.strokeWidth(6.0).strokeColor(paleTurquoise).fillColor(turquoise)
@@ -150,7 +149,7 @@ object CreativeScala {
               n - 1,
               rotation)
         }
-      closedPath(
+      Image.closedPath(
         moveTo(polar(size.toDouble, initialRotation)) :: iter(
           sides,
           360.degrees / sides.toDouble))
@@ -198,7 +197,7 @@ object CreativeScala {
         lineTo(point)
       }
 
-      closedPath(start :: elements) strokeWidth 2
+      Image.closedPath(start :: elements) strokeWidth 2
     }
 
     def allBeside(imgs: List[Image]): Image =
@@ -280,7 +279,8 @@ object CreativeScala {
       }
 
     def coloredRectangle(color: Color, size: Int = 40): Image =
-      rectangle(size.toDouble, size.toDouble)
+      Image
+        .rectangle(size.toDouble, size.toDouble)
         .strokeWidth(5.0)
         .strokeColor(color.spin(30.degrees))
         .fillColor(color)
@@ -442,12 +442,13 @@ object CreativeScala {
     val normalSquared2D = makePoint(normalSquared, normalSquared)
 
     def point(loc: Point): Image =
-      circle(2)
+      Image
+        .circle(2)
         .fillColor(Color.cadetBlue.alpha(0.3.normalized))
         .noStroke
         .at(loc.toVec)
 
-    val spacer = rectangle(20, 20).noStroke.noFill
+    val spacer = Image.rectangle(20, 20).noStroke.noFill
 
     val image =
       (allOn(iter.map(_ => uniform2D map (point _))),
@@ -484,7 +485,7 @@ object CreativeScala {
 
       (size, lightness, alpha, at) mapN { (r, l, a, at) =>
         val fill = Color.hsla(hue, l, 0.4, a)
-        circle(r.toDouble).noFill.strokeColor(fill).at(at)
+        Image.circle(r.toDouble).noFill.strokeColor(fill).at(at)
       }
     }
 

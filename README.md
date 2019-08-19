@@ -6,7 +6,7 @@ Doodle is a Scala library for compositional vector graphics.
 
 Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
-[![Build Status](https://travis-ci.org/creative-scala/doodle.svg?branch=develop)](https://travis-ci.org/creative-scala/doodle)
+[![Build Status](https://travis-ci.org/creativescala/doodle.svg?branch=develop)](https://travis-ci.org/creativescala/doodle)
 
 
 ## Using Doodle
@@ -18,7 +18,7 @@ To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
 scalaVersion := "2.12.8" // Doodle is currently published for Scala 2.12 only
-libraryDependencies += "org.creativescala" %% "doodle" % "0.9.3"
+libraryDependencies += "org.creativescala" %% "doodle" % "0.9.4"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
@@ -75,7 +75,7 @@ If you downloaded Doodle, rather than adding it to an existing Scala project, yo
 
 Doodle was written by Noel Welsh with contributions from [the contributors listed by Github][github-contributors].
 
-[github-contributors]: https://github.com/creative-scala/doodle/graphs/contributors
+[github-contributors]: https://github.com/creativescala/doodle/graphs/contributors
 
 
 ## Notes

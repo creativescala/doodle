@@ -38,6 +38,12 @@ trait GenericStyle[F[_]] extends Style[Finalized[F, ?]] {
   def strokeJoin[A](image: Finalized[F, A], join: Join): Finalized[F, A] =
     Finalized.contextTransform(_.strokeJoin(join))(image)
 
+  def strokeDash[A](image: Finalized[F, A], pattern: Iterable[Double]): Finalized[F, A] =
+    Finalized.contextTransform(_.strokeDash(pattern.toArray.map(_.toFloat)))(image)
+
+  def noDash[A](image: Finalized[F, A]): Finalized[F, A] =
+    Finalized.contextTransform(_.noDash)(image)
+
   def noFill[A](image: Finalized[F, A]): Finalized[F, A] =
     Finalized.contextTransform(_.noFill)(image)
 

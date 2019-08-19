@@ -26,14 +26,14 @@ object Example {
 
     // Orbit.frames.animateFrames(frame)
     //
-      import cats.effect.IO
-      import cats.instances.all._
-      import doodle.svg.effect.Canvas
-      import doodle.interact.syntax._
+    import cats.instances.all._
+    import doodle.syntax._
+    import doodle.interact.syntax._
       (for {
-          canvas <- IO{ Canvas.fromFrame(frame) }
-          frames <- Ripples.ripples(canvas)
-      } yield frames.animateToCanvas(canvas)).unsafeRunAsync(println _)
+         canvas <- frame.canvas
+         frames <- Ripples.ripples(canvas)
+         a <- frames.animateWithCanvasToIO(canvas)
+       } yield a).unsafeRunAsync(println _)
     //
     // import doodle.interact.syntax._
     // import cats.implicits._

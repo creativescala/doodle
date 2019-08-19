@@ -38,13 +38,10 @@ trait RendererSyntax {
     /** Convenience to immediately render a `Picture`, using the default `Frame` options for this `Renderer`. */
     def draw[Frame, Canvas](cb: Either[Throwable, A] => Unit = nullCallback _)(
         implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
-      (for {
-        canvas <- renderer.canvas(renderer.default)
-        a <- renderer.render(canvas)(picture)
-      } yield a).unsafeRunAsync(cb)
+      drawToIO.unsafeRunAsync(cb)
 
     /** Convenience to immediately render a `Picture`, using the given `Frame` options for this `Renderer`. */
-    def drawToFrame[Frame, Canvas](frame: Frame,
+    def drawWithFrame[Frame, Canvas](frame: Frame,
                                    cb: Either[Throwable, A] => Unit =
                                      nullCallback _)(
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
@@ -54,15 +51,25 @@ trait RendererSyntax {
       } yield a).unsafeRunAsync(cb)
 
     /** Convenience to immediately render a `Picture`, using the given `Canvas` for this `Renderer`. */
-    def drawToCanvas[Canvas](canvas: Canvas,
+    def drawWithCanvas[Canvas](canvas: Canvas,
                              cb: Either[Throwable, A] => Unit = nullCallback _)(
         implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
-      (for {
-        a <- renderer.render(canvas)(picture)
-      } yield a).unsafeRunAsync(cb)
+      drawWithCanvasToIO(canvas).unsafeRunAsync(cb)
 
-    /** Convenience that passes through to the render method on Renderer. Nothing is rendered until the IO result is run. */
-    def render[Canvas](canvas: Canvas)(
+    /**
+     * Create an effect that, when run, will draw `Picture` on the default `Frame` for this `Renderer`.
+     */
+    def drawToIO[Frame, Canvas](
+        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): IO[A] =
+      (for {
+        canvas <- renderer.canvas(renderer.default)
+        a <- renderer.render(canvas)(picture)
+      } yield a)
+
+    /**
+     * Create an effect that, when run, will draw the `Picture` on the given `Canvas`.
+     */
+    def drawWithCanvasToIO[Canvas](canvas: Canvas)(
         implicit renderer: Renderer[Alg, F, _, Canvas]): IO[A] =
       renderer.render(canvas)(picture)
   }

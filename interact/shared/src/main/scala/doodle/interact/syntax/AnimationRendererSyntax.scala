@@ -3,6 +3,7 @@ package interact
 package syntax
 
 import cats.Monoid
+import cats.effect.IO
 import doodle.algebra.{Algebra, Picture}
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
@@ -20,69 +21,114 @@ trait AnimationRendererSyntax {
       case Right(_) => ()
     }
 
+  val theNullCallback = nullCallback _
+
   implicit class AnimateObservableOps[Alg[x[_]] <: Algebra[x], F[_], A](
       frames: Observable[Picture[Alg, F, A]]) {
+
+    /** Create an effect that, when run, will render an `Observable` that is
+      * generating frames an appropriate rate for animation. */
+    def animateToIO[Frame, Canvas](
+        frame: Frame)(
+        implicit a: AnimationRenderer[Canvas],
+        e: Renderer[Alg, F, Frame, Canvas],
+        s: Scheduler,
+        m: Monoid[A]): IO[A] =
+      (for {
+        canvas <- e.canvas(frame)
+        result <- a.animate(canvas)(frames)
+      } yield result)
 
     /** Render an `Observable` that is generating frames an appropriate rate for animation. */
     def animate[Frame, Canvas](
         frame: Frame,
-        cb: Either[Throwable, A] => Unit = nullCallback _)(
+        cb: Either[Throwable, A] => Unit = theNullCallback)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         s: Scheduler,
         m: Monoid[A]): Unit =
-      (for {
-        canvas <- e.canvas(frame)
-        result <- a.animate(canvas)(frames)
-      } yield result).unsafeRunAsync(cb)
+      animateToIO(frame).unsafeRunAsync(cb)
+
+    /** Create an effect that, when run, will render an `Observable` that is
+      * generating frames an appropriate rate for animation. */
+    def animateWithCanvasToIO[Canvas](canvas: Canvas)(
+        implicit a: AnimationRenderer[Canvas],
+        e: Renderer[Alg, F, _, Canvas],
+        s: Scheduler,
+        m: Monoid[A]): IO[A] = {
+      a.animate(canvas)(frames)
+    }
 
     /** Render an `Observable` that is generating frames an appropriate rate for animation. */
-    def animateToCanvas[Canvas](canvas: Canvas,
+    def animateWithCanvas[Canvas](canvas: Canvas,
                                 cb: Either[Throwable, A] => Unit =
-                                  nullCallback _)(
+                                  theNullCallback)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         s: Scheduler,
         m: Monoid[A]): Unit = {
-      a.animate(canvas)(frames).unsafeRunAsync(cb)
+      animateWithCanvasToIO(canvas).unsafeRunAsync(cb)
     }
   }
 
   implicit class AnimateToObservableOps[Alg[x[_]] <: Algebra[x], F[_], G[_], A](
       frames: G[Picture[Alg, F, A]]) {
 
-    /** Animate a source of frames that is not producing those frames at a rate that is suitable for animation. */
-    def animateFrames[Frame, Canvas](frame: Frame,
-                                     cb: Either[Throwable, A] => Unit =
-                                       nullCallback _)(
+    /** Create an effect that, when run, will animate a source of frames that is not
+      * producing those frames at a rate that is suitable for animation. */
+    def animateFramesToIO[Frame, Canvas](frame: Frame)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         r: Redraw[Canvas],
         s: Scheduler,
         o: ObservableLike[G],
-        m: Monoid[A]): Unit = {
+        m: Monoid[A]): IO[A] = {
       (for {
         canvas <- e.canvas(frame)
         animatable = o(frames).zip(r.redraw(canvas)).map {
           case (frame, _) => frame
         }
         result <- a.animate(canvas)(animatable)
-      } yield result).unsafeRunAsync(cb)
+      } yield result)
     }
 
-    def animateFramesToCanvas[Canvas](canvas: Canvas,
+    /** Animate a source of frames that is not producing those frames at a rate that
+      * is suitable for animation. */
+    def animateFrames[Frame, Canvas](frame: Frame,
+                                     cb: Either[Throwable, A] => Unit =
+                                       theNullCallback)(
+        implicit a: AnimationRenderer[Canvas],
+        e: Renderer[Alg, F, Frame, Canvas],
+        r: Redraw[Canvas],
+        s: Scheduler,
+        o: ObservableLike[G],
+        m: Monoid[A]): Unit = {
+      animateFramesToIO(frame).unsafeRunAsync(cb)
+    }
+
+    def animateFramesWithCanvasToIO[Canvas](canvas: Canvas)(
+        implicit a: AnimationRenderer[Canvas],
+        e: Renderer[Alg, F, _, Canvas],
+        r: Redraw[Canvas],
+        s: Scheduler,
+        o: ObservableLike[G],
+        m: Monoid[A]): IO[A] = {
+      val animatable: Observable[Picture[Alg, F, A]] =
+        o(frames).zip(r.redraw(canvas)).map { case (frame, _) => frame }
+
+      animatable.animateWithCanvasToIO(canvas)
+    }
+
+    def animateFramesWithCanvas[Canvas](canvas: Canvas,
                                       cb: Either[Throwable, A] => Unit =
-                                        nullCallback _)(
+                                        theNullCallback)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         r: Redraw[Canvas],
         s: Scheduler,
         o: ObservableLike[G],
         m: Monoid[A]): Unit = {
-      val animatable: Observable[Picture[Alg, F, A]] =
-        o(frames).zip(r.redraw(canvas)).map { case (frame, _) => frame }
-
-      animatable.animateToCanvas(canvas, cb)
+      animateFramesWithCanvasToIO(canvas).unsafeRunAsync(cb)
     }
   }
 }

@@ -15,7 +15,7 @@ object SvgSpec extends Properties("SVG Properties") {
   import Text.implicits._
 
   val svg = Svg(Text)
-  val blackStroke = Stroke(Color.black, 1.0, Cap.butt, Join.miter)
+  val blackStroke = Stroke(Color.black, 1.0, Cap.butt, Join.miter, None)
   val positiveDouble = Gen.choose(0.0, 1000.0)
 
   property("circle renders to svg circle") =

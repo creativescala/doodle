@@ -104,6 +104,9 @@ final case class Canvas(target: dom.Node,
 object Canvas {
   def fromFrame(frame: Frame): Canvas = {
     val target = dom.document.getElementById(frame.id)
-    Canvas(target, frame, frame.background)
+    if(target == null) {
+      throw new java.util.NoSuchElementException(
+        s"Doodle SVG Canvas could not be created, as could not find a DOM element with the requested id ${frame.id}")
+    } else Canvas(target, frame, frame.background)
   }
 }

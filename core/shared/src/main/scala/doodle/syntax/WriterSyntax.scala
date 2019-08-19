@@ -17,6 +17,7 @@
 package doodle
 package syntax
 
+import cats.effect.IO
 import doodle.algebra.{Algebra, Picture}
 import doodle.effect.Writer
 import java.io.File
@@ -44,7 +45,28 @@ trait WriterSyntax {
         w.write(file, frame, picture).unsafeRunSync()
     }
 
+    class WriterIOOpsHelper[Format](picture: Picture[Alg, F, A]) {
+      def apply[Frame](file: String)(
+          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+        apply(new File(file))
+
+      def apply[Frame](file: File)(
+          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+        w.write(file, picture)
+
+      def apply[Frame](file: String, frame: Frame)(
+          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+        apply(new File(file), frame)
+
+      def apply[Frame](file: File, frame: Frame)(
+          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+        w.write(file, frame, picture)
+    }
+
     def write[Format] =
       new WriterOpsHelper(picture)
+
+    def writeToIO[Format] =
+      new WriterIOOpsHelper(picture)
   }
 }

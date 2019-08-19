@@ -3,7 +3,6 @@ package image
 package examples
 
 import doodle.core._
-import doodle.image.Image._
 import doodle.syntax._
 
 object Flowers {
@@ -25,7 +24,7 @@ object Flowers {
       val size = minRadius + (r.get * (maxRadius - minRadius))
       // val alpha = (minAlpha.get + (r.get * (maxAlpha - minAlpha))).normalized
 
-      (circle(size * ratio.get).noStroke on circle(size).noFill)
+      (Image.circle(size * ratio.get).noStroke on Image.circle(size).noFill)
       // fillColorTransform(_.alpha(alpha)).
       // strokeColorTransform(_.alpha(alpha))
     }
@@ -33,7 +32,7 @@ object Flowers {
   def square: Normalized => Image =
     (_: Normalized) => {
       // val alpha = (minAlpha.get + (r.get * (maxAlpha - minAlpha))).normalized
-      rectangle(5, 5).noStroke //.fillColorTransform(_.alpha(alpha))
+      Image.rectangle(5, 5).noStroke //.fillColorTransform(_.alpha(alpha))
     }
 
   def point(
@@ -56,7 +55,7 @@ object Flowers {
     {
       def iter(angle: Angle): Image = {
         if (angle > Angle.one)
-          empty
+          Image.empty
         else
           point(angle) on iter(angle + step)
       }
@@ -81,7 +80,7 @@ object Flowers {
         point(position(5), scale(150.0), square, 36.degrees)
       }.fillColor(Color.yellowGreen).strokeColor(Color.yellowGreen)
 
-    val background = (rectangle(500, 500) fillColor Color.black)
+    val background = (Image.rectangle(500, 500).fillColor(Color.black))
 
     petals on leaves on background
   }
