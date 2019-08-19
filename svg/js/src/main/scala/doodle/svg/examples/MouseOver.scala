@@ -12,11 +12,7 @@ object MouseOver {
   val initialColor = Color.royalBlue
 
   def coloredCircle(color: Color): Picture[Unit] =
-    Picture { implicit algebra =>
-      import algebra._
-
       circle(300).fillColor(color)
-    }
 
   def makeFrames(color: Color): Observable[Picture[Unit]] = {
     println("makeFrames")

@@ -20,48 +20,31 @@ package syntax
 import doodle.algebra.{Picture, Blend}
 
 trait BlendSyntax {
-  implicit class BlendOps[F[_], A](picture: F[A]) {
-    def screen(implicit b: Blend[F]): F[A] =
-      b.screen(picture)
-
-    def burn(implicit b: Blend[F]): F[A] =
-      b.burn(picture)
-
-    def dodge(implicit b: Blend[F]): F[A] =
-      b.dodge(picture)
-
-    def lighten(implicit b: Blend[F]): F[A] =
-      b.lighten(picture)
-
-    def sourceOver(implicit b: Blend[F]): F[A] =
-      b.sourceOver(picture)
-  }
-
   implicit class BlendPictureOps[Alg[x[_]] <: Blend[x], F[_], A](
       picture: Picture[Alg, F, A]) {
     def screen: Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
-        picture(algebra).screen
+        algebra.screen(picture(algebra))
       }
 
     def burn: Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
-        picture(algebra).burn
+        algebra.burn(picture(algebra))
       }
 
     def dodge: Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
-        picture(algebra).dodge
+        algebra.dodge(picture(algebra))
       }
 
     def lighten: Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
-        picture(algebra).lighten
+        algebra.lighten(picture(algebra))
       }
 
     def sourceOver: Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
-        picture(algebra).sourceOver
+        algebra.sourceOver(picture(algebra))
       }
   }
 }

@@ -36,16 +36,15 @@ object Dash {
   val dash: Array[Double] = Array(13, 8, 5, 3, 2, 1, 2, 3, 5, 8, 13)
 
   def curve(size: Double): Picture[Unit] =
-    Picture{ implicit algebra =>
-      algebra.path(ClosedPath
-                     .empty
-                     .moveTo(-size, -size)
-                     .curveTo(-size, size, -size, size, size, size)
-                     .curveTo(size, -size, size, -size, -size, -size))
-        .strokeDash(dash)
-        .strokeColor(Color.limeGreen)
-        .strokeWidth(5.0)
-    }
+    (ClosedPath
+       .empty
+       .moveTo(-size, -size)
+       .curveTo(-size, size, -size, size, size, size)
+       .curveTo(size, -size, size, -size, -size, -size))
+      .path[Algebra,Drawing]
+      .strokeDash(dash)
+      .strokeColor(Color.limeGreen)
+      .strokeWidth(5.0)
 
   val animation: Observable[Picture[Unit]] =
     Observable

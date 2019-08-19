@@ -23,6 +23,7 @@ package object syntax
     with LayoutSyntax
     with NormalizedSyntax
     with PathSyntax
+    with ShapeSyntax
     with StyleSyntax
     with TraverseSyntax
     with UnsignedByteSyntax
@@ -33,6 +34,7 @@ package object syntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
+  object shape extends ShapeSyntax
   object style extends StyleSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax

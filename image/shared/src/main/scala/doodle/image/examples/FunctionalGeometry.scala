@@ -4,7 +4,6 @@ package examples
 
 import doodle.core._
 import doodle.syntax._
-import doodle.image.Image._
 
 // To use this example, open the SBT console and type:
 //
@@ -17,7 +16,7 @@ object FunctionalGeometry {
     import PathElement._
     val paths = lines.map {
       case (((a, b), (c, d))) =>
-        openPath(
+        Image.openPath(
           List(moveTo(a.toDouble, b.toDouble), lineTo(c.toDouble, d.toDouble)))
     }
     paths.foldLeft(Image.empty)(_ on _)
@@ -30,7 +29,7 @@ object FunctionalGeometry {
     quartet(i, i rotate 270.degrees, i rotate 90.degrees, i rotate 180.degrees)
 
   def blank(m: Int = 4, n: Int = 4): Image =
-    rectangle(16, 16).scale(m.toDouble, n.toDouble).noStroke
+    Image.rectangle(16, 16).scale(m.toDouble, n.toDouble).noStroke
 
   def nonet(i1: Image,
             i2: Image,

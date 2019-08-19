@@ -3,7 +3,6 @@ package image
 package examples
 
 import doodle.core._
-import doodle.image.Image._
 import doodle.syntax._
 import doodle.random._
 
@@ -97,9 +96,9 @@ object DiffusionLimitedAggregation {
       (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
         Color.hsla(h, s, l, a)
       }
-    val c = Random.normal(1, 1) map (r => circle(Math.abs(r)))
+    val c = Random.normal(1, 1) map (r => Image.circle(Math.abs(r)))
 
-    (c, color) mapN { (circle, line) =>
+    (c, color).mapN { (circle, line) =>
       circle.strokeColor(line).noFill
     }
   }

@@ -37,12 +37,9 @@ object Ripples {
       this.copy(age = age + 1)
 
     def picture: Picture[Unit] =
-      Picture { implicit algebra =>
-        algebra
-          .circle(age.toDouble)
-          .strokeColor(Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized))
-          .at(x, y)
-      }
+      circle[Algebra,Drawing](age.toDouble)
+        .strokeColor(Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized))
+        .at(x, y)
   }
 
   def ripples(canvas: Canvas): IO[Observable[Picture[Unit]]] = {
@@ -72,9 +69,7 @@ object Ripples {
               case None => ripples.filter(_.alive).map(_.older)
             }
           }
-          .map(ripples => Picture{ implicit algebra =>
-                 ripples.map(_.picture(algebra)).allOn
-               })
+          .map(ripples => ripples.map(_.picture).allOn)
       }
   }
 }

@@ -4,7 +4,6 @@ package examples
 
 import doodle.core._
 import doodle.image._
-import doodle.image.Image._
 import doodle.syntax._
 import doodle.random._
 
@@ -67,9 +66,9 @@ object Spirals {
       (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
         Color.hsla(h, s, l, a)
       }
-    val c = Random.normal(2, 1) map (r => circle(r))
+    val c = Random.normal(2, 1) map (r => Image.circle(r))
 
-    (c, color) mapN { (circle, stroke) =>
+    (c, color).mapN { (circle, stroke) =>
       circle.strokeColor(stroke).noFill
     }
   }
