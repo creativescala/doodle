@@ -164,11 +164,11 @@ object Image {
     )
   }
 
-  def circle(d: Double): Image =
-    Circle(d)
+  def circle(diameter: Double): Image =
+    Circle(diameter)
 
-  def rectangle(w: Double, h: Double): Image =
-    Rectangle(w, h)
+  def rectangle(width: Double, height: Double): Image =
+    Rectangle(width, height)
 
   def square(side: Double): Image =
     rectangle(side, side)
@@ -203,76 +203,76 @@ object Image {
     closedPath(moveTo(outerRadius, angle) +: path)
   }
 
-  def rightArrow(w: Double, h: Double): Image = {
+  def rightArrow(width: Double, height: Double): Image = {
     import PathElement._
 
     val path = List(
-      moveTo(w / 2, 0),
-      lineTo(0, h / 2),
-      lineTo(0, h * 0.2),
-      lineTo(-w / 2, h * 0.2),
-      lineTo(-w / 2, -h * 0.2),
-      lineTo(0, -h * 0.2),
-      lineTo(0, -h / 2),
-      lineTo(w / 2, 0)
+      moveTo(width / 2, 0),
+      lineTo(0, height / 2),
+      lineTo(0, height * 0.2),
+      lineTo(-width / 2, height * 0.2),
+      lineTo(-width / 2, -height * 0.2),
+      lineTo(0, -height * 0.2),
+      lineTo(0, -height / 2),
+      lineTo(width / 2, 0)
     )
 
     closedPath(path)
   }
 
-  def roundedRectangle(w: Double, h: Double, r: Double): Image = {
+  def roundedRectangle(width: Double, height: Double, radius: Double): Image = {
     import PathElement._
 
     // Clamp radius to the smallest of width and height
-    val radius =
-      if (r > w / 2 || r > h / 2)
-        (w / 2) min (h / 2)
+    val cornerRadius =
+      if (radius > width / 2 || radius > height / 2)
+        (width / 2) min (height / 2)
       else
-        r
+        radius
 
     // Magic number for drawing circles with bezier curves
     // See http://spencermortensen.com/articles/bezier-circle/ for approximation
     // of a circle with a Bezier curve.
     val c = (4.0 / 3.0) * (Math.sqrt(2) - 1)
-    val cR = c * radius
+    val cR = c * cornerRadius
 
     val elts = List(
-      moveTo(w / 2 - radius, h / 2),
-      curveTo(w / 2 - radius + cR,
-              h / 2,
-              w / 2,
-              h / 2 - radius + cR,
-              w / 2,
-              h / 2 - radius),
-      lineTo(w / 2, -h / 2 + radius),
-      curveTo(w / 2,
-              -h / 2 + radius - cR,
-              w / 2 - radius + cR,
-              -h / 2,
-              w / 2 - radius,
-              -h / 2),
-      lineTo(-w / 2 + radius, -h / 2),
-      curveTo(-w / 2 + radius - cR,
-              -h / 2,
-              -w / 2,
-              -h / 2 + radius - cR,
-              -w / 2,
-              -h / 2 + radius),
-      lineTo(-w / 2, h / 2 - radius),
-      curveTo(-w / 2,
-              h / 2 - radius + cR,
-              -w / 2 + radius - cR,
-              h / 2,
-              -w / 2 + radius,
-              h / 2),
-      lineTo(w / 2 - radius, h / 2)
+      moveTo(width / 2 - cornerRadius, height / 2),
+      curveTo(width / 2 - cornerRadius + cR,
+              height / 2,
+              width / 2,
+              height / 2 - cornerRadius + cR,
+              width / 2,
+              height / 2 - cornerRadius),
+      lineTo(width / 2, -height / 2 + cornerRadius),
+      curveTo(width / 2,
+              -height / 2 + cornerRadius - cR,
+              width / 2 - cornerRadius + cR,
+              -height / 2,
+              width / 2 - cornerRadius,
+              -height / 2),
+      lineTo(-width / 2 + cornerRadius, -height / 2),
+      curveTo(-width / 2 + cornerRadius - cR,
+              -height / 2,
+              -width / 2,
+              -height / 2 + cornerRadius - cR,
+              -width / 2,
+              -height / 2 + cornerRadius),
+      lineTo(-width / 2, height / 2 - cornerRadius),
+      curveTo(-width / 2,
+              height / 2 - cornerRadius + cR,
+              -width / 2 + cornerRadius - cR,
+              height / 2,
+              -width / 2 + cornerRadius,
+              height / 2),
+      lineTo(width / 2 - cornerRadius, height / 2)
     )
 
     closedPath(elts)
   }
 
-  def triangle(w: Double, h: Double): Image =
-    Triangle(w, h)
+  def triangle(width: Double, height: Double): Image =
+    Triangle(width, height)
 
   /**
     * Construct an open path of bezier curves that intersects all the given
