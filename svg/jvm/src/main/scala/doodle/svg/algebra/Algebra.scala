@@ -4,13 +4,14 @@ package algebra
 
 import cats.{Apply, Semigroup}
 import doodle.language.Basic
-import doodle.algebra.Layout
+import doodle.algebra.{Layout,Size}
 import doodle.algebra.generic._
 import scalatags.generic.{Bundle, TypedTag}
 
 final case class Algebra[Builder, Output <: FragT, FragT](
     bundle: Bundle[Builder, Output, FragT])
     extends Layout[Finalized[(TypedTag[Builder, Output, FragT], ?), ?]]
+    with Size[Finalized[(TypedTag[Builder, Output, FragT], ?), ?]]
     with Shape[Builder, Output, FragT]
     with Path[Builder, Output, FragT]
     with GenericStyle[(TypedTag[Builder, Output, FragT], ?)]
@@ -26,6 +27,8 @@ final case class Algebra[Builder, Output <: FragT, FragT](
   // I don't understand why the compiler cannot derive this itself
   implicit val tagApply: Apply[SvgResult] =
     cats.instances.tuple.catsStdFlatMapForTuple2(tagSemigroup)
+
+  // Layout ----------------------------------------------------------
 
   val layout = new GenericLayout[SvgResult]()(Apply.apply[SvgResult])
 
@@ -45,4 +48,18 @@ final case class Algebra[Builder, Output <: FragT, FragT](
             x: Double,
             y: Double): Finalized[SvgResult, A] =
     layout.at(img, x, y)
+
+  // Size ------------------------------------------------------------
+
+  val size = new GenericSize[SvgResult]
+
+  def width[A](image: Finalized[SvgResult, A]): Finalized[SvgResult, Double] =
+    size.width(image)
+
+  def height[A](image: Finalized[SvgResult, A]): Finalized[SvgResult, Double] =
+    size.height(image)
+
+  def size[A](image: Finalized[SvgResult, A]): Finalized[SvgResult, (Double, Double)] =
+    size.size(image)
+
 }

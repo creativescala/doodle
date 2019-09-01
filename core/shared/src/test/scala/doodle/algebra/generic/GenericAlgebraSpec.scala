@@ -3,7 +3,6 @@ package algebra
 package generic
 
 import cats.instances.unit._
-import doodle.syntax._
 import org.scalacheck._
 import org.scalacheck.Prop._
 
@@ -12,7 +11,7 @@ object GenericAlgebraspec extends Properties("Generic algebra properties") {
 
   property("Beside doubles the width") =
     forAll(Generators.finalized){ f =>
-      val (bbDouble, _) = f.beside(f).runA(List.empty).value
+      val (bbDouble, _) = algebra.beside(f, f).runA(List.empty).value
       val (bb, _) = f.runA(List.empty).value
 
       bbDouble.width ?= (bb.width * 2)
@@ -21,7 +20,7 @@ object GenericAlgebraspec extends Properties("Generic algebra properties") {
 
   property("Above doubles the height") =
     forAll(Generators.finalized){ f =>
-      val (bbDouble, _) = f.above(f).runA(List.empty).value
+      val (bbDouble, _) = algebra.above(f,f).runA(List.empty).value
       val (bb, _) = f.runA(List.empty).value
 
       bbDouble.height ?= (bb.height * 2)
@@ -30,7 +29,7 @@ object GenericAlgebraspec extends Properties("Generic algebra properties") {
 
   property("On doesn't change the bounding box") =
     forAll(Generators.finalized){ f =>
-      val (bbDouble, _) = f.on(f).runA(List.empty).value
+      val (bbDouble, _) = algebra.on(f,f).runA(List.empty).value
       val (bb, _) = f.runA(List.empty).value
 
       bbDouble.height ?= bb.height
