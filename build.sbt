@@ -67,11 +67,11 @@ lazy val root = crossProject
   )
   .enablePlugins(ScalaUnidocPlugin)
 lazy val rootJvm = root.jvm
-  .dependsOn(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
-  .aggregate(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, svgJvm, turtleJvm)
+  .dependsOn(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm)
+  .aggregate(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm)
 lazy val rootJs = root.js
-  .dependsOn(coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
-  .aggregate(coreJs, exploreJs, imageJs, interactJs, svgJs, turtleJs)
+  .dependsOn(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
+  .aggregate(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
 
 
 lazy val core = crossProject
