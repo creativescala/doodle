@@ -28,6 +28,7 @@ package object java2d extends effect.Java2dExplorerAtoms {
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 
+  type Frame = doodle.java2d.effect.Frame
   type Canvas = doodle.java2d.effect.Canvas
   implicit val java2dCanvasAlgebra = doodle.java2d.algebra.CanvasAlgebra
 
@@ -54,6 +55,8 @@ package object java2d extends effect.Java2dExplorerAtoms {
   implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
   implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
+
+  val Frame = doodle.java2d.effect.Frame
 
   type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
   object Picture {
