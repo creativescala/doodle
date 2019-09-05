@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2019 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,24 @@
  */
 
 package doodle
-package language
+package algebra
 
-import doodle.algebra._
+/**
+  * Get information about the size of the bounding box enclosing an image.
+  */
+trait Size[F[_]] extends Algebra[F] {
+  /**
+   * Get the height of the bounding box enclosing the image
+   */
+  def height[A](image: F[A]): F[Double]
 
-trait Basic[F[_]]
-    extends Algebra[F]
-    with Layout[F]
-    with Path[F]
-    with Shape[F]
-    with Size[F]
-    with Style[F]
-    with Transform[F]
-object Basic {
-  def picture[F[_], A](f: Basic[F] => F[A]): Picture[Basic, F, A] =
-    new Picture[Basic, F, A] {
-      def apply(implicit algebra: Basic[F]): F[A] =
-        f(algebra)
-    }
+  /**
+   * Get the width of the bounding box enclosing the image
+   */
+  def width[A](image: F[A]): F[Double]
+
+  /**
+   * Get the width and height of the bounding box enclosing the image
+   */
+  def size[A](image: F[A]): F[(Double,Double)]
 }

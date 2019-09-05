@@ -5,13 +5,14 @@ package algebra
 import cats._
 import cats.implicits._
 import doodle.language.Basic
-import doodle.algebra.Layout
+import doodle.algebra.{Layout,Size}
 import doodle.algebra.generic._
 import org.scalajs.dom
 import scalatags.JsDom
 
 object Algebra
     extends Layout[Drawing]
+    with Size[Drawing]
     with MouseOver
     with Shape[dom.Element, dom.Element, dom.Node]
     with Path[dom.Element, dom.Element, dom.Node]
@@ -24,6 +25,8 @@ object Algebra
     def combine(x: Tag, y: Tag): Tag =
       JsDom.svgTags.g(x, y)
   }
+
+  // Layout ----------------------------------------------------------
 
   val layout = new GenericLayout[SvgResult]()(Apply.apply[SvgResult])
 
@@ -43,4 +46,17 @@ object Algebra
             x: Double,
             y: Double): Finalized[SvgResult, A] =
     layout.at(img, x, y)
+
+  // Size ------------------------------------------------------------
+
+  val size = new GenericSize[SvgResult]()
+
+  def width[A](image: Finalized[SvgResult, A]): Finalized[SvgResult, Double] =
+    size.width(image)
+
+  def height[A](image: Finalized[SvgResult, A]): Finalized[SvgResult, Double] =
+    size.height(image)
+
+  def size[A](image: Finalized[SvgResult, A]): Finalized[SvgResult, (Double, Double)] =
+    size.size(image)
 }

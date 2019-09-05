@@ -147,16 +147,6 @@ lazy val imageJvm = image.jvm.dependsOn(coreJvm, java2d)
 lazy val imageJs  = image.js.dependsOn(coreJs)
 
 
-// lazy val animate = crossProject
-//   .in(file("animate"))
-//   .settings(commonSettings,
-//             libraryDependencies += Dependencies.monix.value,
-//             moduleName := "doodle-animate")
-
-// lazy val animateJvm = animate.jvm.dependsOn(coreJvm, java2d)
-// lazy val animateJs  = animate.js.dependsOn(coreJs)
-
-
 lazy val explore = crossProject
   .in(file("explore"))
   .settings(commonSettings,
@@ -166,8 +156,6 @@ lazy val explore = crossProject
 
 lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, interactJvm)
 lazy val exploreJs  = explore.js.dependsOn(coreJs, interactJs)
-
-
 
 
 lazy val svg = crossProject
@@ -190,3 +178,13 @@ lazy val turtle = crossProject
 
 lazy val turtleJvm = turtle.jvm.dependsOn(coreJvm, imageJvm)
 lazy val turtleJs  = turtle.js.dependsOn(coreJs, imageJs)
+
+
+lazy val reactor = crossProject
+  .in(file("reactor"))
+  .settings(commonSettings,
+            libraryDependencies += Dependencies.monix.value,
+            moduleName := "doodle-reactor")
+
+lazy val reactorJvm = reactor.jvm.dependsOn(coreJvm, java2d, imageJvm, interactJvm)
+lazy val reactorJs  = reactor.js.dependsOn(coreJs, svgJs, imageJs, interactJs)

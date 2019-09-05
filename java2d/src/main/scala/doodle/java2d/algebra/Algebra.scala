@@ -26,11 +26,15 @@ import doodle.algebra.generic.reified._
 
 final case class Algebra()
     extends Layout[Finalized[Reification, ?]]
+    with Size[Finalized[Reification, ?]]
     with ReifiedPath
     with ReifiedShape
     with GenericStyle[Reification]
     with GenericTransform[Reification]
     with Basic[Drawing] {
+
+  // Layout ----------------------------------------------------------
+
   val layout = ReifiedLayout.instance
 
   def on[A](top: Finalized[Reification, A], bottom: Finalized[Reification, A])(
@@ -51,4 +55,17 @@ final case class Algebra()
             x: Double,
             y: Double): Finalized[Reification, A] =
     layout.at(img, x, y)
+
+  // Size ------------------------------------------------------------
+
+  val size = ReifiedSize.instance
+
+  def width[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
+    size.width(image)
+
+  def height[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
+    size.height(image)
+
+  def size[A](image: Finalized[Reification, A]): Finalized[Reification, (Double, Double)] =
+    size.size(image)
 }

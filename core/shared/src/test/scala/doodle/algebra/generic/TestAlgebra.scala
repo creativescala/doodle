@@ -23,11 +23,14 @@ import doodle.algebra.Layout
 import doodle.algebra.generic.reified._
 
 final case class TestAlgebra()
-    extends Layout[Finalized[Reification,?]]
-    with ReifiedPath
-    with ReifiedShape
-    with GenericStyle[Reification]
+        extends Layout[Finalized[Reification,?]]
+        with Size[Finalized[Reification, ?]]
+        with ReifiedPath
+        with ReifiedShape
+        with GenericStyle[Reification]
 {
+    // Layout ----------------------------------------------------------
+
     val layout = ReifiedLayout.instance
 
     def on[A](top: Finalized[Reification,A], bottom: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
@@ -41,4 +44,17 @@ final case class TestAlgebra()
 
     def at[A](img: Finalized[Reification,A], x: Double, y: Double): Finalized[Reification,A] =
         layout.at(img, x, y)
+
+    // Size ------------------------------------------------------------
+
+    val size = ReifiedSize.instance
+
+    def width[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
+        size.width(image)
+
+    def height[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
+        size.height(image)
+
+    def size[A](image: Finalized[Reification, A]): Finalized[Reification, (Double, Double)] =
+        size.size(image)
 }

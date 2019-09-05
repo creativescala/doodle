@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2019 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,14 @@
  */
 
 package doodle
-package language
+package algebra
+package generic
+package reified
 
-import doodle.algebra._
+import cats.Functor
+import cats.implicits._
 
-trait Basic[F[_]]
-    extends Algebra[F]
-    with Layout[F]
-    with Path[F]
-    with Shape[F]
-    with Size[F]
-    with Style[F]
-    with Transform[F]
-object Basic {
-  def picture[F[_], A](f: Basic[F] => F[A]): Picture[Basic, F, A] =
-    new Picture[Basic, F, A] {
-      def apply(implicit algebra: Basic[F]): F[A] =
-        f(algebra)
-    }
+object ReifiedSize {
+  val instance: Size[Finalized[Reification, ?]] =
+    new GenericSize()(Functor.apply[Reification])
 }

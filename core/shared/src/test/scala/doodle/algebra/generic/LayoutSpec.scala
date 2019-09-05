@@ -20,7 +20,6 @@ package generic
 
 import cats.implicits._
 import doodle.core.{Transform => Tx}
-import doodle.syntax._
 import org.scalacheck._
 import org.scalacheck.Prop._
 
@@ -39,7 +38,7 @@ object LayoutSpec extends Properties("Layout properties") {
           i <- List(square, circle, triangle)
           j <- List(square, circle, triangle)
         } yield {
-          val img = (i.above(j)).noStroke
+          val img = algebra.noStroke(algebra.above(i,j))
           val (bb, rdr) = img.runA(List.empty).value
           val (_, fa) = rdr.run(Tx.identity).value
           val (reified, _) = fa.run.value
@@ -58,7 +57,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
       implicit val algebra = TestAlgebra()
       val square = algebra.square(width)
-      val img = square.above(square)
+      val img = algebra.above(square, square)
       val (_, rdr) = img.runA(List.empty).value
       val (_, fa) = rdr.run(Tx.identity).value
       val (reified, _) = fa.run.value

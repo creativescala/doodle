@@ -37,7 +37,7 @@ trait ShapeSyntax {
 
   def circle[Alg[x[_]] <: Shape[x], F[_]](diameter: Double): Picture[Alg, F, Unit] =
     Picture{ implicit algebra: Alg[F] =>
-      algebra.square(diameter)
+      algebra.circle(diameter)
     }
 
   def empty[Alg[x[_]] <: Shape[x], F[_]]: Picture[Alg, F, Unit] =
