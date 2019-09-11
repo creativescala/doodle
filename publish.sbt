@@ -2,7 +2,7 @@ ThisBuild / name := "doodle"
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Noel Welsh"
 ThisBuild / organizationHomepage := Some(url("http://creativescala.org/"))
-ThisBuild / version := "0.9.6"
+ThisBuild / version := "0.9.7"
 ThisBuild / isSnapshot := false
 
 ThisBuild / useGpg := true
@@ -35,3 +35,5 @@ ThisBuild / publishTo := {
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 ThisBuild / publishMavenStyle := true
+
+ThisBuild / publishTo := sonatypePublishToBundle.value
