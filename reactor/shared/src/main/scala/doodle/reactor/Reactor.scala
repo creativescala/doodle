@@ -28,7 +28,7 @@ trait Reactor[A] {
   def stop(value: A): Boolean
 
   /**
-   * Run one tick of this Reactor, drawing on the given [[Frame]]. Returns the
+   * Run one tick of this Reactor, drawing on the given `frame`. Returns the
    * next state, or None if the Reactor has stopped.
    */
   def tick[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
@@ -42,7 +42,7 @@ trait Reactor[A] {
   }
 
   /**
-   * Runs this Reactor, drawing on the given [[Frame]], until `stop` indicates
+   * Runs this Reactor, drawing on the given `frame`, until `stop` indicates
    * it should stop.
    */
   def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
