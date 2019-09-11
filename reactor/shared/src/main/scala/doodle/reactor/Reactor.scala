@@ -2,8 +2,9 @@ package doodle
 package reactor
 
 import cats.instances.unit._
-import doodle.effect.{DefaultRenderer, Renderer}
+import doodle.effect.Renderer
 import doodle.image.Image
+import doodle.image.syntax._
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.syntax._
 import doodle.language.Basic
@@ -11,51 +12,43 @@ import monix.execution.Scheduler
 import monix.reactive.Observable
 import scala.concurrent.duration._
 
-final case class Reactor[A](
-  initial: A,
-  onTick: A => A = (a: A) => a,
-  tickRate: FiniteDuration = FiniteDuration(100, MILLISECONDS),
-  render: A => Image = (_: A) => Image.empty,
-  stop: A => Boolean = (_: A) => false
-) {
-  // Builder methods -------------------------------------------------
+/**
+ * A Reactor is a simple way to express an interactive program. It allows us to
+ * write programs in terms of some initial state and transformations of that
+ * state in response to inputs and clock ticks. This is the basic interface that
+ * does not handle any user input, only clock ticks.
+ *
+ * It is based on * the same abstraction in Pyret.
+ */
+trait Reactor[A] {
+  def initial: A
+  def onTick(value: A): A
+  def tickRate: FiniteDuration
+  def render(value: A): Image
+  def stop(value: A): Boolean
 
-  def onTick(f: A => A): Reactor[A] =
-    this.copy(onTick = f)
-
-  def tickRate(duration: FiniteDuration): Reactor[A] =
-    this.copy(tickRate = duration)
-
-  def render(f: A => Image): Reactor[A] =
-    this.copy(render = f)
-
-  def stop(f: A => Boolean): Reactor[A] =
-    this.copy(stop = f)
-
-  // Make stuff happen -----------------------------------------------
-
-  def image: Image =
-    this.render(this.initial)
-
-  def step: Reactor[A] =
-    this.copy(initial = this.onTick(this.initial))
-
-  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
-    implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit = {
-    import doodle.image.syntax._
-    this.image.draw(frame)(renderer)
+  /**
+   * Run one tick of this Reactor, drawing on the given [[Frame]]. Returns the
+   * next state, or None if the Reactor has stopped.
+   */
+  def tick[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
+    implicit e: Renderer[Alg, F, Frame, Canvas]): Option[A] = {
+    if(stop(initial)) None
+    else {
+      (render(initial)).draw(frame)
+      val next = onTick(initial)
+      Some(next)
+    }
   }
 
-  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
-    implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit = {
-    import doodle.image.syntax._
-    this.image.draw()(renderer)
-  }
-
+  /**
+   * Runs this Reactor, drawing on the given [[Frame]], until `stop` indicates
+   * it should stop.
+   */
   def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
     implicit a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, Frame, Canvas],
-        s: Scheduler): Unit = {
+    e: Renderer[Alg, F, Frame, Canvas],
+    s: Scheduler): Unit = {
     val frames =
       Observable
         .interval(this.tickRate)
@@ -67,15 +60,4 @@ final case class Reactor[A](
 
     frames.animate(frame)
   }
-
-}
-object Reactor {
-  def init[A](value: A): Reactor[A] =
-    Reactor(initial = value)
-
-  def linearRamp(start: Double = 0.0, stop: Double = 1.0, step: Double = 0.01): Reactor[Double] =
-    Reactor
-      .init(start)
-      .onTick(x => x + step)
-      .stop(x => x >= stop)
 }

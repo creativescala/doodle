@@ -20,7 +20,7 @@ object Easing {
 
   val step = (easeIn _).andThen(scale(-300.0, 300.0))
   val reactor =
-    Reactor
+    BasicReactor
       .linearRamp()
       .render(t => Image.circle(5.0).fillColor(Color.seaGreen).at(step(t), 0.0))
 
