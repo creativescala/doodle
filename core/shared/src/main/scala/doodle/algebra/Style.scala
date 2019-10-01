@@ -17,13 +17,14 @@
 package doodle
 package algebra
 
-import doodle.core.{Cap, Color, Join}
+import doodle.core.{Cap, Color, Gradient, Join}
 
 /**
   * Apply styling to a image.
   */
 trait Style[F[_]] extends Algebra[F] {
   def fillColor[A](image: F[A], fillColor: Color): F[A]
+  def fillGradient[A](image: F[A], fillGradient: Gradient): F[A]
 
   def strokeColor[A](image: F[A], strokeColor: Color): F[A]
   def strokeWidth[A](image: F[A], strokeWidth: Double): F[A]
