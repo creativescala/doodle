@@ -10,7 +10,7 @@ import doodle.effect.Writer._
 import doodle.java2d._
 import doodle.java2d.effect.Frame
 
-object Write {
+object Write extends App {
   val frame = Frame.fitToPicture().background(Color.black)
 
   def rainbowCircles(count: Int, color: Color): Image =
@@ -28,4 +28,5 @@ object Write {
   // Draw with `Background.image.draw(Background.frame)`
   val image = rainbowCircles(12, Color.red)
   image.write[Png]("rainbow-circles.png", frame)
+  println(image.write[Png].base64)
 }
