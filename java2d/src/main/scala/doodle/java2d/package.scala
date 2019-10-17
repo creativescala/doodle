@@ -55,6 +55,7 @@ package object java2d extends effect.Java2dExplorerAtoms {
   implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
   implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
+  implicit val java2dPdfWriter = doodle.java2d.effect.Java2dPdfWriter
 
   val Frame = doodle.java2d.effect.Frame
 

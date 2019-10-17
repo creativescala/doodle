@@ -39,7 +39,7 @@ object Java2d {
 
   /**
    * Create a transform from local logical coordinates to screen coordinates
-   * given the bounding box for a picture, the screen size, and descriptino of
+   * given the bounding box for a picture, the screen size, and description of
    * the relationship between screen and picture.
    */
   def transform(bb: BoundingBox,
