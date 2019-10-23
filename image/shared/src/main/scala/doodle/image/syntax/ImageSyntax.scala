@@ -65,5 +65,12 @@ trait ImageSyntax {
                frame,
                Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunSync()
+
+    def base64[Alg[x[_]] <: Basic[x], F[_], Frame](
+      implicit w: Writer[Alg, F, Frame, Format]): String = {
+      val picture = Picture((algebra: Alg[F]) => image.compile(algebra))
+      val (_, base64String) = w.base64(picture).unsafeRunSync()
+      base64String
+    }
   }
 }
