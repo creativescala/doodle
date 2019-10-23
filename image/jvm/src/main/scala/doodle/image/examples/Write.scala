@@ -29,4 +29,6 @@ object Write extends App {
   val image = rainbowCircles(12, Color.red)
   image.write[Png]("rainbow-circles.png", frame)
   image.write[Pdf]("rainbow-circles.pdf", frame)
+  // Print base64 encoded png
+  println(image.write[Png].base64)
 }

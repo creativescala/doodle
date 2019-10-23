@@ -25,8 +25,8 @@ import doodle.core.Transform
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
-import java.io.{File, FileOutputStream}
-
+import java.io.{ByteArrayOutputStream, File, FileOutputStream, OutputStream}
+import java.util.Base64
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
@@ -48,6 +48,25 @@ trait Java2dWriter[Format]
       _ = ImageIO.write(bi, format, file)
     } yield a
   }
+
+  def base64[A](image: Picture[A]): IO[(A, String)] = for {
+    output <- IO.pure(new ByteArrayOutputStream())
+    value <- writeToOutput(output, Frame.fitToPicture(), image)
+    base64 = Base64.getEncoder.encodeToString(output.toByteArray)
+  } yield (value, base64)
+
+  private def writeToOutput[A](output: OutputStream, frame: Frame, picture: Picture[A]): IO[A] = {
+    for {
+      result <- Java2dWriter.renderBufferedImage(frame, picture)
+      (bi, a) = result
+      _ <- IO {
+        ImageIO.write(bi, format, output)
+        output.flush()
+        output.close()
+      }
+    } yield a
+  }
+
 }
 object Java2dWriter {
   def renderBufferedImage[A](frame: Frame,
