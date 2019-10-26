@@ -18,10 +18,20 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{Cap, Color, Join}
+import doodle.core.{Cap, Color, Gradient, Join}
 
 final case class Stroke(color: Color, width: Double, cap: Cap, join: Join, dash: Option[Array[Float]])
-final case class Fill(color: Color)
+sealed trait Fill extends Product with Serializable
+object Fill {
+  final case class ColorFill(color: Color) extends Fill
+  final case class GradientFill(gradient: Gradient) extends Fill
+
+  def color(color: Color): Fill =
+    ColorFill(color)
+
+  def gradient(gradient: Gradient): Fill =
+    GradientFill(gradient)
+}
 
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
@@ -31,7 +41,7 @@ final case class DrawingContext(
     strokeCap: Cap,
     strokeJoin: Join,
     strokeDash: Option[Array[Float]], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
-    fillColor: Option[Color]
+    fill: Option[Fill]
 ) {
   def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = mode)
@@ -60,14 +70,14 @@ final case class DrawingContext(
   def noStroke: DrawingContext =
     this.copy(strokeWidth = None)
 
-  def fill: Option[Fill] =
-    fillColor.map(c => Fill(c))
-
   def fillColor(color: Color): DrawingContext =
-    this.copy(fillColor = Some(color))
+    this.copy(fill = Some(Fill.color(color)))
+
+  def fillGradient(gradient: Gradient): DrawingContext =
+    this.copy(fill = Some(Fill.gradient(gradient)))
 
   def noFill: DrawingContext =
-    this.copy(fillColor = None)
+    this.copy(fill = None)
 }
 object DrawingContext {
   def default: DrawingContext =

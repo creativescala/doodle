@@ -7,6 +7,8 @@ import doodle.effect._
 import doodle.algebra.Picture
 import java.io.File
 import java.nio.file.Files
+import java.util.Base64
+
 import scalatags.Text
 
 object SvgWriter extends Writer[Algebra, Drawing, Frame, Writer.Svg] {
@@ -29,4 +31,9 @@ object SvgWriter extends Writer[Algebra, Drawing, Frame, Writer.Svg] {
 
   def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
     write(file, Frame("").fitToPicture(), picture)
+
+  override def base64[A](image: Picture[Algebra, Drawing, A]): IO[(A, String)] = for {
+    rendered <- svg.render[Algebra, A](Frame("").fitToPicture(), algebra, image)
+    (nodes, value) = rendered
+  } yield (value, Base64.getEncoder.encodeToString(nodes.getBytes()))
 }

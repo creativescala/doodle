@@ -134,7 +134,8 @@ lazy val interactJs  = interact.js.dependsOn(coreJs)
 lazy val java2d = project
   .in(file("java2d"))
   .settings(commonSettings,
-            moduleName := "doodle-java2d")
+            moduleName := "doodle-java2d",
+            libraryDependencies += "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13")
   .dependsOn(coreJvm, exploreJvm, interactJvm)
 
 

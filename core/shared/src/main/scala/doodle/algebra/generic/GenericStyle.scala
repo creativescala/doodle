@@ -18,11 +18,14 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{Cap, Color, Join}
+import doodle.core.{Cap, Color, Gradient, Join}
 
 trait GenericStyle[F[_]] extends Style[Finalized[F, ?]] {
   def fillColor[A](image: Finalized[F, A], fillColor: Color): Finalized[F, A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
+
+  def fillGradient[A](image: Finalized[F, A], fillGradient: Gradient): Finalized[F, A] =
+    Finalized.contextTransform(_.fillGradient(fillGradient))(image)
 
   def strokeColor[A](image: Finalized[F, A],
                      strokeColor: Color): Finalized[F, A] =

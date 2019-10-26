@@ -77,6 +77,44 @@ final case class Svg[Builder, Output <: FragT, FragT](
         Transform.screenToLogical(w, h)
     }
   }
+
+  def toSvgGradient(gradient: Gradient): bundle.Tag =
+    gradient match {
+      case linear: Gradient.Linear => this.toSvgLinearGradient(linear)
+      case radial: Gradient.Radial => this.toSvgRadialGradient(radial)
+    }
+
+  def toSvgLinearGradient(gradient: Gradient.Linear): bundle.Tag = {
+    val (x1, y1, x2, y2) = (gradient.start.x, gradient.start.y, gradient.end.x, gradient.end.y)
+    // val id = Svg.toGradientId(gradient)
+    val spreadMethod = Svg.toSvgSpreadMethod(gradient.cycleMethod)
+    val domGradient = svg.linearGradient(/*svgAttrs.id:=id,*/ svgAttrs.x1:=x1, svgAttrs.y1:=y1, svgAttrs.x2:=x2,
+      svgAttrs.y2:=y2, svgAttrs.spreadMethod:=spreadMethod, svgAttrs.gradientUnits:="userSpaceOnUse")
+    // val stops = gradient.stops.map(this.toSvgGradientStop)
+    // stops.foreach(domGradient.appendChild(_))
+
+    domGradient
+  }
+
+  def toSvgRadialGradient(gradient: Gradient.Radial): bundle.Tag = {
+    val (cx, cy, fx, fy, r) = (gradient.outer.x, gradient.outer.y, gradient.inner.x, gradient.inner.y, gradient.radius)
+    // val id = Svg.toGradientId(gradient)
+    val spreadMethod = Svg.toSvgSpreadMethod(gradient.cycleMethod)
+    val domGradient = svg.radialGradient(// svgAttrs.id:=id,
+                                         svgAttrs.cx:=cx, svgAttrs.cy:=cy, svgAttrs.fx:=fx,
+      svgAttrs.fy:=fy, svgAttrs.r:=r, svgAttrs.spreadMethod:=spreadMethod, svgAttrs.gradientUnits:="userSpaceOnUse")
+    // val stops = gradient.stops.map(this.toSvgGradientStop)
+    // stops.foreach(domGradient.appendChild(_))
+
+    domGradient
+  }
+
+  def toSvgGradientStop(tuple: (Color, Double)): bundle.Tag = {
+    val (c, offset) = tuple
+    val color = Svg.toRGB(c)
+    val opacity = c.alpha.get
+    svg.stop(svgAttrs.offset:=offset, svgAttrs.stopColor:=color, svgAttrs.stopOpacity:=opacity)
+  }
 }
 object Svg {
   def toStyle(stroke: Stroke): String = {
@@ -105,7 +143,11 @@ object Svg {
   }
 
   def toStyle(fill: Fill): String = {
-    s"fill: ${toHSLA(fill.color)};"
+    fill match {
+      case Fill.ColorFill(c) => s"fill: ${toHSLA(c)};"
+      case Fill.GradientFill(_) => throw new Exception("Gradient fills are not yet supported in SVG")
+
+    }
   }
 
   def toStyle(stroke: Option[Stroke], fill: Option[Fill]): String = {
@@ -165,6 +207,13 @@ object Svg {
       case Closed => (builder += 'Z').toString
     }
   }
+
+  def toSvgSpreadMethod(cycleMethod: Gradient.CycleMethod): String =
+    cycleMethod match {
+      case Gradient.CycleMethod.NoCycle => "pad"
+      case Gradient.CycleMethod.Reflect => "reflect"
+      case Gradient.CycleMethod.Repeat => "repeat"
+    }
 
   def toHSLA(color: Color): String = {
     val (h, s, l, a) =

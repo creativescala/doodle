@@ -74,6 +74,23 @@ There are many methods to modify colors, such as `spin`, `desaturate`, and so on
 
 ## Point
 
+A `Point` represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.
+
+```scala mdoc
+Point(1.0, 1.0) // cartesian coordinates
+Point(1.0, 90.degrees) // polar coordinates
+```
+
+No matter how we construct a `Point` we can still access x- and y-coordinates or radius and angle.
+
+```scala mdoc
+val pt1 = Point(1.0, 0.0)
+pt1.x
+pt1.y
+pt1.r
+pt1.angle
+```
+
 ## Transform
 
 ## Vec

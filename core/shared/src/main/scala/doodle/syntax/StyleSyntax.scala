@@ -18,7 +18,7 @@ package doodle
 package syntax
 
 import doodle.algebra.{Picture, Style}
-import doodle.core.Color
+import doodle.core.{Color, Gradient}
 
 trait StyleSyntax {
   implicit class StylePictureOps[Alg[x[_]] <: Style[x], F[_], A](
@@ -26,6 +26,11 @@ trait StyleSyntax {
     def fillColor(fillColor: Color): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.fillColor(picture(algebra), fillColor)
+      }
+
+    def fillGradient(fillGradient: Gradient): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.fillGradient(picture(algebra), fillGradient)
       }
 
     def strokeColor(strokeColor: Color): Picture[Alg, F, A] =

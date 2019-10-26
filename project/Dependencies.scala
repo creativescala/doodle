@@ -11,7 +11,7 @@ object Dependencies {
 
   val magnoliaVersion = "0.10.0"
 
-  val monixVersion = "3.0.0-RC3"
+  val monixVersion = "3.0.0"
 
   val miniTestVersion   = "2.2.2"
   val scalaCheckVersion = "1.14.0"

@@ -18,12 +18,12 @@ package doodle
 package java2d
 package algebra
 
-import doodle.core.{Cap, Color, Join, PathElement, Point, Transform => Tx}
+import doodle.core.{Cap, Color, Gradient, Join, PathElement, Point, Transform => Tx}
 import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
-import java.awt.{Color => AwtColor, BasicStroke, Graphics2D}
+import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, LinearGradientPaint, Paint, RadialGradientPaint}
+import java.awt.MultipleGradientPaint.CycleMethod
 // import java.awt.image.BufferedImage
-import java.awt.geom.{AffineTransform, Path2D}
-import java.awt.geom.Path2D
+import java.awt.geom.{AffineTransform, Path2D, Point2D}
 
 /** Various utilities for using Java2D */
 object Java2D {
@@ -36,6 +36,9 @@ object Java2D {
 
   //   fontMetrics(graphics)
   // }
+
+  def toPoint2D(point: Point): Point2D =
+    new Point2D.Double(point.x, point.y)
 
   def toAwtColor(color: Color): AwtColor = {
     val rgba = color.toRGBA
@@ -70,7 +73,48 @@ object Java2D {
   }
 
   def setFill(graphics: Graphics2D, fill: Fill) = {
-    graphics.setColor(Java2D.toAwtColor(fill.color))
+    val paint: Paint =
+      fill match {
+        case Fill.ColorFill(c) =>
+          Java2D.toAwtColor(c)
+
+        case Fill.GradientFill(g) =>
+          g match {
+            case l: Gradient.Linear =>
+              Java2D.toLinearGradientPaint(l)
+            case r: Gradient.Radial =>
+              Java2D.toRadialGradientPaint(r)
+          }
+      }
+    graphics.setPaint(paint)
+  }
+
+  def toCycleMethod(cycleMethod: Gradient.CycleMethod): CycleMethod =
+    cycleMethod match {
+    case Gradient.CycleMethod.NoCycle => CycleMethod.NO_CYCLE
+    case Gradient.CycleMethod.Reflect => CycleMethod.REFLECT
+    case Gradient.CycleMethod.Repeat  => CycleMethod.REPEAT
+  }
+
+  def toLinearGradientPaint(gradient: Gradient.Linear): LinearGradientPaint = {
+    val start = this.toPoint2D(gradient.start)
+    val end = this.toPoint2D(gradient.end)
+    val fractions = gradient.stops.map(_._2).map(_.toFloat).toArray
+    val colors = gradient.stops.map(_._1).map(this.toAwtColor(_)).toArray
+    val cycleMethod = this.toCycleMethod(gradient.cycleMethod)
+
+    new LinearGradientPaint(start, end, fractions, colors, cycleMethod)
+  }
+
+  def toRadialGradientPaint(gradient: Gradient.Radial): RadialGradientPaint = {
+    val center = this.toPoint2D(gradient.outer)
+    val focus = this.toPoint2D(gradient.inner)
+    val radius = gradient.radius.toFloat
+    val fractions = gradient.stops.map(_._2).map(_.toFloat).toArray
+    val colors = gradient.stops.map(_._1).map(this.toAwtColor(_)).toArray
+    val cycleMethod = this.toCycleMethod(gradient.cycleMethod)
+
+    new RadialGradientPaint(center, radius, focus, fractions, colors, cycleMethod)
   }
 
   /** Converts to an *open* `Path2D` */

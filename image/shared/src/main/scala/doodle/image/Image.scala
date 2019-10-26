@@ -75,6 +75,11 @@ sealed abstract class Image extends Product with Serializable {
     // Transform(core.transform.Transform.translate(x, y), this)
     At(this, x, y)
 
+  def at(r: Double, a: Angle): Image = {
+    val pt = Point(r, a)
+    At(this, pt.x, pt.y)
+  }
+
   // Convert to tagless final format
 
   def compile[Algebra[x[?]] <: Basic[x], F[_]]
