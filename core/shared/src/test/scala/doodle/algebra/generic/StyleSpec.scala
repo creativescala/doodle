@@ -30,11 +30,11 @@ object StyleSpec extends Properties("Style properties") {
       val reified = Generators.reify(style.fillColor(f, c))
       reified.foldLeft(true: Prop){ (prop, elt) =>
         prop && (elt match {
-                   case FillOpenPath(_, fill, _) => (fill.color ?= c)
-                   case FillClosedPath(_, fill, _) => (fill.color ?= c)
-                   case FillCircle(_, fill, _) => (fill.color ?= c)
-                   case FillRect(_, fill, _, _) => (fill.color ?= c)
-                   case FillPolygon(_, fill, _) => (fill.color ?= c)
+                   case FillOpenPath(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
+                   case FillClosedPath(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
+                   case FillCircle(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
+                   case FillRect(_, fill, _, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
+                   case FillPolygon(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
                    case _ => true
                  })
       }
