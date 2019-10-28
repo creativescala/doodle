@@ -38,6 +38,9 @@ sealed abstract class Image extends Product with Serializable {
   def fillColor(color: Color): Image =
     FillColor(this, color)
 
+  def fillGradient(gradient: Gradient): Image =
+    FillGradient(this, gradient)
+
   // def fillColorTransform(f: Color => Color): Image =
   //   ContextTransform(_.fillColorTransform(f), this)
 
@@ -132,6 +135,7 @@ object Image {
     final case class StrokeWidth(image: Image, width: Double) extends Image
     final case class StrokeColor(image: Image, color: Color) extends Image
     final case class FillColor(image: Image, color: Color) extends Image
+    final case class FillGradient(image: Image, gradient: Gradient) extends Image
     final case class NoStroke(image: Image) extends Image
     final case class NoFill(image: Image) extends Image
 
@@ -398,6 +402,8 @@ object Image {
           algebra.strokeColor(compile(image)(algebra), color)
         case FillColor(image, color) =>
           algebra.fillColor(compile(image)(algebra), color)
+        case FillGradient(image, gradient) =>
+          algebra.fillGradient(compile(image)(algebra), gradient)
         case NoStroke(image) =>
           algebra.noStroke(compile(image)(algebra))
         case NoFill(image) =>

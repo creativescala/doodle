@@ -16,7 +16,7 @@ Doodle provides a simple to use DSL, called @ref[Image](image/index.md). This DS
 To use Doodle, add to your `build.sbt`
 
 ```scala
-libraryDependencies += "org.creativescala" %% "doodle" % "0.9.8"
+libraryDependencies += "org.creativescala" %% "doodle" % "0.9.9"
 ```
 
 ## ScalaDoc

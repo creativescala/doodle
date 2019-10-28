@@ -15,10 +15,10 @@ import scala.concurrent.duration._
 /**
  * A reactor is a simple way to express an interactive program. It allows us to
  * write programs in terms of some initial state and transformations of that
- * state in response to inputs and clock ticks. This is the basic interface that
- * does not handle any user input, only clock ticks.
+ * state in response to inputs and clock ticks.
  *
- * See [[Reactor]] for a more user friendly approach to definie reactors.
+ * This is the basic interface. See [[Reactor]] for a more user friendly
+ * implementation.
  *
  * It is based on * the same abstraction in Pyret.
  */
@@ -30,7 +30,7 @@ trait BaseReactor[A] {
   def stop(value: A): Boolean
 
   /**
-   * Run one tick of this Reactor, drawing on the given `frame`. Returns the
+   * Run one tick of this reactor, drawing on the given `frame`. Returns the
    * next state, or None if the Reactor has stopped.
    */
   def tick[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
