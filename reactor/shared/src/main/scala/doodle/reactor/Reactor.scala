@@ -1,63 +1,81 @@
 package doodle
 package reactor
 
-import cats.instances.unit._
-import doodle.effect.Renderer
+import doodle.effect._
 import doodle.image.Image
-import doodle.image.syntax._
-import doodle.interact.effect.AnimationRenderer
-import doodle.interact.syntax._
 import doodle.language.Basic
-import monix.execution.Scheduler
-import monix.reactive.Observable
 import scala.concurrent.duration._
 
 /**
- * A Reactor is a simple way to express an interactive program. It allows us to
- * write programs in terms of some initial state and transformations of that
- * state in response to inputs and clock ticks. This is the basic interface that
- * does not handle any user input, only clock ticks.
- *
- * It is based on * the same abstraction in Pyret.
+ * A [[Reactor]] that has reasonable defaults and a simple builder style for
+ * creating more complicated behaviour.
  */
-trait Reactor[A] {
-  def initial: A
-  def onTick(value: A): A
-  def tickRate: FiniteDuration
-  def render(value: A): Image
-  def stop(value: A): Boolean
+final case class Reactor[A](
+  initial: A,
+  onTickHandler: A => A = (a: A) => a,
+  tickRate: FiniteDuration = FiniteDuration(100, MILLISECONDS),
+  renderHandler: A => Image = (_: A) => Image.empty,
+  stopHandler: A => Boolean = (_: A) => false
+) extends BaseReactor[A] {
+  // Reactor methods -------------------------------------------------
 
-  /**
-   * Run one tick of this Reactor, drawing on the given `frame`. Returns the
-   * next state, or None if the Reactor has stopped.
-   */
-  def tick[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
-    implicit e: Renderer[Alg, F, Frame, Canvas]): Option[A] = {
-    if(stop(initial)) None
-    else {
-      (render(initial)).draw(frame)
-      val next = onTick(initial)
-      Some(next)
-    }
+  def onTick(value: A): A =
+    onTickHandler(value)
+
+  def render(value: A): Image =
+    renderHandler(value)
+
+  def stop(value: A): Boolean =
+    stopHandler(value)
+
+  // Builder methods -------------------------------------------------
+
+  def onTick(f: A => A): Reactor[A] =
+    this.copy(onTickHandler = f)
+
+  def tickRate(duration: FiniteDuration): Reactor[A] =
+    this.copy(tickRate = duration)
+
+  def render(f: A => Image): Reactor[A] =
+    this.copy(renderHandler = f)
+
+  def stop(f: A => Boolean): Reactor[A] =
+    this.copy(stopHandler = f)
+
+  // Make stuff happen -----------------------------------------------
+
+  def image: Image =
+    render(initial)
+
+  def step: Reactor[A] =
+    this.copy(initial = this.onTick(this.initial))
+
+  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
+    implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit = {
+    import doodle.image.syntax._
+    this.image.draw(frame)(renderer)
   }
 
-  /**
-   * Runs this Reactor, drawing on the given `frame`, until `stop` indicates
-   * it should stop.
-   */
-  def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
-    implicit a: AnimationRenderer[Canvas],
-    e: Renderer[Alg, F, Frame, Canvas],
-    s: Scheduler): Unit = {
-    val frames =
-      Observable
-        .interval(this.tickRate)
-        .flatScan0(this.initial){ (a, _) =>
-          if(this.stop(a)) Observable.empty
-          else Observable(this.onTick(a))
-        }
-        .map(a => Image.compile[Alg,F](this.render(a)))
-
-    frames.animate(frame)
+  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
+    implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit = {
+    import doodle.image.syntax._
+    this.image.draw()(renderer)
   }
+}
+object Reactor {
+  /**
+   * Create a [[Reactor]] with the given initial value.
+   */
+  def init[A](value: A): Reactor[A] =
+    Reactor(initial = value)
+
+  /**
+   * Create a [[Reactor]] where the value starts at `start` and goes to
+   * `stop` in `step` increments.
+   */
+  def linearRamp(start: Double = 0.0, stop: Double = 1.0, step: Double = 0.01): Reactor[Double] =
+    Reactor
+      .init(start)
+      .onTick((x: Double) => x + step)
+      .stop((x: Double) => x >= stop)
 }
