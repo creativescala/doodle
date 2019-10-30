@@ -42,12 +42,12 @@ object random {
       @tailrec
       def pick[A](total: Double, weight: Double, events: Seq[(A, Double)]): A =
         events match {
-          case (a, p) :: rest =>
+          case (a, p) +: rest =>
             if (total < weight && weight < (total + p))
               a
             else
               pick(total + p, weight, rest)
-          case Nil =>
+          case Seq() =>
             throw new Exception("Could not sample---ran out of events!")
         }
 
