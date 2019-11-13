@@ -6,30 +6,32 @@ import scalatags.JsDom
 import monix.reactive.Observable
 import monix.reactive.subjects.ReplaySubject
 
-trait MouseOver extends doodle.interact.algebra.MouseOver[Drawing] {
-  import JsDom.all._
+trait MouseOverModule { self: JsBase =>
+  trait MouseOver extends doodle.interact.algebra.MouseOver[Drawing] {
+    import JsDom.all._
 
-  var counter = 0
+    var counter = 0
 
-  def mouseOver[A](img: Drawing[A]): (Drawing[A], Observable[Unit]) = {
-    counter = counter + 1
-    val subject = ReplaySubject[Int]()
-    val callback = (_: Any) => {
-      println(s"callback invoked $counter")
-      subject.onNext(counter)
-      subject.onComplete()
-    }
-
-    val result =
-      img.map {
-        case (bb, rdr) =>
-          (bb, rdr.map {
-            case (tags, a) =>
-              (tags(onmouseover := callback): JsDom.Tag, a)
-          })
+    def mouseOver[A](img: Drawing[A]): (Drawing[A], Observable[Unit]) = {
+      counter = counter + 1
+      val subject = ReplaySubject[Int]()
+      val callback = (_: Any) => {
+        println(s"callback invoked $counter")
+        subject.onNext(counter)
+        subject.onComplete()
       }
 
-    import monix.eval.Task
-    (result, subject.doOnNext(a => Task(println(s"got it $a"))).map(_ => ()))
+      val result =
+        img.map {
+          case (bb, rdr) =>
+            (bb, rdr.map {
+               case (tags, set, a) =>
+                 (tags(onmouseover := callback): JsDom.Tag, set, a)
+             })
+        }
+
+      import monix.eval.Task
+      (result, subject.doOnNext(a => Task(println(s"got it $a"))).map(_ => ()))
+    }
   }
 }

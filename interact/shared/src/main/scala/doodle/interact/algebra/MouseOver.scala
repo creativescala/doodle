@@ -9,7 +9,7 @@ import monix.reactive.Observable
 trait MouseOver[F[_]] extends Algebra[F] {
 
   /** Attaches a mouse over event listener to the given img. The
-    * `Observable[Unit]` produces an event every time the mouseOver event
-    * fires. */
+   * `Observable[Unit]` produces an event every time the mouseOver event
+   * fires. */
   def mouseOver[A](img: F[A]): (F[A], Observable[Unit])
 }
