@@ -1,12 +1,16 @@
 package doodle
 
-import doodle.language.Basic
-import scalatags.Text
-
 package object svg {
-  type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
-  type Drawing[A] = doodle.algebra.generic.Finalized[(Text.Tag, ?), A]
+  val jvm = new doodle.svg.algebra.JvmAlgebraModule {}
 
+  // Need to re-export most of the things from JsAlgebraModule because directly
+  // extending JsAlgebraModule from the package object leads to a compilation
+  // error
+  type Algebra[F[_]] = jvm.Algebra[F]
+  val algebraInstance = jvm.algebraInstance
+  type Drawing[A] = jvm.Drawing[A]
+  val Svg = jvm.Svg
+  type Tag = jvm.Tag
   type Frame = doodle.svg.effect.Frame
   implicit val svgWriter = doodle.svg.effect.SvgWriter
 

@@ -1,18 +1,19 @@
 package doodle
 
 import doodle.effect.Renderer
-import doodle.interact.algebra.MouseOver
 import doodle.interact.effect.AnimationRenderer
-import doodle.language.Basic
-// import monix.reactive.Observer
-import org.scalajs.dom
 
 package object svg {
-  type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F] with MouseOver[F]
-  type Tag = scalatags.generic.TypedTag[dom.Element, dom.Element, dom.Node]
-  type SvgResult[A] = (Tag, A)
-  type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
+  val js = new doodle.svg.algebra.JsAlgebraModule {}
 
+  // Need to re-export most of the things from JsAlgebraModule because directly
+  // extending JsAlgebraModule from the package object leads to a compilation
+  // error
+  type Algebra[F[_]] = js.Algebra[F]
+  val algebraInstance = js.algebraInstance
+  type Drawing[A] = js.Drawing[A]
+  val Svg = js.Svg
+  type Tag = js.Tag
   type Frame = doodle.svg.effect.Frame
   type Canvas = doodle.svg.effect.Canvas
   implicit val svgRenderer: Renderer[Algebra, Drawing, Frame, Canvas] =

@@ -13,10 +13,9 @@ import scalatags.JsDom
 final case class Canvas(target: dom.Node,
                         frame: Frame,
                         background: Option[Color]) {
-  import JsDom.all._
+  import JsDom.all.{Tag => _, _}
 
-  val algebra = doodle.svg.algebra.Algebra
-  val svg = Svg(JsDom)
+  val algebra: Algebra[Drawing] = algebraInstance
 
   val redraw: Observable[Int] = {
     val subject = PublishSubject[Int]()
@@ -62,16 +61,16 @@ final case class Canvas(target: dom.Node,
       tag(onmousemove := (mouseMoveCallback(tx)))
 
     currentBB = bb
-    val tx = svg.inverseClientTransform(currentBB, frame.size)
+    val tx = Svg.inverseClientTransform(currentBB, frame.size)
     if (svgRoot == null) {
-      val newRoot = addCallback(svg.svgTag(bb, frame), tx)
+      val newRoot = addCallback(Svg.svgTag(bb, frame), tx)
       svgRoot = target.appendChild(newRoot.render)
       svgRoot
     } else {
       frame.size match {
         case Size.FixedSize(_, _) => svgRoot
         case Size.FitToPicture(_) =>
-          val newRoot = addCallback(svg.svgTag(bb, frame), tx).render
+          val newRoot = addCallback(Svg.svgTag(bb, frame), tx).render
           target.replaceChild(newRoot, svgRoot)
           svgRoot = newRoot
           svgRoot
@@ -92,7 +91,7 @@ final case class Canvas(target: dom.Node,
 
   def render[A](picture: Picture[A]): IO[A] = {
     for {
-      result <- svg.renderWithoutRootTag[Algebra, A](algebra, picture)
+      result <- Svg.renderWithoutRootTag[Algebra, A](algebra, picture)
     } yield {
       val (bb, tags, a) = result
       val root = svgRoot(bb)
