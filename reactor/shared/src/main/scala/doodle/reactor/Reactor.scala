@@ -1,6 +1,7 @@
 package doodle
 package reactor
 
+import doodle.core.Point
 import doodle.effect._
 import doodle.image.Image
 import doodle.language.Basic
@@ -12,6 +13,7 @@ import scala.concurrent.duration._
  */
 final case class Reactor[A](
   initial: A,
+  onMouseMoveHandler: (Point, A) => A = (_: Point, a: A) => a,
   onTickHandler: A => A = (a: A) => a,
   tickRate: FiniteDuration = FiniteDuration(100, MILLISECONDS),
   renderHandler: A => Image = (_: A) => Image.empty,
@@ -19,8 +21,11 @@ final case class Reactor[A](
 ) extends BaseReactor[A] {
   // Reactor methods -------------------------------------------------
 
-  def onTick(value: A): A =
-    onTickHandler(value)
+  def onMouseMove(location: Point, state: A): A =
+    onMouseMoveHandler(location, state)
+
+  def onTick(state: A): A =
+    onTickHandler(state)
 
   def render(value: A): Image =
     renderHandler(value)
@@ -29,6 +34,9 @@ final case class Reactor[A](
     stopHandler(value)
 
   // Builder methods -------------------------------------------------
+
+  def onMouseMove(f: (Point, A) => A): Reactor[A] =
+    this.copy(onMouseMoveHandler = f)
 
   def onTick(f: A => A): Reactor[A] =
     this.copy(onTickHandler = f)
