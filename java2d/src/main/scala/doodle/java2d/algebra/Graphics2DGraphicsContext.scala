@@ -19,9 +19,10 @@ package java2d
 package algebra
 
 import doodle.algebra.generic._
-import doodle.algebra.generic.reified.GraphicsContext
 import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.java2d.algebra.reified.GraphicsContext
 import java.awt.Graphics2D
+import java.awt.image.BufferedImage
 
 /** Higher level shape primitives */
 object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
@@ -136,4 +137,10 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       gc.draw(path)
     }
   }
+
+  def bitmap(gc: Graphics2D)(transform: Tx, image: BufferedImage): Unit =
+    Java2D.withTransform(gc, transform) {
+      gc.drawImage(image, -(image.getWidth() / 2), -(image.getHeight() / 2), null)
+      ()
+    }
 }

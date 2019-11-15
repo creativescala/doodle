@@ -16,15 +16,16 @@
 
 package doodle
 
-import doodle.algebra.generic.reified.Reification
+import doodle.algebra.Bitmap
 import doodle.effect.DefaultRenderer
 import doodle.explore.effect.ExplorerFactory
 import doodle.interact.effect.AnimationRenderer
+import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
 import javax.swing.JComponent
 
 package object java2d extends effect.Java2dExplorerAtoms {
-  type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
+  type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F]
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 

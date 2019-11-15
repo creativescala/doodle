@@ -22,7 +22,7 @@ import cats.Semigroup
 import doodle.language.Basic
 import doodle.algebra._
 import doodle.algebra.generic._
-import doodle.algebra.generic.reified._
+import doodle.java2d.algebra.reified._
 
 final case class Algebra()
     extends Layout[Finalized[Reification, ?]]
@@ -31,6 +31,7 @@ final case class Algebra()
     with ReifiedShape
     with GenericStyle[Reification]
     with GenericTransform[Reification]
+    with ReifiedBitmap
     with Basic[Drawing] {
 
   // Layout ----------------------------------------------------------

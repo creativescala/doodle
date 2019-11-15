@@ -15,12 +15,14 @@
  */
 
 package doodle
+package java2d
 package algebra
-package generic
 package reified
 
 import cats.implicits._
 import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.algebra.generic.{Fill, Stroke}
+import java.awt.image.BufferedImage
 
 sealed abstract class Reified extends Product with Serializable {
   import Reified._
@@ -57,6 +59,8 @@ sealed abstract class Reified extends Product with Serializable {
       case StrokePolygon(tx, stroke, points) =>
         ctx.strokePolygon(gc)(tx.andThen(finalTransform), stroke, points)
 
+      case Bitmap(tx, image) =>
+        ctx.bitmap(gc)(tx.andThen(finalTransform), image)
     }
 }
 object Reified {
@@ -127,6 +131,7 @@ object Reified {
                                   stroke: Stroke,
                                   elements: List[PathElement])
       extends Reified
+  final case class Bitmap(transform: Tx, image: BufferedImage) extends Reified
 
   def fillRect(transform: Tx,
                fill: Fill,
@@ -168,4 +173,6 @@ object Reified {
                      stroke: Stroke,
                      elements: List[PathElement]): Reified =
     StrokeOpenPath(transform, stroke, elements)
+  def bitmap(transform: Tx, image: BufferedImage): Reified =
+    Bitmap(transform, image)
 }

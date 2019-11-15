@@ -21,9 +21,9 @@ package effect
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
 import doodle.algebra.generic.BoundingBox
-import doodle.algebra.generic.reified.Reified
 import doodle.core.{Transform}
 import doodle.java2d.algebra.Java2D
+import doodle.java2d.algebra.reified.Reified
 import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.NoSuchElementException
 import javax.swing.{JPanel, SwingUtilities}

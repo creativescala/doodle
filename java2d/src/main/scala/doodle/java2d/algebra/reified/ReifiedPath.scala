@@ -15,13 +15,14 @@
  */
 
 package doodle
+package java2d
 package algebra
-package generic
 package reified
 
 import cats.data.WriterT
 import doodle.core._
 import doodle.core.{Transform => Tx}
+import doodle.algebra.generic._
 
 trait ReifiedPath extends GenericPath[Reification] {
   object PathApi extends PathApi {
