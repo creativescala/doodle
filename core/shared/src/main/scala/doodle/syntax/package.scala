@@ -18,6 +18,7 @@ package doodle
 
 package object syntax
     extends AngleSyntax
+    with BitmapSyntax
     with BlendSyntax
     with RendererSyntax
     with LayoutSyntax
@@ -29,6 +30,7 @@ package object syntax
     with UnsignedByteSyntax
     with WriterSyntax {
   object angle extends AngleSyntax
+  object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
   object renderer extends RendererSyntax
   object layout extends LayoutSyntax

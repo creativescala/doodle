@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Creative Scala
+ * Copyright 2019 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,16 @@
  */
 
 package doodle
+package java2d
 package algebra
-package generic
+package reified
 
-import cats.Eval
-import cats.data.WriterT
+import cats.Functor
+import cats.implicits._
+import doodle.algebra.Size
+import doodle.algebra.generic._
 
-package object reified {
-  type Reification[A] = WriterT[Eval, List[Reified], A]
+object ReifiedSize {
+  val instance: Size[Finalized[Reification, ?]] =
+    new GenericSize()(Functor.apply[Reification])
 }

@@ -19,9 +19,9 @@ package java2d
 package effect
 
 import doodle.algebra.generic.BoundingBox
-import doodle.algebra.generic.reified.Reified
 import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.Graphics2DGraphicsContext
+import doodle.java2d.algebra.reified.Reified
 import java.awt.{Graphics2D, RenderingHints}
 
 /** Utilities for rendering with Java2D */

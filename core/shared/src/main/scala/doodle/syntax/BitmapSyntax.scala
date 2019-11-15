@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Noel Welsh
+ * Copyright 2015 Creative Scala
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,19 @@
  */
 
 package doodle
-package algebra
-package generic
-package reified
+package syntax
 
-import cats.Functor
-import cats.implicits._
+import doodle.algebra.{Picture, Bitmap}
+import java.io.File
 
-object ReifiedSize {
-  val instance: Size[Finalized[Reification, ?]] =
-    new GenericSize()(Functor.apply[Reification])
+trait BitmapSyntax {
+  def read[Alg[x[_]] <: Bitmap[x], F[_]](file: File): Picture[Alg, F, Unit] =
+    Picture{ implicit algebra: Alg[F] =>
+      algebra.read(file)
+    }
+
+  def read[Alg[x[_]] <: Bitmap[x], F[_]](file: String): Picture[Alg, F, Unit] =
+    Picture{ implicit algebra: Alg[F] =>
+      algebra.read(file)
+    }
 }

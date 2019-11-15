@@ -15,11 +15,12 @@
  */
 
 package doodle
+package java2d
 package algebra
-package generic
 package reified
 
 import cats.data.WriterT
+import doodle.algebra.generic._
 import doodle.core.{Point, Transform => Tx}
 
 trait ReifiedShape extends GenericShape[Reification] {

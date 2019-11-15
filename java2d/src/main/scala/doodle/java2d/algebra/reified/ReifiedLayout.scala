@@ -15,12 +15,14 @@
  */
 
 package doodle
+package java2d
 package algebra
-package generic
 package reified
 
 import cats.Apply
 import cats.implicits._
+import doodle.algebra.Layout
+import doodle.algebra.generic._
 
 object ReifiedLayout {
   val instance: Layout[Finalized[Reification, ?]] =

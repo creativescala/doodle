@@ -15,11 +15,13 @@
  */
 
 package doodle
+package java2d
 package algebra
-package generic
 package reified
 
 import doodle.core.{PathElement, Point, Transform}
+import doodle.algebra.generic.{Fill, Stroke}
+import java.awt.image.BufferedImage
 
 /** Render in screen space */
 trait GraphicsContext[A] {
@@ -55,4 +57,6 @@ trait GraphicsContext[A] {
   def strokeOpenPath(gc: A)(transform: Transform,
                             stroke: Stroke,
                             elements: List[PathElement]): Unit
+
+  def bitmap(gc: A)(transform: Transform, image: BufferedImage): Unit
 }
