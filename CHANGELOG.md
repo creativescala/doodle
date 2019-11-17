@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.12 16-Nov-2019
+
+- Doodle has been completely rewritten in terms of tagless final algebras. This gives extensibility needed to support diffferent features on different platforms.
+
+- 0.9.12 add the ability to load bitmap images on the java2d backend (the `read` methods on the `Bitmap` algebra.) It's likely this API will be reworked in the future. This is very basic support for this feature.
+
+- 0.9.11 added mouse movement events to reactors.
+
+
+--- Period when I wasn't recording changes ---
+
+
 ## 0.6.5
 
 Fix most SVG text rendering issues. 
