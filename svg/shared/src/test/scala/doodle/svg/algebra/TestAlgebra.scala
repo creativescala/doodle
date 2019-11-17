@@ -2,15 +2,12 @@ package doodle
 package svg
 package algebra
 
-import doodle.language.Basic
-
-
-trait JvmAlgebraModule
+trait TestAlgebra
     extends AlgebraModule
     with PathModule
     with ShapeModule
     with SvgModule
-    with JvmBase {
-  type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
+    with TestBase {
   val algebraInstance = new BaseAlgebra {}
 }
+object TestAlgebra extends TestAlgebra {}

@@ -1,12 +1,13 @@
 package doodle
 package svg
-package effect
+package algebra
 
 import cats.Apply
 import cats.effect.IO
 import doodle.core._
 import doodle.algebra.Picture
 import doodle.algebra.generic.{BoundingBox, Fill, Stroke}
+import doodle.svg.effect.Size
 import scala.collection.mutable
 
 trait SvgModule { self: Base =>

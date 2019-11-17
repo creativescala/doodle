@@ -3,7 +3,7 @@ package svg
 package algebra
 
 import doodle.language.Basic
-import doodle.svg.effect.SvgModule
+
 
 trait JsAlgebraModule
     extends AlgebraModule
