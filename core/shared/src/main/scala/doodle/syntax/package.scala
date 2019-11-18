@@ -28,6 +28,7 @@ package object syntax
     with SizeSyntax
     with StyleSyntax
     with TextSyntax
+    with TransformSyntax
     with TraverseSyntax
     with UnsignedByteSyntax
     with WriterSyntax {
@@ -42,6 +43,7 @@ package object syntax
   object size extends SizeSyntax
   object style extends StyleSyntax
   object text extends TextSyntax
+  object transform extends TransformSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
   object writer extends WriterSyntax
