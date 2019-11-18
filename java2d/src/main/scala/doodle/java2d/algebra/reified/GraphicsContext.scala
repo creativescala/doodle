@@ -20,43 +20,51 @@ package algebra
 package reified
 
 import doodle.core.{PathElement, Point, Transform}
+import doodle.core.font.Font
 import doodle.algebra.generic.{Fill, Stroke}
+import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
 
 /** Render in screen space */
 trait GraphicsContext[A] {
-  def fillRect(gc: A)(transform: Transform,
-                      fill: Fill,
-                      width: Double,
-                      height: Double): Unit
-  def strokeRect(gc: A)(transform: Transform,
-                        stroke: Stroke,
-                        width: Double,
-                        height: Double): Unit
+  def fillRect(
+      gc: A
+  )(transform: Transform, fill: Fill, width: Double, height: Double): Unit
+  def strokeRect(
+      gc: A
+  )(transform: Transform, stroke: Stroke, width: Double, height: Double): Unit
 
   def fillCircle(
-      gc: A)(transform: Transform, fill: Fill, diameter: Double): Unit
+      gc: A
+  )(transform: Transform, fill: Fill, diameter: Double): Unit
   def strokeCircle(
-      gc: A)(transform: Transform, stroke: Stroke, diameter: Double): Unit
+      gc: A
+  )(transform: Transform, stroke: Stroke, diameter: Double): Unit
 
   def fillPolygon(
-      gc: A)(transform: Transform, fill: Fill, points: Array[Point]): Unit
+      gc: A
+  )(transform: Transform, fill: Fill, points: Array[Point]): Unit
   def strokePolygon(
-      gc: A)(transform: Transform, stroke: Stroke, points: Array[Point]): Unit
+      gc: A
+  )(transform: Transform, stroke: Stroke, points: Array[Point]): Unit
 
-  def fillClosedPath(gc: A)(transform: Transform,
-                            fill: Fill,
-                            elements: List[PathElement]): Unit
-  def strokeClosedPath(gc: A)(transform: Transform,
-                              stroke: Stroke,
-                              elements: List[PathElement]): Unit
+  def fillClosedPath(
+      gc: A
+  )(transform: Transform, fill: Fill, elements: List[PathElement]): Unit
+  def strokeClosedPath(
+      gc: A
+  )(transform: Transform, stroke: Stroke, elements: List[PathElement]): Unit
 
-  def fillOpenPath(gc: A)(transform: Transform,
-                          fill: Fill,
-                          elements: List[PathElement]): Unit
-  def strokeOpenPath(gc: A)(transform: Transform,
-                            stroke: Stroke,
-                            elements: List[PathElement]): Unit
+  def fillOpenPath(
+      gc: A
+  )(transform: Transform, fill: Fill, elements: List[PathElement]): Unit
+  def strokeOpenPath(
+      gc: A
+  )(transform: Transform, stroke: Stroke, elements: List[PathElement]): Unit
 
   def bitmap(gc: A)(transform: Transform, image: BufferedImage): Unit
+
+  def text(
+      gc: A
+  )(transform: Transform, text: String, font: Font, bounds: Rectangle2D): Unit
 }

@@ -88,7 +88,11 @@ object Java2dWriter {
                              picture: Picture[A],
                              graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
     for {
-      drawing <- IO { picture(Algebra()) }
+      gc <- IO {
+        val bi = new BufferedImage(0, 0, BufferedImage.TYPE_INT_ARGB)
+        Java2d.setup(bi.createGraphics())
+      }
+      drawing <- IO { picture(Algebra(gc)) }
       (bb, rdr) = drawing.runA(List.empty).value
       (_, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value

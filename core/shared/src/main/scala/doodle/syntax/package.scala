@@ -25,7 +25,9 @@ package object syntax
     with NormalizedSyntax
     with PathSyntax
     with ShapeSyntax
+    with SizeSyntax
     with StyleSyntax
+    with TextSyntax
     with TraverseSyntax
     with UnsignedByteSyntax
     with WriterSyntax {
@@ -37,7 +39,9 @@ package object syntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
   object shape extends ShapeSyntax
+  object size extends SizeSyntax
   object style extends StyleSyntax
+  object text extends TextSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
   object writer extends WriterSyntax

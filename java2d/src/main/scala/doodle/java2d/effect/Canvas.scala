@@ -20,7 +20,7 @@ package effect
 
 import cats.effect.IO
 import doodle.core.{Point,Transform}
-import doodle.java2d.algebra.Algebra
+// import doodle.java2d.algebra.Algebra
 import java.awt.event._
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.{JFrame, Timer, WindowConstants}
@@ -28,7 +28,6 @@ import monix.reactive.subjects.PublishSubject
 
 final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
-  val algebra = Algebra()
 
   /**
    * The current global transform from logical to screen coordinates
@@ -38,19 +37,21 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
 
   def render[A](picture: Picture[A]): IO[A] = {
     // Possible race condition here setting the currentInverseTx
-    def register(cb: Either[Throwable, A] => Unit): Unit = {
-      val drawing = picture(algebra)
-      val (bb, rdr) = drawing.runA(List.empty).value
-      val (w, h) = Java2d.size(bb, frame.size)
+    def register(cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit): Unit = {
+      // val drawing = picture(algebra)
+      // val (bb, rdr) = drawing.runA(List.empty).value
+      // val (w, h) = Java2d.size(bb, frame.size)
 
-      val inverseTx = Java2d.inverseTransform(bb, w, h, frame.center)
-      currentInverseTx.set(inverseTx)
 
-      val rr = Java2DPanel.RenderRequest(bb, w, h, rdr, cb)
-      panel.render(rr)
+      // val rr = Java2DPanel.RenderRequest(bb, w, h, rdr, cb)
+      panel.render(Java2DPanel.RenderRequest(picture, frame, cb))
     }
 
-    IO.async(register)
+    IO.async(register).map{result =>
+      val inverseTx = Java2d.inverseTransform(result.boundingBox, result.width, result.height, frame.center)
+      currentInverseTx.set(inverseTx)
+      result.value
+    }
   }
 
   val redraw = PublishSubject[Int]()
