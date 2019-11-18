@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.13
+
+- Add text rendering via the `Text` algebra. Currently only implemented for the Java2D back-end.
+
+- Add syntax for `Size` and `Transform` algebras
+
+
 ## 0.9.12 16-Nov-2019
 
 - Doodle has been completely rewritten in terms of tagless final algebras. This gives extensibility needed to support diffferent features on different platforms.
