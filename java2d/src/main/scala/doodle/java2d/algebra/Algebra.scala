@@ -23,12 +23,14 @@ import doodle.language.Basic
 import doodle.algebra._
 import doodle.algebra.generic._
 import doodle.java2d.algebra.reified._
+import java.awt.Graphics2D
 
-final case class Algebra()
+final case class Algebra(gc: Graphics2D)
     extends Layout[Finalized[Reification, ?]]
     with Size[Finalized[Reification, ?]]
     with ReifiedPath
     with ReifiedShape
+    with ReifiedText
     with GenericStyle[Reification]
     with GenericTransform[Reification]
     with ReifiedBitmap

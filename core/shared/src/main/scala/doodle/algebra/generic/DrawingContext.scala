@@ -19,6 +19,7 @@ package algebra
 package generic
 
 import doodle.core.{Cap, Color, Gradient, Join}
+import doodle.core.font.Font
 
 final case class Stroke(color: Color, width: Double, cap: Cap, join: Join, dash: Option[Array[Float]])
 sealed trait Fill extends Product with Serializable
@@ -41,7 +42,8 @@ final case class DrawingContext(
     strokeCap: Cap,
     strokeJoin: Join,
     strokeDash: Option[Array[Float]], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
-    fill: Option[Fill]
+    fill: Option[Fill],
+    font: Font
 ) {
   def blendMode(mode: BlendMode): DrawingContext =
     this.copy(blendMode = mode)
@@ -78,6 +80,9 @@ final case class DrawingContext(
 
   def noFill: DrawingContext =
     this.copy(fill = None)
+
+  def font(font: Font): DrawingContext =
+    this.copy(font = font)
 }
 object DrawingContext {
   def default: DrawingContext =
@@ -88,6 +93,7 @@ object DrawingContext {
       Cap.butt,
       Join.miter,
       None,
-      Option.empty
+      Option.empty,
+      Font.defaultSansSerif
     )
 }

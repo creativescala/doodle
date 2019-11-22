@@ -22,7 +22,7 @@ import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
 import doodle.algebra.generic.BoundingBox
 import doodle.core.{Transform}
-import doodle.java2d.algebra.Java2D
+import doodle.java2d.algebra.{Algebra, Java2D}
 import doodle.java2d.algebra.reified.Reified
 import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.NoSuchElementException
@@ -36,8 +36,9 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   private var lastBoundingBox: BoundingBox = _
   private var lastImage: List[Reified] = _
 
-  frame.background.foreach(color =>
-    this.setBackground(Java2D.toAwtColor(color)))
+  frame.background.foreach(
+    color => this.setBackground(Java2D.toAwtColor(color))
+  )
 
   def resize(width: Double, height: Double): Unit = {
     setPreferredSize(new Dimension(width.toInt, height.toInt))
@@ -56,40 +57,57 @@ final class Java2DPanel(frame: Frame) extends JPanel {
     val gc = context.asInstanceOf[Graphics2D]
     Java2d.setup(gc)
 
+    val algebra = Algebra(gc)
+
     try {
       val rr = channel.take(10L)
-      // println("Java2DPanel got new rr to paint")
-      lastBoundingBox = rr.boundingBox
-      resize(rr.width, rr.height)
-      lastImage = rr.reify.unsafeRunSync()
+      val result = rr.render(algebra).unsafeRunSync()
+      lastBoundingBox = result.boundingBox
+      lastImage = result.reified
+      resize(result.width, result.height)
     } catch {
       case _: NoSuchElementException => ()
     }
     if (lastImage != null) {
-      frame.background.foreach(color =>
-        gc.setBackground(Java2D.toAwtColor(color)))
+      frame.background.foreach(
+        color => gc.setBackground(Java2D.toAwtColor(color))
+      )
       gc.clearRect(0, 0, getWidth, getHeight)
-      val tx = Java2d.transform(lastBoundingBox,
-                                getWidth.toDouble,
-                                getHeight.toDouble,
-                                frame.center)
+      val tx = Java2d.transform(
+        lastBoundingBox,
+        getWidth.toDouble,
+        getHeight.toDouble,
+        frame.center
+      )
       Java2d.render(gc, lastImage, tx)
     }
   }
 }
 object Java2DPanel {
-  final case class RenderRequest[A](boundingBox: BoundingBox,
-                                    width: Double,
-                                    height: Double,
-                                    renderable: Renderable[A],
-                                    cb: Either[Throwable, A] => Unit) {
-    def reify: IO[List[Reified]] = {
-      IO {
-        val (_, fa) = renderable.run(Transform.identity).value
-        val (reified, a) = fa.run.value
-        cb(Right(a))
+  final case class RenderResult[A](
+      boundingBox: BoundingBox,
+      width: Double,
+      height: Double,
+      reified: List[Reified],
+      value: A
+  )
 
-        reified
+  final case class RenderRequest[A](
+      picture: Picture[A],
+      frame: Frame,
+      cb: Either[Throwable, RenderResult[A]] => Unit
+  ) {
+    def render(algebra: Algebra): IO[RenderResult[A]] = {
+      IO {
+        val drawing = picture(algebra)
+        val (bb, rdr) = drawing.runA(List.empty).value
+        val (w, h) = Java2d.size(bb, frame.size)
+        val (_, fa) = rdr.run(Transform.identity).value
+        val (reified, a) = fa.run.value
+        val result = RenderResult(bb, w, h, reified, a)
+        cb(Right(result))
+
+        result
       }
     }
   }

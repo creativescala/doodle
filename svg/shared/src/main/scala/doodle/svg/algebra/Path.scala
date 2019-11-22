@@ -4,7 +4,7 @@ package algebra
 
 import doodle.algebra.generic._
 import doodle.core.{PathElement, Transform => Tx}
-import doodle.svg.effect.SvgModule
+
 import scala.collection.mutable
 
 trait PathModule { self: Base with SvgModule =>

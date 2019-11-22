@@ -6,7 +6,7 @@ import cats.Semigroup
 import doodle.language.Basic
 import doodle.algebra.{Layout, Size}
 import doodle.algebra.generic._
-import doodle.svg.effect.SvgModule
+
 
 trait AlgebraModule {
   self: Base with ShapeModule with PathModule with SvgModule =>

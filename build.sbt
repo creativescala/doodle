@@ -168,8 +168,8 @@ lazy val svg = crossProject
 //            workbenchDefaultRootObject := Some(("svg/example.html", "svg/"))
             )
 
-lazy val svgJvm = svg.jvm.dependsOn(coreJvm, interactJvm)
-lazy val svgJs  = svg.js.dependsOn(coreJs, interactJs)
+lazy val svgJvm = svg.jvm.dependsOn(coreJvm % "compile->compile;test->test", interactJvm)
+lazy val svgJs  = svg.js.dependsOn(coreJs % "compile->compile;test->test", interactJs)
 
 
 lazy val turtle = crossProject

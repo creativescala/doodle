@@ -16,7 +16,7 @@
 
 package doodle
 
-import doodle.algebra.Bitmap
+import doodle.algebra.{Bitmap, Text}
 import doodle.effect.DefaultRenderer
 import doodle.explore.effect.ExplorerFactory
 import doodle.interact.effect.AnimationRenderer
@@ -25,7 +25,8 @@ import doodle.language.Basic
 import javax.swing.JComponent
 
 package object java2d extends effect.Java2dExplorerAtoms {
-  type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F]
+  type Algebra[F[_]] =
+    doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F] with Text[F]
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 
@@ -51,7 +52,7 @@ package object java2d extends effect.Java2dExplorerAtoms {
     macro Magnolia.gen[A]
 
   implicit val java2dRenderer
-    : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
+      : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
   implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter

@@ -18,24 +18,69 @@ package doodle
 package java2d
 package algebra
 
-import doodle.core.{Cap, Color, Gradient, Join, PathElement, Point, Transform => Tx}
-import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
-import java.awt.{Color => AwtColor, BasicStroke, Graphics2D, LinearGradientPaint, Paint, RadialGradientPaint}
+import doodle.core.{
+  Cap,
+  Color,
+  Gradient,
+  Join,
+  PathElement,
+  Point,
+  Transform => Tx
+}
+import doodle.core.font._
+import doodle.algebra.generic.{BoundingBox, DrawingContext, Stroke, Fill}
+import java.awt.{
+  Color => AwtColor,
+  BasicStroke,
+  Font => AwtFont,
+  FontMetrics,
+  Graphics2D,
+  LinearGradientPaint,
+  Paint,
+  RadialGradientPaint
+}
 import java.awt.MultipleGradientPaint.CycleMethod
-// import java.awt.image.BufferedImage
-import java.awt.geom.{AffineTransform, Path2D, Point2D}
+import java.awt.geom.{AffineTransform, Path2D, Point2D, Rectangle2D}
 
 /** Various utilities for using Java2D */
 object Java2D {
-  // def fontMetrics(graphics: Graphics2D): Metrics =
-  //   FontMetrics(graphics.getFontRenderContext()).boundingBox _
+  def fontMetrics(gc: Graphics2D, font: Font): FontMetrics =
+    gc.getFontMetrics(Java2D.toAwtFont(font))
 
-  // val bufferFontMetrics: Metrics = {
-  //   val buffer = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
-  //   val graphics = this.setup(buffer.createGraphics())
+  def textBoundingBox(gc: Graphics2D, text: String, font: Font): BoundingBox = {
+    val bounds = textBounds(gc, text, font)
 
-  //   fontMetrics(graphics)
-  // }
+    BoundingBox.centered(bounds.getWidth(), bounds.getHeight())
+  }
+
+  def textBounds(gc: Graphics2D, text: String, font: Font): Rectangle2D = {
+    val metrics = fontMetrics(gc, font)
+    metrics.getStringBounds(text, gc)
+  }
+
+  def toAwtFont(font: Font): AwtFont = {
+    val awtFamily =
+      font.family match {
+        case FontFamily.Serif      => AwtFont.SERIF
+        case FontFamily.SansSerif  => AwtFont.SANS_SERIF
+        case FontFamily.Monospaced => AwtFont.MONOSPACED
+        case FontFamily.Named(name)           => name
+      }
+
+    val awtStyle =
+      font.face match {
+        case FontFace.Bold   => AwtFont.BOLD
+        case FontFace.Italic => AwtFont.ITALIC
+        case FontFace.Normal => AwtFont.PLAIN
+      }
+
+    val awtSize =
+      font.size match {
+        case FontSize.Points(pts) => pts
+      }
+
+    new AwtFont(awtFamily, awtStyle, awtSize)
+  }
 
   def toPoint2D(point: Point): Point2D =
     new Point2D.Double(point.x, point.y)
@@ -91,10 +136,10 @@ object Java2D {
 
   def toCycleMethod(cycleMethod: Gradient.CycleMethod): CycleMethod =
     cycleMethod match {
-    case Gradient.CycleMethod.NoCycle => CycleMethod.NO_CYCLE
-    case Gradient.CycleMethod.Reflect => CycleMethod.REFLECT
-    case Gradient.CycleMethod.Repeat  => CycleMethod.REPEAT
-  }
+      case Gradient.CycleMethod.NoCycle => CycleMethod.NO_CYCLE
+      case Gradient.CycleMethod.Reflect => CycleMethod.REFLECT
+      case Gradient.CycleMethod.Repeat  => CycleMethod.REPEAT
+    }
 
   def toLinearGradientPaint(gradient: Gradient.Linear): LinearGradientPaint = {
     val start = this.toPoint2D(gradient.start)
@@ -114,7 +159,14 @@ object Java2D {
     val colors = gradient.stops.map(_._1).map(this.toAwtColor(_)).toArray
     val cycleMethod = this.toCycleMethod(gradient.cycleMethod)
 
-    new RadialGradientPaint(center, radius, focus, fractions, colors, cycleMethod)
+    new RadialGradientPaint(
+      center,
+      radius,
+      focus,
+      fractions,
+      colors,
+      cycleMethod
+    )
   }
 
   /** Converts to an *open* `Path2D` */
@@ -131,9 +183,11 @@ object Java2D {
       case LineTo(Cartesian(x, y)) =>
         path.lineTo(x, y)
 
-      case BezierCurveTo(Cartesian(cp1x, cp1y),
-                         Cartesian(cp2x, cp2y),
-                         Cartesian(endX, endY)) =>
+      case BezierCurveTo(
+          Cartesian(cp1x, cp1y),
+          Cartesian(cp2x, cp2y),
+          Cartesian(endX, endY)
+          ) =>
         path.curveTo(
           cp1x,
           cp1y,
@@ -158,9 +212,11 @@ object Java2D {
     graphics.setTransform(original)
   }
 
-  def strokeAndFill(graphics: Graphics2D,
-                    path: Path2D,
-                    current: DrawingContext): Unit = {
+  def strokeAndFill(
+      graphics: Graphics2D,
+      path: Path2D,
+      current: DrawingContext
+  ): Unit = {
     current.stroke.foreach { s =>
       setStroke(graphics, s)
       graphics.draw(path)

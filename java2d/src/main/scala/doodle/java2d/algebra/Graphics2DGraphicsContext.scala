@@ -20,16 +20,17 @@ package algebra
 
 import doodle.algebra.generic._
 import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.core.font.Font
 import doodle.java2d.algebra.reified.GraphicsContext
 import java.awt.Graphics2D
+import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
 
 /** Higher level shape primitives */
 object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
-  def fillRect(gc: Graphics2D)(transform: Tx,
-                               fill: Fill,
-                               width: Double,
-                               height: Double): Unit = {
+  def fillRect(
+      gc: Graphics2D
+  )(transform: Tx, fill: Fill, width: Double, height: Double): Unit = {
     Java2D.setFill(gc, fill)
     Java2D.withTransform(gc, transform) {
       val w = width.toInt
@@ -37,10 +38,9 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       gc.fillRect(-(w / 2), -(h / 2), w, h)
     }
   }
-  def strokeRect(gc: Graphics2D)(transform: Tx,
-                                 stroke: Stroke,
-                                 width: Double,
-                                 height: Double): Unit = {
+  def strokeRect(
+      gc: Graphics2D
+  )(transform: Tx, stroke: Stroke, width: Double, height: Double): Unit = {
     Java2D.setStroke(gc, stroke)
     Java2D.withTransform(gc, transform) {
       val w = width.toInt
@@ -50,7 +50,8 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   }
 
   def fillCircle(
-      gc: Graphics2D)(transform: Tx, fill: Fill, diameter: Double): Unit = {
+      gc: Graphics2D
+  )(transform: Tx, fill: Fill, diameter: Double): Unit = {
     Java2D.setFill(gc, fill)
     Java2D.withTransform(gc, transform) {
       val r = (diameter / 2.0).toInt
@@ -59,7 +60,8 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     }
   }
   def strokeCircle(
-      gc: Graphics2D)(transform: Tx, stroke: Stroke, diameter: Double): Unit = {
+      gc: Graphics2D
+  )(transform: Tx, stroke: Stroke, diameter: Double): Unit = {
     Java2D.setStroke(gc, stroke)
     Java2D.withTransform(gc, transform) {
       val r = (diameter / 2.0).toInt
@@ -69,7 +71,8 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   }
 
   def fillPolygon(
-      gc: Graphics2D)(transform: Tx, fill: Fill, points: Array[Point]): Unit = {
+      gc: Graphics2D
+  )(transform: Tx, fill: Fill, points: Array[Point]): Unit = {
     Java2D.setFill(gc, fill)
     Java2D.withTransform(gc, transform) {
       val xs = Array.ofDim[Int](points.size)
@@ -82,9 +85,9 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       gc.fillPolygon(xs, ys, points.size)
     }
   }
-  def strokePolygon(gc: Graphics2D)(transform: Tx,
-                                    stroke: Stroke,
-                                    points: Array[Point]): Unit = {
+  def strokePolygon(
+      gc: Graphics2D
+  )(transform: Tx, stroke: Stroke, points: Array[Point]): Unit = {
     Java2D.setStroke(gc, stroke)
     Java2D.withTransform(gc, transform) {
       val xs = Array.ofDim[Int](points.size)
@@ -98,9 +101,9 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     }
   }
 
-  def fillClosedPath(gc: Graphics2D)(transform: Tx,
-                                     fill: Fill,
-                                     elements: List[PathElement]): Unit = {
+  def fillClosedPath(
+      gc: Graphics2D
+  )(transform: Tx, fill: Fill, elements: List[PathElement]): Unit = {
     Java2D.setFill(gc, fill)
     Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
@@ -108,9 +111,9 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       gc.fill(path)
     }
   }
-  def strokeClosedPath(gc: Graphics2D)(transform: Tx,
-                                       stroke: Stroke,
-                                       elements: List[PathElement]): Unit = {
+  def strokeClosedPath(
+      gc: Graphics2D
+  )(transform: Tx, stroke: Stroke, elements: List[PathElement]): Unit = {
     Java2D.setStroke(gc, stroke)
     Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
@@ -119,18 +122,18 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     }
   }
 
-  def fillOpenPath(gc: Graphics2D)(transform: Tx,
-                                   fill: Fill,
-                                   elements: List[PathElement]): Unit = {
+  def fillOpenPath(
+      gc: Graphics2D
+  )(transform: Tx, fill: Fill, elements: List[PathElement]): Unit = {
     Java2D.setFill(gc, fill)
     Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
       gc.fill(path)
     }
   }
-  def strokeOpenPath(gc: Graphics2D)(transform: Tx,
-                                     stroke: Stroke,
-                                     elements: List[PathElement]): Unit = {
+  def strokeOpenPath(
+      gc: Graphics2D
+  )(transform: Tx, stroke: Stroke, elements: List[PathElement]): Unit = {
     Java2D.setStroke(gc, stroke)
     Java2D.withTransform(gc, transform) {
       val path = Java2D.toPath2D(elements)
@@ -140,7 +143,26 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
 
   def bitmap(gc: Graphics2D)(transform: Tx, image: BufferedImage): Unit =
     Java2D.withTransform(gc, transform) {
-      gc.drawImage(image, -(image.getWidth() / 2), -(image.getHeight() / 2), null)
+      gc.drawImage(
+        image,
+        -(image.getWidth() / 2),
+        -(image.getHeight() / 2),
+        null
+      )
       ()
+    }
+
+  def text(
+      gc: Graphics2D
+  )(transform: Tx, text: String, font: Font, bounds: Rectangle2D): Unit =
+    // Our default transform adds reflection around the y-axis (to make positive
+    // y moving up). This has the effect of causing our text to be drawn upside
+    // down. Hence we add a transformation to undo this.
+    Java2D.withTransform(gc, Tx.verticalReflection.andThen(transform)) {
+      // Our origin is centered in the bounds. Work out the x and y coordinates
+      // of the reference point of the text relative to the origin.
+      val x = -bounds.getCenterX()
+      val y = -bounds.getCenterY()
+      gc.drawString(text, x.toFloat, y.toFloat)
     }
 }

@@ -17,7 +17,6 @@ To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
 scalaVersion := "2.12.10" // Doodle is currently published for Scala 2.12 only
-
 libraryDependencies += "org.creativescala" %% "doodle" % "0.9.12"
 ~~~
 

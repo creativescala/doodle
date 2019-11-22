@@ -3,31 +3,32 @@ package svg
 package effect
 
 import doodle.algebra.generic._
-import doodle.algebra.generic.reified.Reified
 import doodle.core._
+import doodle.language.Basic
 import org.scalacheck._
 import org.scalacheck.Prop._
-import scalatags.Text
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable
 
-object SvgSpec extends Properties("SVG Properties") {
-  import Text.{svgAttrs, svgTags}
-  import Text.implicits._
+object SvgSpec extends Properties("SVG Properties") with doodle.svg.algebra.TestAlgebra {
+  import scalatags.Text.{svgAttrs, svgTags}
+  import scalatags.Text.implicits._
 
-  val svg = Svg(Text)
   val blackStroke = Stroke(Color.black, 1.0, Cap.butt, Join.miter, None)
   val positiveDouble = Gen.choose(0.0, 1000.0)
 
   property("circle renders to svg circle") =
     forAll(positiveDouble){ (diameter: Double) =>
-      val circle = Reified.strokeCircle(Transform.identity, blackStroke, diameter)
-      val elt = new ListBuffer[Text.Tag]()
-      val expected = svgTags.circle(
-        svgAttrs.transform:=Svg.toSvgTransform(Transform.identity),
-        svgAttrs.style:=Svg.toStyle(blackStroke),
-        svgAttrs.r:=(diameter/2.0))
-      circle.render(elt, Transform.identity)(svg.context)
-      elt.head.render ?= expected.render
+      val circle = doodle.algebra.Picture[Basic, Drawing, Unit]( algebra => algebra.strokeColor(algebra.circle(diameter), Color.black))
+      val (_, elt, _) = Svg.renderWithoutRootTag(algebraInstance, circle).unsafeRunSync()
+      val expected =
+        svgTags.g(
+          svgTags.defs(),
+          svgTags.circle(
+            svgAttrs.transform:=Svg.toSvgTransform(Transform.verticalReflection),
+            svgAttrs.style:=Svg.toStyle(Some(blackStroke), None, mutable.Set.empty),
+            svgAttrs.r:=(diameter/2.0))
+        )
+      elt ?= expected
     }
 
   property("paths of path elements render correctly") = {

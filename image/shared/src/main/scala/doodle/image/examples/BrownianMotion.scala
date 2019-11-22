@@ -4,7 +4,7 @@ package examples
 
 import doodle.core._
 import doodle.image.Image._
-import doodle.syntax._
+import doodle.image.syntax.core._
 import doodle.random._
 
 import cats.instances.all._
