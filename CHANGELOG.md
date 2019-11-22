@@ -4,6 +4,7 @@
 
 - `Picture` has a `Monad` instance if the underlying type `F` does.
 
+- Refactor base64 encoding support into a separate type class, and augment the syntax with an optional frame.
 
 ## 0.9.13 21-Nov-2019
 

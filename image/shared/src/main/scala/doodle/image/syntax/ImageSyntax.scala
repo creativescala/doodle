@@ -18,7 +18,7 @@ package doodle
 package image
 package syntax
 
-import doodle.effect.{DefaultRenderer, Renderer, Writer}
+import doodle.effect.{Base64, DefaultRenderer, Renderer, Writer}
 import doodle.image.Image
 import doodle.algebra.Picture
 import doodle.language.Basic
@@ -41,6 +41,8 @@ trait ImageSyntax {
       } yield a).unsafeRunSync()
 
     def write[Format] = new ImageWriterOps[Format](image)
+
+    def base64[Format] = new Base64Ops[Format](image)
   }
 
   /** This strange construction allows the user to write `anImage.write[AFormat](filename)`
@@ -65,12 +67,18 @@ trait ImageSyntax {
                frame,
                Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunSync()
+  }
 
-    def base64[Alg[x[_]] <: Basic[x], F[_], Frame](
-      implicit w: Writer[Alg, F, Frame, Format]): String = {
+  /** This strange construction allows the user to write
+    * `anImage.base64[AFormat]` without having to specify other, mostly
+    * irrelevant to the user, type parameters. */
+  final class Base64Ops[Format](image: Image){
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](
+      implicit w: Base64[Alg, F, Frame, Format]): String = {
       val picture = Picture((algebra: Alg[F]) => image.compile(algebra))
       val (_, base64String) = w.base64(picture).unsafeRunSync()
       base64String
     }
   }
+
 }

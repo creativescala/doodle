@@ -26,7 +26,7 @@ import doodle.effect._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
 import java.io.{ByteArrayOutputStream, File, FileOutputStream, OutputStream}
-import java.util.Base64
+import java.util.{Base64 => JBase64}
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
@@ -34,7 +34,8 @@ import doodle.algebra.generic.BoundingBox
 import javax.imageio.ImageIO
 
 trait Java2dWriter[Format]
-    extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format] {
+    extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format]
+    with Base64[doodle.java2d.Algebra, Drawing, Frame, Format]{
   def format: String
 
   def write[A](file: File, picture: Picture[A]): IO[A] = {
@@ -49,11 +50,15 @@ trait Java2dWriter[Format]
     } yield a
   }
 
-  def base64[A](image: Picture[A]): IO[(A, String)] = for {
-    output <- IO.pure(new ByteArrayOutputStream())
-    value <- writeToOutput(output, Frame.fitToPicture(), image)
-    base64 = Base64.getEncoder.encodeToString(output.toByteArray)
-  } yield (value, base64)
+  def base64[A](frame: Frame, image: Picture[A]): IO[(A, String)] =
+    for {
+      output <- IO.pure(new ByteArrayOutputStream())
+      value <- writeToOutput(output, frame, image)
+      base64 = JBase64.getEncoder.encodeToString(output.toByteArray)
+    } yield (value, base64)
+
+  def base64[A](image: Picture[A]): IO[(A, String)] =
+    base64(Frame.fitToPicture(), image)
 
   private def writeToOutput[A](output: OutputStream, frame: Frame, picture: Picture[A]): IO[A] = {
     for {

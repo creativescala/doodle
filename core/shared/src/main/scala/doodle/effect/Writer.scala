@@ -25,7 +25,6 @@ import java.io.File
 trait Writer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
   def write[A](file: File, description: Frame, image: Picture[Alg, F, A]): IO[A]
   def write[A](file: File, image: Picture[Alg, F, A]): IO[A]
-  def base64[A](image: Picture[Alg, F, A]): IO[(A, String)]
 }
 object Writer {
   /* Standard format type for PDF writer */
