@@ -183,33 +183,14 @@ object Image {
     rectangle(side, side)
 
   def regularPolygon(sides: Int, radius: Double, angle: Angle): Image = {
-    import PathElement._
-
-    val rotation = Angle.one / sides.toDouble
-    val path =
-      (1 to sides).map { n =>
-        lineTo(radius, rotation * n.toDouble + angle)
-      }.toList
-
-    closedPath(moveTo(radius, angle) +: path)
+    closedPath(PathElement.regularPolygon(sides, radius, angle))
   }
 
   def star(points: Int,
            outerRadius: Double,
            innerRadius: Double,
            angle: Angle): Image = {
-    import PathElement._
-
-    val rotation = Angle.one / (points * 2.0)
-    val path =
-      (1 to (points * 2)).map { n =>
-        if (n % 2 == 0)
-          lineTo(outerRadius, rotation * n.toDouble + angle)
-        else
-          lineTo(innerRadius, rotation * n.toDouble + angle)
-      }.toList
-
-    closedPath(moveTo(outerRadius, angle) +: path)
+    closedPath(PathElement.star(points, outerRadius, innerRadius, angle))
   }
 
   def rightArrow(width: Double, height: Double): Image = {
@@ -230,54 +211,7 @@ object Image {
   }
 
   def roundedRectangle(width: Double, height: Double, radius: Double): Image = {
-    import PathElement._
-
-    // Clamp radius to the smallest of width and height
-    val cornerRadius =
-      if (radius > width / 2 || radius > height / 2)
-        (width / 2) min (height / 2)
-      else
-        radius
-
-    // Magic number for drawing circles with bezier curves
-    // See http://spencermortensen.com/articles/bezier-circle/ for approximation
-    // of a circle with a Bezier curve.
-    val c = (4.0 / 3.0) * (Math.sqrt(2) - 1)
-    val cR = c * cornerRadius
-
-    val elts = List(
-      moveTo(width / 2 - cornerRadius, height / 2),
-      curveTo(width / 2 - cornerRadius + cR,
-              height / 2,
-              width / 2,
-              height / 2 - cornerRadius + cR,
-              width / 2,
-              height / 2 - cornerRadius),
-      lineTo(width / 2, -height / 2 + cornerRadius),
-      curveTo(width / 2,
-              -height / 2 + cornerRadius - cR,
-              width / 2 - cornerRadius + cR,
-              -height / 2,
-              width / 2 - cornerRadius,
-              -height / 2),
-      lineTo(-width / 2 + cornerRadius, -height / 2),
-      curveTo(-width / 2 + cornerRadius - cR,
-              -height / 2,
-              -width / 2,
-              -height / 2 + cornerRadius - cR,
-              -width / 2,
-              -height / 2 + cornerRadius),
-      lineTo(-width / 2, height / 2 - cornerRadius),
-      curveTo(-width / 2,
-              height / 2 - cornerRadius + cR,
-              -width / 2 + cornerRadius - cR,
-              height / 2,
-              -width / 2 + cornerRadius,
-              height / 2),
-      lineTo(width / 2 - cornerRadius, height / 2)
-    )
-
-    closedPath(elts)
+    closedPath(PathElements.roundedRectangle(width, height, radius))
   }
 
   def triangle(width: Double, height: Double): Image =
@@ -302,61 +236,8 @@ object Image {
     *
     * If `points` has less than two elements an empty `Path` is returned.
     */
-  def catmulRom(points: Seq[Point], tension: Double = 0.5): Path = {
-    /*
-    To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
-
-    See, for example, http://www.almightybuserror.com/2009/12/04/drawing-splines-in-opengl.html
-
-    Inverse Bezier matrix
-    val invB = Array[Double](0, 0,       0,       1,
-                             0, 0,       1.0/3.0, 1,
-                             0, 1.0/3.0, 2.0/3.0, 1,
-                             1, 1,       1,       1)
-
-    Catmul matrix with given tension
-    val catmul = Array[Double](-tension,    2 - tension,  tension - 2,       tension,
-                               2 * tension, tension - 3,  3 - (2 * tension), -tension,
-                               -tension,    0,            tension,           0,
-                               0,           1,            0,                 0)
-
-    invB * catmul
-    val matrix = Array[Double](0,            1,           0,           0,
-                               -tension/3.0, 1,           tension/3.0, 0,
-                               0,            tension/3.0, 1,           -tension/3.0,
-                               0,            0,           1,           0)
-     */
-    def toCurve(pt0: Point, pt1: Point, pt2: Point, pt3: Point): PathElement =
-      PathElement.curveTo(
-        ((-tension * pt0.x) + 3 * pt1.x + (tension * pt2.x)) / 3.0,
-        ((-tension * pt0.y) + 3 * pt1.y + (tension * pt2.y)) / 3.0,
-        ((tension * pt1.x) + 3 * pt2.x - (tension * pt3.x)) / 3.0,
-        ((tension * pt1.y) + 3 * pt2.y - (tension * pt3.y)) / 3.0,
-        pt2.x,
-        pt2.y
-      )
-
-    def iter(points: List[Point]): List[PathElement] = {
-      points match {
-        case pt0 :: pt1 :: pt2 :: pt3 :: pts =>
-          toCurve(pt0, pt1, pt2, pt3) +: iter(pt1 +: pt2 +: pt3 +: pts)
-
-        case pt0 :: pt1 :: pt2 :: Seq() =>
-          // Case where we've reached the end of the sequence of points
-          // We repeat the last point
-          val pt3 = pt2
-          List(toCurve(pt0, pt1, pt2, pt3))
-
-        case _ =>
-          // There were two or fewer points in the sequence
-          List.empty[PathElement]
-      }
-    }
-
-    points.headOption.fold(OpenPath(List.empty)) { pt0 =>
-      OpenPath(PathElement.moveTo(pt0) :: iter(pt0 :: points.toList))
-    }
-  }
+  def catmulRom(points: Seq[Point], tension: Double = 0.5): Path =
+    openPath(PathElements.catmulrom(points, tension))
 
 //  def draw(width: Double, height: Double)(f: Canvas => Unit): Image =
 //    Draw(width, height, f)
@@ -403,7 +284,7 @@ object Image {
         case FillColor(image, color) =>
           algebra.fillColor(compile(image)(algebra), color)
         case FillGradient(image, gradient) =>
-          algebra.fillGradient(compile(image)(algebra), gradient)
+          algebra.fillGradient(compile(image)(algebra), color)
         case NoStroke(image) =>
           algebra.noStroke(compile(image)(algebra))
         case NoFill(image) =>

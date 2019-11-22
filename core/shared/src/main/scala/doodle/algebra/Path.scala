@@ -17,9 +17,32 @@
 package doodle
 package algebra
 
-import doodle.core.{ClosedPath, OpenPath}
+import doodle.core.{Angle, ClosedPath, PathElement, Point, OpenPath}
 
 trait Path[F[_]] extends Algebra[F] {
   def path(path: ClosedPath): F[Unit]
   def path(path: OpenPath): F[Unit]
+
+  // Derived methods ------------
+
+  def regularPolygon(sides: Int, radius: Double, angle: Angle): F[Unit] = {
+    path(ClosedPath(PathElement.regularPolygon(sides, radius, angle)))
+  }
+
+  def star(points: Int,
+           outerRadius: Double,
+           innerRadius: Double,
+           angle: Angle): F[Unit] = {
+    path(ClosedPath(PathElement.star(points, outerRadius, innerRadius, angle)))
+  }
+
+  def roundedRectangle(width: Double, height: Double, radius: Double): F[Unit] = {
+    path(ClosedPath(PathElement.roundedRectangle(width, height, radius)))
+  }
+
+  def interpolatingSpline(points: Seq[Point]): F[Unit] =
+    path(OpenPath(PathElement.interpolatingSpline(points)))
+
+  def catmulRom(points: Seq[Point], tension: Double = 0.5): F[Unit] =
+    path(OpenPath(PathElement.catmulRom(points, tension)))
 }

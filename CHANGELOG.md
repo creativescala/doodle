@@ -6,6 +6,8 @@
 
 - Add syntax for `Size` and `Transform` algebras
 
+- Add derived methods for some common types of shapes to the `Path` algebra. Add syntax for these.
+
 
 ## 0.9.12 16-Nov-2019
 
