@@ -277,7 +277,7 @@ object PathElement {
       }
     }
 
-    points.headOption.fold(List.empty) { pt0 =>
+    points.headOption.fold(List.empty[PathElement]) { pt0 =>
       (PathElement.moveTo(pt0) :: iter(pt0 :: points.toList))
     }
   }

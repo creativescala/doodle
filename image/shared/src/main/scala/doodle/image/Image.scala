@@ -211,7 +211,7 @@ object Image {
   }
 
   def roundedRectangle(width: Double, height: Double, radius: Double): Image = {
-    closedPath(PathElements.roundedRectangle(width, height, radius))
+    closedPath(PathElement.roundedRectangle(width, height, radius))
   }
 
   def triangle(width: Double, height: Double): Image =
@@ -237,7 +237,7 @@ object Image {
     * If `points` has less than two elements an empty `Path` is returned.
     */
   def catmulRom(points: Seq[Point], tension: Double = 0.5): Path =
-    openPath(PathElements.catmulrom(points, tension))
+    openPath(PathElement.catmulRom(points, tension))
 
 //  def draw(width: Double, height: Double)(f: Canvas => Unit): Image =
 //    Draw(width, height, f)
@@ -284,7 +284,7 @@ object Image {
         case FillColor(image, color) =>
           algebra.fillColor(compile(image)(algebra), color)
         case FillGradient(image, gradient) =>
-          algebra.fillGradient(compile(image)(algebra), color)
+          algebra.fillGradient(compile(image)(algebra), gradient)
         case NoStroke(image) =>
           algebra.noStroke(compile(image)(algebra))
         case NoFill(image) =>
