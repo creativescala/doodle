@@ -48,8 +48,7 @@ object Java2D {
     gc.getFontMetrics(Java2D.toAwtFont(font))
 
   def textBoundingBox(gc: Graphics2D, text: String, font: Font): BoundingBox = {
-    val metrics = fontMetrics(gc, font)
-    val bounds = metrics.getStringBounds(text, gc)
+    val bounds = textBounds(gc, text, font)
 
     BoundingBox.centered(bounds.getWidth(), bounds.getHeight())
   }
