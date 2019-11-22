@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.13
+## 0.9.13 21-Nov-2019
 
 - Add text rendering via the `Text` algebra. Currently only implemented for the Java2D back-end.
 
