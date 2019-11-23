@@ -94,7 +94,7 @@ object Java2dWriter {
                              graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
     for {
       gc <- IO {
-        val bi = new BufferedImage(0, 0, BufferedImage.TYPE_INT_ARGB)
+        val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
         Java2d.setup(bi.createGraphics())
       }
       drawing <- IO { picture(Algebra(gc)) }
