@@ -6,6 +6,11 @@
 
 - Refactor base64 encoding support into a separate type class, and augment the syntax with an optional frame.
 
+- Fix `Java2dWriter` use of 0 size `BufferedImage`
+
+- Miscellaneous small improvements.
+
+
 ## 0.9.13 21-Nov-2019
 
 - Add text rendering via the `Text` algebra. Currently only implemented for the Java2D back-end.
