@@ -75,7 +75,7 @@ sealed abstract class Image extends Product with Serializable {
     At(this, vec.x, vec.y)
 
   def at(pt: Point): Image =
-    At(this, pt,x, pt.y)
+    At(this, pt.x, pt.y)
 
   def at(x: Double, y: Double): Image =
     // Transform(core.transform.Transform.translate(x, y), this)
