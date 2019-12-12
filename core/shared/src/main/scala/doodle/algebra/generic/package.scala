@@ -77,6 +77,12 @@ package object generic {
           (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
       }
   }
+  implicit class FinalizedOps[F[_],A](finalized: Finalized[F,A]) {
+    def boundingBox: BoundingBox = {
+      val (bb, _) = finalized.runA(List.empty).value
+      bb
+    }
+  }
 
   /** A [[Renderable]] represents some effect producing a value of type A and also
     * creating a concrete implementation specific drawing.

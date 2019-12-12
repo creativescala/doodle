@@ -26,19 +26,54 @@ import org.scalacheck.Prop._
 object LayoutSpec extends Properties("Layout properties") {
   val style = TestAlgebra()
 
-  property("above doubles size of image") =
-    forAllNoShrink(Generators.width){ width =>
+  property("hand generated path bounding boxes are correct") = {
+    import doodle.core._
+    import doodle.syntax._
+    import doodle.syntax.approximatelyEqual._
+    import doodle.algebra.generic._
+    import Instances._
+
+    implicit val algebra = TestAlgebra()
+    val verticalLine =
+      algebra.path(
+        OpenPath(
+          List(
+            PathElement.moveTo(0, -100),
+            PathElement.lineTo(0, 100)
+          )
+        )
+      )
+    val horizontalLine =
+      algebra.path(
+        OpenPath(
+          List(
+            PathElement.moveTo(-100, 0),
+            PathElement.lineTo(100, 0)
+          )
+        )
+      )
+    val hexagon =
+      algebra.noStroke(algebra.regularPolygon(6, 100, 0.degrees))
+    val hexagonHeight = (Math.sqrt(3.0) * 100) / 2.0
+
+    (verticalLine.boundingBox ~= BoundingBox(-1, 101, 1, -101)) &&
+    (horizontalLine.boundingBox ~= BoundingBox(-101, 1, 101, -1)) &&
+    (hexagon.boundingBox ~= BoundingBox(-100, hexagonHeight, 100, -hexagonHeight))
+  }
+
+  property("above doubles size of image") = forAllNoShrink(Generators.width) {
+    width =>
       implicit val algebra = TestAlgebra()
       val square = algebra.square(width)
       val circle = algebra.circle(width)
-      val triangle = algebra.triangle(width,width)
+      val triangle = algebra.triangle(width, width)
 
       val examples =
         for {
           i <- List(square, circle, triangle)
           j <- List(square, circle, triangle)
         } yield {
-          val img = algebra.noStroke(algebra.above(i,j))
+          val img = algebra.noStroke(algebra.above(i, j))
           val (bb, rdr) = img.runA(List.empty).value
           val (_, fa) = rdr.run(Tx.identity).value
           val (reified, _) = fa.run.value
@@ -48,10 +83,10 @@ object LayoutSpec extends Properties("Layout properties") {
         }
 
       all(examples: _*)
-    }
+  }
 
-  property("above reifies correctly") =
-    forAllNoShrink(Generators.width){ width =>
+  property("above reifies correctly") = forAllNoShrink(Generators.width) {
+    width =>
       import doodle.algebra.generic.reified.Reified._
       import doodle.core.Transform
 
@@ -66,13 +101,17 @@ object LayoutSpec extends Properties("Layout properties") {
       reified match {
         case List(StrokeRect(tx1, _, w1, h1), StrokeRect(tx2, _, w2, h2)) =>
           ((w1 ?= width) :| "Top width") &&
-          ((h1 ?= width) :| "Top height") &&
-          ((w2 ?= width) :| "Bottom width") &&
-          ((h2 ?= width) :| "Bottom height") &&
-          // The translation must account for the width of the line (1.0) in
-          // addition to the width of the shape.
-          ((tx1 ?= Tx.identity.andThen(Transform.translate(0, (width + 1.0) / 2.0))) :| "Top transform") &&
-          ((tx2 ?= Tx.identity.andThen(Transform.translate(0, -(width + 1.0) / 2.0))) :| "Bottom transform")
+            ((h1 ?= width) :| "Top height") &&
+            ((w2 ?= width) :| "Bottom width") &&
+            ((h2 ?= width) :| "Bottom height") &&
+            // The translation must account for the width of the line (1.0) in
+            // addition to the width of the shape.
+            ((tx1 ?= Tx.identity.andThen(
+              Transform.translate(0, (width + 1.0) / 2.0)
+            )) :| "Top transform") &&
+            ((tx2 ?= Tx.identity.andThen(
+              Transform.translate(0, -(width + 1.0) / 2.0)
+            )) :| "Bottom transform")
       }
-    }
+  }
 }
