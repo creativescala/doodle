@@ -17,8 +17,9 @@
 package doodle
 package core
 
-/** Elements are stored in reversed order to make appending, the most common operation, more efficient. */
-final case class OpenPath(reversed: List[PathElement]) {
+/** Elements are stored in reversed order to make appending, the most common
+  * operation, more efficient. */
+final case class OpenPath private(reversed: List[PathElement]) {
   def add(element: PathElement): OpenPath =
     OpenPath(element :: reversed)
 
@@ -78,4 +79,7 @@ final case class OpenPath(reversed: List[PathElement]) {
 }
 object OpenPath {
   val empty: OpenPath = OpenPath(List.empty)
+
+  def apply(elts: List[PathElement]): OpenPath =
+    new OpenPath(elts.reverse)
 }

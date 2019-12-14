@@ -257,9 +257,9 @@ object Image {
     doodle.algebra.Picture[Alg, F, Unit] { algebra =>
       image match {
         case OpenPath(elements) =>
-          algebra.path(doodle.core.OpenPath(elements.reverse))
+          algebra.path(doodle.core.OpenPath(elements))
         case ClosedPath(elements) =>
-          algebra.path(doodle.core.ClosedPath(elements.reverse))
+          algebra.path(doodle.core.ClosedPath(elements))
 
         case Circle(d) =>
           algebra.circle(d)
