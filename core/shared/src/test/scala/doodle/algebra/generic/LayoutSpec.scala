@@ -26,6 +26,10 @@ import org.scalacheck.Prop._
 object LayoutSpec extends Properties("Layout properties") {
   val style = TestAlgebra()
 
+  // Height of a hexagon with radius r with the widest part of the hexagon aligned with the x axis.
+  def hexagonHeight(r: Double): Double =
+    (Math.sqrt(3.0) * r) / 2.0
+
   property("hand generated path bounding boxes are correct") = {
     import doodle.core._
     import doodle.syntax._
@@ -54,12 +58,57 @@ object LayoutSpec extends Properties("Layout properties") {
       )
     val hexagon =
       algebra.noStroke(algebra.regularPolygon(6, 100, 0.degrees))
-    val hexagonHeight = (Math.sqrt(3.0) * 100) / 2.0
+    val hexagonH = hexagonHeight(100)
 
-    (verticalLine.boundingBox ~= BoundingBox(-1, 101, 1, -101)) &&
-    (horizontalLine.boundingBox ~= BoundingBox(-101, 1, 101, -1)) &&
-    (hexagon.boundingBox ~= BoundingBox(-100, hexagonHeight, 100, -hexagonHeight))
+    (verticalLine.boundingBox ?= BoundingBox(-1, 101, 1, -101)) &&
+    (horizontalLine.boundingBox ?= BoundingBox(-101, 1, 101, -1)) &&
+    (hexagon.boundingBox ~= BoundingBox(-100, hexagonH, 100, -hexagonH))
   }
+
+  property("hand generated at bounding boxes are correct") = {
+    import doodle.syntax._
+    import doodle.syntax.approximatelyEqual._
+    import doodle.algebra.generic._
+    import Instances._
+    import TestAlgebra._
+
+    implicit val algebra = TestAlgebra()
+    val hexagon =
+      regularPolygon[Algebra, Drawing](6, 100, 0.degrees).noStroke
+
+    val hexhex =
+      List(
+        hexagon.at(100, 0.degrees),
+        hexagon.at(100, 60.degrees),
+        hexagon.at(100, 120.degrees),
+        hexagon.at(100, 180.degrees),
+        hexagon.at(100, 240.degrees),
+        hexagon.at(100, 300.degrees)
+      ).allOn
+
+    val height = hexagonHeight(200)
+
+    val actual = hexhex(algebra).boundingBox
+    val expected = BoundingBox(-200, height, 200, -height)
+
+    (actual ~= expected) :| s"Actual bounding box $actual while expected $expected"
+  }
+
+  property("at never decreases the size of the bounding box") =
+    forAllNoShrink(Generators.width, Generators.height) { (x, y) =>
+      import doodle.syntax._
+
+      implicit val algebra = TestAlgebra()
+      val hexagon = algebra.regularPolygon(6, 100, 0.degrees)
+      val initialBb = hexagon.boundingBox
+      val atBb = algebra.at(hexagon, x, y).boundingBox
+
+      val atSize = (atBb.width * atBb.height)
+      val initialSize = (initialBb.width * initialBb.height)
+
+      // Allow for a little bit of rounding / FP error
+      (atSize - initialSize >= -0.01) :| s"Bounding box $atBb with size $atSize and displacement ($x, $y), was smaller than $initialBb with size $initialSize"
+    }
 
   property("above doubles size of image") = forAllNoShrink(Generators.width) {
     width =>
