@@ -5,7 +5,7 @@ package examples
 import scala.scalajs.js.annotation._
 import doodle.core.Color
 import doodle.svg._
-import doodle.syntax._
+// import doodle.syntax._
 
 // Wrapper to run an example in a web page
 @JSExportTopLevel("Main")
@@ -23,10 +23,10 @@ object Example {
     //
     // GradientCircle.image.drawWithFrame(frame)
     //
-    // import doodle.interact.syntax._
-    // import cats.implicits._
+    import doodle.interact.syntax._
+    import cats.implicits._
 
-    // Orbit.frames.animateFrames(frame)
+    Orbit.frames.animateFrames(frame)
     //
     // import cats.instances.all._
     // import doodle.syntax._
@@ -45,6 +45,6 @@ object Example {
     //     canvas <- MouseOver.frame.canvas()
     //   } yield MouseOver.frames.animate(canvas)
     // ).unsafeRunAsync(println _)
-    GradientSquares.image.drawWithFrame(frame)
+    // GradientSquares.image.drawWithFrame(frame)
   }
 }

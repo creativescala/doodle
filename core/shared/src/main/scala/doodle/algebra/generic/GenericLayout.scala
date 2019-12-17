@@ -23,12 +23,13 @@ import cats.data.IndexedStateT
 import cats.implicits._
 import doodle.core.Transform
 
-class GenericLayout[F[_]]()(implicit val applyF: Apply[F])
-    extends Layout[Finalized[F, ?]] {
+trait GenericLayout[F[_]] extends Layout[Finalized[F, ?]] {
+  self: GivenApply[F] =>
   import Renderable._
 
   def on[A](top: Finalized[F, A], bottom: Finalized[F, A])(
-      implicit s: Semigroup[A]): Finalized[F, A] =
+      implicit s: Semigroup[A]
+  ): Finalized[F, A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
@@ -41,7 +42,8 @@ class GenericLayout[F[_]]()(implicit val applyF: Apply[F])
     }
 
   def beside[A](left: Finalized[F, A], right: Finalized[F, A])(
-      implicit s: Semigroup[A]): Finalized[F, A] =
+      implicit s: Semigroup[A]
+  ): Finalized[F, A] =
     IndexedStateT { ctxTxs =>
       val l = left.runA(ctxTxs)
       val r = right.runA(ctxTxs)
@@ -60,7 +62,8 @@ class GenericLayout[F[_]]()(implicit val applyF: Apply[F])
     }
 
   def above[A](top: Finalized[F, A], bottom: Finalized[F, A])(
-      implicit s: Semigroup[A]): Finalized[F, A] =
+      implicit s: Semigroup[A]
+  ): Finalized[F, A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)

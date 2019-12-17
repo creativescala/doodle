@@ -21,6 +21,7 @@ import doodle.algebra._
 
 trait Basic[F[_]]
     extends Algebra[F]
+    with Debug[F]
     with Layout[F]
     with Path[F]
     with Shape[F]

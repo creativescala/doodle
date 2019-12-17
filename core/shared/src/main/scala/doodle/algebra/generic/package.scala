@@ -99,7 +99,7 @@ package object generic {
       // Can't use the Applicative instance here as that will sequentially
       // compose the left and right, which will result in the transforms being
       // sequentially composed, which is wrong. Couldn't get `parMapN` to
-      // compile to wrote it by hand.
+      // compile so wrote it by hand.
       IndexedStateT.inspectF { tx =>
         val l = left.runA(txLeft.andThen(tx))
         val r = right.runA(txRight.andThen(tx))

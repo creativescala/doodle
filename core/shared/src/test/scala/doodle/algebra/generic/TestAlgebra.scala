@@ -18,43 +18,75 @@ package doodle
 package algebra
 package generic
 
-import cats.Semigroup
+import cats._
+import cats.implicits._
 import doodle.algebra.Layout
 import doodle.algebra.generic.reified._
 
-final case class TestAlgebra()
-        extends Layout[Finalized[Reification,?]]
-        with Size[Finalized[Reification, ?]]
-        with ReifiedPath
-        with ReifiedShape
-        with GenericStyle[Reification]
-{
-    // Layout ----------------------------------------------------------
+final case class TestAlgebra(
+    applyF: Apply[Reification] = Apply.apply[Reification],
+    functorF: Functor[Reification] = Apply.apply[Reification]
+) extends Algebra[Finalized[Reification, ?]]
+    with ReifiedPath
+    with ReifiedShape
+    with GenericDebug[Reification]
+    with GenericLayout[Reification]
+    with GenericSize[Reification]
+    with GenericStyle[Reification]
+    with GenericTransform[Reification]
+    with GivenApply[Reification]
+    with GivenFunctor[Reification] {
+  // Layout ----------------------------------------------------------
 
-    val layout = ReifiedLayout.instance
+  // val layout = ReifiedLayout.instance
 
-    def on[A](top: Finalized[Reification,A], bottom: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
-        layout.on(top, bottom)(s)
+  // def on[A](top: Finalized[Reification, A], bottom: Finalized[Reification, A])(
+  //     implicit s: Semigroup[A]
+  // ): Finalized[Reification, A] =
+  //   layout.on(top, bottom)(s)
 
-    def beside[A](left: Finalized[Reification,A], right: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
-        layout.beside(left, right)(s)
+  // def beside[A](
+  //     left: Finalized[Reification, A],
+  //     right: Finalized[Reification, A]
+  // )(implicit s: Semigroup[A]): Finalized[Reification, A] =
+  //   layout.beside(left, right)(s)
 
-    def above[A](top: Finalized[Reification,A], bottom: Finalized[Reification,A])(implicit s: Semigroup[A]): Finalized[Reification,A] =
-        layout.above(top, bottom)(s)
+  // def above[A](
+  //     top: Finalized[Reification, A],
+  //     bottom: Finalized[Reification, A]
+  // )(implicit s: Semigroup[A]): Finalized[Reification, A] =
+  //   layout.above(top, bottom)(s)
 
-    def at[A](img: Finalized[Reification,A], x: Double, y: Double): Finalized[Reification,A] =
-        layout.at(img, x, y)
+  // def at[A](
+  //     img: Finalized[Reification, A],
+  //     x: Double,
+  //     y: Double
+  // ): Finalized[Reification, A] =
+  //   layout.at(img, x, y)
 
-    // Size ------------------------------------------------------------
+  // Size ------------------------------------------------------------
 
-    val size = ReifiedSize.instance
+  // val size = ReifiedSize.instance
 
-    def width[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
-        size.width(image)
+  // def width[A](
+  //     image: Finalized[Reification, A]
+  // ): Finalized[Reification, Double] =
+  //   size.width(image)
 
-    def height[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
-        size.height(image)
+  // def height[A](
+  //     image: Finalized[Reification, A]
+  // ): Finalized[Reification, Double] =
+  //   size.height(image)
 
-    def size[A](image: Finalized[Reification, A]): Finalized[Reification, (Double, Double)] =
-        size.size(image)
+  // def size[A](
+  //     image: Finalized[Reification, A]
+  // ): Finalized[Reification, (Double, Double)] =
+  //   size.size(image)
+}
+object TestAlgebra {
+  import doodle.algebra._
+
+  type Algebra[F[_]] =
+    Layout[F] with Size[F] with Path[F] with Shape[F] with Debug[F] with Style[F]
+  type Drawing[A] = Finalized[Reification, A]
 }

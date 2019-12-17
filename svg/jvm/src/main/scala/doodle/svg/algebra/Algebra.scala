@@ -2,8 +2,8 @@ package doodle
 package svg
 package algebra
 
+import cats._
 import doodle.language.Basic
-
 
 trait JvmAlgebraModule
     extends AlgebraModule
@@ -12,5 +12,10 @@ trait JvmAlgebraModule
     with SvgModule
     with JvmBase {
   type Algebra[F[_]] = doodle.algebra.Algebra[F] with Basic[F]
-  val algebraInstance = new BaseAlgebra {}
+
+  final class JvmAlgebra(
+      val applyF: Apply[SvgResult],
+      val functorF: Functor[SvgResult]
+  ) extends BaseAlgebra
+  val algebraInstance = new JvmAlgebra(Svg.svgResultApply, Svg.svgResultApply)
 }
