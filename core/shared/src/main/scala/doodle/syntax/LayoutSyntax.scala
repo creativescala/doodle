@@ -19,7 +19,7 @@ package syntax
 
 import cats.Semigroup
 import doodle.algebra.{Picture, Layout}
-import doodle.core.{Point, Vec}
+import doodle.core.{Angle, Point, Vec}
 
 trait LayoutSyntax {
   implicit class LayoutPictureOps[Alg[x[_]] <: Layout[x], F[_], A](
@@ -57,6 +57,11 @@ trait LayoutSyntax {
     def at(x: Double, y: Double): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.at(picture(algebra), x, y)
+      }
+
+    def at(r: Double, a: Angle): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.at(picture(algebra), r, a)
       }
 
     def at(offset: Vec): Picture[Alg, F, A] =
