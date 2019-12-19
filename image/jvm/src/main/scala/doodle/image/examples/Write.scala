@@ -30,5 +30,5 @@ object Write extends App {
   image.write[Png]("rainbow-circles.png", frame)
   image.write[Pdf]("rainbow-circles.pdf", frame)
   // Print base64 encoded png
-  println(image.write[Png].base64)
+  println(image.base64[Png])
 }

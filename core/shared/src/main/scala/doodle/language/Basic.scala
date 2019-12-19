@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import doodle.algebra._
 
 trait Basic[F[_]]
     extends Algebra[F]
+    with Debug[F]
     with Layout[F]
     with Path[F]
     with Shape[F]

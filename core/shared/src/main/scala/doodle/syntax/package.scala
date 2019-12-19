@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ package doodle
 
 package object syntax
     extends AngleSyntax
+    with Base64Syntax
     with BitmapSyntax
     with BlendSyntax
-    with RendererSyntax
+    with DebugSyntax
     with LayoutSyntax
     with NormalizedSyntax
     with PathSyntax
+    with RendererSyntax
     with ShapeSyntax
     with SizeSyntax
     with StyleSyntax
@@ -33,12 +35,14 @@ package object syntax
     with UnsignedByteSyntax
     with WriterSyntax {
   object angle extends AngleSyntax
+  object base64 extends Base64Syntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
-  object renderer extends RendererSyntax
+  object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
+  object renderer extends RendererSyntax
   object shape extends ShapeSyntax
   object size extends SizeSyntax
   object style extends StyleSyntax

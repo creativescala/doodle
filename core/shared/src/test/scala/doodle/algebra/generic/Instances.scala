@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@
 package doodle
 package algebra
 package generic
-package reified
 
-import cats.Apply
-import cats.implicits._
-import doodle.algebra.Layout
-import doodle.algebra.generic._
-
-object ReifiedLayout {
-  val instance: Layout[Finalized[Reification, ?]] =
-    new GenericLayout()(Apply.apply[Reification])
+trait Instances {
+  implicit val boundingBoxDistance: Distance[BoundingBox] =
+    Distance(
+      (bb1, bb2) =>
+        Math.abs(bb1.left - bb2.left) +
+          Math.abs(bb1.right - bb2.right) +
+          Math.abs(bb1.top - bb2.top) +
+          Math.abs(bb1.bottom - bb2.bottom)
+    )
 }
+object Instances extends Instances

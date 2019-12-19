@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Noel Welsh
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,16 @@
 
 package doodle
 package algebra
-package generic
-package reified
 
-import cats.Functor
-import cats.implicits._
-import doodle.algebra.Size
-import doodle.algebra.generic._
+import doodle.core.Color
 
-object ReifiedSize {
-  val instance: Size[Finalized[Reification, ?]] =
-    new GenericSize()(Functor.apply[Reification])
+trait Debug[F[_]] extends Algebra[F] {
+  /**
+   * Draws the bounding box and origin of the given picture on top of the
+   * picture. The given color is used for the bounding box and origin.
+   *
+   * The bounding box and origin are not included in layout calculations and
+   * hence will not affect the picture's layout.
+   */
+  def debug[A](picture: F[A], color: Color): F[A]
 }

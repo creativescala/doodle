@@ -2,12 +2,19 @@ package doodle
 package svg
 package algebra
 
-trait TestAlgebra
+import cats._
+
+trait TestAlgebraModule
     extends AlgebraModule
     with PathModule
     with ShapeModule
     with SvgModule
     with TestBase {
-  val algebraInstance = new BaseAlgebra {}
+
+  final class TestAlgebra(
+      val applyF: Apply[SvgResult],
+      val functorF: Functor[SvgResult]
+  ) extends BaseAlgebra
+  val algebraInstance = new TestAlgebra(Svg.svgResultApply, Svg.svgResultApply)
 }
-object TestAlgebra extends TestAlgebra {}
+object TestAlgebra extends TestAlgebraModule {}

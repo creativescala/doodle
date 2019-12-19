@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import java.io.File
 trait Writer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
   def write[A](file: File, description: Frame, image: Picture[Alg, F, A]): IO[A]
   def write[A](file: File, image: Picture[Alg, F, A]): IO[A]
-  def base64[A](image: Picture[Alg, F, A]): IO[(A, String)]
 }
 object Writer {
   /* Standard format type for PDF writer */

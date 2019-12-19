@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,11 @@
  */
 
 package doodle
-package java2d
 package algebra
-package reified
+package generic
 
-import cats.Apply
-import cats.implicits._
-import doodle.algebra.Layout
-import doodle.algebra.generic._
+import cats.Functor
 
-object ReifiedLayout {
-  val instance: Layout[Finalized[Reification, ?]] =
-    new GenericLayout()(Apply.apply[Reification])
+trait GivenFunctor[F[_]]{
+  implicit val functorF: Functor[F]
 }

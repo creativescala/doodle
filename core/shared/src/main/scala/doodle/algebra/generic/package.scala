@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,12 @@ package object generic {
           (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
       }
   }
+  implicit class FinalizedOps[F[_],A](finalized: Finalized[F,A]) {
+    def boundingBox: BoundingBox = {
+      val (bb, _) = finalized.runA(List.empty).value
+      bb
+    }
+  }
 
   /** A [[Renderable]] represents some effect producing a value of type A and also
     * creating a concrete implementation specific drawing.
@@ -93,7 +99,7 @@ package object generic {
       // Can't use the Applicative instance here as that will sequentially
       // compose the left and right, which will result in the transforms being
       // sequentially composed, which is wrong. Couldn't get `parMapN` to
-      // compile to wrote it by hand.
+      // compile so wrote it by hand.
       IndexedStateT.inspectF { tx =>
         val l = left.runA(txLeft.andThen(tx))
         val r = right.runA(txRight.andThen(tx))

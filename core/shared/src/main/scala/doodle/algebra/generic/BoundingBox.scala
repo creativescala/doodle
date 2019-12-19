@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,26 +47,18 @@ final case class BoundingBox(left: Double,
                 this.top max that.top,
                 (this.width + that.width) / 2.0,
                 this.bottom min that.bottom)
-  // BoundingBox(-this.width,
-  //             this.top max that.top,
-  //             that.width,
-  //             this.bottom min that.bottom)
 
   def above(that: BoundingBox): BoundingBox =
     BoundingBox(this.left min that.left,
                 (this.height + that.height) / 2.0,
                 this.right max that.right,
                 -(this.height + that.height) / 2.0)
-  // BoundingBox(this.left min that.left,
-  //             this.height,
-  //             this.right max that.right,
-  //             -that.height)
 
   def at(x: Double, y: Double): BoundingBox = {
     val newLeft = (left + x) min 0
     val newTop = (top + y) max 0
     val newRight = (right + x) max 0
-    val newBottom = (bottom + x) min 0
+    val newBottom = (bottom + y) min 0
 
     BoundingBox(newLeft, newTop, newRight, newBottom)
   }

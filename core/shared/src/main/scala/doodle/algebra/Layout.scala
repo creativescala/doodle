@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package doodle
 package algebra
 
 import cats.Semigroup
-import doodle.core.{Point, Vec}
+import doodle.core.{Angle, Point, Vec}
 
 trait Layout[F[_]] extends Algebra[F] {
   def on[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
@@ -33,6 +33,10 @@ trait Layout[F[_]] extends Algebra[F] {
   def below[A](bottom: F[A], top: F[A])(implicit s: Semigroup[A]): F[A] =
     above(top, bottom)
 
+  def at[A](img: F[A], r: Double, a: Angle): F[A] = {
+    val offset = Point(r, a)
+    at(img, offset.x, offset.y)
+  }
   def at[A](img: F[A], offset: Vec): F[A] =
     at(img, offset.x, offset.y)
   def at[A](img: F[A], offset: Point): F[A] =

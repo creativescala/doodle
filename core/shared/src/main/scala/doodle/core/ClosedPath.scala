@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
 package doodle
 package core
 
-/** Elements are stored in reversed order to make appending, the most common operation, more efficient. */
-final case class ClosedPath(reversed: List[PathElement]) {
+/** Elements are stored in reversed order to make appending, the most common
+  * operation, more efficient. */
+final case class ClosedPath private(reversed: List[PathElement]) {
   def add(element: PathElement): ClosedPath =
     ClosedPath(element :: reversed)
 
@@ -78,4 +79,7 @@ final case class ClosedPath(reversed: List[PathElement]) {
 }
 object ClosedPath {
   val empty: ClosedPath = ClosedPath(List.empty)
+
+  def apply(elts: List[PathElement]): ClosedPath =
+    new ClosedPath(elts.reverse)
 }

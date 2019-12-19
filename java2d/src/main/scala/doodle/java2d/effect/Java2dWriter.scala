@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import doodle.effect._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
 import java.io.{ByteArrayOutputStream, File, FileOutputStream, OutputStream}
-import java.util.Base64
+import java.util.{Base64 => JBase64}
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
@@ -34,7 +34,8 @@ import doodle.algebra.generic.BoundingBox
 import javax.imageio.ImageIO
 
 trait Java2dWriter[Format]
-    extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format] {
+    extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format]
+    with Base64[doodle.java2d.Algebra, Drawing, Frame, Format]{
   def format: String
 
   def write[A](file: File, picture: Picture[A]): IO[A] = {
@@ -49,11 +50,15 @@ trait Java2dWriter[Format]
     } yield a
   }
 
-  def base64[A](image: Picture[A]): IO[(A, String)] = for {
-    output <- IO.pure(new ByteArrayOutputStream())
-    value <- writeToOutput(output, Frame.fitToPicture(), image)
-    base64 = Base64.getEncoder.encodeToString(output.toByteArray)
-  } yield (value, base64)
+  def base64[A](frame: Frame, image: Picture[A]): IO[(A, String)] =
+    for {
+      output <- IO.pure(new ByteArrayOutputStream())
+      value <- writeToOutput(output, frame, image)
+      base64 = JBase64.getEncoder.encodeToString(output.toByteArray)
+    } yield (value, base64)
+
+  def base64[A](image: Picture[A]): IO[(A, String)] =
+    base64(Frame.fitToPicture(), image)
 
   private def writeToOutput[A](output: OutputStream, frame: Frame, picture: Picture[A]): IO[A] = {
     for {
@@ -89,7 +94,7 @@ object Java2dWriter {
                              graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
     for {
       gc <- IO {
-        val bi = new BufferedImage(0, 0, BufferedImage.TYPE_INT_ARGB)
+        val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
         Java2d.setup(bi.createGraphics())
       }
       drawing <- IO { picture(Algebra(gc)) }

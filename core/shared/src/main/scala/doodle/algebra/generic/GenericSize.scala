@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Noel Welsh
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,34 +18,37 @@ package doodle
 package algebra
 package generic
 
-import cats.Functor
 import cats.syntax.functor._
 
 /**
   * Get information about the size of the bounding box enclosing an image.
   */
-class GenericSize[F[_]]()(implicit val functorF: Functor[F]) extends Size[Finalized[F, ?]] {
+trait GenericSize[F[_]] extends Size[Finalized[F, ?]] { self: GivenFunctor[F] =>
+
   /**
-   * Get the height of the bounding box enclosing the image
-   */
+    * Get the height of the bounding box enclosing the image
+    */
   def height[A](image: Finalized[F, A]): Finalized[F, Double] =
-    image.map{ case (bb, rdr) =>
-      (bb, rdr.map(fa => fa.map(_ => bb.height)))
+    image.map {
+      case (bb, rdr) =>
+        (bb, rdr.map(fa => fa.map(_ => bb.height)))
     }
 
   /**
-   * Get the width of the bounding box enclosing the image
-   */
+    * Get the width of the bounding box enclosing the image
+    */
   def width[A](image: Finalized[F, A]): Finalized[F, Double] =
-    image.map{ case (bb, rdr) =>
-      (bb, rdr.map(fa => fa.map(_ => bb.width)))
+    image.map {
+      case (bb, rdr) =>
+        (bb, rdr.map(fa => fa.map(_ => bb.width)))
     }
 
   /**
-   * Get the width and height of the bounding box enclosing the image
-   */
-  def size[A](image: Finalized[F, A]): Finalized[F, (Double,Double)] =
-    image.map{ case (bb, rdr) =>
-      (bb, rdr.map(fa => fa.map(_ => (bb.width, bb.height))))
+    * Get the width and height of the bounding box enclosing the image
+    */
+  def size[A](image: Finalized[F, A]): Finalized[F, (Double, Double)] =
+    image.map {
+      case (bb, rdr) =>
+        (bb, rdr.map(fa => fa.map(_ => (bb.width, bb.height))))
     }
 }

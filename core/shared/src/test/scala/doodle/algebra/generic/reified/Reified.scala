@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,19 +40,6 @@ object Reified {
     points.map { pt =>
       tx(pt)
     }
-
-  // def renderable[F[_]: InvariantMonoidal](dc: DrawingContext)(fill: (Tx, Fill) => Reified)(
-  //     stroke: (Tx, Stroke) => Reified): Renderable[F,Unit] =
-  //   Renderable { tx =>
-  //     val f = dc.fill.map { f =>
-  //       List(fill(tx, f))
-  //     }
-  //     val s = dc.stroke.map { s =>
-  //       List(stroke(tx, s))
-  //     }
-
-  //     (f |+| s).getOrElse(List.empty[Reified])
-  //   }
 
   final case class FillRect(transform: Tx,
                             fill: Fill,

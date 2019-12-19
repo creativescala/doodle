@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Noel Welsh
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-scalaVersion in ThisBuild := "2.12.8"
+scalaVersion in ThisBuild := "2.12.9"
 
 // enablePlugins(AutomateHeaderPlugin)
 
@@ -127,8 +127,8 @@ lazy val interact = crossProject
             libraryDependencies += Dependencies.monix.value,
             moduleName := "doodle-interact")
 
-lazy val interactJvm = interact.jvm.dependsOn(coreJvm)
-lazy val interactJs  = interact.js.dependsOn(coreJs)
+lazy val interactJvm = interact.jvm.dependsOn(coreJvm % "compile->compile;test->test")
+lazy val interactJs  = interact.js.dependsOn(coreJs % "compile->compile;test->test")
 
 
 lazy val java2d = project

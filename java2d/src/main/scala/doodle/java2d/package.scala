@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,10 @@ import javax.swing.JComponent
 
 package object java2d extends effect.Java2dExplorerAtoms {
   type Algebra[F[_]] =
-    doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F] with Text[F]
+    doodle.algebra.Algebra[F]
+      with Basic[F]
+      with Bitmap[F]
+      with Text[F]
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 

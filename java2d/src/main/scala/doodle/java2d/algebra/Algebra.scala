@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,57 +18,26 @@ package doodle
 package java2d
 package algebra
 
-import cats.Semigroup
+import cats._
+import cats.implicits._
 import doodle.language.Basic
-import doodle.algebra._
 import doodle.algebra.generic._
 import doodle.java2d.algebra.reified._
 import java.awt.Graphics2D
 
-final case class Algebra(gc: Graphics2D)
-    extends Layout[Finalized[Reification, ?]]
-    with Size[Finalized[Reification, ?]]
+final case class Algebra(
+    gc: Graphics2D,
+    applyF: Apply[Reification] = Apply.apply[Reification],
+    functorF: Functor[Reification] = Apply.apply[Reification]
+) extends Basic[Drawing]
+    with ReifiedBitmap
     with ReifiedPath
     with ReifiedShape
     with ReifiedText
+    with GenericDebug[Reification]
+    with GenericLayout[Reification]
+    with GenericSize[Reification]
     with GenericStyle[Reification]
     with GenericTransform[Reification]
-    with ReifiedBitmap
-    with Basic[Drawing] {
-
-  // Layout ----------------------------------------------------------
-
-  val layout = ReifiedLayout.instance
-
-  def on[A](top: Finalized[Reification, A], bottom: Finalized[Reification, A])(
-      implicit s: Semigroup[A]): Finalized[Reification, A] =
-    layout.on(top, bottom)(s)
-
-  def beside[A](left: Finalized[Reification, A],
-                right: Finalized[Reification, A])(
-      implicit s: Semigroup[A]): Finalized[Reification, A] =
-    layout.beside(left, right)(s)
-
-  def above[A](top: Finalized[Reification, A],
-               bottom: Finalized[Reification, A])(
-      implicit s: Semigroup[A]): Finalized[Reification, A] =
-    layout.above(top, bottom)(s)
-
-  def at[A](img: Finalized[Reification, A],
-            x: Double,
-            y: Double): Finalized[Reification, A] =
-    layout.at(img, x, y)
-
-  // Size ------------------------------------------------------------
-
-  val size = ReifiedSize.instance
-
-  def width[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
-    size.width(image)
-
-  def height[A](image: Finalized[Reification, A]): Finalized[Reification, Double] =
-    size.height(image)
-
-  def size[A](image: Finalized[Reification, A]): Finalized[Reification, (Double, Double)] =
-    size.size(image)
-}
+    with GivenApply[Reification]
+    with GivenFunctor[Reification]

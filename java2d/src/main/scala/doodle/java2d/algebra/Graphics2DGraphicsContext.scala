@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Creative Scala
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   }
 
   def bitmap(gc: Graphics2D)(transform: Tx, image: BufferedImage): Unit =
-    Java2D.withTransform(gc, transform) {
+    Java2D.withTransform(gc, Tx.verticalReflection.andThen(transform)) {
       gc.drawImage(
         image,
         -(image.getWidth() / 2),

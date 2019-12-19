@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 noelwelsh
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,19 +26,103 @@ import org.scalacheck.Prop._
 object LayoutSpec extends Properties("Layout properties") {
   val style = TestAlgebra()
 
-  property("above doubles size of image") =
-    forAllNoShrink(Generators.width){ width =>
+  // Height of a hexagon with radius r with the widest part of the hexagon aligned with the x axis.
+  def hexagonHeight(r: Double): Double =
+    (Math.sqrt(3.0) * r) / 2.0
+
+  property("hand generated path bounding boxes are correct") = {
+    import doodle.core._
+    import doodle.syntax._
+    import doodle.syntax.approximatelyEqual._
+    import doodle.algebra.generic._
+    import Instances._
+
+    implicit val algebra = TestAlgebra()
+    val verticalLine =
+      algebra.path(
+        OpenPath(
+          List(
+            PathElement.moveTo(0, -100),
+            PathElement.lineTo(0, 100)
+          )
+        )
+      )
+    val horizontalLine =
+      algebra.path(
+        OpenPath(
+          List(
+            PathElement.moveTo(-100, 0),
+            PathElement.lineTo(100, 0)
+          )
+        )
+      )
+    val hexagon =
+      algebra.noStroke(algebra.regularPolygon(6, 100, 0.degrees))
+    val hexagonH = hexagonHeight(100)
+
+    (verticalLine.boundingBox ?= BoundingBox(-1, 101, 1, -101)) &&
+    (horizontalLine.boundingBox ?= BoundingBox(-101, 1, 101, -1)) &&
+    (hexagon.boundingBox ~= BoundingBox(-100, hexagonH, 100, -hexagonH))
+  }
+
+  property("hand generated at bounding boxes are correct") = {
+    import doodle.syntax._
+    import doodle.syntax.approximatelyEqual._
+    import doodle.algebra.generic._
+    import Instances._
+    import TestAlgebra._
+
+    implicit val algebra = TestAlgebra()
+    val hexagon =
+      regularPolygon[Algebra, Drawing](6, 100, 0.degrees).noStroke
+
+    val hexhex =
+      List(
+        hexagon.at(100, 0.degrees),
+        hexagon.at(100, 60.degrees),
+        hexagon.at(100, 120.degrees),
+        hexagon.at(100, 180.degrees),
+        hexagon.at(100, 240.degrees),
+        hexagon.at(100, 300.degrees)
+      ).allOn
+
+    val height = hexagonHeight(200)
+
+    val actual = hexhex(algebra).boundingBox
+    val expected = BoundingBox(-200, height, 200, -height)
+
+    (actual ~= expected) :| s"Actual bounding box $actual while expected $expected"
+  }
+
+  property("at never decreases the size of the bounding box") =
+    forAllNoShrink(Generators.width, Generators.height) { (x, y) =>
+      import doodle.syntax._
+
+      implicit val algebra = TestAlgebra()
+      val hexagon = algebra.regularPolygon(6, 100, 0.degrees)
+      val initialBb = hexagon.boundingBox
+      val atBb = algebra.at(hexagon, x, y).boundingBox
+
+      val atSize = (atBb.width * atBb.height)
+      val initialSize = (initialBb.width * initialBb.height)
+
+      // Allow for a little bit of rounding / FP error
+      (atSize - initialSize >= -0.01) :| s"Bounding box $atBb with size $atSize and displacement ($x, $y), was smaller than $initialBb with size $initialSize"
+    }
+
+  property("above doubles size of image") = forAllNoShrink(Generators.width) {
+    width =>
       implicit val algebra = TestAlgebra()
       val square = algebra.square(width)
       val circle = algebra.circle(width)
-      val triangle = algebra.triangle(width,width)
+      val triangle = algebra.triangle(width, width)
 
       val examples =
         for {
           i <- List(square, circle, triangle)
           j <- List(square, circle, triangle)
         } yield {
-          val img = algebra.noStroke(algebra.above(i,j))
+          val img = algebra.noStroke(algebra.above(i, j))
           val (bb, rdr) = img.runA(List.empty).value
           val (_, fa) = rdr.run(Tx.identity).value
           val (reified, _) = fa.run.value
@@ -48,10 +132,10 @@ object LayoutSpec extends Properties("Layout properties") {
         }
 
       all(examples: _*)
-    }
+  }
 
-  property("above reifies correctly") =
-    forAllNoShrink(Generators.width){ width =>
+  property("above reifies correctly") = forAllNoShrink(Generators.width) {
+    width =>
       import doodle.algebra.generic.reified.Reified._
       import doodle.core.Transform
 
@@ -66,13 +150,17 @@ object LayoutSpec extends Properties("Layout properties") {
       reified match {
         case List(StrokeRect(tx1, _, w1, h1), StrokeRect(tx2, _, w2, h2)) =>
           ((w1 ?= width) :| "Top width") &&
-          ((h1 ?= width) :| "Top height") &&
-          ((w2 ?= width) :| "Bottom width") &&
-          ((h2 ?= width) :| "Bottom height") &&
-          // The translation must account for the width of the line (1.0) in
-          // addition to the width of the shape.
-          ((tx1 ?= Tx.identity.andThen(Transform.translate(0, (width + 1.0) / 2.0))) :| "Top transform") &&
-          ((tx2 ?= Tx.identity.andThen(Transform.translate(0, -(width + 1.0) / 2.0))) :| "Bottom transform")
+            ((h1 ?= width) :| "Top height") &&
+            ((w2 ?= width) :| "Bottom width") &&
+            ((h2 ?= width) :| "Bottom height") &&
+            // The translation must account for the width of the line (1.0) in
+            // addition to the width of the shape.
+            ((tx1 ?= Tx.identity.andThen(
+              Transform.translate(0, (width + 1.0) / 2.0)
+            )) :| "Top transform") &&
+            ((tx2 ?= Tx.identity.andThen(
+              Transform.translate(0, -(width + 1.0) / 2.0)
+            )) :| "Bottom transform")
       }
-    }
+  }
 }

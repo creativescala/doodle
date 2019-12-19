@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Noel Welsh
+ * Copyright 2015-2020 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,11 @@
  */
 
 package doodle
-package java2d
 package algebra
-package reified
+package generic
 
-import cats.Functor
-import cats.implicits._
-import doodle.algebra.Size
-import doodle.algebra.generic._
+import cats.Apply
 
-object ReifiedSize {
-  val instance: Size[Finalized[Reification, ?]] =
-    new GenericSize()(Functor.apply[Reification])
+trait GivenApply[F[_]]{
+  implicit val applyF: Apply[F]
 }
