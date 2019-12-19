@@ -8,6 +8,10 @@
 
 - Fix `Java2dWriter` use of 0 size `BufferedImage`
 
+- Fix error in calculating bounding box if the picture uses `at` layout. This will prevent the issue where the frame is too large or small for the enclosed picture.
+
+- Add `Debug` algebra, which draws bounding box and origin for the given picture.
+
 - Miscellaneous small improvements.
 
 
