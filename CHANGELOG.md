@@ -12,6 +12,8 @@
 
 - Add `Debug` algebra, which draws bounding box and origin for the given picture.
 
+- Draw bitmaps the correct way around (they were upside-down).
+
 - Miscellaneous small improvements.
 
 
