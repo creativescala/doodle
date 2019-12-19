@@ -142,7 +142,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   }
 
   def bitmap(gc: Graphics2D)(transform: Tx, image: BufferedImage): Unit =
-    Java2D.withTransform(gc, transform) {
+    Java2D.withTransform(gc, Tx.verticalReflection.andThen(transform)) {
       gc.drawImage(
         image,
         -(image.getWidth() / 2),

@@ -41,19 +41,6 @@ object Reified {
       tx(pt)
     }
 
-  // def renderable[F[_]: InvariantMonoidal](dc: DrawingContext)(fill: (Tx, Fill) => Reified)(
-  //     stroke: (Tx, Stroke) => Reified): Renderable[F,Unit] =
-  //   Renderable { tx =>
-  //     val f = dc.fill.map { f =>
-  //       List(fill(tx, f))
-  //     }
-  //     val s = dc.stroke.map { s =>
-  //       List(stroke(tx, s))
-  //     }
-
-  //     (f |+| s).getOrElse(List.empty[Reified])
-  //   }
-
   final case class FillRect(transform: Tx,
                             fill: Fill,
                             width: Double,
