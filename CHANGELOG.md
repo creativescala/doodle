@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.15
+
+- `explore` takes a `Frame`, which means it now works again.
+
+
 ## 0.9.14 20-Dec-2019
 
 - `Picture` has a `Monad` instance if the underlying type `F` does.

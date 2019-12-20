@@ -18,7 +18,7 @@ package doodle
 package java2d
 package examples
 
-object Sine {
+object Explore {
   import doodle.core._
   import doodle.syntax._
 
