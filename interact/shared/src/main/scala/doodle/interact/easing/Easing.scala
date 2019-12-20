@@ -2,12 +2,14 @@ package doodle
 package interact
 package easing
 
+import monix.reactive.Observable
+
 /**
   * An easing function is a function from [0,1] to the real numbers (but usually
   * numbers in [0,1]) that is used to construct animation that move in a pleasing
   * way.
   *
-  * All easing functions should return 0.0 for input 0.0 and 1.0 for input 1.0.
+  * All easing functions must return 0.0 for input 0.0 and 1.0 for input 1.0.
   */
 trait Easing extends Function1[Double, Double] {
 
@@ -17,8 +19,8 @@ trait Easing extends Function1[Double, Double] {
     *
     * For the input [0, 0.5) the resulting function uses this easing function,
     * and for [0.5, 1] uses that easing function. The input to the two easing
-    * functions is linearly scaled so that they both receive a value in the range
-    * [0, 1]. Their output is similarly scaled in half so the first function
+    * functions is linearly scaled so that they both receive a value in the
+    * range [0, 1]. Their output is scaled in half so the first function
     * generates values in [0, 0.5] and the second in [0.5, 1.0].
     */
   def followedBy(that: Easing): Easing =
@@ -31,10 +33,24 @@ trait Easing extends Function1[Double, Double] {
     * Reflect this easing around x = 0.5 and y = 0.5. Constructs an "out" easing
     * from an "in" easing and vice versa.
     */
-  def reverse: Easing =
+  def reflect: Easing =
     Easing { t =>
       1.0 - this(1.0 - t)
     }
+
+  /**
+    * Convert to an Observable that produces a total of steps values, starting at 0.0 and
+    * finishing at 1.0
+    */
+  def toObservable(steps: Int): Observable[Double] =
+    Observable
+      .range(0L, steps.toLong)
+      .map(
+        step =>
+          if (step == 0) 0.0
+          else if (step == steps) 1.0
+          else this(step.toDouble / steps.toDouble)
+      )
 }
 object Easing {
 
@@ -83,7 +99,7 @@ object Easing {
     Easing(t => t * t * ((1.70158 + 1) * t - 1.70158))
 
   /**
-    * The elastic easing function. Has a little bounce.
+    * The elastic easing function. Has a little bounce. Might not be correct.
     */
   val elastic: Easing = {
     val p = 0.3

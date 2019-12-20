@@ -23,9 +23,9 @@ object EasingSpec extends Properties("Easing properties") {
       (f(t) >= 0.5) && (f(t) <= 1.0)
     }
 
-  property("reverse is its own inverse") =
+  property("reflect is its own inverse") =
     forAllNoShrink(Gen.chooseNum(0.0, 1.0)) { (t: Double) =>
-      Easing.identity(t) ?= Easing.identity.reverse.reverse(t)
+      Easing.identity(t) ?= Easing.identity.reflect.reflect(t)
     }
 
   property("starts at 0") =
