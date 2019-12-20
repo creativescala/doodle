@@ -14,6 +14,8 @@
 
 - Draw bitmaps the correct way around (they were upside-down).
 
+- Add some easing functions, the start of a library to make animations easier.
+
 - Miscellaneous small improvements.
 
 
