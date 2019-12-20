@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.14
+## 0.9.14 20-Dec-2019
 
 - `Picture` has a `Monad` instance if the underlying type `F` does.
 
