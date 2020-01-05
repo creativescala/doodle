@@ -19,7 +19,7 @@ package algebra
 package generic
 
 import cats.data.State
-import doodle.core.{Transform => Tx}
+import doodle.core.{BoundingBox, Transform => Tx}
 import doodle.core.font.Font
 
 trait GenericText[F[_]] extends Text[Finalized[F, ?]] {

@@ -6,7 +6,7 @@ import cats.Apply
 import cats.effect.IO
 import doodle.core._
 import doodle.algebra.Picture
-import doodle.algebra.generic.{BoundingBox, Fill, Stroke}
+import doodle.algebra.generic.{Fill, Stroke}
 import doodle.svg.effect.Size
 import scala.collection.mutable
 

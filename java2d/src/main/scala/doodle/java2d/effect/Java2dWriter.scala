@@ -21,7 +21,7 @@ package effect
 import java.awt.Graphics2D
 
 import cats.effect.IO
-import doodle.core.Transform
+import doodle.core.{BoundingBox, Transform}
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
@@ -30,12 +30,11 @@ import java.util.{Base64 => JBase64}
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
-import doodle.algebra.generic.BoundingBox
 import javax.imageio.ImageIO
 
 trait Java2dWriter[Format]
     extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format]
-    with Base64[doodle.java2d.Algebra, Drawing, Frame, Format]{
+    with Base64[doodle.java2d.Algebra, Drawing, Frame, Format] {
   def format: String
 
   def write[A](file: File, picture: Picture[A]): IO[A] = {
@@ -60,7 +59,11 @@ trait Java2dWriter[Format]
   def base64[A](image: Picture[A]): IO[(A, String)] =
     base64(Frame.fitToPicture(), image)
 
-  private def writeToOutput[A](output: OutputStream, frame: Frame, picture: Picture[A]): IO[A] = {
+  private def writeToOutput[A](
+      output: OutputStream,
+      frame: Frame,
+      picture: Picture[A]
+  ): IO[A] = {
     for {
       result <- Java2dWriter.renderBufferedImage(frame, picture)
       (bi, a) = result
@@ -74,24 +77,32 @@ trait Java2dWriter[Format]
 
 }
 object Java2dWriter {
-  def renderBufferedImage[A](frame: Frame,
-                             picture: Picture[A]): IO[(BufferedImage, A)] =
+  def renderBufferedImage[A](
+      frame: Frame,
+      picture: Picture[A]
+  ): IO[(BufferedImage, A)] =
     for {
-      rendered <- renderGraphics2D(frame, picture, bb => IO {
-        val (w, h) = Java2d.size(bb, frame.size)
+      rendered <- renderGraphics2D(
+        frame,
+        picture,
+        bb =>
+          IO {
+            val (w, h) = Java2d.size(bb, frame.size)
 
-        val image = new BufferedImage(w.toInt,
-          h.toInt,
-          BufferedImage.TYPE_INT_ARGB)
+            val image =
+              new BufferedImage(w.toInt, h.toInt, BufferedImage.TYPE_INT_ARGB)
 
-        (Java2d.setup(image.createGraphics()), image)
-      })
+            (Java2d.setup(image.createGraphics()), image)
+          }
+      )
       (image, a) = rendered
     } yield (image, a)
 
-  private[java2d] def renderGraphics2D[A, I](frame: Frame,
-                             picture: Picture[A],
-                             graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
+  private[java2d] def renderGraphics2D[A, I](
+      frame: Frame,
+      picture: Picture[A],
+      graphicsContext: BoundingBox => IO[(Graphics2D, I)]
+  ): IO[(I, A)] =
     for {
       gc <- IO {
         val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
@@ -104,10 +115,7 @@ object Java2dWriter {
       tx = {
         val (width, height) = Java2d.size(bb, frame.size)
 
-        Java2d.transform(bb,
-          width.toDouble,
-          height.toDouble,
-          frame.center)
+        Java2d.transform(bb, width.toDouble, height.toDouble, frame.center)
       }
       contextWithImage <- graphicsContext(bb)
       (gc, image) = contextWithImage
@@ -130,13 +138,20 @@ object Java2dPdfWriter extends Java2dWriter[Writer.Pdf] {
 
   import de.erichseifert.vectorgraphics2d.VectorGraphics2D
 
-  private def renderVectorCommands[A](frame: Frame,
-                              picture: Picture[A]): IO[((CommandSequence, BoundingBox), A)] =
+  private def renderVectorCommands[A](
+      frame: Frame,
+      picture: Picture[A]
+  ): IO[((CommandSequence, BoundingBox), A)] =
     for {
-      rendered <- Java2dWriter.renderGraphics2D(frame, picture, bb => IO {
-        val vectorGraphics = new VectorGraphics2D()
-        (vectorGraphics, (vectorGraphics, bb))
-      })
+      rendered <- Java2dWriter.renderGraphics2D(
+        frame,
+        picture,
+        bb =>
+          IO {
+            val vectorGraphics = new VectorGraphics2D()
+            (vectorGraphics, (vectorGraphics, bb))
+          }
+      )
       ((image, bounds), a) = rendered
     } yield ((image.getCommands, bounds), a)
 
@@ -148,7 +163,8 @@ object Java2dPdfWriter extends Java2dWriter[Writer.Pdf] {
         val (width, height) = Java2d.size(bounds, frame.size)
 
         val pdfProcessor = new PDFProcessor(true)
-        val doc = pdfProcessor.getDocument(commands, new PageSize(width, height))
+        val doc =
+          pdfProcessor.getDocument(commands, new PageSize(width, height))
         doc.writeTo(new FileOutputStream(file))
       }
     } yield value

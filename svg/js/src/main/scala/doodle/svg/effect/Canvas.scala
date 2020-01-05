@@ -3,8 +3,7 @@ package svg
 package effect
 
 import cats.effect.IO
-import doodle.core.{Color,Point,Transform}
-import doodle.algebra.generic.BoundingBox
+import doodle.core.{BoundingBox, Color,Point,Transform}
 import monix.reactive.Observable
 import monix.reactive.subjects.PublishSubject
 import org.scalajs.dom

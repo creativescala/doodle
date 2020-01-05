@@ -20,7 +20,7 @@ package algebra
 import cats._
 import cats.data._
 import cats.implicits._
-import doodle.core.{Transform => Tx}
+import doodle.core.{BoundingBox, Transform => Tx}
 
 package object generic {
   type ContextTransform = DrawingContext => DrawingContext

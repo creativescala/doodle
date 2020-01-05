@@ -6,7 +6,7 @@ package reified
 import cats.Eval
 import cats.data.{State, WriterT}
 import doodle.algebra.generic._
-import doodle.core.Transform
+import doodle.core.{BoundingBox, Transform}
 import java.io.File
 import javax.imageio.ImageIO
 

@@ -18,8 +18,7 @@ package doodle
 package java2d
 package effect
 
-import doodle.algebra.generic.BoundingBox
-import doodle.core.{Transform => Tx}
+import doodle.core.{BoundingBox, Transform => Tx}
 import doodle.java2d.algebra.Graphics2DGraphicsContext
 import doodle.java2d.algebra.reified.Reified
 import java.awt.{Graphics2D, RenderingHints}
