@@ -20,6 +20,12 @@ package animation
 
 import cats._
 import cats.implicits._
+import doodle.algebra.{Algebra, Picture}
+import doodle.effect.Renderer
+import doodle.interact.algebra.Redraw
+import doodle.interact.effect.AnimationRenderer
+import doodle.interact.syntax.animationRenderer._
+import monix.execution.Scheduler
 import monix.reactive.Observable
 import scala.annotation.tailrec
 
@@ -149,8 +155,9 @@ trait Transducer[Output] { self =>
     * stopping is returned as its output until the other transducer stops. If it
     * stops before generating output (i.e. its initial state is a stopping
     * state) than the zero / identity of the monoid is used as its output. This
-    * behaviour is usually what we want for animations. To stop when either have
-    * stopped see [[product]].
+    * behaviour is usually what we want for animations, and it makes and a
+    * monoid instance for transducer with empty as the identity. To stop when
+    * either have stopped see [[product]].
     */
   def and(
       that: Transducer[Output]
@@ -241,6 +248,37 @@ trait Transducer[Output] { self =>
       .value
 
   /**
+    * Construct a transducer by appending this transducer to itself the given
+    * number of times.
+    *
+    * The count must be 0 or greater.
+    */
+  def repeat(count: Int): Transducer[Output] = {
+    assert(
+      count >= 0,
+      s"A transducer must be repeated 0 or more times. Given $count as the number of repeats."
+    )
+    0.until(count).foldLeft(Transducer.empty[Output])((t, _) => t.andThen(this))
+  }
+
+  def repeatForever: Transducer[Output] =
+    new Transducer[Output] {
+      type State = self.State
+
+      def initial: State = self.initial
+
+      def next(current: State): State =
+        if (stopped(current)) initial
+        else self.next(current)
+
+      def output(state: State): Output =
+        self.output(state)
+
+      def stopped(state: State): Boolean =
+        self.stopped(state)
+    }
+
+  /**
     * Convert this transducer to an [[monix.reactive.Observable]]
     */
   def toObservable: Observable[Output] =
@@ -248,6 +286,20 @@ trait Transducer[Output] { self =>
       if (self.stopped(state)) None
       else Some((self.output(state), self.next(state)))
     }
+
+  /**
+    * Convenience method to animate a transducer.
+    */
+  def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame, Canvas](frame: Frame)(
+      implicit
+      a: AnimationRenderer[Canvas],
+      e: Renderer[Alg, F, Frame, Canvas],
+      r: Redraw[Canvas],
+      s: Scheduler,
+      m: Monoid[A],
+      ev: Output <:< Picture[Alg, F, A]
+  ): Unit =
+    this.toObservable.map(ev(_)).animateFrames(frame)
 }
 object Transducer {
   implicit val transducerTraverseAndApplicative
