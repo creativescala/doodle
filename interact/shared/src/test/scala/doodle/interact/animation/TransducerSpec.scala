@@ -24,9 +24,9 @@ object TransducerSpec extends Properties("Transducer properties") {
       Transducer(xs: _*).product(Transducer(ys: _*)).toList ?= xs.zip(ys)
   }
 
-  property("andThen combines transducers in series") = forAllNoShrink {
+  property("++ combines transducers in series") = forAllNoShrink {
     (xs: List[Int], ys: List[Int]) =>
-      val t = Transducer.fromList(xs).andThen(Transducer.fromList(ys))
+      val t = Transducer.fromList(xs) ++ (Transducer.fromList(ys))
 
       t.toList ?= (xs ++ ys)
   }

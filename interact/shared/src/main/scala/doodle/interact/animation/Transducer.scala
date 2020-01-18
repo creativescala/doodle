@@ -48,14 +48,14 @@ import scala.annotation.tailrec
   * Transducers have several type classes instances:
   *  - Traverse
   *  - Applicative
-  *  - Monoid, corresponding to sequential composition (andThen)
+  *  - Monoid, corresponding to sequential composition (++)
   *
   * The majority of the API is provided by the Cats methods defined on these
   * type classes, so import cats.implicits._ to get a richer API (e.g. toList,
   * filter, etc.)
   *
   * There is another possible monoid, which corresponds to parallel composition
-  * (and), if there is a monoid on the type A. Taken with andThen this makes
+  * (and), if there is a monoid on the type A. Taken with ++ this makes
   * Transducers a Rig or Semiring (depending on how one defines these terms;
   * they are not always defined in the same way).
   */
@@ -115,7 +115,7 @@ trait Transducer[Output] { self =>
     * Append that transducer to this transducer, so that tranducer runs when this
     * one has finished. Both transducers must produce output of the same type.
     */
-  def andThen(that: Transducer[Output]): Transducer[Output] =
+  def ++(that: Transducer[Output]): Transducer[Output] =
     new Transducer[Output] {
       type State = Either[self.State, that.State]
 
@@ -142,6 +142,52 @@ trait Transducer[Output] { self =>
         state match {
           case Left(_)  => false
           case Right(b) => that.stopped(b)
+        }
+    }
+
+  /**
+   * When this transducer's next state would be a stopped state, transition to the
+   * tranducer created by calling the given function with the current state.
+   *
+   * This is like append (++) but allows the final state to determine the
+   * transducer that is appended.
+   */
+  def andThen[State2](f: State => Transducer.Aux[State2, Output]): Transducer[Output] =
+    new Transducer[Output] {
+      type State = Either[self.State, State2]
+
+      var that: Transducer.Aux[State2, Output] = _
+
+      val initial: State =
+        if(self.stopped(self.initial)) {
+          that = f(self.initial)
+          that.initial.asRight
+        } else self.initial.asLeft
+
+      def next(current: State): State =
+        current match {
+          case Left(s) =>
+            val nextA = self.next(s)
+            if (self.stopped(nextA)) {
+              that = f(s)
+              that.initial.asRight
+            }
+            else nextA.asLeft
+
+          case Right(s) =>
+            that.next(s).asRight
+        }
+
+      def output(state: State): Output =
+        state match {
+          case Left(s) => self.output(s)
+          case Right(s) => that.output(s)
+        }
+
+      def stopped(state: State): Boolean =
+        state match {
+          case Left(_) => false
+          case Right(s) => that.stopped(s)
         }
     }
 
@@ -243,7 +289,7 @@ trait Transducer[Output] { self =>
     self
       .foldRight[G[Transducer[B]]](Always(G.pure(Transducer.empty))) {
         (output, gtb) =>
-          G.map2Eval(f(output), gtb)(Transducer.pure(_) andThen _)
+          G.map2Eval(f(output), gtb)(Transducer.pure(_) ++ _)
       }
       .value
 
@@ -258,7 +304,7 @@ trait Transducer[Output] { self =>
       count >= 0,
       s"A transducer must be repeated 0 or more times. Given $count as the number of repeats."
     )
-    0.until(count).foldLeft(Transducer.empty[Output])((t, _) => t.andThen(this))
+    0.until(count).foldLeft(Transducer.empty[Output])((t, _) => t.++(this))
   }
 
   def repeatForever: Transducer[Output] =
@@ -290,18 +336,23 @@ trait Transducer[Output] { self =>
   /**
     * Convenience method to animate a transducer.
     */
-  def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame, Canvas](frame: Frame)(
+  def animate[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](frame: Frame)(
       implicit
       a: AnimationRenderer[Canvas],
       e: Renderer[Alg, F, Frame, Canvas],
       r: Redraw[Canvas],
       s: Scheduler,
-      m: Monoid[A],
-      ev: Output <:< Picture[Alg, F, A]
+      ev: Output <:< Picture[Alg, F, Unit]
   ): Unit =
     this.toObservable.map(ev(_)).animateFrames(frame)
 }
 object Transducer {
+  /**
+   * Aux instance for Transducer. Use when you need to make the State type
+   * visible as a type parameter.
+   */
+  type Aux[S0, O0] = Transducer[O0]{ type State = S0 }
+
   implicit val transducerTraverseAndApplicative
       : Traverse[Transducer] with Applicative[Transducer] =
     new Traverse[Transducer] with Applicative[Transducer] {
@@ -331,7 +382,7 @@ object Transducer {
   implicit def transducerMonoid[A]: Monoid[Transducer[A]] =
     new Monoid[Transducer[A]] {
       def combine(x: Transducer[A], y: Transducer[A]): Transducer[A] =
-        x.andThen(y)
+        x.++(y)
 
       def empty: Transducer[A] =
         Transducer.empty[A]

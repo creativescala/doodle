@@ -4,13 +4,13 @@ package interact
 package object syntax
     extends AnimationRendererSyntax
     with AnimationWriterSyntax
-    with EnumeratorSyntax
+    with InterpolationSyntax
     with MouseMoveSyntax
     with MouseOverSyntax
     with RedrawSyntax{
   object animationRenderer extends AnimationRendererSyntax
   object animationWriter extends AnimationWriterSyntax
-  object enumerator extends EnumeratorSyntax
+  object interpolation extends InterpolationSyntax
   object mouseMove extends MouseMoveSyntax
   object mouseOver extends MouseOverSyntax
   object redraw extends RedrawSyntax
