@@ -1,8 +1,12 @@
 # Changelog
 
-## 0.9.15
+## 0.9.15 19-Jan-2020
 
 - `explore` takes a `Frame`, which means it now works again.
+
+- Some work on the `plot` library
+
+- Algebraic animations via `Interpolation` and `Transducer` allow easier construction and composition of common animations types.
 
 
 ## 0.9.14 20-Dec-2019
