@@ -80,7 +80,7 @@ object InterpolationSpec extends Properties("Interpolation properties") {
       .upToIncluding(start.toDouble + difference)
       .forSteps(difference.toLong + 1)
     difference match {
-      case 0 => t.toList ?= List.empty[Double]
+      case 0 => t.toList ?= List.(start.toDouble)
       case 1 => t.toList ?= List(start.toDouble + difference)
       case _ =>
         t.toList ?= List.tabulate(difference + 1) { a =>
