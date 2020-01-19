@@ -19,7 +19,7 @@ package algebra
 package generic
 
 import cats.data.State
-import doodle.core.{Transform => Tx}
+import doodle.core.{BoundingBox, Transform => Tx}
 
 trait GenericShape[F[_]] extends Shape[Finalized[F, ?]] {
 

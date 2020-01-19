@@ -19,7 +19,7 @@ package algebra
 package generic
 
 import cats.implicits._
-import doodle.core.{Transform => Tx}
+import doodle.core.{BoundingBox, Transform => Tx}
 import org.scalacheck._
 import org.scalacheck.Prop._
 

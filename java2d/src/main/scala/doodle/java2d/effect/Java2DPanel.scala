@@ -20,8 +20,7 @@ package effect
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.algebra.generic.BoundingBox
-import doodle.core.{Transform}
+import doodle.core.{BoundingBox,Transform}
 import doodle.java2d.algebra.{Algebra, Java2D}
 import doodle.java2d.algebra.reified.Reified
 import java.awt.{Dimension, Graphics, Graphics2D}

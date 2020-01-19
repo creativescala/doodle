@@ -18,6 +18,8 @@ package doodle
 package algebra
 package generic
 
+import doodle.core.BoundingBox
+
 trait Instances {
   implicit val boundingBoxDistance: Distance[BoundingBox] =
     Distance(

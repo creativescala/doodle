@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-scalaVersion in ThisBuild := "2.12.9"
+scalaVersion in ThisBuild := "2.12.10"
 
 // enablePlugins(AutomateHeaderPlugin)
 
@@ -146,6 +146,15 @@ lazy val image = crossProject
 
 lazy val imageJvm = image.jvm.dependsOn(coreJvm, java2d)
 lazy val imageJs  = image.js.dependsOn(coreJs)
+
+
+lazy val plot = crossProject
+  .in(file("plot"))
+  .settings(commonSettings,
+            moduleName := "doodle-plot")
+
+lazy val plotJvm = plot.jvm.dependsOn(coreJvm, interactJvm)
+lazy val plotJs  = plot.js.dependsOn(coreJs, interactJs)
 
 
 lazy val explore = crossProject

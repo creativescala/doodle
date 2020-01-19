@@ -15,15 +15,11 @@
  */
 
 package doodle
-package algebra
-package generic
+package core
 
-import doodle.core.{Point, Transform}
-
-/** A [[doodle.algebra.generic.BoundingBox]] represents a bounding box around an
-  * image.
+/** A [[doodle.core.BoundingBox]] represents a bounding box around an picture.
   *
-  * A bounding box also defines a local coordinate system for an image. The
+  * A bounding box also defines a local coordinate system for a picture. The
   * bounding box must contain the origin of the coordinate system. However the
   * origin need not be centered within the box.
   *
@@ -91,7 +87,7 @@ final case class BoundingBox(left: Double,
 object BoundingBox {
   val empty = BoundingBox(0, 0, 0, 0)
 
-  /** Create a [[doodle.algebra.generic.BoundingBox]] with the given width and
+  /** Create a [[doodle.core.BoundingBox]] with the given width and
     * height and the origin centered within the box. */
   def centered(width: Double, height: Double): BoundingBox = {
     val w = width / 2.0

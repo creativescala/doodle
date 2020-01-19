@@ -19,6 +19,7 @@ package java2d
 package algebra
 
 import doodle.core.{
+  BoundingBox,
   Cap,
   Color,
   Gradient,
@@ -28,7 +29,7 @@ import doodle.core.{
   Transform => Tx
 }
 import doodle.core.font._
-import doodle.algebra.generic.{BoundingBox, DrawingContext, Stroke, Fill}
+import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
 import java.awt.{
   Color => AwtColor,
   BasicStroke,

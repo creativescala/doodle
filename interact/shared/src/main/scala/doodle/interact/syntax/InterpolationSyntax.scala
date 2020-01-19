@@ -15,30 +15,17 @@
  */
 
 package doodle
-package java2d
-package examples
+package interact
+package syntax
 
-object Sine {
-  import doodle.core._
-  import doodle.syntax._
+import doodle.interact.animation._
 
-  import doodle.explore.syntax._
+trait InterpolationSyntax {
+  implicit class InterpolationBuilderOps[A](start: A) {
+    def upTo(stop: A)(implicit i: Interpolator[A]): Interpolation[A] =
+      Interpolation.halfOpen(start, stop)
 
-  import cats.instances.all._
-
-  val wave = (period: Double, amplitude: Double, color: Color) =>
-      (-300 to 300).toList.map { x =>
-        val y = Math.sin(x / period) * amplitude
-        circle[Algebra,Drawing](10)
-          .fillColor(color)
-          .at(x.toDouble, y)
-      }.allOn
-
-  def draw(): Unit = {
-    wave(50, 300, Color.cornflowerBlue).draw()
-  }
-
-  def explore(): Unit = {
-    wave.tupled.explore(Frame.size(600, 600))
+    def upToIncluding(stop: A)(implicit i: Interpolator[A]): Interpolation[A] =
+      Interpolation.closed(start, stop)
   }
 }

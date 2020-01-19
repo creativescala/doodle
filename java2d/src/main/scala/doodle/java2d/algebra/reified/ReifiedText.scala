@@ -5,7 +5,7 @@ package reified
 
 import cats.data.WriterT
 import doodle.algebra.generic._
-import doodle.core.{Transform => Tx}
+import doodle.core.{BoundingBox, Transform => Tx}
 import doodle.core.font.Font
 import java.awt.Graphics2D
 
