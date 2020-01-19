@@ -82,7 +82,7 @@ trait Transducer[Output] { self =>
   /**
     * A method that returns the output of the current state. If the transducer
     * has stopped it may not have any output, in which case it can throw a
-    * [[java.util.NoSuchElementException]]. As a result, clients should avoid
+    * java.util.NoSuchElementException. As a result, clients should avoid
     * calling this method when the transducer is in a stopped state. If possible
     * this method should return some other sensible result, rather than throwing
     * an exception, if given a stopped state.
@@ -325,7 +325,7 @@ trait Transducer[Output] { self =>
     }
 
   /**
-    * Convert this transducer to an [[monix.reactive.Observable]]
+    * Convert this transducer to an monix.reactive.Observable
     */
   def toObservable: Observable[Output] =
     Observable.unfold(self.initial) { state =>
