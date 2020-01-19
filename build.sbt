@@ -46,7 +46,7 @@ lazy val root = crossProject
             moduleName := "doodle",
             paradoxTheme := Some(builtinParadoxTheme("generic")),
             unidocProjectFilter in ( ScalaUnidoc, unidoc ) :=
-              inAnyProject -- inProjects(coreJs, interactJs, exploreJs, imageJs, svgJs, turtleJs ))
+              inAnyProject -- inProjects(coreJs, interactJs, exploreJs, imageJs, plotJs, reactorJs, svgJs, turtleJs ))
   .jvmSettings(
     initialCommands in console := """
       |import cats.instances.all._
