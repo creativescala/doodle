@@ -9,7 +9,6 @@ import doodle.image.Image
 import cats.{Monoid, Monad}
 import cats.data.{Kleisli, WriterT}
 import cats.implicits._
-import scala.language.higherKinds
 
 object ParticleSystem {
 

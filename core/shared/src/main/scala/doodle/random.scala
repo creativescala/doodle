@@ -52,7 +52,7 @@ object random {
         }
 
       override def coflatMap[A, B](fa: RandomOp[A])(
-          f: (RandomOp[A]) ⇒ B): RandomOp[B] =
+          f: (RandomOp[A]) => B): RandomOp[B] =
         Always(f(fa))
       override def extract[A](x: RandomOp[A]): A =
         x match {
@@ -65,7 +65,7 @@ object random {
           case RDouble    => rng.nextDouble()
           case Normal     => rng.nextGaussian()
         }
-      override def map[A, B](fa: RandomOp[A])(f: (A) ⇒ B): RandomOp[B] =
+      override def map[A, B](fa: RandomOp[A])(f: (A) => B): RandomOp[B] =
         Always(f(extract(fa)))
     }
 

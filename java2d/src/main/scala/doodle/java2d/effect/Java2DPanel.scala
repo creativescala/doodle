@@ -20,18 +20,18 @@ package effect
 
 import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.core.{BoundingBox,Transform}
+import doodle.core.{BoundingBox, Transform}
 import doodle.java2d.algebra.{Algebra, Java2D}
 import doodle.java2d.algebra.reified.Reified
 import java.awt.{Dimension, Graphics, Graphics2D}
-import java.util.NoSuchElementException
+import java.util.concurrent.{LinkedBlockingQueue, TimeUnit}
 import javax.swing.{JPanel, SwingUtilities}
-import scala.concurrent.SyncVar
 
 final class Java2DPanel(frame: Frame) extends JPanel {
   import Java2DPanel.RenderRequest
 
-  private val channel: SyncVar[RenderRequest[_]] = new SyncVar()
+  private val channel: LinkedBlockingQueue[RenderRequest[_]] =
+    new LinkedBlockingQueue(1)
   private var lastBoundingBox: BoundingBox = _
   private var lastImage: List[Reified] = _
 
@@ -58,15 +58,15 @@ final class Java2DPanel(frame: Frame) extends JPanel {
 
     val algebra = Algebra(gc)
 
-    try {
-      val rr = channel.take(10L)
+    val rr = channel.poll(10L, TimeUnit.MILLISECONDS)
+    if (rr == null) ()
+    else {
       val result = rr.render(algebra).unsafeRunSync()
       lastBoundingBox = result.boundingBox
       lastImage = result.reified
       resize(result.width, result.height)
-    } catch {
-      case _: NoSuchElementException => ()
     }
+
     if (lastImage != null) {
       frame.background.foreach(
         color => gc.setBackground(Java2D.toAwtColor(color))

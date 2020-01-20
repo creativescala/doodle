@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-scalaVersion in ThisBuild := "2.12.10"
+lazy val scala212 = "2.12.10"
+lazy val scala213 = "2.13.1"
+lazy val supportedScalaVersions = List(scala212, scala213)
+
+ThisBuild / scalaVersion := scala213
+ThisBuild / useSuperShell := false
 
 // enablePlugins(AutomateHeaderPlugin)
 
@@ -22,6 +27,8 @@ coursierChecksums := Nil      // workaround for nexus sync bugs
 
 
 lazy val commonSettings = Seq(
+  crossScalaVersions := supportedScalaVersions,
+
   libraryDependencies ++= Seq(
     Dependencies.catsCore.value,
     Dependencies.catsEffect.value,
@@ -43,6 +50,8 @@ lazy val commonSettings = Seq(
 lazy val root = crossProject
   .in(file("."))
   .settings(commonSettings,
+            // crossScalaVersions must be set to Nil on the aggregating project
+            crossScalaVersions := Nil,
             moduleName := "doodle",
             paradoxTheme := Some(builtinParadoxTheme("generic")),
             unidocProjectFilter in ( ScalaUnidoc, unidoc ) :=

@@ -65,7 +65,7 @@ object Mandelbrot {
   val defaultRenderer = new PaletteCellRenderer(defaultPalette)
 
   def countUntilDiverges(z: Complex, func: Complex => Complex) = {
-    lazy val series: Stream[Complex] = z #:: series.map(func(_))
+    lazy val series: LazyList[Complex] = z #:: series.map(func(_))
     series.takeWhile(_.closeTo(z)).take(maxApplys).length
   }
 

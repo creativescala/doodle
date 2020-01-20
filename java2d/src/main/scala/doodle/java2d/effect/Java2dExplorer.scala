@@ -27,7 +27,7 @@ import magnolia._
 import monix.execution.{Ack, Scheduler}
 import monix.reactive._
 import monix.reactive.subjects.Var
-import scala.language.experimental.macros
+//import scala.language.experimental.macros
 
 trait Java2dExplorer[A] extends Explorer[JComponent, A] {
   def render: IO[Observable[A]] =
