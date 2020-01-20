@@ -313,9 +313,11 @@ trait Transducer[Output] { self =>
 
       def initial: State = self.initial
 
-      def next(current: State): State =
-        if (self.stopped(current)) initial
-        else self.next(current)
+      def next(current: State): State = {
+        val next = self.next(current)
+        if(self.stopped(next)) self.initial
+        else next
+      }
 
       def output(state: State): Output =
         self.output(state)

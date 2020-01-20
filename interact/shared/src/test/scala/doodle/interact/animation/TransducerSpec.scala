@@ -52,4 +52,26 @@ object TransducerSpec extends Properties("Transducer properties") {
 
       a.and(b).toList ?= (x :: xs)
     }
+
+  property("repeat repeats the given number of times") =
+    forAllNoShrink(Gen.listOf(Gen.choose(0, 10)), Gen.choose(0, 10)) {
+      (xs: List[Int], repeat: Int) =>
+        val t = Transducer.fromList(xs).repeat(repeat)
+        t.toList ?= List.fill(repeat)(xs).flatten
+    }
+
+  property("repeatForever seems to repeat forever") =
+    forAllNoShrink(Gen.listOf(Gen.choose(0, 10)), Gen.choose(1, 100)) {
+      (xs: List[Int], repeat: Int) =>
+        val t = Transducer.fromList(xs).repeatForever
+        var count = 0
+        var data: List[Int] = Nil
+        var state = t.initial
+        while (count < repeat * xs.length) {
+          data = t.output(state) :: data
+          state = t.next(state)
+          count = count + 1
+        }
+        data.reverse ?= List.fill(repeat)(xs).flatten
+    }
 }
