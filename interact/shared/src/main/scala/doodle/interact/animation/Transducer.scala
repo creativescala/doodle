@@ -314,14 +314,13 @@ trait Transducer[Output] { self =>
       def initial: State = self.initial
 
       def next(current: State): State =
-        if (stopped(current)) initial
+        if (self.stopped(current)) initial
         else self.next(current)
 
       def output(state: State): Output =
         self.output(state)
 
-      def stopped(state: State): Boolean =
-        self.stopped(state)
+      def stopped(state: State): Boolean = false
     }
 
   /**
