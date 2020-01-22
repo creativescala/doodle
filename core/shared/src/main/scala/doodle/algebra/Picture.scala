@@ -17,7 +17,7 @@
 package doodle
 package algebra
 
-import cats.Monad
+import cats._
 import cats.implicits._
 
 /**
@@ -37,6 +37,26 @@ object Picture {
         f(algebra)
     }
   }
+
+  /**
+   * Picture[Alg,F,?] has a Monoid instance if:
+   *
+   * - the algebra has `Layout` and `Shape`;
+   * - the effect type has a `Functor`
+   * - and the result type has a monoid.
+   *
+   * In this case the combine is `on`, with identity `empty`.
+   */
+  implicit def pictureMonoidInstance[Alg[x[_]] <: Layout[x] with Shape[x], F[_], A](
+      implicit f: Functor[F], m: Monoid[A]
+  ): Monoid[Picture[Alg, F, A]] =
+    new Monoid[Picture[Alg, F, A]] {
+      val empty: Picture[Alg, F, A] =
+        Picture(alg => alg.empty.map(_ => m.empty))
+
+      def combine(x: Picture[Alg, F, A], y: Picture[Alg, F, A]): Picture[Alg, F, A] =
+        Picture(alg => alg.on(x(alg), y(alg)))
+    }
 
   /**
    * Picture[Alg,F,?] has a Monad instance if F does

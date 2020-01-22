@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.16
+
+- add `Monoid` instance for `Picture`
+
+
 ## 0.9.15 19-Jan-2020
 
 - `explore` takes a `Frame`, which means it now works again.
