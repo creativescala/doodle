@@ -29,3 +29,5 @@ matrix:
   - scala: 2.13.1
     env:
       - ADOPTOPENJDK=8
+    script:
+    - sbt "++ ${TRAVIS_SCALA_VERSION}!" test
