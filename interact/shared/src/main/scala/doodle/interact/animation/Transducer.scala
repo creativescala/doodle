@@ -146,50 +146,47 @@ trait Transducer[Output] { self =>
     }
 
   /**
-   * When this transducer's next state would be a stopped state, transition to the
-   * tranducer created by calling the given function with the current state.
-   *
-   * This is like append (++) but allows the final state to determine the
-   * transducer that is appended.
-   */
-  def andThen[State2](f: State => Transducer.Aux[State2, Output]): Transducer[Output] =
+    * When this transducer's next state would be a stopped state, transition to
+    * the tranducer created by calling the given function with the current
+    * output. If this transducer immediately stops, and hence has no output, there
+    * will be no output to pass to the function and therefore the next transducer
+    * will not be created.
+    *
+    * This is like append (++) but allows the final output to determine the
+    * transducer that is appended.
+    */
+  def andThen(f: Output => Transducer[Output]): Transducer[Output] = {
+    import Transducer._
+
     new Transducer[Output] {
-      type State = Either[self.State, State2]
+      type State = (Boolean, Box[_,Output])
 
-      var that: Transducer.Aux[State2, Output] = _
+      val initial = (true, Box[self.State,Output](self)(self.initial))
 
-      val initial: State =
-        if(self.stopped(self.initial)) {
-          that = f(self.initial)
-          that.initial.asRight
-        } else self.initial.asLeft
-
-      def next(current: State): State =
+      def next(current: State): State = {
         current match {
-          case Left(s) =>
-            val nextA = self.next(s)
-            if (self.stopped(nextA)) {
-              that = f(s)
-              that.initial.asRight
+          case (first, box: Box[s, Output]) =>
+            val nextS = box.next
+            if (first && box.transducer.stopped(nextS)) {
+              val nextT = f(box.output)
+              (false, Box[nextT.State,Output](nextT)(nextT.initial))
+            } else {
+              (first, Box(box.transducer)(nextS))
             }
-            else nextA.asLeft
+        }
+      }
 
-          case Right(s) =>
-            that.next(s).asRight
+      def output(state: (Boolean, Transducer.Box[_, Output])): Output =
+        state match {
+          case (_, box: Box[s, Output]) => box.output
         }
 
-      def output(state: State): Output =
+      def stopped(state: (Boolean, Transducer.Box[_, Output])): Boolean =
         state match {
-          case Left(s) => self.output(s)
-          case Right(s) => that.output(s)
-        }
-
-      def stopped(state: State): Boolean =
-        state match {
-          case Left(_) => false
-          case Right(s) => that.stopped(s)
+          case (_, box: Box[s, Output]) => box.stopped
         }
     }
+  }
 
   /**
     * Create a transducer that runs this transducer in parallel with that
@@ -315,7 +312,7 @@ trait Transducer[Output] { self =>
 
       def next(current: State): State = {
         val next = self.next(current)
-        if(self.stopped(next)) self.initial
+        if (self.stopped(next)) self.initial
         else next
       }
 
@@ -348,11 +345,27 @@ trait Transducer[Output] { self =>
     this.toObservable.map(ev(_)).animateFrames(frame)
 }
 object Transducer {
+
   /**
-   * Aux instance for Transducer. Use when you need to make the State type
-   * visible as a type parameter.
+    * Aux instance for Transducer. Use when you need to make the State type
+    * visible as a type parameter.
+    */
+  type Aux[S0, O0] = Transducer[O0] { type State = S0 }
+
+  /**
+   * This associates a transducer with its state, useful to get around issues
+   * with inference of existential types.
    */
-  type Aux[S0, O0] = Transducer[O0]{ type State = S0 }
+  final case class Box[S,O](transducer: Transducer.Aux[S,O])(state: S) { self =>
+    def next: S =
+      transducer.next(state)
+
+    def output: O =
+      transducer.output(state)
+
+    def stopped: Boolean =
+      transducer.stopped(state)
+  }
 
   implicit val transducerTraverseAndApplicative
       : Traverse[Transducer] with Applicative[Transducer] =

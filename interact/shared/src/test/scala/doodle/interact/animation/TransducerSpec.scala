@@ -53,6 +53,20 @@ object TransducerSpec extends Properties("Transducer properties") {
       a.and(b).toList ?= (x :: xs)
     }
 
+  property("andThen passes last output to the second transducer") =
+    forAllNoShrink { (xs: List[Int]) =>
+      val a = Transducer.fromList(xs)
+      val t = a.andThen(o => Transducer(o+1))
+
+      xs.length match {
+        case 0 => t.toList ?= List.empty
+        case n =>
+          val o = xs.last
+          val l = t.toList
+          (l.length ?= n+1) && (l.last ?= o+1)
+      }
+    }
+
   property("repeat repeats the given number of times") =
     forAllNoShrink(Gen.listOf(Gen.choose(0, 10)), Gen.choose(0, 10)) {
       (xs: List[Int], repeat: Int) =>
