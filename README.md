@@ -16,7 +16,7 @@ The current release is **0.9.15** and is on the `master` branch.
 To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
-scalaVersion := "2.12.10" // Doodle is currently published for Scala 2.12 only
+scalaVersion := "2.13.1" // Doodle is currently published for Scala 2.12 and 2.13
 libraryDependencies += "org.creativescala" %% "doodle" % "0.9.15"
 ~~~
 
