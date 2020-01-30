@@ -163,4 +163,65 @@ object LayoutSpec extends Properties("Layout properties") {
             )) :| "Bottom transform")
       }
   }
+
+  property(
+    "above generates bounding boxes with the correct size"
+  ) = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+
+    forAllNoShrink(genShape, genShape) { (shape1, shape2) =>
+      val above = algebra.above(shape1, shape2)
+      val bb = above.boundingBox
+      val s1Bb = shape1.boundingBox
+      val s2Bb = shape2.boundingBox
+
+      val maxWidth = s1Bb.width.max(s2Bb.width)
+
+      (bb ?= s1Bb.above(s2Bb)) &&
+      (bb.height ?= (s1Bb.height + s2Bb.height)) &&
+      (bb.width ?= maxWidth)
+    }
+  }
+
+  property(
+    "beside generates bounding boxes with the correct size"
+  ) = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+
+    forAllNoShrink(genShape, genShape) { (shape1, shape2) =>
+      val beside = algebra.beside(shape1, shape2)
+      val bb = beside.boundingBox
+      val s1Bb = shape1.boundingBox
+      val s2Bb = shape2.boundingBox
+
+      val maxHeight = s1Bb.height.max(s2Bb.height)
+
+      (bb ?= s1Bb.beside(s2Bb)) &&
+      (bb.width ?= (s1Bb.width + s2Bb.width)) &&
+      (bb.height ?= maxHeight)
+    }
+  }
+
+  property(
+    "on generates bounding boxes with the correct size"
+  ) = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+
+    forAllNoShrink(genShape, genShape) { (shape1, shape2) =>
+      val on = algebra.on(shape1, shape2)
+      val bb = on.boundingBox
+      val s1Bb = shape1.boundingBox
+      val s2Bb = shape2.boundingBox
+
+      val maxWidth = s1Bb.width.max(s2Bb.width)
+      val maxHeight = s1Bb.height.max(s2Bb.height)
+
+      (bb ?= s1Bb.on(s2Bb)) &&
+      (bb.width ?= maxWidth) &&
+      (bb.height ?= maxHeight)
+    }
+  }
 }
