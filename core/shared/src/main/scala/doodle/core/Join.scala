@@ -17,7 +17,7 @@
 package doodle
 package core
 
-sealed trait Join extends Product with Serializable
+sealed abstract class Join extends Product with Serializable
 object Join {
   final case object Bevel extends Join
   final case object Round extends Join

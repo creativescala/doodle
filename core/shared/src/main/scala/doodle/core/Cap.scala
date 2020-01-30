@@ -17,7 +17,7 @@
 package doodle
 package core
 
-sealed trait Cap extends Product with Serializable
+sealed abstract class Cap extends Product with Serializable
 object Cap {
   final case object Butt extends Cap
   final case object Round extends Cap
