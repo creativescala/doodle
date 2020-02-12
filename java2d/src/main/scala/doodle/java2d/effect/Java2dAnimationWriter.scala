@@ -23,10 +23,10 @@ import cats.effect.IO
 import doodle.effect.Writer.Gif
 import doodle.interact.effect.AnimationWriter
 import java.io.{File, FileOutputStream}
-// import java.awt.image.BufferedImage
 // import javax.imageio.{IIOImage,ImageIO,ImageWriter,ImageTypeSpecifier}
 // import javax.imageio.metadata.IIOMetadataNode
 // import javax.imageio.stream.FileImageOutputStream
+import java.awt.image.BufferedImage
 import monix.eval.{Task, TaskLift}
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
@@ -58,7 +58,8 @@ object Java2dAnimationWriter
 
   def write[A](file: File, frame: Frame, frames: Observable[Picture[A]])(
       implicit s: Scheduler,
-      m: Monoid[A]): IO[A] = {
+      m: Monoid[A]
+  ): IO[A] = {
     for {
       ge <- gifEncoder
       _ = ge.start(new FileOutputStream(file))
@@ -68,7 +69,9 @@ object Java2dAnimationWriter
           for {
             a <- accum
             result <- doodle.java2d.effect.Java2dWriter
-              .renderBufferedImage(frame, picture)
+              .renderBufferedImage(frame, picture)(
+                (w, h) => new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
+              )
             (bi, a2) = result
             _ = ge.addFrame(bi)
           } yield m.combine(a, a2)

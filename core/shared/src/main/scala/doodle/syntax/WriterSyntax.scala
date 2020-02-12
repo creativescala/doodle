@@ -64,9 +64,9 @@ trait WriterSyntax {
     }
 
     def write[Format] =
-      new WriterOpsHelper(picture)
+      new WriterOpsHelper[Format](picture)
 
     def writeToIO[Format] =
-      new WriterIOOpsHelper(picture)
+      new WriterIOOpsHelper[Format](picture)
   }
 }
