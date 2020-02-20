@@ -86,6 +86,15 @@ sealed abstract class Image extends Product with Serializable {
     At(this, pt.x, pt.y)
   }
 
+  // Debug ------------------------------------------------------------
+
+  def debug(color: Color): Image =
+    Debug(this, color)
+
+  def debug: Image =
+    Debug(this, Color.crimson)
+
+
   // Convert to tagless final format
 
   def compile[Algebra[x[?]] <: Basic[x], F[_]]
@@ -141,6 +150,8 @@ object Image {
     final case class FillGradient(image: Image, gradient: Gradient) extends Image
     final case class NoStroke(image: Image) extends Image
     final case class NoFill(image: Image) extends Image
+    // Debug
+    final case class Debug(image: Image, color: Color) extends Image
 
     final case object Empty extends Image
   }
@@ -292,6 +303,9 @@ object Image {
           algebra.noStroke(compile(image)(algebra))
         case NoFill(image) =>
           algebra.noFill(compile(image)(algebra))
+
+        case Debug(image, color) =>
+          algebra.debug(compile(image)(algebra), color)
 
         case Empty =>
           algebra.empty
