@@ -27,7 +27,7 @@ trait Base64Syntax {
     // This class exists solely so the user doesn't have to provide the `Frame`
     // type parameter when calling syntax methods.
     class Base64OpsHelper[Format](picture: Picture[Alg, F, A]) {
-      def apply[Frame](
+      def apply[Frame]()(
           implicit w: Base64[Alg, F, Frame, Format]): (A, String) =
         w.base64(picture).unsafeRunSync()
 
@@ -37,7 +37,7 @@ trait Base64Syntax {
     }
 
     class Base64IOOpsHelper[Format](picture: Picture[Alg, F, A]) {
-      def apply[Frame](
+      def apply[Frame]()(
           implicit w: Base64[Alg, F, Frame, Format]): IO[(A, String)] =
         w.base64(picture)
 
@@ -47,9 +47,9 @@ trait Base64Syntax {
     }
 
     def base64[Format] =
-      new Base64OpsHelper(picture)
+      new Base64OpsHelper[Format](picture)
 
     def base64ToIO[Format] =
-      new Base64IOOpsHelper(picture)
+      new Base64IOOpsHelper[Format](picture)
   }
 }
