@@ -76,8 +76,8 @@ lazy val root = crossProject
   )
   .enablePlugins(ScalaUnidocPlugin)
 lazy val rootJvm = root.jvm
-  .dependsOn(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm)
-  .aggregate(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm)
+  .dependsOn(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm, golden)
+  .aggregate(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm, golden)
 lazy val rootJs = root.js
   .dependsOn(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
   .aggregate(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
@@ -207,3 +207,12 @@ lazy val reactor = crossProject
 
 lazy val reactorJvm = reactor.jvm.dependsOn(coreJvm, java2d, imageJvm, interactJvm)
 lazy val reactorJs  = reactor.js.dependsOn(coreJs, svgJs, imageJs, interactJs)
+
+
+lazy val golden = project
+  .in(file("golden"))
+  .settings(commonSettings,
+            moduleName := "doodle-java2d",
+            libraryDependencies += Dependencies.munit.value,
+            testFrameworks += new TestFramework("munit.Framework"))
+  .dependsOn(coreJvm, imageJvm, interactJvm, java2d)

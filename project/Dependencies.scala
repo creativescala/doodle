@@ -15,15 +15,16 @@ object Dependencies {
 
   val miniTestVersion   = "2.7.0"
   val scalaCheckVersion = "1.14.0"
-
+  val munitVersion      = "0.4.3"
 
   // Libraries
   val catsEffect = Def.setting("org.typelevel" %%% "cats-effect" % catsEffectVersion)
   val catsCore   = Def.setting("org.typelevel" %%% "cats-core"   % catsVersion)
   val catsFree   = Def.setting("org.typelevel" %%% "cats-free"   % catsVersion)
 
-  val miniTest     = Def.setting("io.monix" %%% "minitest"      % miniTestVersion % "test")
-  val miniTestLaws = Def.setting("io.monix" %%% "minitest-laws" % miniTestVersion % "test")
+  val miniTest     = Def.setting("io.monix"     %%% "minitest"      % miniTestVersion % "test")
+  val miniTestLaws = Def.setting("io.monix"     %%% "minitest-laws" % miniTestVersion % "test")
+  val munit        = Def.setting("org.scalameta" %% "munit"         % munitVersion % "test")
 
   val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
 
