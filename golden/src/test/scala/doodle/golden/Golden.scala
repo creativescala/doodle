@@ -44,7 +44,8 @@ trait Golden { self: FunSuite =>
 
         // Sum of squared error
         var error = 0.0
-        val threshold = actual.getHeight() * actual.getWidth() * 4
+        // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
+        val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
 
         var x = 0
         while(x < actual.getWidth()) {
