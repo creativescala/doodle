@@ -2,7 +2,15 @@
 
 ## 0.9.16
 
+- Build and publish for Scala 2.12 and 2.13
+
 - add `Monoid` instance for `Picture`
+
+- add golden testing, to make tests more robust against rendering errors
+
+- `write` and `base64` methods are usable
+
+- add `debug` method to `Image`
 
 
 ## 0.9.15 19-Jan-2020
