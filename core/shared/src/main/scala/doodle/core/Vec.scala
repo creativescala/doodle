@@ -59,9 +59,12 @@ object Vec {
   val unitX = Vec(1, 0)
   val unitY = Vec(0, 1)
 
+  def apply(r: Double, angle: Angle): Vec =
+    Vec(r * angle.cos, r * angle.sin)
+
   def polar(angle: Angle): Vec =
     polar(1.0, angle)
 
   def polar(r: Double, angle: Angle): Vec =
-    Vec(r * angle.cos, r * angle.sin)
+    apply(r, angle)
 }

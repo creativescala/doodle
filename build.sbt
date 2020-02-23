@@ -23,12 +23,10 @@ ThisBuild / useSuperShell := false
 // enablePlugins(AutomateHeaderPlugin)
 
 coursierUseSbtCredentials := true
-coursierChecksums := Nil      // workaround for nexus sync bugs
-
+coursierChecksums := Nil // workaround for nexus sync bugs
 
 lazy val commonSettings = Seq(
   crossScalaVersions := supportedScalaVersions,
-
   libraryDependencies ++= Seq(
     Dependencies.catsCore.value,
     Dependencies.catsEffect.value,
@@ -36,26 +34,37 @@ lazy val commonSettings = Seq(
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
-
   testFrameworks += new TestFramework("minitest.runner.Framework"),
-
   credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential"),
-
   startYear := Some(2015),
-  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
-
-  addCompilerPlugin("org.typelevel" % "kind-projector" % "0.10.3" cross CrossVersion.binary)
+  licenses := List(
+    "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
+  ),
+  addCompilerPlugin(
+    "org.typelevel" % "kind-projector" % "0.10.3" cross CrossVersion.binary
+  )
 )
 
 lazy val root = crossProject
   .in(file("."))
-  .settings(commonSettings,
-            // crossScalaVersions must be set to Nil on the aggregating project
-            crossScalaVersions := Nil,
-            moduleName := "doodle",
-            paradoxTheme := Some(builtinParadoxTheme("generic")),
-            unidocProjectFilter in ( ScalaUnidoc, unidoc ) :=
-              inAnyProject -- inProjects(coreJs, interactJs, exploreJs, imageJs, plotJs, reactorJs, svgJs, turtleJs ))
+  .settings(
+    commonSettings,
+    // crossScalaVersions must be set to Nil on the aggregating project
+    crossScalaVersions := Nil,
+    moduleName := "doodle",
+    paradoxTheme := Some(builtinParadoxTheme("generic")),
+    unidocProjectFilter in (ScalaUnidoc, unidoc) :=
+      inAnyProject -- inProjects(
+        coreJs,
+        interactJs,
+        exploreJs,
+        imageJs,
+        plotJs,
+        reactorJs,
+        svgJs,
+        turtleJs
+      )
+  )
   .jvmSettings(
     initialCommands in console := """
       |import cats.instances.all._
@@ -76,143 +85,172 @@ lazy val root = crossProject
   )
   .enablePlugins(ScalaUnidocPlugin)
 lazy val rootJvm = root.jvm
-  .dependsOn(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm, golden)
-  .aggregate(coreJvm, java2d, exploreJvm, imageJvm, interactJvm, reactorJvm, svgJvm, turtleJvm, golden)
+  .dependsOn(
+    coreJvm,
+    java2d,
+    exploreJvm,
+    imageJvm,
+    interactJvm,
+    reactorJvm,
+    svgJvm,
+    turtleJvm,
+    golden
+  )
+  .aggregate(
+    coreJvm,
+    java2d,
+    exploreJvm,
+    imageJvm,
+    interactJvm,
+    reactorJvm,
+    svgJvm,
+    turtleJvm,
+    golden
+  )
 lazy val rootJs = root.js
   .dependsOn(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
   .aggregate(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
 
-
 lazy val core = crossProject
   .in(file("core"))
-  .settings(commonSettings,
-            moduleName := "doodle-core")
+  .settings(commonSettings, moduleName := "doodle-core")
 
 lazy val coreJvm = core.jvm
-lazy val coreJs  = core.js
-
+lazy val coreJs = core.js
 
 lazy val copyFiles1 = taskKey[Unit]("SBT is a pile of bullshit")
-copyFiles1 := {
-}
+copyFiles1 := {}
 
 // Why can't I mix normal code and Task .value in the same task?
 // When I do the normal code doesn't run. SBT is a pile of shit
 lazy val copyScalaDoc = taskKey[Unit]("SBT is bullshit")
 copyScalaDoc := {
   println("Copying Scaladoc")
-  sbt.io.IO.copyDirectory(file("jvm/target/scala-2.12/unidoc/"),
-                          file("docs/src/main/mdoc/api"))
+  sbt.io.IO.copyDirectory(
+    file("jvm/target/scala-2.12/unidoc/"),
+    file("docs/src/main/mdoc/api")
+  )
 }
 lazy val copyFinalDoc = taskKey[Unit]("SBT is a pile of shit")
 copyFinalDoc := {
   println("Copying documentation to docs/target/docs/site/main")
-  sbt.io.IO.copyDirectory(file("docs/target/paradox/site/main"),
-                          file("docs/target/docs"))
+  sbt.io.IO.copyDirectory(
+    file("docs/target/paradox/site/main"),
+    file("docs/target/docs")
+  )
 }
 lazy val documentation = taskKey[Unit]("Generate documentation")
 documentation :=
-  Def.sequential(
-    (rootJvm / Compile / unidoc),
-    copyScalaDoc,
-    (docs / Compile / mdoc).toTask(""),
-    (docs / Compile / paradox).toTask,
-    copyFinalDoc
-  ).value
+  Def
+    .sequential(
+      (rootJvm / Compile / unidoc),
+      copyScalaDoc,
+      (docs / Compile / mdoc).toTask(""),
+      (docs / Compile / paradox).toTask,
+      copyFinalDoc
+    )
+    .value
 lazy val docs = project
   .in(file("docs"))
-  .settings(mdocIn := file("docs/src/main/mdoc"),
-            mdocOut := file("docs/src/main/paradox"),
-            (paradoxProperties in Compile) ++= Map(
-              "scaladoc.base_url" -> ".../api/"
-            ))
+  .settings(
+    mdocIn := file("docs/src/main/mdoc"),
+    mdocOut := file("docs/src/main/paradox"),
+    (paradoxProperties in Compile) ++= Map(
+      "scaladoc.base_url" -> ".../api/"
+    ),
+    mdocVariables := Map("VERSION" -> version.value)
+  )
   .enablePlugins(MdocPlugin, ParadoxPlugin)
   .dependsOn(rootJvm)
 
-
 lazy val interact = crossProject
   .in(file("interact"))
-  .settings(commonSettings,
-            libraryDependencies += Dependencies.monix.value,
-            moduleName := "doodle-interact")
+  .settings(
+    commonSettings,
+    libraryDependencies += Dependencies.monix.value,
+    moduleName := "doodle-interact"
+  )
 
-lazy val interactJvm = interact.jvm.dependsOn(coreJvm % "compile->compile;test->test")
-lazy val interactJs  = interact.js.dependsOn(coreJs % "compile->compile;test->test")
-
+lazy val interactJvm =
+  interact.jvm.dependsOn(coreJvm % "compile->compile;test->test")
+lazy val interactJs =
+  interact.js.dependsOn(coreJs % "compile->compile;test->test")
 
 lazy val java2d = project
   .in(file("java2d"))
-  .settings(commonSettings,
-            moduleName := "doodle-java2d",
-            libraryDependencies += "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13")
+  .settings(
+    commonSettings,
+    moduleName := "doodle-java2d",
+    libraryDependencies += "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
+  )
   .dependsOn(coreJvm, exploreJvm, interactJvm)
-
 
 lazy val image = crossProject
   .in(file("image"))
-  .settings(commonSettings,
-            moduleName := "doodle-image")
+  .settings(commonSettings, moduleName := "doodle-image")
 
 lazy val imageJvm = image.jvm.dependsOn(coreJvm, java2d)
-lazy val imageJs  = image.js.dependsOn(coreJs)
-
+lazy val imageJs = image.js.dependsOn(coreJs)
 
 lazy val plot = crossProject
   .in(file("plot"))
-  .settings(commonSettings,
-            moduleName := "doodle-plot")
+  .settings(commonSettings, moduleName := "doodle-plot")
 
 lazy val plotJvm = plot.jvm.dependsOn(coreJvm, interactJvm)
-lazy val plotJs  = plot.js.dependsOn(coreJs, interactJs)
-
+lazy val plotJs = plot.js.dependsOn(coreJs, interactJs)
 
 lazy val explore = crossProject
   .in(file("explore"))
-  .settings(commonSettings,
-            libraryDependencies += Dependencies.magnolia.value,
-            moduleName := "doodle-explore")
+  .settings(
+    commonSettings,
+    libraryDependencies += Dependencies.magnolia.value,
+    moduleName := "doodle-explore"
+  )
   .dependsOn(core, interact)
 
 lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, interactJvm)
-lazy val exploreJs  = explore.js.dependsOn(coreJs, interactJs)
-
+lazy val exploreJs = explore.js.dependsOn(coreJs, interactJs)
 
 lazy val svg = crossProject
   .in(file("svg"))
 //.enablePlugins(WorkbenchPlugin)
-  .settings(commonSettings,
-            moduleName := "doodle-svg",
-            libraryDependencies += Dependencies.scalaTags.value
+  .settings(
+    commonSettings,
+    moduleName := "doodle-svg",
+    libraryDependencies += Dependencies.scalaTags.value
 //            workbenchDefaultRootObject := Some(("svg/example.html", "svg/"))
-            )
+  )
 
-lazy val svgJvm = svg.jvm.dependsOn(coreJvm % "compile->compile;test->test", interactJvm)
-lazy val svgJs  = svg.js.dependsOn(coreJs % "compile->compile;test->test", interactJs)
-
+lazy val svgJvm =
+  svg.jvm.dependsOn(coreJvm % "compile->compile;test->test", interactJvm)
+lazy val svgJs =
+  svg.js.dependsOn(coreJs % "compile->compile;test->test", interactJs)
 
 lazy val turtle = crossProject
   .in(file("turtle"))
-  .settings(commonSettings,
-            moduleName := "doodle-turtle")
+  .settings(commonSettings, moduleName := "doodle-turtle")
 
 lazy val turtleJvm = turtle.jvm.dependsOn(coreJvm, imageJvm)
-lazy val turtleJs  = turtle.js.dependsOn(coreJs, imageJs)
-
+lazy val turtleJs = turtle.js.dependsOn(coreJs, imageJs)
 
 lazy val reactor = crossProject
   .in(file("reactor"))
-  .settings(commonSettings,
-            libraryDependencies += Dependencies.monix.value,
-            moduleName := "doodle-reactor")
+  .settings(
+    commonSettings,
+    libraryDependencies += Dependencies.monix.value,
+    moduleName := "doodle-reactor"
+  )
 
-lazy val reactorJvm = reactor.jvm.dependsOn(coreJvm, java2d, imageJvm, interactJvm)
-lazy val reactorJs  = reactor.js.dependsOn(coreJs, svgJs, imageJs, interactJs)
-
+lazy val reactorJvm =
+  reactor.jvm.dependsOn(coreJvm, java2d, imageJvm, interactJvm)
+lazy val reactorJs = reactor.js.dependsOn(coreJs, svgJs, imageJs, interactJs)
 
 lazy val golden = project
   .in(file("golden"))
-  .settings(commonSettings,
-            moduleName := "doodle-java2d",
-            libraryDependencies += Dependencies.munit.value,
-            testFrameworks += new TestFramework("munit.Framework"))
+  .settings(
+    commonSettings,
+    moduleName := "doodle-java2d",
+    libraryDependencies += Dependencies.munit.value,
+    testFrameworks += new TestFramework("munit.Framework")
+  )
   .dependsOn(coreJvm, imageJvm, interactJvm, java2d)

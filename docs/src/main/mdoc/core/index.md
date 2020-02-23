@@ -2,7 +2,7 @@
 
 The @scaladoc[core](doodle.core.index) package provides utilities, such as @scaladoc[Color](doodle.core.Color) and @scaladoc[Point](doodle.core.Point), that are useful in the rest of the libraries.
 
-In this section we just cover the most important uses. You should see the @scaladoc[ScalaDoc](doodel.core.index) for details.
+In this section we just cover the most important uses. You should see the @scaladoc[ScalaDoc](doodle.core.index) for details.
 
 ## Imports
 
@@ -74,7 +74,7 @@ There are many methods to modify colors, such as `spin`, `desaturate`, and so on
 
 ## Point
 
-A `Point` represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.
+A @scaladoc[Point](doodle.core.Point) represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.
 
 ```scala mdoc
 Point(1.0, 1.0) // cartesian coordinates
@@ -91,6 +91,39 @@ pt1.r
 pt1.angle
 ```
 
+
 ## Transform
 
+A @scaladoc[Transform](doodle.core.Transform), in Doodle, represents an [affine transform](https://en.wikipedia.org/wiki/Affine_transformation) in two-dimensions. The easiest way to create a `Transform` is via the methods on the @scaladoc[companion object](doodle.core.Transform$). Here are some examples.
+
+```scala mdoc:silent
+Transform.scale(5.0, -2.0)
+Transform.rotate(90.degrees)
+Transform.translate(10, 10)
+```
+
+A `Transform` can be applied to a `Point` to transform that point.
+
+```scala mdoc
+Transform.scale(5.0, -2.0)(Point(1,1))
+Transform.rotate(90.degrees)(Point(1,1))
+Transform.translate(10, 10)(Point(1,1))
+```
+
+`Transforms` can be composed together using the `andThen` method.
+
+```scala mdoc
+Transform.scale(5.0, -2.0).andThen(Transform.translate(10, 10))(Point(1,1))
+Transform.scale(5.0, -2.0).translate(10, 10)(Point(1,1)) // Shorter version
+
+```
+
+
 ## Vec
+
+A @scaladoc[Vec](doodle.core.Vec) represents a two-dimensional vector. You can construct `Vecs` from cartesian (xy-coordinates) or polar (length and angle) coordinates, just like `Point`.
+
+```scala mdoc
+Vec(0, 1)
+Vec(1, 90.degrees)
+```

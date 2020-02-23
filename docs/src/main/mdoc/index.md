@@ -16,7 +16,7 @@ Doodle provides a simple to use DSL, called @ref[Image](image/index.md). This DS
 To use Doodle, add to your `build.sbt`
 
 ```scala
-libraryDependencies += "org.creativescala" %% "doodle" % "0.9.15"
+libraryDependencies += "org.creativescala" %% "doodle" % "@VERSION@"
 ```
 
 ## ScalaDoc
@@ -68,8 +68,8 @@ chessboard.draw()
 
 The main packages of Doodle are:
 
-- [core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
-- [image](image/index.md)
+- @ref[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
+- @ref[image](image/index.md)
 
 
 [java2d]: https://en.wikipedia.org/wiki/Java_2D
