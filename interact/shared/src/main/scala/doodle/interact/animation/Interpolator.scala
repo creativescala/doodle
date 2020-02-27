@@ -18,6 +18,9 @@ package doodle
 package interact
 package animation
 
+import cats.Invariant
+import cats.syntax.invariant._
+import doodle.core.Angle
 import doodle.interact.easing.Easing
 
 /**
@@ -53,6 +56,25 @@ trait Interpolator[A] {
   def closed(start: A, stop: A, steps: Long, easing: Easing): Transducer[A]
 }
 object Interpolator {
+  /**
+   * Invariant functor instance for Interpolator
+   */
+  implicit object interpolatorInvariant extends Invariant[Interpolator] {
+    def imap[A,B](fa: Interpolator[A])(f: A => B)(g: B => A): Interpolator[B] =
+      new Interpolator[B] {
+        def halfOpen(start: B, stop: B, steps: Long): Transducer[B] =
+          fa.halfOpen(g(start), g(stop), steps).map(f)
+
+        def halfOpen(start: B, stop: B, steps: Long, easing: Easing): Transducer[B] =
+          fa.halfOpen(g(start), g(stop), steps, easing).map(f)
+
+        def closed(start: B, stop: B, steps: Long): Transducer[B] =
+          fa.closed(g(start), g(stop), steps).map(f)
+
+        def closed(start: B, stop: B, steps: Long, easing: Easing): Transducer[B] =
+          fa.closed(g(start), g(stop), steps, easing).map(f)
+      }
+  }
 
   /**
     * Perform Kahan summation given the total so far, the value to add to the
@@ -69,6 +91,9 @@ object Interpolator {
     (nextTotal, nextError)
   }
 
+  /**
+   * Interpolator instance for Double
+   */
   implicit val doubleInterpolator: Interpolator[Double] =
     new Interpolator[Double] {
       def halfOpen(
@@ -219,4 +244,10 @@ object Interpolator {
             }
           }
     }
+
+  /**
+   * Interpolator instance for Angle
+   */
+  implicit val angleInterpolator: Interpolator[Angle] =
+    doubleInterpolator.imap(turns => Angle.turns(turns))(angle => angle.toTurns)
 }

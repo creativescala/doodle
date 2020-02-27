@@ -264,7 +264,35 @@ trait Transducer[Output] { self =>
       }
     }
 
-  def foldLeft[B](zero: B)(f: (B, Output) => B) = {
+  /**
+   * Create a transducer that outputs the cumulative results of applying the
+   * function f to the output of the underlying transducer.
+   */
+  def scanLeft[B](zero: B)(f: (B, Output) => B): Transducer[B] =
+    new Transducer[B] {
+      type State = (self.State, B)
+
+      val initial: State = (self.initial, zero)
+
+      def next(current: State): State = {
+        val (a, b) = current
+        val nextA = self.next(a)
+        val nextB = f(b, self.output(nextA))
+        (nextA, nextB)
+      }
+
+      def output(state: State): B = {
+        val (_, b) = state
+        b
+      }
+
+      def stopped(state: State): Boolean = {
+        val (a, _) = state
+        self.stopped(a)
+      }
+    }
+
+  def foldLeft[B](zero: B)(f: (B, Output) => B): B = {
     @tailrec def loop(b: B, state: State): B =
       if (self.stopped(state)) b
       else loop(f(b, self.output(state)), self.next(state))

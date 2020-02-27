@@ -2,15 +2,23 @@
 
 ## 0.9.16
 
-- Build and publish for Scala 2.12 and 2.13
+- Build and publish for Scala 2.12 and 2.13.
 
-- add `Monoid` instance for `Picture`
+- add `Monoid` instance for `Picture`.
 
-- add golden testing, to make tests more robust against rendering errors
+- add golden testing, to make tests more robust against rendering errors.
 
-- `write` and `base64` methods are usable
+- `write` and `base64` methods are usable.
 
-- add `debug` method to `Image`
+- add `debug` method to `Image`.
+
+- `Vec` apply method accept cartesian or polar coordinates, inline with `Point`.
+
+- add `withFrameRate` utility to `Observable`.
+
+- add `Invariant` instance for `Interpolator`, and `Interpolator` instance for `Angle`.
+
+- add `scaleLength` method to `Point`.
 
 
 ## 0.9.15 19-Jan-2020

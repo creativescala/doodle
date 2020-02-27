@@ -10,6 +10,7 @@ import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
 import monix.execution.Scheduler
 import monix.reactive.{Observable, ObservableLike}
+import scala.concurrent.duration.FiniteDuration
 
 trait AnimationRendererSyntax {
   def nullCallback[A](r: Either[Throwable, A]): Unit =
@@ -25,6 +26,16 @@ trait AnimationRendererSyntax {
 
   implicit class AnimateObservableOps[Alg[x[_]] <: Algebra[x], F[_], A](
       frames: Observable[Picture[Alg, F, A]]) {
+
+    /**
+     * Makes this Observable produce frames with the given period between
+     * frames. This is useful if the Observable is producing frames too quickly
+     * or slowly for the desired animation.
+     *
+     * A convenience derived from the throttle method on Observable.
+     */
+    def withFrameRate(period: FiniteDuration): Observable[Picture[Alg, F, A]] =
+      frames.throttle(period, 1)
 
     /** Create an effect that, when run, will render an `Observable` that is
       * generating frames an appropriate rate for animation. */
@@ -59,7 +70,8 @@ trait AnimationRendererSyntax {
       a.animate(canvas)(frames)
     }
 
-    /** Render an `Observable` that is generating frames an appropriate rate for animation. */
+    /** Render an `Observable` that is generating frames an appropriate rate for
+      * animation. */
     def animateWithCanvas[Canvas](canvas: Canvas,
                                 cb: Either[Throwable, A] => Unit =
                                   theNullCallback)(

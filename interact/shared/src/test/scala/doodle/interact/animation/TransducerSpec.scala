@@ -88,4 +88,10 @@ object TransducerSpec extends Properties("Transducer properties") {
         }
         data.reverse ?= List.fill(repeat)(xs).flatten
     }
+
+  property("scanLeft produces cumulative results") =
+    forAllNoShrink(Gen.listOf(Gen.choose(-100,100))){ (xs: List[Int]) =>
+      val t = Transducer.fromList(xs).scanLeft(0)(_ + _)
+      t.toList ?= xs.scanLeft(0)(_ + _)
+    }
 }

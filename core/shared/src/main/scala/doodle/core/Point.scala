@@ -38,6 +38,18 @@ sealed abstract class Point extends Product with Serializable {
     Polar(polar.r, polar.angle + angle)
   }
 
+  /**
+   * Scale the length of this point by multiplying its length (radius, in polar
+   * form) by the given factor.
+   */
+  def scaleLength(factor: Double): Point = {
+    Point(this.r * factor, this.angle)
+  }
+
+  /**
+   * Scale the length of this point by adding its length (radius, in polar
+   * form) to the given factor.
+   */
   def lengthen(r: Double): Point = {
     val polar = this.toPolar
     Polar(polar.r + r, polar.angle)
