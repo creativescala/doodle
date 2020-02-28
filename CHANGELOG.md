@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.16
+## 0.9.16 27-Feb-2020
 
 - Build and publish for Scala 2.12 and 2.13.
 
