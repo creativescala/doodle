@@ -266,29 +266,37 @@ trait Transducer[Output] { self =>
 
   /**
    * Create a transducer that outputs the cumulative results of applying the
-   * function f to the output of the underlying transducer.
+   * function f to the output of the underlying transducer. If the underlying
+   * transducer has stopped the zero value is produced as the only output.
    */
   def scanLeft[B](zero: B)(f: (B, Output) => B): Transducer[B] =
     new Transducer[B] {
-      type State = (self.State, B)
+      // State consists of
+      // - state of the underlying transducer,
+      //
+      // - the current cumulative result,
+      //
+      // - flag indicating if the transducer has stopped (which happens one step
+      //   after the underlying transducer stops)
+      type State = (self.State, B, Boolean)
 
-      val initial: State = (self.initial, zero)
+      val initial: State = (self.initial, zero, false)
 
       def next(current: State): State = {
-        val (a, b) = current
-        val nextA = self.next(a)
-        val nextB = f(b, self.output(nextA))
-        (nextA, nextB)
+        val (a, b, flag) = current
+        if(flag) current
+        else if(self.stopped(a)) (a, b, true)
+        else (self.next(a), f(b, self.output(a)), false)
       }
 
       def output(state: State): B = {
-        val (_, b) = state
+        val (_, b, _) = state
         b
       }
 
       def stopped(state: State): Boolean = {
-        val (a, _) = state
-        self.stopped(a)
+        val (_, _, flag) = state
+        flag
       }
     }
 
@@ -443,7 +451,7 @@ object Transducer {
     new Transducer[A] {
       type State = Seq[A]
 
-      def initial: State = elts
+      val initial: State = elts
 
       def next(current: State): State =
         current match {
