@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.17
+
+- Improve modelling of fonts. Fonts can be both bold and italic
+
+- Java2D background actually uses given font information to render the font
+
+- Add `scanLeft` method to `Transducer`
+
+
 ## 0.9.16 27-Feb-2020
 
 - Build and publish for Scala 2.12 and 2.13.
