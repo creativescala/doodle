@@ -7,10 +7,6 @@ import doodle.core.font._
 import Image._
 
 object BoxesAndArrows {
-  import FontFamily._
-  import FontFace._
-  import FontSize._
-
   val size = 100.0
 
   val spacer = rectangle(size * 0.2, size).noFill.noStroke
@@ -18,7 +14,7 @@ object BoxesAndArrows {
   val box =
     roundedRectangle(size, size, size * .12).strokeWidth(size * .12).noFill
 
-  val font = Font(SansSerif, Normal, Points((size / 2.0).toInt))
+  val font = Font(FontFamily.sansSerif, FontStyle.normal, FontWeight.normal, FontSize.points((size / 2.0).toInt))
   // val equals = text("=").font(font)
 
   val c = circle(size * 0.3).fillColor(Color.black)

@@ -62,18 +62,25 @@ object Java2D {
   def toAwtFont(font: Font): AwtFont = {
     val awtFamily =
       font.family match {
-        case FontFamily.Serif      => AwtFont.SERIF
-        case FontFamily.SansSerif  => AwtFont.SANS_SERIF
-        case FontFamily.Monospaced => AwtFont.MONOSPACED
-        case FontFamily.Named(name)           => name
+        case FontFamily.Serif       => AwtFont.SERIF
+        case FontFamily.SansSerif   => AwtFont.SANS_SERIF
+        case FontFamily.Monospaced  => AwtFont.MONOSPACED
+        case FontFamily.Named(name) => name
       }
 
-    val awtStyle =
-      font.face match {
-        case FontFace.Bold   => AwtFont.BOLD
-        case FontFace.Italic => AwtFont.ITALIC
-        case FontFace.Normal => AwtFont.PLAIN
-      }
+    val awtStyle = font.weight match {
+      case FontWeight.Normal =>
+        font.style match {
+          case FontStyle.Italic => AwtFont.ITALIC
+          case FontStyle.Normal => AwtFont.PLAIN
+        }
+
+      case FontWeight.Bold =>
+        font.style match {
+          case FontStyle.Italic => AwtFont.ITALIC | AwtFont.BOLD
+          case FontStyle.Normal => AwtFont.BOLD
+        }
+    }
 
     val awtSize =
       font.size match {

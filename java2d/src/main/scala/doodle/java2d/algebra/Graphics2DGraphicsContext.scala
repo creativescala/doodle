@@ -163,6 +163,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       // of the reference point of the text relative to the origin.
       val x = -bounds.getCenterX()
       val y = -bounds.getCenterY()
+      gc.setFont(Java2D.toAwtFont(font))
       gc.drawString(text, x.toFloat, y.toFloat)
     }
 }

@@ -31,15 +31,22 @@ object FontFamily {
   def named(name: String): FontFamily = Named(name)
 }
 
-sealed abstract class FontFace extends Product with Serializable
-object FontFace {
-  final case object Bold extends FontFace
-  final case object Italic extends FontFace
-  final case object Normal extends FontFace
+sealed abstract class FontWeight extends Product with Serializable
+object FontWeight {
+  final case object Normal extends FontWeight
+  final case object Bold extends FontWeight
 
-  val bold: FontFace = Bold
-  val italic: FontFace = Italic
-  val normal: FontFace = Normal
+  val bold: FontWeight = Bold
+  val normal: FontWeight = Normal
+}
+
+sealed abstract class FontStyle extends Product with Serializable
+object FontStyle {
+  final case object Italic extends FontStyle
+  final case object Normal extends FontStyle
+
+  val italic: FontStyle = Italic
+  val normal: FontStyle = Normal
 }
 
 sealed abstract class FontSize extends Product with Serializable
@@ -49,12 +56,36 @@ object FontSize {
   def points(pts: Int): FontSize = Points(pts)
 }
 
-final case class Font(family: FontFamily, face: FontFace, size: FontSize)
+final case class Font(family: FontFamily, style: FontStyle, weight: FontWeight, size: FontSize) {
+  def family(name: String): Font =
+    family(FontFamily.named(name))
+
+  def family(family: FontFamily): Font =
+    this.copy(family = family)
+
+  def italic: Font =
+    style(FontStyle.italic)
+
+  def style(style: FontStyle) =
+    this.copy(style = style)
+
+  def bold: Font =
+    weight(FontWeight.bold)
+
+  def weight(weight: FontWeight): Font =
+    this.copy(weight = weight)
+
+  def size(points: Int): Font =
+    size(FontSize.points(points))
+
+  def size(size: FontSize): Font =
+    this.copy(size = size)
+
+}
 object Font {
   import FontFamily._
-  import FontFace._
   import FontSize._
 
-  val defaultSerif = Font(serif, normal, points(12))
-  val defaultSansSerif = Font(sansSerif, normal, points(12))
+  val defaultSerif = Font(serif, FontStyle.normal, FontWeight.normal, points(12))
+  val defaultSansSerif = Font(sansSerif, FontStyle.normal, FontWeight.normal, points(12))
 }
