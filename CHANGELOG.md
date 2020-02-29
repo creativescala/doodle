@@ -4,7 +4,7 @@
 
 - Improve modelling of fonts. Fonts can be both bold and italic
 
-- Java2D background actually uses given font information to render the font
+- Java2D backend actually uses given font information to render the font
 
 - Add `scanLeft` method to `Transducer`
 
