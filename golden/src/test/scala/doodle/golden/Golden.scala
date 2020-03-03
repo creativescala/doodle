@@ -12,7 +12,7 @@ import doodle.effect.Writer
 trait Golden { self: FunSuite =>
   val goldenDir = "golden/src/test/golden"
 
-  def pixelSumOfSquaredError(a: Int, b: Int): Int = {
+  def pixelAbsoluteError(a: Int, b: Int): Int = {
     var error = 0
     var i = 0
     while (i < 4) {
@@ -21,14 +21,14 @@ trait Golden { self: FunSuite =>
       val aValue = (a & mask) >> shift
       val bValue = (b & mask) >> shift
 
-      error = error + ((aValue - bValue) * (aValue - bValue))
+      error = error + Math.abs(aValue - bValue)
 
       i = i + 1
     }
     error
   }
 
-  def sumOfSquaredError(
+  def absoluteError(
       actual: BufferedImage,
       golden: BufferedImage
   ): (Double, BufferedImage) = {
@@ -44,11 +44,14 @@ trait Golden { self: FunSuite =>
     while (x < actual.getWidth()) {
       var y = 0
       while (y < actual.getHeight()) {
-        val pixelError = pixelSumOfSquaredError(
+        val pixelError = pixelAbsoluteError(
           actual.getRGB(x, y),
           golden.getRGB(x, y)
         )
-        diff.setRGB(x, y, pixelError)
+        // Convert pixelError to black and white value for easier rendering
+        val err = (256 * ((pixelError.toDouble) / (Int.MaxValue.toDouble))).toInt
+        val pixel = (err << 16) | (err << 8) | err
+        diff.setRGB(x, y, pixel)
 
         error = error + pixelError
 
@@ -85,9 +88,9 @@ trait GoldenImage extends Golden { self: FunSuite =>
         )
         assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
 
-        // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
-        val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
-        val (error, diff) = sumOfSquaredError(actual, expected)
+        // Fairly arbitrary threshold allowing a 4-bit difference in each component of each pixel
+        val threshold = actual.getHeight() * actual.getWidth() * 4 * 16
+        val (error, diff) = absoluteError(actual, expected)
         val (_, diff64) = diff.toPicture[Algebra,Drawing].base64[Png]()
 
         assert(clue(error) < clue(threshold), diff64)
@@ -134,7 +137,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
 
         // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
         val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
-        val (error, diff) = sumOfSquaredError(actual, expected)
+        val (error, diff) = absoluteError(actual, expected)
         val (_, diff64) = diff.toPicture[Algebra,Drawing].base64[Png]()
 
         assert(clue(error) < clue(threshold), diff64)
