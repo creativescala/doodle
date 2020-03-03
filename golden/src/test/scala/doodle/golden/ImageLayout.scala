@@ -4,7 +4,7 @@ package golden
 import doodle.image._
 import munit._
 
-class ImageLayout extends FunSuite with Golden {
+class ImageLayout extends FunSuite with GoldenImage {
   testImage("layout-at-debug") {
     val c = Image.circle(20)
 

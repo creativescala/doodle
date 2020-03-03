@@ -3,6 +3,7 @@ package svg
 package effect
 
 import cats.effect.IO
+import doodle.core.{Base64 => B64}
 import doodle.effect._
 import doodle.algebra.Picture
 import java.io.File
@@ -31,13 +32,14 @@ object SvgWriter
   def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
     write(file, Frame("").fitToPicture(), picture)
 
-  def base64[A](frame: Frame, image: Picture[Algebra, Drawing, A]): IO[(A, String)] =
+  def base64[A](frame: Frame, image: Picture[Algebra, Drawing, A]): IO[(A, B64[Writer.Svg])] =
     for {
       rendered <- Svg
         .render[Algebra, A](frame, algebraInstance, image)
       (nodes, value) = rendered
-    } yield (value, JBase64.getEncoder.encodeToString(nodes.getBytes()))
+      b64 = JBase64.getEncoder.encodeToString(nodes.getBytes())
+    } yield (value, B64[Writer.Svg](b64))
 
-  def base64[A](picture: Picture[Algebra, Drawing, A]): IO[(A, String)] =
+  def base64[A](picture: Picture[Algebra, Drawing, A]): IO[(A, B64[Writer.Svg])] =
     base64(Frame("").fitToPicture(), picture)
 }

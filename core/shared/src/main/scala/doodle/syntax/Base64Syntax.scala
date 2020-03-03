@@ -19,6 +19,7 @@ package syntax
 
 import cats.effect.IO
 import doodle.algebra.{Algebra, Picture}
+import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
 
 trait Base64Syntax {
@@ -28,21 +29,21 @@ trait Base64Syntax {
     // type parameter when calling syntax methods.
     class Base64OpsHelper[Format](picture: Picture[Alg, F, A]) {
       def apply[Frame]()(
-          implicit w: Base64[Alg, F, Frame, Format]): (A, String) =
+          implicit w: Base64[Alg, F, Frame, Format]): (A, B64[Format]) =
         w.base64(picture).unsafeRunSync()
 
       def apply[Frame](frame: Frame)(
-          implicit w: Base64[Alg, F, Frame, Format]): (A, String) =
+          implicit w: Base64[Alg, F, Frame, Format]): (A, B64[Format]) =
         w.base64(frame, picture).unsafeRunSync()
     }
 
     class Base64IOOpsHelper[Format](picture: Picture[Alg, F, A]) {
       def apply[Frame]()(
-          implicit w: Base64[Alg, F, Frame, Format]): IO[(A, String)] =
+          implicit w: Base64[Alg, F, Frame, Format]): IO[(A, B64[Format])] =
         w.base64(picture)
 
       def apply[Frame](frame: Frame)(
-          implicit w: Base64[Alg, F, Frame, Format]): IO[(A, String)] =
+          implicit w: Base64[Alg, F, Frame, Format]): IO[(A, B64[Format])] =
         w.base64(frame, picture)
     }
 

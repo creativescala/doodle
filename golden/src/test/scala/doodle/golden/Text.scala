@@ -7,7 +7,7 @@ import doodle.java2d._
 import doodle.syntax._
 import munit._
 
-class Text extends FunSuite with Golden {
+class Text extends FunSuite with GoldenPicture {
   // Enusre the text images have the same size, which guards to some extent
   // against different font rendering on different machines
   val spacer = square[Algebra, Drawing](100).noFill.noStroke

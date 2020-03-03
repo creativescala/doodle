@@ -30,6 +30,7 @@ package object syntax
     with SizeSyntax
     with StyleSyntax
     with TextSyntax
+    with ToPictureSyntax
     with TransformSyntax
     with TraverseSyntax
     with UnsignedByteSyntax
@@ -47,6 +48,7 @@ package object syntax
   object size extends SizeSyntax
   object style extends StyleSyntax
   object text extends TextSyntax
+  object toPicture extends ToPictureSyntax
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax

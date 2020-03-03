@@ -2,11 +2,8 @@ package doodle
 package golden
 
 import doodle.algebra.{Algebra, Picture}
-import doodle.image._
-import doodle.image.syntax._
 import doodle.java2d._
 import doodle.effect.Writer._
-import doodle.syntax._
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import munit._
@@ -18,7 +15,7 @@ trait Golden { self: FunSuite =>
   def pixelSumOfSquaredError(a: Int, b: Int): Int = {
     var error = 0
     var i = 0
-    while(i < 4) {
+    while (i < 4) {
       val shift = i * 8
       val mask = 0x000000FF << shift
       val aValue = (a & mask) >> shift
@@ -31,29 +28,49 @@ trait Golden { self: FunSuite =>
     error
   }
 
-  def sumOfSquaredError(actual: BufferedImage, golden: BufferedImage): Double = {
+  def sumOfSquaredError(
+      actual: BufferedImage,
+      golden: BufferedImage
+  ): (Double, BufferedImage) = {
+    val diff = new BufferedImage(
+      actual.getWidth(),
+      actual.getHeight(),
+      BufferedImage.TYPE_INT_ARGB
+    )
     // Sum of squared error
     var error = 0.0
 
     var x = 0
-    while(x < actual.getWidth()) {
+    while (x < actual.getWidth()) {
       var y = 0
-      while(y < actual.getHeight()) {
-        error = error + pixelSumOfSquaredError(actual.getRGB(x, y), golden.getRGB(x, y))
+      while (y < actual.getHeight()) {
+        val pixelError = pixelSumOfSquaredError(
+          actual.getRGB(x, y),
+          golden.getRGB(x, y)
+        )
+        diff.setRGB(x, y, pixelError)
+
+        error = error + pixelError
 
         y = y + 1
       }
       x = x + 1
     }
 
-    error
+    (error, diff)
   }
+}
+
+trait GoldenImage extends Golden { self: FunSuite =>
+  import doodle.image._
+  import doodle.image.syntax._
+  import doodle.syntax._
 
   def assertGoldenImage(name: String, image: Image)(implicit loc: Location) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
 
-    if(file.exists()) {
+    if (file.exists()) {
       val temp = new File(s"${goldenDir}/${name}.tmp.png")
 
       try {
@@ -61,16 +78,21 @@ trait Golden { self: FunSuite =>
         val actual = ImageIO.read(temp)
         val expected = ImageIO.read(file)
 
-        assertEquals(actual.getHeight(), expected.getHeight(), s"Heights differ")
+        assertEquals(
+          actual.getHeight(),
+          expected.getHeight(),
+          s"Heights differ"
+        )
         assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
 
         // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
         val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
-        val error = sumOfSquaredError(actual, expected)
+        val (error, diff) = sumOfSquaredError(actual, expected)
+        val (_, diff64) = diff.toPicture[Algebra,Drawing].base64[Png]()
 
-        assert(clue(error) < clue(threshold), "Error greater than threshold")
+        assert(clue(error) < clue(threshold), diff64)
       } finally {
-        if(temp.exists()) temp.delete()
+        if (temp.exists()) temp.delete()
         ()
       }
     } else {
@@ -79,11 +101,23 @@ trait Golden { self: FunSuite =>
     }
   }
 
-  def assertGoldenPicture[Alg[x[_]] <: Algebra[x], F[_]](name: String, picture: Picture[Alg, F, Unit])(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) = {
+  def testImage(name: String)(image: Image)(implicit loc: Location) =
+    test(name) {
+      assertGoldenImage(name, image)
+    }
+}
+
+trait GoldenPicture extends Golden { self: FunSuite =>
+  import doodle.syntax._
+
+  def assertGoldenPicture[Alg[x[_]] <: Algebra[x], F[_]](
+      name: String,
+      picture: Picture[Alg, F, Unit]
+  )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
 
-    if(file.exists()) {
+    if (file.exists()) {
       val temp = new File(s"${goldenDir}/${name}.tmp.png")
 
       try {
@@ -91,16 +125,21 @@ trait Golden { self: FunSuite =>
         val actual = ImageIO.read(temp)
         val expected = ImageIO.read(file)
 
-        assertEquals(actual.getHeight(), expected.getHeight(), s"Heights differ")
+        assertEquals(
+          actual.getHeight(),
+          expected.getHeight(),
+          s"Heights differ"
+        )
         assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
 
         // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
         val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
-        val error = sumOfSquaredError(actual, expected)
+        val (error, diff) = sumOfSquaredError(actual, expected)
+        val (_, diff64) = diff.toPicture[Algebra,Drawing].base64[Png]()
 
-        assert(clue(error) < clue(threshold), "Error greater than threshold")
+        assert(clue(error) < clue(threshold), diff64)
       } finally {
-        if(temp.exists()) temp.delete()
+        if (temp.exists()) temp.delete()
         ()
       }
     } else {
@@ -109,12 +148,9 @@ trait Golden { self: FunSuite =>
     }
   }
 
-  def testImage(name: String)(image: Image)(implicit loc: Location) =
-    test(name) {
-      assertGoldenImage(name, image)
-    }
-
-  def testPicture[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(picture: Picture[Alg, F, Unit])(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
+  def testPicture[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(
+      picture: Picture[Alg, F, Unit]
+  )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture)
     }

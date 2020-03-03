@@ -21,7 +21,7 @@ package effect
 import java.awt.Graphics2D
 
 import cats.effect.IO
-import doodle.core.{BoundingBox, Transform}
+import doodle.core.{Base64 => B64, BoundingBox, Transform}
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
 import java.awt.image.BufferedImage
@@ -54,14 +54,14 @@ trait Java2dWriter[Format]
     } yield a
   }
 
-  def base64[A](frame: Frame, image: Picture[A]): IO[(A, String)] =
+  def base64[A](frame: Frame, image: Picture[A]): IO[(A, B64[Format])] =
     for {
       output <- IO.pure(new ByteArrayOutputStream())
       value <- writeToOutput(output, frame, image)
       base64 = JBase64.getEncoder.encodeToString(output.toByteArray)
-    } yield (value, base64)
+    } yield (value, B64[Format](base64))
 
-  def base64[A](image: Picture[A]): IO[(A, String)] =
+  def base64[A](image: Picture[A]): IO[(A, B64[Format])] =
     base64(Frame.fitToPicture(), image)
 
   private def writeToOutput[A](

@@ -213,12 +213,10 @@ lazy val exploreJs = explore.js.dependsOn(coreJs, interactJs)
 
 lazy val svg = crossProject
   .in(file("svg"))
-//.enablePlugins(WorkbenchPlugin)
   .settings(
     commonSettings,
     moduleName := "doodle-svg",
     libraryDependencies += Dependencies.scalaTags.value
-//            workbenchDefaultRootObject := Some(("svg/example.html", "svg/"))
   )
 
 lazy val svgJvm =

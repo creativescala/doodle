@@ -8,6 +8,10 @@
 
 - Add `scanLeft` method to `Transducer`
 
+- Add `Base64` wrapper type to `core` which encodes image format as well indicating base 64 data. Update `Base64` algebra to use.
+
+- Add `ToPicture` algebra and syntax, which allows conversion from an arbitrary type to a picture so long as an implicit is available. Java2d implements this for `BufferedImage` and `Base64`. This replaces some of the functionality of the `Bitmap` algebra. The `Bitmap` algebra will either be removed or reworked in the future.
+
 
 ## 0.9.16 27-Feb-2020
 

@@ -18,6 +18,7 @@ package doodle
 package image
 package syntax
 
+import doodle.core.{Base64 => B64}
 import doodle.effect.{Base64, DefaultRenderer, Renderer, Writer}
 import doodle.image.Image
 import doodle.algebra.Picture
@@ -74,10 +75,10 @@ trait ImageSyntax {
     * irrelevant to the user, type parameters. */
   final class Base64Ops[Format](image: Image){
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](
-      implicit w: Base64[Alg, F, Frame, Format]): String = {
+      implicit w: Base64[Alg, F, Frame, Format]): B64[Format] = {
       val picture = Picture((algebra: Alg[F]) => image.compile(algebra))
-      val (_, base64String) = w.base64(picture).unsafeRunSync()
-      base64String
+      val (_, base64) = w.base64(picture).unsafeRunSync()
+      base64
     }
   }
 
