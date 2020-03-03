@@ -1,7 +1,7 @@
 package doodle
 package java2d
 
-import doodle.algebra.{Picture, ToPicture}
+import doodle.algebra.ToPicture
 import doodle.core.{Base64 => B64}
 import doodle.effect._
 import doodle.effect.Writer._
@@ -23,7 +23,7 @@ object ToPictureSpec extends SimpleTestSuite {
   val image = square[Algebra, Drawing](40.0).fillColor(doodle.core.Color.blue)
 
   def testInverse[A](
-      picture: Picture[Algebra, Drawing, Unit]
+      picture: Picture[Unit]
   )(implicit b: Base64[Algebra, Drawing, Frame, A], tp: ToPicture[Drawing, B64[A]]) = {
     val (_, b1) = picture.base64[A](Frame.fitToPicture(0))
     val (_, b2) = b1.toPicture[Algebra, Drawing].base64[A](Frame.fitToPicture(0))
