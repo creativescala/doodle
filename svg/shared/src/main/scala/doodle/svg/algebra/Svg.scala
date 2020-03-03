@@ -5,6 +5,7 @@ package algebra
 import cats.Apply
 import cats.effect.IO
 import doodle.core._
+import doodle.core.font._
 import doodle.algebra.Picture
 import doodle.algebra.generic.{Fill, Stroke}
 import doodle.svg.effect.Size
@@ -74,6 +75,36 @@ trait SvgModule { self: Base =>
                     frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
 
       }
+
+    def textTag(text: String, font: Font): Tag = {
+      val fontFamily =
+        font.family match {
+          case FontFamily.Serif => "serif"
+          case FontFamily.SansSerif => "sans-serif"
+          case FontFamily.Monospaced => "monospaced"
+          case FontFamily.Named(name) => name
+        }
+
+      val fontStyle =
+        font.style match {
+          case FontStyle.Italic => "italic"
+          case FontStyle.Normal => "normal"
+        }
+
+      val fontWeight =
+        font.weight match {
+          case FontWeight.Bold => "bold"
+          case FontWeight.Normal => "normal"
+        }
+
+      val style = s"""
+        |font-family: ${fontFamily};
+        |font-style: ${fontStyle};
+        |font-weight: ${fontWeight};
+        """.stripMargin
+
+      svg.text(svgAttrs.style:=style, text)
+    }
 
     /**
      * Transform from client coordinates to local coordinates

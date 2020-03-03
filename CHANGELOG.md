@@ -10,7 +10,23 @@
 
 - Add `Base64` wrapper type to `core` which encodes image format as well indicating base 64 data. Update `Base64` algebra to use.
 
-- Add `ToPicture` algebra and syntax, which allows conversion from an arbitrary type to a picture so long as an implicit is available. Java2d implements this for `BufferedImage` and `Base64`. This replaces some of the functionality of the `Bitmap` algebra. The `Bitmap` algebra will either be removed or reworked in the future.
+- Add `ToPicture` algebra and syntax
+
+  The `ToPicture` algebra provides a generic way to convert some type into
+  a `Picture`. The syntax adds a method `toPicture` so one can call, e.g.
+  
+  ```scala
+  someBase64Value.toPicture[Algebra, Drawing]
+  ```
+  
+  There are implementations for the Java2d backend for `Base64` and
+  `BufferedImage`.
+
+
+  This replaces some of the functionality of the `Bitmap` algebra and it is
+  likely that the `Bitmap` algebra will be removed or reworked in the future.
+
+- Implement `Text` algebra for the SVG backend on JS
 
 
 ## 0.9.16 27-Feb-2020

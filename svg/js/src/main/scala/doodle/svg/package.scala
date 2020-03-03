@@ -10,7 +10,6 @@ package object svg {
   // extending JsAlgebraModule from the package object leads to a compilation
   // error
   type Algebra[F[_]] = js.Algebra[F]
-  val algebraInstance = js.algebraInstance
   type Drawing[A] = js.Drawing[A]
   val Svg = js.Svg
   type Tag = js.Tag
