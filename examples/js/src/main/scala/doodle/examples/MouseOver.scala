@@ -1,5 +1,4 @@
 package doodle
-package svg
 package examples
 
 import doodle.core._

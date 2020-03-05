@@ -15,7 +15,6 @@
  */
 
 package doodle
-package svg
 package examples
 
 object Ripples {
@@ -24,6 +23,7 @@ object Ripples {
   import cats.syntax.all._
   import doodle.core._
   import doodle.syntax._
+  import doodle.svg._
   import doodle.svg.effect._
   import monix.reactive.Observable
   import monix.catnap.{ConcurrentQueue,SchedulerEffect}

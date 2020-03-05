@@ -243,12 +243,24 @@ lazy val reactorJvm =
   reactor.jvm.dependsOn(coreJvm, java2d, imageJvm, interactJvm)
 lazy val reactorJs = reactor.js.dependsOn(coreJs, svgJs, imageJs, interactJs)
 
+// Just for testing
 lazy val golden = project
   .in(file("golden"))
   .settings(
     commonSettings,
-    moduleName := "doodle-java2d",
+    moduleName := "doodle-golden",
     libraryDependencies += Dependencies.munit.value,
     testFrameworks += new TestFramework("munit.Framework")
   )
   .dependsOn(coreJvm, imageJvm, interactJvm, java2d)
+
+// To avoid including this in the core build
+lazy val examples = crossProject
+  .in(file("examples"))
+  .settings(
+    commonSettings,
+    moduleName := "doodle-examples"
+  )
+
+lazy val examplesJvm = examples.jvm.dependsOn(coreJvm, interactJvm, imageJvm, java2d, svgJvm)
+lazy val examplesJs = examples.js.dependsOn(coreJs, interactJs, imageJs, svgJs)

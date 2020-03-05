@@ -1,9 +1,9 @@
 package doodle
-package svg
 package examples
 
 import cats.implicits._
 import doodle.core._
+import doodle.svg._
 import doodle.syntax._
 
 object SierpinskiRipple {

@@ -1,5 +1,4 @@
 package doodle
-package svg
 package examples
 
 import scala.scalajs.js.annotation._
@@ -8,7 +7,7 @@ import doodle.svg._
 // import doodle.syntax._
 
 // Wrapper to run an example in a web page
-@JSExportTopLevel("Main")
+@JSExportTopLevel("Examples")
 object Example {
   val frame =
     Frame("canvas")
