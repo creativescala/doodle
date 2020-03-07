@@ -8,6 +8,7 @@ import doodle.core.font.Font
 import monix.reactive.Observable
 import monix.reactive.subjects.PublishSubject
 import org.scalajs.dom
+import org.scalajs.dom.svg.Rect
 import scalatags.JsDom
 import scalatags.JsDom.svgTags
 import scalatags.JsDom.svgAttrs
@@ -95,14 +96,19 @@ final case class Canvas(
     }
   }
 
-  def textBoundingBox(text: String, font: Font): BoundingBox = {
+  def textBoundingBox(text: String, font: Font): (BoundingBox, Rect) = {
     // Create an invisible SVG element to measure the text size and delete it
     // after use
-    val elt = target.appendChild(svgTags.svg(svgAttrs.display:="none").render)
+    //
+    // Can't use 'display: none' style beause Firefox will raise an exception if
+    // we ask for the bounding box of such an element.
+    val elt = target.appendChild(svgTags.svg(svgAttrs.visibility:="hidden").render)
     val txt = elt.appendChild(Svg.textTag(text, font).render)
     val bb = txt.asInstanceOf[dom.svg.Text].getBBox()
+    val boundingBox = BoundingBox.centered(bb.width, bb.height)
 
-    BoundingBox.centered(bb.width, bb.height)
+    target.removeChild(elt)
+    (boundingBox, bb)
   }
 
   def render[A](picture: Picture[A]): IO[A] = {

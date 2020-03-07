@@ -29,4 +29,10 @@ class Text extends FunSuite with GoldenPicture {
       .font(Font.defaultSansSerif.size(48))
       .on(spacer)
   }
+
+  // Test that layout is correct. Text should be centered on the circle
+  testPicture("text-on-circle") {
+    text[Algebra, Drawing]("Hi!")
+      .on(circle[Algebra, Drawing](40))
+  }
 }

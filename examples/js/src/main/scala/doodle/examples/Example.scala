@@ -4,7 +4,7 @@ package examples
 import scala.scalajs.js.annotation._
 import doodle.core.Color
 import doodle.svg._
-// import doodle.syntax._
+import doodle.syntax._
 
 // Wrapper to run an example in a web page
 @JSExportTopLevel("Examples")
@@ -16,16 +16,18 @@ object Example {
 
   @JSExport
   def main(): Unit = {
+      Letters.letters[Algebra, Drawing].drawWithFrame(frame)
+
     // Squares.squares.drawWithFrame(frame)
     //
     // SierpinskiRipple.image.drawWithFrame(frame)
     //
     // GradientCircle.image.drawWithFrame(frame)
     //
-    import doodle.interact.syntax._
-    import cats.implicits._
+    // import doodle.interact.syntax._
+    // import cats.implicits._
 
-    Orbit.frames.animateFrames(frame)
+    // Orbit.frames.animateFrames(frame)
     //
     // import cats.instances.all._
     // import doodle.syntax._

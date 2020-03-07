@@ -8,24 +8,36 @@ import doodle.algebra.generic._
 import doodle.core.{BoundingBox, Transform => Tx}
 import doodle.core.font.Font
 import java.awt.Graphics2D
+import java.awt.geom.Rectangle2D
 
 trait ReifiedText extends GenericText[Reification] {
   def gc: Graphics2D
 
   val TextApi = new TextApi {
-    def text(tx: Tx, font: Font, text: String): Reification[Unit] =
+    type Bounds = Rectangle2D
+
+    def text(
+        tx: Tx,
+        font: Font,
+        text: String,
+        bounds: Bounds
+    ): Reification[Unit] =
       WriterT.tell(
         List(
           Reified.text(
             tx,
             text,
             font,
-            Java2D.textBounds(gc, text, font)
+            bounds
           )
         )
       )
 
-    def textBoundingBox(text: String, font: Font): BoundingBox =
-      Java2D.textBoundingBox(gc, text, font)
+    def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
+      val bounds = Java2D.textBounds(gc, text, font)
+
+      (BoundingBox.centered(bounds.getWidth(), bounds.getHeight()),
+       bounds)
+    }
   }
 }

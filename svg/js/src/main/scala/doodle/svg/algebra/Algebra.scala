@@ -7,6 +7,7 @@ import doodle.core.BoundingBox
 import doodle.core.font.Font
 import doodle.language.Basic
 import doodle.svg.effect.Canvas
+import org.scalajs.dom.svg.Rect
 
 trait JsAlgebraModule
     extends AlgebraModule
@@ -29,7 +30,7 @@ trait JsAlgebraModule
       with HasTextBoundingBox
       with MouseOver
       with Text {
-    def textBoundingBox(text: String, font: Font): BoundingBox =
+    def textBoundingBox(text: String, font: Font): (BoundingBox, Rect) =
       canvas.textBoundingBox(text, font)
   }
 }
