@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.17
+## 0.9.17 8-Mar-2020
 
 - Improve modelling of fonts. Fonts can be both bold and italic
 
@@ -21,7 +21,6 @@
   
   There are implementations for the Java2d backend for `Base64` and
   `BufferedImage`.
-
 
   This replaces some of the functionality of the `Bitmap` algebra and it is
   likely that the `Bitmap` algebra will be removed or reworked in the future.
