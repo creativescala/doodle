@@ -21,12 +21,12 @@ package core
   * operation, more efficient. */
 final case class OpenPath private(reversed: List[PathElement]) {
   def add(element: PathElement): OpenPath =
-    OpenPath(element :: reversed)
+    new OpenPath(element :: reversed)
 
   def append(elements: List[PathElement]): OpenPath =
-    OpenPath(elements.reverse ++ reversed)
+    new OpenPath(elements.reverse ++ reversed)
   def append(path: OpenPath): OpenPath =
-    OpenPath(path.reversed ++ reversed)
+    new OpenPath(path.reversed ++ reversed)
 
   def elements: List[PathElement] = reversed.reverse
 

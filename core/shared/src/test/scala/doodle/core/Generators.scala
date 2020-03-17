@@ -34,5 +34,28 @@ trait Generators {
 
   val normalized: Gen[Normalized] =
     Gen.choose(0.0,1.0).map(_.normalized)
+
+  val pathElement: Gen[PathElement] = {
+    val point: Gen[Point] =
+      for {
+        x <- Gen.choose(-100.0, 100.0)
+        y <- Gen.choose(-100.0, 100.0)
+      } yield Point(x, y)
+
+    val moveTo: Gen[PathElement] =
+      point.map(pt => PathElement.moveTo(pt))
+
+    val lineTo: Gen[PathElement] =
+      point.map(PathElement.lineTo _)
+
+    val bezierCurveTo: Gen[PathElement] =
+      for {
+        cp1 <- point
+        cp2 <- point
+        to  <- point
+      } yield PathElement.curveTo(cp1, cp2, to)
+
+    Gen.oneOf(moveTo, lineTo, bezierCurveTo)
+  }
 }
 object Generators extends Generators
