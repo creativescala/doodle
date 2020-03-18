@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.18 18-Mar-2020
+
+- Fix error in constructing open and closed paths
+
+
 ## 0.9.17 8-Mar-2020
 
 - Improve modelling of fonts. Fonts can be both bold and italic
