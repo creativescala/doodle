@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.19 28-Mar-2020
+
+- Build with Java 8 to avoid class file version issues that occur when compiling with new JVM versions.
+
+
 ## 0.9.18 18-Mar-2020
 
 - Fix error in constructing open and closed paths
