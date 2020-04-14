@@ -29,14 +29,14 @@ Image is based on *composition* and the *interpreter pattern*.
 
 Composition basically means that we build big Images out of small Images. For example, if we have an Image describing a red square and an Image describing a blue square
 
-```scala mdoc
+```scala mdoc:silent
 val redSquare = Image.square(100).fillColor(Color.red)
 val blueSquare = Image.square(100).fillColor(Color.blue)
 ```
 
 we can create an Image describing a red square next to a blue square by combining them together.
 
-```scala mdoc
+```scala mdoc:silent
 val combination = redSquare.beside(blueSquare)
 ```
 

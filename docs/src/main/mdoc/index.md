@@ -2,26 +2,29 @@
 
 @@@ index
 
-- [Core](core/index.md)
+- [Core Concepts](concepts/index.md)
 - [Image](image/index.md)
+- [Algebras](algebra/index.md)
+- [Core](core/index.md)
 
 @@@
 
-Doodle is a library for 2D graphics. It runs in both the JVM, rendering via [Java2D][java2d], and the web browser using [SVG][svg].
+Doodle is a Scala library for 2D graphics, animation, data visualization, and creative coding. It runs in both the JVM, rendering via [Java2D][java2d], and the web browser using [SVG][svg].
 
-Doodle provides a simple to use DSL, called @ref[Image](image/index.md). This DSL is in turn built on tagless final algebras. The tagless final algebras allow Doodle to support features that are not available across all backends (addressing the so-called [expression problem][expression-problem]). Doodle also provides libraries for animation and other utilties.
 
 ## Getting Started
 
-To use Doodle, add to your `build.sbt`
+To use Doodle, add the following to your `build.sbt`
 
 ```scala
 libraryDependencies += "org.creativescala" %% "doodle" % "@VERSION@"
 ```
 
+
 ## ScalaDoc
 
-ScalaDoc is @scaladoc[here](doodle.index)
+The @scaladoc[ScalaDoc](doodle.index) covers Doodle's APIs.
+
 
 ## Quick Example
 
@@ -63,6 +66,21 @@ import doodle.java2d._
 chessboard.draw()
 ```
 
+This creates the picture shown below.
+
+![A picture of a red and black chessboard](img/chessboard.png)
+
+
+## Guides
+
+@ref[Using the Image library](image/index.md), which is the easiest way to get started drawing with Doodle.
+
+@ref[Using the tagless final algebras](algebra/index.md) allows access to features that are specific to a backend.
+
+## Concepts
+
+Understanding @ref[core concepts](concepts/index.md) in Doodle will help make sense of the library.
+
 
 ## Library Overview
 
@@ -70,6 +88,9 @@ The main packages of Doodle are:
 
 - @ref[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
 - @ref[image](image/index.md)
+- algebra, effect, and syntax
+- animation and interaction
+- interactive exploration
 
 
 [java2d]: https://en.wikipedia.org/wiki/Java_2D
