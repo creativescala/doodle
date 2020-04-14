@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.20 29-Mar-2020
+
+- Republish because I didn't completely rebuild last time and hence published some byte code compiled with JVM 11.
+
+
 ## 0.9.19 28-Mar-2020
 
 - Build with Java 8 to avoid class file version issues that occur when compiling with new JVM versions.
