@@ -1,4 +1,4 @@
-# Core Concepts in Doodle
+# Core Concepts
 
 Doodle is based on a few core concepts that dictate the design of the library. This section of the documentation attempts to explain them.
 

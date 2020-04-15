@@ -68,12 +68,12 @@ chessboard.draw()
 
 This creates the picture shown below.
 
-![A picture of a red and black chessboard](img/chessboard.png)
+![A picture of a red and black chessboard](chessboard.png)
 
 
 ## Guides
 
-@ref[Using the Image library](image/index.md), which is the easiest way to get started drawing with Doodle.
+@ref[Using the Image library](image/index.md) is the easiest way to get started drawing with Doodle.
 
 @ref[Using the tagless final algebras](algebra/index.md) allows access to features that are specific to a backend.
 

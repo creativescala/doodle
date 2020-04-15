@@ -29,5 +29,4 @@ Paths allow construction of custom shapes. They are described in @ref[their own 
 * `Image.closedPath` converts a `Seq[PathElement]` to an `Image` representing a closed path (a path that ends where it begins; a straight line will be inserted if to make this the case if needed.)
 * `Image.interpolatingSpline` converts a `Seq[Point]` to an `Image` by interpolating a smooth curve between the points using the [Catmull-Rom][catmull-rom] algorithm.
 
-
-
+[catmull-rom]: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline

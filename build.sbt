@@ -128,7 +128,11 @@ lazy val docs = project
     (paradoxProperties in Compile) ++= Map(
       "scaladoc.base_url" -> ".../api/"
     ),
-    mdocVariables := Map("VERSION" -> version.value)
+    mdocVariables := Map("VERSION" -> version.value),
+    // Something in mdoc is creating code using deprecated + for string
+    // concatenation. Turn off fatal warnings so we can compile the
+    // documentation.
+    scalacOptions ~= (_ filterNot (flag => flag == "-Xfatal-warnings"))
   )
   .enablePlugins(MdocPlugin, ParadoxPlugin)
   .dependsOn(rootJvm)
