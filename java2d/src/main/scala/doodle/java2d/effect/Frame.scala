@@ -20,12 +20,22 @@ package effect
 
 import doodle.core.Color
 
+/**
+ * The [[Frame]]
+ */
 final case class Frame(size: Size,
                        title: String = "Doodle",
                        center: Center,
-                       background: Option[Color] = None) {
+                       background: Color = Color.white,
+                       redraw: Redraw = Redraw.clearToBackground) {
   def background(color: Color): Frame =
-    this.copy(background = Some(color))
+    this.copy(background = color)
+
+  def clearToBackground: Frame =
+    this.copy(redraw = Redraw.clearToBackground)
+
+  def clearToColor(color: Color): Frame =
+    this.copy(redraw = Redraw.clearToColor(color))
 
   def title(title: String): Frame =
     this.copy(title = title)

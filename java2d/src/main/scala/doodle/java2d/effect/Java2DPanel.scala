@@ -18,26 +18,50 @@ package doodle
 package java2d
 package effect
 
-import java.awt.{Dimension, Graphics, Graphics2D}
 import cats.effect.IO
-import doodle.core.{BoundingBox, Transform}
+import doodle.core.{BoundingBox, Normalized, Transform}
 import doodle.java2d.algebra.{Algebra, Java2D}
 import doodle.java2d.algebra.reified.Reified
 import java.awt.{Dimension, Graphics, Graphics2D}
 import java.util.concurrent.{LinkedBlockingQueue, TimeUnit}
 import javax.swing.{JPanel, SwingUtilities}
+import scala.collection.mutable.ArrayBuffer
 
 final class Java2DPanel(frame: Frame) extends JPanel {
   import Java2DPanel.RenderRequest
 
+  /**
+   * The channel communicates between the Swing thread and outside threads
+   */
   private val channel: LinkedBlockingQueue[RenderRequest[_]] =
     new LinkedBlockingQueue(1)
-  private var lastBoundingBox: BoundingBox = _
-  private var lastImage: List[Reified] = _
 
-  frame.background.foreach(
-    color => this.setBackground(Java2D.toAwtColor(color))
-  )
+  /**
+   * The pictures we've rendered, along with the bounding box for each picture.
+   * Ordered so the last element is the most recent picture (which should be
+   * rendered last).
+   *
+   * Default size is 1 as the most common case is being asked to render only one
+   * picture.
+   *
+   * As an optimization with check the [[Redraw]] property of the [[Frame]], and
+   * if we use an opaque color to redraw we only keep the last element around.
+   * See [[opaqueRedraw]].
+   */
+  private val pictures: ArrayBuffer[(BoundingBox, List[Reified])] =
+    new ArrayBuffer(1)
+
+  /**
+   * True if the redraw is an opaque color and hence we don't need to keep
+   * earlier pictures around.
+   */
+  private val opaqueRedraw =
+    frame.redraw match {
+      case Redraw.ClearToBackground =>
+        frame.background.alpha == Normalized.MaxValue
+      case Redraw.ClearToColor(c) =>
+        c.alpha == Normalized.MaxValue
+    }
 
   def resize(width: Double, height: Double): Unit = {
     setPreferredSize(new Dimension(width.toInt, height.toInt))
@@ -51,6 +75,70 @@ final class Java2DPanel(frame: Frame) extends JPanel {
     // println("Java2DPanel repaint request sent")
   }
 
+  /**
+   * Draw all images this [[Java2DPanel]] has received. We assume the Graphics2D
+   * parameter has already been setup.
+   */
+  def draw(gc: Graphics2D): Unit = {
+    // Clear to background
+    gc.setColor(Java2D.toAwtColor(frame.background))
+    gc.fillRect(0, 0, getWidth(), getHeight())
+
+    pictures.size match {
+      case 0 =>
+        // Nothing to do
+        ()
+
+      case 1 =>
+        val (bb, reified) = pictures(0)
+        val tx = Java2d.transform(
+          bb,
+          getWidth.toDouble,
+          getHeight.toDouble,
+          frame.center
+        )
+
+        Java2d.render(gc, reified, tx)
+
+      case _ =>
+        val (bb, reified) = pictures(0)
+        val tx = Java2d.transform(
+          bb,
+          getWidth.toDouble,
+          getHeight.toDouble,
+          frame.center
+        )
+
+        Java2d.render(gc, reified, tx)
+
+        // Draw remaining images, redrawing *before* each image
+        var i = 0
+        while(i < pictures.size) {
+          frame.redraw match {
+            case Redraw.ClearToBackground =>
+              gc.setColor(Java2D.toAwtColor(frame.background))
+              gc.fillRect(0, 0, getWidth(), getHeight())
+
+            case Redraw.ClearToColor(c) =>
+              gc.setColor(Java2D.toAwtColor(c))
+              gc.fillRect(0, 0, getWidth(), getHeight())
+          }
+
+          val (bb, reified) = pictures(i)
+          val tx = Java2d.transform(
+            bb,
+            getWidth.toDouble,
+            getHeight.toDouble,
+            frame.center
+          )
+
+          Java2d.render(gc, reified, tx)
+
+          i = i + 1
+        }
+    }
+  }
+
   override def paintComponent(context: Graphics): Unit = {
     // println("Java2DPanel painting")
     val gc = context.asInstanceOf[Graphics2D]
@@ -62,24 +150,17 @@ final class Java2DPanel(frame: Frame) extends JPanel {
     if (rr == null) ()
     else {
       val result = rr.render(algebra).unsafeRunSync()
-      lastBoundingBox = result.boundingBox
-      lastImage = result.reified
+      val bb = result.boundingBox
+      val picture = result.reified
       resize(result.width, result.height)
+      if(opaqueRedraw && pictures.size > 0)
+        pictures.update(0, (bb, picture))
+      else
+        pictures += ((bb, picture))
+
     }
 
-    if (lastImage != null) {
-      frame.background.foreach(
-        color => gc.setBackground(Java2D.toAwtColor(color))
-      )
-      gc.clearRect(0, 0, getWidth, getHeight)
-      val tx = Java2d.transform(
-        lastBoundingBox,
-        getWidth.toDouble,
-        getHeight.toDouble,
-        frame.center
-      )
-      Java2d.render(gc, lastImage, tx)
-    }
+    draw(gc)
   }
 }
 object Java2DPanel {

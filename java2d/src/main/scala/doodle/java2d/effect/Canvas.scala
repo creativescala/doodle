@@ -26,6 +26,10 @@ import java.util.concurrent.atomic.AtomicReference
 import javax.swing.{JFrame, Timer, WindowConstants}
 import monix.reactive.subjects.PublishSubject
 
+/**
+ * A [[Canvas]] is an area on the screen to which [[doodle.algebra.Picture]]s
+ * can be drawn.
+ */
 final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
 
@@ -35,6 +39,9 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
   private val currentInverseTx: AtomicReference[Transform] =
     new AtomicReference(Transform.identity)
 
+  /**
+   * Draw the given [[doodle.algebra.Picture]] to this [[Canvas]].
+   */
   def render[A](picture: Picture[A]): IO[A] = {
     // Possible race condition here setting the currentInverseTx
     def register(cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit): Unit = {
