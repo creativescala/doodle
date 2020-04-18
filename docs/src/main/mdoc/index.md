@@ -81,6 +81,8 @@ This creates the picture shown below.
 
 Understanding @ref[core concepts](concepts/index.md) in Doodle will help make sense of the library.
 
+*TODO*: layout, bounding boxes, and origins; paths; styles
+
 
 ## Library Overview
 

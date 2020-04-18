@@ -43,4 +43,3 @@ val combination = redSquare.beside(blueSquare)
 The interpreter pattern means that we separate describing the Image from rendering it. Writing `Image.square(100)` doesn't draw anything. To draw an image we need to call the `draw()` method. This separation is important for composition; if we were to immediately draw we would lose composition. 
 
 
-[catmull-rom]: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
