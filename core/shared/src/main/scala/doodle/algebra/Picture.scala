@@ -42,8 +42,8 @@ object Picture {
    * Picture[Alg,F,?] has a Monoid instance if:
    *
    * - the algebra has `Layout` and `Shape`;
-   * - the effect type has a `Functor`
-   * - and the result type has a monoid.
+   * - the effect type has a `Functor`; and
+   * - and the result type has a `Monoid`.
    *
    * In this case the combine is `on`, with identity `empty`.
    */
