@@ -100,7 +100,7 @@ We can then `draw` the picture as before. In this case we get the output below.
 
 ## Using Raw Algebras
 
-We never need to call methods on algebras directly. Doodle provides the @scaladoc[Picture](doodle.algebra.Picture) abstraction and lots of @scaladoc[syntax](doodle.syntax) to avoid this. However, if some reason we did want to use algebras directly here is how we would do this. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.
+We never need to call methods on algebras directly. Doodle provides the @scaladoc[Picture](doodle.algebra.Picture) abstraction and lots of @scaladoc[syntax](doodle.syntax.index) to avoid this. However, if some reason we did want to use algebras directly here is how we would do this. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.
 
 To use these algebras to create a picture you could write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using `Layout`, `Style`, and `Shape` we might write the following.
 
