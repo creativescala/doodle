@@ -1,6 +1,6 @@
 # Writing to a File
 
-The @scaladoc[Image DSL](doodle.image.index) can write a file as well as displaying on screen. The file formats you can write depend on the backend you're using:
+The @scaladoc[Image DSL](doodle.image.index) can write an `Image` to file as well as displaying it on screen. The file formats you can write depend on the backend you're using:
 
 * the Java2D backend can write PNG, GIF, and JPEG;
 * the SVG backend running on the JVM can write SVG; and
@@ -29,9 +29,9 @@ import doodle.effect.Writer._
 The first import pulls in the Java2D backend. The second import makes available the standard formats supported by Doodle.
 
 
-## Writing to a File
+## Writing an Image
 
-To write to a file, call the `write` method, giving the format as a type parameter and the file name as a normal parameter. For example, to write a PNG to the file called `"circle.png"`
+Call the `write` method to write to a file, giving the format as a type parameter and the file name as a normal parameter. For example, to write a PNG to the file called `"circle.png"`
 
 ```scala mdoc
 val image = Image.circle(100)
