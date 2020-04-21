@@ -143,7 +143,7 @@ lazy val copyScalaDoc = taskKey[Unit]("SBT is bullshit")
 docs / copyScalaDoc := {
   println("Copying Scaladoc")
   sbt.io.IO.copyDirectory(
-    file("jvm/target/scala-2.12/unidoc/"),
+    file("jvm/target/scala-2.13/unidoc/"),
     file("docs/src/main/mdoc/api")
   )
 }
