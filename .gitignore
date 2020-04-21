@@ -137,3 +137,6 @@ local.properties
 # Metals and Bloop
 .metals
 .bloop
+project/metals.sbt
+
+.sbt-hydra-history
