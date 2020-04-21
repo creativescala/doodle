@@ -21,11 +21,11 @@ package effect
 import doodle.core.Color
 
 /**
- * Determines how the [[Canvas]] handles drawing multiple
- * [[doodle.algebra.Picture]]s. The default is to clear the [[Canvas]] with the
- * [[Frame]]'s background color every time a new picture is rendered.
- * Alternatively a different color can be specified. This allows one to blend
- * together pictures while keeping a constant background.
+ * Determines how the [[Canvas]] handles drawing multiple Pictures. The default
+ * is to clear the [[Canvas]] with the [[Frame]]'s background color every time a
+ * new picture is rendered. Alternatively a different color can be specified.
+ * This allows one to blend together pictures while keeping a constant
+ * background.
  */
 sealed trait Redraw
 object Redraw {
@@ -34,13 +34,12 @@ object Redraw {
 
   /**
    * Clear the [[Canvas]] with the [[Frame]]'s background color when rendering a
-   * new [[doodle.algebra.Picture]].
+   * new Picture.
    */
   val clearToBackground: Redraw = ClearToBackground
 
   /**
-   * Clear the [[Canvas]] with the given color when rendering a new
-   * [[doodle.algebra.Picture]].
+   * Clear the [[Canvas]] with the given color when rendering a new Picture.
    */
   def clearToColor(color: Color): Redraw =
     ClearToColor(color)
