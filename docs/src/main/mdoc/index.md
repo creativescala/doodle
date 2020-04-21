@@ -5,6 +5,7 @@
 - [Core Concepts](concepts/index.md)
 - [Image](image/index.md)
 - [Algebras](algebra/index.md)
+- [Effects](effect/index.md)
 - [Core](core/index.md)
 
 @@@
@@ -81,7 +82,7 @@ This creates the picture shown below.
 
 Understanding @ref[core concepts](concepts/index.md) in Doodle will help make sense of the library.
 
-*TODO*: layout, bounding boxes, and origins; paths; styles
+*TODO*: layout, bounding boxes, and origins; paths; styles; debug
 
 
 ## Library Overview
@@ -91,7 +92,7 @@ The main packages of Doodle are:
 - @ref[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
 - @ref[image](image/index.md)
 - @ref[algebra](algebra/index.md)
-- effect
+- @ref[effect](effect/index.md)
 - syntax
 - animation and interaction
 - interactive exploration
