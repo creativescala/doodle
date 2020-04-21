@@ -16,7 +16,40 @@ Algebras *do not* work directly with `Picture`. Instead they work with the `F[A]
 [context-function]: https://dotty.epfl.ch/docs/reference/contextual/context-functions.html
 
 
+## Drawing Pictures
+
+We can draw a picture to the screen using the `draw` method. This is @scaladoc[syntax](doodle.syntax.RendererSyntax) that depends on a having a @scaladoc[`Renderer` effect](doodle.effect.Renderer) in scope. There are other methods provided by the `Renderer` effect, as explained in its documentation.
+
+
 ## Writing and Converting Pictures
+
+In addition to drawing a picture to the screen we can write it to a file or convert it to some other type. The `write` method saves a picture to a file. When we call write we must pass two parameters: a normal parameter that is the file name to use and a type parameter that gives the format of the file. In the example below we save a file as a [PNG][png].
+
+```scala mdoc:silent
+import doodle.core._
+import doodle.syntax._
+import doodle.java2d._
+import doodle.effect.Writer._
+
+val picture = circle[Algebra, Drawing](100)
+
+picture.write[Png]("circle.png")
+```
+
+The `write` method is @scaladoc[syntax](doodle.syntax.WriterSyntax) that comes from the @scaladoc[`Writer` effect](doodle.effect.Writer). There are other methods that allow, for example, specifying a `Frame` to use when saving the file.
+
+We can convert a `Picture` to a [Base64][base64] value using the `base64` method. As with `write`, this method is @scaladoc[syntax](doodle.syntax.Base64Syntax) for the @scaladoc[`Base64` effect](doodle.effect.Base64). The parameters are similar to `write`: we must specify a format to encode the picture in but we don't specify a filename. Instead we get back the result of evaluating the `Picture` (the `A` in `F[A]` which is usually `()`) and a @scaladoc[Base64](doodle.core.Base64) value.
+
+```scala mdoc:silent:reset
+import doodle.core._
+import doodle.syntax._
+import doodle.java2d._
+import doodle.effect.Writer._
+
+val picture = circle[Algebra, Drawing](100)
+
+val (result, b64) = picture.base64[Png]()
+```
 
 
 ## Converting Other Types to a Picture
@@ -27,7 +60,7 @@ The available instances vary depending on the backend. For the Java2D backend, @
 
 Here is quick example of use. First we create a `Base64` value from a `Picture`.
 
-```scala mdoc:silent
+```scala mdoc:silent:reset
 import doodle.core._
 import doodle.syntax._
 import doodle.java2d._
@@ -40,7 +73,7 @@ val (_, base64) = circle[Algebra, Drawing](100).base64[Png]()
 
 We can convert it right back to a `Picture` using the `toPicture` method.
 
-```scala
+```scala mdoc
 val picture = base64.toPicture
 ```
 
@@ -58,3 +91,7 @@ There are a few type class instances defined for `Picture`.
 In this case the combine is `on`, with identity `empty`.
 
 `Picture[Alg,F,?]` has a `Monad` instance if `F` does.
+
+
+[png]: https://en.wikipedia.org/wiki/Portable_Network_Graphics
+[base64]: https://en.wikipedia.org/wiki/Base64
