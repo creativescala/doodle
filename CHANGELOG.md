@@ -7,15 +7,20 @@
 
 - A lot of work on documentation.
 
+- Text rendering correctly uses stroke and fill where possible. Java2D doesn't
+  support fill. SVG supports both.
+
 
 ## 0.9.20 29-Mar-2020
 
-- Republish because I didn't completely rebuild last time and hence published some byte code compiled with JVM 11.
+- Republish because I didn't completely rebuild last time and hence published
+  some byte code compiled with JVM 11.
 
 
 ## 0.9.19 28-Mar-2020
 
-- Build with Java 8 to avoid class file version issues that occur when compiling with new JVM versions.
+- Build with Java 8 to avoid class file version issues that occur when compiling
+  with new JVM versions.
 
 
 ## 0.9.18 18-Mar-2020
@@ -31,7 +36,8 @@
 
 - Add `scanLeft` method to `Transducer`
 
-- Add `Base64` wrapper type to `core` which encodes image format as well indicating base 64 data. Update `Base64` algebra to use.
+- Add `Base64` wrapper type to `core` which encodes image format as well
+  indicating base 64 data. Update `Base64` algebra to use.
 
 - Add `ToPicture` algebra and syntax
 
