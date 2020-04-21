@@ -11,13 +11,13 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 ## Using Doodle
 
-The current release is **0.9.20** and is on the `master` branch.
+The current release is **0.9.21** and is on the `master` branch.
 
 To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
 scalaVersion := "2.13.1" // Doodle is currently published for Scala 2.12 and 2.13
-libraryDependencies += "org.creativescala" %% "doodle" % "0.9.20"
+libraryDependencies += "org.creativescala" %% "doodle" % "0.9.21"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
@@ -92,7 +92,7 @@ If you run out of metaspace you can punch SBT in the face. Alternatively run jus
 To publish a release:
 
 * update the version number on `master` in `publish.sbt`
-* update the version number in `README.md` on and `master`
+* update the version number in `README.md`
 * run `+ publishSigned`
 * run `sonatypeBundleRelease`
 * tag `master` with the release version

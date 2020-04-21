@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.21
+## 0.9.21 21-Apr-2020
 
 - Add redraw specification to Java2D `Frame`, which allows rendering animations
   in an way that captures the animation as a static image.
