@@ -12,13 +12,13 @@ This section gives a quick overview of the main algebras in Doodle. It is not in
 
 - @scaladoc[Layout](doodle.algebra.Layout) provides basic layout operations.
 
-- @scaladoc[Algebra](doodle.algebra.Path) converts a @scaladoc[ClosedPath](doodle.core.ClosedPath) or an @scaladoc[OpenPath](doodle.core.OpenPath) into a `Picture`.
+- @scaladoc[Path](doodle.algebra.Path) converts a @scaladoc[ClosedPath](doodle.core.ClosedPath) or an @scaladoc[OpenPath](doodle.core.OpenPath) into a `Picture`.
 
-- @scaladoc[Algebra](doodle.algebra.Shape) is a convenience for drawing some simple shapes, such as circles and squares.
+- @scaladoc[Shape](doodle.algebra.Shape) is a convenience for drawing some simple shapes, such as circles and squares.
 
 - @scaladoc[Size](doodle.algebra.Size) gets the size of a `Picture`, which can be used for complex layout, for example.
 
-- @scaladoc[Size](doodle.algebra.Style) allows changing the stroke, fill, and other characterisitics of a `Picture`.
+- @scaladoc[Style](doodle.algebra.Style) allows changing the stroke, fill, and other characterisitics of a `Picture`.
 
 - @scaladoc[Text](doodle.algebra.Text) adds text to a `Picture`.
 
