@@ -11,7 +11,7 @@ Thus in effect a `Picture` is a function with type `Alg[F] => F[A]`.
 
 ## Pictures Are Values
 
-Algebras *do not* work directly with `Picture`. Instead they work with the `F[A]` type that is the output of a `Picture`. However, all the @scaladoc[syntax](doodle.syntax.index) that makes the algebras easier to use, and which we have used in our previous examples create and consume `Picture`. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. `Picture` is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a `Picture` we know exactly what we're dealing with.
+Algebras *do not* work directly with `Picture`. Instead they work with the `F[A]` type that is the output of a `Picture`. However, all the @scaladoc[syntax](doodle.syntax.index) that makes the algebras easier to use, and which we have used in our previous examples, create and consume `Picture`. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. `Picture` is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a `Picture` we know exactly what we're dealing with.
 
 [context-function]: https://dotty.epfl.ch/docs/reference/contextual/context-functions.html
 

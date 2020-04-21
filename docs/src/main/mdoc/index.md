@@ -90,7 +90,9 @@ The main packages of Doodle are:
 
 - @ref[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
 - @ref[image](image/index.md)
-- algebra, effect, and syntax
+- @ref[algebra](algebra/index.md)
+- effect
+- syntax
 - animation and interaction
 - interactive exploration
 
