@@ -2,6 +2,7 @@ package doodle
 package golden
 
 import cats.implicits._
+import doodle.core._
 import doodle.core.font._
 import doodle.java2d._
 import doodle.syntax._
@@ -34,5 +35,11 @@ class Text extends FunSuite with GoldenPicture {
   testPicture("text-on-circle") {
     text[Algebra, Drawing]("Hi!")
       .on(circle[Algebra, Drawing](40))
+  }
+
+  testPicture("text-color") {
+    text[Algebra, Drawing]("Red")
+      .strokeColor(Color.red)
+      .beside(text[Algebra, Drawing]("Blue").strokeColor(Color.blue))
   }
 }

@@ -18,6 +18,8 @@ trait ReifiedText extends GenericText[Reification] {
 
     def text(
         tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
         font: Font,
         text: String,
         bounds: Bounds
@@ -26,6 +28,8 @@ trait ReifiedText extends GenericText[Reification] {
         List(
           Reified.text(
             tx,
+            fill,
+            stroke,
             text,
             font,
             bounds

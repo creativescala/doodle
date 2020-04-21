@@ -65,8 +65,8 @@ sealed abstract class Reified extends Product with Serializable {
       case Bitmap(tx, image) =>
         ctx.bitmap(gc)(tx.andThen(finalTransform), image)
 
-      case Text(tx, text, font, bounds) =>
-        ctx.text(gc)(tx.andThen(finalTransform), text, font, bounds)
+      case Text(tx, _, stroke, text, font, bounds) =>
+        ctx.text(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
     }
 }
 object Reified {
@@ -133,10 +133,12 @@ object Reified {
   ) extends Reified
   final case class Bitmap(transform: Tx, image: BufferedImage) extends Reified
   final case class Text(
-      transform: Tx,
-      text: String,
-      font: Font,
-      bounds: Rectangle2D
+    transform: Tx,
+    fill: Option[Fill],
+    stroke: Option[Stroke],
+    text: String,
+    font: Font,
+    bounds: Rectangle2D
   ) extends Reified
 
   def fillRect(
@@ -198,9 +200,11 @@ object Reified {
 
   def text(
       transform: Tx,
+      fill: Option[Fill],
+      stroke: Option[Stroke],
       text: String,
       font: Font,
       bounds: Rectangle2D
   ): Reified =
-    Text(transform, text, font, bounds)
+    Text(transform, fill, stroke, text, font, bounds)
 }

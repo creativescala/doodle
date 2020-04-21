@@ -41,7 +41,7 @@ trait GenericText[F[_]] extends Text[Finalized[F, ?]] {
      */
     type Bounds
 
-    def text(tx: Tx, font: Font, text: String, bounds: Bounds): F[Unit]
+    def text(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], font: Font, text: String, bounds: Bounds): F[Unit]
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds)
   }
 
@@ -55,7 +55,7 @@ trait GenericText[F[_]] extends Text[Finalized[F, ?]] {
 
     Finalized.leaf { dc =>
       val (bb, bounds) = api.textBoundingBox(text, dc.font)
-      (bb, State.inspect(tx => api.text(tx, dc.font, text, bounds)))
+      (bb, State.inspect(tx => api.text(tx, dc.fill, dc.stroke, dc.font, text, bounds)))
     }
   }
 }

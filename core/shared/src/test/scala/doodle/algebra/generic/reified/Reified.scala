@@ -21,6 +21,7 @@ package reified
 
 import cats.implicits._
 import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.core.font.Font
 import doodle.algebra.generic.{Fill, Stroke}
 
 sealed abstract class Reified extends Product with Serializable {
@@ -81,6 +82,12 @@ object Reified {
                                   stroke: Stroke,
                                   elements: List[PathElement])
       extends Reified
+  final case class Text(transform: Tx,
+                        fill: Option[Fill],
+                        stroke: Option[Stroke],
+                        font: Font,
+                        text: String)
+      extends Reified
 
   def fillRect(transform: Tx,
                fill: Fill,
@@ -122,4 +129,10 @@ object Reified {
                      stroke: Stroke,
                      elements: List[PathElement]): Reified =
     StrokeOpenPath(transform, stroke, elements)
+  def text(transform: Tx,
+           fill: Option[Fill],
+           stroke: Option[Stroke],
+           font: Font,
+           text: String): Reified =
+    Text(transform, fill, stroke, font, text)
 }

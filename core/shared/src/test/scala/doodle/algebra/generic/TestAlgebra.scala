@@ -29,6 +29,7 @@ final case class TestAlgebra(
 ) extends Algebra[Finalized[Reification, ?]]
     with ReifiedPath
     with ReifiedShape
+    with ReifiedText
     with GenericDebug[Reification]
     with GenericLayout[Reification]
     with GenericSize[Reification]
@@ -36,57 +37,11 @@ final case class TestAlgebra(
     with GenericTransform[Reification]
     with GivenApply[Reification]
     with GivenFunctor[Reification] {
-  // Layout ----------------------------------------------------------
-
-  // val layout = ReifiedLayout.instance
-
-  // def on[A](top: Finalized[Reification, A], bottom: Finalized[Reification, A])(
-  //     implicit s: Semigroup[A]
-  // ): Finalized[Reification, A] =
-  //   layout.on(top, bottom)(s)
-
-  // def beside[A](
-  //     left: Finalized[Reification, A],
-  //     right: Finalized[Reification, A]
-  // )(implicit s: Semigroup[A]): Finalized[Reification, A] =
-  //   layout.beside(left, right)(s)
-
-  // def above[A](
-  //     top: Finalized[Reification, A],
-  //     bottom: Finalized[Reification, A]
-  // )(implicit s: Semigroup[A]): Finalized[Reification, A] =
-  //   layout.above(top, bottom)(s)
-
-  // def at[A](
-  //     img: Finalized[Reification, A],
-  //     x: Double,
-  //     y: Double
-  // ): Finalized[Reification, A] =
-  //   layout.at(img, x, y)
-
-  // Size ------------------------------------------------------------
-
-  // val size = ReifiedSize.instance
-
-  // def width[A](
-  //     image: Finalized[Reification, A]
-  // ): Finalized[Reification, Double] =
-  //   size.width(image)
-
-  // def height[A](
-  //     image: Finalized[Reification, A]
-  // ): Finalized[Reification, Double] =
-  //   size.height(image)
-
-  // def size[A](
-  //     image: Finalized[Reification, A]
-  // ): Finalized[Reification, (Double, Double)] =
-  //   size.size(image)
 }
 object TestAlgebra {
   import doodle.algebra._
 
   type Algebra[F[_]] =
-    Layout[F] with Size[F] with Path[F] with Shape[F] with Debug[F] with Style[F]
+    Layout[F] with Size[F] with Path[F] with Shape[F] with Debug[F] with Style[F] with Text[F]
   type Drawing[A] = Finalized[Reification, A]
 }

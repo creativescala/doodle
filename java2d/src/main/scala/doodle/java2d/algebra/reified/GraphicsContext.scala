@@ -66,5 +66,11 @@ trait GraphicsContext[A] {
 
   def text(
       gc: A
-  )(transform: Transform, text: String, font: Font, bounds: Rectangle2D): Unit
+  )(
+      transform: Transform,
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
+  ): Unit
 }
