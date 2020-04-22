@@ -31,30 +31,17 @@ import monix.eval.{Task, TaskLift}
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
 
+/**
+ * Write an animation as an animated GIF. The GIF file format doesn't support
+ * transparency to the degree we need to faithfully render Java2d images. In
+ * particular it doesn't support semi-transparent redraw. As a result we just
+ * fill with the background color on each frame, if the background is set.
+ */
 object Java2dAnimationWriter
     extends AnimationWriter[doodle.java2d.Algebra, Drawing, Frame, Gif] {
-  // val imageWriter: IO[ImageWriter] =
-  //   IO { ImageIO.getImageWritersByFormatName("gif").next() }
 
   val gifEncoder: IO[GifEncoder] =
     IO { new GifEncoder() }
-
-  /** Set ImageWriter metadata so that animations render as we expect. Notably
-    * erase the previous frame before drawing the current one. */
-  // def setImageWriterMetadata(iw: ImageWriter): Unit = {
-  //   val typeSpec = ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_INT_ARGB)
-  //   val metadata = iw.getDefaultImageMetadata(typeSpec, null)
-  //   val ext = new IIOMetadataNode("GraphicControlExtension")
-  //   ext.setAttribute("disposalMethod", "restoreToBackgroundColor")
-  //   ext.setAttribute("userInputFlag", "FALSE")
-  //   ext.setAttribute("transparentColorFlag", "FALSE")
-  //   ext.setAttribute("delayTime", ((1.0 / 60.0) * 100).toInt.toString)
-  //   ext.setAttribute("transparentColorIndex", "0")
-
-  //   val root = new IIOMetadataNode("javax_imageio_gif_image_1.0")
-  //   root.appendChild(ext)
-  //   metadata.mergeTree("javax_imageio_gif_image_1.0", root)
-  // }
 
   def write[A](file: File, frame: Frame, frames: Observable[Picture[A]])(
       implicit s: Scheduler,
@@ -69,7 +56,7 @@ object Java2dAnimationWriter
           for {
             a <- accum
             result <- doodle.java2d.effect.Java2dWriter
-              .renderBufferedImage(frame, picture)(
+              .renderBufferedImage(frame.size, frame.center, frame.background, picture)(
                 (w, h) => new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
               )
             (bi, a2) = result
@@ -81,22 +68,5 @@ object Java2dAnimationWriter
 
       _ = ge.finish()
     } yield a
-    // for {
-    //   iw <- imageWriter
-    //   _ = iw.setOutput(new FileImageOutputStream(file))
-
-    //   _ = iw.prepareWriteSequence(null)
-    //   _ = setImageWriterMetadata(iw)
-    //   a <- frames.consumeWith(Consumer.foldLeft(IO(m.empty)) { (accum, picture) =>
-    //                             for {
-    //                               a <- accum
-    //                               result <- doodle.java2d.effect.Java2dWriter.renderBufferedImage(frame, picture)
-    //                               (bi, a2) = result
-    //                               _ = iw.writeToSequence(new IIOImage(bi, null, null), null)
-    //                             } yield m.combine(a, a2)
-    //                           }).to[IO](TaskLift.toIO(Task.catsEffect(s))).flatMap(ioa => ioa)
-    //   _ = iw.endWriteSequence()
-    //   _ = iw.dispose()
-    // } yield a
   }
 }

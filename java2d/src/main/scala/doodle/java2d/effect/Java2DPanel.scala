@@ -58,7 +58,10 @@ final class Java2DPanel(frame: Frame) extends JPanel {
   private val opaqueRedraw =
     frame.redraw match {
       case Redraw.ClearToBackground =>
-        frame.background.alpha == Normalized.MaxValue
+        frame.background match {
+          case None => true
+          case Some(c) => c.alpha == Normalized.MaxValue
+        }
       case Redraw.ClearToColor(c) =>
         c.alpha == Normalized.MaxValue
     }
@@ -81,8 +84,10 @@ final class Java2DPanel(frame: Frame) extends JPanel {
    */
   def draw(gc: Graphics2D): Unit = {
     // Clear to background
-    gc.setColor(Java2D.toAwtColor(frame.background))
-    gc.fillRect(0, 0, getWidth(), getHeight())
+    frame.background.foreach{ c =>
+      gc.setColor(Java2D.toAwtColor(c))
+      gc.fillRect(0, 0, getWidth(), getHeight())
+    }
 
     pictures.size match {
       case 0 =>
@@ -116,8 +121,10 @@ final class Java2DPanel(frame: Frame) extends JPanel {
         while(i < pictures.size) {
           frame.redraw match {
             case Redraw.ClearToBackground =>
-              gc.setColor(Java2D.toAwtColor(frame.background))
-              gc.fillRect(0, 0, getWidth(), getHeight())
+              frame.background.foreach{ c =>
+                gc.setColor(Java2D.toAwtColor(c))
+                gc.fillRect(0, 0, getWidth(), getHeight())
+              }
 
             case Redraw.ClearToColor(c) =>
               gc.setColor(Java2D.toAwtColor(c))

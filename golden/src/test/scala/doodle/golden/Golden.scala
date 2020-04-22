@@ -49,7 +49,8 @@ trait Golden { self: FunSuite =>
           golden.getRGB(x, y)
         )
         // Convert pixelError to black and white value for easier rendering
-        val err = (256 * ((pixelError.toDouble) / (Int.MaxValue.toDouble))).toInt
+        val err =
+          (256 * ((pixelError.toDouble) / (Int.MaxValue.toDouble))).toInt
         val pixel = (err << 16) | (err << 8) | err
         diff.setRGB(x, y, pixel)
 
@@ -91,7 +92,7 @@ trait GoldenImage extends Golden { self: FunSuite =>
         // Fairly arbitrary threshold allowing a 4-bit difference in each component of each pixel
         val threshold = actual.getHeight() * actual.getWidth() * 4 * 16
         val (error, diff) = absoluteError(actual, expected)
-        val (_, diff64) = diff.toPicture[Algebra,Drawing].base64[Png]()
+        val (_, diff64) = diff.toPicture[Algebra, Drawing].base64[Png]()
 
         assert(clue(error) < clue(threshold), diff64)
       } finally {
@@ -115,7 +116,8 @@ trait GoldenPicture extends Golden { self: FunSuite =>
 
   def assertGoldenPicture[Alg[x[_]] <: Algebra[x], F[_]](
       name: String,
-      picture: Picture[Alg, F, Unit]
+      picture: Picture[Alg, F, Unit],
+      frame: Frame = Frame.fitToPicture()
   )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
@@ -124,7 +126,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
       val temp = new File(s"${goldenDir}/${name}.tmp.png")
 
       try {
-        picture.write[Png](temp)
+        picture.write[Png](temp, frame)
         val actual = ImageIO.read(temp)
         val expected = ImageIO.read(file)
 
@@ -138,7 +140,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
         // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
         val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
         val (error, diff) = absoluteError(actual, expected)
-        val (_, diff64) = diff.toPicture[Algebra,Drawing].base64[Png]()
+        val (_, diff64) = diff.toPicture[Algebra, Drawing].base64[Png]()
 
         assert(clue(error) < clue(threshold), diff64)
       } finally {
@@ -147,7 +149,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
       }
     } else {
       println(s"Golden: ${file} does not exist. Creating golden image.")
-      picture.write[Png](file)
+      picture.write[Png](file, frame)
     }
   }
 
@@ -156,5 +158,12 @@ trait GoldenPicture extends Golden { self: FunSuite =>
   )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture)
+    }
+
+  def testPictureWithFrame[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(frame: Frame)(
+      picture: Picture[Alg, F, Unit]
+  )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
+    test(name) {
+      assertGoldenPicture(name, picture, frame)
     }
 }

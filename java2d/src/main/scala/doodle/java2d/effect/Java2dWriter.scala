@@ -21,9 +21,10 @@ package effect
 import java.awt.Graphics2D
 
 import cats.effect.IO
-import doodle.core.{Base64 => B64, BoundingBox, Transform}
+import doodle.core.{Base64 => B64, BoundingBox, Color, Transform}
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
+import doodle.java2d.algebra.Java2D
 import java.awt.image.BufferedImage
 import java.io.{ByteArrayOutputStream, File, FileOutputStream, OutputStream}
 import java.util.{Base64 => JBase64}
@@ -48,7 +49,12 @@ trait Java2dWriter[Format]
 
   def write[A](file: File, frame: Frame, picture: Picture[A]): IO[A] = {
     for {
-      result <- Java2dWriter.renderBufferedImage(frame, picture)(makeImage _)
+      result <- Java2dWriter.renderBufferedImage(
+        frame.size,
+        frame.center,
+        frame.background,
+        picture
+      )(makeImage _)
       (bi, a) = result
       _ = ImageIO.write(bi, format, file)
     } yield a
@@ -70,7 +76,12 @@ trait Java2dWriter[Format]
       picture: Picture[A]
   ): IO[A] = {
     for {
-      result <- Java2dWriter.renderBufferedImage(frame, picture)(makeImage _)
+      result <- Java2dWriter.renderBufferedImage(
+        frame.size,
+        frame.center,
+        frame.background,
+        picture
+      )(makeImage _)
       (bi, a) = result
       _ <- IO {
         ImageIO.write(bi, format, output)
@@ -83,30 +94,29 @@ trait Java2dWriter[Format]
 }
 object Java2dWriter {
   def renderBufferedImage[A](
-      frame: Frame,
+      size: Size,
+      center: Center,
+      background: Option[Color],
       picture: Picture[A]
   )(makeImage: (Int, Int) => BufferedImage): IO[(BufferedImage, A)] =
     for {
-      rendered <- renderGraphics2D(
-        frame,
-        picture,
-        bb =>
-          IO {
-            val (w, h) = Java2d.size(bb, frame.size)
+      rendered <- renderGraphics2D(size, center, background, picture) { bb =>
+        IO {
+          val (w, h) = Java2d.size(bb, size)
+          val image = makeImage(w.toInt, h.toInt)
 
-            val image = makeImage(w.toInt, h.toInt)
-
-            (Java2d.setup(image.createGraphics()), image)
-          }
-      )
+          (Java2d.setup(image.createGraphics()), image)
+        }
+      }
       (image, a) = rendered
     } yield (image, a)
 
   private[java2d] def renderGraphics2D[A, I](
-      frame: Frame,
-      picture: Picture[A],
-      graphicsContext: BoundingBox => IO[(Graphics2D, I)]
-  ): IO[(I, A)] =
+      size: Size,
+      center: Center,
+      background: Option[Color],
+      picture: Picture[A]
+  )(graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
     for {
       gc <- IO {
         val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
@@ -116,13 +126,14 @@ object Java2dWriter {
       (bb, rdr) = drawing.runA(List.empty).value
       (_, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value
-      tx = {
-        val (width, height) = Java2d.size(bb, frame.size)
-
-        Java2d.transform(bb, width.toDouble, height.toDouble, frame.center)
-      }
+      (width, height) = Java2d.size(bb, size)
+      tx = Java2d.transform(bb, width, height, center)
       contextWithImage <- graphicsContext(bb)
       (gc, image) = contextWithImage
+      _ = background.foreach { c =>
+        gc.setColor(Java2D.toAwtColor(c))
+        gc.fillRect(0, 0, width.toInt, height.toInt)
+      }
       _ = Java2d.render(gc, r, tx)
     } yield (image, a)
 
@@ -160,14 +171,16 @@ object Java2dPdfWriter extends Java2dWriter[Writer.Pdf] {
   ): IO[((CommandSequence, BoundingBox), A)] =
     for {
       rendered <- Java2dWriter.renderGraphics2D(
-        frame,
-        picture,
-        bb =>
-          IO {
-            val vectorGraphics = new VectorGraphics2D()
-            (vectorGraphics, (vectorGraphics, bb))
-          }
-      )
+        frame.size,
+        frame.center,
+        frame.background,
+        picture
+      ) { bb =>
+        IO {
+          val vectorGraphics = new VectorGraphics2D()
+          (vectorGraphics, (vectorGraphics, bb))
+        }
+      }
       ((image, bounds), a) = rendered
     } yield ((image.getCommands, bounds), a)
 
