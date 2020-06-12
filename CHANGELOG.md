@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.22
+
+- Java2d writers correctly use frame background color.
+
+
 ## 0.9.21 21-Apr-2020
 
 - Add redraw specification to Java2D `Frame`, which allows rendering animations
