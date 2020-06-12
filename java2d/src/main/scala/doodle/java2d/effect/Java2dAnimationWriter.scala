@@ -50,7 +50,7 @@ object Java2dAnimationWriter
     for {
       ge <- gifEncoder
       _ = ge.start(new FileOutputStream(file))
-      _ = ge.setDelay(13)
+      _ = ge.setDelay(20)
       a <- frames
         .consumeWith(Consumer.foldLeft(IO(m.empty)) { (accum, picture) =>
           for {
