@@ -61,6 +61,7 @@ trait SvgModule { self: Base =>
           val w = bb.width + (2 * border)
           val h = bb.height + (2 * border)
           svg.svg(
+            svgAttrs.xmlns := s"http://www.w3.org/2000/svg"
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${bb.left - border} ${bb.bottom - border} ${w} ${h}",
