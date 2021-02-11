@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-lazy val scala212 = "2.12.10"
 lazy val scala213 = "2.13.4"
-lazy val supportedScalaVersions = List(scala212, scala213)
+lazy val supportedScalaVersions = List(scala213)
 
 ThisBuild / scalaVersion := scala213
 ThisBuild / useSuperShell := false
