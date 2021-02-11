@@ -13,6 +13,7 @@ import scala.concurrent.duration._
   */
 final case class Reactor[A](
     initial: A,
+    onMouseClickHandler: (Point, A) => A = (_: Point, a: A) => a,
     onMouseMoveHandler: (Point, A) => A = (_: Point, a: A) => a,
     onTickHandler: A => A = (a: A) => a,
     tickRate: FiniteDuration = FiniteDuration(100, MILLISECONDS),
@@ -20,6 +21,9 @@ final case class Reactor[A](
     stopHandler: A => Boolean = (_: A) => false
 ) extends BaseReactor[A] {
   // Reactor methods -------------------------------------------------
+
+  def onMouseClick(location: Point, state: A): A =
+    onMouseClickHandler(location, state)
 
   def onMouseMove(location: Point, state: A): A =
     onMouseMoveHandler(location, state)
@@ -34,6 +38,9 @@ final case class Reactor[A](
     stopHandler(value)
 
   // Builder methods -------------------------------------------------
+
+  def onMouseClick(f: (Point, A) => A): Reactor[A] =
+    this.copy(onMouseClickHandler = f)
 
   def onMouseMove(f: (Point, A) => A): Reactor[A] =
     this.copy(onMouseMoveHandler = f)
