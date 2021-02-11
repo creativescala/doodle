@@ -216,10 +216,6 @@ lazy val explore = crossProject(JSPlatform, JVMPlatform)
   .in(file("explore"))
   .settings(
     commonSettings,
-    libraryDependencies ++= Seq(
-      // Dependencies.magnolia.value,
-      // "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided
-    ),
     moduleName := "doodle-explore"
   )
   .dependsOn(core, interact)
