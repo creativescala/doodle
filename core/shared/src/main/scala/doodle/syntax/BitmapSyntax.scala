@@ -22,12 +22,12 @@ import java.io.File
 
 trait BitmapSyntax {
   def read[Alg[x[_]] <: Bitmap[x], F[_]](file: File): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+    Picture { implicit algebra: Alg[F] =>
       algebra.read(file)
     }
 
   def read[Alg[x[_]] <: Bitmap[x], F[_]](file: String): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+    Picture { implicit algebra: Alg[F] =>
       algebra.read(file)
     }
 }

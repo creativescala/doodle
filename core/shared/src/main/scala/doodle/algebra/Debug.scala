@@ -20,12 +20,13 @@ package algebra
 import doodle.core.Color
 
 trait Debug[F[_]] extends Algebra[F] {
+
   /**
-   * Draws the bounding box and origin of the given picture on top of the
-   * picture. The given color is used for the bounding box and origin.
-   *
-   * The bounding box and origin are not included in layout calculations and
-   * hence will not affect the picture's layout.
-   */
+    * Draws the bounding box and origin of the given picture on top of the
+    * picture. The given color is used for the bounding box and origin.
+    *
+    * The bounding box and origin are not included in layout calculations and
+    * hence will not affect the picture's layout.
+    */
   def debug[A](picture: F[A], color: Color): F[A]
 }

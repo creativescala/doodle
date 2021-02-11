@@ -19,7 +19,7 @@ package core
 
 /** Elements are stored in reversed order to make appending, the most common
   * operation, more efficient. */
-final case class OpenPath private(reversed: List[PathElement]) {
+final case class OpenPath private (reversed: List[PathElement]) {
   def add(element: PathElement): OpenPath =
     new OpenPath(element :: reversed)
 

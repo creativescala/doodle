@@ -21,22 +21,23 @@ package effect
 import doodle.core.Color
 
 /**
- * The [[Frame]] specifies how to create a [[Canvas]].
- */
+  * The [[Frame]] specifies how to create a [[Canvas]].
+  */
 final case class Frame(size: Size,
                        title: String = "Doodle",
                        center: Center,
                        background: Option[Color] = Some(Color.white),
                        redraw: Redraw = Redraw.clearToBackground) {
+
   /**
-   * Change the background color to the given color.
-   */
+    * Change the background color to the given color.
+    */
   def background(color: Color): Frame =
     this.copy(background = Some(color))
 
   /**
-   * Change the background to fully transparent (no background).
-   */
+    * Change the background to fully transparent (no background).
+    */
   def noBackground: Frame =
     this.copy(background = None)
 

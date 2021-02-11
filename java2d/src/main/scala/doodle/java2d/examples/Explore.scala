@@ -27,12 +27,12 @@ object Explore {
   import cats.instances.all._
 
   val wave = (period: Double, amplitude: Double, color: Color) =>
-      (-300 to 300).toList.map { x =>
-        val y = Math.sin(x / period) * amplitude
-        circle[Algebra,Drawing](10)
-          .fillColor(color)
-          .at(x.toDouble, y)
-      }.allOn
+    (-300 to 300).toList.map { x =>
+      val y = Math.sin(x / period) * amplitude
+      circle[Algebra, Drawing](10)
+        .fillColor(color)
+        .at(x.toDouble, y)
+    }.allOn
 
   def draw(): Unit = {
     wave(50, 300, Color.cornflowerBlue).draw()

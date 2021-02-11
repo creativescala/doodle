@@ -39,17 +39,17 @@ sealed abstract class Point extends Product with Serializable {
   }
 
   /**
-   * Scale the length of this point by multiplying its length (radius, in polar
-   * form) by the given factor.
-   */
+    * Scale the length of this point by multiplying its length (radius, in polar
+    * form) by the given factor.
+    */
   def scaleLength(factor: Double): Point = {
     Point(this.r * factor, this.angle)
   }
 
   /**
-   * Scale the length of this point by adding its length (radius, in polar
-   * form) to the given factor.
-   */
+    * Scale the length of this point by adding its length (radius, in polar
+    * form) to the given factor.
+    */
   def lengthen(r: Double): Point = {
     val polar = this.toPolar
     Polar(polar.r + r, polar.angle)
@@ -118,13 +118,13 @@ object Point {
   // representation you want.
   object extractors {
     object Cartesian {
-      def unapply(pt: Point): Option[(Double, Double)] = {
+      def unapply(pt: Point): Some[(Double, Double)] = {
         val cartesian = pt.toCartesian
         Some((cartesian.x, cartesian.y))
       }
     }
     object Polar {
-      def unapply(pt: Point): Option[(Double, Angle)] = {
+      def unapply(pt: Point): Some[(Double, Angle)] = {
         val polar = pt.toPolar
         Some((polar.r, polar.angle))
       }

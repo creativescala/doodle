@@ -12,15 +12,14 @@ import javax.imageio.ImageIO
 
 trait ReifiedBitmap extends doodle.algebra.Bitmap[Drawing] {
   def read(file: File): Drawing[Unit] = {
-    Finalized.leaf{ _ =>
+    Finalized.leaf { _ =>
       val bi = ImageIO.read(file)
       val w = bi.getWidth()
       val h = bi.getHeight()
       val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (bb,
-       State.inspect{ (tx: Transform) =>
-         WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
-       })
+      (bb, State.inspect { (tx: Transform) =>
+        WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
+      })
 
     }
   }

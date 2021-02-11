@@ -21,7 +21,11 @@ package generic
 import doodle.core.{Cap, Color, Gradient, Join}
 import doodle.core.font.Font
 
-final case class Stroke(color: Color, width: Double, cap: Cap, join: Join, dash: Option[Array[Float]])
+final case class Stroke(color: Color,
+                        width: Double,
+                        cap: Cap,
+                        join: Join,
+                        dash: Option[Array[Float]])
 sealed trait Fill extends Product with Serializable
 object Fill {
   final case class ColorFill(color: Color) extends Fill
@@ -49,7 +53,8 @@ final case class DrawingContext(
     this.copy(blendMode = mode)
 
   def stroke: Option[Stroke] =
-    (strokeWidth).map(w => Stroke(strokeColor, w, strokeCap, strokeJoin, strokeDash))
+    (strokeWidth).map(w =>
+      Stroke(strokeColor, w, strokeCap, strokeJoin, strokeDash))
 
   def strokeColor(color: Color): DrawingContext =
     this.copy(strokeColor = color)

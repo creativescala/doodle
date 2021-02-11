@@ -157,7 +157,11 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   // fill parameter here.
   def text(
       gc: Graphics2D
-  )(transform: Tx, stroke: Option[Stroke], text: String, font: Font, bounds: Rectangle2D): Unit =
+  )(transform: Tx,
+    stroke: Option[Stroke],
+    text: String,
+    font: Font,
+    bounds: Rectangle2D): Unit =
     stroke.foreach { s =>
       Java2D.setStroke(gc, s)
       // Our default transform adds reflection around the y-axis (to make positive

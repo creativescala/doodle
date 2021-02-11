@@ -28,8 +28,7 @@ object Polygons {
     def polygon(sides: Int, radius: Double): Picture[Basic, F, Unit] = {
       val centerAngle = 360.degrees / sides.toDouble
 
-      val shape = (0 until sides).foldLeft(ClosedPath.empty) {
-        (path, index) =>
+      val shape = (0 until sides).foldLeft(ClosedPath.empty) { (path, index) =>
         val point = Point.polar(radius, centerAngle * index.toDouble)
         if (index == 0) path.moveTo(point) else path.lineTo(point)
       }

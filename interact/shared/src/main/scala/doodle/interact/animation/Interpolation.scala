@@ -132,7 +132,7 @@ object Interpolation {
   ) extends Interpolation[(A, B)]
 
   implicit val interpolationInstance
-      : Functor[Interpolation] with Semigroupal[Interpolation] =
+    : Functor[Interpolation] with Semigroupal[Interpolation] =
     new Functor[Interpolation] with Semigroupal[Interpolation] {
       def product[A, B](
           fa: Interpolation[A],

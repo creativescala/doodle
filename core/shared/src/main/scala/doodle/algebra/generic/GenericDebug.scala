@@ -54,7 +54,7 @@ trait GenericDebug[F[_]] extends Debug[Finalized[F, ?]] {
               .map {
                 case (_, rdrDebug) =>
                   val fullRdr = Renderable { tx =>
-                    (rdr.runA(tx), rdrDebug.runA(tx)).mapN{ (fa, fdbg) =>
+                    (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (fa, fdbg) =>
                       (fa, fdbg).mapN((a, _) => a)
                     }
                   }

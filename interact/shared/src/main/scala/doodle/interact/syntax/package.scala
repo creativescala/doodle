@@ -7,7 +7,7 @@ package object syntax
     with InterpolationSyntax
     with MouseMoveSyntax
     with MouseOverSyntax
-    with RedrawSyntax{
+    with RedrawSyntax {
   object animationRenderer extends AnimationRendererSyntax
   object animationWriter extends AnimationWriterSyntax
   object interpolation extends InterpolationSyntax

@@ -42,8 +42,8 @@ trait RendererSyntax {
 
     /** Convenience to immediately render a `Picture`, using the given `Frame` options for this `Renderer`. */
     def drawWithFrame[Frame, Canvas](frame: Frame,
-                                   cb: Either[Throwable, A] => Unit =
-                                     nullCallback _)(
+                                     cb: Either[Throwable, A] => Unit =
+                                       nullCallback _)(
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(frame)
@@ -51,14 +51,15 @@ trait RendererSyntax {
       } yield a).unsafeRunAsync(cb)
 
     /** Convenience to immediately render a `Picture`, using the given `Canvas` for this `Renderer`. */
-    def drawWithCanvas[Canvas](canvas: Canvas,
-                             cb: Either[Throwable, A] => Unit = nullCallback _)(
+    def drawWithCanvas[Canvas](
+        canvas: Canvas,
+        cb: Either[Throwable, A] => Unit = nullCallback _)(
         implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
       drawWithCanvasToIO(canvas).unsafeRunAsync(cb)
 
     /**
-     * Create an effect that, when run, will draw `Picture` on the default `Frame` for this `Renderer`.
-     */
+      * Create an effect that, when run, will draw `Picture` on the default `Frame` for this `Renderer`.
+      */
     def drawToIO[Frame, Canvas](
         implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): IO[A] =
       (for {
@@ -67,8 +68,8 @@ trait RendererSyntax {
       } yield a)
 
     /**
-     * Create an effect that, when run, will draw the `Picture` on the given `Canvas`.
-     */
+      * Create an effect that, when run, will draw the `Picture` on the given `Canvas`.
+      */
     def drawWithCanvasToIO[Canvas](canvas: Canvas)(
         implicit renderer: Renderer[Alg, F, _, Canvas]): IO[A] =
       renderer.render(canvas)(picture)

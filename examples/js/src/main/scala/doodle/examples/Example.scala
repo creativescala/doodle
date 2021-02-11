@@ -16,7 +16,7 @@ object Example {
 
   @JSExport
   def main(): Unit = {
-      Letters.letters[Algebra, Drawing].drawWithFrame(frame)
+    Letters.letters[Algebra, Drawing].drawWithFrame(frame)
 
     // Squares.squares.drawWithFrame(frame)
     //

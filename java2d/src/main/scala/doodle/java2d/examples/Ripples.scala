@@ -41,8 +41,9 @@ object Ripples {
       this.copy(age = age + 1)
 
     def picture: Picture[Unit] =
-      circle[Algebra,Drawing](age.toDouble)
-        .strokeColor(Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized))
+      circle[Algebra, Drawing](age.toDouble)
+        .strokeColor(
+          Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized))
         .at(x, y)
   }
 
@@ -51,15 +52,13 @@ object Ripples {
 
     ConcurrentQueue[IO]
       .bounded[Option[Ripple]](5)
-      .map{ queue =>
-        canvas
-          .redraw
+      .map { queue =>
+        canvas.redraw
           .map(_ => none[Ripple])
           .mapEvalF(r => queue.offer(r))
           .subscribe()
 
-        canvas
-          .mouseMove
+        canvas.mouseMove
           .throttleFirst(FiniteDuration(100, MILLISECONDS)) // Stop spamming with too many mouse events
           .map(pt => Ripple(0, pt.x, pt.y).some)
           .mapEvalF(r => queue.offer(r))
@@ -67,21 +66,20 @@ object Ripples {
 
         Observable
           .repeatEvalF(queue.poll)
-          .scan(List.empty[Ripple]){(ripples, ripple) =>
+          .scan(List.empty[Ripple]) { (ripples, ripple) =>
             ripple match {
               case Some(r) => r :: ripples
-              case None => ripples.filter(_.alive).map(_.older)
+              case None    => ripples.filter(_.alive).map(_.older)
             }
           }
           .map(ripples => ripples.map(_.picture).allOn)
       }
   }
 
-
   def go(): Unit = {
     // frame.canvas.flatMap(canvas => ripples(canvas.mouseMove).map(_.animateToCanvas(canvas))).unsafeRunSync()
     (for {
-      canvas <- frame.canvas
+      canvas <- frame.canvas()
       frames <- ripples(canvas)
       a <- frames.animateWithCanvasToIO(canvas)
     } yield a).unsafeRunAsync(println _)

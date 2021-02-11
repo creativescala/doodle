@@ -85,7 +85,7 @@ trait GoldenImage extends Golden { self: FunSuite =>
         assertEquals(
           actual.getHeight(),
           expected.getHeight(),
-          s"Heights differ"
+          s"Heights differed when comparing golden Image against generated Image"
         )
         assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
 
@@ -133,7 +133,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
         assertEquals(
           actual.getHeight(),
           expected.getHeight(),
-          s"Heights differ"
+          s"Heights differed when comparing golden Picture against generated Picture"
         )
         assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
 

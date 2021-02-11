@@ -54,8 +54,8 @@ trait GenericSize[F[_]] extends Size[Finalized[F, ?]] { self: GivenFunctor[F] =>
     }
 
   /**
-   * Get the bounding box enclosing the picture
-   */
+    * Get the bounding box enclosing the picture
+    */
   def boundingBox[A](picture: Finalized[F, A]): Finalized[F, BoundingBox] =
     picture.map {
       case (bb, rdr) =>

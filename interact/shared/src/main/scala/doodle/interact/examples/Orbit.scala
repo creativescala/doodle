@@ -11,7 +11,9 @@ import monix.reactive.Observable
 object Orbit {
 
   def planet[F[_]](angle: Angle): Picture[Basic, F, Unit] =
-    circle[Basic, F](20).fillColor(Color.brown.spin(angle)).at(Point(200, angle))
+    circle[Basic, F](20)
+      .fillColor(Color.brown.spin(angle))
+      .at(Point(200, angle))
 
   def frames[F[_]]: Observable[Picture[Basic, F, Unit]] =
     Observable

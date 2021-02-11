@@ -27,7 +27,6 @@ import magnolia._
 import monix.execution.{Ack, Scheduler}
 import monix.reactive._
 import monix.reactive.subjects.Var
-//import scala.language.experimental.macros
 
 trait Java2dExplorer[A] extends Explorer[JComponent, A] {
   def render: IO[Observable[A]] =
@@ -114,14 +113,14 @@ trait Java2dExplorerAtoms {
     }
 }
 
-object Java2dExplorer extends Java2dExplorerAtoms {
+object Java2dExplorer /*extends Java2dExplorerAtoms*/ {
   type Typeclass[A] = ExplorerFactory[JComponent, A]
 
-  def combine[A](caseClass: CaseClass[Typeclass, A]): Typeclass[A] =
+  def combine[A](ctx: CaseClass[Typeclass, A]): ExplorerFactory[JComponent, A] =
     new ExplorerFactory[JComponent, A] {
       def create =
         new Java2dExplorer[A] {
-          val children = caseClass.parameters.map(p => p.typeclass.create)
+          val children = ctx.parameters.map(p => p.typeclass.create)
 
           val ui: JComponent = {
             val container = Box.createVerticalBox()
@@ -133,12 +132,14 @@ object Java2dExplorer extends Java2dExplorerAtoms {
           val value: Observable[A] = {
             Observable
               .combineLatestList(children.map(c => c.value): _*)
-              .map(v => caseClass.rawConstruct(v))
+              .map(v => ctx.rawConstruct(v))
           }
         }
     }
 
-  def dispatch[A](sealedTrait: SealedTrait[Typeclass, A]): Typeclass[A] = ???
+  def dispatch[A](
+      ctx: SealedTrait[Typeclass, A]): ExplorerFactory[JComponent, A] = ???
 
-  def gen[A]: Typeclass[A] = macro Magnolia.gen[A]
+  implicit def deriveExplorer[A]: ExplorerFactory[JComponent, A] =
+    macro Magnolia.gen[A]
 }

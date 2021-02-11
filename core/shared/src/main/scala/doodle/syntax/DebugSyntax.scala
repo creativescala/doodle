@@ -23,17 +23,18 @@ import doodle.core.Color
 trait DebugSyntax {
   implicit class DebugPictureOps[Alg[x[_]] <: Debug[x], F[_], A](
       picture: Picture[Alg, F, A]) {
+
     /**
-     * Draw bounding box and origin in the given color on top of the given picture.
-     */
+      * Draw bounding box and origin in the given color on top of the given picture.
+      */
     def debug(color: Color): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.debug(picture(algebra), color)
       }
 
     /**
-     * Draw bounding box and origin in crimson on top of the given picture.
-     */
+      * Draw bounding box and origin in crimson on top of the given picture.
+      */
     def debug: Picture[Alg, F, A] =
       debug(Color.crimson)
   }

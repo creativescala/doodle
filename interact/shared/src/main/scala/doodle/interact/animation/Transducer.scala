@@ -159,9 +159,9 @@ trait Transducer[Output] { self =>
     import Transducer._
 
     new Transducer[Output] {
-      type State = (Boolean, Box[_,Output])
+      type State = (Boolean, Box[_, Output])
 
-      val initial = (true, Box[self.State,Output](self)(self.initial))
+      val initial = (true, Box[self.State, Output](self)(self.initial))
 
       def next(current: State): State = {
         current match {
@@ -169,7 +169,7 @@ trait Transducer[Output] { self =>
             val nextS = box.next
             if (first && box.transducer.stopped(nextS)) {
               val nextT = f(box.output)
-              (false, Box[nextT.State,Output](nextT)(nextT.initial))
+              (false, Box[nextT.State, Output](nextT)(nextT.initial))
             } else {
               (first, Box(box.transducer)(nextS))
             }
@@ -265,10 +265,10 @@ trait Transducer[Output] { self =>
     }
 
   /**
-   * Create a transducer that outputs the cumulative results of applying the
-   * function f to the output of the underlying transducer. If the underlying
-   * transducer has stopped the zero value is produced as the only output.
-   */
+    * Create a transducer that outputs the cumulative results of applying the
+    * function f to the output of the underlying transducer. If the underlying
+    * transducer has stopped the zero value is produced as the only output.
+    */
   def scanLeft[B](zero: B)(f: (B, Output) => B): Transducer[B] =
     new Transducer[B] {
       // State consists of
@@ -284,8 +284,8 @@ trait Transducer[Output] { self =>
 
       def next(current: State): State = {
         val (a, b, flag) = current
-        if(flag) current
-        else if(self.stopped(a)) (a, b, true)
+        if (flag) current
+        else if (self.stopped(a)) (a, b, true)
         else (self.next(a), f(b, self.output(a)), false)
       }
 
@@ -389,10 +389,11 @@ object Transducer {
   type Aux[S0, O0] = Transducer[O0] { type State = S0 }
 
   /**
-   * This associates a transducer with its state, useful to get around issues
-   * with inference of existential types.
-   */
-  final case class Box[S,O](transducer: Transducer.Aux[S,O])(state: S) { self =>
+    * This associates a transducer with its state, useful to get around issues
+    * with inference of existential types.
+    */
+  final case class Box[S, O](transducer: Transducer.Aux[S, O])(state: S) {
+    self =>
     def next: S =
       transducer.next(state)
 
@@ -404,7 +405,7 @@ object Transducer {
   }
 
   implicit val transducerTraverseAndApplicative
-      : Traverse[Transducer] with Applicative[Transducer] =
+    : Traverse[Transducer] with Applicative[Transducer] =
     new Traverse[Transducer] with Applicative[Transducer] {
       def foldLeft[A, B](fa: Transducer[A], b: B)(f: (B, A) => B): B =
         fa.foldLeft(b)(f)

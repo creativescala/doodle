@@ -8,11 +8,11 @@ object Squares {
   import doodle.svg._
 
   val squares: Picture[Unit] = {
-      val red = square[Algebra,Drawing](100).fillColor(Color.red)
-      val green = square[Algebra,Drawing](100).fillColor(Color.green)
-      val blue = square[Algebra,Drawing](100).fillColor(Color.blue)
-      val yellow = square[Algebra,Drawing](100).fillColor(Color.yellow)
+    val red = square[Algebra, Drawing](100).fillColor(Color.red)
+    val green = square[Algebra, Drawing](100).fillColor(Color.green)
+    val blue = square[Algebra, Drawing](100).fillColor(Color.blue)
+    val yellow = square[Algebra, Drawing](100).fillColor(Color.yellow)
 
-      red.beside(green).above(blue.beside(yellow))
-    }
+    red.beside(green).above(blue.beside(yellow))
+  }
 }

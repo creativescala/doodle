@@ -56,7 +56,10 @@ object FontSize {
   def points(pts: Int): FontSize = Points(pts)
 }
 
-final case class Font(family: FontFamily, style: FontStyle, weight: FontWeight, size: FontSize) {
+final case class Font(family: FontFamily,
+                      style: FontStyle,
+                      weight: FontWeight,
+                      size: FontSize) {
   def family(name: String): Font =
     family(FontFamily.named(name))
 
@@ -86,6 +89,8 @@ object Font {
   import FontFamily._
   import FontSize._
 
-  val defaultSerif = Font(serif, FontStyle.normal, FontWeight.normal, points(12))
-  val defaultSansSerif = Font(sansSerif, FontStyle.normal, FontWeight.normal, points(12))
+  val defaultSerif =
+    Font(serif, FontStyle.normal, FontWeight.normal, points(12))
+  val defaultSansSerif =
+    Font(sansSerif, FontStyle.normal, FontWeight.normal, points(12))
 }

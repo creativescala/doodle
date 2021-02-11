@@ -17,8 +17,7 @@ trait PathModule { self: Base with SvgModule =>
       def closedPath(tx: Tx,
                      fill: Option[Fill],
                      stroke: Option[Stroke],
-                     elements: List[PathElement])
-          : SvgResult[Unit] = {
+                     elements: List[PathElement]): SvgResult[Unit] = {
         val dAttr = Svg.toSvgPath(elements, Svg.Closed)
         val set = mutable.Set.empty[self.Tag]
         val style = Svg.toStyle(stroke, fill, set)
@@ -32,8 +31,7 @@ trait PathModule { self: Base with SvgModule =>
       def openPath(tx: Tx,
                    fill: Option[Fill],
                    stroke: Option[Stroke],
-                   elements: List[PathElement])
-          : SvgResult[Unit] = {
+                   elements: List[PathElement]): SvgResult[Unit] = {
         val dAttr = Svg.toSvgPath(elements, Svg.Open)
         val set = mutable.Set.empty[self.Tag]
         val style = Svg.toStyle(stroke, fill, set)

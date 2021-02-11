@@ -24,7 +24,10 @@ object Interpolation {
       .allOn
 
   val default =
-    Image.interpolatingSpline(pts).strokeColor(Color.cornflowerBlue).strokeWidth(3.0)
+    Image
+      .interpolatingSpline(pts)
+      .strokeColor(Color.cornflowerBlue)
+      .strokeWidth(3.0)
 
   val tight =
     Image.catmulRom(pts, 1.0).strokeColor(Color.cornflowerBlue).strokeWidth(3.0)

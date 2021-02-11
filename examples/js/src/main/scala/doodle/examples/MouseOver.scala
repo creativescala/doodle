@@ -11,7 +11,7 @@ object MouseOver {
   val initialColor = Color.royalBlue
 
   def coloredCircle(color: Color): Picture[Unit] =
-      circle(300).fillColor(color)
+    circle(300).fillColor(color)
 
   def makeFrames(color: Color): Observable[Picture[Unit]] = {
     println("makeFrames")

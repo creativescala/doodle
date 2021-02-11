@@ -36,7 +36,9 @@ trait Path[F[_]] extends Algebra[F] {
     path(ClosedPath(PathElement.star(points, outerRadius, innerRadius, angle)))
   }
 
-  def roundedRectangle(width: Double, height: Double, radius: Double): F[Unit] = {
+  def roundedRectangle(width: Double,
+                       height: Double,
+                       radius: Double): F[Unit] = {
     path(ClosedPath(PathElement.roundedRectangle(width, height, radius)))
   }
 

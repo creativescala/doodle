@@ -28,19 +28,18 @@ trait AnimationRendererSyntax {
       frames: Observable[Picture[Alg, F, A]]) {
 
     /**
-     * Makes this Observable produce frames with the given period between
-     * frames. This is useful if the Observable is producing frames too quickly
-     * or slowly for the desired animation.
-     *
-     * A convenience derived from the throttle method on Observable.
-     */
+      * Makes this Observable produce frames with the given period between
+      * frames. This is useful if the Observable is producing frames too quickly
+      * or slowly for the desired animation.
+      *
+      * A convenience derived from the throttle method on Observable.
+      */
     def withFrameRate(period: FiniteDuration): Observable[Picture[Alg, F, A]] =
       frames.throttle(period, 1)
 
     /** Create an effect that, when run, will render an `Observable` that is
       * generating frames an appropriate rate for animation. */
-    def animateToIO[Frame, Canvas](
-        frame: Frame)(
+    def animateToIO[Frame, Canvas](frame: Frame)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         s: Scheduler,
@@ -51,9 +50,9 @@ trait AnimationRendererSyntax {
       } yield result)
 
     /** Render an `Observable` that is generating frames an appropriate rate for animation. */
-    def animate[Frame, Canvas](
-        frame: Frame,
-        cb: Either[Throwable, A] => Unit = theNullCallback)(
+    def animate[Frame, Canvas](frame: Frame,
+                               cb: Either[Throwable, A] => Unit =
+                                 theNullCallback)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         s: Scheduler,
@@ -73,8 +72,8 @@ trait AnimationRendererSyntax {
     /** Render an `Observable` that is generating frames an appropriate rate for
       * animation. */
     def animateWithCanvas[Canvas](canvas: Canvas,
-                                cb: Either[Throwable, A] => Unit =
-                                  theNullCallback)(
+                                  cb: Either[Throwable, A] => Unit =
+                                    theNullCallback)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         s: Scheduler,
@@ -132,8 +131,8 @@ trait AnimationRendererSyntax {
     }
 
     def animateFramesWithCanvas[Canvas](canvas: Canvas,
-                                      cb: Either[Throwable, A] => Unit =
-                                        theNullCallback)(
+                                        cb: Either[Throwable, A] => Unit =
+                                          theNullCallback)(
         implicit a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         r: Redraw[Canvas],

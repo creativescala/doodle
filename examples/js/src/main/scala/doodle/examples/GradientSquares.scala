@@ -10,7 +10,7 @@ object GradientSquares {
   val width = 100.0
   val gradient = Gradient.dichromaticVertical(Color.red, Color.blue, width)
   val gradientSquare =
-    square[Algebra,Drawing](width)
+    square[Algebra, Drawing](width)
       .fillGradient(gradient)
 
   val image: Picture[Unit] =

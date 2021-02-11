@@ -6,7 +6,6 @@ import doodle.language.Basic
 import doodle.algebra.{Layout, Size}
 import doodle.algebra.generic._
 
-
 trait AlgebraModule {
   self: Base with ShapeModule with PathModule with SvgModule =>
   trait BaseAlgebra

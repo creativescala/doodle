@@ -11,10 +11,11 @@ object GradientCircle {
 
   val image: Picture[Unit] =
     (0 to 360 by 15)
-      .map(x =>
-        circle[Algebra,Drawing](50)
-          .fillColor(Color.hsl(x.degrees, 0.7, 0.7))
-          .at(Point(200, x.degrees)))
+      .map(
+        x =>
+          circle[Algebra, Drawing](50)
+            .fillColor(Color.hsl(x.degrees, 0.7, 0.7))
+            .at(Point(200, x.degrees)))
       .toList
       .allOn
 }

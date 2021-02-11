@@ -47,7 +47,19 @@ final case class Canvas(
     subject
   }
 
-  private val mouseMoveSubject = PublishSubject[Point]
+  private val mouseClickSubject = PublishSubject[Point]()
+  private def mouseClickCallback(tx: Transform): dom.MouseEvent => Unit =
+    (evt: dom.MouseEvent) => {
+      val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
+      val x = evt.clientX - rect.left; //x position within the element.
+      val y = evt.clientY - rect.top;
+      mouseClickSubject.onNext(tx(doodle.core.Point(x, y)))
+      ()
+    }
+
+  val mouseClick: Observable[Point] = mouseClickSubject
+
+  private val mouseMoveSubject = PublishSubject[Point]()
   private def mouseMoveCallback(tx: Transform): dom.MouseEvent => Unit =
     (evt: dom.MouseEvent) => {
       val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
@@ -64,20 +76,21 @@ final case class Canvas(
 
   /** Get the root <svg> node, creating one if needed. */
   def svgRoot(bb: BoundingBox): dom.Node = {
-    def addCallback(tag: Tag, tx: Transform): Tag =
-      tag(onmousemove := (mouseMoveCallback(tx)))
+    def addCallbacks(tag: Tag, tx: Transform): Tag =
+      tag(onmousemove := (mouseMoveCallback(tx)),
+          onclick := (mouseClickCallback(tx)))
 
     currentBB = bb
     val tx = Svg.inverseClientTransform(currentBB, frame.size)
     if (svgRoot == null) {
-      val newRoot = addCallback(Svg.svgTag(bb, frame), tx)
+      val newRoot = addCallbacks(Svg.svgTag(bb, frame), tx)
       svgRoot = target.appendChild(newRoot.render)
       svgRoot
     } else {
       frame.size match {
         case Size.FixedSize(_, _) => svgRoot
         case Size.FitToPicture(_) =>
-          val newRoot = addCallback(Svg.svgTag(bb, frame), tx).render
+          val newRoot = addCallbacks(Svg.svgTag(bb, frame), tx).render
           target.replaceChild(newRoot, svgRoot)
           svgRoot = newRoot
           svgRoot
@@ -102,7 +115,8 @@ final case class Canvas(
     //
     // Can't use 'display: none' style beause Firefox will raise an exception if
     // we ask for the bounding box of such an element.
-    val elt = target.appendChild(svgTags.svg(svgAttrs.visibility:="hidden").render)
+    val elt =
+      target.appendChild(svgTags.svg(svgAttrs.visibility := "hidden").render)
     val txt = elt.appendChild(Svg.textTag(text, font).render)
     val bb = txt.asInstanceOf[dom.svg.Text].getBBox()
     val boundingBox = BoundingBox.centered(bb.width, bb.height)

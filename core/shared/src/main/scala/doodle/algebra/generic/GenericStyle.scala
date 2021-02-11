@@ -24,7 +24,8 @@ trait GenericStyle[F[_]] extends Style[Finalized[F, ?]] {
   def fillColor[A](image: Finalized[F, A], fillColor: Color): Finalized[F, A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
 
-  def fillGradient[A](image: Finalized[F, A], fillGradient: Gradient): Finalized[F, A] =
+  def fillGradient[A](image: Finalized[F, A],
+                      fillGradient: Gradient): Finalized[F, A] =
     Finalized.contextTransform(_.fillGradient(fillGradient))(image)
 
   def strokeColor[A](image: Finalized[F, A],
@@ -41,8 +42,10 @@ trait GenericStyle[F[_]] extends Style[Finalized[F, ?]] {
   def strokeJoin[A](image: Finalized[F, A], join: Join): Finalized[F, A] =
     Finalized.contextTransform(_.strokeJoin(join))(image)
 
-  def strokeDash[A](image: Finalized[F, A], pattern: Iterable[Double]): Finalized[F, A] =
-    Finalized.contextTransform(_.strokeDash(pattern.toArray.map(_.toFloat)))(image)
+  def strokeDash[A](image: Finalized[F, A],
+                    pattern: Iterable[Double]): Finalized[F, A] =
+    Finalized.contextTransform(_.strokeDash(pattern.toArray.map(_.toFloat)))(
+      image)
 
   def noDash[A](image: Finalized[F, A]): Finalized[F, A] =
     Finalized.contextTransform(_.noDash)(image)

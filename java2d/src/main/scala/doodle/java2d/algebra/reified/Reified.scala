@@ -133,12 +133,12 @@ object Reified {
   ) extends Reified
   final case class Bitmap(transform: Tx, image: BufferedImage) extends Reified
   final case class Text(
-    transform: Tx,
-    fill: Option[Fill],
-    stroke: Option[Stroke],
-    text: String,
-    font: Font,
-    bounds: Rectangle2D
+      transform: Tx,
+      fill: Option[Fill],
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
   ) extends Reified
 
   def fillRect(

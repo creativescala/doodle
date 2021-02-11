@@ -18,10 +18,10 @@ package doodle
 package algebra
 
 /**
- * Algebra that represents converting from the Input type to a F[Unit] (that in
- * turn can be wrapped in a Picture). This can be used to represent, for
- * example, creating a picture from a bitmap in a base64 encoded string.
- */
+  * Algebra that represents converting from the Input type to a F[Unit] (that in
+  * turn can be wrapped in a Picture). This can be used to represent, for
+  * example, creating a picture from a bitmap in a base64 encoded string.
+  */
 trait ToPicture[F[_], Input] extends Algebra[F] {
   def toPicture(in: Input): F[Unit]
 }

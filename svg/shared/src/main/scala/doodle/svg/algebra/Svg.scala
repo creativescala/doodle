@@ -15,7 +15,8 @@ trait SvgModule { self: Base =>
   object Svg {
     implicit val svgResultApply: Apply[SvgResult] =
       new Apply[SvgResult] {
-        def ap[A, B](ff: SvgResult[(A) => B])(fa: SvgResult[A]): SvgResult[B] = {
+        def ap[A, B](ff: SvgResult[(A) => B])(
+            fa: SvgResult[A]): SvgResult[B] = {
           val (t1, s1, fab) = ff
           val (t2, s2, a) = fa
 
@@ -34,55 +35,62 @@ trait SvgModule { self: Base =>
     import implicits.{Tag => _, _}
 
     def render[Alg[x[_]] <: doodle.algebra.Algebra[x], A](
-      frame: Frame,
-      algebra: Alg[Drawing],
-      picture: Picture[Alg, Drawing, A]): IO[(Output, A)] = {
+        frame: Frame,
+        algebra: Alg[Drawing],
+        picture: Picture[Alg, Drawing, A]): IO[(Output, A)] = {
       renderWithoutRootTag(algebra, picture)
         .map { case (bb, tags, a) => (svgTag(bb, frame)(tags).render, a) }
     }
 
     /** Render to SVG without wrapping with a root <svg> tag. */
     def renderWithoutRootTag[Alg[x[_]] <: doodle.algebra.Algebra[x], A](
-      algebra: Alg[Drawing],
-      picture: Picture[Alg, Drawing, A]): IO[(BoundingBox, Tag, A)] = {
+        algebra: Alg[Drawing],
+        picture: Picture[Alg, Drawing, A]): IO[(BoundingBox, Tag, A)] = {
       for {
         drawing <- IO { picture(algebra) }
         (bb, rdr) = drawing.runA(List.empty).value
         (_, (tags, set, a)) = rdr.run(Transform.verticalReflection).value
-        tagsWithGradients = svg.g(svg.defs(set.toList:_*), tags)
+        tagsWithGradients = svg.g(svg.defs(set.toList: _*), tags)
       } yield (bb, tagsWithGradients, a)
     }
 
     /** Given a bounding box and a size specification create a <svg> tag that has the
-     * correct size and viewbox */
+      * correct size and viewbox */
     def svgTag(bb: BoundingBox, frame: Frame): Tag =
       frame.size match {
         case Size.FitToPicture(border) =>
           val w = bb.width + (2 * border)
           val h = bb.height + (2 * border)
           svg.svg(
-            svgAttrs.xmlns := s"http://www.w3.org/2000/svg"
+            svgAttrs.xmlns := s"http://www.w3.org/2000/svg",
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${bb.left - border} ${bb.bottom - border} ${w} ${h}",
             bundle.attrs.style :=
-              frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
+              frame.background
+                .map(c => s"background-color: ${Svg.toHSLA(c)};")
+                .getOrElse("")
+          )
 
         case Size.FixedSize(w, h) =>
-          svg.svg(svgAttrs.width := w,
-                  svgAttrs.height := h,
-                  svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
-                  bundle.attrs.style :=
-                    frame.background.map(c => s"background-color: ${Svg.toHSLA(c)};").getOrElse(""))
+          svg.svg(
+            svgAttrs.width := w,
+            svgAttrs.height := h,
+            svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
+            bundle.attrs.style :=
+              frame.background
+                .map(c => s"background-color: ${Svg.toHSLA(c)};")
+                .getOrElse("")
+          )
 
       }
 
     def textTag(text: String, font: Font): Tag = {
       val fontFamily =
         font.family match {
-          case FontFamily.Serif => "serif"
-          case FontFamily.SansSerif => "sans-serif"
-          case FontFamily.Monospaced => "monospaced"
+          case FontFamily.Serif       => "serif"
+          case FontFamily.SansSerif   => "sans-serif"
+          case FontFamily.Monospaced  => "monospaced"
           case FontFamily.Named(name) => name
         }
 
@@ -94,7 +102,7 @@ trait SvgModule { self: Base =>
 
       val fontWeight =
         font.weight match {
-          case FontWeight.Bold => "bold"
+          case FontWeight.Bold   => "bold"
           case FontWeight.Normal => "normal"
         }
 
@@ -104,12 +112,12 @@ trait SvgModule { self: Base =>
         |font-weight: ${fontWeight};
         """.stripMargin
 
-      svg.text(svgAttrs.style:=style, text)
+      svg.text(svgAttrs.style := style, text)
     }
 
     /**
-     * Transform from client coordinates to local coordinates
-     */
+      * Transform from client coordinates to local coordinates
+      */
     def inverseClientTransform(bb: BoundingBox, size: Size): Transform = {
       size match {
         case Size.FitToPicture(border) =>
@@ -123,12 +131,14 @@ trait SvgModule { self: Base =>
     }
 
     /**
-     * Given stroke and fill returns a `String` representing the stroke and fill rendered as SVG styles.
-     *
-     * If the fill specifies a gradient that gradient, represented in SVG form as
-     * a Tag, is added to the given Set as a side-effect.
-     */
-    def toStyle(stroke: Option[Stroke], fill: Option[Fill], gradients: mutable.Set[Tag]): String = {
+      * Given stroke and fill returns a `String` representing the stroke and fill rendered as SVG styles.
+      *
+      * If the fill specifies a gradient that gradient, represented in SVG form as
+      * a Tag, is added to the given Set as a side-effect.
+      */
+    def toStyle(stroke: Option[Stroke],
+                fill: Option[Fill],
+                gradients: mutable.Set[Tag]): String = {
       val f = fill.fold("fill: none;")(f => this.toStyle(f, gradients))
       val s = stroke.fold("stroke: none;")(Svg.toStyle(_))
 
@@ -136,12 +146,12 @@ trait SvgModule { self: Base =>
     }
 
     /**
-     * Given a Fill return the string to insert as the style part of the tag being rendered
-     *
-     * Additionally, if this fill represents a gradient add that gradient to the
-     * given Set as a side-effect. In SVG gradients cannot be specified inline.
-     * Hence this construction.
-     */
+      * Given a Fill return the string to insert as the style part of the tag being rendered
+      *
+      * Additionally, if this fill represents a gradient add that gradient to the
+      * given Set as a side-effect. In SVG gradients cannot be specified inline.
+      * Hence this construction.
+      */
     def toStyle(fill: Fill, gradients: mutable.Set[Tag]): String = {
       fill match {
         case Fill.ColorFill(c) => s"fill: ${Svg.toHSLA(c)};"
@@ -159,31 +169,43 @@ trait SvgModule { self: Base =>
       }
 
     def toSvgLinearGradient(gradient: Gradient.Linear): (String, Tag) = {
-      val (x1, y1, x2, y2) = (gradient.start.x, gradient.start.y, gradient.end.x, gradient.end.y)
+      val (x1, y1, x2, y2) =
+        (gradient.start.x, gradient.start.y, gradient.end.x, gradient.end.y)
       val id = Svg.toGradientId(gradient)
       val spreadMethod = Svg.toSvgSpreadMethod(gradient.cycleMethod)
       val stops = gradient.stops.map(this.toSvgGradientStop)
       val domGradient = svg.linearGradient(
-        svgAttrs.id:=id,
-        svgAttrs.x1:=x1, svgAttrs.y1:=y1, svgAttrs.x2:=x2, svgAttrs.y2:=y2,
-        svgAttrs.spreadMethod:=spreadMethod,
-        svgAttrs.gradientUnits:="objectBoundingBox"
-        )(stops:_*)
+        svgAttrs.id := id,
+        svgAttrs.x1 := x1,
+        svgAttrs.y1 := y1,
+        svgAttrs.x2 := x2,
+        svgAttrs.y2 := y2,
+        svgAttrs.spreadMethod := spreadMethod,
+        svgAttrs.gradientUnits := "objectBoundingBox"
+      )(stops: _*)
 
       id -> domGradient
     }
 
     def toSvgRadialGradient(gradient: Gradient.Radial): (String, Tag) = {
-      val (cx, cy, fx, fy, r) = (gradient.outer.x, gradient.outer.y, gradient.inner.x, gradient.inner.y, gradient.radius)
+      val (cx, cy, fx, fy, r) = (gradient.outer.x,
+                                 gradient.outer.y,
+                                 gradient.inner.x,
+                                 gradient.inner.y,
+                                 gradient.radius)
       val id = Svg.toGradientId(gradient)
       val spreadMethod = Svg.toSvgSpreadMethod(gradient.cycleMethod)
       val stops = gradient.stops.map(this.toSvgGradientStop)
       val domGradient = svg.radialGradient(
-        svgAttrs.id:=id,
-        svgAttrs.cx:=cx, svgAttrs.cy:=cy,
-        svgAttrs.fx:=fx, svgAttrs.fy:=fy, svgAttrs.r:=r,
-        svgAttrs.spreadMethod:=spreadMethod,
-        svgAttrs.gradientUnits:="userSpaceOnUse")(stops:_*)
+        svgAttrs.id := id,
+        svgAttrs.cx := cx,
+        svgAttrs.cy := cy,
+        svgAttrs.fx := fx,
+        svgAttrs.fy := fy,
+        svgAttrs.r := r,
+        svgAttrs.spreadMethod := spreadMethod,
+        svgAttrs.gradientUnits := "userSpaceOnUse"
+      )(stops: _*)
 
       id -> domGradient
     }
@@ -192,7 +214,9 @@ trait SvgModule { self: Base =>
       val (c, offset) = tuple
       val color = Svg.toRGB(c)
       val opacity = c.alpha.get
-      svg.stop(svgAttrs.offset:=offset, svgAttrs.stopColor:=color, svgAttrs.stopOpacity:=opacity)
+      svg.stop(svgAttrs.offset := offset,
+               svgAttrs.stopColor := color,
+               svgAttrs.stopOpacity := opacity)
     }
 
     def toStyle(stroke: Stroke): String = {
@@ -213,13 +237,12 @@ trait SvgModule { self: Base =>
       builder ++= s"stroke-linecap: ${linecap}; "
       builder ++= s"stroke-linejoin: ${linejoin}; "
       builder ++= (stroke.dash match {
-                     case Some(d) => d.map(a => f"stroke-dasharray: $a%.2f; ").mkString(" ")
-                     case None => ""
-                   })
+        case Some(d) => d.map(a => f"stroke-dasharray: $a%.2f; ").mkString(" ")
+        case None    => ""
+      })
 
       builder.toString
     }
-
 
     def toSvgTransform(tx: Transform): String = {
       val elt = tx.elements
@@ -236,7 +259,8 @@ trait SvgModule { self: Base =>
     case object Open extends PathType
     case object Closed extends PathType
 
-    private def format(d: Double): String = d.toString.replaceFirst("\\.0+$","")
+    private def format(d: Double): String =
+      d.toString.replaceFirst("\\.0+$", "")
 
     def toSvgPath(elts: List[PathElement], pathType: PathType): String = {
       import PathElement._
@@ -249,7 +273,8 @@ trait SvgModule { self: Base =>
         case LineTo(end) =>
           builder ++= s"L ${format(end.x)},${format(end.y)} "
         case BezierCurveTo(cp1, cp2, end) =>
-          builder ++= s"C ${format(cp1.x)},${format(cp1.y)} ${format(cp2.x)},${format(cp2.y)} ${format(end.x)},${format(end.y)} "
+          builder ++= s"C ${format(cp1.x)},${format(cp1.y)} ${format(cp2.x)},${format(
+            cp2.y)} ${format(end.x)},${format(end.y)} "
       }
       pathType match {
         case Open   => builder.toString
@@ -279,7 +304,7 @@ trait SvgModule { self: Base =>
       cycleMethod match {
         case Gradient.CycleMethod.NoCycle => "pad"
         case Gradient.CycleMethod.Reflect => "reflect"
-        case Gradient.CycleMethod.Repeat => "repeat"
+        case Gradient.CycleMethod.Repeat  => "repeat"
       }
 
     def toHSLA(color: Color): String = {

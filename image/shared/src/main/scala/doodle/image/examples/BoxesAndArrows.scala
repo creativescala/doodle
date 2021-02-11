@@ -14,7 +14,10 @@ object BoxesAndArrows {
   val box =
     roundedRectangle(size, size, size * .12).strokeWidth(size * .12).noFill
 
-  val font = Font(FontFamily.sansSerif, FontStyle.normal, FontWeight.normal, FontSize.points((size / 2.0).toInt))
+  val font = Font(FontFamily.sansSerif,
+                  FontStyle.normal,
+                  FontWeight.normal,
+                  FontSize.points((size / 2.0).toInt))
   // val equals = text("=").font(font)
 
   val c = circle(size * 0.3).fillColor(Color.black)

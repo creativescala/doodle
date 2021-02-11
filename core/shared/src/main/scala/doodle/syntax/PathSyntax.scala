@@ -35,28 +35,40 @@ trait PathSyntax {
       }
   }
 
-  def regularPolygon[Alg[x[_]] <: Path[x], F[_]](sides: Int, radius: Double, angle: Angle): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+  def regularPolygon[Alg[x[_]] <: Path[x], F[_]](
+      sides: Int,
+      radius: Double,
+      angle: Angle): Picture[Alg, F, Unit] =
+    Picture { implicit algebra: Alg[F] =>
       algebra.regularPolygon(sides, radius, angle)
     }
 
-  def star[Alg[x[_]] <: Path[x], F[_]](points: Int, outerRadius: Double, innerRadius: Double, angle: Angle): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+  def star[Alg[x[_]] <: Path[x], F[_]](points: Int,
+                                       outerRadius: Double,
+                                       innerRadius: Double,
+                                       angle: Angle): Picture[Alg, F, Unit] =
+    Picture { implicit algebra: Alg[F] =>
       algebra.star(points, outerRadius, innerRadius, angle)
     }
 
-  def roundedRectangle[Alg[x[_]] <: Path[x], F[_]](width: Double, height: Double, radius: Double): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+  def roundedRectangle[Alg[x[_]] <: Path[x], F[_]](
+      width: Double,
+      height: Double,
+      radius: Double): Picture[Alg, F, Unit] =
+    Picture { implicit algebra: Alg[F] =>
       algebra.roundedRectangle(width, height, radius)
     }
 
-  def interpolatingSpline[Alg[x[_]] <: Path[x], F[_]](points: Seq[Point]): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+  def interpolatingSpline[Alg[x[_]] <: Path[x], F[_]](
+      points: Seq[Point]): Picture[Alg, F, Unit] =
+    Picture { implicit algebra: Alg[F] =>
       algebra.interpolatingSpline(points)
     }
 
-  def catmulRom[Alg[x[_]] <: Path[x], F[_]](points: Seq[Point], tension: Double = 0.5): Picture[Alg, F, Unit] =
-    Picture{ implicit algebra: Alg[F] =>
+  def catmulRom[Alg[x[_]] <: Path[x], F[_]](
+      points: Seq[Point],
+      tension: Double = 0.5): Picture[Alg, F, Unit] =
+    Picture { implicit algebra: Alg[F] =>
       algebra.catmulRom(points, tension)
     }
 }

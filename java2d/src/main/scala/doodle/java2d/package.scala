@@ -26,10 +26,7 @@ import javax.swing.JComponent
 
 package object java2d extends effect.Java2dExplorerAtoms {
   type Algebra[F[_]] =
-    doodle.algebra.Algebra[F]
-      with Basic[F]
-      with Bitmap[F]
-      with Text[F]
+    doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F] with Text[F]
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 
@@ -55,17 +52,21 @@ package object java2d extends effect.Java2dExplorerAtoms {
     macro Magnolia.gen[A]
 
   implicit val java2dRenderer
-      : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
+    : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
   implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
   implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
   implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
   implicit val java2dPdfWriter = doodle.java2d.effect.Java2dPdfWriter
 
-  implicit val java2dBufferedImageToPicture = doodle.java2d.algebra.reified.BufferedImageToPicture
-  implicit val java2dBase64PngToPicture = doodle.java2d.algebra.reified.Base64PngToPicture
-  implicit val java2dBase64GifToPicture = doodle.java2d.algebra.reified.Base64GifToPicture
-  implicit val java2dBase64JpgToPicture = doodle.java2d.algebra.reified.Base64JpgToPicture
+  implicit val java2dBufferedImageToPicture =
+    doodle.java2d.algebra.reified.BufferedImageToPicture
+  implicit val java2dBase64PngToPicture =
+    doodle.java2d.algebra.reified.Base64PngToPicture
+  implicit val java2dBase64GifToPicture =
+    doodle.java2d.algebra.reified.Base64GifToPicture
+  implicit val java2dBase64JpgToPicture =
+    doodle.java2d.algebra.reified.Base64JpgToPicture
 
   val Frame = doodle.java2d.effect.Frame
 

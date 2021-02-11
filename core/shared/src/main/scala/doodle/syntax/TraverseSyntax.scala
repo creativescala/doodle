@@ -22,23 +22,30 @@ import cats.instances.unit._
 import doodle.algebra.{Layout, Picture, Shape}
 
 trait TraverseSyntax {
-  implicit class TraverseOps[T[_], Alg[x[_]] <: Layout[x] with Shape[x], F[_]](val t: T[Picture[Alg, F, Unit]]) {
+  implicit class TraverseOps[T[_], Alg[x[_]] <: Layout[x] with Shape[x], F[_]](
+      val t: T[Picture[Alg, F, Unit]]) {
     def allOn(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
-      val empty = Picture{ algebra: Alg[F] => algebra.empty }
-      traverse.foldLeft(t, empty){ (accum, img) =>
-          accum.on(img)
+      val empty = Picture { algebra: Alg[F] =>
+        algebra.empty
+      }
+      traverse.foldLeft(t, empty) { (accum, img) =>
+        accum.on(img)
       }
     }
 
     def allBeside(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
-      val empty = Picture{ algebra: Alg[F] => algebra.empty }
+      val empty = Picture { algebra: Alg[F] =>
+        algebra.empty
+      }
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.beside(img)
       }
     }
 
     def allAbove(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
-      val empty = Picture{ algebra: Alg[F] => algebra.empty }
+      val empty = Picture { algebra: Alg[F] =>
+        algebra.empty
+      }
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.above(img)
       }

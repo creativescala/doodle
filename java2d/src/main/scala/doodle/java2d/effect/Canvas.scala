@@ -19,42 +19,44 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.core.{Point,Transform}
-// import doodle.java2d.algebra.Algebra
+import doodle.core.{Point, Transform}
 import java.awt.event._
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.{JFrame, Timer, WindowConstants}
 import monix.reactive.subjects.PublishSubject
 
 /**
- * A [[Canvas]] is an area on the screen to which Pictures can be drawn.
- */
+  * A [[Canvas]] is an area on the screen to which Pictures can be drawn.
+  */
 final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
 
   /**
-   * The current global transform from logical to screen coordinates
-   */
+    * The current global transform from logical to screen coordinates
+    */
   private val currentInverseTx: AtomicReference[Transform] =
     new AtomicReference(Transform.identity)
 
   /**
-   * Draw the given Picture to this [[Canvas]].
-   */
+    * Draw the given Picture to this [[Canvas]].
+    */
   def render[A](picture: Picture[A]): IO[A] = {
     // Possible race condition here setting the currentInverseTx
-    def register(cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit): Unit = {
+    def register(
+        cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit): Unit = {
       // val drawing = picture(algebra)
       // val (bb, rdr) = drawing.runA(List.empty).value
       // val (w, h) = Java2d.size(bb, frame.size)
-
 
       // val rr = Java2DPanel.RenderRequest(bb, w, h, rdr, cb)
       panel.render(Java2DPanel.RenderRequest(picture, frame, cb))
     }
 
-    IO.async(register).map{result =>
-      val inverseTx = Java2d.inverseTransform(result.boundingBox, result.width, result.height, frame.center)
+    IO.async(register).map { result =>
+      val inverseTx = Java2d.inverseTransform(result.boundingBox,
+                                              result.width,
+                                              result.height,
+                                              frame.center)
       currentInverseTx.set(inverseTx)
       result.value
     }
@@ -84,6 +86,27 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
   }
   val timer = new Timer(frameRateMs, frameEvent)
 
+  val mouseClick = PublishSubject[Point]()
+  this.addMouseListener(
+    new MouseListener {
+      import scala.concurrent.duration.Duration
+      import scala.concurrent.Await
+
+      def mouseClicked(e: MouseEvent): Unit = {
+        val pt = e.getPoint()
+        val inverseTx = currentInverseTx.get()
+        val ack = mouseClick.onNext(inverseTx(Point(pt.getX(), pt.getY())))
+        Await.ready(ack, Duration.Inf)
+        ()
+      }
+
+      def mouseEntered(e: MouseEvent): Unit = ()
+      def mouseExited(e: MouseEvent): Unit = ()
+      def mousePressed(e: MouseEvent): Unit = ()
+      def mouseReleased(e: MouseEvent): Unit = ()
+    }
+  )
+
   val mouseMove = PublishSubject[Point]()
   this.addMouseMotionListener(
     new MouseMotionListener {
@@ -107,7 +130,6 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
         timer.stop()
     }
   )
-
 
   getContentPane().add(panel)
   pack()

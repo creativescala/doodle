@@ -23,23 +23,24 @@ import doodle.core.BoundingBox
   * Get information about the size of the bounding box enclosing an picture.
   */
 trait Size[F[_]] extends Algebra[F] {
+
   /**
-   * Get the height of the bounding box enclosing the picture
-   */
+    * Get the height of the bounding box enclosing the picture
+    */
   def height[A](picture: F[A]): F[Double]
 
   /**
-   * Get the width of the bounding box enclosing the picture
-   */
+    * Get the width of the bounding box enclosing the picture
+    */
   def width[A](picture: F[A]): F[Double]
 
   /**
-   * Get the width and height of the bounding box enclosing the picture
-   */
-  def size[A](picture: F[A]): F[(Double,Double)]
+    * Get the width and height of the bounding box enclosing the picture
+    */
+  def size[A](picture: F[A]): F[(Double, Double)]
 
   /**
-   * Get the bounding box enclosing the picture
-   */
+    * Get the bounding box enclosing the picture
+    */
   def boundingBox[A](picture: F[A]): F[BoundingBox]
 }

@@ -40,8 +40,7 @@ trait ReifiedText extends GenericText[Reification] {
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
       val bounds = Java2D.textBounds(gc, text, font)
 
-      (BoundingBox.centered(bounds.getWidth(), bounds.getHeight()),
-       bounds)
+      (BoundingBox.centered(bounds.getWidth(), bounds.getHeight()), bounds)
     }
   }
 }

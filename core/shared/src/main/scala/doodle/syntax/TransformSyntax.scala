@@ -24,38 +24,38 @@ trait TransformSyntax {
   implicit class TransformPictureOps[Alg[x[_]] <: Transform[x], F[_], A](
       picture: Picture[Alg, F, A]) {
 
-  def transform(tx: Tx): Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.transform(picture(algebra), tx)
-    }
+    def transform(tx: Tx): Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.transform(picture(algebra), tx)
+      }
 
-  def scale(x: Double, y: Double): Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.scale(picture(algebra), x, y)
-    }
+    def scale(x: Double, y: Double): Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.scale(picture(algebra), x, y)
+      }
 
-  def rotate(angle: Angle): Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.rotate(picture(algebra), angle)
-    }
+    def rotate(angle: Angle): Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.rotate(picture(algebra), angle)
+      }
 
-  def translate(x: Double, y: Double): Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.translate(picture(algebra), x, y)
-    }
+    def translate(x: Double, y: Double): Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.translate(picture(algebra), x, y)
+      }
 
-  def translate(vec: Vec): Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.translate(picture(algebra), vec)
-    }
+    def translate(vec: Vec): Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.translate(picture(algebra), vec)
+      }
 
-  def horizontalReflection: Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.horizontalReflection(picture(algebra))
-    }
-  def verticalReflection: Picture[Alg, F, A] =
-    Picture{ implicit algebra =>
-      algebra.verticalReflection(picture(algebra))
-    }
+    def horizontalReflection: Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.horizontalReflection(picture(algebra))
+      }
+    def verticalReflection: Picture[Alg, F, A] =
+      Picture { implicit algebra =>
+        algebra.verticalReflection(picture(algebra))
+      }
   }
 }

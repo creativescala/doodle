@@ -9,7 +9,8 @@ import doodle.language.Basic
 import doodle.algebra.{Picture, Text}
 
 object BasicWithText {
-  def basicWithText[Alg[x[_]] <: Basic[x] with Text[x], F[_]]: Picture[Alg, F, Unit] = {
+  def basicWithText[Alg[x[_]] <: Basic[x] with Text[x], F[_]]
+    : Picture[Alg, F, Unit] = {
     val redCircle = circle[Alg, F](100).strokeColor(Color.red)
     val rad = text[Alg, F]("Doodle is rad")
 

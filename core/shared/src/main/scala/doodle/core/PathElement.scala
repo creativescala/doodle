@@ -108,9 +108,11 @@ object PathElement {
   }
 
   /**
-   * Construct a regular polygon
-   */
-  def regularPolygon(sides: Int, radius: Double, angle: Angle): List[PathElement] = {
+    * Construct a regular polygon
+    */
+  def regularPolygon(sides: Int,
+                     radius: Double,
+                     angle: Angle): List[PathElement] = {
     val rotation = Angle.one / sides.toDouble
     val path =
       (1 to sides).map { n =>
@@ -121,8 +123,8 @@ object PathElement {
   }
 
   /**
-   * Construct a star
-   */
+    * Construct a star
+    */
   def star(points: Int,
            outerRadius: Double,
            innerRadius: Double,
@@ -156,9 +158,11 @@ object PathElement {
   }
 
   /**
-   * Construct a rounded rectangle with the given width, height, and corner radius
-   */
-  def roundedRectangle(width: Double, height: Double, radius: Double): List[PathElement] = {
+    * Construct a rounded rectangle with the given width, height, and corner radius
+    */
+  def roundedRectangle(width: Double,
+                       height: Double,
+                       radius: Double): List[PathElement] = {
     // Clamp radius to the smallest of width and height
     val cornerRadius =
       if (radius > width / 2 || radius > height / 2)
@@ -226,7 +230,8 @@ object PathElement {
     *
     * If `points` has less than two elements an empty List is returned.
     */
-  def catmulRom(points: Seq[Point], tension: Double = 0.5): List[PathElement] = {
+  def catmulRom(points: Seq[Point],
+                tension: Double = 0.5): List[PathElement] = {
     /*
     To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
 

@@ -20,7 +20,6 @@ package generic
 
 import cats._
 import cats.implicits._
-import doodle.algebra.Layout
 import doodle.algebra.generic.reified._
 
 final case class TestAlgebra(

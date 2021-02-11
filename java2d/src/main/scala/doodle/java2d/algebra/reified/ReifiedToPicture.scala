@@ -36,31 +36,29 @@ trait BaseToPicture[Input] extends ToPicture[Drawing, Input] {
 
 object BufferedImageToPicture extends BaseToPicture[BufferedImage] {
   def toPicture(in: BufferedImage): Drawing[Unit] = {
-    Finalized.leaf{ _ =>
+    Finalized.leaf { _ =>
       val w = in.getWidth()
       val h = in.getHeight()
       val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (bb,
-       State.inspect{ (tx: Transform) =>
-         WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, in)))
-       })
+      (bb, State.inspect { (tx: Transform) =>
+        WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, in)))
+      })
     }
   }
 }
 
 trait GenericBase64ToPicture[A] extends BaseToPicture[Base64[A]] {
   def toPicture(in: Base64[A]): Drawing[Unit] = {
-    Finalized.leaf{ _ =>
+    Finalized.leaf { _ =>
       val bytes = JBase64.getDecoder().decode(in.value)
       val bs = new ByteArrayInputStream(bytes)
       val bi = ImageIO.read(bs)
       val w = bi.getWidth()
       val h = bi.getHeight()
       val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (bb,
-       State.inspect{ (tx: Transform) =>
-         WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
-       })
+      (bb, State.inspect { (tx: Transform) =>
+        WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
+      })
     }
 
   }

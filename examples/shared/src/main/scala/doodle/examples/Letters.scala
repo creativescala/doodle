@@ -7,12 +7,12 @@ import doodle.language.Basic
 import doodle.syntax._
 
 /**
- * Really basic example of a picture that abstracts over algebras, and hence is
- * independent of back-end.
- */
+  * Really basic example of a picture that abstracts over algebras, and hence is
+  * independent of back-end.
+  */
 object Letters {
   def letters[Alg[x[_]] <: Basic[x] with Text[x], F[_]]: Picture[Alg, F, Unit] =
-    text[Alg,F]("Hi from Doodle!").on(
-      square[Alg,F](40)
+    text[Alg, F]("Hi from Doodle!").on(
+      square[Alg, F](40)
     )
 }

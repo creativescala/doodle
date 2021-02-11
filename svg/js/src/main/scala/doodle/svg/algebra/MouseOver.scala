@@ -25,9 +25,9 @@ trait MouseOverModule { self: JsBase =>
         img.map {
           case (bb, rdr) =>
             (bb, rdr.map {
-               case (tags, set, a) =>
-                 (tags(onmouseover := callback): JsDom.Tag, set, a)
-             })
+              case (tags, set, a) =>
+                (tags(onmouseover := callback): JsDom.Tag, set, a)
+            })
         }
 
       import monix.eval.Task

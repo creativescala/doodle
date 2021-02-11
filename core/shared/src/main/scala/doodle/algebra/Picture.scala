@@ -21,10 +21,10 @@ import cats._
 import cats.implicits._
 
 /**
- * Represents a picture, which is a function from a tagless final algebra to
- * some type F that represents drawing a picture with result A. Has a monad
- * instance if F does.
- */
+  * Represents a picture, which is a function from a tagless final algebra to
+  * some type F that represents drawing a picture with result A. Has a monad
+  * instance if F does.
+  */
 trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A] {
   def apply(implicit algebra: Alg[F]): F[A]
 }
@@ -39,28 +39,32 @@ object Picture {
   }
 
   /**
-   * Picture[Alg,F,?] has a Monoid instance if:
-   *
-   * - the algebra has `Layout` and `Shape`;
-   * - the effect type has a `Functor`; and
-   * - and the result type has a `Monoid`.
-   *
-   * In this case the combine is `on`, with identity `empty`.
-   */
-  implicit def pictureMonoidInstance[Alg[x[_]] <: Layout[x] with Shape[x], F[_], A](
-      implicit f: Functor[F], m: Monoid[A]
+    * Picture[Alg,F,?] has a Monoid instance if:
+    *
+    * - the algebra has `Layout` and `Shape`;
+    * - the effect type has a `Functor`; and
+    * - and the result type has a `Monoid`.
+    *
+    * In this case the combine is `on`, with identity `empty`.
+    */
+  implicit def pictureMonoidInstance[Alg[x[_]] <: Layout[x] with Shape[x],
+                                     F[_],
+                                     A](
+      implicit f: Functor[F],
+      m: Monoid[A]
   ): Monoid[Picture[Alg, F, A]] =
     new Monoid[Picture[Alg, F, A]] {
       val empty: Picture[Alg, F, A] =
         Picture(alg => alg.empty.map(_ => m.empty))
 
-      def combine(x: Picture[Alg, F, A], y: Picture[Alg, F, A]): Picture[Alg, F, A] =
+      def combine(x: Picture[Alg, F, A],
+                  y: Picture[Alg, F, A]): Picture[Alg, F, A] =
         Picture(alg => alg.on(x(alg), y(alg)))
     }
 
   /**
-   * Picture[Alg,F,?] has a Monad instance if F does
-   */
+    * Picture[Alg,F,?] has a Monad instance if F does
+    */
   implicit def pictureMonadInstance[Alg[x[_]] <: Algebra[x], F[_]](
       implicit m: Monad[F]
   ): Monad[Picture[Alg, F, ?]] =
@@ -81,7 +85,7 @@ object Picture {
             either match {
               case Left(a)  => tailRecM(a)(f)
               case Right(b) => pure(b)
-            }
+          }
         )
     }
 }

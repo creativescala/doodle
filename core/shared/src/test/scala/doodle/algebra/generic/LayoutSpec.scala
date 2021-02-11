@@ -161,6 +161,8 @@ object LayoutSpec extends Properties("Layout properties") {
             ((tx2 ?= Tx.identity.andThen(
               Transform.translate(0, -(width + 1.0) / 2.0)
             )) :| "Bottom transform")
+
+        case other => falsified :| s"Reached a case with value ${other} which should not have happened"
       }
   }
 

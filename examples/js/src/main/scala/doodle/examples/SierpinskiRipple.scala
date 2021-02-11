@@ -8,7 +8,7 @@ import doodle.syntax._
 
 object SierpinskiRipple {
   def base(size: Double, color: Color): Picture[Unit] = {
-      triangle[Algebra,Drawing](size, size).fillColor(color).strokeColor(color)
+    triangle[Algebra, Drawing](size, size).fillColor(color).strokeColor(color)
   }
 
   def sierpinski(n: Int, size: Double, color: Color): Picture[Unit] = {

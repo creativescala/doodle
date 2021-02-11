@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 lazy val scala212 = "2.12.10"
-lazy val scala213 = "2.13.1"
+lazy val scala213 = "2.13.4"
 lazy val supportedScalaVersions = List(scala212, scala213)
 
 ThisBuild / scalaVersion := scala213
@@ -45,7 +45,7 @@ lazy val commonSettings = Seq(
   )
 )
 
-lazy val root = crossProject
+lazy val root = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
   .settings(
     commonSettings,
@@ -113,7 +113,7 @@ lazy val rootJs = root.js
   .dependsOn(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
   .aggregate(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
 
-lazy val core = crossProject
+lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(commonSettings, moduleName := "doodle-core")
 
@@ -172,7 +172,7 @@ docs / documentation :=
     .value
 
 
-lazy val interact = crossProject
+lazy val interact = crossProject(JSPlatform, JVMPlatform)
   .in(file("interact"))
   .settings(
     commonSettings,
@@ -190,29 +190,36 @@ lazy val java2d = project
   .settings(
     commonSettings,
     moduleName := "doodle-java2d",
-    libraryDependencies += "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
+    libraryDependencies ++= Seq(
+      Dependencies.magnolia.value,
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13",
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided
+    )
   )
   .dependsOn(coreJvm, exploreJvm, interactJvm)
 
-lazy val image = crossProject
+lazy val image = crossProject(JSPlatform, JVMPlatform)
   .in(file("image"))
   .settings(commonSettings, moduleName := "doodle-image")
 
 lazy val imageJvm = image.jvm.dependsOn(coreJvm, java2d)
 lazy val imageJs = image.js.dependsOn(coreJs)
 
-lazy val plot = crossProject
+lazy val plot = crossProject(JSPlatform, JVMPlatform)
   .in(file("plot"))
   .settings(commonSettings, moduleName := "doodle-plot")
 
 lazy val plotJvm = plot.jvm.dependsOn(coreJvm, interactJvm)
 lazy val plotJs = plot.js.dependsOn(coreJs, interactJs)
 
-lazy val explore = crossProject
+lazy val explore = crossProject(JSPlatform, JVMPlatform)
   .in(file("explore"))
   .settings(
     commonSettings,
-    libraryDependencies += Dependencies.magnolia.value,
+    libraryDependencies ++= Seq(
+      // Dependencies.magnolia.value,
+      // "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided
+    ),
     moduleName := "doodle-explore"
   )
   .dependsOn(core, interact)
@@ -220,7 +227,7 @@ lazy val explore = crossProject
 lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, interactJvm)
 lazy val exploreJs = explore.js.dependsOn(coreJs, interactJs)
 
-lazy val svg = crossProject
+lazy val svg = crossProject(JSPlatform, JVMPlatform)
   .in(file("svg"))
   .settings(
     commonSettings,
@@ -233,14 +240,14 @@ lazy val svgJvm =
 lazy val svgJs =
   svg.js.dependsOn(coreJs % "compile->compile;test->test", interactJs)
 
-lazy val turtle = crossProject
+lazy val turtle = crossProject(JSPlatform, JVMPlatform)
   .in(file("turtle"))
   .settings(commonSettings, moduleName := "doodle-turtle")
 
 lazy val turtleJvm = turtle.jvm.dependsOn(coreJvm, imageJvm)
 lazy val turtleJs = turtle.js.dependsOn(coreJs, imageJs)
 
-lazy val reactor = crossProject
+lazy val reactor = crossProject(JSPlatform, JVMPlatform)
   .in(file("reactor"))
   .settings(
     commonSettings,
@@ -264,7 +271,7 @@ lazy val golden = project
   .dependsOn(coreJvm, imageJvm, interactJvm, java2d)
 
 // To avoid including this in the core build
-lazy val examples = crossProject
+lazy val examples = crossProject(JSPlatform, JVMPlatform)
   .in(file("examples"))
   .settings(
     commonSettings,

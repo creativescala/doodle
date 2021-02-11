@@ -9,10 +9,12 @@ import monix.reactive.Observable
 object Orbit {
 
   def planet(angle: Angle): Picture[Unit] =
-      circle[Algebra,Drawing](20).fillColor(Color.brown.spin(angle)).at(Point(200, angle))
+    circle[Algebra, Drawing](20)
+      .fillColor(Color.brown.spin(angle))
+      .at(Point(200, angle))
 
   val background =
-    circle[Algebra,Drawing](400)
+    circle[Algebra, Drawing](400)
       .strokeDash(Array(5.0, 5.0))
       .strokeColor(Color.midnightBlue)
 

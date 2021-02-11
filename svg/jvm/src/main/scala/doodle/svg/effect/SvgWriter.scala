@@ -32,7 +32,8 @@ object SvgWriter
   def write[A](file: File, picture: Picture[Algebra, Drawing, A]): IO[A] =
     write(file, Frame("").fitToPicture(), picture)
 
-  def base64[A](frame: Frame, image: Picture[Algebra, Drawing, A]): IO[(A, B64[Writer.Svg])] =
+  def base64[A](frame: Frame,
+                image: Picture[Algebra, Drawing, A]): IO[(A, B64[Writer.Svg])] =
     for {
       rendered <- Svg
         .render[Algebra, A](frame, algebraInstance, image)
@@ -40,6 +41,7 @@ object SvgWriter
       b64 = JBase64.getEncoder.encodeToString(nodes.getBytes())
     } yield (value, B64[Writer.Svg](b64))
 
-  def base64[A](picture: Picture[Algebra, Drawing, A]): IO[(A, B64[Writer.Svg])] =
+  def base64[A](
+      picture: Picture[Algebra, Drawing, A]): IO[(A, B64[Writer.Svg])] =
     base64(Frame("").fitToPicture(), picture)
 }

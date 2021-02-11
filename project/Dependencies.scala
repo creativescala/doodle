@@ -6,16 +6,16 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object Dependencies {
   // Library Versions
-  val catsVersion       = "2.1.0"
-  val catsEffectVersion = "2.0.0"
+  val catsVersion       = "2.2.0"
+  val catsEffectVersion = "2.3.1"
 
-  val magnoliaVersion = "0.10.0"
+  val magnoliaVersion = "0.17.0"
 
-  val monixVersion = "3.1.0"
+  val monixVersion = "3.3.0"
 
-  val miniTestVersion   = "2.7.0"
+  val miniTestVersion   = "2.9.2"
   val scalaCheckVersion = "1.14.0"
-  val munitVersion      = "0.4.3"
+  val munitVersion      = "0.7.21"
 
   // Libraries
   val catsEffect = Def.setting("org.typelevel" %%% "cats-effect" % catsEffectVersion)
@@ -28,7 +28,7 @@ object Dependencies {
 
   val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
 
-  val magnolia = Def.setting("com.propensive" %%% "magnolia" % "0.12.6")
+  val magnolia = Def.setting("com.propensive" %%% "magnolia" % magnoliaVersion)
 
-  val scalaTags = Def.setting("com.lihaoyi" %%% "scalatags" % "0.8.4")
+  val scalaTags = Def.setting("com.lihaoyi" %%% "scalatags" % "0.9.3")
 }

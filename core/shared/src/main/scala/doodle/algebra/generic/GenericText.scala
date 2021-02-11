@@ -27,21 +27,26 @@ trait GenericText[F[_]] extends Text[Finalized[F, ?]] {
   trait TextApi {
 
     /**
-     * The type of additional information that is useful for laying out text.
-     *
-     * Text layout is complicated. Doodle's layout only cares about the bounding
-     * box, with the usual assumption that the origin is the center of the
-     * bounding box. However, when we come to actually render the text we
-     * usually want additional information. In particular we usually specify the
-     * origin where we start rendering as the left-most point on the baseline of
-     * the text (and text may descend below the baseline). This is difficult to
-     * calculate just from the Doodle bounding box, so we allows methods to
-     * return an additional piece of information that can be used to layout the
-     * text.
-     */
+      * The type of additional information that is useful for laying out text.
+      *
+      * Text layout is complicated. Doodle's layout only cares about the bounding
+      * box, with the usual assumption that the origin is the center of the
+      * bounding box. However, when we come to actually render the text we
+      * usually want additional information. In particular we usually specify the
+      * origin where we start rendering as the left-most point on the baseline of
+      * the text (and text may descend below the baseline). This is difficult to
+      * calculate just from the Doodle bounding box, so we allows methods to
+      * return an additional piece of information that can be used to layout the
+      * text.
+      */
     type Bounds
 
-    def text(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], font: Font, text: String, bounds: Bounds): F[Unit]
+    def text(tx: Tx,
+             fill: Option[Fill],
+             stroke: Option[Stroke],
+             font: Font,
+             text: String,
+             bounds: Bounds): F[Unit]
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds)
   }
 
@@ -55,7 +60,9 @@ trait GenericText[F[_]] extends Text[Finalized[F, ?]] {
 
     Finalized.leaf { dc =>
       val (bb, bounds) = api.textBoundingBox(text, dc.font)
-      (bb, State.inspect(tx => api.text(tx, dc.fill, dc.stroke, dc.font, text, bounds)))
+      (bb,
+       State.inspect(tx =>
+         api.text(tx, dc.fill, dc.stroke, dc.font, text, bounds)))
     }
   }
 }

@@ -20,6 +20,6 @@ package generic
 
 import cats.Functor
 
-trait GivenFunctor[F[_]]{
+trait GivenFunctor[F[_]] {
   implicit val functorF: Functor[F]
 }

@@ -14,9 +14,9 @@ object ChristmasTree {
 
   def treeElement = {
     val color = green
-      .spin((math.random * 30).degrees)
-      .darken((math.random * 0.1).normalized)
-      .desaturate((math.random * 0.1).normalized)
+      .spin((math.random() * 30).degrees)
+      .darken((math.random() * 0.1).normalized)
+      .desaturate((math.random() * 0.1).normalized)
 
     Image.triangle(40, 40) strokeWidth 0 fillColor color
   }

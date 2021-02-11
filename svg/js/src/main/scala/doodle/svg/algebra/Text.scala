@@ -30,8 +30,10 @@ trait TextModule extends JsBase {
         // (0,0) of the Rect is the left baseline. For Doodle (0,0) is the
         // center of the bounding box.
         val style = Svg.toStyle(stroke, fill, set)
-        val elt = Svg.textTag(text, font)(svgAttrs.x:= -(bounds.x + bounds.width) / 2.0,
-            svgAttrs.y:= (bounds.y + bounds.height) / 2.0, svgAttrs.style := style)
+        val elt = Svg.textTag(text, font)(
+          svgAttrs.x := -(bounds.x + bounds.width) / 2.0,
+          svgAttrs.y := (bounds.y + bounds.height) / 2.0,
+          svgAttrs.style := style)
 
         (elt, set, ())
       }
