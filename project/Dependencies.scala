@@ -13,6 +13,8 @@ object Dependencies {
 
   val monixVersion = "3.3.0"
 
+  val batikVersion = "1.14"
+
   val miniTestVersion   = "2.9.2"
   val scalaCheckVersion = "1.14.0"
   val munitVersion      = "0.7.21"
@@ -22,11 +24,13 @@ object Dependencies {
   val catsCore   = Def.setting("org.typelevel" %%% "cats-core"   % catsVersion)
   val catsFree   = Def.setting("org.typelevel" %%% "cats-free"   % catsVersion)
 
+  val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
+
+  val batik = Def.setting("org.apache.xmlgraphics" % "batik" % batikVersion)
+
   val miniTest     = Def.setting("io.monix"     %%% "minitest"      % miniTestVersion % "test")
   val miniTestLaws = Def.setting("io.monix"     %%% "minitest-laws" % miniTestVersion % "test")
   val munit        = Def.setting("org.scalameta" %% "munit"         % munitVersion % "test")
-
-  val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
 
   val magnolia = Def.setting("com.propensive" %%% "magnolia" % magnoliaVersion)
 

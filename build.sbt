@@ -260,10 +260,10 @@ lazy val golden = project
   .settings(
     commonSettings,
     moduleName := "doodle-golden",
-    libraryDependencies += Dependencies.munit.value,
+    libraryDependencies ++= Seq(Dependencies.munit.value, Dependencies.batik.value),
     testFrameworks += new TestFramework("munit.Framework")
   )
-  .dependsOn(coreJvm, imageJvm, interactJvm, java2d)
+  .dependsOn(coreJvm, imageJvm, interactJvm, java2d, svgJvm)
 
 // To avoid including this in the core build
 lazy val examples = crossProject(JSPlatform, JVMPlatform)

@@ -2,8 +2,6 @@ package doodle
 package golden
 
 import cats.implicits._
-import doodle.core._
-import doodle.core.font._
 import doodle.java2d._
 import doodle.syntax._
 import munit._
