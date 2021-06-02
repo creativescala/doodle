@@ -59,6 +59,13 @@ trait PathSyntax {
       algebra.roundedRectangle(width, height, radius)
     }
 
+  def equilateralTriangle[Alg[x[_]] <: Path[x], F[_]](
+      width: Double,
+  ): Picture[Alg, F, Unit] =
+    Picture { implicit algebra: Alg[F] =>
+      algebra.equilateralTriangle(width)
+    }
+
   def interpolatingSpline[Alg[x[_]] <: Path[x], F[_]](
       points: Seq[Point]): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>

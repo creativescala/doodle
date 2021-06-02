@@ -42,6 +42,10 @@ trait Path[F[_]] extends Algebra[F] {
     path(ClosedPath(PathElement.roundedRectangle(width, height, radius)))
   }
 
+  def equilateralTriangle(width: Double): F[Unit] = {
+    path(ClosedPath(PathElement.equilateralTriangle(width)))
+  }
+
   def interpolatingSpline(points: Seq[Point]): F[Unit] =
     path(OpenPath(PathElement.interpolatingSpline(points)))
 

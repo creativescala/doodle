@@ -142,6 +142,18 @@ object PathElement {
     (moveTo(outerRadius, angle) +: path)
   }
 
+  val sqrt3on2 = math.sqrt(3.0) / 2.0
+
+  /** Construct an equilateral triangle */
+  def equilateralTriangle(width: Double): List[PathElement] = {
+    List(
+      moveTo(Point.zero),
+      lineTo(width, 0),
+      lineTo(width / 2.0, sqrt3on2 * width),
+      lineTo(0, 0)
+    )
+  }
+
   def rightArrow(width: Double, height: Double): List[PathElement] = {
     val path = List(
       moveTo(width / 2, 0),
