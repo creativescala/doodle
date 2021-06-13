@@ -26,7 +26,7 @@ object Dependencies {
 
   val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
 
-  val batik = Def.setting("org.apache.xmlgraphics" % "batik" % batikVersion)
+  val batik = Def.setting("org.apache.xmlgraphics" % "batik-transcoder" % batikVersion)
 
   val miniTest     = Def.setting("io.monix"     %%% "minitest"      % miniTestVersion % "test")
   val miniTestLaws = Def.setting("io.monix"     %%% "minitest-laws" % miniTestVersion % "test")

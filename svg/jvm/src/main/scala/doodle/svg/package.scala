@@ -12,6 +12,7 @@ package object svg {
   val Svg = jvm.Svg
   type Tag = jvm.Tag
   type Frame = doodle.svg.effect.Frame
+  val Frame = doodle.svg.effect.Frame
   implicit val svgWriter = doodle.svg.effect.SvgWriter
 
   type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
