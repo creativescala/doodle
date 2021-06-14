@@ -228,6 +228,9 @@ object Image {
     closedPath(PathElement.roundedRectangle(width, height, radius))
   }
 
+  def equilateralTriangle(width: Double): Image =
+    closedPath(PathElement.equilateralTriangle(width))
+
   def triangle(width: Double, height: Double): Image =
     Triangle(width, height)
 
