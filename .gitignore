@@ -135,6 +135,7 @@ local.properties
 .texlipse
 
 # Metals and Bloop
+.bsp
 .metals
 .bloop
 project/metals.sbt
