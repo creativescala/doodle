@@ -8,7 +8,7 @@ import doodle.image.Image
 
 object SierpinskiRipple {
   def triangle(size: Double, color: Color): Image = {
-    Image.triangle(size, size).fillColor(color).strokeColor(color)
+    Image.equilateralTriangle(size).fillColor(color).strokeColor(color)
   }
 
   def sierpinski(n: Int, size: Double, color: Color): Image = {
