@@ -22,7 +22,7 @@ import cats.data.State
 import doodle.core.{BoundingBox, Transform => Tx}
 import doodle.core.font.Font
 
-trait GenericText[F[_]] extends Text[Finalized[F, ?]] {
+trait GenericText[F[_]] extends Text[Finalized[F, *]] {
 
   trait TextApi {
 

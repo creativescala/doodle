@@ -21,7 +21,7 @@ package generic
 import cats.data.State
 import doodle.core.{BoundingBox, Transform => Tx}
 
-trait GenericShape[F[_]] extends Shape[Finalized[F, ?]] {
+trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
 
   trait ShapeApi {
     def rectangle(tx: Tx,

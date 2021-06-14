@@ -25,7 +25,7 @@ import doodle.algebra.generic.reified._
 final case class TestAlgebra(
     applyF: Apply[Reification] = Apply.apply[Reification],
     functorF: Functor[Reification] = Apply.apply[Reification]
-) extends Algebra[Finalized[Reification, ?]]
+) extends Algebra[Finalized[Reification, *]]
     with ReifiedPath
     with ReifiedShape
     with ReifiedText

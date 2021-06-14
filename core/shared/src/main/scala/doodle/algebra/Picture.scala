@@ -67,8 +67,8 @@ object Picture {
     */
   implicit def pictureMonadInstance[Alg[x[_]] <: Algebra[x], F[_]](
       implicit m: Monad[F]
-  ): Monad[Picture[Alg, F, ?]] =
-    new Monad[Picture[Alg, F, ?]] {
+  ): Monad[Picture[Alg, F, *]] =
+    new Monad[Picture[Alg, F, *]] {
       def flatMap[A, B](
           fa: Picture[Alg, F, A]
       )(f: A => Picture[Alg, F, B]): Picture[Alg, F, B] =

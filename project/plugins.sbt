@@ -1,4 +1,4 @@
-addSbtPlugin("org.scala-js"              % "sbt-scalajs"              % "1.4.0")
+addSbtPlugin("org.scala-js"              % "sbt-scalajs"              % "1.6.0")
 addSbtPlugin("io.get-coursier"           % "sbt-coursier"             % "1.0.2")
 addSbtPlugin("com.dwijnand"              % "sbt-travisci"             % "1.1.0")
 addSbtPlugin("com.typesafe.sbt"          % "sbt-git"                  % "0.9.3")

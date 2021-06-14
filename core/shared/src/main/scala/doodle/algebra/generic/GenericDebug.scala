@@ -20,9 +20,9 @@ package generic
 
 import doodle.core.Color
 
-trait GenericDebug[F[_]] extends Debug[Finalized[F, ?]] {
-  self: Shape[Finalized[F, ?]]
-    with Layout[Finalized[F, ?]]
+trait GenericDebug[F[_]] extends Debug[Finalized[F, *]] {
+  self: Shape[Finalized[F, *]]
+    with Layout[Finalized[F, *]]
     with GivenApply[F] =>
 
   import cats.implicits._

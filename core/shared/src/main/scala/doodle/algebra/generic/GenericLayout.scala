@@ -23,7 +23,7 @@ import cats.data.IndexedStateT
 import cats.implicits._
 import doodle.core.Transform
 
-trait GenericLayout[F[_]] extends Layout[Finalized[F, ?]] {
+trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
   self: GivenApply[F] =>
   import Renderable._
 

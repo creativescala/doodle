@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-lazy val scala213 = "2.13.4"
+lazy val scala213 = "2.13.5"
 lazy val supportedScalaVersions = List(scala213)
 
 ThisBuild / scalaVersion := scala213
@@ -40,7 +40,7 @@ lazy val commonSettings = Seq(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
   ),
   addCompilerPlugin(
-    "org.typelevel" % "kind-projector" % "0.10.3" cross CrossVersion.binary
+    "org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full
   )
 )
 
@@ -52,7 +52,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
     crossScalaVersions := Nil,
     moduleName := "doodle",
     paradoxTheme := Some(builtinParadoxTheme("generic")),
-    unidocProjectFilter in (ScalaUnidoc, unidoc) :=
+    ScalaUnidoc / unidoc / unidocProjectFilter :=
       inAnyProject -- inProjects(
         coreJs,
         interactJs,
@@ -67,7 +67,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
       )
   )
   .jvmSettings(
-    initialCommands in console := """
+    console / initialCommands := """
       |import cats.instances.all._
       |import doodle.java2d._
       |import doodle.syntax._
@@ -80,7 +80,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
       |import doodle.explore.syntax._
       |import doodle.core._
     """.trim.stripMargin,
-    cleanupCommands in console := """
+    console / cleanupCommands := """
       |doodle.java2d.effect.Java2dRenderer.stop()
     """.trim.stripMargin
   )
@@ -124,7 +124,7 @@ lazy val docs = project
   .settings(
     mdocIn := file("docs/src/main/mdoc"),
     mdocOut := file("docs/src/main/paradox"),
-    (paradoxProperties in Compile) ++= Map(
+    (Compile / paradoxProperties) ++= Map(
       "scaladoc.base_url" -> ".../api/"
     ),
     mdocVariables := Map("VERSION" -> version.value),

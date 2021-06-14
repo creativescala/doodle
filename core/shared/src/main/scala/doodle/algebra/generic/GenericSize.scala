@@ -24,7 +24,7 @@ import doodle.core.BoundingBox
 /**
   * Get information about the size of the bounding box enclosing an picture.
   */
-trait GenericSize[F[_]] extends Size[Finalized[F, ?]] { self: GivenFunctor[F] =>
+trait GenericSize[F[_]] extends Size[Finalized[F, *]] { self: GivenFunctor[F] =>
 
   /**
     * Get the height of the bounding box enclosing the picture

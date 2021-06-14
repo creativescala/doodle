@@ -20,7 +20,7 @@ package generic
 
 import doodle.core.{Cap, Color, Gradient, Join}
 
-trait GenericStyle[F[_]] extends Style[Finalized[F, ?]] {
+trait GenericStyle[F[_]] extends Style[Finalized[F, *]] {
   def fillColor[A](image: Finalized[F, A], fillColor: Color): Finalized[F, A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
 

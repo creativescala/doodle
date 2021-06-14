@@ -23,7 +23,7 @@ import doodle.core._
 import doodle.core.{Transform => Tx}
 import scala.annotation.tailrec
 
-trait GenericPath[F[_]] extends Path[Finalized[F, ?]] {
+trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
 
   trait PathApi {
     def closedPath(tx: Tx,
