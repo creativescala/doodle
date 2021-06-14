@@ -8,7 +8,7 @@ import doodle.image.Image
 object Sierpinski {
   def triangle(size: Double): Image = {
     println(s"Creating a triangle")
-    Image.triangle(size, size).strokeColor(Color.magenta)
+    Image.equilateralTriangle(size).strokeColor(Color.magenta)
   }
 
   def sierpinski(n: Int, size: Double): Image = {
@@ -17,7 +17,7 @@ object Sierpinski {
       triangle(size)
     } else {
       val smaller = sierpinski(n - 1, size / 2)
-      smaller above (smaller beside smaller)
+      smaller.above(smaller.beside(smaller))
     }
   }
 
