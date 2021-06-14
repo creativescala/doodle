@@ -22,5 +22,5 @@ object SierpinskiRipple {
     }
   }
 
-  val image = sierpinski(10, 512, Color.brown)
+  val image = sierpinski(10, 1024, Color.brown)
 }
