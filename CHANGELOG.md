@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.9.23 11-Feb-2020
+## Next release
+
+- Update to Scala 2.13.5 and Scala.js 1.6
+
+- Add equilateralTriangle path
+
+
+## 0.9.23 11-Feb-2021
 
 - Mouse click algebra
 
