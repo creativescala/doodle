@@ -42,6 +42,7 @@ trait Path[F[_]] extends Algebra[F] {
     path(ClosedPath(PathElement.roundedRectangle(width, height, radius)))
   }
 
+  /** Create an equilateral triangle with the given side length. */
   def equilateralTriangle(width: Double): F[Unit] = {
     path(ClosedPath(PathElement.equilateralTriangle(width)))
   }
