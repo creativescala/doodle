@@ -17,7 +17,7 @@ object Instruction {
     def ++(is: List[Instruction]): Branch =
       Branch(instructions ++ is)
   }
-  final case object NoOp extends Instruction
+  case object NoOp extends Instruction
 
   def forward(distance: Double): Instruction =
     Forward(distance)

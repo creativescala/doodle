@@ -26,24 +26,31 @@ import doodle.language.Basic
 import java.io.File
 
 trait ImageSyntax {
+  def unitCallback[A]: Either[Throwable, A] => Unit =
+    (either) => either match {
+      case Left(err) =>
+        println("There was an error working with an Image")
+        err.printStackTrace()
+
+      case Right(_) => ()
+    }
+
   implicit class ImageOps(image: Image) {
     def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
         implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
-      } yield a).unsafeRunSync()
+      } yield a).unsafeRunAsync(unitCallback)
 
     def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
         implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
-      } yield a).unsafeRunSync()
+      } yield a).unsafeRunAsync(unitCallback)
 
     def write[Format] = new ImageWriterOps[Format](image)
-
-    def base64[Format] = new Base64Ops[Format](image)
   }
 
   /** This strange construction allows the user to write `anImage.write[AFormat](filename)`
@@ -56,7 +63,7 @@ trait ImageSyntax {
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
       w.write(file, Picture((algebra: Alg[F]) => image.compile(algebra)))
-        .unsafeRunSync()
+        .unsafeRunAsync(unitCallback)
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
         implicit w: Writer[Alg, F, Frame, Format]): Unit =
@@ -67,19 +74,6 @@ trait ImageSyntax {
       w.write(file,
                frame,
                Picture((algebra: Alg[F]) => image.compile(algebra)))
-        .unsafeRunSync()
+        .unsafeRunAsync(unitCallback)
   }
-
-  /** This strange construction allows the user to write
-    * `anImage.base64[AFormat]` without having to specify other, mostly
-    * irrelevant to the user, type parameters. */
-  final class Base64Ops[Format](image: Image) {
-    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](
-        implicit w: Base64[Alg, F, Frame, Format]): B64[Format] = {
-      val picture = Picture((algebra: Alg[F]) => image.compile(algebra))
-      val (_, base64) = w.base64(picture).unsafeRunSync()
-      base64
-    }
-  }
-
 }

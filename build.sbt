@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-lazy val scala213 = "2.13.5"
-lazy val supportedScalaVersions = List(scala213)
+lazy val scala213 = "2.13.6"
+lazy val scala3   = "3.0.0"
+lazy val supportedScalaVersions = List(scala213, scala3)
 
-ThisBuild / scalaVersion := scala213
+ThisBuild / scalaVersion := scala3
 ThisBuild / useSuperShell := false
 
 // enablePlugins(AutomateHeaderPlugin)
-
-coursierUseSbtCredentials := true
-coursierChecksums := Nil // workaround for nexus sync bugs
 
 lazy val commonSettings = Seq(
   crossScalaVersions := supportedScalaVersions,
@@ -39,9 +37,11 @@ lazy val commonSettings = Seq(
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
   ),
-  addCompilerPlugin(
-    "org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full
-  )
+  libraryDependencies ++= (
+      if (scalaBinaryVersion.value == "2.13")
+        compilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full) :: Nil
+      else Nil
+    )
 )
 
 lazy val root = crossProject(JSPlatform, JVMPlatform)
@@ -190,10 +190,13 @@ lazy val java2d = project
     commonSettings,
     moduleName := "doodle-java2d",
     libraryDependencies ++= Seq(
-      Dependencies.magnolia.value,
-      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13",
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided
-    )
+      if (scalaBinaryVersion == "2.13") ("com.softwaremill.magnolia1_2" %%% "magnolia" % "1.0.0-M5")
+      else ("com.softwaremill.magnolia1_3" %% "magnolia" % "1.0.0-M3"),
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
+    ),
+    libraryDependencies ++=
+      (if (scalaBinaryVersion == "2.13") List("org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided)
+      else Nil)
   )
   .dependsOn(coreJvm, exploreJvm, interactJvm)
 
@@ -227,7 +230,7 @@ lazy val svg = crossProject(JSPlatform, JVMPlatform)
   .settings(
     commonSettings,
     moduleName := "doodle-svg",
-    libraryDependencies += Dependencies.scalaTags.value
+    libraryDependencies += ("com.lihaoyi" %%% "scalatags" % "0.9.4").cross(CrossVersion.for3Use2_13)
   )
 
 lazy val svgJvm =

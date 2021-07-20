@@ -96,7 +96,7 @@ sealed abstract class Image extends Product with Serializable {
 
   // Convert to tagless final format
 
-  def compile[Algebra[x[?]] <: Basic[x], F[_]]
+  def compile[Algebra[x[*]] <: Basic[x], F[_]]
     : doodle.algebra.Picture[Algebra, F, Unit] =
     Image.compile(this)
 }
@@ -153,7 +153,7 @@ object Image {
     // Debug
     final case class Debug(image: Image, color: Color) extends Image
 
-    final case object Empty extends Image
+    case object Empty extends Image
   }
   import Elements._
 

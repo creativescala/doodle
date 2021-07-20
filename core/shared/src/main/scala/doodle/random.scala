@@ -28,10 +28,10 @@ object random {
   object RandomOp {
     final case class Always[A](get: A) extends RandomOp[A]
     final case class Discrete[A](elements: Seq[(A, Double)]) extends RandomOp[A]
-    final case object RInt extends RandomOp[Int]
     final case class Natural(upperLimit: Int) extends RandomOp[Int]
-    final case object RDouble extends RandomOp[Double]
-    final case object Normal extends RandomOp[Double]
+    case object RInt extends RandomOp[Int]
+    case object RDouble extends RandomOp[Double]
+    case object Normal extends RandomOp[Double]
   }
 
   implicit def randomInstances(

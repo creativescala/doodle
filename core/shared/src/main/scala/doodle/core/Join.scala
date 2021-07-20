@@ -19,9 +19,9 @@ package core
 
 sealed abstract class Join extends Product with Serializable
 object Join {
-  final case object Bevel extends Join
-  final case object Round extends Join
-  final case object Miter extends Join
+  case object Bevel extends Join
+  case object Round extends Join
+  case object Miter extends Join
 
   val bevel: Join = Bevel
   val round: Join = Round

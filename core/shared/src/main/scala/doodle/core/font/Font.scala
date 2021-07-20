@@ -20,9 +20,9 @@ package font
 
 sealed abstract class FontFamily extends Product with Serializable
 object FontFamily {
-  final case object Serif extends FontFamily
-  final case object SansSerif extends FontFamily
-  final case object Monospaced extends FontFamily
+  case object Serif extends FontFamily
+  case object SansSerif extends FontFamily
+  case object Monospaced extends FontFamily
   final case class Named(get: String) extends FontFamily
 
   val serif: FontFamily = Serif
@@ -33,8 +33,8 @@ object FontFamily {
 
 sealed abstract class FontWeight extends Product with Serializable
 object FontWeight {
-  final case object Normal extends FontWeight
-  final case object Bold extends FontWeight
+  case object Normal extends FontWeight
+  case object Bold extends FontWeight
 
   val bold: FontWeight = Bold
   val normal: FontWeight = Normal
@@ -42,8 +42,8 @@ object FontWeight {
 
 sealed abstract class FontStyle extends Product with Serializable
 object FontStyle {
-  final case object Italic extends FontStyle
-  final case object Normal extends FontStyle
+  case object Italic extends FontStyle
+  case object Normal extends FontStyle
 
   val italic: FontStyle = Italic
   val normal: FontStyle = Normal

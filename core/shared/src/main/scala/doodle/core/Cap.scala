@@ -19,9 +19,9 @@ package core
 
 sealed abstract class Cap extends Product with Serializable
 object Cap {
-  final case object Butt extends Cap
-  final case object Round extends Cap
-  final case object Square extends Cap
+  case object Butt extends Cap
+  case object Round extends Cap
+  case object Square extends Cap
 
   val butt: Cap = Butt
   val round: Cap = Round

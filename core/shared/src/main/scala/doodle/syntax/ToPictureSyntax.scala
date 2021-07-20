@@ -24,7 +24,7 @@ trait ToPictureSyntax {
     def toPicture[Alg[x[_]] <: Algebra[x], F[_]](
         implicit tp: ToPicture[F, A]
     ): Picture[Alg, F, Unit] =
-      Picture { _: Alg[F] =>
+      Picture { (_: Alg[F]) =>
         tp.toPicture(value)
       }
   }

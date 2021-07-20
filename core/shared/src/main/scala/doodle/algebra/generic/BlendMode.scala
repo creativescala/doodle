@@ -20,11 +20,11 @@ package generic
 
 sealed abstract class BlendMode extends Product with Serializable
 object BlendMode {
-  final case object Screen extends BlendMode
-  final case object Burn extends BlendMode
-  final case object Dodge extends BlendMode
-  final case object Lighten extends BlendMode
-  final case object SourceOver extends BlendMode
+  case object Screen extends BlendMode
+  case object Burn extends BlendMode
+  case object Dodge extends BlendMode
+  case object Lighten extends BlendMode
+  case object SourceOver extends BlendMode
 
   val screen: BlendMode = Screen
   val burn: BlendMode = Burn

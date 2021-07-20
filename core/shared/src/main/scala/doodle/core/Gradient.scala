@@ -65,9 +65,9 @@ object Gradient {
 
   sealed trait CycleMethod extends Product with Serializable {}
   object CycleMethod {
-    final case object NoCycle extends CycleMethod
-    final case object Reflect extends CycleMethod
-    final case object Repeat extends CycleMethod
+    case object NoCycle extends CycleMethod
+    case object Reflect extends CycleMethod
+    case object Repeat extends CycleMethod
 
     val noCycle: CycleMethod = NoCycle
     val reflect: CycleMethod = Reflect
