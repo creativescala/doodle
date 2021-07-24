@@ -3,8 +3,8 @@ package interact
 package animation
 
 import cats.implicits._
-import org.scalacheck._
 import org.scalacheck.Prop._
+import org.scalacheck._
 
 object TransducerSpec extends Properties("Transducer properties") {
   property("empty produces no output") =
@@ -40,8 +40,8 @@ object TransducerSpec extends Properties("Transducer properties") {
       val a = Transducer.fromList(shortest ++ pad)
       val b = Transducer.fromList(longest)
 
-      a.and(b).toList ?= (shortest ++ pad).zip(longest).map {
-        case (a, b) => a + b
+      a.and(b).toList ?= (shortest ++ pad).zip(longest).map { case (a, b) =>
+        a + b
       }
   }
 
@@ -56,14 +56,14 @@ object TransducerSpec extends Properties("Transducer properties") {
   property("andThen passes last output to the second transducer") =
     forAllNoShrink { (xs: List[Int]) =>
       val a = Transducer.fromList(xs)
-      val t = a.andThen(o => Transducer(o+1))
+      val t = a.andThen(o => Transducer(o + 1))
 
       xs.length match {
         case 0 => t.toList ?= List.empty
         case n =>
           val o = xs.last
           val l = t.toList
-          (l.length ?= n+1) && (l.last ?= o+1)
+          (l.length ?= n + 1) && (l.last ?= o + 1)
       }
     }
 
@@ -90,7 +90,7 @@ object TransducerSpec extends Properties("Transducer properties") {
     }
 
   property("scanLeft produces cumulative results") =
-    forAllNoShrink(Gen.listOf(Gen.choose(-100,100))){ (xs: List[Int]) =>
+    forAllNoShrink(Gen.listOf(Gen.choose(-100, 100))) { (xs: List[Int]) =>
       val t = Transducer.fromList(xs).scanLeft(0)(_ + _)
       t.toList ?= xs.scanLeft(0)(_ + _)
     }

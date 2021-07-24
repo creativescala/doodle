@@ -19,10 +19,10 @@ package algebra
 package generic
 
 import cats.implicits._
-import doodle.core.{Transform => Tx}
 import doodle.algebra.generic.reified.Reification
-import org.scalacheck._
+import doodle.core.{Transform => Tx}
 import org.scalacheck.Prop._
+import org.scalacheck._
 
 object SizeSpec extends Properties("Size properties") {
   implicit val algebra: TestAlgebra = TestAlgebra()
@@ -33,7 +33,7 @@ object SizeSpec extends Properties("Size properties") {
   }
 
   property("width matches bounding box width") =
-    forAllNoShrink(Generators.finalized){ f =>
+    forAllNoShrink(Generators.finalized) { f =>
       val width = getA(algebra.width(f))
       val (bb, _) = f.runA(List.empty).value
 
@@ -41,7 +41,7 @@ object SizeSpec extends Properties("Size properties") {
     }
 
   property("height matches bounding box height") =
-    forAllNoShrink(Generators.finalized){ f =>
+    forAllNoShrink(Generators.finalized) { f =>
       val height = getA(algebra.height(f))
       val (bb, _) = f.runA(List.empty).value
 
@@ -49,7 +49,7 @@ object SizeSpec extends Properties("Size properties") {
     }
 
   property("size matches bounding box size") =
-    forAllNoShrink(Generators.finalized){ f =>
+    forAllNoShrink(Generators.finalized) { f =>
       val size = getA(algebra.size(f))
       val (bb, _) = f.runA(List.empty).value
 

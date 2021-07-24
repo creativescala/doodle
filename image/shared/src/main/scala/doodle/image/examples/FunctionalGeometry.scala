@@ -14,10 +14,10 @@ object FunctionalGeometry {
 
   def grid(lines: List[((Int, Int), (Int, Int))]) = {
     import PathElement._
-    val paths = lines.map {
-      case (((a, b), (c, d))) =>
-        Image.openPath(
-          List(moveTo(a.toDouble, b.toDouble), lineTo(c.toDouble, d.toDouble)))
+    val paths = lines.map { case (((a, b), (c, d))) =>
+      Image.openPath(
+        List(moveTo(a.toDouble, b.toDouble), lineTo(c.toDouble, d.toDouble))
+      )
     }
     paths.foldLeft(Image.empty)(_ on _)
   }
@@ -31,15 +31,17 @@ object FunctionalGeometry {
   def blank(m: Int = 4, n: Int = 4): Image =
     Image.rectangle(16, 16).scale(m.toDouble, n.toDouble).noStroke
 
-  def nonet(i1: Image,
-            i2: Image,
-            i3: Image,
-            i4: Image,
-            i5: Image,
-            i6: Image,
-            i7: Image,
-            i8: Image,
-            i9: Image) = {
+  def nonet(
+      i1: Image,
+      i2: Image,
+      i3: Image,
+      i4: Image,
+      i5: Image,
+      i6: Image,
+      i7: Image,
+      i8: Image,
+      i9: Image
+  ) = {
     (i1 beside (i2 beside i3)) above ((i4 beside (i5 beside i6)) above (i7 beside (i8 beside i9)))
   }
 
@@ -75,7 +77,8 @@ object FunctionalGeometry {
         ((12, 16), (13, 15)),
         ((13, 15), (16, 14)),
         ((14, 16), (16, 15))
-      ))
+      )
+    )
 
   val q: Image =
     grid(
@@ -113,7 +116,8 @@ object FunctionalGeometry {
         ((2, 16), (3, 13)),
         ((4, 16), (5, 14)),
         ((6, 16), (7, 15))
-      ))
+      )
+    )
 
   val r: Image =
     grid(
@@ -140,7 +144,8 @@ object FunctionalGeometry {
         ((13, 13), (16, 10)),
         ((14, 14), (16, 12)),
         ((15, 15), (16, 14))
-      ))
+      )
+    )
 
   val s: Image =
     grid(
@@ -172,7 +177,8 @@ object FunctionalGeometry {
         ((13, 13), (16, 14)),
         ((14, 11), (16, 12)),
         ((15, 9), (16, 10))
-      ))
+      )
+    )
 
   val t: Image = quartet(p, q, r, s)
 
@@ -190,10 +196,12 @@ object FunctionalGeometry {
     quartet(corner1, side1, side1 rotate 90.degrees, u.scale(4, 4))
 
   val pseudocorner: Image =
-    quartet(corner2,
-            side2,
-            side2 rotate 90.degrees,
-            (t rotate 90.degrees).scale(8, 8))
+    quartet(
+      corner2,
+      side2,
+      side2 rotate 90.degrees,
+      (t rotate 90.degrees).scale(8, 8)
+    )
 
   val fishes: Image = cycle(pseudocorner)
 

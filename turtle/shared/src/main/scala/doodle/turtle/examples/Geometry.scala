@@ -4,8 +4,8 @@ package examples
 
 import doodle.core._
 import doodle.syntax._
-import doodle.turtle._
 import doodle.turtle.Instruction._
+import doodle.turtle._
 
 object Geometry {
   val instructions =

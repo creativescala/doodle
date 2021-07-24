@@ -17,12 +17,14 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Algebra, Picture, ToPicture}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
+import doodle.algebra.ToPicture
 
 trait ToPictureSyntax {
   implicit class ToPictureOps[A](value: A) {
-    def toPicture[Alg[x[_]] <: Algebra[x], F[_]](
-        implicit tp: ToPicture[F, A]
+    def toPicture[Alg[x[_]] <: Algebra[x], F[_]](implicit
+        tp: ToPicture[F, A]
     ): Picture[Alg, F, Unit] =
       Picture { (_: Alg[F]) =>
         tp.toPicture(value)

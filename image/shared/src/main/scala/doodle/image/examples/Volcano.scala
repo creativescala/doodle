@@ -2,17 +2,19 @@ package doodle
 package image
 package examples
 
+import cats.syntax.all._
 import doodle.core._
 import doodle.image._
-import doodle.syntax._
 import doodle.random._
-import cats.syntax.all._
+import doodle.syntax._
 
 object Volcano {
   def rose(k: Int): Angle => Point =
     (angle: Angle) => {
-      Point.cartesian((angle * k.toDouble).cos * angle.cos,
-                      (angle * k.toDouble).cos * angle.sin)
+      Point.cartesian(
+        (angle * k.toDouble).cos * angle.cos,
+        (angle * k.toDouble).cos * angle.sin
+      )
     }
 
   def scale(factor: Double): Point => Point =

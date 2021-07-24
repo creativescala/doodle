@@ -17,12 +17,16 @@
 package doodle
 package syntax
 
-import doodle.core.{Angle, Transform => Tx, Vec}
-import doodle.algebra.{Picture, Transform}
+import doodle.algebra.Picture
+import doodle.algebra.Transform
+import doodle.core.Angle
+import doodle.core.Vec
+import doodle.core.{Transform => Tx}
 
 trait TransformSyntax {
   implicit class TransformPictureOps[Alg[x[_]] <: Transform[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
 
     def transform(tx: Tx): Picture[Alg, F, A] =
       Picture { implicit algebra =>

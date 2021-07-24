@@ -52,19 +52,19 @@ sealed abstract class Color extends Product with Serializable {
 
   // Color manipulation ------------------------------------
 
-  /** Copies this color, changing the hue to the given value*/
+  /** Copies this color, changing the hue to the given value */
   def hue(angle: Angle): Color =
     this.toHSLA.copy(h = angle)
 
-  /** Copies this color, changing the saturation to the given value*/
+  /** Copies this color, changing the saturation to the given value */
   def saturation(s: Normalized): Color =
     this.toHSLA.copy(s = s)
 
-  /** Copies this color, changing the lightness to the given value*/
+  /** Copies this color, changing the lightness to the given value */
   def lightness(l: Normalized): Color =
     this.toHSLA.copy(l = l)
 
-  /** Copies this color, changing the alpha to the given value*/
+  /** Copies this color, changing the alpha to the given value */
   def alpha(a: Normalized): Color =
     this.toHSLA.copy(a = a)
 
@@ -74,33 +74,37 @@ sealed abstract class Color extends Product with Serializable {
     original.copy(h = original.h + angle)
   }
 
-  /** Lighten the color by the given amount. This is an absolute
-    * amount, not an amount relative to the Color's current
-    * lightness. Lightness is clipped at Normalized.MaxValue */
+  /** Lighten the color by the given amount. This is an absolute amount, not an
+    * amount relative to the Color's current lightness. Lightness is clipped at
+    * Normalized.MaxValue
+    */
   def lighten(lightness: Normalized) = {
     val original = this.toHSLA
     original.copy(l = Normalized.clip(original.l + lightness))
   }
 
-  /** Darken the color by the given amount. This is an absolute
-    * amount, not an amount relative to the Color's current
-    * lightness. Lightness is clipped at Normalized.MaxValue */
+  /** Darken the color by the given amount. This is an absolute amount, not an
+    * amount relative to the Color's current lightness. Lightness is clipped at
+    * Normalized.MaxValue
+    */
   def darken(darkness: Normalized) = {
     val original = this.toHSLA
     original.copy(l = Normalized.clip(original.l - darkness))
   }
 
-  /** Saturate the color by the given amount. This is an absolute
-    * amount, not an amount relative to the Color's current
-    * saturation. Saturation is clipped at Normalized.MaxValue */
+  /** Saturate the color by the given amount. This is an absolute amount, not an
+    * amount relative to the Color's current saturation. Saturation is clipped
+    * at Normalized.MaxValue
+    */
   def saturate(saturation: Normalized) = {
     val original = this.toHSLA
     original.copy(s = Normalized.clip(original.s + saturation))
   }
 
-  /** Desaturate the color by the given amount. This is an absolute
-    * amount, not an amount relative to the Color's current
-    * saturation. Saturation is clipped at Normalized.MaxValue */
+  /** Desaturate the color by the given amount. This is an absolute amount, not
+    * an amount relative to the Color's current saturation. Saturation is
+    * clipped at Normalized.MaxValue
+    */
   def desaturate(desaturation: Normalized) = {
     val original = this.toHSLA
     original.copy(s = Normalized.clip(original.s - desaturation))
@@ -146,8 +150,8 @@ sealed abstract class Color extends Product with Serializable {
   }
 
   /** Desaturate the color by the given *relative* amount. For example, calling
-    * `aColor.desaturateBy(0.1.normalized` decreases the saturation by 10% of the
-    * current saturation.
+    * `aColor.desaturateBy(0.1.normalized` decreases the saturation by 10% of
+    * the current saturation.
     */
   def desaturateBy(desaturation: Normalized) = {
     val original = this.toHSLA
@@ -244,18 +248,21 @@ sealed abstract class Color extends Product with Serializable {
     }
 }
 object Color extends CommonColors {
-  final case class RGBA(r: UnsignedByte,
-                        g: UnsignedByte,
-                        b: UnsignedByte,
-                        a: Normalized)
-      extends Color
+  final case class RGBA(
+      r: UnsignedByte,
+      g: UnsignedByte,
+      b: UnsignedByte,
+      a: Normalized
+  ) extends Color
   final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized)
       extends Color
 
-  def rgba(r: UnsignedByte,
-           g: UnsignedByte,
-           b: UnsignedByte,
-           a: Normalized): Color =
+  def rgba(
+      r: UnsignedByte,
+      g: UnsignedByte,
+      b: UnsignedByte,
+      a: Normalized
+  ): Color =
     RGBA(r, g, b, a)
 
   def rgba(r: Int, g: Int, b: Int, a: Double): Color =
@@ -267,13 +274,15 @@ object Color extends CommonColors {
   def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
     rgba(r, g, b, 1.0.normalized)
 
-  /** Construct a [[Color]] in terms of red, green, and blue components. The alpha
-    * value defaults to 1.0 (fully opaque). */
+  /** Construct a [[Color]] in terms of red, green, and blue components. The
+    * alpha value defaults to 1.0 (fully opaque).
+    */
   def rgb(r: Int, g: Int, b: Int): Color =
     rgba(r, g, b, 1.0)
 
-  /** Construct a [[Color]] in terms of hue, saturation, and lightness components.
-    * The alpha value defaults to 1.0 (fully opaque). */
+  /** Construct a [[Color]] in terms of hue, saturation, and lightness
+    * components. The alpha value defaults to 1.0 (fully opaque).
+    */
   def hsl(h: Angle, s: Double, l: Double): Color =
     hsla(h, s, l, 1.0)
 

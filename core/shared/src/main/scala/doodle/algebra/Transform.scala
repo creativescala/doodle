@@ -17,7 +17,9 @@
 package doodle
 package algebra
 
-import doodle.core.{Angle, Transform => Tx, Vec}
+import doodle.core.Angle
+import doodle.core.Vec
+import doodle.core.{Transform => Tx}
 
 trait Transform[F[_]] extends Algebra[F] {
   def transform[A](img: F[A], tx: Tx): F[A]

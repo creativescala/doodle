@@ -17,11 +17,13 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Picture, Size}
+import doodle.algebra.Picture
+import doodle.algebra.Size
 
 trait SizeSyntax {
   implicit class SizePictureOps[Alg[x[_]] <: Size[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
     def height: Picture[Alg, F, Double] =
       Picture { implicit algebra: Alg[F] =>
         algebra.height(picture(algebra))

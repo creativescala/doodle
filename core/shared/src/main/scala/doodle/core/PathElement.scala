@@ -54,24 +54,28 @@ object PathElement {
   def curveTo(cp1: Point, cp2: Point, to: Point): PathElement =
     BezierCurveTo(cp1, cp2, to)
 
-  def curveTo(cp1X: Double,
-              cp1Y: Double,
-              cp2X: Double,
-              cp2Y: Double,
-              toX: Double,
-              toY: Double): PathElement =
+  def curveTo(
+      cp1X: Double,
+      cp1Y: Double,
+      cp2X: Double,
+      cp2Y: Double,
+      toX: Double,
+      toY: Double
+  ): PathElement =
     curveTo(
       Point(cp1X, cp1Y),
       Point(cp2X, cp2Y),
       Point(toX, toY)
     )
 
-  def curveTo(cp1R: Double,
-              cp1Angle: Angle,
-              cp2R: Double,
-              cp2Angle: Angle,
-              toR: Double,
-              toAngle: Angle): PathElement =
+  def curveTo(
+      cp1R: Double,
+      cp1Angle: Angle,
+      cp2R: Double,
+      cp2Angle: Angle,
+      toR: Double,
+      toAngle: Angle
+  ): PathElement =
     curveTo(
       Point(cp1R, cp1Angle),
       Point(cp2R, cp2Angle),
@@ -92,27 +96,36 @@ object PathElement {
     val cR = c * r
     List(
       MoveTo(cartesian(x, y + r)),
-      BezierCurveTo(cartesian(x + cR, y + r),
-                    cartesian(x + r, y + cR),
-                    cartesian(x + r, y)),
-      BezierCurveTo(cartesian(x + r, y + -cR),
-                    cartesian(x + cR, y + -r),
-                    cartesian(x, y + -r)),
-      BezierCurveTo(cartesian(x + -cR, y + -r),
-                    cartesian(x + -r, y + -cR),
-                    cartesian(x + -r, y)),
-      BezierCurveTo(cartesian(x + -r, y + cR),
-                    cartesian(x + -cR, y + r),
-                    cartesian(x, y + r))
+      BezierCurveTo(
+        cartesian(x + cR, y + r),
+        cartesian(x + r, y + cR),
+        cartesian(x + r, y)
+      ),
+      BezierCurveTo(
+        cartesian(x + r, y + -cR),
+        cartesian(x + cR, y + -r),
+        cartesian(x, y + -r)
+      ),
+      BezierCurveTo(
+        cartesian(x + -cR, y + -r),
+        cartesian(x + -r, y + -cR),
+        cartesian(x + -r, y)
+      ),
+      BezierCurveTo(
+        cartesian(x + -r, y + cR),
+        cartesian(x + -cR, y + r),
+        cartesian(x, y + r)
+      )
     )
   }
 
-  /**
-    * Construct a regular polygon
+  /** Construct a regular polygon
     */
-  def regularPolygon(sides: Int,
-                     radius: Double,
-                     angle: Angle): List[PathElement] = {
+  def regularPolygon(
+      sides: Int,
+      radius: Double,
+      angle: Angle
+  ): List[PathElement] = {
     val rotation = Angle.one / sides.toDouble
     val path =
       (1 to sides).map { n =>
@@ -122,13 +135,14 @@ object PathElement {
     (moveTo(radius, angle) +: path)
   }
 
-  /**
-    * Construct a star
+  /** Construct a star
     */
-  def star(points: Int,
-           outerRadius: Double,
-           innerRadius: Double,
-           angle: Angle): List[PathElement] = {
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double,
+      angle: Angle
+  ): List[PathElement] = {
 
     val rotation = Angle.one / (points * 2.0)
     val path =
@@ -170,12 +184,14 @@ object PathElement {
     path
   }
 
-  /**
-    * Construct a rounded rectangle with the given width, height, and corner radius
+  /** Construct a rounded rectangle with the given width, height, and corner
+    * radius
     */
-  def roundedRectangle(width: Double,
-                       height: Double,
-                       radius: Double): List[PathElement] = {
+  def roundedRectangle(
+      width: Double,
+      height: Double,
+      radius: Double
+  ): List[PathElement] = {
     // Clamp radius to the smallest of width and height
     val cornerRadius =
       if (radius > width / 2 || radius > height / 2)
@@ -191,60 +207,70 @@ object PathElement {
 
     val elts = List(
       moveTo(width / 2 - cornerRadius, height / 2),
-      curveTo(width / 2 - cornerRadius + cR,
-              height / 2,
-              width / 2,
-              height / 2 - cornerRadius + cR,
-              width / 2,
-              height / 2 - cornerRadius),
+      curveTo(
+        width / 2 - cornerRadius + cR,
+        height / 2,
+        width / 2,
+        height / 2 - cornerRadius + cR,
+        width / 2,
+        height / 2 - cornerRadius
+      ),
       lineTo(width / 2, -height / 2 + cornerRadius),
-      curveTo(width / 2,
-              -height / 2 + cornerRadius - cR,
-              width / 2 - cornerRadius + cR,
-              -height / 2,
-              width / 2 - cornerRadius,
-              -height / 2),
+      curveTo(
+        width / 2,
+        -height / 2 + cornerRadius - cR,
+        width / 2 - cornerRadius + cR,
+        -height / 2,
+        width / 2 - cornerRadius,
+        -height / 2
+      ),
       lineTo(-width / 2 + cornerRadius, -height / 2),
-      curveTo(-width / 2 + cornerRadius - cR,
-              -height / 2,
-              -width / 2,
-              -height / 2 + cornerRadius - cR,
-              -width / 2,
-              -height / 2 + cornerRadius),
+      curveTo(
+        -width / 2 + cornerRadius - cR,
+        -height / 2,
+        -width / 2,
+        -height / 2 + cornerRadius - cR,
+        -width / 2,
+        -height / 2 + cornerRadius
+      ),
       lineTo(-width / 2, height / 2 - cornerRadius),
-      curveTo(-width / 2,
-              height / 2 - cornerRadius + cR,
-              -width / 2 + cornerRadius - cR,
-              height / 2,
-              -width / 2 + cornerRadius,
-              height / 2),
+      curveTo(
+        -width / 2,
+        height / 2 - cornerRadius + cR,
+        -width / 2 + cornerRadius - cR,
+        height / 2,
+        -width / 2 + cornerRadius,
+        height / 2
+      ),
       lineTo(width / 2 - cornerRadius, height / 2)
     )
 
     elts
   }
 
-  /**
-    * Construct list of bezier curves that are smoothly connected and intersect
+  /** Construct list of bezier curves that are smoothly connected and intersect
     * all the given points. Defaults to `catmulRom` with the default tension.
     */
   def interpolatingSpline(points: Seq[Point]): List[PathElement] =
     catmulRom(points)
 
-  /**
-    * Interpolate a spline (a curve) that passes through all the given points,
-    * using the Catmul Rom formulation (see, e.g., https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
+  /** Interpolate a spline (a curve) that passes through all the given points,
+    * using the Catmul Rom formulation (see, e.g.,
+    * https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
     *
-    * The tension can be changed to control how tightly the curve turns. It defaults to 0.5.
+    * The tension can be changed to control how tightly the curve turns. It
+    * defaults to 0.5.
     *
     * The Catmul Rom algorithm requires a point before and after each pair of
-    * points that define the curve. To meet this condition for the first and last
-    * points in `points`, they are repeated.
+    * points that define the curve. To meet this condition for the first and
+    * last points in `points`, they are repeated.
     *
     * If `points` has less than two elements an empty List is returned.
     */
-  def catmulRom(points: Seq[Point],
-                tension: Double = 0.5): List[PathElement] = {
+  def catmulRom(
+      points: Seq[Point],
+      tension: Double = 0.5
+  ): List[PathElement] = {
     /*
     To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
 

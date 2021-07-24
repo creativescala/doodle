@@ -17,11 +17,13 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Picture, Blend}
+import doodle.algebra.Blend
+import doodle.algebra.Picture
 
 trait BlendSyntax {
   implicit class BlendPictureOps[Alg[x[_]] <: Blend[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
     def screen: Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.screen(picture(algebra))

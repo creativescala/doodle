@@ -18,6 +18,7 @@ package doodle
 package core
 
 import doodle.syntax._
+
 import scala.annotation.tailrec
 
 trait Parametric[A] extends (A => Point) {
@@ -26,16 +27,14 @@ trait Parametric[A] extends (A => Point) {
   def sample(count: Int): List[Point]
 }
 
-/**
-  * A collection of parametric curves.
+/** A collection of parametric curves.
   *
   * A parametric curve is a function from some input---usually a normalized
   * number or an angle---to a `Point`.
   */
 object Parametric {
 
-  /**
-    * A parametric curve that maps angles to points
+  /** A parametric curve that maps angles to points
     */
   final case class AngularCurve(f: Angle => Point) extends Parametric[Angle] {
     def apply(angle: Angle): Point = f(angle)
@@ -62,14 +61,15 @@ object Parametric {
       sample(count, Angle.one)
   }
 
-  /**
-    * A parametric curve that maps normalized to points
+  /** A parametric curve that maps normalized to points
     */
   final case class NormalizedCurve(f: Normalized => Point)
       extends Parametric[Normalized] {
     def apply(t: Normalized): Point = f(t)
 
-    /** Convert to an `AngularCurve` where the angle ranges from 0 to 360 degrees */
+    /** Convert to an `AngularCurve` where the angle ranges from 0 to 360
+      * degrees
+      */
     def toAngularCurve: AngularCurve =
       AngularCurve((theta: Angle) => f((theta.toTurns).normalized))
 
@@ -101,71 +101,79 @@ object Parametric {
   def rose(k: Double, scale: Double = 1.0): AngularCurve =
     AngularCurve((theta: Angle) => Point(scale * (theta * k).cos, theta))
 
-  /**
-    * A hypotrochoid is the curve sketched out by a point `offset` from the centre of a circle of radius `innerRadius` rolling around the inside of a circle of radius `outerRadius`.
+  /** A hypotrochoid is the curve sketched out by a point `offset` from the
+    * centre of a circle of radius `innerRadius` rolling around the inside of a
+    * circle of radius `outerRadius`.
     */
-  def hypotrochoid(outerRadius: Double,
-                   innerRadius: Double,
-                   offset: Double): AngularCurve = {
+  def hypotrochoid(
+      outerRadius: Double,
+      innerRadius: Double,
+      offset: Double
+  ): AngularCurve = {
     val difference = outerRadius - innerRadius
     val differenceRatio = difference / innerRadius
     AngularCurve((theta: Angle) =>
-      Point(theta.cos * difference + ((theta * differenceRatio).cos * offset),
-            theta.sin * difference - ((theta * differenceRatio).sin * offset)))
+      Point(
+        theta.cos * difference + ((theta * differenceRatio).cos * offset),
+        theta.sin * difference - ((theta * differenceRatio).sin * offset)
+      )
+    )
   }
 
   /** Logarithmic spiral */
   def logarithmicSpiral(a: Double, b: Double): AngularCurve =
-    AngularCurve(
-      (theta: Angle) => Point(a * Math.exp(theta.toRadians * b), theta))
+    AngularCurve((theta: Angle) =>
+      Point(a * Math.exp(theta.toRadians * b), theta)
+    )
 
   /** Quadratic bezier curve */
   def quadraticBezier(start: Point, cp: Point, end: Point): NormalizedCurve = {
     // We don't use de Casteljau's algorithm because I don't think numerical stability is important for the applications we have in mind. I reserve the right to change this opinion
-    NormalizedCurve(
-      (t: Normalized) => {
-        val tD = t.get
-        val p1 = start.toVec * (1 - tD) * (1 - tD)
-        val p2 = cp.toVec * (2 * (1 - tD) * tD)
-        val p3 = end.toVec * (tD * tD)
+    NormalizedCurve((t: Normalized) => {
+      val tD = t.get
+      val p1 = start.toVec * (1 - tD) * (1 - tD)
+      val p2 = cp.toVec * (2 * (1 - tD) * tD)
+      val p3 = end.toVec * (tD * tD)
 
-        (p1 + p2 + p3).toPoint
-      }
-    )
+      (p1 + p2 + p3).toPoint
+    })
   }
 
-  def cubicBezier(start: Point,
-                  cp1: Point,
-                  cp2: Point,
-                  end: Point): NormalizedCurve = {
-    NormalizedCurve(
-      (t: Normalized) => {
-        val tD = t.get
-        val oneMinusTD = 1 - tD
-        val p0 = start.toVec * (oneMinusTD * oneMinusTD * oneMinusTD)
-        val p1 = cp1.toVec * (3 * oneMinusTD * oneMinusTD * tD)
-        val p2 = cp2.toVec * (3 * oneMinusTD * tD * tD)
-        val p3 = end.toVec * (tD * tD * tD)
+  def cubicBezier(
+      start: Point,
+      cp1: Point,
+      cp2: Point,
+      end: Point
+  ): NormalizedCurve = {
+    NormalizedCurve((t: Normalized) => {
+      val tD = t.get
+      val oneMinusTD = 1 - tD
+      val p0 = start.toVec * (oneMinusTD * oneMinusTD * oneMinusTD)
+      val p1 = cp1.toVec * (3 * oneMinusTD * oneMinusTD * tD)
+      val p2 = cp2.toVec * (3 * oneMinusTD * tD * tD)
+      val p3 = end.toVec * (tD * tD * tD)
 
-        (p0 + p1 + p2 + p3).toPoint
-      }
-    )
+      (p0 + p1 + p2 + p3).toPoint
+    })
   }
 
-  /**
-    * Interpolate a spline (a curve) that passes through all the given points,
-    * using the Catmul Rom formulation (see, e.g., https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
+  /** Interpolate a spline (a curve) that passes through all the given points,
+    * using the Catmul Rom formulation (see, e.g.,
+    * https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
     *
-    * The tension can be changed to control how tightly the curve turns. It defaults to 0.5.
+    * The tension can be changed to control how tightly the curve turns. It
+    * defaults to 0.5.
     *
     * The Catmul Rom algorithm requires a point before and after each pair of
-    * points that define the curve. To meet this condition for the first and last
-    * points in `points`, they are repeated.
+    * points that define the curve. To meet this condition for the first and
+    * last points in `points`, they are repeated.
     *
     * If `points` has less than two elements an empty `Path` is returned.
     */
-  def interpolate(points: Seq[Point],
-                  tension: Double = 0.5): NormalizedCurve = {
+  def interpolate(
+      points: Seq[Point],
+      tension: Double = 0.5
+  ): NormalizedCurve = {
     /*
     To convert Catmul Rom curve to a Bezier curve, multiply points by (invB * catmul)
 
@@ -189,10 +197,12 @@ object Parametric {
                                0,            tension/3.0, 1,           -tension/3.0,
                                0,            0,           1,           0)
      */
-    def toCurve(pt0: Point,
-                pt1: Point,
-                pt2: Point,
-                pt3: Point): NormalizedCurve =
+    def toCurve(
+        pt0: Point,
+        pt1: Point,
+        pt2: Point,
+        pt3: Point
+    ): NormalizedCurve =
       cubicBezier(
         pt1,
         Point(
@@ -206,8 +216,10 @@ object Parametric {
         pt2
       )
     @tailrec
-    def iter(points: Seq[Point],
-             accum: Seq[NormalizedCurve]): Seq[NormalizedCurve] = {
+    def iter(
+        points: Seq[Point],
+        accum: Seq[NormalizedCurve]
+    ): Seq[NormalizedCurve] = {
       points match {
         case pt0 +: pt1 +: pt2 +: pt3 +: pts =>
           iter(

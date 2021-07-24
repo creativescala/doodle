@@ -17,31 +17,36 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Picture, Shape}
+import doodle.algebra.Picture
+import doodle.algebra.Shape
 
 trait ShapeSyntax {
   def rectangle[Alg[x[_]] <: Shape[x], F[_]](
       width: Double,
-      height: Double): Picture[Alg, F, Unit] =
+      height: Double
+  ): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>
       algebra.rectangle(width, height)
     }
 
   def square[Alg[x[_]] <: Shape[x], F[_]](
-      width: Double): Picture[Alg, F, Unit] =
+      width: Double
+  ): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>
       algebra.square(width)
     }
 
   def triangle[Alg[x[_]] <: Shape[x], F[_]](
       width: Double,
-      height: Double): Picture[Alg, F, Unit] =
+      height: Double
+  ): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>
       algebra.triangle(width, height)
     }
 
   def circle[Alg[x[_]] <: Shape[x], F[_]](
-      diameter: Double): Picture[Alg, F, Unit] =
+      diameter: Double
+  ): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>
       algebra.circle(diameter)
     }

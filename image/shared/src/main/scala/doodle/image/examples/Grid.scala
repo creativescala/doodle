@@ -6,8 +6,7 @@ import cats.implicits._
 import doodle.image.syntax._
 import doodle.random._
 
-/**
-  * Grid patterns in the style of Sasj's geometric series such as
+/** Grid patterns in the style of Sasj's geometric series such as
   * https://www.instagram.com/p/BohZM4RiWJk/?taken-by=sasj_nl
   */
 object Grid {

@@ -56,10 +56,12 @@ object FontSize {
   def points(pts: Int): FontSize = Points(pts)
 }
 
-final case class Font(family: FontFamily,
-                      style: FontStyle,
-                      weight: FontWeight,
-                      size: FontSize) {
+final case class Font(
+    family: FontFamily,
+    style: FontStyle,
+    weight: FontWeight,
+    size: FontSize
+) {
   def family(name: String): Font =
     family(FontFamily.named(name))
 

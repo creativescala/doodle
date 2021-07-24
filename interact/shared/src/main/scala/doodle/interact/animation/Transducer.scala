@@ -20,35 +20,36 @@ package animation
 
 import cats._
 import cats.implicits._
-import doodle.algebra.{Algebra, Picture}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.syntax.animationRenderer._
 import monix.execution.Scheduler
 import monix.reactive.Observable
+
 import scala.annotation.tailrec
 
-/**
-  * A Transducer represents an animation that starts in some initial state and
+/** A Transducer represents an animation that starts in some initial state and
   * proceeds through various states until it stops. For example, a square might
-  * move from an x position of 0 to an x position of 100 in increments of 10. The
-  * states then become 0, 10, 20, ..., 100.
+  * move from an x position of 0 to an x position of 100 in increments of 10.
+  * The states then become 0, 10, 20, ..., 100.
   *
   * More abstractly, a transducer is a finite state machine with an additional
   * set of output values, so that each state is associated with some output
   * value. Continuing the example of the moving square, the states are the x
-  * position and the output is the square at the given position (for some fixed y
-  * coordinate).
+  * position and the output is the square at the given position (for some fixed
+  * y coordinate).
   *
   * Transducers should be treated like half open intervals, which means they
   * should generate the inital state but avoid generating a stopping state when
   * possible (for example, when combined in sequence with another transducer).
   *
   * Transducers have several type classes instances:
-  *  - Traverse
-  *  - Applicative
-  *  - Monoid, corresponding to sequential composition (++)
+  *   - Traverse
+  *   - Applicative
+  *   - Monoid, corresponding to sequential composition (++)
   *
   * The majority of the API is provided by the Cats methods defined on these
   * type classes, so import cats.implicits._ to get a richer API (e.g. toList,
@@ -61,26 +62,22 @@ import scala.annotation.tailrec
   */
 trait Transducer[Output] { self =>
 
-  /**
-    * The type of the state used by this transducer. A type parameter as this
+  /** The type of the state used by this transducer. A type parameter as this
     * isn't really needed outside of the transducer.
     */
   type State
 
-  /**
-    * The initial state for this Transducer.
+  /** The initial state for this Transducer.
     */
   def initial: State
 
-  /**
-    * A method that constructs the next state given the current state. If the
+  /** A method that constructs the next state given the current state. If the
     * current state is a stopped state this method should always return that
     * state.
     */
   def next(current: State): State
 
-  /**
-    * A method that returns the output of the current state. If the transducer
+  /** A method that returns the output of the current state. If the transducer
     * has stopped it may not have any output, in which case it can throw a
     * java.util.NoSuchElementException. As a result, clients should avoid
     * calling this method when the transducer is in a stopped state. If possible
@@ -89,14 +86,12 @@ trait Transducer[Output] { self =>
     */
   def output(state: State): Output
 
-  /**
-    * True if this state is a stopped (or halt) state, meaning the transducer
+  /** True if this state is a stopped (or halt) state, meaning the transducer
     * will never transition to a different state.
     */
   def stopped(state: State): Boolean
 
-  /**
-    * Transform the output of this transducer using the given function
+  /** Transform the output of this transducer using the given function
     */
   def map[B](f: Output => B): Transducer[B] =
     new Transducer[B] {
@@ -111,9 +106,9 @@ trait Transducer[Output] { self =>
         self.stopped(state)
     }
 
-  /**
-    * Append that transducer to this transducer, so that tranducer runs when this
-    * one has finished. Both transducers must produce output of the same type.
+  /** Append that transducer to this transducer, so that tranducer runs when
+    * this one has finished. Both transducers must produce output of the same
+    * type.
     */
   def ++(that: Transducer[Output]): Transducer[Output] =
     new Transducer[Output] {
@@ -145,12 +140,11 @@ trait Transducer[Output] { self =>
         }
     }
 
-  /**
-    * When this transducer's next state would be a stopped state, transition to
+  /** When this transducer's next state would be a stopped state, transition to
     * the tranducer created by calling the given function with the current
-    * output. If this transducer immediately stops, and hence has no output, there
-    * will be no output to pass to the function and therefore the next transducer
-    * will not be created.
+    * output. If this transducer immediately stops, and hence has no output,
+    * there will be no output to pass to the function and therefore the next
+    * transducer will not be created.
     *
     * This is like append (++) but allows the final output to determine the
     * transducer that is appended.
@@ -188,8 +182,7 @@ trait Transducer[Output] { self =>
     }
   }
 
-  /**
-    * Create a transducer that runs this transducer in parallel with that
+  /** Create a transducer that runs this transducer in parallel with that
     * transducer, stopping when both have stopped. Both transducers must produce
     * output of the same type, and there must be a monoid instance for the
     * output type.
@@ -237,8 +230,7 @@ trait Transducer[Output] { self =>
       }
     }
 
-  /**
-    * Create a transducer that runs this transducer in parallel with that
+  /** Create a transducer that runs this transducer in parallel with that
     * transducer, stopping when either has stopped. To stop when both have
     * stopped see [[and]].
     */
@@ -264,8 +256,7 @@ trait Transducer[Output] { self =>
       }
     }
 
-  /**
-    * Create a transducer that outputs the cumulative results of applying the
+  /** Create a transducer that outputs the cumulative results of applying the
     * function f to the output of the underlying transducer. If the underlying
     * transducer has stopped the zero value is produced as the only output.
     */
@@ -326,8 +317,7 @@ trait Transducer[Output] { self =>
       }
       .value
 
-  /**
-    * Construct a transducer by appending this transducer to itself the given
+  /** Construct a transducer by appending this transducer to itself the given
     * number of times.
     *
     * The count must be 0 or greater.
@@ -358,8 +348,7 @@ trait Transducer[Output] { self =>
       def stopped(state: State): Boolean = false
     }
 
-  /**
-    * Convert this transducer to an monix.reactive.Observable
+  /** Convert this transducer to an monix.reactive.Observable
     */
   def toObservable: Observable[Output] =
     Observable.unfold(self.initial) { state =>
@@ -367,8 +356,7 @@ trait Transducer[Output] { self =>
       else Some((self.output(state), self.next(state)))
     }
 
-  /**
-    * Convenience method to animate a transducer.
+  /** Convenience method to animate a transducer.
     */
   def animate[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](frame: Frame)(
       implicit
@@ -382,14 +370,12 @@ trait Transducer[Output] { self =>
 }
 object Transducer {
 
-  /**
-    * Aux instance for Transducer. Use when you need to make the State type
+  /** Aux instance for Transducer. Use when you need to make the State type
     * visible as a type parameter.
     */
   type Aux[S0, O0] = Transducer[O0] { type State = S0 }
 
-  /**
-    * This associates a transducer with its state, useful to get around issues
+  /** This associates a transducer with its state, useful to get around issues
     * with inference of existential types.
     */
   final case class Box[S, O](transducer: Transducer.Aux[S, O])(state: S) {
@@ -405,7 +391,7 @@ object Transducer {
   }
 
   implicit val transducerTraverseAndApplicative
-    : Traverse[Transducer] with Applicative[Transducer] =
+      : Traverse[Transducer] with Applicative[Transducer] =
     new Traverse[Transducer] with Applicative[Transducer] {
       def foldLeft[A, B](fa: Transducer[A], b: B)(f: (B, A) => B): B =
         fa.foldLeft(b)(f)
@@ -455,19 +441,12 @@ object Transducer {
       val initial: State = elts
 
       def next(current: State): State =
-        current match {
-          case Seq()  => current
-          case _ +: t => t
-        }
+        if (current.isEmpty) current
+        else current.tail
 
       def output(state: State): A =
-        state match {
-          case Seq() =>
-            throw new NoSuchElementException(
-              "This transducer has no more output."
-            )
-          case h +: _ => h
-        }
+        if (state.isEmpty) throw new NoSuchElementException("This transducer has no more output.")
+        else state.head
 
       def stopped(state: State): Boolean =
         state match {

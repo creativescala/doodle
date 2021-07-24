@@ -18,8 +18,9 @@ package doodle
 
 import cats.Comonad
 import cats.free.Free
-import scala.util.{Random => Rng}
+
 import scala.annotation.tailrec
+import scala.util.{Random => Rng}
 
 object random {
   type Random[A] = Free[RandomOp, A]
@@ -34,8 +35,9 @@ object random {
     case object Normal extends RandomOp[Double]
   }
 
-  implicit def randomInstances(
-      implicit rng: Rng = scala.util.Random): Comonad[RandomOp] =
+  implicit def randomInstances(implicit
+      rng: Rng = scala.util.Random
+  ): Comonad[RandomOp] =
     new Comonad[RandomOp] {
       import RandomOp._
 
@@ -47,12 +49,13 @@ object random {
               a
             else
               pick(total + p, weight, rest)
-          case Seq() =>
+          case _ =>
             throw new Exception("Could not sample---ran out of events!")
         }
 
       override def coflatMap[A, B](fa: RandomOp[A])(
-          f: (RandomOp[A]) => B): RandomOp[B] =
+          f: (RandomOp[A]) => B
+      ): RandomOp[B] =
         Always(f(fa))
       override def extract[A](x: RandomOp[A]): A =
         x match {
@@ -76,11 +79,15 @@ object random {
     def always[A](in: A): Random[A] =
       Free.pure(in)
 
-    /** Create a `Random` that generates an `Int` uniformly distributed across the entire range. */
+    /** Create a `Random` that generates an `Int` uniformly distributed across
+      * the entire range.
+      */
     def int: Random[Int] =
       Free.liftF[RandomOp, Int](RInt)
 
-    /** Create a `Random` that generates an `Int` uniformly distributed in the range greater than or equal to `lower` and less than `upper`. */
+    /** Create a `Random` that generates an `Int` uniformly distributed in the
+      * range greater than or equal to `lower` and less than `upper`.
+      */
     def int(lower: Int, upper: Int): Random[Int] = {
       val high = (upper max lower)
       val low = (upper min lower)
@@ -90,15 +97,21 @@ object random {
       }
     }
 
-    /** Create a `Random` that generates an `Int` uniformly distributed in the range greater than or equal to zero and less than `upper`. */
+    /** Create a `Random` that generates an `Int` uniformly distributed in the
+      * range greater than or equal to zero and less than `upper`.
+      */
     def natural(upperLimit: Int): Random[Int] =
       Free.liftF[RandomOp, Int](Natural(upperLimit))
 
-    /** Create a `Random` that generates a `Double` uniformly distributed between 0.0 and 1.0. */
+    /** Create a `Random` that generates a `Double` uniformly distributed
+      * between 0.0 and 1.0.
+      */
     def double: Random[Double] =
       Free.liftF[RandomOp, Double](RDouble)
 
-    /** Create a `Random` that generates one of the provided values with uniform distribution. */
+    /** Create a `Random` that generates one of the provided values with uniform
+      * distribution.
+      */
     def oneOf[A](elts: A*): Random[A] = {
       val length = elts.length
       Random.natural(length).map(idx => elts(idx))

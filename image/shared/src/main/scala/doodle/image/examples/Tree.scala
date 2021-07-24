@@ -15,7 +15,8 @@ object Tree {
         Seq(
           moveTo(Point.zero),
           lineTo(Point.polar(length, angle))
-        ))
+        )
+      )
       .strokeColor(Color.hsl(angle, .5, .5))
 
   def branch(depth: Int, angle: Angle, length: Double): Image = {

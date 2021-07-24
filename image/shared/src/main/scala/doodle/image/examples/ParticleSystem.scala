@@ -5,30 +5,33 @@ package examples
 // import doodle.core._
 //import doodle.syntax._
 // import doodle.random._
-import doodle.image.Image
-import cats.{Monoid, Monad}
-import cats.data.{Kleisli, WriterT}
+import cats.Monad
+import cats.Monoid
+import cats.data.Kleisli
+import cats.data.WriterT
 import cats.implicits._
+import doodle.image.Image
 
 object ParticleSystem {
 
-  def walk[F[_]: Monad, A](steps: Int,
-                           step: Kleisli[F, A, A]): Kleisli[F, A, A] = {
-    Kleisli(
-      a => {
-        def loop(count: Int, fa: F[A]): F[A] =
-          count match {
-            case 0 => fa
-            case n => loop(n - 1, fa flatMap step.run)
-          }
+  def walk[F[_]: Monad, A](
+      steps: Int,
+      step: Kleisli[F, A, A]
+  ): Kleisli[F, A, A] = {
+    Kleisli(a => {
+      def loop(count: Int, fa: F[A]): F[A] =
+        count match {
+          case 0 => fa
+          case n => loop(n - 1, fa flatMap step.run)
+        }
 
-        loop(steps - 1, step(a))
-      }
-    )
+      loop(steps - 1, step(a))
+    })
   }
 
   def trace[F[_]: Monad, A, B: Monoid](steps: Int, step: Kleisli[F, A, A])(
-      f: A => B): Kleisli[F, A, B] = {
+      f: A => B
+  ): Kleisli[F, A, B] = {
     type Result[T] = WriterT[F, B, T]
 
     walk[Result, A](
@@ -37,9 +40,11 @@ object ParticleSystem {
     ).mapF(fa => fa.written)
   }
 
-  def particles[F[_]: Monad, A, B: Monoid](count: Int,
-                                           initial: F[A],
-                                           walk: Kleisli[F, A, B]) = {
+  def particles[F[_]: Monad, A, B: Monoid](
+      count: Int,
+      initial: F[A],
+      walk: Kleisli[F, A, B]
+  ) = {
     def loop(count: Int, fb: F[B]): F[B] = {
       count match {
         case 0 => fb

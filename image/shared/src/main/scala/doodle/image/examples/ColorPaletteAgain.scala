@@ -20,7 +20,9 @@ object ColorPaletteAgain {
     c.spin(15.degrees)
 
   def singleCircle(n: Int, color: Color): Image =
-    Image.circle(circleMinimum + circleIncrement * n) strokeColor color strokeWidth circleIncrement
+    Image.circle(
+      circleMinimum + circleIncrement * n
+    ) strokeColor color strokeWidth circleIncrement
 
   def complementCircles(n: Int, c: Color): Image = {
     val color = complement(c)
@@ -94,7 +96,8 @@ object ColorPaletteAgain {
     val lightness = rescale(
       normalize(lcg2(spun.hue.toDegrees.toInt), Int.MaxValue),
       0.25,
-      0.5)
+      0.5
+    )
     println(s"saturation ${saturation} lightness ${lightness}")
     spun.saturation(saturation).lightness(lightness)
   }

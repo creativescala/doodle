@@ -2,11 +2,10 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax._
-import doodle.random._
-
 import cats.syntax.all._
+import doodle.core._
+import doodle.random._
+import doodle.syntax._
 
 object DiffusionLimitedAggregation {
   def brownianMotion(start: Point, drift: Vec): Random[Point] =
@@ -34,9 +33,12 @@ object DiffusionLimitedAggregation {
 
   val stuckStart =
     Random.always(
-      List(Point.cartesian(0, 0),
-           Point.cartesian(0, 50),
-           Point.cartesian(0, -50)))
+      List(
+        Point.cartesian(0, 0),
+        Point.cartesian(0, 50),
+        Point.cartesian(0, -50)
+      )
+    )
 
   val stickRadius = 5.0
 
@@ -47,9 +49,11 @@ object DiffusionLimitedAggregation {
     stuck.exists(pt => distance(point, pt) < stickRadius)
 
   def walk(maxSteps: Int, stuck: List[Point]): Random[Option[Point]] = {
-    def iter(step: Int,
-             point: Random[Point],
-             drift: Vec): Random[Option[Point]] =
+    def iter(
+        step: Int,
+        point: Random[Point],
+        drift: Vec
+    ): Random[Option[Point]] =
       step match {
         case 0 => Random.always(None)
         case _ =>
@@ -61,15 +65,16 @@ object DiffusionLimitedAggregation {
           }
       }
 
-    seed flatMap {
-      case (start, drift) =>
-        iter(maxSteps, Random.always(start), drift)
+    seed flatMap { case (start, drift) =>
+      iter(maxSteps, Random.always(start), drift)
     }
   }
 
-  def dla(nParticles: Int,
-          maxSteps: Int,
-          stuck: Random[List[Point]]): Random[List[Point]] =
+  def dla(
+      nParticles: Int,
+      maxSteps: Int,
+      stuck: Random[List[Point]]
+  ): Random[List[Point]] =
     nParticles match {
       case 0 => stuck
       case _ =>

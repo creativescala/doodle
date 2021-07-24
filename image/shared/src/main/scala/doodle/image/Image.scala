@@ -97,7 +97,7 @@ sealed abstract class Image extends Product with Serializable {
   // Convert to tagless final format
 
   def compile[Algebra[x[*]] <: Basic[x], F[_]]
-    : doodle.algebra.Picture[Algebra, F, Unit] =
+      : doodle.algebra.Picture[Algebra, F, Unit] =
     Image.compile(this)
 }
 sealed abstract class Path extends Image {
@@ -126,9 +126,10 @@ sealed abstract class Path extends Image {
 }
 object Image {
 
-  /** Contains the leaves of the Image algebraic data type. Packaged here so they
-    * don't pollute the namespace when importing Image to access to the smart
-    * constructors. */
+  /** Contains the leaves of the Image algebraic data type. Packaged here so
+    * they don't pollute the namespace when importing Image to access to the
+    * smart constructors.
+    */
   object Elements {
     final case class OpenPath(elements: List[PathElement]) extends Path
     final case class ClosedPath(elements: List[PathElement]) extends Path
@@ -200,10 +201,12 @@ object Image {
     closedPath(PathElement.regularPolygon(sides, radius, angle))
   }
 
-  def star(points: Int,
-           outerRadius: Double,
-           innerRadius: Double,
-           angle: Angle): Image = {
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double,
+      angle: Angle
+  ): Image = {
     closedPath(PathElement.star(points, outerRadius, innerRadius, angle))
   }
 
@@ -234,22 +237,22 @@ object Image {
   def triangle(width: Double, height: Double): Image =
     Triangle(width, height)
 
-  /**
-    * Construct an open path of bezier curves that intersects all the given
+  /** Construct an open path of bezier curves that intersects all the given
     * points. Defaults to `catmulRom` with the default tension.
     */
   def interpolatingSpline(points: Seq[Point]): Path =
     catmulRom(points)
 
-  /**
-    * Interpolate a spline (a curve) that passes through all the given points,
-    * using the Catmul Rom formulation (see, e.g., https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
+  /** Interpolate a spline (a curve) that passes through all the given points,
+    * using the Catmul Rom formulation (see, e.g.,
+    * https://en.wikipedia.org/wiki/Cubic_Hermite_spline)
     *
-    * The tension can be changed to control how tightly the curve turns. It defaults to 0.5.
+    * The tension can be changed to control how tightly the curve turns. It
+    * defaults to 0.5.
     *
     * The Catmul Rom algorithm requires a point before and after each pair of
-    * points that define the curve. To meet this condition for the first and last
-    * points in `points`, they are repeated.
+    * points that define the curve. To meet this condition for the first and
+    * last points in `points`, they are repeated.
     *
     * If `points` has less than two elements an empty `Path` is returned.
     */
@@ -264,7 +267,8 @@ object Image {
 
   /** Compile an `Image` to a `doodle.algebra.Picture` */
   def compile[Alg[x[_]] <: Basic[x], F[_]](
-      image: Image): doodle.algebra.Picture[Alg, F, Unit] = {
+      image: Image
+  ): doodle.algebra.Picture[Alg, F, Unit] = {
     import cats.instances.unit._
     import Elements._
 

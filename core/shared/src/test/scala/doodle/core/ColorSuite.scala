@@ -58,6 +58,6 @@ object ColorSuite extends SimpleTestSuite {
     val fadeIn = original.fadeIn(0.5.normalized)
 
     assert(fadeOut.alpha == (0.0.normalized))
-    assert(fadeIn.alpha ==(1.0.normalized))
+    assert(fadeIn.alpha == (1.0.normalized))
   }
 }

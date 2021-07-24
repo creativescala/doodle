@@ -8,8 +8,10 @@ import doodle.syntax._
 object Flowers {
   def position(k: Int): Angle => Point =
     (angle: Angle) => {
-      Point.cartesian((angle * k.toDouble).cos * angle.cos,
-                      (angle * k.toDouble).cos * angle.sin)
+      Point.cartesian(
+        (angle * k.toDouble).cos * angle.cos,
+        (angle * k.toDouble).cos * angle.sin
+      )
     }
 
   def scale(factor: Double): Point => Point =
@@ -17,9 +19,11 @@ object Flowers {
       Point.polar(pt.r * factor, pt.angle)
     }
 
-  def drop(minRadius: Int,
-           maxRadius: Int,
-           ratio: Normalized): Normalized => Image =
+  def drop(
+      minRadius: Int,
+      maxRadius: Int,
+      ratio: Normalized
+  ): Normalized => Image =
     (r: Normalized) => {
       val size = minRadius + (r.get * (maxRadius - minRadius))
       // val alpha = (minAlpha.get + (r.get * (maxAlpha - minAlpha))).normalized
@@ -51,17 +55,18 @@ object Flowers {
     }
   }
 
-  def iterate(step: Angle): (Angle => Image) => Image = { (point: Angle => Image) =>
-    {
-      def iter(angle: Angle): Image = {
-        if (angle > Angle.one)
-          Image.empty
-        else
-          point(angle) on iter(angle + step)
-      }
+  def iterate(step: Angle): (Angle => Image) => Image = {
+    (point: Angle => Image) =>
+      {
+        def iter(angle: Angle): Image = {
+          if (angle > Angle.one)
+            Image.empty
+          else
+            point(angle) on iter(angle + step)
+        }
 
-      iter(Angle.zero)
-    }
+        iter(Angle.zero)
+      }
   }
 
   val image: Image = {

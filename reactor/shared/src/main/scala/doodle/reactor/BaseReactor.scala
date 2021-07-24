@@ -6,17 +6,18 @@ import doodle.core.Point
 import doodle.effect.Renderer
 import doodle.image.Image
 import doodle.image.syntax._
-import doodle.interact.algebra.{MouseClick, MouseMove}
+import doodle.interact.algebra.MouseClick
+import doodle.interact.algebra.MouseMove
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.syntax._
 import doodle.language.Basic
 import doodle.syntax.renderer._
 import monix.execution.Scheduler
 import monix.reactive.Observable
+
 import scala.concurrent.duration._
 
-/**
-  * A reactor is a simple way to express an interactive program. It allows us to
+/** A reactor is a simple way to express an interactive program. It allows us to
   * write programs in terms of some initial state and transformations of that
   * state in response to inputs and clock ticks.
   *
@@ -34,12 +35,12 @@ trait BaseReactor[A] {
   def render(value: A): Image
   def stop(value: A): Boolean
 
-  /**
-    * Run one tick of this reactor, drawing on the given `frame`. Returns the
+  /** Run one tick of this reactor, drawing on the given `frame`. Returns the
     * next state, or None if the Reactor has stopped.
     */
-  def tick[F[_], Frame, Canvas](frame: Frame)(
-      implicit e: Renderer[Basic, F, Frame, Canvas]): Option[A] = {
+  def tick[F[_], Frame, Canvas](
+      frame: Frame
+  )(implicit e: Renderer[Basic, F, Frame, Canvas]): Option[A] = {
     if (stop(initial)) None
     else {
       (render(initial)).draw(frame)
@@ -48,15 +49,15 @@ trait BaseReactor[A] {
     }
   }
 
-  /**
-    * Runs this reactor, drawing on the given `frame`, until `stop` indicates
-    * it should stop.
+  /** Runs this reactor, drawing on the given `frame`, until `stop` indicates it
+    * should stop.
     */
-  def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
-      implicit a: AnimationRenderer[Canvas],
+  def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(implicit
+      a: AnimationRenderer[Canvas],
       e: Renderer[Alg, F, Frame, Canvas],
       m: MouseClick[Canvas] with MouseMove[Canvas],
-      s: Scheduler): Unit = {
+      s: Scheduler
+  ): Unit = {
     import BaseReactor._
 
     implicit val strategy = monix.reactive.OverflowStrategy.DropOld(10)

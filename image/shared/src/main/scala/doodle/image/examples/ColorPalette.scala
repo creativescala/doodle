@@ -2,12 +2,12 @@ package doodle
 package image
 package examples
 
-import scala.math.BigDecimal
-
 import cats.instances.list._
 import doodle.core._
-import doodle.syntax._
 import doodle.image.syntax._
+import doodle.syntax._
+
+import scala.math.BigDecimal
 
 object ColorPalette {
   // Type alias for cell constructor functions.

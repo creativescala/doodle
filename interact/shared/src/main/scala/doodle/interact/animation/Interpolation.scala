@@ -18,12 +18,13 @@ package doodle
 package interact
 package animation
 
-import cats.{Functor, Semigroupal}
+import cats.Functor
+import cats.Semigroupal
 import doodle.interact.easing.Easing
+
 import scala.concurrent.duration.Duration
 
-/**
-  * An Interpolation represents a range of values between a starting and ending
+/** An Interpolation represents a range of values between a starting and ending
   * value. The interpolation is also optionally transformed by an easing
   * function. The starting value is mapped to 0.0 and the ending value to 1.0.
   * When a number of steps is specified the interpolation is transformed into a
@@ -34,35 +35,32 @@ import scala.concurrent.duration.Duration
   *
   * The differences between an interpolation and a transducer are as follows:
   *
-  * - An interpolation specifies a start and end value. When a number of steps is
-  *   given it becomes a transducer. When interpolations are combined in
-  *   parallel, with product, they always take the same amount of time when
-  *   converted to a transducer. Transducers combined in parallel may take
-  *   differing amounts of time.
+  *   - An interpolation specifies a start and end value. When a number of steps
+  *     is given it becomes a transducer. When interpolations are combined in
+  *     parallel, with product, they always take the same amount of time when
+  *     converted to a transducer. Transducers combined in parallel may take
+  *     differing amounts of time.
   *
-  * - A transducer can represent arbitrary FSMs, while an interpolation moves
-  *   from start to end value.
+  *   - A transducer can represent arbitrary FSMs, while an interpolation moves
+  *     from start to end value.
   *
-  * - Transducers can be run. Interpolations must be transformed to transducers
-  *   to run.
+  *   - Transducers can be run. Interpolations must be transformed to
+  *     transducers to run.
   */
 sealed trait Interpolation[A] {
   import Interpolation._
 
-  /**
-    * Transform the output of this interpolation with the given function.
+  /** Transform the output of this interpolation with the given function.
     */
   def map[B](f: A => B): Interpolation[B] =
     Map(this, f)
 
-  /**
-    * Combine this Interpolation in parallel with that Interpolation.
+  /** Combine this Interpolation in parallel with that Interpolation.
     */
   def product[B](that: Interpolation[B]): Interpolation[(A, B)] =
     Product(this, that)
 
-  /**
-    * Apply an easing function to this interpolation.
+  /** Apply an easing function to this interpolation.
     *
     * Map the range in this interpolation to 0.0 and 1.0, pass through the given
     * easing function, and then map back to the original domain.
@@ -70,10 +68,9 @@ sealed trait Interpolation[A] {
   def withEasing(easing: Easing): Interpolation[A] =
     WithEasing(this, easing)
 
-  /**
-    * Create a transducer that will produce the given number of values before it
-    * stops. So, for example, calling `forSteps(2)` will create a transducer that
-    * produces 2 values before it stops.
+  /** Create a transducer that will produce the given number of values before it
+    * stops. So, for example, calling `forSteps(2)` will create a transducer
+    * that produces 2 values before it stops.
     *
     * The number of steps must be non-negative. 0 steps means a transducer that
     * stops immediately. 1 step will produce the start value for a half-open
@@ -132,7 +129,7 @@ object Interpolation {
   ) extends Interpolation[(A, B)]
 
   implicit val interpolationInstance
-    : Functor[Interpolation] with Semigroupal[Interpolation] =
+      : Functor[Interpolation] with Semigroupal[Interpolation] =
     new Functor[Interpolation] with Semigroupal[Interpolation] {
       def product[A, B](
           fa: Interpolation[A],
@@ -144,21 +141,19 @@ object Interpolation {
         fa.map(f)
     }
 
-  /**
-    * Construct a half-open interpolation, which starts at the given start value
+  /** Construct a half-open interpolation, which starts at the given start value
     * and ends at (but does not generate) the given stop value.
     */
-  def halfOpen[A](start: A, stop: A)(
-      implicit i: Interpolator[A]
+  def halfOpen[A](start: A, stop: A)(implicit
+      i: Interpolator[A]
   ): Interpolation[A] =
     HalfOpen(start, stop, i)
 
-  /**
-    * Construct a closed interpolation, which starts at the given start value
+  /** Construct a closed interpolation, which starts at the given start value
     * and ends at the given stop value.
     */
-  def closed[A](start: A, stop: A)(
-      implicit i: Interpolator[A]
+  def closed[A](start: A, stop: A)(implicit
+      i: Interpolator[A]
   ): Interpolation[A] =
     Closed(start, stop, i)
 

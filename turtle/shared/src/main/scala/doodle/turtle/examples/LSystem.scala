@@ -10,9 +10,11 @@ import doodle.turtle._
 object LSystem {
   import Instruction._
 
-  def iterate(steps: Int,
-              seed: List[Instruction],
-              rule: Instruction => List[Instruction]): List[Instruction] = {
+  def iterate(
+      steps: Int,
+      seed: List[Instruction],
+      rule: Instruction => List[Instruction]
+  ): List[Instruction] = {
     def rewrite(instructions: List[Instruction]): List[Instruction] =
       instructions.flatMap {
         case Branch(i) =>
@@ -38,14 +40,16 @@ object LSystem {
     val rule = (i: Instruction) => {
       i match {
         case NoOp => //  F−[[X]+X]+F[+FX]−X
-          List(f,
-               left,
-               branch(branch(noop), right, noop),
-               right,
-               f,
-               branch(right, f, noop),
-               left,
-               noop)
+          List(
+            f,
+            left,
+            branch(branch(noop), right, noop),
+            right,
+            f,
+            branch(right, f, noop),
+            left,
+            noop
+          )
 
         case Forward(_) =>
           List(f, f)

@@ -21,14 +21,22 @@ package reified
 
 import cats.data.WriterT
 import doodle.algebra.generic._
-import doodle.core.{BoundingBox, Transform => Tx}
+import doodle.core.BoundingBox
 import doodle.core.font.Font
+import doodle.core.{Transform => Tx}
 
 trait ReifiedText extends GenericText[Reification] {
   object TextApi extends TextApi {
     type Bounds = Unit
 
-    def text(tx: Tx, fill: Option[Fill], stroke: Option[Stroke], font: Font, text: String, bounds: Bounds): Reification[Unit] =
+    def text(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        font: Font,
+        text: String,
+        bounds: Bounds
+    ): Reification[Unit] =
       WriterT.tell(List(Reified.text(tx, fill, stroke, font, text)))
 
     // We don't do proper layout for text in this test implementation

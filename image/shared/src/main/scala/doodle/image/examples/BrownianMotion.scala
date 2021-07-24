@@ -2,13 +2,12 @@ package doodle
 package image
 package examples
 
+import cats.instances.all._
+import cats.syntax.all._
 import doodle.core._
 import doodle.image.Image._
 import doodle.image.syntax.core._
 import doodle.random._
-
-import cats.instances.all._
-import cats.syntax.all._
 
 object BrownianMotion {
   def brownianMotion(start: Point, drift: Vec): Random[Point] =
@@ -51,9 +50,11 @@ object BrownianMotion {
   }
 
   def walk(steps: Int): Random[Image] = {
-    def iter(step: Int,
-             start: Random[Point],
-             shape: Image): List[Random[Image]] =
+    def iter(
+        step: Int,
+        start: Random[Point],
+        shape: Image
+    ): List[Random[Image]] =
       step match {
         case 0 =>
           Nil

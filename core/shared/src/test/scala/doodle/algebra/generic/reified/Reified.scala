@@ -20,9 +20,12 @@ package generic
 package reified
 
 import cats.implicits._
-import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.algebra.generic.Fill
+import doodle.algebra.generic.Stroke
+import doodle.core.PathElement
+import doodle.core.Point
 import doodle.core.font.Font
-import doodle.algebra.generic.{Fill, Stroke}
+import doodle.core.{Transform => Tx}
 
 sealed abstract class Reified extends Product with Serializable {
   def transform: Tx
@@ -42,16 +45,18 @@ object Reified {
       tx(pt)
     }
 
-  final case class FillRect(transform: Tx,
-                            fill: Fill,
-                            width: Double,
-                            height: Double)
-      extends Reified
-  final case class StrokeRect(transform: Tx,
-                              stroke: Stroke,
-                              width: Double,
-                              height: Double)
-      extends Reified
+  final case class FillRect(
+      transform: Tx,
+      fill: Fill,
+      width: Double,
+      height: Double
+  ) extends Reified
+  final case class StrokeRect(
+      transform: Tx,
+      stroke: Stroke,
+      width: Double,
+      height: Double
+  ) extends Reified
 
   final case class FillCircle(transform: Tx, fill: Fill, diameter: Double)
       extends Reified
@@ -60,44 +65,54 @@ object Reified {
 
   final case class FillPolygon(transform: Tx, fill: Fill, points: Array[Point])
       extends Reified
-  final case class StrokePolygon(transform: Tx,
-                                 stroke: Stroke,
-                                 points: Array[Point])
-      extends Reified
+  final case class StrokePolygon(
+      transform: Tx,
+      stroke: Stroke,
+      points: Array[Point]
+  ) extends Reified
 
-  final case class FillClosedPath(transform: Tx,
-                                  fill: Fill,
-                                  elements: List[PathElement])
-      extends Reified
-  final case class StrokeClosedPath(transform: Tx,
-                                    stroke: Stroke,
-                                    elements: List[PathElement])
-      extends Reified
+  final case class FillClosedPath(
+      transform: Tx,
+      fill: Fill,
+      elements: List[PathElement]
+  ) extends Reified
+  final case class StrokeClosedPath(
+      transform: Tx,
+      stroke: Stroke,
+      elements: List[PathElement]
+  ) extends Reified
 
-  final case class FillOpenPath(transform: Tx,
-                                fill: Fill,
-                                elements: List[PathElement])
-      extends Reified
-  final case class StrokeOpenPath(transform: Tx,
-                                  stroke: Stroke,
-                                  elements: List[PathElement])
-      extends Reified
-  final case class Text(transform: Tx,
-                        fill: Option[Fill],
-                        stroke: Option[Stroke],
-                        font: Font,
-                        text: String)
-      extends Reified
+  final case class FillOpenPath(
+      transform: Tx,
+      fill: Fill,
+      elements: List[PathElement]
+  ) extends Reified
+  final case class StrokeOpenPath(
+      transform: Tx,
+      stroke: Stroke,
+      elements: List[PathElement]
+  ) extends Reified
+  final case class Text(
+      transform: Tx,
+      fill: Option[Fill],
+      stroke: Option[Stroke],
+      font: Font,
+      text: String
+  ) extends Reified
 
-  def fillRect(transform: Tx,
-               fill: Fill,
-               width: Double,
-               height: Double): Reified =
+  def fillRect(
+      transform: Tx,
+      fill: Fill,
+      width: Double,
+      height: Double
+  ): Reified =
     FillRect(transform, fill, width, height)
-  def strokeRect(transform: Tx,
-                 stroke: Stroke,
-                 width: Double,
-                 height: Double): Reified =
+  def strokeRect(
+      transform: Tx,
+      stroke: Stroke,
+      width: Double,
+      height: Double
+  ): Reified =
     StrokeRect(transform, stroke, width, height)
 
   def fillCircle(transform: Tx, fill: Fill, diameter: Double): Reified =
@@ -107,32 +122,44 @@ object Reified {
 
   def fillPolygon(transform: Tx, fill: Fill, points: Array[Point]): Reified =
     FillPolygon(transform, fill, points)
-  def strokePolygon(transform: Tx,
-                    stroke: Stroke,
-                    points: Array[Point]): Reified =
+  def strokePolygon(
+      transform: Tx,
+      stroke: Stroke,
+      points: Array[Point]
+  ): Reified =
     StrokePolygon(transform, stroke, points)
 
-  def fillClosedPath(transform: Tx,
-                     fill: Fill,
-                     elements: List[PathElement]): Reified =
+  def fillClosedPath(
+      transform: Tx,
+      fill: Fill,
+      elements: List[PathElement]
+  ): Reified =
     FillClosedPath(transform, fill, elements)
-  def strokeClosedPath(transform: Tx,
-                       stroke: Stroke,
-                       elements: List[PathElement]): Reified =
+  def strokeClosedPath(
+      transform: Tx,
+      stroke: Stroke,
+      elements: List[PathElement]
+  ): Reified =
     StrokeClosedPath(transform, stroke, elements)
 
-  def fillOpenPath(transform: Tx,
-                   fill: Fill,
-                   elements: List[PathElement]): Reified =
+  def fillOpenPath(
+      transform: Tx,
+      fill: Fill,
+      elements: List[PathElement]
+  ): Reified =
     FillOpenPath(transform, fill, elements)
-  def strokeOpenPath(transform: Tx,
-                     stroke: Stroke,
-                     elements: List[PathElement]): Reified =
+  def strokeOpenPath(
+      transform: Tx,
+      stroke: Stroke,
+      elements: List[PathElement]
+  ): Reified =
     StrokeOpenPath(transform, stroke, elements)
-  def text(transform: Tx,
-           fill: Option[Fill],
-           stroke: Option[Stroke],
-           font: Font,
-           text: String): Reified =
+  def text(
+      transform: Tx,
+      fill: Option[Fill],
+      stroke: Option[Stroke],
+      font: Font,
+      text: String
+  ): Reified =
     Text(transform, fill, stroke, font, text)
 }

@@ -22,12 +22,11 @@ import doodle.core.BoundingBox
 
 trait Instances {
   implicit val boundingBoxDistance: Distance[BoundingBox] =
-    Distance(
-      (bb1, bb2) =>
-        Math.abs(bb1.left - bb2.left) +
-          Math.abs(bb1.right - bb2.right) +
-          Math.abs(bb1.top - bb2.top) +
-          Math.abs(bb1.bottom - bb2.bottom)
+    Distance((bb1, bb2) =>
+      Math.abs(bb1.left - bb2.left) +
+        Math.abs(bb1.right - bb2.right) +
+        Math.abs(bb1.top - bb2.top) +
+        Math.abs(bb1.bottom - bb2.bottom)
     )
 }
 object Instances extends Instances

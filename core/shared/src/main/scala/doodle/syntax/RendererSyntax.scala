@@ -18,8 +18,10 @@ package doodle
 package syntax
 
 import cats.effect.IO
-import doodle.algebra.{Algebra, Picture}
-import doodle.effect.{DefaultRenderer, Renderer}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
+import doodle.effect.DefaultRenderer
+import doodle.effect.Renderer
 
 trait RendererSyntax {
 
@@ -33,51 +35,62 @@ trait RendererSyntax {
     }
 
   implicit class RendererPictureOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
 
-    /** Convenience to immediately render a `Picture`, using the default `Frame` options for this `Renderer`. */
+    /** Convenience to immediately render a `Picture`, using the default `Frame`
+      * options for this `Renderer`.
+      */
     def draw[Frame, Canvas](cb: Either[Throwable, A] => Unit = nullCallback _)(
-        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
+        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+    ): Unit =
       drawToIO.unsafeRunAsync(cb)
 
-    /** Convenience to immediately render a `Picture`, using the given `Frame` options for this `Renderer`. */
-    def drawWithFrame[Frame, Canvas](frame: Frame,
-                                     cb: Either[Throwable, A] => Unit =
-                                       nullCallback _)(
-        implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
+    /** Convenience to immediately render a `Picture`, using the given `Frame`
+      * options for this `Renderer`.
+      */
+    def drawWithFrame[Frame, Canvas](
+        frame: Frame,
+        cb: Either[Throwable, A] => Unit = nullCallback _
+    )(implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(picture)
       } yield a).unsafeRunAsync(cb)
 
-    /** Convenience to immediately render a `Picture`, using the given `Canvas` for this `Renderer`. */
+    /** Convenience to immediately render a `Picture`, using the given `Canvas`
+      * for this `Renderer`.
+      */
     def drawWithCanvas[Canvas](
         canvas: Canvas,
-        cb: Either[Throwable, A] => Unit = nullCallback _)(
-        implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
+        cb: Either[Throwable, A] => Unit = nullCallback _
+    )(implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
       drawWithCanvasToIO(canvas).unsafeRunAsync(cb)
 
-    /**
-      * Create an effect that, when run, will draw `Picture` on the default `Frame` for this `Renderer`.
+    /** Create an effect that, when run, will draw `Picture` on the default
+      * `Frame` for this `Renderer`.
       */
-    def drawToIO[Frame, Canvas](
-        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): IO[A] =
+    def drawToIO[Frame, Canvas](implicit
+        renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+    ): IO[A] =
       (for {
         canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(picture)
       } yield a)
 
-    /**
-      * Create an effect that, when run, will draw the `Picture` on the given `Canvas`.
+    /** Create an effect that, when run, will draw the `Picture` on the given
+      * `Canvas`.
       */
-    def drawWithCanvasToIO[Canvas](canvas: Canvas)(
-        implicit renderer: Renderer[Alg, F, _, Canvas]): IO[A] =
+    def drawWithCanvasToIO[Canvas](canvas: Canvas)(implicit
+        renderer: Renderer[Alg, F, _, Canvas]
+    ): IO[A] =
       renderer.render(canvas)(picture)
   }
 
   implicit class RendererFrameOps[Frame](frame: Frame) {
-    def canvas[Alg[x[_]] <: Algebra[x], F[_], Canvas]()(
-        implicit renderer: Renderer[Alg, F, Frame, Canvas]): IO[Canvas] =
+    def canvas[Alg[x[_]] <: Algebra[x], F[_], Canvas]()(implicit
+        renderer: Renderer[Alg, F, Frame, Canvas]
+    ): IO[Canvas] =
       renderer.canvas(frame)
   }
 }

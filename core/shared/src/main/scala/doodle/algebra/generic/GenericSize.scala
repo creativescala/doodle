@@ -21,45 +21,36 @@ package generic
 import cats.syntax.functor._
 import doodle.core.BoundingBox
 
-/**
-  * Get information about the size of the bounding box enclosing an picture.
+/** Get information about the size of the bounding box enclosing an picture.
   */
 trait GenericSize[F[_]] extends Size[Finalized[F, *]] { self: GivenFunctor[F] =>
 
-  /**
-    * Get the height of the bounding box enclosing the picture
+  /** Get the height of the bounding box enclosing the picture
     */
   def height[A](picture: Finalized[F, A]): Finalized[F, Double] =
-    picture.map {
-      case (bb, rdr) =>
-        (bb, rdr.map(fa => fa.map(_ => bb.height)))
+    picture.map { case (bb, rdr) =>
+      (bb, rdr.map(fa => fa.map(_ => bb.height)))
     }
 
-  /**
-    * Get the width of the bounding box enclosing the picture
+  /** Get the width of the bounding box enclosing the picture
     */
   def width[A](picture: Finalized[F, A]): Finalized[F, Double] =
-    picture.map {
-      case (bb, rdr) =>
-        (bb, rdr.map(fa => fa.map(_ => bb.width)))
+    picture.map { case (bb, rdr) =>
+      (bb, rdr.map(fa => fa.map(_ => bb.width)))
     }
 
-  /**
-    * Get the width and height of the bounding box enclosing the picture
+  /** Get the width and height of the bounding box enclosing the picture
     */
   def size[A](picture: Finalized[F, A]): Finalized[F, (Double, Double)] =
-    picture.map {
-      case (bb, rdr) =>
-        (bb, rdr.map(fa => fa.map(_ => (bb.width, bb.height))))
+    picture.map { case (bb, rdr) =>
+      (bb, rdr.map(fa => fa.map(_ => (bb.width, bb.height))))
     }
 
-  /**
-    * Get the bounding box enclosing the picture
+  /** Get the bounding box enclosing the picture
     */
   def boundingBox[A](picture: Finalized[F, A]): Finalized[F, BoundingBox] =
-    picture.map {
-      case (bb, rdr) =>
-        (bb, rdr.map(fa => fa.map(_ => bb)))
+    picture.map { case (bb, rdr) =>
+      (bb, rdr.map(fa => fa.map(_ => bb)))
     }
 
 }

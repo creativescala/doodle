@@ -18,14 +18,19 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{Cap, Color, Gradient, Join}
+import doodle.core.Cap
+import doodle.core.Color
+import doodle.core.Gradient
+import doodle.core.Join
 import doodle.core.font.Font
 
-final case class Stroke(color: Color,
-                        width: Double,
-                        cap: Cap,
-                        join: Join,
-                        dash: Option[Array[Float]])
+final case class Stroke(
+    color: Color,
+    width: Double,
+    cap: Cap,
+    join: Join,
+    dash: Option[Array[Float]]
+)
 sealed trait Fill extends Product with Serializable
 object Fill {
   final case class ColorFill(color: Color) extends Fill
@@ -42,10 +47,14 @@ object Fill {
 final case class DrawingContext(
     blendMode: BlendMode,
     strokeColor: Color,
-    strokeWidth: Option[Double], // We use strokeWidth to determine if there is a stroke or not
+    strokeWidth: Option[
+      Double
+    ], // We use strokeWidth to determine if there is a stroke or not
     strokeCap: Cap,
     strokeJoin: Join,
-    strokeDash: Option[Array[Float]], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
+    strokeDash: Option[
+      Array[Float]
+    ], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
     fill: Option[Fill],
     font: Font
 ) {
@@ -54,7 +63,8 @@ final case class DrawingContext(
 
   def stroke: Option[Stroke] =
     (strokeWidth).map(w =>
-      Stroke(strokeColor, w, strokeCap, strokeJoin, strokeDash))
+      Stroke(strokeColor, w, strokeCap, strokeJoin, strokeDash)
+    )
 
   def strokeColor(color: Color): DrawingContext =
     this.copy(strokeColor = color)

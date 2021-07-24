@@ -19,25 +19,32 @@ package algebra
 package generic
 
 import cats.data.State
-import doodle.core.{BoundingBox, Transform => Tx}
+import doodle.core.BoundingBox
+import doodle.core.{Transform => Tx}
 
 trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
 
   trait ShapeApi {
-    def rectangle(tx: Tx,
-                  fill: Option[Fill],
-                  stroke: Option[Stroke],
-                  width: Double,
-                  height: Double): F[Unit]
-    def triangle(tx: Tx,
-                 fill: Option[Fill],
-                 stroke: Option[Stroke],
-                 width: Double,
-                 height: Double): F[Unit]
-    def circle(tx: Tx,
-               fill: Option[Fill],
-               stroke: Option[Stroke],
-               diameter: Double): F[Unit]
+    def rectangle(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        width: Double,
+        height: Double
+    ): F[Unit]
+    def triangle(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        width: Double,
+        height: Double
+    ): F[Unit]
+    def circle(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        diameter: Double
+    ): F[Unit]
     def unit: F[Unit]
   }
 
@@ -47,9 +54,12 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
-      (bb,
-       State.inspect(tx =>
-         ShapeApi.rectangle(tx, dc.fill, dc.stroke, width, height)))
+      (
+        bb,
+        State.inspect(tx =>
+          ShapeApi.rectangle(tx, dc.fill, dc.stroke, width, height)
+        )
+      )
     }
 
   def square(width: Double): Finalized[F, Unit] =
@@ -60,9 +70,12 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
 
-      (bb,
-       State.inspect(tx =>
-         ShapeApi.triangle(tx, dc.fill, dc.stroke, width, height)))
+      (
+        bb,
+        State.inspect(tx =>
+          ShapeApi.triangle(tx, dc.fill, dc.stroke, width, height)
+        )
+      )
     }
 
   def circle(diameter: Double): Finalized[F, Unit] =
@@ -70,8 +83,10 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb =
         BoundingBox.centered(strokeWidth + diameter, strokeWidth + diameter)
-      (bb,
-       State.inspect(tx => ShapeApi.circle(tx, dc.fill, dc.stroke, diameter)))
+      (
+        bb,
+        State.inspect(tx => ShapeApi.circle(tx, dc.fill, dc.stroke, diameter))
+      )
     }
 
   def empty: Finalized[F, Unit] =

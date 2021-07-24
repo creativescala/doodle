@@ -5,16 +5,18 @@ package examples
 import cats.instances.all._
 import doodle.core._
 import doodle.image.Image
-import doodle.syntax._
 import doodle.image.syntax._
+import doodle.syntax._
 
 object Koch {
   import PathElement._
 
-  def kochElements(depth: Int,
-                   start: Point,
-                   angle: Angle,
-                   length: Double): Seq[PathElement] = {
+  def kochElements(
+      depth: Int,
+      start: Point,
+      angle: Angle,
+      length: Double
+  ): Seq[PathElement] = {
     if (depth == 0) {
       Seq(lineTo(start + Vec.polar(length, angle)))
     } else {
@@ -38,7 +40,8 @@ object Koch {
   def koch(depth: Int, length: Double): Image = {
     val origin = Point.cartesian(0, length / 6)
     Image.openPath(
-      moveTo(origin) +: kochElements(depth, origin, 0.degrees, length))
+      moveTo(origin) +: kochElements(depth, origin, 0.degrees, length)
+    )
   }
 
   val image = ((1 to 4)

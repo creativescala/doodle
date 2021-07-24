@@ -5,10 +5,10 @@ import doodle.core.Point
 import doodle.effect._
 import doodle.image.Image
 import doodle.language.Basic
+
 import scala.concurrent.duration._
 
-/**
-  * A [[Reactor]] that has reasonable defaults and a simple builder style for
+/** A [[Reactor]] that has reasonable defaults and a simple builder style for
   * creating more complicated behaviour.
   */
 final case class Reactor[A](
@@ -65,33 +65,35 @@ final case class Reactor[A](
   def step: Reactor[A] =
     this.copy(initial = this.onTick(this.initial))
 
-  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
-      implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit = {
+  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](
+      frame: Frame
+  )(implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit = {
     import doodle.image.syntax._
     this.image.draw(frame)(renderer)
   }
 
-  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
-      implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit = {
+  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(implicit
+      renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+  ): Unit = {
     import doodle.image.syntax._
     this.image.draw()(renderer)
   }
 }
 object Reactor {
 
-  /**
-    * Create a [[Reactor]] with the given initial value.
+  /** Create a [[Reactor]] with the given initial value.
     */
   def init[A](value: A): Reactor[A] =
     Reactor(initial = value)
 
-  /**
-    * Create a [[Reactor]] where the value starts at `start` and goes to
-    * `stop` in `step` increments.
+  /** Create a [[Reactor]] where the value starts at `start` and goes to `stop`
+    * in `step` increments.
     */
-  def linearRamp(start: Double = 0.0,
-                 stop: Double = 1.0,
-                 step: Double = 0.01): Reactor[Double] =
+  def linearRamp(
+      start: Double = 0.0,
+      stop: Double = 1.0,
+      step: Double = 0.01
+  ): Reactor[Double] =
     Reactor
       .init[Double](start)
       .onTick((x: Double) => x + step)

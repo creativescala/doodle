@@ -27,8 +27,8 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
   self: GivenApply[F] =>
   import Renderable._
 
-  def on[A](top: Finalized[F, A], bottom: Finalized[F, A])(
-      implicit s: Semigroup[A]
+  def on[A](top: Finalized[F, A], bottom: Finalized[F, A])(implicit
+      s: Semigroup[A]
   ): Finalized[F, A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
@@ -41,8 +41,8 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       }
     }
 
-  def beside[A](left: Finalized[F, A], right: Finalized[F, A])(
-      implicit s: Semigroup[A]
+  def beside[A](left: Finalized[F, A], right: Finalized[F, A])(implicit
+      s: Semigroup[A]
   ): Finalized[F, A] =
     IndexedStateT { ctxTxs =>
       val l = left.runA(ctxTxs)
@@ -61,8 +61,8 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       }
     }
 
-  def above[A](top: Finalized[F, A], bottom: Finalized[F, A])(
-      implicit s: Semigroup[A]
+  def above[A](top: Finalized[F, A], bottom: Finalized[F, A])(implicit
+      s: Semigroup[A]
   ): Finalized[F, A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
@@ -82,8 +82,7 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
     }
 
   def at[A](img: Finalized[F, A], x: Double, y: Double): Finalized[F, A] =
-    img.map {
-      case (bb, rdr) =>
-        (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
+    img.map { case (bb, rdr) =>
+      (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
     }
 }

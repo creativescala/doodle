@@ -16,8 +16,10 @@ final case class Complex(real: Double, imaginary: Double) {
   def *(other: Complex) = {
     //   (a + bi) * (c + di)
     // = ac - bd + bci + adi
-    Complex(real * other.real - imaginary * other.imaginary,
-            imaginary * other.real + real * other.imaginary)
+    Complex(
+      real * other.real - imaginary * other.imaginary,
+      imaginary * other.real + real * other.imaginary
+    )
   }
 
   def /(factor: Double) = {
@@ -74,11 +76,13 @@ object Mandelbrot {
     renderer(size, count)
   }
 
-  def mandlebrot(fractalCenter: Complex,
-                 domainSize: Complex,
-                 displaySize: Int,
-                 renderer: CellRenderer = defaultRenderer,
-                 minSize: Int = 4): Image = {
+  def mandlebrot(
+      fractalCenter: Complex,
+      domainSize: Complex,
+      displaySize: Int,
+      renderer: CellRenderer = defaultRenderer,
+      minSize: Int = 4
+  ): Image = {
     if (displaySize <= minSize) {
       cell(fractalCenter, displaySize, renderer)
     } else {

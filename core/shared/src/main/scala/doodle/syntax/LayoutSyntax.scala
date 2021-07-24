@@ -18,38 +18,47 @@ package doodle
 package syntax
 
 import cats.Semigroup
-import doodle.algebra.{Picture, Layout}
-import doodle.core.{Angle, Point, Vec}
+import doodle.algebra.Layout
+import doodle.algebra.Picture
+import doodle.core.Angle
+import doodle.core.Point
+import doodle.core.Vec
 
 trait LayoutSyntax {
   implicit class LayoutPictureOps[Alg[x[_]] <: Layout[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
-    def on(that: Picture[Alg, F, A])(
-        implicit s: Semigroup[A]): Picture[Alg, F, A] =
+      picture: Picture[Alg, F, A]
+  ) {
+    def on(
+        that: Picture[Alg, F, A]
+    )(implicit s: Semigroup[A]): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.on(picture(algebra), that(algebra))
       }
 
-    def beside(that: Picture[Alg, F, A])(
-        implicit s: Semigroup[A]): Picture[Alg, F, A] =
+    def beside(
+        that: Picture[Alg, F, A]
+    )(implicit s: Semigroup[A]): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.beside(picture(algebra), that(algebra))
       }
 
-    def above(that: Picture[Alg, F, A])(
-        implicit s: Semigroup[A]): Picture[Alg, F, A] =
+    def above(
+        that: Picture[Alg, F, A]
+    )(implicit s: Semigroup[A]): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.above(picture(algebra), that(algebra))
       }
 
-    def under(that: Picture[Alg, F, A])(
-        implicit s: Semigroup[A]): Picture[Alg, F, A] =
+    def under(
+        that: Picture[Alg, F, A]
+    )(implicit s: Semigroup[A]): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.under(picture(algebra), that(algebra))
       }
 
-    def below(that: Picture[Alg, F, A])(
-        implicit s: Semigroup[A]): Picture[Alg, F, A] =
+    def below(
+        that: Picture[Alg, F, A]
+    )(implicit s: Semigroup[A]): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.below(picture(algebra), that(algebra))
       }

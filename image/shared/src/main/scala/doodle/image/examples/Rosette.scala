@@ -4,8 +4,8 @@ package examples
 
 import cats.implicits._
 import doodle.core._
-import doodle.syntax._
 import doodle.image.syntax._
+import doodle.syntax._
 
 object Rosette {
   val pts = List(
@@ -43,7 +43,7 @@ object Rosette {
     // Point(300, 310.degrees),
     Point(300, 320.degrees),
     // Point(300, 330.degrees),
-    Point(300, 340.degrees),
+    Point(300, 340.degrees)
     // Point(300, 350.degrees),
   )
 
@@ -59,7 +59,9 @@ object Rosette {
 
   val lines: Image =
     mapTails(pts) { (pt1, pt2) =>
-      Image.openPath(Seq(PathElement.moveTo(pt1), PathElement.lineTo(pt2))): Image
+      Image.openPath(
+        Seq(PathElement.moveTo(pt1), PathElement.lineTo(pt2))
+      ): Image
     }.allOn
 
   val image = circles.on(lines)

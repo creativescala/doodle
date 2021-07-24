@@ -4,8 +4,8 @@ package examples
 
 import doodle.core._
 import doodle.image.Image
-import doodle.syntax._
 import doodle.random._
+import doodle.syntax._
 
 object Smoke {
   val emitter =
@@ -37,9 +37,11 @@ object Smoke {
   def particle(point: Point, color: Color, radius: Double): Image =
     Image.circle(radius).fillColor(color).noStroke.at(point.toVec)
 
-  def step(point: Point,
-           color: Color,
-           radius: Double): Random[(Point, Color, Double)] =
+  def step(
+      point: Point,
+      color: Color,
+      radius: Double
+  ): Random[(Point, Color, Double)] =
     perturb(point) flatMap { pt =>
       widen(radius) flatMap { r =>
         cool(color) map { c =>
@@ -49,10 +51,12 @@ object Smoke {
     }
 
   def randomWalk(steps: Int): Random[Image] = {
-    def loop(count: Int,
-             point: Point,
-             color: Color,
-             radius: Double): Random[Image] =
+    def loop(
+        count: Int,
+        point: Point,
+        color: Color,
+        radius: Double
+    ): Random[Image] =
       count match {
         case 0 => Random.always(particle(point, color, radius))
         case n =>
@@ -64,7 +68,8 @@ object Smoke {
       }
 
     emitter.flatMap(pt =>
-      loop(steps, pt, Color.yellow.alpha(0.7.normalized), 3))
+      loop(steps, pt, Color.yellow.alpha(0.7.normalized), 3)
+    )
   }
 
   val image =

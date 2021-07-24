@@ -14,7 +14,8 @@ trait MouseOverSyntax {
   }
 
   implicit class MouseOverPictureOps[Alg[x[_]] <: MouseOver[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
     def mouseOver: (Picture[Alg, F, A], Observable[Unit]) = {
       val obs = PublishSubject[Unit]()
       val p = Picture { implicit algebra: Alg[F] =>

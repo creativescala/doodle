@@ -23,42 +23,36 @@ import cats.syntax.invariant._
 import doodle.core.Angle
 import doodle.interact.easing.Easing
 
-/**
-  * An interpolator constructs a transducer from a starting value, a stopping value,
-  * and the number of elements or steps to produce between these values.
+/** An interpolator constructs a transducer from a starting value, a stopping
+  * value, and the number of elements or steps to produce between these values.
   */
 trait Interpolator[A] {
 
-  /**
-    * Enumerate a half-open interval, starting with start and ending with stop.
+  /** Enumerate a half-open interval, starting with start and ending with stop.
     * The uneased case allows exact computation of the interval while the easing
     * will probably introduce numeric error.
     */
   def halfOpen(start: A, stop: A, steps: Long): Transducer[A]
 
-  /**
-    * Enumerate a half-open interval, starting with start and ending with stop,
+  /** Enumerate a half-open interval, starting with start and ending with stop,
     * and passed through the given easing.
     */
   def halfOpen(start: A, stop: A, steps: Long, easing: Easing): Transducer[A]
 
-  /**
-    * Interpolate a closed interval, starting with start and ending with the
+  /** Interpolate a closed interval, starting with start and ending with the
     * first value after stop. The uneased case allows exact computation of the
     * interval while the easing will probably introduce numeric error.
     */
   def closed(start: A, stop: A, steps: Long): Transducer[A]
 
-  /**
-    * Interpolate a closed interval, starting with start and ending with the first
-    * value after stop, and passed through the given easing.
+  /** Interpolate a closed interval, starting with start and ending with the
+    * first value after stop, and passed through the given easing.
     */
   def closed(start: A, stop: A, steps: Long, easing: Easing): Transducer[A]
 }
 object Interpolator {
 
-  /**
-    * Invariant functor instance for Interpolator
+  /** Invariant functor instance for Interpolator
     */
   implicit object interpolatorInvariant extends Invariant[Interpolator] {
     def imap[A, B](fa: Interpolator[A])(f: A => B)(g: B => A): Interpolator[B] =
@@ -66,30 +60,33 @@ object Interpolator {
         def halfOpen(start: B, stop: B, steps: Long): Transducer[B] =
           fa.halfOpen(g(start), g(stop), steps).map(f)
 
-        def halfOpen(start: B,
-                     stop: B,
-                     steps: Long,
-                     easing: Easing): Transducer[B] =
+        def halfOpen(
+            start: B,
+            stop: B,
+            steps: Long,
+            easing: Easing
+        ): Transducer[B] =
           fa.halfOpen(g(start), g(stop), steps, easing).map(f)
 
         def closed(start: B, stop: B, steps: Long): Transducer[B] =
           fa.closed(g(start), g(stop), steps).map(f)
 
-        def closed(start: B,
-                   stop: B,
-                   steps: Long,
-                   easing: Easing): Transducer[B] =
+        def closed(
+            start: B,
+            stop: B,
+            steps: Long,
+            easing: Easing
+        ): Transducer[B] =
           fa.closed(g(start), g(stop), steps, easing).map(f)
       }
   }
 
-  /**
-    * Perform Kahan summation given the total so far, the value to add to the
+  /** Perform Kahan summation given the total so far, the value to add to the
     * total, and the error term (which starts at 0.0). Returns the updated total
     * and the new error term.
     *
-    * Kahan's algorithm is a way to sum floating point numbers that reduces error
-    * compared to straightforward addition.
+    * Kahan's algorithm is a way to sum floating point numbers that reduces
+    * error compared to straightforward addition.
     */
   def kahanSum(total: Double, x: Double, error: Double): (Double, Double) = {
     val y = x - error
@@ -98,8 +95,7 @@ object Interpolator {
     (nextTotal, nextError)
   }
 
-  /**
-    * Interpolator instance for Double
+  /** Interpolator instance for Double
     */
   implicit val doubleInterpolator: Interpolator[Double] =
     new Interpolator[Double] {
@@ -252,8 +248,7 @@ object Interpolator {
           }
     }
 
-  /**
-    * Interpolator instance for Angle
+  /** Interpolator instance for Angle
     */
   implicit val angleInterpolator: Interpolator[Angle] =
     doubleInterpolator.imap(turns => Angle.turns(turns))(angle => angle.toTurns)

@@ -17,7 +17,11 @@
 package doodle
 package algebra
 
-import doodle.core.{Angle, ClosedPath, PathElement, Point, OpenPath}
+import doodle.core.Angle
+import doodle.core.ClosedPath
+import doodle.core.OpenPath
+import doodle.core.PathElement
+import doodle.core.Point
 
 trait Path[F[_]] extends Algebra[F] {
   def path(path: ClosedPath): F[Unit]
@@ -29,16 +33,20 @@ trait Path[F[_]] extends Algebra[F] {
     path(ClosedPath(PathElement.regularPolygon(sides, radius, angle)))
   }
 
-  def star(points: Int,
-           outerRadius: Double,
-           innerRadius: Double,
-           angle: Angle): F[Unit] = {
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double,
+      angle: Angle
+  ): F[Unit] = {
     path(ClosedPath(PathElement.star(points, outerRadius, innerRadius, angle)))
   }
 
-  def roundedRectangle(width: Double,
-                       height: Double,
-                       radius: Double): F[Unit] = {
+  def roundedRectangle(
+      width: Double,
+      height: Double,
+      radius: Double
+  ): F[Unit] = {
     path(ClosedPath(PathElement.roundedRectangle(width, height, radius)))
   }
 

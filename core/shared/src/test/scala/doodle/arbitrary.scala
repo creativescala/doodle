@@ -1,10 +1,11 @@
 package doodle
 
-import org.scalacheck.{Arbitrary, Gen}
+import org.scalacheck.Arbitrary
+import org.scalacheck.Gen
 
 object arbitrary {
   import doodle.core._
-  import doodle.core.Color.{RGBA,HSLA}
+  import doodle.core.Color.{RGBA, HSLA}
 
   val genAngle: Gen[Angle] =
     Gen.choose(-36.0, 36.0).map { angle => Angle(angle) }
@@ -40,7 +41,10 @@ object arbitrary {
   final case class Translate(x: Double, y: Double)
   final case class Scale(x: Double, y: Double)
   final case class Rotate(angle: Angle)
-  /** The dimensions of a screen: positive integers greater than 0 and less than or equal to 4000. */
+
+  /** The dimensions of a screen: positive integers greater than 0 and less than
+    * or equal to 4000.
+    */
   final case class Screen(width: Int, height: Int)
 
   val genScreen: Gen[Screen] =

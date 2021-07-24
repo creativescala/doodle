@@ -22,7 +22,8 @@ object OpenClosedPaths {
         lineTo(cartesian(50, 100)),
         lineTo(cartesian(100, 0)),
         lineTo(cartesian(0, 0))
-      ))
+      )
+    )
 
   val closedTriangle = openTriangle.close
 

@@ -2,10 +2,10 @@ package doodle
 package image
 package examples
 
+import cats.implicits._
 import doodle.core._
 import doodle.image.Image
 import doodle.random._
-import cats.implicits._
 
 object Layers {
   val point =
@@ -27,11 +27,10 @@ object Layers {
       top <- layer
       mid <- layer
       bot <- layer
-    } yield
-      (top.noFill
-        .strokeColor(Color.deepPink))
-        .above(mid.noFill.strokeColor(Color.yellowGreen))
-        .above(bot.noFill.strokeColor(Color.dodgerBlue))
+    } yield (top.noFill
+      .strokeColor(Color.deepPink))
+      .above(mid.noFill.strokeColor(Color.yellowGreen))
+      .above(bot.noFill.strokeColor(Color.dodgerBlue))
 
   val image = cake.run
 }

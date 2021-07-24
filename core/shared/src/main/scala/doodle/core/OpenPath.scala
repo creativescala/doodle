@@ -18,7 +18,8 @@ package doodle
 package core
 
 /** Elements are stored in reversed order to make appending, the most common
-  * operation, more efficient. */
+  * operation, more efficient.
+  */
 final case class OpenPath private (reversed: List[PathElement]) {
   def add(element: PathElement): OpenPath =
     new OpenPath(element :: reversed)
@@ -53,24 +54,28 @@ final case class OpenPath private (reversed: List[PathElement]) {
   def curveTo(cp1: Point, cp2: Point, to: Point): OpenPath =
     add(PathElement.curveTo(cp1, cp2, to))
 
-  def curveTo(cp1X: Double,
-              cp1Y: Double,
-              cp2X: Double,
-              cp2Y: Double,
-              toX: Double,
-              toY: Double): OpenPath =
+  def curveTo(
+      cp1X: Double,
+      cp1Y: Double,
+      cp2X: Double,
+      cp2Y: Double,
+      toX: Double,
+      toY: Double
+  ): OpenPath =
     curveTo(
       Point(cp1X, cp1Y),
       Point(cp2X, cp2Y),
       Point(toX, toY)
     )
 
-  def curveTo(cp1R: Double,
-              cp1Angle: Angle,
-              cp2R: Double,
-              cp2Angle: Angle,
-              toR: Double,
-              toAngle: Angle): OpenPath =
+  def curveTo(
+      cp1R: Double,
+      cp1Angle: Angle,
+      cp2R: Double,
+      cp2Angle: Angle,
+      toR: Double,
+      toAngle: Angle
+  ): OpenPath =
     curveTo(
       Point(cp1R, cp1Angle),
       Point(cp2R, cp2Angle),

@@ -20,26 +20,29 @@ package effect
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.{Algebra, Picture}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
 import doodle.effect.Renderer
 import monix.execution.Scheduler
 import monix.reactive.Observable
 
-/**
-  * The `AnimationRenderer` typeclass describes a data type that can render an
+/** The `AnimationRenderer` typeclass describes a data type that can render an
   * animation to a Canvas.
   */
 trait AnimationRenderer[Canvas] {
 
   /** Animate frames that are produced by an `Observable`. */
-  def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame](canvas: Canvas)(
-      frames: Observable[Picture[Alg, F, A]])(
-      implicit e: Renderer[Alg, F, Frame, Canvas],
+  def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame](
+      canvas: Canvas
+  )(frames: Observable[Picture[Alg, F, A]])(implicit
+      e: Renderer[Alg, F, Frame, Canvas],
       s: Scheduler,
-      m: Monoid[A]): IO[A]
+      m: Monoid[A]
+  ): IO[A]
 }
 object AnimationRenderer {
-  def apply[Canvas](
-      implicit animator: AnimationRenderer[Canvas]): AnimationRenderer[Canvas] =
+  def apply[Canvas](implicit
+      animator: AnimationRenderer[Canvas]
+  ): AnimationRenderer[Canvas] =
     animator
 }

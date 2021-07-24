@@ -2,14 +2,13 @@ package doodle
 package image
 package examples
 
+import cats.implicits._
 import doodle.core._
 import doodle.image.Image
 import doodle.image.Image._
-import doodle.image.syntax.core._
 import doodle.image.syntax._
+import doodle.image.syntax.core._
 import doodle.random._
-
-import cats.implicits._
 
 object Sine {
   import Parametric.AngularCurve
@@ -20,16 +19,19 @@ object Sine {
     val frequency = width.toDouble / period.toDouble
     AngularCurve {
       Parametric.sine(amplitude, frequency) andThen (pt =>
-        Point((pt.x - 0.5) * width, pt.y))
+        Point((pt.x - 0.5) * width, pt.y)
+      )
     }
   }
 
-  def noisySine(curve: AngularCurve,
-                stdDev: Double = 15.0): Angle => Random[Point] =
+  def noisySine(
+      curve: AngularCurve,
+      stdDev: Double = 15.0
+  ): Angle => Random[Point] =
     (angle: Angle) =>
       Random.normal(0.0, stdDev).map { offset =>
         curve(angle) + Vec(0, offset)
-    }
+      }
 
   val randomAngle: Random[Angle] = Random.double.map(a => a.turns)
 
@@ -49,7 +51,8 @@ object Sine {
 
   def errorPlot(data: List[Point], periods: List[Int]): Image = {
     val errors = periods.sorted.map(p =>
-      Point(p.toDouble, error(sine(2000, 150, p), data)))
+      Point(p.toDouble, error(sine(2000, 150, p), data))
+    )
     val maxPeriod = periods.max
     val max = errors.map(pt => pt.y).max
     val scaled =
@@ -58,7 +61,8 @@ object Sine {
     val points =
       (scaled
         .map(pt =>
-          Image.circle(13.0).at(pt.toVec).fillColor(Color.white).noStroke))
+          Image.circle(13.0).at(pt.toVec).fillColor(Color.white).noStroke
+        ))
         .allOn
     val curve =
       interpolatingSpline(scaled).strokeWidth(11.0).strokeColor(Color.white)
@@ -66,14 +70,17 @@ object Sine {
     points on curve
   }
 
-  def gradientDescent(data: List[Point],
-                      periods: List[Int],
-                      start: Int,
-                      goal: Int,
-                      step: Int): Image = {
+  def gradientDescent(
+      data: List[Point],
+      periods: List[Int],
+      start: Int,
+      goal: Int,
+      step: Int
+  ): Image = {
     val steps = List.range(start, goal, step)
     val errors = periods.sorted.map(p =>
-      Point(p.toDouble, error(sine(2000, 150, p), data)))
+      Point(p.toDouble, error(sine(2000, 150, p), data))
+    )
     val maxPeriod = periods.max
     val max = errors.map(pt => pt.y).max
     val scaled =
@@ -91,8 +98,10 @@ object Sine {
         .map(pt => Image.circle(13.0).at(pt.toVec).noStroke)
         .foldLeft((1.0, List.empty[Image])) { (accum, img) =>
           val (lightness, soFar) = accum
-          (lightness * 0.9,
-           img.fillColor(Color.red.lightness(lightness.normalized)) :: soFar)
+          (
+            lightness * 0.9,
+            img.fillColor(Color.red.lightness(lightness.normalized)) :: soFar
+          )
         }
 
     (visited.allOn) on curve
@@ -152,7 +161,8 @@ object Sine {
       val descent = gradientDescent(data, periods, 350, 410, 10)
 
       descent :: squaredError :: (dataPlot on spacer) :: (sines.last on dataPlot on bars) :: (sines map (
-          s => dataPlot on s))
+        s => dataPlot on s
+      ))
     }.run
 
   /*
@@ -164,5 +174,5 @@ object Sine {
     bars.save[Pdf]("sine-error-bars.pdf")
     rest.zipWithIndex.map{ case (s, i) => s.save[Pdf](s"sine-$i.pdf") }
   }
- */
+   */
 }

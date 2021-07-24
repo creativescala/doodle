@@ -17,8 +17,7 @@
 package doodle
 package core
 
-/**
-  * An angle in radians
+/** An angle in radians
   */
 final class Angle(val toRadians: Double) {
   def +(that: Angle): Angle =
@@ -96,9 +95,8 @@ object Angle {
   def radians(rad: Double): Angle =
     Angle(rad)
 
-  /**
-    *  A turn represents angle as a proportion of a full turn around a
-    *  circle, with a full turn being 1.0
+  /** A turn represents angle as a proportion of a full turn around a circle,
+    * with a full turn being 1.0
     */
   def turns(t: Double): Angle =
     Angle(t * TwoPi)

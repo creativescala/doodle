@@ -46,7 +46,8 @@ object CreativeScala {
           moveTo(polar(50, 0.degrees)),
           lineTo(polar(50, 120.degrees)),
           lineTo(polar(50, 240.degrees))
-        ))
+        )
+      )
 
     val square =
       Image.closedPath(
@@ -55,7 +56,8 @@ object CreativeScala {
           lineTo(polar(50, 135.degrees)),
           lineTo(polar(50, 225.degrees)),
           lineTo(polar(50, 315.degrees))
-        ))
+        )
+      )
 
     val pentagon =
       Image.closedPath(
@@ -67,7 +69,8 @@ object CreativeScala {
             lineTo(polar(50, 288.degrees)),
             lineTo(polar(50, 360.degrees))
           )
-        ))
+        )
+      )
 
     val spacer =
       Image.rectangle(10, 100).noStroke.noFill
@@ -75,8 +78,9 @@ object CreativeScala {
     def style(image: Image): Image =
       image.strokeWidth(6.0).strokeColor(paleTurquoise).fillColor(turquoise)
 
-    val image = style(triangle) beside spacer beside style(square) beside spacer beside style(
-      pentagon)
+    val image = style(triangle) beside spacer beside style(
+      square
+    ) beside spacer beside style(pentagon)
   }
 
   object curvedPolygons {
@@ -99,7 +103,8 @@ object CreativeScala {
           curve(50, 0.degrees, 120.degrees),
           curve(50, 120.degrees, 120.degrees),
           curve(50, 240.degrees, 120.degrees)
-        ))
+        )
+      )
 
     val square =
       Image.closedPath(
@@ -109,7 +114,8 @@ object CreativeScala {
           curve(50, 135.degrees, 90.degrees),
           curve(50, 225.degrees, 90.degrees),
           curve(50, 315.degrees, 90.degrees)
-        ))
+        )
+      )
 
     val pentagon =
       Image.closedPath(
@@ -122,7 +128,8 @@ object CreativeScala {
             curve(50, 288.degrees, 72.degrees),
             curve(50, 360.degrees, 72.degrees)
           )
-        ))
+        )
+      )
 
     val spacer =
       Image.rectangle(10, 100).noStroke.noFill
@@ -130,8 +137,9 @@ object CreativeScala {
     def style(image: Image): Image =
       image.strokeWidth(6.0).strokeColor(paleTurquoise).fillColor(turquoise)
 
-    val image = style(triangle) beside spacer beside style(square) beside spacer beside style(
-      pentagon)
+    val image = style(triangle) beside spacer beside style(
+      square
+    ) beside spacer beside style(pentagon)
   }
 
   object regularPolygons {
@@ -144,15 +152,16 @@ object CreativeScala {
           case 0 =>
             Nil
           case n =>
-            lineTo(polar(size.toDouble,
-                         rotation * n.toDouble + initialRotation)) :: iter(
-              n - 1,
-              rotation)
+            lineTo(
+              polar(size.toDouble, rotation * n.toDouble + initialRotation)
+            ) :: iter(n - 1, rotation)
         }
       Image.closedPath(
         moveTo(polar(size.toDouble, initialRotation)) :: iter(
           sides,
-          360.degrees / sides.toDouble))
+          360.degrees / sides.toDouble
+        )
+      )
     }
 
     def style(img: Image): Image = {
@@ -226,8 +235,10 @@ object CreativeScala {
     def allStar =
       allAbove((3 to 33 by 2).toList map { sides =>
         allBeside((1 to sides / 2).toList map { skip =>
-          style(star(sides, skip, 20),
-                360.degrees * skip.toDouble / sides.toDouble)
+          style(
+            star(sides, skip, 20),
+            360.degrees * skip.toDouble / sides.toDouble
+          )
         })
       })
 
@@ -304,8 +315,10 @@ object CreativeScala {
       count match {
         case 0 => Image.empty
         case n =>
-          coloredRectangle(Color.royalBlue, size) beside growingBoxes(n - 1,
-                                                                      size + 10)
+          coloredRectangle(Color.royalBlue, size) beside growingBoxes(
+            n - 1,
+            size + 10
+          )
       }
 
     // Basic structural recursion modifying both parameters
@@ -313,8 +326,10 @@ object CreativeScala {
       n match {
         case 0 => Image.empty
         case n =>
-          coloredRectangle(color) beside gradientBoxes(n - 1,
-                                                       color.spin(15.degrees))
+          coloredRectangle(color) beside gradientBoxes(
+            n - 1,
+            color.spin(15.degrees)
+          )
       }
 
     // Structural recursion with applicative (implemented via monad)
@@ -389,7 +404,7 @@ object CreativeScala {
             .strokeWidth(5.0)
             .strokeColor(Color.royalBlue.spin(30.degrees))
             .fillColor(Color.royalBlue)
-    )
+      )
 
     // Image written out as one expression using abstraction (a name)
     val abstraction = {
@@ -451,11 +466,12 @@ object CreativeScala {
     val spacer = Image.rectangle(20, 20).noStroke.noFill
 
     val image =
-      (allOn(iter.map(_ => uniform2D map (point _))),
-       allOn(iter.map(_ => normal2D map (point _))),
-       allOn(iter.map(_ => normalSquared2D map (point _)))) mapN {
-        (s1, s2, s3) =>
-          s1 beside spacer beside s2 beside spacer beside s3
+      (
+        allOn(iter.map(_ => uniform2D map (point _))),
+        allOn(iter.map(_ => normal2D map (point _))),
+        allOn(iter.map(_ => normalSquared2D map (point _)))
+      ) mapN { (s1, s2, s3) =>
+        s1 beside spacer beside s2 beside spacer beside s3
       }
   }
 
@@ -465,8 +481,10 @@ object CreativeScala {
 
     def rose(k: Int): Angle => Point =
       (angle: Angle) => {
-        Point.cartesian((angle * k.toDouble).cos * angle.cos,
-                        (angle * k.toDouble).cos * angle.sin)
+        Point.cartesian(
+          (angle * k.toDouble).cos * angle.cos,
+          (angle * k.toDouble).cos * angle.sin
+        )
       }
 
     def scale(point: Point): Point =
@@ -534,7 +552,9 @@ object CreativeScala {
           Image.circle(40)
         case n =>
           val circle = Image.circle(40 * (1.0 / (n + 1)))
-          circle beside (circle above shrinking(n - 1) above circle) beside circle
+          circle beside (circle above shrinking(
+            n - 1
+          ) above circle) beside circle
       }
   }
 
@@ -564,8 +584,10 @@ object CreativeScala {
 
     def rose(k: Int): Angle => Point =
       (angle: Angle) => {
-        Point.cartesian((angle * k.toDouble).cos * angle.cos,
-                        (angle * k.toDouble).cos * angle.sin)
+        Point.cartesian(
+          (angle * k.toDouble).cos * angle.cos,
+          (angle * k.toDouble).cos * angle.sin
+        )
       }
 
     val dot = Image

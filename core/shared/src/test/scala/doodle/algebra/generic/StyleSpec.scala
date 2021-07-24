@@ -18,25 +18,35 @@ package doodle
 package algebra
 package generic
 
-import org.scalacheck._
 import org.scalacheck.Prop._
+import org.scalacheck._
 
 object StyleSpec extends Properties("Style properties") {
   val style = TestAlgebra()
 
   property("last fillColor takes effect") =
-    forAll(Generators.finalized, Generators.color){ (f, c) =>
+    forAll(Generators.finalized, Generators.color) { (f, c) =>
       import doodle.algebra.generic.reified.Reified._
       val reified = Generators.reify(style.fillColor(f, c))
-      reified.foldLeft(true: Prop){ (prop, elt) =>
+      reified.foldLeft(true: Prop) { (prop, elt) =>
         prop && (elt match {
-                   case FillOpenPath(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
-                   case FillClosedPath(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
-                   case FillCircle(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
-                   case FillRect(_, fill, _, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
-                   case FillPolygon(_, fill, _) => (fill.asInstanceOf[Fill.ColorFill].color ?= c)
-                   case _ => true
-                 })
+          case FillOpenPath(_, fill, _) => (
+            fill.asInstanceOf[Fill.ColorFill].color ?= c
+          )
+          case FillClosedPath(_, fill, _) => (
+            fill.asInstanceOf[Fill.ColorFill].color ?= c
+          )
+          case FillCircle(_, fill, _) => (
+            fill.asInstanceOf[Fill.ColorFill].color ?= c
+          )
+          case FillRect(_, fill, _, _) => (
+            fill.asInstanceOf[Fill.ColorFill].color ?= c
+          )
+          case FillPolygon(_, fill, _) => (
+            fill.asInstanceOf[Fill.ColorFill].color ?= c
+          )
+          case _ => true
+        })
       }
     }
 }

@@ -17,8 +17,8 @@
 package doodle
 package core
 
-import org.scalacheck.Gen
 import doodle.syntax._
+import org.scalacheck.Gen
 
 trait Generators {
   val angle: Gen[Angle] =
@@ -33,7 +33,7 @@ trait Generators {
     } yield Color.HSLA(h, s, l, a)
 
   val normalized: Gen[Normalized] =
-    Gen.choose(0.0,1.0).map(_.normalized)
+    Gen.choose(0.0, 1.0).map(_.normalized)
 
   val pathElement: Gen[PathElement] = {
     val point: Gen[Point] =
@@ -52,7 +52,7 @@ trait Generators {
       for {
         cp1 <- point
         cp2 <- point
-        to  <- point
+        to <- point
       } yield PathElement.curveTo(cp1, cp2, to)
 
     Gen.oneOf(moveTo, lineTo, bezierCurveTo)

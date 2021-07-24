@@ -7,16 +7,20 @@ import doodle.image.Image
 object Turtle {
   final case class State(at: Vec, heading: Angle)
 
-  def draw(instructions: List[Instruction],
-           angle: Angle = Angle.zero): Image = {
+  def draw(
+      instructions: List[Instruction],
+      angle: Angle = Angle.zero
+  ): Image = {
     import Instruction._
     import PathElement._
 
     val initialState = State(Vec.zero, angle)
 
     // Note that iterate returns the path in *reversed* order.
-    def iterate(state: State,
-                instructions: List[Instruction]): (State, List[PathElement]) = {
+    def iterate(
+        state: State,
+        instructions: List[Instruction]
+    ): (State, List[PathElement]) = {
       instructions.foldLeft((state, List.empty[PathElement])) { (accum, elt) =>
         val (state, path) = accum
         elt match {

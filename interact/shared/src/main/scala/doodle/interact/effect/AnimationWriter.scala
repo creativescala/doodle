@@ -20,19 +20,21 @@ package effect
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.algebra.{Algebra, Picture}
-import java.io.File
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
 import monix.execution.Scheduler
 import monix.reactive.Observable
 
-/**
-  * The `AnimationWriter` typeclass describes a data type that can write an
+import java.io.File
+
+/** The `AnimationWriter` typeclass describes a data type that can write an
   * animation to a file.
   */
 trait AnimationWriter[Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
 
-  def write[A](file: File,
-               description: Frame,
-               frames: Observable[Picture[Alg, F, A]])(implicit s: Scheduler,
-                                                       m: Monoid[A]): IO[A]
+  def write[A](
+      file: File,
+      description: Frame,
+      frames: Observable[Picture[Alg, F, A]]
+  )(implicit s: Scheduler, m: Monoid[A]): IO[A]
 }

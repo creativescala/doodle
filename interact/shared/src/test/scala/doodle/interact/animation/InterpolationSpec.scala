@@ -4,8 +4,8 @@ package animation
 
 import cats.implicits._
 import doodle.interact.syntax._
-import org.scalacheck._
 import org.scalacheck.Prop._
+import org.scalacheck._
 
 object InterpolationSpec extends Properties("Interpolation properties") {
   property("upTo empty range produces no output") = forAllNoShrink {

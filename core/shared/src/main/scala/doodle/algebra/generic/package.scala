@@ -20,7 +20,8 @@ package algebra
 import cats._
 import cats.data._
 import cats.implicits._
-import doodle.core.{BoundingBox, Transform => Tx}
+import doodle.core.BoundingBox
+import doodle.core.{Transform => Tx}
 
 package object generic {
   type ContextTransform = DrawingContext => DrawingContext
@@ -30,11 +31,11 @@ package object generic {
     * needed for this process) and can eventually produce a value of type `A`
     * (once it is rendered). Algorithmically this means:
     *
-    * - for each shape work out its [[DrawingContext]] from which we can work
-    *   out a [[doodle.core.BoundingBox]].
+    *   - for each shape work out its [[DrawingContext]] from which we can work
+    *     out a [[doodle.core.BoundingBox]].
     *
-    * - apply transforms to bounding boxes at the point they are defined so each
-    *   transformed subtree is laid out in its local coordinate system.
+    *   - apply transforms to bounding boxes at the point they are defined so
+    *     each transformed subtree is laid out in its local coordinate system.
     *
     * The List of ContextTransform's are supplied in the order they should be
     * applied: the innermost transform is at the head of the list.
@@ -43,16 +44,19 @@ package object generic {
     State[List[ContextTransform], (BoundingBox, Renderable[F, A])]
   object Finalized {
     def apply[F[_], A](
-        f: List[ContextTransform] => (List[ContextTransform],
-                                      (BoundingBox, Renderable[F, A])))
-      : Finalized[F, A] =
+        f: List[ContextTransform] => (
+            List[ContextTransform],
+            (BoundingBox, Renderable[F, A])
+        )
+    ): Finalized[F, A] =
       State[List[ContextTransform], (BoundingBox, Renderable[F, A])] { f }
 
-    /** Create a leaf [[Finalized]]. It will be passed a [[DrawingContext]] with all
-      * transforms applied in the correct order.
+    /** Create a leaf [[Finalized]]. It will be passed a [[DrawingContext]] with
+      * all transforms applied in the correct order.
       */
     def leaf[F[_], A](
-        f: DrawingContext => (BoundingBox, Renderable[F, A])): Finalized[F, A] =
+        f: DrawingContext => (BoundingBox, Renderable[F, A])
+    ): Finalized[F, A] =
       State.inspect { ctxTxs =>
         val dc = ctxTxs.foldLeft(DrawingContext.default) { (dc, f) =>
           f(dc)
@@ -60,8 +64,9 @@ package object generic {
         f(dc)
       }
 
-    def contextTransform[F[_], A](f: DrawingContext => DrawingContext)(
-        child: Finalized[F, A]): Finalized[F, A] = {
+    def contextTransform[F[_], A](
+        f: DrawingContext => DrawingContext
+    )(child: Finalized[F, A]): Finalized[F, A] = {
       for {
         _ <- State.modify { (ctxTxs: List[ContextTransform]) =>
           f :: ctxTxs
@@ -71,10 +76,10 @@ package object generic {
     }
 
     def transform[F[_], A](transform: Tx)(
-        child: Finalized[F, A]): Finalized[F, A] =
-      child.map {
-        case (bb, rdr) =>
-          (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
+        child: Finalized[F, A]
+    ): Finalized[F, A] =
+      child.map { case (bb, rdr) =>
+        (bb.transform(transform), rdr.contramap(tx => transform.andThen(tx)))
       }
   }
   implicit class FinalizedOps[F[_], A](finalized: Finalized[F, A]) {
@@ -84,18 +89,20 @@ package object generic {
     }
   }
 
-  /** A [[Renderable]] represents some effect producing a value of type A and also
-    * creating a concrete implementation specific drawing.
+  /** A [[Renderable]] represents some effect producing a value of type A and
+    * also creating a concrete implementation specific drawing.
     *
     * Invoking a [[Renderable]] does any layout (usually using bounding box
     * information calculated in [[Finalized]]) and as such requires a
     * [[doodle.core.Transform]]. Transforms should be applied outermost last. So
     * any transformation in a [[Renderable]] should be applied before the
-    * trasform it receives from its surrounding context. */
+    * trasform it receives from its surrounding context.
+    */
   type Renderable[F[_], A] = State[Tx, F[A]]
   object Renderable {
     def parallel[F[_]: Apply, A: Semigroup](txLeft: Tx, txRight: Tx)(
-        left: Renderable[F, A])(right: Renderable[F, A]): Renderable[F, A] =
+        left: Renderable[F, A]
+    )(right: Renderable[F, A]): Renderable[F, A] =
       // Can't use the Applicative instance here as that will sequentially
       // compose the left and right, which will result in the transforms being
       // sequentially composed, which is wrong. Couldn't get `parMapN` to
@@ -111,21 +118,25 @@ package object generic {
       State.pure(fUnit)
 
     def transform[F[_], A](transform: Tx)(
-        child: Renderable[F, A]): Renderable[F, A] =
+        child: Renderable[F, A]
+    ): Renderable[F, A] =
       child.contramap(tx => transform.andThen(tx))
 
     def apply[F[_], A](f: Tx => Eval[F[A]]): Renderable[F, A] =
       IndexedStateT.inspectF(f)
 
     implicit def renderableSemigroup[F[_]: Apply, A: Semigroup]
-      : Semigroup[Renderable[F, A]] =
+        : Semigroup[Renderable[F, A]] =
       new Semigroup[Renderable[F, A]] {
-        def combine(x: Renderable[F, A],
-                    y: Renderable[F, A]): Renderable[F, A] =
+        def combine(
+            x: Renderable[F, A],
+            y: Renderable[F, A]
+        ): Renderable[F, A] =
           Renderable(tx =>
             (x.runA(tx), y.runA(tx)).mapN { (fx, fy) =>
               (fx, fy).mapN((a, b) => a |+| b)
-          })
+            }
+          )
       }
   }
 }

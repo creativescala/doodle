@@ -2,13 +2,12 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.image._
-import doodle.syntax._
-import doodle.random._
-
 import cats.instances.all._
 import cats.syntax.all._
+import doodle.core._
+import doodle.image._
+import doodle.random._
+import doodle.syntax._
 
 object Spirals {
   def scale(factor: Double): Point => Point =

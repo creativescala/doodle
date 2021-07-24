@@ -5,8 +5,7 @@ package algebra
 import doodle.core.Point
 import monix.reactive.Observable
 
-/**
-  * Algebra for generating a stream of events corresponding to mouse clicks.
+/** Algebra for generating a stream of events corresponding to mouse clicks.
   * Whenever the mouse is clicked a new event is generated with the location of
   * the click.
   *
@@ -16,8 +15,7 @@ import monix.reactive.Observable
   */
 trait MouseClick[Canvas] {
 
-  /**
-    * Return an Observable that has an event every time the mouse is clicked on
+  /** Return an Observable that has an event every time the mouse is clicked on
     * the canvas. The coordinate system used is the global coordinate system
     * used by the Canvas, which usually means the origin is centered on the
     * canvas.

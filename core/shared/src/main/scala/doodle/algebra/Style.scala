@@ -17,10 +17,12 @@
 package doodle
 package algebra
 
-import doodle.core.{Cap, Color, Gradient, Join}
+import doodle.core.Cap
+import doodle.core.Color
+import doodle.core.Gradient
+import doodle.core.Join
 
-/**
-  * Apply styling to a image.
+/** Apply styling to a image.
   */
 trait Style[F[_]] extends Algebra[F] {
   def fillColor[A](image: F[A], fillColor: Color): F[A]
@@ -31,8 +33,7 @@ trait Style[F[_]] extends Algebra[F] {
   def strokeCap[A](image: F[A], strokeCap: Cap): F[A]
   def strokeJoin[A](image: F[A], strokeJoin: Join): F[A]
 
-  /**
-    * Specify the stroke dash pattern. The pattern gives the length, in local
+  /** Specify the stroke dash pattern. The pattern gives the length, in local
     * coordinates, of opaque and transparent sections. The first element is the
     * length of an opaque section, the second of a transparent section, and so
     * on.

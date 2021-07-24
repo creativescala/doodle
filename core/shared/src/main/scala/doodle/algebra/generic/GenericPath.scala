@@ -21,19 +21,24 @@ package generic
 import cats.data.State
 import doodle.core._
 import doodle.core.{Transform => Tx}
+
 import scala.annotation.tailrec
 
 trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
 
   trait PathApi {
-    def closedPath(tx: Tx,
-                   fill: Option[Fill],
-                   stroke: Option[Stroke],
-                   elements: List[PathElement]): F[Unit]
-    def openPath(tx: Tx,
-                 fill: Option[Fill],
-                 stroke: Option[Stroke],
-                 elements: List[PathElement]): F[Unit]
+    def closedPath(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        elements: List[PathElement]
+    ): F[Unit]
+    def openPath(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        elements: List[PathElement]
+    ): F[Unit]
   }
 
   def PathApi: PathApi
@@ -44,9 +49,12 @@ trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb,
-       State.inspect(tx =>
-         PathApi.closedPath(tx, dc.fill, dc.stroke, elements)))
+      (
+        bb,
+        State.inspect(tx =>
+          PathApi.closedPath(tx, dc.fill, dc.stroke, elements)
+        )
+      )
     }
 
   def path(path: OpenPath): Finalized[F, Unit] =
@@ -55,8 +63,10 @@ trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = boundingBox(elements).expand(strokeWidth)
 
-      (bb,
-       State.inspect(tx => PathApi.openPath(tx, dc.fill, dc.stroke, elements)))
+      (
+        bb,
+        State.inspect(tx => PathApi.openPath(tx, dc.fill, dc.stroke, elements))
+      )
     }
 
   def boundingBox(elements: List[PathElement]): BoundingBox = {

@@ -34,32 +34,29 @@ trait GenericDebug[F[_]] extends Debug[Finalized[F, *]] {
     Finalized { ctxTxs =>
       picture
         .runA(ctxTxs)
-        .flatMap {
-          case (bb, rdr) =>
-            val xOffset = (bb.right - (bb.width / 2))
-            val yOffset = (bb.top - (bb.height / 2))
-            val bbOutline = at(rectangle(bb.width, bb.height), xOffset, yOffset)
-            val bbOrigin = circle(5.0)
-            val bbPicture = on(bbOrigin, bbOutline)
+        .flatMap { case (bb, rdr) =>
+          val xOffset = (bb.right - (bb.width / 2))
+          val yOffset = (bb.top - (bb.height / 2))
+          val bbOutline = at(rectangle(bb.width, bb.height), xOffset, yOffset)
+          val bbOrigin = circle(5.0)
+          val bbPicture = on(bbOrigin, bbOutline)
 
-            bbPicture
-              .runA(
-                List(
-                  dc =>
-                    dc.strokeColor(color)
-                      .strokeWidth(1.0)
-                      .noFill
-                )
+          bbPicture
+            .runA(
+              List(dc =>
+                dc.strokeColor(color)
+                  .strokeWidth(1.0)
+                  .noFill
               )
-              .map {
-                case (_, rdrDebug) =>
-                  val fullRdr = Renderable { tx =>
-                    (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (fa, fdbg) =>
-                      (fa, fdbg).mapN((a, _) => a)
-                    }
-                  }
-                  (ctxTxs, (bb, fullRdr))
+            )
+            .map { case (_, rdrDebug) =>
+              val fullRdr = Renderable { tx =>
+                (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (fa, fdbg) =>
+                  (fa, fdbg).mapN((a, _) => a)
+                }
               }
+              (ctxTxs, (bb, fullRdr))
+            }
         }
         .value
     }

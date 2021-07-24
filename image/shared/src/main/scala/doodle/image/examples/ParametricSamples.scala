@@ -4,9 +4,9 @@ package examples
 
 import cats.instances.list._
 import doodle.core._
-import doodle.syntax._
 import doodle.image.Image
 import doodle.image.syntax._
+import doodle.syntax._
 
 object ParametricSamples {
   val color = Color.lightSlateGray.alpha(0.3.normalized)
@@ -26,12 +26,14 @@ object ParametricSamples {
   def logarithmicSpiral(count: Int) =
     render(
       Parametric.logarithmicSpiral(1, 0.25).toNormalizedCurve(1440.degrees),
-      count)
+      count
+    )
 
   def bezier(count: Int) =
     render(
       Parametric.quadraticBezier(Point.zero, Point(100, 200), Point(200, 0)),
-      count)
+      count
+    )
 
   def interpolate[A](count: Int, f: Parametric[A]) =
     Parametric.interpolate(f.sample(count))

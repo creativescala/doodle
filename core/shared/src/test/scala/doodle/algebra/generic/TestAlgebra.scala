@@ -35,12 +35,17 @@ final case class TestAlgebra(
     with GenericStyle[Reification]
     with GenericTransform[Reification]
     with GivenApply[Reification]
-    with GivenFunctor[Reification] {
-}
+    with GivenFunctor[Reification] {}
 object TestAlgebra {
   import doodle.algebra._
 
   type Algebra[F[_]] =
-    Layout[F] with Size[F] with Path[F] with Shape[F] with Debug[F] with Style[F] with Text[F]
+    Layout[F]
+      with Size[F]
+      with Path[F]
+      with Shape[F]
+      with Debug[F]
+      with Style[F]
+      with Text[F]
   type Drawing[A] = Finalized[Reification, A]
 }

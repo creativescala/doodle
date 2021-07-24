@@ -17,7 +17,9 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Picture, Bitmap}
+import doodle.algebra.Bitmap
+import doodle.algebra.Picture
+
 import java.io.File
 
 trait BitmapSyntax {

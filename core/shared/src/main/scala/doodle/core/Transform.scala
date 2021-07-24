@@ -36,15 +36,17 @@ final case class Transform(elements: Array[Double]) {
     val a = this.elements
     val b = that.elements
     Transform(
-      Array(b(0) * a(0) + b(1) * a(3),
-            b(0) * a(1) + b(1) * a(4),
-            b(0) * a(2) + b(1) * a(5) + b(2),
-            b(3) * a(0) + b(4) * a(3),
-            b(3) * a(1) + b(4) * a(4),
-            b(3) * a(2) + b(4) * a(5) + b(5),
-            0,
-            0,
-            1)
+      Array(
+        b(0) * a(0) + b(1) * a(3),
+        b(0) * a(1) + b(1) * a(4),
+        b(0) * a(2) + b(1) * a(5) + b(2),
+        b(3) * a(0) + b(4) * a(3),
+        b(3) * a(1) + b(4) * a(4),
+        b(3) * a(2) + b(4) * a(5) + b(5),
+        0,
+        0,
+        1
+      )
     )
   }
 
@@ -106,16 +108,18 @@ object Transform {
   val verticalReflection: Transform =
     Transform(Array(1, 0, 0, 0, -1, 0, 0, 0, 1))
 
-  /** Convert from the usual cartesian coordinate system (origin in the center, x
-    * and y increase towards the top right) to usual screen coordinate system
-    * (origin in the top left, x and y increase to the bottom right). */
+  /** Convert from the usual cartesian coordinate system (origin in the center,
+    * x and y increase towards the top right) to usual screen coordinate system
+    * (origin in the top left, x and y increase to the bottom right).
+    */
   def logicalToScreen(width: Double, height: Double): Transform =
     // A composition of a reflection and a translation
     Transform(Array(1, 0, width / 2.0, 0, -1, height / 2.0, 0, 0, 1))
 
   /** Convert from the usual screen coordinate system (origin in the top left, x
     * and y increase to the bottom right) to the usual cartesian coordinate
-    * system (origin in the center, x and y increase towards the top right). */
+    * system (origin in the center, x and y increase towards the top right).
+    */
   def screenToLogical(width: Double, height: Double): Transform =
     // A composition of a reflection and a translation
     Transform(Array(1, 0, -width / 2.0, 0, -1, height / 2.0, 0, 0, 1))

@@ -2,10 +2,10 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.random._
 import cats.instances.list._
 import cats.syntax.traverse._
+import doodle.core._
+import doodle.random._
 
 object Hypocycloid {
   type Hypocycloid = List[(Double, Double, Boolean)]
@@ -43,9 +43,9 @@ object Hypocycloid {
     Image.closedPath(
       PathElement.moveTo(eval(Angle.zero, epicycloid).toPoint) ::
         (BigDecimal(0.0) to 1.0 by 0.001).map { t =>
-        val angle = Angle.turns(t.doubleValue)
-        PathElement.lineTo(eval(angle, epicycloid).toPoint)
-      }.toList
+          val angle = Angle.turns(t.doubleValue)
+          PathElement.lineTo(eval(angle, epicycloid).toPoint)
+        }.toList
     )
 
   def image: Image =

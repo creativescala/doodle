@@ -18,12 +18,12 @@ package doodle
 package effect
 
 import cats.effect.IO
-import doodle.algebra.{Algebra, Picture}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
 
-/**
-  * The `Renderer` typeclass describes a data type that can create an area to
-  * render a picture (a Canvas) from a description (a Frame) and render a picture
-  * to that Canvas.
+/** The `Renderer` typeclass describes a data type that can create an area to
+  * render a picture (a Canvas) from a description (a Frame) and render a
+  * picture to that Canvas.
   */
 trait Renderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
 
@@ -34,7 +34,7 @@ trait Renderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
   def render[A](canvas: Canvas)(picture: Picture[Alg, F, A]): IO[A]
 }
 object Renderer {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](
-      implicit renderer: Renderer[Alg, F, Frame, Canvas])
-    : Renderer[Alg, F, Frame, Canvas] = renderer
+  def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](implicit
+      renderer: Renderer[Alg, F, Frame, Canvas]
+  ): Renderer[Alg, F, Frame, Canvas] = renderer
 }

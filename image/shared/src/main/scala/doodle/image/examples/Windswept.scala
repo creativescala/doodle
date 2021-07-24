@@ -2,12 +2,11 @@ package doodle
 package image
 package examples
 
+import cats.syntax.all._
 import doodle.core._
 import doodle.image.Image
-import doodle.syntax._
 import doodle.random._
-
-import cats.syntax.all._
+import doodle.syntax._
 
 object Windswept {
   import PathElement._
@@ -31,43 +30,60 @@ object Windswept {
   val leafSquare = randomSquare(leafGreen)
   val emeraldSquare = randomSquare(emeraldGreen)
 
-  def randomColumn(one: Random[Image],
-                   two: Random[Image],
-                   three: Random[Image],
-                   four: Random[Image],
-                   five: Random[Image]): Random[Image] =
+  def randomColumn(
+      one: Random[Image],
+      two: Random[Image],
+      three: Random[Image],
+      four: Random[Image],
+      five: Random[Image]
+  ): Random[Image] =
     (one, two, three, four, five) mapN { _ above _ above _ above _ above _ }
 
   val columnOne =
-    randomColumn(emeraldSquare,
-                 emeraldSquare,
-                 emeraldSquare,
-                 emeraldSquare,
-                 emeraldSquare)
+    randomColumn(
+      emeraldSquare,
+      emeraldSquare,
+      emeraldSquare,
+      emeraldSquare,
+      emeraldSquare
+    )
 
   val columnTwo =
-    randomColumn(emeraldSquare,
-                 emeraldSquare,
-                 leafSquare,
-                 emeraldSquare,
-                 emeraldSquare)
+    randomColumn(
+      emeraldSquare,
+      emeraldSquare,
+      leafSquare,
+      emeraldSquare,
+      emeraldSquare
+    )
 
   val columnThree =
-    randomColumn(emeraldSquare,
-                 leafSquare,
-                 emeraldSquare,
-                 leafSquare,
-                 emeraldSquare)
+    randomColumn(
+      emeraldSquare,
+      leafSquare,
+      emeraldSquare,
+      leafSquare,
+      emeraldSquare
+    )
 
   val columnFour =
-    randomColumn(leafSquare,
-                 emeraldSquare,
-                 emeraldSquare,
-                 emeraldSquare,
-                 leafSquare)
+    randomColumn(
+      leafSquare,
+      emeraldSquare,
+      emeraldSquare,
+      emeraldSquare,
+      leafSquare
+    )
 
   val singleRepeat: Random[Image] =
-    (columnOne, columnTwo, columnThree, columnFour, columnThree, columnTwo) mapN {
+    (
+      columnOne,
+      columnTwo,
+      columnThree,
+      columnFour,
+      columnThree,
+      columnTwo
+    ) mapN {
       _ beside _ beside _ beside _ beside _ beside _
     }
 
@@ -84,13 +100,17 @@ object Windswept {
   def normalPoint(point: Point, stdDev: Double = 50): Random[Point] =
     randomPoint(Random.normal(point.x, stdDev), Random.normal(point.y, stdDev))
 
-  def randomBezier(cp1: Point,
-                   cp2: Point,
-                   end: Point,
-                   stdDev: Double): Random[BezierCurveTo] = {
-    (normalPoint(cp1, stdDev),
-     normalPoint(cp2, stdDev),
-     normalPoint(end, stdDev)) mapN { (cp1, cp2, end) =>
+  def randomBezier(
+      cp1: Point,
+      cp2: Point,
+      end: Point,
+      stdDev: Double
+  ): Random[BezierCurveTo] = {
+    (
+      normalPoint(cp1, stdDev),
+      normalPoint(cp2, stdDev),
+      normalPoint(end, stdDev)
+    ) mapN { (cp1, cp2, end) =>
       BezierCurveTo(cp1, cp2, end)
     }
   }
@@ -101,10 +121,9 @@ object Windswept {
       offset = -425
       start = Point.cartesian(offset.toDouble, 0)
       end <- Random.normal(800, 30)
-    } yield
-      Image.openPath(Seq(
-        moveTo(start),
-        lineTo(Point.cartesian(end + offset, 0)))) strokeColor stroke strokeWidth 1.0
+    } yield Image.openPath(
+      Seq(moveTo(start), lineTo(Point.cartesian(end + offset, 0)))
+    ) strokeColor stroke strokeWidth 1.0
 
   val tendrils: Random[Image] =
     (-50 to 50).foldLeft(tendril) { (randomImage, i) =>

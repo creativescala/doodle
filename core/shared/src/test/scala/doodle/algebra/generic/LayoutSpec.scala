@@ -19,9 +19,10 @@ package algebra
 package generic
 
 import cats.implicits._
-import doodle.core.{BoundingBox, Transform => Tx}
-import org.scalacheck._
+import doodle.core.BoundingBox
+import doodle.core.{Transform => Tx}
 import org.scalacheck.Prop._
+import org.scalacheck._
 
 object LayoutSpec extends Properties("Layout properties") {
   val style = TestAlgebra()
@@ -162,7 +163,8 @@ object LayoutSpec extends Properties("Layout properties") {
               Transform.translate(0, -(width + 1.0) / 2.0)
             )) :| "Bottom transform")
 
-        case other => falsified :| s"Reached a case with value ${other} which should not have happened"
+        case other =>
+          falsified :| s"Reached a case with value ${other} which should not have happened"
       }
   }
 

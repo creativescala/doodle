@@ -9,17 +9,21 @@ import doodle.turtle._
 object SquareSpiral {
   import Instruction._
 
-  def iterate(steps: Int,
-              distance: Double,
-              angle: Angle,
-              increment: Double): List[Instruction] = {
+  def iterate(
+      steps: Int,
+      distance: Double,
+      angle: Angle,
+      increment: Double
+  ): List[Instruction] = {
     steps match {
       case 0 => Nil
       case _ =>
-        forward(distance) :: turn(angle) :: iterate(steps - 1,
-                                                    distance + increment,
-                                                    angle,
-                                                    increment)
+        forward(distance) :: turn(angle) :: iterate(
+          steps - 1,
+          distance + increment,
+          angle,
+          increment
+        )
     }
   }
 

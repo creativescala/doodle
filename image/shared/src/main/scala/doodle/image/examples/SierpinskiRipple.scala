@@ -3,8 +3,8 @@ package image
 package examples
 
 import doodle.core._
-import doodle.syntax._
 import doodle.image.Image
+import doodle.syntax._
 
 object SierpinskiRipple {
   def triangle(size: Double, color: Color): Image = {
@@ -18,7 +18,8 @@ object SierpinskiRipple {
       sierpinski(n - 1, size / 2, color.spin(-10.degrees))
         .above(
           sierpinski(n - 1, size / 2, color.spin(37.degrees))
-            .beside(sierpinski(n - 1, size / 2, color.spin(79.degrees))))
+            .beside(sierpinski(n - 1, size / 2, color.spin(79.degrees)))
+        )
     }
   }
 

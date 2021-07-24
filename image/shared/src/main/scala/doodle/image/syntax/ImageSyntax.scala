@@ -18,33 +18,38 @@ package doodle
 package image
 package syntax
 
-import doodle.core.{Base64 => B64}
-import doodle.effect.{Base64, DefaultRenderer, Renderer, Writer}
-import doodle.image.Image
 import doodle.algebra.Picture
+import doodle.effect.DefaultRenderer
+import doodle.effect.Renderer
+import doodle.effect.Writer
+import doodle.image.Image
 import doodle.language.Basic
+
 import java.io.File
 
 trait ImageSyntax {
   def unitCallback[A]: Either[Throwable, A] => Unit =
-    (either) => either match {
-      case Left(err) =>
-        println("There was an error working with an Image")
-        err.printStackTrace()
+    (either) =>
+      either match {
+        case Left(err) =>
+          println("There was an error working with an Image")
+          err.printStackTrace()
 
-      case Right(_) => ()
-    }
+        case Right(_) => ()
+      }
 
   implicit class ImageOps(image: Image) {
-    def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(
-        implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
+    def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](
+        frame: Frame
+    )(implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
       (for {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
       } yield a).unsafeRunAsync(unitCallback)
 
-    def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(
-        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]): Unit =
+    def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(implicit
+        renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+    ): Unit =
       (for {
         canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(Picture(algebra => image.compile(algebra)))
@@ -53,27 +58,31 @@ trait ImageSyntax {
     def write[Format] = new ImageWriterOps[Format](image)
   }
 
-  /** This strange construction allows the user to write `anImage.write[AFormat](filename)`
-    * without having to specify other, mostly irrelevant to the user, type parameters. */
+  /** This strange construction allows the user to write
+    * `anImage.write[AFormat](filename)` without having to specify other, mostly
+    * irrelevant to the user, type parameters.
+    */
   final class ImageWriterOps[Format](image: Image) {
-    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String)(
-        implicit w: Writer[Alg, F, Frame, Format]): Unit =
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String)(implicit
+        w: Writer[Alg, F, Frame, Format]
+    ): Unit =
       apply(new File(file))
 
-    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File)(
-        implicit w: Writer[Alg, F, Frame, Format]): Unit =
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](
+        file: File
+    )(implicit w: Writer[Alg, F, Frame, Format]): Unit =
       w.write(file, Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunAsync(unitCallback)
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
-        implicit w: Writer[Alg, F, Frame, Format]): Unit =
+        implicit w: Writer[Alg, F, Frame, Format]
+    ): Unit =
       apply(new File(file), frame)
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File, frame: Frame)(
-        implicit w: Writer[Alg, F, Frame, Format]): Unit =
-      w.write(file,
-               frame,
-               Picture((algebra: Alg[F]) => image.compile(algebra)))
+        implicit w: Writer[Alg, F, Frame, Format]
+    ): Unit =
+      w.write(file, frame, Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunAsync(unitCallback)
   }
 }

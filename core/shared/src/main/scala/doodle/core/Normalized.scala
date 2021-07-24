@@ -19,8 +19,7 @@ package core
 
 import scala.annotation.tailrec
 
-/**
-  * A value in the range [0, 1]
+/** A value in the range [0, 1]
   */
 final case class Normalized(get: Double) extends AnyVal {
   def +(that: Normalized): Double =

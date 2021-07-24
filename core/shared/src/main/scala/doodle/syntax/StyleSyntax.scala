@@ -17,12 +17,15 @@
 package doodle
 package syntax
 
-import doodle.algebra.{Picture, Style}
-import doodle.core.{Color, Gradient}
+import doodle.algebra.Picture
+import doodle.algebra.Style
+import doodle.core.Color
+import doodle.core.Gradient
 
 trait StyleSyntax {
   implicit class StylePictureOps[Alg[x[_]] <: Style[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
     def fillColor(fillColor: Color): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.fillColor(picture(algebra), fillColor)

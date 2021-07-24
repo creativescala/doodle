@@ -19,5 +19,6 @@ package algebra
 
 /** Base type for algebras that produce results in some effect type F. This type
   * serves to make sure algebras are internally consistent. E.g. they all
-  * produce an effect with the same type. */
+  * produce an effect with the same type.
+  */
 trait Algebra[+F[_]]

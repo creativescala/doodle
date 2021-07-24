@@ -19,11 +19,14 @@ package syntax
 
 import cats.Traverse
 import cats.instances.unit._
-import doodle.algebra.{Layout, Picture, Shape}
+import doodle.algebra.Layout
+import doodle.algebra.Picture
+import doodle.algebra.Shape
 
 trait TraverseSyntax {
   implicit class TraverseOps[T[_], Alg[x[_]] <: Layout[x] with Shape[x], F[_]](
-      val t: T[Picture[Alg, F, Unit]]) {
+      val t: T[Picture[Alg, F, Unit]]
+  ) {
     def allOn(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
       val empty = Picture { (algebra: Alg[F]) =>
         algebra.empty
