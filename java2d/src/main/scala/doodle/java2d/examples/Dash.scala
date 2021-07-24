@@ -27,6 +27,7 @@ object Dash {
   import doodle.interact.syntax._
   import monix.reactive.Observable
   import scala.concurrent.duration._
+  import monix.execution.Scheduler.Implicits.global
 
   val frame = Frame.size(600, 600).background(Color.midnightBlue)
   val maxSize = 300

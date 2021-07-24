@@ -27,6 +27,7 @@ object Ripples {
   import monix.reactive.Observable
   import monix.catnap.ConcurrentQueue
   import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
+  import monix.execution.Scheduler.Implicits.global
 
   import cats.instances.all._
   import cats.syntax.all._
@@ -48,7 +49,7 @@ object Ripples {
   }
 
   def ripples(canvas: Canvas): IO[Observable[Picture[Unit]]] = {
-    implicit val cs = IO.contextShift(java2dExplorerScheduler)
+    implicit val cs = IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
 
     ConcurrentQueue[IO]
       .bounded[Option[Ripple]](5)

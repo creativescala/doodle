@@ -23,7 +23,7 @@ import doodle.interact.algebra.{MouseClick, MouseMove, Redraw}
 import doodle.java2d.effect.Canvas
 import monix.reactive.Observable
 
-final case object CanvasAlgebra
+case object CanvasAlgebra
     extends MouseClick[Canvas]
     with MouseMove[Canvas]
     with Redraw[Canvas] {

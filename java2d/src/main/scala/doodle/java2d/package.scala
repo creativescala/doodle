@@ -18,13 +18,20 @@ package doodle
 
 import doodle.algebra.{Bitmap, Text}
 import doodle.effect.DefaultRenderer
-import doodle.explore.effect.ExplorerFactory
 import doodle.interact.effect.AnimationRenderer
 import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
 import javax.swing.JComponent
+import doodle.algebra.ToPicture
+import java.awt.image.BufferedImage
+import doodle.effect.Base64
+import doodle.effect.Writer
+import doodle.effect.Writer._
+import doodle.interact.effect.AnimationWriter
+import doodle.interact.algebra._
+import doodle.core.{Base64 => B64}
 
-package object java2d extends effect.Java2dExplorerAtoms {
+package object java2d {
   type Algebra[F[_]] =
     doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F] with Text[F]
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
@@ -32,40 +39,29 @@ package object java2d extends effect.Java2dExplorerAtoms {
 
   type Frame = doodle.java2d.effect.Frame
   type Canvas = doodle.java2d.effect.Canvas
-  implicit val java2dCanvasAlgebra = doodle.java2d.algebra.CanvasAlgebra
+  implicit val java2dCanvasAlgebra: MouseClick[Canvas] with MouseMove[Canvas] with Redraw[Canvas] =
+    doodle.java2d.algebra.CanvasAlgebra
 
   implicit val java2dAnimationRenderer: AnimationRenderer[Canvas] =
     doodle.java2d.effect.Java2dAnimationRenderer
-  implicit val java2dGifAnimationWriter =
+  implicit val java2dGifAnimationWriter: AnimationWriter[Algebra, Drawing, Frame, Gif] =
     doodle.java2d.effect.Java2dAnimationWriter
-
-  // Magnolia doesn't work if I just define
-  //   def gen[A] = Java2dExplorer.gen[A]
-  // Hence it's defined inline here, which pollutes the namespace
-  import magnolia._
-  type Typeclass[A] = effect.Java2dExplorer.Typeclass[A]
-  def combine[A](caseClass: CaseClass[Typeclass, A]): Typeclass[A] =
-    effect.Java2dExplorer.combine(caseClass)
-  def dispatch[A](sealedTrait: SealedTrait[Typeclass, A]): Typeclass[A] =
-    effect.Java2dExplorer.dispatch(sealedTrait)
-  implicit def java2dExplorerFactory[A]: ExplorerFactory[JComponent, A] =
-    macro Magnolia.gen[A]
 
   implicit val java2dRenderer
     : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
-  implicit val java2dGifWriter = doodle.java2d.effect.Java2dGifWriter
-  implicit val java2dPngWriter = doodle.java2d.effect.Java2dPngWriter
-  implicit val java2dJpgWriter = doodle.java2d.effect.Java2dJpgWriter
-  implicit val java2dPdfWriter = doodle.java2d.effect.Java2dPdfWriter
+  implicit val java2dGifWriter: Writer[Algebra, Drawing, Frame, Gif] with Base64[Algebra, Drawing, Frame, Gif] = doodle.java2d.effect.Java2dGifWriter
+  implicit val java2dPngWriter: Writer[Algebra, Drawing, Frame, Png] with Base64[Algebra, Drawing, Frame, Png] = doodle.java2d.effect.Java2dPngWriter
+  implicit val java2dJpgWriter: Writer[Algebra, Drawing, Frame, Jpg] with Base64[Algebra, Drawing, Frame, Jpg] = doodle.java2d.effect.Java2dJpgWriter
+  implicit val java2dPdfWriter: Writer[Algebra, Drawing, Frame, Pdf] with Base64[Algebra, Drawing, Frame, Pdf] = doodle.java2d.effect.Java2dPdfWriter
 
-  implicit val java2dBufferedImageToPicture =
+  implicit val java2dBufferedImageToPicture: ToPicture[Drawing, BufferedImage] =
     doodle.java2d.algebra.reified.BufferedImageToPicture
-  implicit val java2dBase64PngToPicture =
+  implicit val java2dBase64PngToPicture: ToPicture[Drawing, B64[Png]] =
     doodle.java2d.algebra.reified.Base64PngToPicture
-  implicit val java2dBase64GifToPicture =
+  implicit val java2dBase64GifToPicture: ToPicture[Drawing, B64[Gif]] =
     doodle.java2d.algebra.reified.Base64GifToPicture
-  implicit val java2dBase64JpgToPicture =
+  implicit val java2dBase64JpgToPicture: ToPicture[Drawing, B64[Jpg]] =
     doodle.java2d.algebra.reified.Base64JpgToPicture
 
   val Frame = doodle.java2d.effect.Frame

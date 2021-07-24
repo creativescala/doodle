@@ -57,12 +57,10 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
         coreJs,
         interactJs,
         examplesJs,
-        exploreJs,
         golden,
         imageJs,
         plotJs,
         reactorJs,
-        svgJs,
         turtleJs
       )
   )
@@ -77,7 +75,6 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
       |import doodle.image.syntax._
       |import doodle.image.examples._
       |import doodle.interact.syntax._
-      |import doodle.explore.syntax._
       |import doodle.core._
     """.trim.stripMargin,
     console / cleanupCommands := """
@@ -89,28 +86,24 @@ lazy val rootJvm = root.jvm
   .dependsOn(
     coreJvm,
     java2d,
-    exploreJvm,
     imageJvm,
     interactJvm,
     reactorJvm,
-    svgJvm,
     turtleJvm,
     golden
   )
   .aggregate(
     coreJvm,
     java2d,
-    exploreJvm,
     imageJvm,
     interactJvm,
     reactorJvm,
-    svgJvm,
     turtleJvm,
     golden
   )
 lazy val rootJs = root.js
-  .dependsOn(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
-  .aggregate(coreJs, exploreJs, imageJs, interactJs, reactorJs, svgJs, turtleJs)
+  .dependsOn(coreJs, imageJs, interactJs, reactorJs, turtleJs)
+  .aggregate(coreJs, imageJs, interactJs, reactorJs, turtleJs)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
@@ -190,15 +183,13 @@ lazy val java2d = project
     commonSettings,
     moduleName := "doodle-java2d",
     libraryDependencies ++= Seq(
-      if (scalaBinaryVersion == "2.13") ("com.softwaremill.magnolia1_2" %%% "magnolia" % "1.0.0-M5")
-      else ("com.softwaremill.magnolia1_3" %% "magnolia" % "1.0.0-M3"),
       "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
     libraryDependencies ++=
       (if (scalaBinaryVersion == "2.13") List("org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided)
       else Nil)
   )
-  .dependsOn(coreJvm, exploreJvm, interactJvm)
+  .dependsOn(coreJvm, interactJvm)
 
 lazy val image = crossProject(JSPlatform, JVMPlatform)
   .in(file("image"))
@@ -213,30 +204,6 @@ lazy val plot = crossProject(JSPlatform, JVMPlatform)
 
 lazy val plotJvm = plot.jvm.dependsOn(coreJvm, interactJvm)
 lazy val plotJs = plot.js.dependsOn(coreJs, interactJs)
-
-lazy val explore = crossProject(JSPlatform, JVMPlatform)
-  .in(file("explore"))
-  .settings(
-    commonSettings,
-    moduleName := "doodle-explore"
-  )
-  .dependsOn(core, interact)
-
-lazy val exploreJvm = explore.jvm.dependsOn(coreJvm, interactJvm)
-lazy val exploreJs = explore.js.dependsOn(coreJs, interactJs)
-
-lazy val svg = crossProject(JSPlatform, JVMPlatform)
-  .in(file("svg"))
-  .settings(
-    commonSettings,
-    moduleName := "doodle-svg",
-    libraryDependencies += ("com.lihaoyi" %%% "scalatags" % "0.9.4").cross(CrossVersion.for3Use2_13)
-  )
-
-lazy val svgJvm =
-  svg.jvm.dependsOn(coreJvm % "compile->compile;test->test", interactJvm)
-lazy val svgJs =
-  svg.js.dependsOn(coreJs % "compile->compile;test->test", interactJs)
 
 lazy val turtle = crossProject(JSPlatform, JVMPlatform)
   .in(file("turtle"))
@@ -255,7 +222,7 @@ lazy val reactor = crossProject(JSPlatform, JVMPlatform)
 
 lazy val reactorJvm =
   reactor.jvm.dependsOn(coreJvm, java2d, imageJvm, interactJvm)
-lazy val reactorJs = reactor.js.dependsOn(coreJs, svgJs, imageJs, interactJs)
+lazy val reactorJs = reactor.js.dependsOn(coreJs, imageJs, interactJs)
 
 // Just for testing
 lazy val golden = project
@@ -266,7 +233,7 @@ lazy val golden = project
     libraryDependencies ++= Seq(Dependencies.munit.value, Dependencies.batik.value),
     testFrameworks += new TestFramework("munit.Framework")
   )
-  .dependsOn(coreJvm, imageJvm, interactJvm, java2d, svgJvm)
+  .dependsOn(coreJvm, imageJvm, interactJvm, java2d)
 
 // To avoid including this in the core build
 lazy val examples = crossProject(JSPlatform, JVMPlatform)
@@ -276,5 +243,5 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
     moduleName := "doodle-examples"
   )
 
-lazy val examplesJvm = examples.jvm.dependsOn(coreJvm, interactJvm, imageJvm, java2d, svgJvm)
-lazy val examplesJs = examples.js.dependsOn(coreJs, interactJs, imageJs, svgJs)
+lazy val examplesJvm = examples.jvm.dependsOn(coreJvm, interactJvm, imageJvm, java2d)
+lazy val examplesJs = examples.js.dependsOn(coreJs, interactJs, imageJs)

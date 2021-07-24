@@ -23,8 +23,8 @@ sealed abstract class Center extends Product with Serializable
 object Center {
 
   // Algebraic data type members
-  final case object CenteredOnPicture extends Center
-  final case object AtOrigin extends Center
+  case object CenteredOnPicture extends Center
+  case object AtOrigin extends Center
 
   // Smart constructors
 

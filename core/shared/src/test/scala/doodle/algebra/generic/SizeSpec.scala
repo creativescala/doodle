@@ -25,7 +25,7 @@ import org.scalacheck._
 import org.scalacheck.Prop._
 
 object SizeSpec extends Properties("Size properties") {
-  implicit val algebra = TestAlgebra()
+  implicit val algebra: TestAlgebra = TestAlgebra()
 
   def getA[A](f: Finalized[Reification, A]): A = {
     val (_, rdr) = f.runA(List.empty).value

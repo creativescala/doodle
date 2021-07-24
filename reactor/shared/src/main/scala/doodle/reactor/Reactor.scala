@@ -93,7 +93,7 @@ object Reactor {
                  stop: Double = 1.0,
                  step: Double = 0.01): Reactor[Double] =
     Reactor
-      .init(start)
+      .init[Double](start)
       .onTick((x: Double) => x + step)
       .stop((x: Double) => x >= stop)
 }

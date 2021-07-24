@@ -7,7 +7,7 @@ import org.scalacheck._
 import org.scalacheck.Prop._
 
 object GenericAlgebraspec extends Properties("Generic algebra properties") {
-  implicit val algebra = TestAlgebra()
+  implicit val algebra: TestAlgebra = TestAlgebra()
 
   property("Beside doubles the width") =
     forAll(Generators.finalized){ f =>

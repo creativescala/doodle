@@ -26,6 +26,7 @@ object PulsingCircle {
   import doodle.java2d.effect._
   import doodle.interact.syntax._
   import monix.reactive.Observable
+  import monix.execution.Scheduler.Implicits.global
 
   val frame = Frame.size(600, 600).background(Color.midnightBlue)
 

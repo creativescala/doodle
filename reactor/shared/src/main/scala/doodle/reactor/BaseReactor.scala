@@ -58,6 +58,9 @@ trait BaseReactor[A] {
       m: MouseClick[Canvas] with MouseMove[Canvas],
       s: Scheduler): Unit = {
     import BaseReactor._
+
+    implicit val strategy = monix.reactive.OverflowStrategy.DropOld(10)
+
     frame
       .canvas[Alg, F, Canvas]()
       .flatMap { canvas =>

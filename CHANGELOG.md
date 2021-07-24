@@ -2,7 +2,11 @@
 
 ## Next release
 
-- Update to Scala 2.13.5 and Scala.js 1.6
+- Update to Scala 3.0, Scala 2.13.6, and Scala.js 1.6. The move to Scala 3 required
+  - removing the svg and explore projects, which have dependencies that don't
+    yet work on Scala 3. They will be restored in due course.
+
+  - updating a bunch of dependencies, changing some code, etc.
 
 - Add equilateralTriangle path
 
