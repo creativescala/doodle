@@ -14,7 +14,7 @@ object Dependencies {
   val batikVersion = "1.14"
 
   val miniTestVersion   = "2.9.6"
-  val scalaCheckVersion = "1.15.0"
+  val scalaCheckVersion = "1.15.4"
   val munitVersion      = "0.7.27"
 
   // Libraries
