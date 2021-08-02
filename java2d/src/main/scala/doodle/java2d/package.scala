@@ -21,7 +21,6 @@ import doodle.effect.DefaultRenderer
 import doodle.interact.effect.AnimationRenderer
 import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
-import javax.swing.JComponent
 import doodle.algebra.ToPicture
 import java.awt.image.BufferedImage
 import doodle.effect.Base64
