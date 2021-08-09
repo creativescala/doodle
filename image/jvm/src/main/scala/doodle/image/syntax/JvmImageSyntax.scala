@@ -19,11 +19,10 @@ package image
 package syntax
 
 import doodle.core.{Base64 => B64}
-import doodle.effect.{Base64, DefaultRenderer, Renderer, Writer}
+import doodle.effect.Base64
 import doodle.image.Image
 import doodle.algebra.Picture
 import doodle.language.Basic
-import java.io.File
 
 trait JvmImageSyntax extends ImageSyntax {
   implicit class Base64ImageOps(image: Image) {

@@ -7,14 +7,14 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 object Dependencies {
   // Library Versions
   val catsVersion       = "2.6.1"
-  val catsEffectVersion = "2.5.1"
+  val catsEffectVersion = "2.5.2"
 
   val monixVersion = "3.4.0"
 
   val batikVersion = "1.14"
 
   val miniTestVersion   = "2.9.6"
-  val scalaCheckVersion = "1.15.0"
+  val scalaCheckVersion = "1.15.4"
   val munitVersion      = "0.7.27"
 
   // Libraries
