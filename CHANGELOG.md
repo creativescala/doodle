@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 0.9.25 (PENDING)
 
 - Update to Scala 3.0, Scala 2.13.6, and Scala.js 1.6. The move to Scala 3 required
   - removing the svg and explore projects, which have dependencies that don't
@@ -9,6 +9,8 @@
   - updating a bunch of dependencies, changing some code, etc.
 
 - Add equilateralTriangle path
+
+- We will never speak of 0.9.24
 
 
 ## 0.9.23 11-Feb-2021
