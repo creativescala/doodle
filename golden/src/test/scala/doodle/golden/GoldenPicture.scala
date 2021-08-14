@@ -1,12 +1,14 @@
 package doodle
 package golden
 
-import doodle.algebra.{Algebra, Picture}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
+import doodle.effect.Writer
 import doodle.effect.Writer._
 import doodle.java2d._
-import doodle.effect.Writer
-import javax.imageio.ImageIO
 import munit._
+
+import javax.imageio.ImageIO
 
 trait GoldenPicture extends Golden { self: FunSuite =>
   import doodle.syntax._

@@ -20,9 +20,13 @@ package algebra
 package reified
 
 import cats.implicits._
-import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.algebra.generic.Fill
+import doodle.algebra.generic.Stroke
+import doodle.core.PathElement
+import doodle.core.Point
 import doodle.core.font.Font
-import doodle.algebra.generic.{Fill, Stroke}
+import doodle.core.{Transform => Tx}
+
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
 

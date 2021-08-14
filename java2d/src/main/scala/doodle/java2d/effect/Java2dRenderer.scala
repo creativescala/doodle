@@ -20,6 +20,7 @@ package effect
 
 import cats.effect.IO
 import doodle.effect.DefaultRenderer
+
 import javax.swing.JFrame
 
 object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Canvas] {

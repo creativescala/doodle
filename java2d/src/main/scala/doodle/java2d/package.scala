@@ -16,19 +16,21 @@
 
 package doodle
 
-import doodle.algebra.{Bitmap, Text}
-import doodle.effect.DefaultRenderer
-import doodle.interact.effect.AnimationRenderer
-import doodle.java2d.algebra.reified.Reification
-import doodle.language.Basic
+import doodle.algebra.Bitmap
+import doodle.algebra.Text
 import doodle.algebra.ToPicture
-import java.awt.image.BufferedImage
+import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
+import doodle.effect.DefaultRenderer
 import doodle.effect.Writer
 import doodle.effect.Writer._
-import doodle.interact.effect.AnimationWriter
 import doodle.interact.algebra._
-import doodle.core.{Base64 => B64}
+import doodle.interact.effect.AnimationRenderer
+import doodle.interact.effect.AnimationWriter
+import doodle.java2d.algebra.reified.Reification
+import doodle.language.Basic
+
+import java.awt.image.BufferedImage
 
 package object java2d {
   type Algebra[F[_]] =

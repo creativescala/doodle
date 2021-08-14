@@ -18,7 +18,8 @@ package doodle
 package syntax
 
 import cats.effect.IO
-import doodle.algebra.{Algebra, Picture}
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
 import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
 

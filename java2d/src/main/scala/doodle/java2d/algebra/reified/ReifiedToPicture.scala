@@ -20,11 +20,15 @@ package algebra
 package reified
 
 import cats.Eval
-import cats.data.{State, WriterT}
+import cats.data.State
+import cats.data.WriterT
 import doodle.algebra.ToPicture
 import doodle.algebra.generic._
-import doodle.core.{Base64, BoundingBox, Transform}
+import doodle.core.Base64
+import doodle.core.BoundingBox
+import doodle.core.Transform
 import doodle.effect.Writer._
+
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.util.{Base64 => JBase64}

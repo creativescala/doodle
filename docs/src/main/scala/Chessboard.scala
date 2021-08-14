@@ -1,9 +1,8 @@
 package docs
 
 // The "Image" DSL is the easiest way to create images
-import doodle.image._
-// Colors and other useful stuff
 import doodle.core._
+import doodle.image._
 
 object Chessboard {
   val blackSquare = Image.rectangle(30, 30).fillColor(Color.black)

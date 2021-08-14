@@ -22,14 +22,15 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.effect.Writer.Gif
 import doodle.interact.effect.AnimationWriter
-import java.io.{File, FileOutputStream}
-// import javax.imageio.{IIOImage,ImageIO,ImageWriter,ImageTypeSpecifier}
-// import javax.imageio.metadata.IIOMetadataNode
-// import javax.imageio.stream.FileImageOutputStream
-import java.awt.image.BufferedImage
-import monix.eval.{Task, TaskLift}
+import monix.eval.Task
+import monix.eval.TaskLift
 import monix.execution.Scheduler
-import monix.reactive.{Consumer, Observable}
+import monix.reactive.Consumer
+import monix.reactive.Observable
+
+import java.awt.image.BufferedImage
+import java.io.File
+import java.io.FileOutputStream
 
 /**
   * Write an animation as an animated GIF. The GIF file format doesn't support

@@ -2,11 +2,12 @@ package docs
 package algebra
 
 import cats.implicits._
-import doodle.java2d._
-import doodle.syntax._
+import doodle.algebra.Picture
+import doodle.algebra.Text
 import doodle.core._
+import doodle.java2d._
 import doodle.language.Basic
-import doodle.algebra.{Picture, Text}
+import doodle.syntax._
 
 object BasicWithText {
   def basicWithText[Alg[x[_]] <: Basic[x] with Text[x], F[_]]

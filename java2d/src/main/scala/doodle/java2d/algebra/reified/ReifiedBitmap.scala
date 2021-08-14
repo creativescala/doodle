@@ -4,9 +4,12 @@ package algebra
 package reified
 
 import cats.Eval
-import cats.data.{State, WriterT}
+import cats.data.State
+import cats.data.WriterT
 import doodle.algebra.generic._
-import doodle.core.{BoundingBox, Transform}
+import doodle.core.BoundingBox
+import doodle.core.Transform
+
 import java.io.File
 import javax.imageio.ImageIO
 

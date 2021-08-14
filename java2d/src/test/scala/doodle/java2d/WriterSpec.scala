@@ -3,8 +3,9 @@ package java2d
 
 import doodle.effect.Writer._
 import doodle.syntax._
-import java.io.File
 import minitest._
+
+import java.io.File
 
 object WriterSpec extends SimpleTestSuite {
   val image = circle[Algebra,Drawing](20.0)

@@ -19,7 +19,9 @@ package java2d
 package algebra
 
 import doodle.core.Point
-import doodle.interact.algebra.{MouseClick, MouseMove, Redraw}
+import doodle.interact.algebra.MouseClick
+import doodle.interact.algebra.MouseMove
+import doodle.interact.algebra.Redraw
 import doodle.java2d.effect.Canvas
 import monix.reactive.Observable
 

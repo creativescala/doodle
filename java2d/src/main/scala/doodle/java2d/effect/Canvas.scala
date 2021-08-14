@@ -19,11 +19,15 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.core.{Point, Transform}
+import doodle.core.Point
+import doodle.core.Transform
+import monix.reactive.subjects.PublishSubject
+
 import java.awt.event._
 import java.util.concurrent.atomic.AtomicReference
-import javax.swing.{JFrame, Timer, WindowConstants}
-import monix.reactive.subjects.PublishSubject
+import javax.swing.JFrame
+import javax.swing.Timer
+import javax.swing.WindowConstants
 
 /**
   * A [[Canvas]] is an area on the screen to which Pictures can be drawn.

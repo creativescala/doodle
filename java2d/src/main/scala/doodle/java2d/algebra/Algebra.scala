@@ -20,9 +20,10 @@ package algebra
 
 import cats._
 import cats.implicits._
-import doodle.language.Basic
 import doodle.algebra.generic._
 import doodle.java2d.algebra.reified._
+import doodle.language.Basic
+
 import java.awt.Graphics2D
 
 final case class Algebra(

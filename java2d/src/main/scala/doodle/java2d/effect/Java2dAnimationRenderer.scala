@@ -22,9 +22,11 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.effect.Renderer
 import doodle.interact.effect.AnimationRenderer
-import monix.eval.{Task, TaskLift}
+import monix.eval.Task
+import monix.eval.TaskLift
 import monix.execution.Scheduler
-import monix.reactive.{Consumer, Observable}
+import monix.reactive.Consumer
+import monix.reactive.Observable
 
 object Java2dAnimationRenderer extends AnimationRenderer[Canvas] {
   def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](

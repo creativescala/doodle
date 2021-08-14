@@ -1,13 +1,14 @@
 package doodle
 package golden
 
+import doodle.effect.Writer.Png
 import doodle.java2d._
 import doodle.syntax._
-import doodle.effect.Writer.Png
+import munit._
+
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
-import munit._
 
 trait Golden { self: FunSuite =>
   val goldenDir = "golden/src/test/golden"

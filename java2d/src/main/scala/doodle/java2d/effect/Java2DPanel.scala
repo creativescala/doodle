@@ -19,12 +19,20 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.core.{BoundingBox, Normalized, Transform}
-import doodle.java2d.algebra.{Algebra, Java2D}
+import doodle.core.BoundingBox
+import doodle.core.Normalized
+import doodle.core.Transform
+import doodle.java2d.algebra.Algebra
+import doodle.java2d.algebra.Java2D
 import doodle.java2d.algebra.reified.Reified
-import java.awt.{Dimension, Graphics, Graphics2D}
-import java.util.concurrent.{LinkedBlockingQueue, TimeUnit}
-import javax.swing.{JPanel, SwingUtilities}
+
+import java.awt.Dimension
+import java.awt.Graphics
+import java.awt.Graphics2D
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
+import javax.swing.JPanel
+import javax.swing.SwingUtilities
 import scala.collection.mutable.ArrayBuffer
 
 final class Java2DPanel(frame: Frame) extends JPanel {

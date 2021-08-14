@@ -3,8 +3,9 @@ package golden
 
 import doodle.effect.Writer._
 import doodle.java2d._
-import javax.imageio.ImageIO
 import munit._
+
+import javax.imageio.ImageIO
 
 trait GoldenImage extends Golden { self: FunSuite =>
   import doodle.image._

@@ -4,11 +4,11 @@ package examples
 
 // Example that demonstrates writing to a file
 import doodle.core._
-import doodle.syntax._
-import doodle.image.syntax._
 import doodle.effect.Writer._
+import doodle.image.syntax._
 import doodle.java2d._
 import doodle.java2d.effect.Frame
+import doodle.syntax._
 
 object Write extends App {
   val frame = Frame.fitToPicture().background(Color.black)

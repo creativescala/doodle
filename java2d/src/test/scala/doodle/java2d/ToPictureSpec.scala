@@ -3,8 +3,8 @@ package java2d
 
 import doodle.algebra.ToPicture
 import doodle.core.{Base64 => B64}
-import doodle.effect._
 import doodle.effect.Writer._
+import doodle.effect._
 import doodle.syntax._
 import minitest._
 

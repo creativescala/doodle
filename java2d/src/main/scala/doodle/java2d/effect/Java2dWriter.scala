@@ -18,19 +18,25 @@ package doodle
 package java2d
 package effect
 
-import java.awt.Graphics2D
-
 import cats.effect.IO
-import doodle.core.{Base64 => B64, BoundingBox, Color, Transform}
-import doodle.effect._
-import doodle.java2d.algebra.Algebra
-import doodle.java2d.algebra.Java2D
-import java.awt.image.BufferedImage
-import java.io.{ByteArrayOutputStream, File, FileOutputStream, OutputStream}
-import java.util.{Base64 => JBase64}
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
+import doodle.core.BoundingBox
+import doodle.core.Color
+import doodle.core.Transform
+import doodle.core.{Base64 => B64}
+import doodle.effect._
+import doodle.java2d.algebra.Algebra
+import doodle.java2d.algebra.Java2D
+
+import java.awt.Graphics2D
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.util.{Base64 => JBase64}
 import javax.imageio.ImageIO
 
 trait Java2dWriter[Format]

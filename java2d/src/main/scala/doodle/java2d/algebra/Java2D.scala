@@ -18,30 +18,32 @@ package doodle
 package java2d
 package algebra
 
-import doodle.core.{
-  BoundingBox,
-  Cap,
-  Color,
-  Gradient,
-  Join,
-  PathElement,
-  Point,
-  Transform => Tx
-}
+import doodle.algebra.generic.DrawingContext
+import doodle.algebra.generic.Fill
+import doodle.algebra.generic.Stroke
+import doodle.core.BoundingBox
+import doodle.core.Cap
+import doodle.core.Color
+import doodle.core.Gradient
+import doodle.core.Join
+import doodle.core.PathElement
+import doodle.core.Point
 import doodle.core.font._
-import doodle.algebra.generic.{DrawingContext, Stroke, Fill}
-import java.awt.{
-  Color => AwtColor,
-  BasicStroke,
-  Font => AwtFont,
-  FontMetrics,
-  Graphics2D,
-  LinearGradientPaint,
-  Paint,
-  RadialGradientPaint
-}
+import doodle.core.{Transform => Tx}
+
+import java.awt.BasicStroke
+import java.awt.FontMetrics
+import java.awt.Graphics2D
+import java.awt.LinearGradientPaint
 import java.awt.MultipleGradientPaint.CycleMethod
-import java.awt.geom.{AffineTransform, Path2D, Point2D, Rectangle2D}
+import java.awt.Paint
+import java.awt.RadialGradientPaint
+import java.awt.geom.AffineTransform
+import java.awt.geom.Path2D
+import java.awt.geom.Point2D
+import java.awt.geom.Rectangle2D
+import java.awt.{Color => AwtColor}
+import java.awt.{Font => AwtFont}
 
 /** Various utilities for using Java2D */
 object Java2D {

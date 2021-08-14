@@ -21,7 +21,8 @@ package reified
 
 import cats.data.WriterT
 import doodle.algebra.generic._
-import doodle.core.{Point, Transform => Tx}
+import doodle.core.Point
+import doodle.core.{Transform => Tx}
 
 trait ReifiedShape extends GenericShape[Reification] {
   object ShapeApi extends ShapeApi {

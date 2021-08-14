@@ -18,10 +18,13 @@ package doodle
 package java2d
 package effect
 
-import doodle.core.{BoundingBox, Transform => Tx}
+import doodle.core.BoundingBox
+import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.Graphics2DGraphicsContext
 import doodle.java2d.algebra.reified.Reified
-import java.awt.{Graphics2D, RenderingHints}
+
+import java.awt.Graphics2D
+import java.awt.RenderingHints
 
 /** Utilities for rendering with Java2D */
 object Java2d {

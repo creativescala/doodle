@@ -19,9 +19,12 @@ package java2d
 package algebra
 
 import doodle.algebra.generic._
-import doodle.core.{PathElement, Point, Transform => Tx}
+import doodle.core.PathElement
+import doodle.core.Point
 import doodle.core.font.Font
+import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.reified.GraphicsContext
+
 import java.awt.Graphics2D
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
