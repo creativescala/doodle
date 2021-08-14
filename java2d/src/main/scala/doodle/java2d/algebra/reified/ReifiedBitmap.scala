@@ -20,9 +20,12 @@ trait ReifiedBitmap extends doodle.algebra.Bitmap[Drawing] {
       val w = bi.getWidth()
       val h = bi.getHeight()
       val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (bb, State.inspect { (tx: Transform) =>
-        WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
-      })
+      (
+        bb,
+        State.inspect { (tx: Transform) =>
+          WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
+        }
+      )
 
     }
   }

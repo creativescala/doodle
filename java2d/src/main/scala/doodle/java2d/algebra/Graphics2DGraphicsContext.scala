@@ -80,10 +80,9 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     Java2D.withTransform(gc, transform) {
       val xs = Array.ofDim[Int](points.size)
       val ys = Array.ofDim[Int](points.size)
-      points.zipWithIndex.foreach {
-        case (pt, idx) =>
-          xs(idx) = pt.x.toInt
-          ys(idx) = pt.y.toInt
+      points.zipWithIndex.foreach { case (pt, idx) =>
+        xs(idx) = pt.x.toInt
+        ys(idx) = pt.y.toInt
       }
       gc.fillPolygon(xs, ys, points.size)
     }
@@ -95,10 +94,9 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
     Java2D.withTransform(gc, transform) {
       val xs = Array.ofDim[Int](points.size)
       val ys = Array.ofDim[Int](points.size)
-      points.zipWithIndex.foreach {
-        case (pt, idx) =>
-          xs(idx) = pt.x.toInt
-          ys(idx) = pt.y.toInt
+      points.zipWithIndex.foreach { case (pt, idx) =>
+        xs(idx) = pt.x.toInt
+        ys(idx) = pt.y.toInt
       }
       gc.drawPolygon(xs, ys, points.size)
     }
@@ -160,11 +158,13 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
   // fill parameter here.
   def text(
       gc: Graphics2D
-  )(transform: Tx,
-    stroke: Option[Stroke],
-    text: String,
-    font: Font,
-    bounds: Rectangle2D): Unit =
+  )(
+      transform: Tx,
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
+  ): Unit =
     stroke.foreach { s =>
       Java2D.setStroke(gc, s)
       // Our default transform adds reflection around the y-axis (to make positive

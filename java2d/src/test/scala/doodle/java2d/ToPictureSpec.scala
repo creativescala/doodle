@@ -24,9 +24,13 @@ object ToPictureSpec extends SimpleTestSuite {
 
   def testInverse[A](
       picture: Picture[Unit]
-  )(implicit b: Base64[Algebra, Drawing, Frame, A], tp: ToPicture[Drawing, B64[A]]) = {
+  )(implicit
+      b: Base64[Algebra, Drawing, Frame, A],
+      tp: ToPicture[Drawing, B64[A]]
+  ) = {
     val (_, b1) = picture.base64[A](Frame.fitToPicture(0))
-    val (_, b2) = b1.toPicture[Algebra, Drawing].base64[A](Frame.fitToPicture(0))
+    val (_, b2) =
+      b1.toPicture[Algebra, Drawing].base64[A](Frame.fitToPicture(0))
     val error = base64Distance(b1, b2)
     // Large threshold because the round-trip introduces a small vertical
     // displacement that ends up causing a large error. Not sure of the source

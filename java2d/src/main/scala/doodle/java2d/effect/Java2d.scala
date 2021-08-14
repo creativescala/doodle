@@ -39,15 +39,16 @@ object Java2d {
     graphics
   }
 
-  /**
-    * Create a transform from local logical coordinates to screen coordinates
+  /** Create a transform from local logical coordinates to screen coordinates
     * given the bounding box for a picture, the screen size, and description of
     * the relationship between screen and picture.
     */
-  def transform(bb: BoundingBox,
-                width: Double,
-                height: Double,
-                center: Center): Tx =
+  def transform(
+      bb: BoundingBox,
+      width: Double,
+      height: Double,
+      center: Center
+  ): Tx =
     center match {
       case Center.CenteredOnPicture =>
         // Work out the center of the bounding box, in logical local coordinates
@@ -60,15 +61,16 @@ object Java2d {
         Tx.logicalToScreen(width, height)
     }
 
-  /**
-    * Create a transform from screen coordinates to local logical coordinates
+  /** Create a transform from screen coordinates to local logical coordinates
     * given the bounding box for a picture, the screen size, and descriptino of
     * the relationship between screen and picture.
     */
-  def inverseTransform(bb: BoundingBox,
-                       width: Double,
-                       height: Double,
-                       center: Center): Tx =
+  def inverseTransform(
+      bb: BoundingBox,
+      width: Double,
+      height: Double,
+      center: Center
+  ): Tx =
     center match {
       case Center.CenteredOnPicture =>
         // Work out the center of the bounding box, in logical local coordinates
@@ -81,8 +83,7 @@ object Java2d {
         Tx.screenToLogical(width, height)
     }
 
-  /**
-    * Calculate the size the panel or buffer should be given picture's bounding
+  /** Calculate the size the panel or buffer should be given picture's bounding
     * box and the frame description.
     */
   def size(bb: BoundingBox, size: Size): (Double, Double) = {

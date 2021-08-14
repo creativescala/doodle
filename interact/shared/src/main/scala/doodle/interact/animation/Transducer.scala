@@ -445,7 +445,10 @@ object Transducer {
         else current.tail
 
       def output(state: State): A =
-        if (state.isEmpty) throw new NoSuchElementException("This transducer has no more output.")
+        if (state.isEmpty)
+          throw new NoSuchElementException(
+            "This transducer has no more output."
+          )
         else state.head
 
       def stopped(state: State): Boolean =

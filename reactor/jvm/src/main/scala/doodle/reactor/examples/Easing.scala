@@ -16,8 +16,7 @@ object Easing {
 
   def scale(min: Double, max: Double): Double => Double = {
     val range = max - min
-    (x: Double) =>
-      min + (x * range)
+    (x: Double) => min + (x * range)
   }
 
   val step = (easeIn _).andThen(scale(-300.0, 300.0))

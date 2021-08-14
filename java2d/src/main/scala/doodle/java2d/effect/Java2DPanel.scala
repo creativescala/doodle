@@ -38,29 +38,26 @@ import scala.collection.mutable.ArrayBuffer
 final class Java2DPanel(frame: Frame) extends JPanel {
   import Java2DPanel.RenderRequest
 
-  /**
-    * The channel communicates between the Swing thread and outside threads
+  /** The channel communicates between the Swing thread and outside threads
     */
   private val channel: LinkedBlockingQueue[RenderRequest[_]] =
     new LinkedBlockingQueue(1)
 
-  /**
-    * The pictures we've rendered, along with the bounding box for each picture.
+  /** The pictures we've rendered, along with the bounding box for each picture.
     * Ordered so the last element is the most recent picture (which should be
     * rendered last).
     *
-    * Default size is 1 as the most common case is being asked to render only one
-    * picture.
+    * Default size is 1 as the most common case is being asked to render only
+    * one picture.
     *
-    * As an optimization with check the [[Redraw]] property of the [[Frame]], and
-    * if we use an opaque color to redraw we only keep the last element around.
-    * See [[opaqueRedraw]].
+    * As an optimization with check the [[Redraw]] property of the [[Frame]],
+    * and if we use an opaque color to redraw we only keep the last element
+    * around. See [[opaqueRedraw]].
     */
   private val pictures: ArrayBuffer[(BoundingBox, List[Reified])] =
     new ArrayBuffer(1)
 
-  /**
-    * True if the redraw is an opaque color and hence we don't need to keep
+  /** True if the redraw is an opaque color and hence we don't need to keep
     * earlier pictures around.
     */
   private val opaqueRedraw =
@@ -86,9 +83,8 @@ final class Java2DPanel(frame: Frame) extends JPanel {
     // println("Java2DPanel repaint request sent")
   }
 
-  /**
-    * Draw all images this [[Java2DPanel]] has received. We assume the Graphics2D
-    * parameter has already been setup.
+  /** Draw all images this [[Java2DPanel]] has received. We assume the
+    * Graphics2D parameter has already been setup.
     */
   def draw(gc: Graphics2D): Unit = {
     // Clear to background

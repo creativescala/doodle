@@ -32,8 +32,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileOutputStream
 
-/**
-  * Write an animation as an animated GIF. The GIF file format doesn't support
+/** Write an animation as an animated GIF. The GIF file format doesn't support
   * transparency to the degree we need to faithfully render Java2d images. In
   * particular it doesn't support semi-transparent redraw. As a result we just
   * fill with the background color on each frame, if the background is set.
@@ -45,7 +44,8 @@ object Java2dAnimationWriter
     IO { new GifEncoder() }
 
   def write[A](file: File, frame: Frame, frames: Observable[Picture[A]])(
-      implicit s: Scheduler,
+      implicit
+      s: Scheduler,
       m: Monoid[A]
   ): IO[A] = {
     for {
@@ -57,12 +57,12 @@ object Java2dAnimationWriter
           for {
             a <- accum
             result <- doodle.java2d.effect.Java2dWriter
-              .renderBufferedImage(frame.size,
-                                   frame.center,
-                                   frame.background,
-                                   picture)(
-                (w, h) => new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
-              )
+              .renderBufferedImage(
+                frame.size,
+                frame.center,
+                frame.background,
+                picture
+              )((w, h) => new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB))
             (bi, a2) = result
             _ = ge.addFrame(bi)
           } yield m.combine(a, a2)

@@ -44,12 +44,14 @@ object Ripples {
     def picture: Picture[Unit] =
       circle[Algebra, Drawing](age.toDouble)
         .strokeColor(
-          Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized))
+          Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized)
+        )
         .at(x, y)
   }
 
   def ripples(canvas: Canvas): IO[Observable[Picture[Unit]]] = {
-    implicit val cs = IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
+    implicit val cs =
+      IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
 
     ConcurrentQueue[IO]
       .bounded[Option[Ripple]](5)
@@ -60,7 +62,9 @@ object Ripples {
           .subscribe()
 
         canvas.mouseMove
-          .throttleFirst(FiniteDuration(100, MILLISECONDS)) // Stop spamming with too many mouse events
+          .throttleFirst(
+            FiniteDuration(100, MILLISECONDS)
+          ) // Stop spamming with too many mouse events
           .map(pt => Ripple(0, pt.x, pt.y).some)
           .mapEvalF(r => queue.offer(r))
           .subscribe()

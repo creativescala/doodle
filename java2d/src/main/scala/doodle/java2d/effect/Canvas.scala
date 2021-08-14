@@ -29,25 +29,23 @@ import javax.swing.JFrame
 import javax.swing.Timer
 import javax.swing.WindowConstants
 
-/**
-  * A [[Canvas]] is an area on the screen to which Pictures can be drawn.
+/** A [[Canvas]] is an area on the screen to which Pictures can be drawn.
   */
 final class Canvas(frame: Frame) extends JFrame(frame.title) {
   val panel = new Java2DPanel(frame)
 
-  /**
-    * The current global transform from logical to screen coordinates
+  /** The current global transform from logical to screen coordinates
     */
   private val currentInverseTx: AtomicReference[Transform] =
     new AtomicReference(Transform.identity)
 
-  /**
-    * Draw the given Picture to this [[Canvas]].
+  /** Draw the given Picture to this [[Canvas]].
     */
   def render[A](picture: Picture[A]): IO[A] = {
     // Possible race condition here setting the currentInverseTx
     def register(
-        cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit): Unit = {
+        cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit
+    ): Unit = {
       // val drawing = picture(algebra)
       // val (bb, rdr) = drawing.runA(List.empty).value
       // val (w, h) = Java2d.size(bb, frame.size)
@@ -57,10 +55,12 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
     }
 
     IO.async(register).map { result =>
-      val inverseTx = Java2d.inverseTransform(result.boundingBox,
-                                              result.width,
-                                              result.height,
-                                              frame.center)
+      val inverseTx = Java2d.inverseTransform(
+        result.boundingBox,
+        result.width,
+        result.height,
+        frame.center
+      )
       currentInverseTx.set(inverseTx)
       result.value
     }

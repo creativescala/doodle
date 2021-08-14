@@ -30,10 +30,12 @@ import monix.reactive.Observable
 
 object Java2dAnimationRenderer extends AnimationRenderer[Canvas] {
   def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](
-      canvas: Canvas)(frames: Observable[doodle.algebra.Picture[Alg, F, A]])(
-      implicit e: Renderer[Alg, F, Frm, Canvas],
+      canvas: Canvas
+  )(frames: Observable[doodle.algebra.Picture[Alg, F, A]])(implicit
+      e: Renderer[Alg, F, Frm, Canvas],
       s: Scheduler,
-      m: Monoid[A]): IO[A] =
+      m: Monoid[A]
+  ): IO[A] =
     frames
       .mapEval { img =>
         Task.from(e.render(canvas)(img))

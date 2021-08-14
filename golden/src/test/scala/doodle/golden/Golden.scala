@@ -18,7 +18,7 @@ trait Golden { self: FunSuite =>
     var i = 0
     while (i < 4) {
       val shift = i * 8
-      val mask = 0x000000FF << shift
+      val mask = 0x000000ff << shift
       val aValue = (a & mask) >> shift
       val bValue = (b & mask) >> shift
 

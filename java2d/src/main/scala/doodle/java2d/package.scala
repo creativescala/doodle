@@ -40,21 +40,31 @@ package object java2d {
 
   type Frame = doodle.java2d.effect.Frame
   type Canvas = doodle.java2d.effect.Canvas
-  implicit val java2dCanvasAlgebra: MouseClick[Canvas] with MouseMove[Canvas] with Redraw[Canvas] =
+  implicit val java2dCanvasAlgebra
+      : MouseClick[Canvas] with MouseMove[Canvas] with Redraw[Canvas] =
     doodle.java2d.algebra.CanvasAlgebra
 
   implicit val java2dAnimationRenderer: AnimationRenderer[Canvas] =
     doodle.java2d.effect.Java2dAnimationRenderer
-  implicit val java2dGifAnimationWriter: AnimationWriter[Algebra, Drawing, Frame, Gif] =
+  implicit val java2dGifAnimationWriter
+      : AnimationWriter[Algebra, Drawing, Frame, Gif] =
     doodle.java2d.effect.Java2dAnimationWriter
 
   implicit val java2dRenderer
-    : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
+      : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
-  implicit val java2dGifWriter: Writer[Algebra, Drawing, Frame, Gif] with Base64[Algebra, Drawing, Frame, Gif] = doodle.java2d.effect.Java2dGifWriter
-  implicit val java2dPngWriter: Writer[Algebra, Drawing, Frame, Png] with Base64[Algebra, Drawing, Frame, Png] = doodle.java2d.effect.Java2dPngWriter
-  implicit val java2dJpgWriter: Writer[Algebra, Drawing, Frame, Jpg] with Base64[Algebra, Drawing, Frame, Jpg] = doodle.java2d.effect.Java2dJpgWriter
-  implicit val java2dPdfWriter: Writer[Algebra, Drawing, Frame, Pdf] with Base64[Algebra, Drawing, Frame, Pdf] = doodle.java2d.effect.Java2dPdfWriter
+  implicit val java2dGifWriter: Writer[Algebra, Drawing, Frame, Gif]
+    with Base64[Algebra, Drawing, Frame, Gif] =
+    doodle.java2d.effect.Java2dGifWriter
+  implicit val java2dPngWriter: Writer[Algebra, Drawing, Frame, Png]
+    with Base64[Algebra, Drawing, Frame, Png] =
+    doodle.java2d.effect.Java2dPngWriter
+  implicit val java2dJpgWriter: Writer[Algebra, Drawing, Frame, Jpg]
+    with Base64[Algebra, Drawing, Frame, Jpg] =
+    doodle.java2d.effect.Java2dJpgWriter
+  implicit val java2dPdfWriter: Writer[Algebra, Drawing, Frame, Pdf]
+    with Base64[Algebra, Drawing, Frame, Pdf] =
+    doodle.java2d.effect.Java2dPdfWriter
 
   implicit val java2dBufferedImageToPicture: ToPicture[Drawing, BufferedImage] =
     doodle.java2d.algebra.reified.BufferedImageToPicture

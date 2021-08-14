@@ -8,7 +8,7 @@ import minitest._
 import java.io.File
 
 object WriterSpec extends SimpleTestSuite {
-  val image = circle[Algebra,Drawing](20.0)
+  val image = circle[Algebra, Drawing](20.0)
 
   test("write should work with png") {
     image.write[Png]("circle.png")

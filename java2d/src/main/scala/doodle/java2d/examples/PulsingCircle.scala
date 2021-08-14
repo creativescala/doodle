@@ -42,7 +42,8 @@ object PulsingCircle {
           .strokeWidth(strokeWidth)
       case n =>
         circle[Algebra, Drawing](
-          (n * 2 * (strokeWidth + gapWidth) + minimumDiameter)).noFill
+          (n * 2 * (strokeWidth + gapWidth) + minimumDiameter)
+        ).noFill
           .strokeWidth(strokeWidth)
     }
 
@@ -68,10 +69,14 @@ object PulsingCircle {
       case n =>
         disk(n)
           .strokeColor(Color.crimson)
-          .on(disk(n - 1)
-            .strokeColor(Color.crimson.spin(30.degrees)))
-          .on(disk(n - 2)
-            .strokeColor(Color.crimson.spin(60.degrees)))
+          .on(
+            disk(n - 1)
+              .strokeColor(Color.crimson.spin(30.degrees))
+          )
+          .on(
+            disk(n - 2)
+              .strokeColor(Color.crimson.spin(60.degrees))
+          )
     }
 
   val animation: Observable[Picture[Unit]] =

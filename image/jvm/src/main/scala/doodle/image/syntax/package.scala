@@ -5,8 +5,7 @@ package object syntax extends JvmImageSyntax with TraverseImageSyntax {
   object image extends JvmImageSyntax
   object traverse extends TraverseImageSyntax
 
-  /**
-    * The core object defines syntax for doodle.core, which is a convenient way
+  /** The core object defines syntax for doodle.core, which is a convenient way
     * to avoid pulling in Algebra syntax that may conflict with Image.
     */
   object core

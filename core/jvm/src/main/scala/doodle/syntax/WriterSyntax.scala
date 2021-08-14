@@ -26,42 +26,51 @@ import java.io.File
 
 trait WriterSyntax {
   implicit class WriterOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
     // This class exists solely so the user doesn't have to provide the `Frame`
     // type parameter when calling syntax methods.
     class WriterOpsHelper[Format](picture: Picture[Alg, F, A]) {
-      def apply[Frame](file: String)(
-          implicit w: Writer[Alg, F, Frame, Format]): A =
+      def apply[Frame](file: String)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): A =
         apply(new File(file))
 
-      def apply[Frame](file: File)(
-          implicit w: Writer[Alg, F, Frame, Format]): A =
+      def apply[Frame](file: File)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): A =
         w.write(file, picture).unsafeRunSync()
 
-      def apply[Frame](file: String, frame: Frame)(
-          implicit w: Writer[Alg, F, Frame, Format]): A =
+      def apply[Frame](file: String, frame: Frame)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): A =
         apply(new File(file), frame)
 
-      def apply[Frame](file: File, frame: Frame)(
-          implicit w: Writer[Alg, F, Frame, Format]): A =
+      def apply[Frame](file: File, frame: Frame)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): A =
         w.write(file, frame, picture).unsafeRunSync()
     }
 
     class WriterIOOpsHelper[Format](picture: Picture[Alg, F, A]) {
-      def apply[Frame](file: String)(
-          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+      def apply[Frame](file: String)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): IO[A] =
         apply(new File(file))
 
-      def apply[Frame](file: File)(
-          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+      def apply[Frame](file: File)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): IO[A] =
         w.write(file, picture)
 
-      def apply[Frame](file: String, frame: Frame)(
-          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+      def apply[Frame](file: String, frame: Frame)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): IO[A] =
         apply(new File(file), frame)
 
-      def apply[Frame](file: File, frame: Frame)(
-          implicit w: Writer[Alg, F, Frame, Format]): IO[A] =
+      def apply[Frame](file: File, frame: Frame)(implicit
+          w: Writer[Alg, F, Frame, Format]
+      ): IO[A] =
         w.write(file, frame, picture)
     }
 

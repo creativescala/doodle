@@ -25,26 +25,31 @@ import doodle.effect.Base64
 
 trait Base64Syntax {
   implicit class Base64Ops[Alg[x[_]] <: Algebra[x], F[_], A](
-      picture: Picture[Alg, F, A]) {
+      picture: Picture[Alg, F, A]
+  ) {
     // This class exists solely so the user doesn't have to provide the `Frame`
     // type parameter when calling syntax methods.
     class Base64OpsHelper[Format](picture: Picture[Alg, F, A]) {
-      def apply[Frame]()(
-          implicit w: Base64[Alg, F, Frame, Format]): (A, B64[Format]) =
+      def apply[Frame]()(implicit
+          w: Base64[Alg, F, Frame, Format]
+      ): (A, B64[Format]) =
         w.base64(picture).unsafeRunSync()
 
-      def apply[Frame](frame: Frame)(
-          implicit w: Base64[Alg, F, Frame, Format]): (A, B64[Format]) =
+      def apply[Frame](frame: Frame)(implicit
+          w: Base64[Alg, F, Frame, Format]
+      ): (A, B64[Format]) =
         w.base64(frame, picture).unsafeRunSync()
     }
 
     class Base64IOOpsHelper[Format](picture: Picture[Alg, F, A]) {
-      def apply[Frame]()(
-          implicit w: Base64[Alg, F, Frame, Format]): IO[(A, B64[Format])] =
+      def apply[Frame]()(implicit
+          w: Base64[Alg, F, Frame, Format]
+      ): IO[(A, B64[Format])] =
         w.base64(picture)
 
-      def apply[Frame](frame: Frame)(
-          implicit w: Base64[Alg, F, Frame, Format]): IO[(A, B64[Format])] =
+      def apply[Frame](frame: Frame)(implicit
+          w: Base64[Alg, F, Frame, Format]
+      ): IO[(A, B64[Format])] =
         w.base64(frame, picture)
     }
 

@@ -194,9 +194,9 @@ object Java2D {
         path.lineTo(x, y)
 
       case BezierCurveTo(
-          Cartesian(cp1x, cp1y),
-          Cartesian(cp2x, cp2y),
-          Cartesian(endX, endY)
+            Cartesian(cp1x, cp1y),
+            Cartesian(cp2x, cp2y),
+            Cartesian(endX, endY)
           ) =>
         path.curveTo(
           cp1x,

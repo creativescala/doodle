@@ -29,19 +29,23 @@ trait ReifiedPath extends GenericPath[Reification] {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =
       WriterT.tell(a.toList ++ b.toList)
 
-    def closedPath(tx: Tx,
-                   fill: Option[Fill],
-                   stroke: Option[Stroke],
-                   elements: List[PathElement]): Reification[Unit] =
+    def closedPath(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        elements: List[PathElement]
+    ): Reification[Unit] =
       append(
         fill.map(f => Reified.fillClosedPath(tx, f, elements)),
         stroke.map(s => Reified.strokeClosedPath(tx, s, elements))
       )
 
-    def openPath(tx: Tx,
-                 fill: Option[Fill],
-                 stroke: Option[Stroke],
-                 elements: List[PathElement]): Reification[Unit] =
+    def openPath(
+        tx: Tx,
+        fill: Option[Fill],
+        stroke: Option[Stroke],
+        elements: List[PathElement]
+    ): Reification[Unit] =
       append(
         fill.map(f => Reified.fillOpenPath(tx, f, elements)),
         stroke.map(s => Reified.strokeOpenPath(tx, s, elements))

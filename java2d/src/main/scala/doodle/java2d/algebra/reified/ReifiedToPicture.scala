@@ -44,9 +44,12 @@ object BufferedImageToPicture extends BaseToPicture[BufferedImage] {
       val w = in.getWidth()
       val h = in.getHeight()
       val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (bb, State.inspect { (tx: Transform) =>
-        WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, in)))
-      })
+      (
+        bb,
+        State.inspect { (tx: Transform) =>
+          WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, in)))
+        }
+      )
     }
   }
 }
@@ -60,9 +63,12 @@ trait GenericBase64ToPicture[A] extends BaseToPicture[Base64[A]] {
       val w = bi.getWidth()
       val h = bi.getHeight()
       val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (bb, State.inspect { (tx: Transform) =>
-        WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
-      })
+      (
+        bb,
+        State.inspect { (tx: Transform) =>
+          WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
+        }
+      )
     }
 
   }

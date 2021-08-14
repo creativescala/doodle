@@ -20,10 +20,9 @@ package effect
 
 import doodle.core.Color
 
-/**
-  * Determines how the [[Canvas]] handles drawing multiple Pictures. The default
-  * is to clear the [[Canvas]] with the [[Frame]]'s background color every time a
-  * new picture is rendered. Alternatively a different color can be specified.
+/** Determines how the [[Canvas]] handles drawing multiple Pictures. The default
+  * is to clear the [[Canvas]] with the [[Frame]] 's background color every time
+  * a new picture is rendered. Alternatively a different color can be specified.
   * This allows one to blend together pictures while keeping a constant
   * background.
   */
@@ -32,14 +31,12 @@ object Redraw {
   case object ClearToBackground extends Redraw
   final case class ClearToColor(color: Color) extends Redraw
 
-  /**
-    * Clear the [[Canvas]] with the [[Frame]]'s background color when rendering a
-    * new Picture.
+  /** Clear the [[Canvas]] with the [[Frame]] 's background color when rendering
+    * a new Picture.
     */
   val clearToBackground: Redraw = ClearToBackground
 
-  /**
-    * Clear the [[Canvas]] with the given color when rendering a new Picture.
+  /** Clear the [[Canvas]] with the given color when rendering a new Picture.
     */
   def clearToColor(color: Color): Redraw =
     ClearToColor(color)

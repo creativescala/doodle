@@ -35,10 +35,11 @@ sealed abstract class Reified extends Product with Serializable {
 
   def transform: Tx
 
-  /** finalTransform gives an transform applied after any other reified transform.
-    * Usually this is a transform from logical to screen coordinates. */
-  def render[A](gc: A, finalTransform: Tx)(
-      implicit ctx: GraphicsContext[A]
+  /** finalTransform gives an transform applied after any other reified
+    * transform. Usually this is a transform from logical to screen coordinates.
+    */
+  def render[A](gc: A, finalTransform: Tx)(implicit
+      ctx: GraphicsContext[A]
   ): Unit =
     this match {
       case FillOpenPath(tx, fill, elements) =>

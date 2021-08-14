@@ -59,7 +59,9 @@ trait GoldenPicture extends Golden { self: FunSuite =>
       assertGoldenPicture(name, picture)
     }
 
-  def testPictureWithFrame[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(frame: Frame)(
+  def testPictureWithFrame[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(
+      frame: Frame
+  )(
       picture: Picture[Alg, F, Unit]
   )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
     test(name) {
