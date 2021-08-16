@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.25 (PENDING)
+## 0.9.25 16-Aug-2021
 
 - Update to Scala 3.0, Scala 2.13.6, and Scala.js 1.6. The move to Scala 3 required
   - removing the svg and explore projects, which have dependencies that don't
