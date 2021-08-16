@@ -6,6 +6,7 @@ ThisBuild / version := "0.9.25"
 ThisBuild / versionScheme := Some("early-semver")
 ThisBuild / isSnapshot := false
 
+ThisBuild / credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential")
 ThisBuild / pgpSecretRing := pgpPublicRing.value
 
 ThisBuild / scmInfo := Some(

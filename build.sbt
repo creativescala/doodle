@@ -29,14 +29,10 @@ ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 lazy val commonSettings = Seq(
   crossScalaVersions := supportedScalaVersions,
   libraryDependencies ++= Seq(
-    Dependencies.catsCore.value,
-    Dependencies.catsEffect.value,
-    Dependencies.catsFree.value,
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
   testFrameworks += new TestFramework("minitest.runner.Framework"),
-  credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential"),
   startYear := Some(2015),
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
@@ -51,7 +47,6 @@ lazy val commonSettings = Seq(
 lazy val root = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
   .settings(
-    commonSettings,
     // crossScalaVersions must be set to Nil on the aggregating project
     crossScalaVersions := Nil,
     moduleName := "doodle",
@@ -111,7 +106,15 @@ lazy val rootJs = root.js
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
-  .settings(commonSettings, moduleName := "doodle-core")
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(
+      Dependencies.catsCore.value,
+      Dependencies.catsEffect.value,
+      Dependencies.catsFree.value
+    ),
+    moduleName := "doodle-core"
+  )
 
 lazy val coreJvm = core.jvm
 lazy val coreJs = core.js
