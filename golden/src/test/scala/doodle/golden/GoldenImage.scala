@@ -5,12 +5,9 @@ import doodle.effect.Writer._
 import doodle.java2d._
 import munit._
 
-import javax.imageio.ImageIO
-
 trait GoldenImage extends Golden { self: FunSuite =>
   import doodle.image._
   import doodle.image.syntax._
-  import doodle.syntax._
 
   def assertGoldenImage(name: String, image: Image)(implicit loc: Location) = {
     import java.io.File
