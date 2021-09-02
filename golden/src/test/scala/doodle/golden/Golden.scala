@@ -31,20 +31,18 @@ trait Golden { self: FunSuite =>
 
   def absoluteError(
       actual: BufferedImage,
-      golden: BufferedImage
+      golden: BufferedImage,
+      width: Int,
+      height: Int
   ): (Double, BufferedImage) = {
-    val diff = new BufferedImage(
-      actual.getWidth(),
-      actual.getHeight(),
-      BufferedImage.TYPE_INT_ARGB
-    )
+    val diff = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
     // Sum of squared error
     var error = 0.0
 
     var x = 0
-    while (x < actual.getWidth()) {
+    while (x < width) {
       var y = 0
-      while (y < actual.getHeight()) {
+      while (y < height) {
         val pixelError = pixelAbsoluteError(
           actual.getRGB(x, y),
           golden.getRGB(x, y)
@@ -69,16 +67,18 @@ trait Golden { self: FunSuite =>
     val actual = ImageIO.read(temp)
     val expected = ImageIO.read(file)
 
-    assertEquals(
-      actual.getHeight(),
-      expected.getHeight(),
-      s"Heights differ"
+    assert(
+      math.abs(actual.getHeight() - expected.getHeight()) <= 1 &&
+        math.abs(actual.getWidth() - expected.getWidth()) <= 1,
+      "Height or width differ by more than one pixel"
     )
-    assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
+
+    val height = actual.getHeight().min(expected.getHeight())
+    val width = actual.getWidth().min(expected.getWidth())
 
     // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
-    val threshold = actual.getHeight() * actual.getWidth() * 4 * 16 * 16
-    val (error, diff) = absoluteError(actual, expected)
+    val threshold = height * width * 4 * 16 * 16
+    val (error, diff) = absoluteError(actual, expected, width, height)
     val (_, diff64) = diff.toPicture[Algebra, Drawing].base64[Png]()
 
     assert(clue(error) < clue(threshold), diff64)

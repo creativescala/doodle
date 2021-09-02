@@ -21,22 +21,7 @@ trait GoldenImage extends Golden { self: FunSuite =>
 
       try {
         image.write[Png](temp)
-        val actual = ImageIO.read(temp)
-        val expected = ImageIO.read(file)
-
-        assertEquals(
-          actual.getHeight(),
-          expected.getHeight(),
-          s"Heights differ"
-        )
-        assertEquals(actual.getWidth(), expected.getWidth(), s"Widths differ")
-
-        // Fairly arbitrary threshold allowing a 4-bit difference in each component of each pixel
-        val threshold = actual.getHeight() * actual.getWidth() * 4 * 16
-        val (error, diff) = absoluteError(actual, expected)
-        val (_, diff64) = diff.toPicture[Algebra, Drawing].base64[Png]()
-
-        assert(clue(error) < clue(threshold), diff64)
+        imageDiff(file, temp)
       } finally {
         if (temp.exists()) temp.delete()
         ()
