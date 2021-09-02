@@ -8,8 +8,6 @@ import doodle.effect.Writer._
 import doodle.java2d._
 import munit._
 
-import javax.imageio.ImageIO
-
 trait GoldenPicture extends Golden { self: FunSuite =>
   import doodle.syntax._
 
