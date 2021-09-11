@@ -13,6 +13,54 @@ import javax.imageio.ImageIO
 trait Golden { self: FunSuite =>
   val goldenDir = "golden/src/test/golden"
 
+  def errorMessage(
+      actual: BufferedImage,
+      expected: BufferedImage,
+      diff: Option[BufferedImage]
+  ): String = {
+
+    val actualH = actual.getHeight()
+    val actualW = actual.getWidth()
+    val expectedH = expected.getHeight()
+    val expectedW = expected.getWidth()
+
+    val (_, actualBase64) = actual.toPicture[Algebra, Drawing].base64[Png]()
+    val (_, expectedBase64) = expected.toPicture[Algebra, Drawing].base64[Png]()
+
+    val diffMessage =
+      diff
+        .map { d =>
+          val (_, diffBase64) = d.toPicture[Algebra, Drawing].base64[Png]()
+
+          s"""
+           | The diff image, PNG and Base 64 encoded is
+           |
+           | ${diffBase64.value}
+           """.stripMargin
+        }
+        .getOrElse("")
+
+    s"""
+     | The dimensions (width x height) of the actual image are ${actualW} by ${actualH}
+     | The dimensions (width x height) of the expected image are ${expectedW} by ${expectedH}
+     |
+     | The actual image, PNG and Base 64 encoded is
+     |
+     | ${actualBase64.value}
+     |
+     |
+     | The expected image, PNG and Base 64 encoded is
+     |
+     | ${expectedBase64.value}
+     |
+     | ${diffMessage}
+     |
+     | To convert a base64 string to a viewable picture, use
+     |
+     | Base64[Png](string).toPicture[Algebra, Drawing]
+     """.stripMargin
+  }
+
   def pixelAbsoluteError(a: Int, b: Int): Int = {
     var error = 0
     var i = 0
@@ -67,20 +115,27 @@ trait Golden { self: FunSuite =>
     val actual = ImageIO.read(temp)
     val expected = ImageIO.read(file)
 
+    val actualH = actual.getHeight()
+    val actualW = actual.getWidth()
+    val expectedH = expected.getHeight()
+    val expectedW = expected.getWidth()
+
     assert(
-      math.abs(actual.getHeight() - expected.getHeight()) <= 1 &&
-        math.abs(actual.getWidth() - expected.getWidth()) <= 1,
-      "Height or width differ by more than one pixel"
+      math.abs(actualH - expectedH) <= 1 &&
+        math.abs(actualW - expectedW) <= 1,
+      errorMessage(actual, expected, None)
     )
 
-    val height = actual.getHeight().min(expected.getHeight())
-    val width = actual.getWidth().min(expected.getWidth())
+    val height = actualH.min(expectedH)
+    val width = actualW.min(expectedW)
 
     // Fairly arbitrary threshold allowing a 4-bit difference in each pixel
     val threshold = height * width * 4 * 16 * 16
     val (error, diff) = absoluteError(actual, expected, width, height)
-    val (_, diff64) = diff.toPicture[Algebra, Drawing].base64[Png]()
 
-    assert(clue(error) < clue(threshold), diff64)
+    assert(
+      clue(error) < clue(threshold),
+      errorMessage(actual, expected, Some(diff))
+    )
   }
 }
