@@ -42,5 +42,6 @@ class Text extends FunSuite with GoldenPicture {
       .strokeColor(Color.red)
       .beside(text[Algebra, Drawing]("Blue").strokeColor(Color.blue))
       .font(Font.defaultSerif.size(24).family("Arial"))
+      .on(rectangle(115, 50).fillColor(Color.white).noStroke)
   }
 }
