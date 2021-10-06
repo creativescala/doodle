@@ -1,6 +1,7 @@
 package doodle
 package golden
 
+import cats.effect.unsafe.implicits.global
 import doodle.effect.Writer._
 import doodle.java2d._
 import munit._

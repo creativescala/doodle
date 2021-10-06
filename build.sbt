@@ -201,6 +201,7 @@ lazy val java2d = project
     libraryDependencies ++= Seq(
       "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
+    libraryDependencies += Dependencies.fs2.value,
     libraryDependencies ++=
       (if (scalaBinaryVersion == "2.13")
          List(

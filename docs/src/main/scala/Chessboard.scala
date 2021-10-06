@@ -1,6 +1,7 @@
 package docs
 
 // The "Image" DSL is the easiest way to create images
+import cats.effect.unsafe.implicits.global
 import doodle.core._
 import doodle.image._
 

@@ -23,20 +23,18 @@ import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.Renderer
-import monix.execution.Scheduler
-import monix.reactive.Observable
+import fs2.Stream
 
 /** The `AnimationRenderer` typeclass describes a data type that can render an
   * animation to a Canvas.
   */
 trait AnimationRenderer[Canvas] {
 
-  /** Animate frames that are produced by an `Observable`. */
+  /** Animate frames that are produced by a `Stream`. */
   def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame](
       canvas: Canvas
-  )(frames: Observable[Picture[Alg, F, A]])(implicit
+  )(frames: Stream[IO, Picture[Alg, F, A]])(implicit
       e: Renderer[Alg, F, Frame, Canvas],
-      s: Scheduler,
       m: Monoid[A]
   ): IO[A]
 }

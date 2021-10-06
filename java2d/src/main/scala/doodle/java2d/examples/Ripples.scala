@@ -19,15 +19,15 @@ package java2d
 package examples
 
 object Ripples {
+  import cats.effect.unsafe.implicits.global
   import cats.effect.IO
   import doodle.core._
   import doodle.syntax._
   import doodle.interact.syntax._
   import doodle.java2d.effect._
-  import monix.reactive.Observable
-  import monix.catnap.ConcurrentQueue
+  import fs2.Stream
+  import cats.effect.IO
   import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
-  import monix.execution.Scheduler.Implicits.global
 
   import cats.instances.all._
   import cats.syntax.all._
@@ -49,28 +49,28 @@ object Ripples {
         .at(x, y)
   }
 
-  def ripples(canvas: Canvas): IO[Observable[Picture[Unit]]] = {
-    implicit val cs =
-      IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
-
-    ConcurrentQueue[IO]
-      .bounded[Option[Ripple]](5)
-      .map { queue =>
-        canvas.redraw
+  def ripples(canvas: Canvas): IO[Stream[IO, Picture[Unit]]] = {
+    import cats.effect.std.Queue
+    Queue
+      .bounded[IO, Option[Ripple]](5)
+      .flatMap { queue =>
+        val redraw = canvas.redraw
           .map(_ => none[Ripple])
-          .mapEvalF(r => queue.offer(r))
-          .subscribe()
+          .evalMap(r => queue.offer(r))
+          .compile
+          .drain
 
-        canvas.mouseMove
-          .throttleFirst(
+        val mouseMove = canvas.mouseMove
+          .debounce(
             FiniteDuration(100, MILLISECONDS)
           ) // Stop spamming with too many mouse events
           .map(pt => Ripple(0, pt.x, pt.y).some)
-          .mapEvalF(r => queue.offer(r))
-          .subscribe()
+          .evalMap(r => queue.offer(r))
+          .compile
+          .drain
 
-        Observable
-          .repeatEvalF(queue.poll)
+        val ripples: Stream[IO, Picture[Unit]] = Stream
+          .fromQueueUnterminated(queue)
           .scan(List.empty[Ripple]) { (ripples, ripple) =>
             ripple match {
               case Some(r) => r :: ripples
@@ -78,6 +78,7 @@ object Ripples {
             }
           }
           .map(ripples => ripples.map(_.picture).allOn)
+        (redraw.start >> mouseMove.start).as(ripples)
       }
   }
 

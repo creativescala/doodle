@@ -7,7 +7,7 @@ package object docs {
 
   implicit class ImageSaveSyntax(image: Image) {
     import doodle.image.syntax._
-    def save(filename: String): Unit = {
+    def save(filename: String)(implicit r: IORuntime): Unit = {
       val dir = new File("docs/src/main/mdoc/")
       val file = new File(dir, filename)
       image.write[Png](file)

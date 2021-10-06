@@ -2,7 +2,8 @@ package doodle
 package interact
 package easing
 
-import monix.reactive.Observable
+import fs2.Pure
+import fs2.Stream
 
 /** An easing function is a function from [0,1] to the real numbers (but usually
   * numbers in [0,1]) that is used to construct animation that move in a
@@ -35,11 +36,11 @@ trait Easing extends Function1[Double, Double] {
       1.0 - this(1.0 - t)
     }
 
-  /** Convert to an Observable that produces a total of steps values, starting
-    * at 0.0 and finishing at 1.0
+  /** Convert to a Stream that produces a total of steps values, starting at 0.0
+    * and finishing at 1.0
     */
-  def toObservable(steps: Int): Observable[Double] =
-    Observable
+  def toStream(steps: Int): Stream[Pure, Double] =
+    Stream
       .range(0L, steps.toLong)
       .map(step =>
         if (step == 0) 0.0

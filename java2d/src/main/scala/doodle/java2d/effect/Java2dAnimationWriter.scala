@@ -22,11 +22,7 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.effect.Writer.Gif
 import doodle.interact.effect.AnimationWriter
-import monix.eval.Task
-import monix.eval.TaskLift
-import monix.execution.Scheduler
-import monix.reactive.Consumer
-import monix.reactive.Observable
+import fs2.Stream
 
 import java.awt.image.BufferedImage
 import java.io.File
@@ -43,19 +39,16 @@ object Java2dAnimationWriter
   val gifEncoder: IO[GifEncoder] =
     IO { new GifEncoder() }
 
-  def write[A](file: File, frame: Frame, frames: Observable[Picture[A]])(
-      implicit
-      s: Scheduler,
-      m: Monoid[A]
+  def write[A](file: File, frame: Frame, frames: Stream[IO, Picture[A]])(
+      implicit m: Monoid[A]
   ): IO[A] = {
     for {
       ge <- gifEncoder
       _ = ge.start(new FileOutputStream(file))
       _ = ge.setDelay(20)
       a <- frames
-        .consumeWith(Consumer.foldLeft(IO(m.empty)) { (accum, picture) =>
+        .evalMap { picture =>
           for {
-            a <- accum
             result <- doodle.java2d.effect.Java2dWriter
               .renderBufferedImage(
                 frame.size,
@@ -65,11 +58,10 @@ object Java2dAnimationWriter
               )((w, h) => new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB))
             (bi, a2) = result
             _ = ge.addFrame(bi)
-          } yield m.combine(a, a2)
-        })
-        .to[IO](TaskLift.toIO(Task.catsEffect(s)))
-        .flatMap(ioa => ioa)
-
+          } yield a2
+        }
+        .compile
+        .foldMonoid
       _ = ge.finish()
     } yield a
   }

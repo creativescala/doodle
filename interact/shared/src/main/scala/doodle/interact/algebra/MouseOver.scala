@@ -3,7 +3,8 @@ package interact
 package algebra
 
 import doodle.algebra.Algebra
-import fs2.{Pure, Stream}
+import fs2.Pure
+import fs2.Stream
 
 /** Algebra for elements that can respond to Mouseover events */
 trait MouseOver[F[_]] extends Algebra[F] {
