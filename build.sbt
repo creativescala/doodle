@@ -26,13 +26,22 @@ ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
 // enablePlugins(AutomateHeaderPlugin)
 
+// Run this (build) to do everything involved in building the project
+commands += Command.command("build") { state =>
+  "compile" ::
+  "test" ::
+  "golden/test" ::
+  "scalafixAll" ::
+  "scalafmtAll" ::
+  state
+}
+
 lazy val commonSettings = Seq(
   crossScalaVersions := supportedScalaVersions,
   libraryDependencies ++= Seq(
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
-  testFrameworks += new TestFramework("minitest.runner.Framework"),
   startYear := Some(2015),
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")

@@ -1,7 +1,7 @@
 addSbtPlugin("org.scala-js"              % "sbt-scalajs"              % "1.6.0")
 addSbtPlugin("com.dwijnand"              % "sbt-travisci"             % "1.1.0")
 addSbtPlugin("com.typesafe.sbt"          % "sbt-git"                  % "0.9.3")
-addSbtPlugin("de.heikoseeberger"         % "sbt-header"               % "5.4.0")
+addSbtPlugin("de.heikoseeberger"         % "sbt-header"               % "5.6.0")
 addSbtPlugin("com.timushev.sbt"          % "sbt-updates"              % "0.3.4")
 addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat"             % "0.1.20")
 addSbtPlugin("com.jsuereth"              % "sbt-pgp"                  % "2.0.1")

@@ -39,22 +39,22 @@ final case class Reactor[A](
 
   // Builder methods -------------------------------------------------
 
-  def onMouseClick(f: (Point, A) => A): Reactor[A] =
+  def withOnMouseClick(f: (Point, A) => A): Reactor[A] =
     this.copy(onMouseClickHandler = f)
 
-  def onMouseMove(f: (Point, A) => A): Reactor[A] =
+  def withOnMouseMove(f: (Point, A) => A): Reactor[A] =
     this.copy(onMouseMoveHandler = f)
 
-  def onTick(f: A => A): Reactor[A] =
+  def withOnTick(f: A => A): Reactor[A] =
     this.copy(onTickHandler = f)
 
-  def tickRate(duration: FiniteDuration): Reactor[A] =
+  def withTickRate(duration: FiniteDuration): Reactor[A] =
     this.copy(tickRate = duration)
 
-  def render(f: A => Image): Reactor[A] =
+  def withRender(f: A => Image): Reactor[A] =
     this.copy(renderHandler = f)
 
-  def stop(f: A => Boolean): Reactor[A] =
+  def withStop(f: A => Boolean): Reactor[A] =
     this.copy(stopHandler = f)
 
   // Make stuff happen -----------------------------------------------
@@ -96,6 +96,6 @@ object Reactor {
   ): Reactor[Double] =
     Reactor
       .init[Double](start)
-      .onTick((x: Double) => x + step)
-      .stop((x: Double) => x >= stop)
+      .withOnTick((x: Double) => x + step)
+      .withStop((x: Double) => x >= stop)
 }

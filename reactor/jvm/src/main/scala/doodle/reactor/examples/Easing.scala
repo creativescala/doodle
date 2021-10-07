@@ -23,7 +23,7 @@ object Easing {
   val reactor =
     Reactor
       .linearRamp()
-      .render(t => Image.circle(5.0).fillColor(Color.seaGreen).at(step(t), 0.0))
+      .withRender(t => Image.circle(5.0).fillColor(Color.seaGreen).at(step(t), 0.0))
 
   def go() =
     reactor.run(Frame.size(600, 600))
