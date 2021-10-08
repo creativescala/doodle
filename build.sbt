@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 lazy val scala213 = "2.13.6"
-lazy val scala3   = "3.0.1"
+lazy val scala3 = "3.0.1"
 lazy val supportedScalaVersions = List(scala213, scala3)
 
 ThisBuild / scalaVersion := scala3
@@ -29,11 +29,11 @@ ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 // Run this (build) to do everything involved in building the project
 commands += Command.command("build") { state =>
   "compile" ::
-  "test" ::
-  "golden/test" ::
-  "scalafixAll" ::
-  "scalafmtAll" ::
-  state
+    "test" ::
+    "golden/test" ::
+    "scalafixAll" ::
+    "scalafmtAll" ::
+    state
 }
 
 lazy val commonSettings = Seq(
@@ -47,10 +47,12 @@ lazy val commonSettings = Seq(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
   ),
   libraryDependencies ++= (
-      if (scalaBinaryVersion.value == "2.13")
-        compilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full) :: Nil
-      else Nil
-    )
+    if (scalaBinaryVersion.value == "2.13")
+      compilerPlugin(
+        "org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full
+      ) :: Nil
+    else Nil
+  )
 )
 
 lazy val root = crossProject(JSPlatform, JVMPlatform)
@@ -145,9 +147,8 @@ lazy val docs = project
   .enablePlugins(MdocPlugin, ParadoxPlugin)
   .dependsOn(rootJvm)
 
-// Why can't I mix normal code and Task .value in the same task?
-// When I do the normal code doesn't run. SBT is a pile of shit
-lazy val copyScalaDoc = taskKey[Unit]("SBT is bullshit")
+lazy val copyScalaDoc =
+  taskKey[Unit]("Copy ScalaDoc to mdoc's expected location")
 docs / copyScalaDoc := {
   println("Copying Scaladoc")
   sbt.io.IO.copyDirectory(
@@ -155,7 +156,7 @@ docs / copyScalaDoc := {
     file("docs/src/main/mdoc/api")
   )
 }
-lazy val copyFinalDoc = taskKey[Unit]("SBT is a pile of shit")
+lazy val copyFinalDoc = taskKey[Unit]("Copy site to expected location")
 docs / copyFinalDoc := {
   println("Copying documentation to docs/target/docs/site/main")
   sbt.io.IO.copyDirectory(
@@ -175,10 +176,9 @@ docs / documentation :=
       (docs / copyScalaDoc),
       (docs / Compile / mdoc).toTask(""),
       (docs / Compile / paradox).toTask,
-      (docs /copyFinalDoc)
+      (docs / copyFinalDoc)
     )
     .value
-
 
 lazy val interact = crossProject(JSPlatform, JVMPlatform)
   .in(file("interact"))
@@ -202,8 +202,11 @@ lazy val java2d = project
       "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
     libraryDependencies ++=
-      (if (scalaBinaryVersion == "2.13") List("org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided)
-      else Nil)
+      (if (scalaBinaryVersion == "2.13")
+         List(
+           "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided
+         )
+       else Nil)
   )
   .dependsOn(coreJvm, interactJvm)
 
@@ -246,7 +249,10 @@ lazy val golden = project
   .settings(
     commonSettings,
     moduleName := "doodle-golden",
-    libraryDependencies ++= Seq(Dependencies.munit.value, Dependencies.batik.value),
+    libraryDependencies ++= Seq(
+      Dependencies.munit.value,
+      Dependencies.batik.value
+    ),
     testFrameworks += new TestFramework("munit.Framework")
   )
   .dependsOn(coreJvm, imageJvm, interactJvm, java2d)
@@ -259,5 +265,6 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
     moduleName := "doodle-examples"
   )
 
-lazy val examplesJvm = examples.jvm.dependsOn(coreJvm, interactJvm, imageJvm, java2d)
+lazy val examplesJvm =
+  examples.jvm.dependsOn(coreJvm, interactJvm, imageJvm, java2d)
 lazy val examplesJs = examples.js.dependsOn(coreJs, interactJs, imageJs)
