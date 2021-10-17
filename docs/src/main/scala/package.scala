@@ -1,5 +1,6 @@
 package object docs {
   import java.io.File
+  import cats.effect.unsafe.IORuntime
   import doodle.image.Image
   import doodle.effect.Writer._
   import doodle.java2d._
@@ -15,7 +16,7 @@ package object docs {
 
   implicit class PictureSaveSyntax(picture: Picture[Unit]) {
     import doodle.syntax._
-    def save(filename: String): Unit = {
+    def save(filename: String)(implicit r: IORuntime): Unit = {
       val dir = new File("docs/src/main/mdoc/")
       val file = new File(dir, filename)
       picture.write[Png](file)

@@ -26,8 +26,7 @@ import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.syntax.animationRenderer._
-import monix.execution.Scheduler
-import monix.reactive.Observable
+import fs2.{Pure, Stream}
 
 import scala.annotation.tailrec
 
@@ -348,10 +347,10 @@ trait Transducer[Output] { self =>
       def stopped(state: State): Boolean = false
     }
 
-  /** Convert this transducer to an monix.reactive.Observable
+  /** Convert this transducer to a fs2.Stream
     */
-  def toObservable: Observable[Output] =
-    Observable.unfold(self.initial) { state =>
+  def toStream: Stream[Pure, Output] =
+    Stream.unfold(self.initial) { state =>
       if (self.stopped(state)) None
       else Some((self.output(state), self.next(state)))
     }
@@ -363,10 +362,9 @@ trait Transducer[Output] { self =>
       a: AnimationRenderer[Canvas],
       e: Renderer[Alg, F, Frame, Canvas],
       r: Redraw[Canvas],
-      s: Scheduler,
       ev: Output <:< Picture[Alg, F, Unit]
   ): Unit =
-    this.toObservable.map(ev(_)).animateFrames(frame)
+    this.toStream.map(ev(_)).animateFrames(frame)
 }
 object Transducer {
 

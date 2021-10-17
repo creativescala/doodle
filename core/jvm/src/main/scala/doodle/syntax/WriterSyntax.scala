@@ -18,6 +18,7 @@ package doodle
 package syntax
 
 import cats.effect.IO
+import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.Writer
@@ -32,22 +33,26 @@ trait WriterSyntax {
     // type parameter when calling syntax methods.
     class WriterOpsHelper[Format](picture: Picture[Alg, F, A]) {
       def apply[Frame](file: String)(implicit
-          w: Writer[Alg, F, Frame, Format]
+          w: Writer[Alg, F, Frame, Format],
+          r: IORuntime
       ): A =
         apply(new File(file))
 
       def apply[Frame](file: File)(implicit
-          w: Writer[Alg, F, Frame, Format]
+          w: Writer[Alg, F, Frame, Format],
+          r: IORuntime
       ): A =
         w.write(file, picture).unsafeRunSync()
 
       def apply[Frame](file: String, frame: Frame)(implicit
-          w: Writer[Alg, F, Frame, Format]
+          w: Writer[Alg, F, Frame, Format],
+          r: IORuntime
       ): A =
         apply(new File(file), frame)
 
       def apply[Frame](file: File, frame: Frame)(implicit
-          w: Writer[Alg, F, Frame, Format]
+          w: Writer[Alg, F, Frame, Format],
+          r: IORuntime
       ): A =
         w.write(file, frame, picture).unsafeRunSync()
     }

@@ -184,7 +184,7 @@ lazy val interact = crossProject(JSPlatform, JVMPlatform)
   .in(file("interact"))
   .settings(
     commonSettings,
-    libraryDependencies += Dependencies.monix.value,
+    libraryDependencies += Dependencies.fs2.value,
     moduleName := "doodle-interact"
   )
 
@@ -235,7 +235,7 @@ lazy val reactor = crossProject(JSPlatform, JVMPlatform)
   .in(file("reactor"))
   .settings(
     commonSettings,
-    libraryDependencies += Dependencies.monix.value,
+    libraryDependencies += Dependencies.fs2.value,
     moduleName := "doodle-reactor"
   )
 

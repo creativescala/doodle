@@ -9,9 +9,7 @@ import doodle.algebra.Picture
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
-import monix.execution.Scheduler
-import monix.reactive.Observable
-import monix.reactive.ObservableLike
+import fs2.{Pure, Stream}
 
 import scala.concurrent.duration.FiniteDuration
 
@@ -27,17 +25,17 @@ trait AnimationRendererSyntax {
 
   val theNullCallback = nullCallback _
 
-  implicit class AnimateObservableOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Observable[Picture[Alg, F, A]]
+  implicit class AnimateStreamOps[Alg[x[_]] <: Algebra[x], F[_], A](
+      frames: Stream[F, Picture[Alg, F, A]]
   ) {
 
-    /** Makes this Observable produce frames with the given period between
-      * frames. This is useful if the Observable is producing frames too quickly
-      * or slowly for the desired animation.
+    /** Makes this Stream produce frames with the given period between frames.
+      * This is useful if the Observable is producing frames too quickly or
+      * slowly for the desired animation.
       *
       * A convenience derived from the throttle method on Observable.
       */
-    def withFrameRate(period: FiniteDuration): Observable[Picture[Alg, F, A]] =
+    def withFrameRate(period: FiniteDuration): Stream[Picture[Alg, F, A]] =
       frames.throttle(period, 1)
 
     /** Create an effect that, when run, will render an `Observable` that is
