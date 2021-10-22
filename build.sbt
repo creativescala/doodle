@@ -15,10 +15,9 @@
  */
 lazy val scala213 = "2.13.6"
 lazy val scala3 = "3.0.1"
-lazy val supportedScalaVersions = List(scala213, scala3)
 
-ThisBuild / scalaVersion := scala3
-ThisBuild / crossScalaVersions := supportedScalaVersions
+ThisBuild / scalaVersion := crossScalaVersions.value.head
+ThisBuild / crossScalaVersions := List(scala3, scala213)
 ThisBuild / useSuperShell := false
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
 ThisBuild / semanticdbEnabled := true
@@ -37,7 +36,6 @@ commands += Command.command("build") { state =>
 }
 
 lazy val commonSettings = Seq(
-  crossScalaVersions := supportedScalaVersions,
   libraryDependencies ++= Seq(
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
@@ -58,8 +56,6 @@ lazy val commonSettings = Seq(
 lazy val root = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
   .settings(
-    // crossScalaVersions must be set to Nil on the aggregating project
-    crossScalaVersions := Nil,
     moduleName := "doodle",
     paradoxTheme := Some(builtinParadoxTheme("generic")),
     ScalaUnidoc / unidoc / unidocProjectFilter :=
