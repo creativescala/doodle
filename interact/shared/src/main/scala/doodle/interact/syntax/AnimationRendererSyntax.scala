@@ -35,7 +35,7 @@ trait AnimationRendererSyntax {
       * This is useful if the Stream is producing frames too quickly or slowly
       * for the desired animation.
       *
-      * A convenience derived from the throttle method on Stream.
+      * A convenience derived from the `metered` method on `Stream`.
       */
     def withFrameRate(period: FiniteDuration): Stream[IO, Picture[Alg, F, A]] =
       frames.metered(period)
@@ -78,7 +78,7 @@ trait AnimationRendererSyntax {
       a.animate(canvas)(frames)
     }
 
-    /** Render a `Stream` that is generating frames an appropriate rate for
+    /** Render a `Stream` that is generating frames at an appropriate rate for
       * animation.
       */
     def animateWithCanvas[Canvas](
