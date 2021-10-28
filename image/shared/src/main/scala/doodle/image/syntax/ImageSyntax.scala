@@ -18,6 +18,7 @@ package doodle
 package image
 package syntax
 
+import cats.effect.IO
 import cats.effect.unsafe.IORuntime
 import doodle.algebra.Picture
 import doodle.effect.DefaultRenderer
@@ -58,6 +59,7 @@ trait ImageSyntax {
       } yield a).unsafeRunAsync(unitCallback)
 
     def write[Format] = new ImageWriterOps[Format](image)
+    def writeToIO[Format] = new ImageWriterIOOps[Format](image)
   }
 
   /** This strange construction allows the user to write
@@ -91,5 +93,36 @@ trait ImageSyntax {
     ): Unit =
       w.write(file, frame, Picture((algebra: Alg[F]) => image.compile(algebra)))
         .unsafeRunAsync(unitCallback)
+  }
+
+  /** This strange construction allows the user to write
+    * `anImage.write[AFormat](filename)` without having to specify other, mostly
+    * irrelevant to the user, type parameters.
+    */
+  final class ImageWriterIOOps[Format](image: Image) {
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String)(implicit
+        w: Writer[Alg, F, Frame, Format],
+        r: IORuntime
+    ): IO[Unit] =
+      apply(new File(file))
+
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](
+        file: File
+    )(implicit w: Writer[Alg, F, Frame, Format], r: IORuntime): IO[Unit] =
+      w.write(file, Picture((algebra: Alg[F]) => image.compile(algebra)))
+
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
+        implicit
+        w: Writer[Alg, F, Frame, Format],
+        r: IORuntime
+    ): IO[Unit] =
+      apply(new File(file), frame)
+
+    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File, frame: Frame)(
+        implicit
+        w: Writer[Alg, F, Frame, Format],
+        r: IORuntime
+    ): IO[Unit] =
+      w.write(file, frame, Picture((algebra: Alg[F]) => image.compile(algebra)))
   }
 }

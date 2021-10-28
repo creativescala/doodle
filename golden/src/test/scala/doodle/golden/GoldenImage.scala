@@ -18,8 +18,14 @@ trait GoldenImage extends Golden { self: FunSuite =>
       val temp = new File(s"${goldenDir}/${name}.tmp.png")
 
       try {
-        image.write[Png](temp)
-        imageDiff(file, temp)
+        // We must do these operations sequentially. If we used the `write`
+        // syntax instead of the `writeToIO` syntax the writing occurs
+        // asynchronously as may not finish before we attempt to calculate the
+        // image diff.
+        image
+          .writeToIO[Png](temp)
+          .map(_ => imageDiff(file, temp))
+          .unsafeRunSync()
       } finally {
         if (temp.exists()) temp.delete()
         ()
