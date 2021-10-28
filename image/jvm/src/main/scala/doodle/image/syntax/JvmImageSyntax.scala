@@ -18,6 +18,7 @@ package doodle
 package image
 package syntax
 
+import cats.effect.unsafe.IORuntime
 import doodle.algebra.Picture
 import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
@@ -35,7 +36,8 @@ trait JvmImageSyntax extends ImageSyntax {
     */
   final class Base64Ops[Format](image: Image) {
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](implicit
-        w: Base64[Alg, F, Frame, Format]
+        w: Base64[Alg, F, Frame, Format],
+        runtime: IORuntime
     ): B64[Format] = {
       val picture = Picture((algebra: Alg[F]) => image.compile(algebra))
       val (_, base64) = w.base64(picture).unsafeRunSync()

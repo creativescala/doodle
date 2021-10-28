@@ -2,10 +2,10 @@ package doodle
 package reactor
 package examples
 
+import cats.effect.unsafe.implicits.global
 import doodle.core._
 import doodle.image.Image
 import doodle.java2d._
-import monix.execution.Scheduler.Implicits.global
 
 object Easing {
   def easeIn(t: Double): Double =

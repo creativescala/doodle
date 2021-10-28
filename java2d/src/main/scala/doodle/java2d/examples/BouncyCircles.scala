@@ -26,29 +26,27 @@ object BouncyCircles {
   import doodle.java2d.effect._
   import doodle.interact.easing._
   import doodle.interact.syntax._
-  import monix.reactive.Observable
-  import monix.execution.Scheduler.Implicits.global
+  import fs2.Stream
+  import cats.effect.IO
+  import cats.effect.unsafe.implicits.global
 
   val frame = Frame.size(600, 600).background(Color.darkMagenta)
   val steps = 60 * 10
 
-  def bounce(easing: Easing): Observable[Double] =
-    easing.toObservable(steps) ++
-      easing.toObservable(steps) ++
-      easing.toObservable(steps) ++
-      easing.toObservable(steps)
+  def bounce(easing: Easing): Stream[IO, Double] =
+    easing.toStream(steps) ++
+      easing.toStream(steps) ++
+      easing.toStream(steps) ++
+      easing.toStream(steps)
 
-  val animation: Observable[Picture[Unit]] =
-    Observable
-      .zip6(
-        bounce(Easing.linear),
-        bounce(Easing.quadratic),
-        bounce(Easing.cubic),
-        bounce(Easing.sin),
-        bounce(Easing.circle),
-        bounce(Easing.back)
-      )
-      .map { case (r1, r2, r3, r4, r5, r6) =>
+  val animation: Stream[IO, Picture[Unit]] =
+    bounce(Easing.linear)
+      .zip(bounce(Easing.quadratic))
+      .zip(bounce(Easing.cubic))
+      .zip(bounce(Easing.sin))
+      .zip(bounce(Easing.circle))
+      .zip(bounce(Easing.back))
+      .map { case (((((r1, r2), r3), r4), r5), r6) =>
         circle[Algebra, Drawing](r1 * 85 + 10)
           .strokeColor(Color.magenta.spin(180.degrees))
           .at(r1 * 400 - 200, 250)

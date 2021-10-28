@@ -6,7 +6,8 @@ import doodle.algebra.Picture
 import doodle.core._
 import doodle.language.Basic
 import doodle.syntax._
-import monix.reactive.Observable
+import fs2.Pure
+import fs2.Stream
 
 object Orbit {
 
@@ -15,8 +16,8 @@ object Orbit {
       .fillColor(Color.brown.spin(angle))
       .at(Point(200, angle))
 
-  def frames[F[_]]: Observable[Picture[Basic, F, Unit]] =
-    Observable
+  def frames[F[_]]: Stream[Pure, Picture[Basic, F, Unit]] =
+    Stream
       .range(0, 360, 1)
       .map(a => a.toDouble.degrees)
       .map(planet _)

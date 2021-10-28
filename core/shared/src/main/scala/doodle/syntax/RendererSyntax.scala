@@ -18,6 +18,7 @@ package doodle
 package syntax
 
 import cats.effect.IO
+import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.DefaultRenderer
@@ -42,7 +43,9 @@ trait RendererSyntax {
       * options for this `Renderer`.
       */
     def draw[Frame, Canvas](cb: Either[Throwable, A] => Unit = nullCallback _)(
-        implicit renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+        implicit
+        renderer: DefaultRenderer[Alg, F, Frame, Canvas],
+        r: IORuntime
     ): Unit =
       drawToIO.unsafeRunAsync(cb)
 
@@ -52,7 +55,7 @@ trait RendererSyntax {
     def drawWithFrame[Frame, Canvas](
         frame: Frame,
         cb: Either[Throwable, A] => Unit = nullCallback _
-    )(implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit =
+    )(implicit renderer: Renderer[Alg, F, Frame, Canvas], r: IORuntime): Unit =
       (for {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(picture)
@@ -64,7 +67,7 @@ trait RendererSyntax {
     def drawWithCanvas[Canvas](
         canvas: Canvas,
         cb: Either[Throwable, A] => Unit = nullCallback _
-    )(implicit renderer: Renderer[Alg, F, _, Canvas]): Unit =
+    )(implicit renderer: Renderer[Alg, F, _, Canvas], r: IORuntime): Unit =
       drawWithCanvasToIO(canvas).unsafeRunAsync(cb)
 
     /** Create an effect that, when run, will draw `Picture` on the default

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 lazy val scala213 = "2.13.6"
-lazy val scala3 = "3.0.1"
+lazy val scala3 = "3.1.0"
+lazy val supportedScalaVersions = List(scala213, scala3)
 
 ThisBuild / scalaVersion := crossScalaVersions.value.head
 ThisBuild / crossScalaVersions := List(scala3, scala213)
@@ -180,7 +181,7 @@ lazy val interact = crossProject(JSPlatform, JVMPlatform)
   .in(file("interact"))
   .settings(
     commonSettings,
-    libraryDependencies += Dependencies.monix.value,
+    libraryDependencies += Dependencies.fs2.value,
     moduleName := "doodle-interact"
   )
 
@@ -197,6 +198,7 @@ lazy val java2d = project
     libraryDependencies ++= Seq(
       "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
+    libraryDependencies += Dependencies.fs2.value,
     libraryDependencies ++=
       (if (scalaBinaryVersion == "2.13")
          List(
@@ -231,7 +233,7 @@ lazy val reactor = crossProject(JSPlatform, JVMPlatform)
   .in(file("reactor"))
   .settings(
     commonSettings,
-    libraryDependencies += Dependencies.monix.value,
+    libraryDependencies += Dependencies.fs2.value,
     moduleName := "doodle-reactor"
   )
 

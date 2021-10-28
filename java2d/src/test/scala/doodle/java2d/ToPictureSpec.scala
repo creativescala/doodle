@@ -1,6 +1,7 @@
 package doodle
 package java2d
 
+import cats.effect.unsafe.implicits.global
 import doodle.algebra.ToPicture
 import doodle.core.{Base64 => B64}
 import doodle.effect.Writer._

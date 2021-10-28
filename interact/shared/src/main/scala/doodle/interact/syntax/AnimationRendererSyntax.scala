@@ -4,14 +4,14 @@ package syntax
 
 import cats.Monoid
 import cats.effect.IO
+import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
-import monix.execution.Scheduler
-import monix.reactive.Observable
-import monix.reactive.ObservableLike
+import fs2.Pure
+import fs2.Stream
 
 import scala.concurrent.duration.FiniteDuration
 
@@ -27,26 +27,25 @@ trait AnimationRendererSyntax {
 
   val theNullCallback = nullCallback _
 
-  implicit class AnimateObservableOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Observable[Picture[Alg, F, A]]
+  implicit class AnimateStreamOps[Alg[x[_]] <: Algebra[x], F[_], A](
+      frames: Stream[IO, Picture[Alg, F, A]]
   ) {
 
-    /** Makes this Observable produce frames with the given period between
-      * frames. This is useful if the Observable is producing frames too quickly
-      * or slowly for the desired animation.
+    /** Makes this Stream produce frames with the given period between frames.
+      * This is useful if the Stream is producing frames too quickly or slowly
+      * for the desired animation.
       *
-      * A convenience derived from the throttle method on Observable.
+      * A convenience derived from the `metered` method on `Stream`.
       */
-    def withFrameRate(period: FiniteDuration): Observable[Picture[Alg, F, A]] =
-      frames.throttle(period, 1)
+    def withFrameRate(period: FiniteDuration): Stream[IO, Picture[Alg, F, A]] =
+      frames.metered(period)
 
-    /** Create an effect that, when run, will render an `Observable` that is
+    /** Create an effect that, when run, will render a `Stream` that is
       * generating frames an appropriate rate for animation.
       */
     def animateToIO[Frame, Canvas](frame: Frame)(implicit
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
-        s: Scheduler,
         m: Monoid[A]
     ): IO[A] =
       (for {
@@ -54,7 +53,7 @@ trait AnimationRendererSyntax {
         result <- a.animate(canvas)(frames)
       } yield result)
 
-    /** Render an `Observable` that is generating frames an appropriate rate for
+    /** Render a `Stream` that is generating frames an appropriate rate for
       * animation.
       */
     def animate[Frame, Canvas](
@@ -63,24 +62,23 @@ trait AnimationRendererSyntax {
     )(implicit
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
-        s: Scheduler,
-        m: Monoid[A]
+        m: Monoid[A],
+        runtime: IORuntime
     ): Unit =
       animateToIO(frame).unsafeRunAsync(cb)
 
-    /** Create an effect that, when run, will render an `Observable` that is
+    /** Create an effect that, when run, will render a `Stream` that is
       * generating frames an appropriate rate for animation.
       */
     def animateWithCanvasToIO[Canvas](canvas: Canvas)(implicit
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
-        s: Scheduler,
         m: Monoid[A]
     ): IO[A] = {
       a.animate(canvas)(frames)
     }
 
-    /** Render an `Observable` that is generating frames an appropriate rate for
+    /** Render a `Stream` that is generating frames at an appropriate rate for
       * animation.
       */
     def animateWithCanvas[Canvas](
@@ -89,15 +87,15 @@ trait AnimationRendererSyntax {
     )(implicit
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
-        s: Scheduler,
-        m: Monoid[A]
+        m: Monoid[A],
+        runtime: IORuntime
     ): Unit = {
       animateWithCanvasToIO(canvas).unsafeRunAsync(cb)
     }
   }
 
-  implicit class AnimateToObservableOps[Alg[x[_]] <: Algebra[x], F[_], G[_], A](
-      frames: G[Picture[Alg, F, A]]
+  implicit class AnimateToStreamOps[Alg[x[_]] <: Algebra[x], F[_], A](
+      frames: Stream[IO, Picture[Alg, F, A]]
   ) {
 
     /** Create an effect that, when run, will animate a source of frames that is
@@ -107,13 +105,11 @@ trait AnimationRendererSyntax {
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         r: Redraw[Canvas],
-        s: Scheduler,
-        o: ObservableLike[G],
         m: Monoid[A]
     ): IO[A] = {
       (for {
         canvas <- e.canvas(frame)
-        animatable = o(frames).zip(r.redraw(canvas)).map { case (frame, _) =>
+        animatable = frames.zip(r.redraw(canvas)).map { case (frame, _) =>
           frame
         }
         result <- a.animate(canvas)(animatable)
@@ -130,9 +126,8 @@ trait AnimationRendererSyntax {
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, Frame, Canvas],
         r: Redraw[Canvas],
-        s: Scheduler,
-        o: ObservableLike[G],
-        m: Monoid[A]
+        m: Monoid[A],
+        runtime: IORuntime
     ): Unit = {
       animateFramesToIO(frame).unsafeRunAsync(cb)
     }
@@ -141,12 +136,10 @@ trait AnimationRendererSyntax {
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         r: Redraw[Canvas],
-        s: Scheduler,
-        o: ObservableLike[G],
         m: Monoid[A]
     ): IO[A] = {
-      val animatable: Observable[Picture[Alg, F, A]] =
-        o(frames).zip(r.redraw(canvas)).map { case (frame, _) => frame }
+      val animatable: Stream[IO, Picture[Alg, F, A]] =
+        frames.zip(r.redraw(canvas)).map { case (frame, _) => frame }
 
       animatable.animateWithCanvasToIO(canvas)
     }
@@ -158,9 +151,8 @@ trait AnimationRendererSyntax {
         a: AnimationRenderer[Canvas],
         e: Renderer[Alg, F, _, Canvas],
         r: Redraw[Canvas],
-        s: Scheduler,
-        o: ObservableLike[G],
-        m: Monoid[A]
+        m: Monoid[A],
+        runtime: IORuntime
     ): Unit = {
       animateFramesWithCanvasToIO(canvas).unsafeRunAsync(cb)
     }

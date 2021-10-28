@@ -25,8 +25,9 @@ object PulsingCircle {
   import doodle.syntax._
   import doodle.java2d.effect._
   import doodle.interact.syntax._
-  import monix.reactive.Observable
-  import monix.execution.Scheduler.Implicits.global
+  import fs2.Stream
+  import cats.effect.IO
+  import cats.effect.unsafe.implicits.global
 
   val frame = Frame.size(600, 600).background(Color.midnightBlue)
 
@@ -79,9 +80,8 @@ object PulsingCircle {
           )
     }
 
-  val animation: Observable[Picture[Unit]] =
-    Observable
-      .repeat(1)
+  val animation: Stream[IO, Picture[Unit]] =
+    Stream(1).repeat
       .scan((1, 0)) { (state, _) =>
         val (inc, count) = state
         if (count >= maxNumberOfDisks) (-1, maxNumberOfDisks - 1)

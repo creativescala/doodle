@@ -18,6 +18,7 @@ package doodle
 package syntax
 
 import cats.effect.IO
+import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.core.{Base64 => B64}
@@ -31,12 +32,14 @@ trait Base64Syntax {
     // type parameter when calling syntax methods.
     class Base64OpsHelper[Format](picture: Picture[Alg, F, A]) {
       def apply[Frame]()(implicit
-          w: Base64[Alg, F, Frame, Format]
+          w: Base64[Alg, F, Frame, Format],
+          r: IORuntime
       ): (A, B64[Format]) =
         w.base64(picture).unsafeRunSync()
 
       def apply[Frame](frame: Frame)(implicit
-          w: Base64[Alg, F, Frame, Format]
+          w: Base64[Alg, F, Frame, Format],
+          r: IORuntime
       ): (A, B64[Format]) =
         w.base64(frame, picture).unsafeRunSync()
     }

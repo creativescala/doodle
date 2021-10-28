@@ -25,9 +25,10 @@ object Dash {
   import doodle.syntax._
   import doodle.java2d.effect._
   import doodle.interact.syntax._
-  import monix.reactive.Observable
+  import fs2.Stream
+  import cats.effect.IO
   import scala.concurrent.duration._
-  import monix.execution.Scheduler.Implicits.global
+  import cats.effect.unsafe.implicits.global
 
   val frame = Frame.size(600, 600).background(Color.midnightBlue)
   val maxSize = 300
@@ -46,10 +47,9 @@ object Dash {
       .strokeColor(Color.limeGreen)
       .strokeWidth(5.0)
 
-  val animation: Observable[Picture[Unit]] =
-    Observable
-      .repeat(1)
-      .sample(200.millis)
+  val animation: Stream[IO, Picture[Unit]] =
+    Stream(1).repeat
+      .debounce[IO](200.millis)
       .scan((1, 0)) { (state, _) =>
         val (inc, size) = state
         if (size >= maxSize) (-increment, maxSize - increment)

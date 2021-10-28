@@ -3,6 +3,7 @@ package image
 package examples
 
 // Example that demonstrates writing to a file
+import cats.effect.unsafe.implicits.global
 import doodle.core._
 import doodle.effect.Writer._
 import doodle.image.syntax._
