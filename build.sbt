@@ -15,10 +15,9 @@
  */
 lazy val scala213 = "2.13.6"
 lazy val scala3 = "3.1.0"
-lazy val supportedScalaVersions = List(scala213, scala3)
 
-ThisBuild / scalaVersion := crossScalaVersions.value.head
 ThisBuild / crossScalaVersions := List(scala3, scala213)
+ThisBuild / scalaVersion := crossScalaVersions.value.head
 ThisBuild / useSuperShell := false
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
 ThisBuild / semanticdbEnabled := true
