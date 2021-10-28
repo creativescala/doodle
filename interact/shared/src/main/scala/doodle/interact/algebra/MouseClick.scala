@@ -2,8 +2,10 @@ package doodle
 package interact
 package algebra
 
+import cats.effect.IO
 import doodle.core.Point
-import fs2.{Pure, Stream}
+import fs2.Pure
+import fs2.Stream
 
 /** Algebra for generating a stream of events corresponding to mouse clicks.
   * Whenever the mouse is clicked a new event is generated with the location of
@@ -22,5 +24,5 @@ trait MouseClick[Canvas] {
     * On systems, such as the browser, that will emulate touch events as mouse
     * events this will also return such touch events.
     */
-  def mouseClick(canvas: Canvas): Stream[Pure, Point]
+  def mouseClick(canvas: Canvas): Stream[IO, Point]
 }

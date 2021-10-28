@@ -1,6 +1,7 @@
 package docs
 package algebra
 
+import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import doodle.algebra.Picture
 import doodle.algebra.Text
@@ -10,6 +11,7 @@ import doodle.language.Basic
 import doodle.syntax._
 
 object BasicWithText {
+
   def basicWithText[Alg[x[_]] <: Basic[x] with Text[x], F[_]]
       : Picture[Alg, F, Unit] = {
     val redCircle = circle[Alg, F](100).strokeColor(Color.red)

@@ -1,6 +1,7 @@
 package docs
 package algebra
 
+import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import doodle.core._
 import doodle.java2d._

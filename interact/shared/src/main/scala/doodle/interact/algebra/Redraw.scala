@@ -2,7 +2,9 @@ package doodle
 package interact
 package algebra
 
-import fs2.{Pure, Stream}
+import cats.effect.IO
+import fs2.Pure
+import fs2.Stream
 
 /** Algebra for generating a stream of events indicating when the canvas is
   * ready to redraw. The algebra applies to a Renderer's Canvas data type
@@ -14,5 +16,5 @@ trait Redraw[Canvas] {
     * redraw. The value is the approximate time in millisecond since a frame was
     * last rendered.
     */
-  def redraw(canvas: Canvas): Stream[Pure, Int]
+  def redraw(canvas: Canvas): Stream[IO, Int]
 }

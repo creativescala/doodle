@@ -1,6 +1,7 @@
 package doodle
 package golden
 
+import cats.effect.unsafe.implicits.global
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.Writer

@@ -22,8 +22,7 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import monix.execution.Scheduler
-import monix.reactive.Observable
+import fs2.Stream
 
 import java.io.File
 
@@ -35,6 +34,6 @@ trait AnimationWriter[Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
   def write[A](
       file: File,
       description: Frame,
-      frames: Observable[Picture[Alg, F, A]]
-  )(implicit s: Scheduler, m: Monoid[A]): IO[A]
+      frames: Stream[IO, Picture[Alg, F, A]]
+  )(implicit m: Monoid[A]): IO[A]
 }

@@ -19,6 +19,7 @@ package interact
 package animation
 
 import cats._
+import cats.effect.unsafe.IORuntime
 import cats.implicits._
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
@@ -26,7 +27,8 @@ import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.syntax.animationRenderer._
-import fs2.{Pure, Stream}
+import fs2.Pure
+import fs2.Stream
 
 import scala.annotation.tailrec
 
@@ -362,7 +364,8 @@ trait Transducer[Output] { self =>
       a: AnimationRenderer[Canvas],
       e: Renderer[Alg, F, Frame, Canvas],
       r: Redraw[Canvas],
-      ev: Output <:< Picture[Alg, F, Unit]
+      ev: Output <:< Picture[Alg, F, Unit],
+      runtime: IORuntime
   ): Unit =
     this.toStream.map(ev(_)).animateFrames(frame)
 }

@@ -24,15 +24,18 @@ import doodle.effect.DefaultRenderer
 import javax.swing.JFrame
 
 object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Canvas] {
+
+  import cats.effect.unsafe.implicits.global
+
   private var jFrames: List[JFrame] = List.empty
 
   val default: Frame = Frame.fitToPicture()
 
   def canvas(description: Frame): IO[Canvas] =
-    IO {
-      val jFrame = new Canvas(description)
-      jFrames.synchronized { jFrames = jFrame :: jFrames }
-      jFrame
+    Canvas(description).flatMap { jFrame =>
+      IO {
+        jFrames.synchronized { jFrames = jFrame :: jFrames }
+      }.as(jFrame)
     }
 
   def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =

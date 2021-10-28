@@ -19,6 +19,7 @@ package java2d
 package effect
 
 import cats.effect.IO
+import cats.effect.unsafe.IORuntime
 import doodle.core.BoundingBox
 import doodle.core.Normalized
 import doodle.core.Transform
@@ -35,7 +36,8 @@ import javax.swing.JPanel
 import javax.swing.SwingUtilities
 import scala.collection.mutable.ArrayBuffer
 
-final class Java2DPanel(frame: Frame) extends JPanel {
+final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
+    extends JPanel {
   import Java2DPanel.RenderRequest
 
   /** The channel communicates between the Swing thread and outside threads

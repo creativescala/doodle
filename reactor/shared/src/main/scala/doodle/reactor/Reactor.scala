@@ -1,6 +1,7 @@
 package doodle
 package reactor
 
+import cats.effect.unsafe.IORuntime
 import doodle.core.Point
 import doodle.effect._
 import doodle.image.Image
@@ -67,16 +68,20 @@ final case class Reactor[A](
 
   def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](
       frame: Frame
-  )(implicit renderer: Renderer[Alg, F, Frame, Canvas]): Unit = {
+  )(implicit
+      renderer: Renderer[Alg, F, Frame, Canvas],
+      runtime: IORuntime
+  ): Unit = {
     import doodle.image.syntax._
-    this.image.draw(frame)(renderer)
+    this.image.draw(frame)(renderer, runtime)
   }
 
   def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(implicit
-      renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+      renderer: DefaultRenderer[Alg, F, Frame, Canvas],
+      runtime: IORuntime
   ): Unit = {
     import doodle.image.syntax._
-    this.image.draw()(renderer)
+    this.image.draw()(renderer, runtime)
   }
 }
 object Reactor {

@@ -19,9 +19,11 @@ package java2d
 package effect
 
 import cats.effect.IO
+import cats.effect.std.Queue
+import cats.effect.unsafe.IORuntime
 import doodle.core.Point
 import doodle.core.Transform
-import monix.reactive.subjects.PublishSubject
+import fs2.Stream
 
 import java.awt.event._
 import java.util.concurrent.atomic.AtomicReference
@@ -31,8 +33,14 @@ import javax.swing.WindowConstants
 
 /** A [[Canvas]] is an area on the screen to which Pictures can be drawn.
   */
-final class Canvas(frame: Frame) extends JFrame(frame.title) {
-  val panel = new Java2DPanel(frame)
+final class Canvas private (
+    frame: Frame,
+    redrawQueue: Queue[IO, Int],
+    mouseClickQueue: Queue[IO, Point],
+    mouseMoveQueue: Queue[IO, Point]
+)(implicit runtime: IORuntime)
+    extends JFrame(frame.title) {
+  private val panel = new Java2DPanel(frame)
 
   /** The current global transform from logical to screen coordinates
     */
@@ -54,7 +62,7 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
       panel.render(Java2DPanel.RenderRequest(picture, frame, cb))
     }
 
-    IO.async(register).map { result =>
+    IO.async_(register).map { result =>
       val inverseTx = Java2d.inverseTransform(
         result.boundingBox,
         result.width,
@@ -66,9 +74,9 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
     }
   }
 
-  val redraw = PublishSubject[Int]()
-  val frameRateMs = (1000.0 * (1 / 60.0)).toInt
-  val frameEvent = {
+  val redraw: Stream[IO, Int] = Stream.fromQueueUnterminated(redrawQueue)
+  private val frameRateMs = (1000.0 * (1 / 60.0)).toInt
+  private val frameEvent = {
 
     /** Delay between frames when rendering at 60fps */
     var firstFrame = true
@@ -79,28 +87,29 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
         if (firstFrame) {
           firstFrame = false
           lastFrameTime = now
-          redraw.onNext(0)
+          redrawQueue.offer(0).unsafeRunSync()
           ()
         } else {
-          redraw.onNext((now - lastFrameTime).toInt)
+          redrawQueue.offer((now - lastFrameTime).toInt).unsafeRunSync()
           lastFrameTime = now
         }
       }
     }
   }
-  val timer = new Timer(frameRateMs, frameEvent)
+  private val timer = new Timer(frameRateMs, frameEvent)
 
-  val mouseClick = PublishSubject[Point]()
+  val mouseClick: Stream[IO, Point] =
+    Stream.fromQueueUnterminated(mouseClickQueue)
+
   this.addMouseListener(
     new MouseListener {
-      import scala.concurrent.duration.Duration
-      import scala.concurrent.Await
 
       def mouseClicked(e: MouseEvent): Unit = {
         val pt = e.getPoint()
         val inverseTx = currentInverseTx.get()
-        val ack = mouseClick.onNext(inverseTx(Point(pt.getX(), pt.getY())))
-        Await.ready(ack, Duration.Inf)
+        val ack = mouseClickQueue
+          .offer(inverseTx(Point(pt.getX(), pt.getY())))
+          .unsafeRunSync()
         ()
       }
 
@@ -111,18 +120,18 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
     }
   )
 
-  val mouseMove = PublishSubject[Point]()
+  val mouseMove: Stream[IO, Point] =
+    Stream.fromQueueUnterminated(mouseMoveQueue)
   this.addMouseMotionListener(
     new MouseMotionListener {
-      import scala.concurrent.duration.Duration
-      import scala.concurrent.Await
 
       def mouseDragged(e: MouseEvent): Unit = ()
       def mouseMoved(e: MouseEvent): Unit = {
         val pt = e.getPoint()
         val inverseTx = currentInverseTx.get()
-        val ack = mouseMove.onNext(inverseTx(Point(pt.getX(), pt.getY())))
-        Await.ready(ack, Duration.Inf)
+        val ack = mouseMoveQueue
+          .offer(inverseTx(Point(pt.getX(), pt.getY())))
+          .unsafeRunSync()
         ()
       }
     }
@@ -141,5 +150,19 @@ final class Canvas(frame: Frame) extends JFrame(frame.title) {
   setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
   repaint()
   timer.start()
+
+}
+
+object Canvas {
+
+  def apply(frame: Frame)(implicit runtime: IORuntime): IO[Canvas] = {
+    import cats.implicits._
+    import cats.effect.implicits._
+    def eventQueue[A]: IO[Queue[IO, A]] = Queue.circularBuffer[IO, A](1)
+    (eventQueue[Int], eventQueue[Point], eventQueue[Point]).mapN {
+      (redrawQueue, mouseClickQueue, mouseMoveQueue) =>
+        new Canvas(frame, redrawQueue, mouseClickQueue, mouseMoveQueue)
+    }
+  }
 
 }
