@@ -101,27 +101,22 @@ trait ImageSyntax {
     */
   final class ImageWriterIOOps[Format](image: Image) {
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String)(implicit
-        w: Writer[Alg, F, Frame, Format],
-        r: IORuntime
+        w: Writer[Alg, F, Frame, Format]
     ): IO[Unit] =
       apply(new File(file))
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](
         file: File
-    )(implicit w: Writer[Alg, F, Frame, Format], r: IORuntime): IO[Unit] =
+    )(implicit w: Writer[Alg, F, Frame, Format]): IO[Unit] =
       w.write(file, Picture((algebra: Alg[F]) => image.compile(algebra)))
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: String, frame: Frame)(
-        implicit
-        w: Writer[Alg, F, Frame, Format],
-        r: IORuntime
+        implicit w: Writer[Alg, F, Frame, Format]
     ): IO[Unit] =
       apply(new File(file), frame)
 
     def apply[Alg[x[_]] <: Basic[x], F[_], Frame](file: File, frame: Frame)(
-        implicit
-        w: Writer[Alg, F, Frame, Format],
-        r: IORuntime
+        implicit w: Writer[Alg, F, Frame, Format]
     ): IO[Unit] =
       w.write(file, frame, Picture((algebra: Alg[F]) => image.compile(algebra)))
   }

@@ -3,7 +3,6 @@ package interact
 package algebra
 
 import cats.effect.IO
-import fs2.Pure
 import fs2.Stream
 
 /** Algebra for generating a stream of events indicating when the canvas is

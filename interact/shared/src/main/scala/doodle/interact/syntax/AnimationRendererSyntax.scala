@@ -10,7 +10,6 @@ import doodle.algebra.Picture
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
-import fs2.Pure
 import fs2.Stream
 
 import scala.concurrent.duration.FiniteDuration

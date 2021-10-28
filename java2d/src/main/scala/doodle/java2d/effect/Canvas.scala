@@ -107,7 +107,8 @@ final class Canvas private (
       def mouseClicked(e: MouseEvent): Unit = {
         val pt = e.getPoint()
         val inverseTx = currentInverseTx.get()
-        val ack = mouseClickQueue
+        // ack
+        mouseClickQueue
           .offer(inverseTx(Point(pt.getX(), pt.getY())))
           .unsafeRunSync()
         ()
@@ -129,7 +130,8 @@ final class Canvas private (
       def mouseMoved(e: MouseEvent): Unit = {
         val pt = e.getPoint()
         val inverseTx = currentInverseTx.get()
-        val ack = mouseMoveQueue
+        // ack
+        mouseMoveQueue
           .offer(inverseTx(Point(pt.getX(), pt.getY())))
           .unsafeRunSync()
         ()
@@ -157,7 +159,6 @@ object Canvas {
 
   def apply(frame: Frame)(implicit runtime: IORuntime): IO[Canvas] = {
     import cats.implicits._
-    import cats.effect.implicits._
     def eventQueue[A]: IO[Queue[IO, A]] = Queue.circularBuffer[IO, A](1)
     (eventQueue[Int], eventQueue[Point], eventQueue[Point]).mapN {
       (redrawQueue, mouseClickQueue, mouseMoveQueue) =>

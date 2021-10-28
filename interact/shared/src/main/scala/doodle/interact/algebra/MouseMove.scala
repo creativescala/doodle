@@ -4,7 +4,6 @@ package algebra
 
 import cats.effect.IO
 import doodle.core.Point
-import fs2.Pure
 import fs2.Stream
 
 /** Algebra for generating a stream of events giving the current mouse location.

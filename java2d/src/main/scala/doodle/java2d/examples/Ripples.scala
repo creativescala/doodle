@@ -26,7 +26,6 @@ object Ripples {
   import doodle.interact.syntax._
   import doodle.java2d.effect._
   import fs2.Stream
-  import cats.effect.IO
   import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
 
   import cats.instances.all._
