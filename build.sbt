@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-lazy val scala213 = "2.13.6"
+lazy val scala213 = "2.13.7"
 lazy val scala3 = "3.1.0"
 
 ThisBuild / crossScalaVersions := List(scala3, scala213)
