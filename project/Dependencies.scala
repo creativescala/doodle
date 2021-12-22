@@ -15,7 +15,7 @@ object Dependencies {
 
   val miniTestVersion = "2.9.6"
   val scalaCheckVersion = "1.15.4"
-  val munitVersion = "0.7.27"
+  val munitVersion = "0.7.29"
 
   // Libraries
   val catsEffect =

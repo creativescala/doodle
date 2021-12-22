@@ -37,6 +37,7 @@ commands += Command.command("build") { state =>
 
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
+    Dependencies.munit.value,
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
