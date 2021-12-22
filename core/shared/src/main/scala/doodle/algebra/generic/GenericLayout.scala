@@ -21,6 +21,7 @@ package generic
 import cats._
 import cats.data.IndexedStateT
 import cats.implicits._
+import doodle.core.Landmark
 import doodle.core.Transform
 
 trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
@@ -81,8 +82,12 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       }
     }
 
-  def at[A](img: Finalized[F, A], x: Double, y: Double): Finalized[F, A] =
+  def at[A](img: Finalized[F, A], landmark: Landmark): Finalized[F, A] =
     img.map { case (bb, rdr) =>
-      (bb.at(x, y), Renderable.transform(Transform.translate(x, y))(rdr))
+      val point = bb.eval(landmark)
+      (
+        bb.at(point),
+        Renderable.transform(Transform.translate(point.x, point.y))(rdr)
+      )
     }
 }

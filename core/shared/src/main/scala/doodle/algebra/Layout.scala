@@ -19,6 +19,7 @@ package algebra
 
 import cats.Semigroup
 import doodle.core.Angle
+import doodle.core.Landmark
 import doodle.core.Point
 import doodle.core.Vec
 
@@ -26,7 +27,7 @@ trait Layout[F[_]] extends Algebra[F] {
   def on[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
   def beside[A](left: F[A], right: F[A])(implicit s: Semigroup[A]): F[A]
   def above[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
-  def at[A](img: F[A], x: Double, y: Double): F[A]
+  def at[A](img: F[A], landmark: Landmark): F[A]
 
   // Derived methods
 
@@ -34,6 +35,9 @@ trait Layout[F[_]] extends Algebra[F] {
     on(top, bottom)
   def below[A](bottom: F[A], top: F[A])(implicit s: Semigroup[A]): F[A] =
     above(top, bottom)
+
+  def at[A](img: F[A], x: Double, y: Double): F[A] =
+    at(img, Landmark.point(x, y))
 
   def at[A](img: F[A], r: Double, a: Angle): F[A] = {
     val offset = Point(r, a)

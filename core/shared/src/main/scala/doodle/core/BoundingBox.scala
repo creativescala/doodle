@@ -59,7 +59,17 @@ final case class BoundingBox(
       -(this.height + that.height) / 2.0
     )
 
-  def at(x: Double, y: Double): BoundingBox = {
+  /** Evaluate the landmark relative to the origin of this bounding box,
+    * returning the location described by the landmark.
+    */
+  def eval(landmark: Landmark): Point = {
+    Point(landmark.x.eval(left, right), landmark.y.eval(bottom, top))
+  }
+
+  def at(point: Point): BoundingBox = {
+    val x = point.x
+    val y = point.y
+
     val newLeft = (left + x) min 0
     val newTop = (top + y) max 0
     val newRight = (right + x) max 0
@@ -67,6 +77,9 @@ final case class BoundingBox(
 
     BoundingBox(newLeft, newTop, newRight, newBottom)
   }
+
+  def at(landmark: Landmark): BoundingBox =
+    at(eval(landmark))
 
   /** Expand bounding box to enclose the given `Point`. */
   def enclose(toInclude: Point): BoundingBox =
