@@ -228,4 +228,23 @@ object LayoutSpec extends Properties("Layout properties") {
       (bb.height ?= maxHeight)
     }
   }
+
+  property("margin expands bounding box by the correct amount") = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+    val genMargin = Gen.choose[Double](-50.0, 50.0)
+
+    forAllNoShrink(genShape, genMargin, genMargin, genMargin, genMargin) {
+      (shape, top, right, bottom, left) =>
+        val bb = shape.boundingBox
+        val newBb = algebra
+          .margin(shape, top, right, bottom, left)
+          .boundingBox
+
+        newBb.left ?= bb.left - left
+        newBb.top ?= bb.top + top
+        newBb.right ?= bb.right + right
+        newBb.bottom ?= bb.bottom - bottom
+    }
+  }
 }

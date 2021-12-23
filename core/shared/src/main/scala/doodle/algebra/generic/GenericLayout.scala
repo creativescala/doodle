@@ -90,4 +90,21 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
         Renderable.transform(Transform.translate(point.x, point.y))(rdr)
       )
     }
+
+  def margin[A](
+      img: Finalized[F, A],
+      top: Double,
+      right: Double,
+      bottom: Double,
+      left: Double
+  ): Finalized[F, A] =
+    img.map { case (bb, rdr) =>
+      val newBb = bb.copy(
+        left = bb.left - left,
+        top = bb.top + top,
+        right = bb.right + right,
+        bottom = bb.bottom - bottom
+      )
+      (newBb, rdr)
+    }
 }

@@ -28,6 +28,13 @@ trait Layout[F[_]] extends Algebra[F] {
   def beside[A](left: F[A], right: F[A])(implicit s: Semigroup[A]): F[A]
   def above[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
   def at[A](img: F[A], landmark: Landmark): F[A]
+  def margin[A](
+      img: F[A],
+      top: Double,
+      right: Double,
+      bottom: Double,
+      left: Double
+  ): F[A]
 
   // Derived methods
 
@@ -47,4 +54,9 @@ trait Layout[F[_]] extends Algebra[F] {
     at(img, offset.x, offset.y)
   def at[A](img: F[A], offset: Point): F[A] =
     at(img, offset.x, offset.y)
+
+  def margin[A](img: F[A], width: Double, height: Double): F[A] =
+    margin(img, height, width, height, width)
+  def margin[A](img: F[A], width: Double): F[A] =
+    margin(img, width, width, width, width)
 }
