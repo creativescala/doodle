@@ -28,6 +28,7 @@ docs/src/main/mdoc/api
 
 
 ### SublimeText ###
+doodle.sublime-project
 # cache files for sublime text
 *.tmlanguage.cache
 *.tmPreferences.cache
