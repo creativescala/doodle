@@ -45,7 +45,6 @@ trait Layout[F[_]] extends Algebra[F] {
 
   def at[A](img: F[A], x: Double, y: Double): F[A] =
     at(img, Landmark.point(x, y))
-
   def at[A](img: F[A], r: Double, a: Angle): F[A] = {
     val offset = Point(r, a)
     at(img, offset.x, offset.y)

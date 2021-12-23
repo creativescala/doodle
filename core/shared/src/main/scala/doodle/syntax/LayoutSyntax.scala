@@ -21,6 +21,7 @@ import cats.Semigroup
 import doodle.algebra.Layout
 import doodle.algebra.Picture
 import doodle.core.Angle
+import doodle.core.Landmark
 import doodle.core.Point
 import doodle.core.Vec
 
@@ -63,6 +64,11 @@ trait LayoutSyntax {
         algebra.below(picture(algebra), that(algebra))
       }
 
+    def at(landmark: Landmark): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.at(picture(algebra), landmark)
+      }
+
     def at(x: Double, y: Double): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.at(picture(algebra), x, y)
@@ -81,6 +87,26 @@ trait LayoutSyntax {
     def at(offset: Point): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.at(picture(algebra), offset)
+      }
+
+    def margin(
+        top: Double,
+        right: Double,
+        bottom: Double,
+        left: Double
+    ): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.margin(picture(algebra), top, right, bottom, left)
+      }
+
+    def margin(width: Double, height: Double): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.margin(picture(algebra), width, height)
+      }
+
+    def margin(width: Double): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.margin(picture(algebra), width)
       }
   }
 }
