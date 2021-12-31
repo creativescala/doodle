@@ -19,6 +19,8 @@ package syntax
 
 import doodle.algebra.Picture
 import doodle.algebra.Style
+import doodle.core.Cap
+import doodle.core.Join
 import doodle.core.Color
 import doodle.core.Gradient
 
@@ -49,6 +51,16 @@ trait StyleSyntax {
     def strokeDash(pattern: Array[Double]): Picture[Alg, F, A] =
       Picture { implicit algebra: Alg[F] =>
         algebra.strokeDash(picture(algebra), pattern)
+      }
+
+    def strokeCap(strokeCap: Cap): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.strokeCap(picture(algebra), strokeCap)
+      }
+
+    def strokeJoin(strokeJoin: Join): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.strokeJoin(picture(algebra), strokeJoin)
       }
 
     def noDash: Picture[Alg, F, A] =
