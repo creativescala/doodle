@@ -16,25 +16,26 @@
 
 package doodle
 
-package object syntax
-    extends AngleSyntax
-    with Base64Syntax
-    with BitmapSyntax
-    with BlendSyntax
-    with DebugSyntax
-    with LayoutSyntax
-    with NormalizedSyntax
-    with PathSyntax
-    with RendererSyntax
-    with ShapeSyntax
-    with SizeSyntax
-    with StyleSyntax
-    with TextSyntax
-    with ToPictureSyntax
-    with TransformSyntax
-    with TraverseSyntax
-    with UnsignedByteSyntax
-    with WriterSyntax {
+package object syntax {
+  object all
+      extends AngleSyntax
+      with Base64Syntax
+      with BitmapSyntax
+      with BlendSyntax
+      with DebugSyntax
+      with LayoutSyntax
+      with NormalizedSyntax
+      with PathSyntax
+      with RendererSyntax
+      with ShapeSyntax
+      with SizeSyntax
+      with StyleSyntax
+      with TextSyntax
+      with ToPictureSyntax
+      with TransformSyntax
+      with TraverseSyntax
+      with UnsignedByteSyntax
+      with WriterSyntax
   object angle extends AngleSyntax
   object base64 extends Base64Syntax
   object bitmap extends BitmapSyntax

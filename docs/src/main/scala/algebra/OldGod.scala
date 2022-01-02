@@ -5,7 +5,7 @@ import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import doodle.core._
 import doodle.java2d._
-import doodle.syntax._ // For Color
+import doodle.syntax.all._ // For Color
 
 object OldGod {
   val redCircle = circle[Algebra, Drawing](100).strokeColor(Color.red)

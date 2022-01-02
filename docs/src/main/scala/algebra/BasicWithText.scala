@@ -8,7 +8,7 @@ import doodle.algebra.Text
 import doodle.core._
 import doodle.java2d._
 import doodle.language.Basic
-import doodle.syntax._
+import doodle.syntax.all._
 
 object BasicWithText {
 

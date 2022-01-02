@@ -6,7 +6,7 @@ import cats.instances.list._
 import doodle.core._
 import doodle.image.Image
 import doodle.image.syntax._
-import doodle.syntax._
+import doodle.syntax.all._
 
 object Polygon {
 

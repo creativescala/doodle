@@ -5,7 +5,7 @@ import cats.implicits._
 import doodle.core._
 import doodle.core.font._
 import doodle.java2d._
-import doodle.syntax._
+import doodle.syntax.all._
 import munit._
 
 class Text extends FunSuite with GoldenPicture {

@@ -4,7 +4,7 @@ package examples
 
 import doodle.core._
 import doodle.image.Image
-import doodle.syntax._
+import doodle.syntax.all._
 
 object RainbowSierpinski {
   def sierpinski(size: Double, color: Color): Image = {

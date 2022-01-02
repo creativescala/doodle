@@ -5,7 +5,7 @@ package examples
 import doodle.core._
 import doodle.image.Image
 import doodle.random._
-import doodle.syntax._
+import doodle.syntax.all._
 
 object SierpinskiConfection {
   val reddish: Random[Color] = {

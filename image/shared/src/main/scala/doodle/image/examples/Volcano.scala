@@ -6,7 +6,7 @@ import cats.syntax.all._
 import doodle.core._
 import doodle.image._
 import doodle.random._
-import doodle.syntax._
+import doodle.syntax.all._
 
 object Volcano {
   def rose(k: Int): Angle => Point =

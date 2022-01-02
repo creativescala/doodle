@@ -15,7 +15,7 @@ package object docs {
   }
 
   implicit class PictureSaveSyntax(picture: Picture[Unit]) {
-    import doodle.syntax._
+    import doodle.syntax.all._
     def save(filename: String)(implicit r: IORuntime): Unit = {
       val dir = new File("docs/src/main/mdoc/")
       val file = new File(dir, filename)

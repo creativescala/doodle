@@ -10,7 +10,7 @@ import doodle.java2d._
 import munit._
 
 trait GoldenPicture extends Golden { self: FunSuite =>
-  import doodle.syntax._
+  import doodle.syntax.all._
 
   def assertGoldenPicture[Alg[x[_]] <: Algebra[x], F[_]](
       name: String,

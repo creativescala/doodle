@@ -20,9 +20,9 @@ package syntax
 import doodle.algebra.Picture
 import doodle.algebra.Style
 import doodle.core.Cap
-import doodle.core.Join
 import doodle.core.Color
 import doodle.core.Gradient
+import doodle.core.Join
 
 trait StyleSyntax {
   implicit class StylePictureOps[Alg[x[_]] <: Style[x], F[_], A](

@@ -22,7 +22,7 @@ object Ripples {
   import cats.effect.unsafe.implicits.global
   import cats.effect.IO
   import doodle.core._
-  import doodle.syntax._
+  import doodle.syntax.all._
   import doodle.interact.syntax._
   import doodle.java2d.effect._
   import fs2.Stream

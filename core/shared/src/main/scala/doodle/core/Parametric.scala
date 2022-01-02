@@ -17,7 +17,7 @@
 package doodle
 package core
 
-import doodle.syntax._
+import doodle.syntax.all._
 
 import scala.annotation.tailrec
 

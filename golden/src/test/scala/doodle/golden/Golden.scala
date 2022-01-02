@@ -4,7 +4,7 @@ package golden
 import cats.effect.unsafe.implicits.global
 import doodle.effect.Writer.Png
 import doodle.java2d._
-import doodle.syntax._
+import doodle.syntax.all._
 import munit._
 
 import java.awt.image.BufferedImage

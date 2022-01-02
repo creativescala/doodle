@@ -4,7 +4,7 @@ package examples
 
 import doodle.core._
 import doodle.image.Image
-import doodle.syntax._
+import doodle.syntax.all._
 
 object SierpinskiRipple {
   def triangle(size: Double, color: Color): Image = {

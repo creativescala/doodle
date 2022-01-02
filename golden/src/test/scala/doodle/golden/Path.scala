@@ -3,7 +3,7 @@ package golden
 
 import cats.implicits._
 import doodle.java2d._
-import doodle.syntax._
+import doodle.syntax.all._
 import munit._
 
 class Path extends FunSuite with GoldenPicture {

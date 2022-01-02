@@ -9,7 +9,7 @@ import doodle.effect.Writer._
 import doodle.image.syntax._
 import doodle.java2d._
 import doodle.java2d.effect.Frame
-import doodle.syntax._
+import doodle.syntax.all._
 
 object Write extends App {
   val frame = Frame.fitToPicture().background(Color.black)

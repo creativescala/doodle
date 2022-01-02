@@ -16,23 +16,24 @@
 
 package doodle
 
-package object syntax
-    extends AngleSyntax
-    with BitmapSyntax
-    with BlendSyntax
-    with DebugSyntax
-    with LayoutSyntax
-    with NormalizedSyntax
-    with PathSyntax
-    with RendererSyntax
-    with ShapeSyntax
-    with SizeSyntax
-    with StyleSyntax
-    with TextSyntax
-    with ToPictureSyntax
-    with TransformSyntax
-    with TraverseSyntax
-    with UnsignedByteSyntax {
+package object syntax {
+  object all
+      extends AngleSyntax
+      with BitmapSyntax
+      with BlendSyntax
+      with DebugSyntax
+      with LayoutSyntax
+      with NormalizedSyntax
+      with PathSyntax
+      with RendererSyntax
+      with ShapeSyntax
+      with SizeSyntax
+      with StyleSyntax
+      with TextSyntax
+      with ToPictureSyntax
+      with TransformSyntax
+      with TraverseSyntax
+      with UnsignedByteSyntax
   object angle extends AngleSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax

@@ -3,7 +3,7 @@ package image
 package examples
 
 import doodle.core._
-import doodle.syntax._
+import doodle.syntax.all._
 
 // To use this example, open the SBT console and type:
 //

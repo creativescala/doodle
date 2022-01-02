@@ -4,7 +4,7 @@ package examples
 
 import doodle.core._
 import doodle.image._
-import doodle.syntax._
+import doodle.syntax.all._
 
 object Tree {
   import PathElement._

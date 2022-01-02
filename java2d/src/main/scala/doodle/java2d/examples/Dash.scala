@@ -22,7 +22,7 @@ object Dash {
   import cats.instances.all._
   import doodle.core._
   import doodle.effect.Writer.Gif
-  import doodle.syntax._
+  import doodle.syntax.all._
   import doodle.java2d.effect._
   import doodle.interact.syntax._
   import fs2.Stream

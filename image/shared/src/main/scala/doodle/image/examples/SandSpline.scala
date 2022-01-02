@@ -5,7 +5,7 @@ package examples
 // import scala.math.BigDecimal
 // import cats.implicits._
 // import doodle.core._
-// import doodle.syntax._
+// import doodle.syntax.all._
 // import doodle.random._
 // import doodle.backend.Canvas
 

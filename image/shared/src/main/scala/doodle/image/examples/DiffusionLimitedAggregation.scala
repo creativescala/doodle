@@ -5,7 +5,7 @@ package examples
 import cats.syntax.all._
 import doodle.core._
 import doodle.random._
-import doodle.syntax._
+import doodle.syntax.all._
 
 object DiffusionLimitedAggregation {
   def brownianMotion(start: Point, drift: Vec): Random[Point] =

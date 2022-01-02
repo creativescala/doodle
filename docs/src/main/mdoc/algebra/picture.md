@@ -27,7 +27,7 @@ In addition to drawing a picture to the screen we can write it to a file or conv
 
 ```scala mdoc:silent
 import doodle.core._
-import doodle.syntax._
+import doodle.syntax.all._
 import doodle.java2d._
 import doodle.effect.Writer._
 
@@ -42,7 +42,7 @@ We can convert a `Picture` to a [Base64][base64] value using the `base64` method
 
 ```scala mdoc:silent:reset
 import doodle.core._
-import doodle.syntax._
+import doodle.syntax.all._
 import doodle.java2d._
 import doodle.effect.Writer._
 
@@ -62,7 +62,7 @@ Here is quick example of use. First we create a `Base64` value from a `Picture`.
 
 ```scala mdoc:silent:reset
 import doodle.core._
-import doodle.syntax._
+import doodle.syntax.all._
 import doodle.java2d._
 import doodle.effect.Writer._
 ```

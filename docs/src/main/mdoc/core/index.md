@@ -10,7 +10,7 @@ In this section we just cover the most important uses. You should see the @scala
 // You definitely want doodle.core
 import doodle.core._
 // You probably also want extension methods
-import doodle.syntax._
+import doodle.syntax.all._
 ```
 
 

@@ -21,7 +21,7 @@ import cats.instances.list._
 import doodle.algebra.Picture
 import doodle.core._
 import doodle.language.Basic
-import doodle.syntax._
+import doodle.syntax.all._
 
 object Polygons {
   def picture[F[_]]: Picture[Basic, F, Unit] = {

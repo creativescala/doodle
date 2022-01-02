@@ -4,7 +4,7 @@ package java2d
 import cats.effect.unsafe.implicits.global
 import doodle.core.Base64
 import doodle.effect.Writer._
-import doodle.syntax._
+import doodle.syntax.all._
 import minitest._
 
 object Base64Spec extends SimpleTestSuite {

@@ -5,7 +5,7 @@ package examples
 import cats.implicits._
 import doodle.core._
 import doodle.image.syntax._
-import doodle.syntax._
+import doodle.syntax.all._
 
 object Rosette {
   val pts = List(

@@ -18,7 +18,7 @@ The first step is to import the backend and syntax extensions, and some Cats imp
 
 ```scala mdoc:silent
 import doodle.java2d._
-import doodle.syntax._
+import doodle.syntax.all._
 import cats.implicits._
 ```
 
