@@ -41,7 +41,7 @@ object BrownianMotion {
       r.turns
     }
     val shape = (points, radius, rotation).mapN { (pts, r, rot) =>
-      star(pts, r, r * 0.5, rot)
+      star(pts, r, r * 0.5).rotate(rot)
     }
 
     (shape, color).mapN { (shape, stroke) =>

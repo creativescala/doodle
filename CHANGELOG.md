@@ -14,6 +14,9 @@
 
 - Move to fs2 and Cats Effect 3 from Monix. I'm not convinced Monix is actively
   maintained any more. Zainab helped out immensely with this one.
+  
+- Remove `angle` parameter from `regularPolygon` and `star`. This is not needed
+  now we have rotations and their removal simplifies the API.
 
 
 ## 0.9.25 16-Aug-2021

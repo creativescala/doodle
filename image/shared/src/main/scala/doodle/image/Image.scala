@@ -197,17 +197,12 @@ object Image {
   def square(side: Double): Image =
     rectangle(side, side)
 
-  def regularPolygon(sides: Int, radius: Double, angle: Angle): Image = {
-    closedPath(PathElement.regularPolygon(sides, radius, angle))
+  def regularPolygon(sides: Int, radius: Double): Image = {
+    closedPath(PathElement.regularPolygon(sides, radius))
   }
 
-  def star(
-      points: Int,
-      outerRadius: Double,
-      innerRadius: Double,
-      angle: Angle
-  ): Image = {
-    closedPath(PathElement.star(points, outerRadius, innerRadius, angle))
+  def star(points: Int, outerRadius: Double, innerRadius: Double): Image = {
+    closedPath(PathElement.star(points, outerRadius, innerRadius))
   }
 
   def rightArrow(width: Double, height: Double): Image = {

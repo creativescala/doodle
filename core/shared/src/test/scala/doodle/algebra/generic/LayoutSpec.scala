@@ -58,7 +58,7 @@ object LayoutSpec extends Properties("Layout properties") {
         )
       )
     val hexagon =
-      algebra.noStroke(algebra.regularPolygon(6, 100, 0.degrees))
+      algebra.noStroke(algebra.regularPolygon(6, 100))
     val hexagonH = hexagonHeight(100)
 
     (verticalLine.boundingBox ?= BoundingBox(-1, 101, 1, -101)) &&
@@ -75,7 +75,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
     implicit val algebra = TestAlgebra()
     val hexagon =
-      regularPolygon[Algebra, Drawing](6, 100, 0.degrees).noStroke
+      regularPolygon[Algebra, Drawing](6, 100).noStroke
 
     val hexhex =
       List(
@@ -100,7 +100,7 @@ object LayoutSpec extends Properties("Layout properties") {
       import doodle.syntax.all._
 
       implicit val algebra = TestAlgebra()
-      val hexagon = algebra.regularPolygon(6, 100, 0.degrees)
+      val hexagon = algebra.regularPolygon(6, 100)
       val initialBb = hexagon.boundingBox
       val atBb = algebra.at(hexagon, x, y).boundingBox
 

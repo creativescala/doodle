@@ -29,17 +29,12 @@ trait Path[F[_]] extends Algebra[F] {
 
   // Derived methods ------------
 
-  def regularPolygon(sides: Int, radius: Double, angle: Angle): F[Unit] = {
-    path(ClosedPath(PathElement.regularPolygon(sides, radius, angle)))
+  def regularPolygon(sides: Int, radius: Double): F[Unit] = {
+    path(ClosedPath(PathElement.regularPolygon(sides, radius)))
   }
 
-  def star(
-      points: Int,
-      outerRadius: Double,
-      innerRadius: Double,
-      angle: Angle
-  ): F[Unit] = {
-    path(ClosedPath(PathElement.star(points, outerRadius, innerRadius, angle)))
+  def star(points: Int, outerRadius: Double, innerRadius: Double): F[Unit] = {
+    path(ClosedPath(PathElement.star(points, outerRadius, innerRadius)))
   }
 
   def roundedRectangle(

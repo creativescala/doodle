@@ -16,8 +16,8 @@ The basic shapes are on the `Image` companion object. This includes:
 Some more complex shapes are also available on the `Image` companion object:
 
 * `Image.equilateralTriangle(width)` creates an equilateral triangle with the given side length.
-* `Image.regularPolygon(sides, radius, angle)` creates a regular polygon with the given number of sides and radius. The `angle` specifies the rotation of the polygon relative to the x-axis.
-* `Image.star(points, outerRadius, innerRadius, angle)` creates a star with the given number of points. The points extend as far as `outerRadius` and go in to `innerRadius`. The `angle` specifies the rotation of the star relative to the x-axis.
+* `Image.regularPolygon(sides, radius)` creates a regular polygon with the given number of sides and radius. 
+* `Image.star(points, outerRadius, innerRadius)` creates a star with the given number of points. The points extend as far as `outerRadius` and go in to `innerRadius`. 
 * `Image.rightArrow(width, height)` creates an arrow points to the right with the given width and height.
 * `Image.roundedRectangle(width, height, radius)` creates a rectangle of the given width and height, with rounded corners with size given by `radius`.
 

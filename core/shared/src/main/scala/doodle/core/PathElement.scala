@@ -123,16 +123,15 @@ object PathElement {
     */
   def regularPolygon(
       sides: Int,
-      radius: Double,
-      angle: Angle
+      radius: Double
   ): List[PathElement] = {
     val rotation = Angle.one / sides.toDouble
     val path =
       (1 to sides).map { n =>
-        lineTo(radius, rotation * n.toDouble + angle)
+        lineTo(radius, rotation * n.toDouble)
       }.toList
 
-    (moveTo(radius, angle) +: path)
+    (moveTo(radius, Angle.zero) +: path)
   }
 
   /** Construct a star
@@ -140,20 +139,19 @@ object PathElement {
   def star(
       points: Int,
       outerRadius: Double,
-      innerRadius: Double,
-      angle: Angle
+      innerRadius: Double
   ): List[PathElement] = {
 
     val rotation = Angle.one / (points * 2.0)
     val path =
       (1 to (points * 2)).map { n =>
         if (n % 2 == 0)
-          lineTo(outerRadius, rotation * n.toDouble + angle)
+          lineTo(outerRadius, rotation * n.toDouble)
         else
-          lineTo(innerRadius, rotation * n.toDouble + angle)
+          lineTo(innerRadius, rotation * n.toDouble)
       }.toList
 
-    (moveTo(outerRadius, angle) +: path)
+    (moveTo(outerRadius, Angle.zero) +: path)
   }
 
   val oneOnSqrt3 = 1.0 / math.sqrt(3.0)

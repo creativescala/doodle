@@ -9,17 +9,17 @@ import munit._
 class Path extends FunSuite with GoldenPicture {
 
   testPicture("path-polygons") {
-    regularPolygon[Algebra, Drawing](4, 100, 0.degrees)
-      .beside(regularPolygon[Algebra, Drawing](5, 100, 0.degrees))
-      .beside(regularPolygon[Algebra, Drawing](7, 100, 0.degrees))
-      .beside(regularPolygon[Algebra, Drawing](20, 100, 0.degrees))
+    regularPolygon[Algebra, Drawing](4, 100)
+      .beside(regularPolygon[Algebra, Drawing](5, 100))
+      .beside(regularPolygon[Algebra, Drawing](7, 100))
+      .beside(regularPolygon[Algebra, Drawing](20, 100))
   }
 
   testPicture("path-stars") {
-    star[Algebra, Drawing](4, 100, 50, 0.degrees)
-      .beside(star[Algebra, Drawing](5, 100, 50, 0.degrees))
-      .beside(star[Algebra, Drawing](7, 100, 50, 0.degrees))
-      .beside(star[Algebra, Drawing](20, 100, 50, 0.degrees))
+    star[Algebra, Drawing](4, 100, 50)
+      .beside(star[Algebra, Drawing](5, 100, 50))
+      .beside(star[Algebra, Drawing](7, 100, 50))
+      .beside(star[Algebra, Drawing](20, 100, 50))
   }
 
   testPicture("path-rounded-rectangle") {

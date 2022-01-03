@@ -107,7 +107,8 @@ object TimeSeries {
     val spacer = Image.rectangle(150, 120).noStroke.noFill
     def processed(hue: Angle): Image =
       Image
-        .star(5, 60, 30, 30.degrees)
+        .star(5, 60, 30)
+        .rotate(30.degrees)
         .noStroke
         .fillColor(color(hue))
         .on(spacer)

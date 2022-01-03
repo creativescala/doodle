@@ -41,21 +41,19 @@ trait PathSyntax {
 
   def regularPolygon[Alg[x[_]] <: Path[x], F[_]](
       sides: Int,
-      radius: Double,
-      angle: Angle
+      radius: Double
   ): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>
-      algebra.regularPolygon(sides, radius, angle)
+      algebra.regularPolygon(sides, radius)
     }
 
   def star[Alg[x[_]] <: Path[x], F[_]](
       points: Int,
       outerRadius: Double,
-      innerRadius: Double,
-      angle: Angle
+      innerRadius: Double
   ): Picture[Alg, F, Unit] =
     Picture { implicit algebra: Alg[F] =>
-      algebra.star(points, outerRadius, innerRadius, angle)
+      algebra.star(points, outerRadius, innerRadius)
     }
 
   def roundedRectangle[Alg[x[_]] <: Path[x], F[_]](
