@@ -1,8 +1,24 @@
 # Changelog
 
+## Next
+
+- Much more flexible layout using `Landmark` and `margin`
+
+- Syntax moves from `import doodle.syntax._` to `import doodle.syntax.all._`.
+  This is consistent with Typelevel projects and avoids name collisions between
+  syntax methods and the objects on which they are defined (e.g. the `text`
+  object contains a method named `text`)
+  
+- Add missing syntax for `strokeCap` and `strokeJoin`. Contributed by Jeff
+  Martin / custommonkey
+
+- Move to fs2 and Cats Effect 3 from Monix. I'm not convinced Monix is actively
+  maintained any more. Zainab helped out immensely with this one.
+
+
 ## 0.9.25 16-Aug-2021
 
-- Update to Scala 3.0, Scala 2.13.6, and Scala.js 1.6. The move to Scala 3 required
+- Update to Scala 3.0, Scala 2.13.6, and Scala.js 1.6. The move to Scala 3 required:
   - removing the svg and explore projects, which have dependencies that don't
     yet work on Scala 3. They will be restored in due course.
 
