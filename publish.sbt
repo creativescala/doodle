@@ -2,9 +2,9 @@ ThisBuild / name := "doodle"
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Noel Welsh"
 ThisBuild / organizationHomepage := Some(url("http://creativescala.org/"))
-ThisBuild / version := "0.10.0"
+ThisBuild / version := "0.10.1"
 ThisBuild / versionScheme := Some("early-semver")
-ThisBuild / isSnapshot := true
+ThisBuild / isSnapshot := false
 
 ThisBuild / credentials += Credentials(
   Path.userHome / ".sbt" / "sonatype_credential"
