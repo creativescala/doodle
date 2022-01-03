@@ -23,6 +23,13 @@ import doodle.image.syntax.all._
 import doodle.core._
 ```
 
+You'll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend:
+
+```scala mdoc
+import doodle.java2d._
+```
+
+
 ## Basic Concepts
 
 Image is based on *composition* and the *interpreter pattern*. 

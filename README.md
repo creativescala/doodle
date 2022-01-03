@@ -70,6 +70,11 @@ If you downloaded Doodle, rather than adding it to an existing Scala project, yo
     Doodle currently supports writing to PNG, GIF, and JPG formats. Just alter the type parameter of `write` accordingly.
 
 
+### Attention IntelliJ Users
+
+The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicits correctly. The above example might give you an Error warning in Line XX. You can ignore this warning, or fix it using `circle.draw[Algebra, Drawing, Frame, Canvas]()`. Please use any text editor and [Metals](https://scalameta.org/metals/) to get a better experience using Doodle.
+
+
 ## Acknowledgements
 
 Doodle was written by Noel Welsh with contributions from [the contributors listed by Github][github-contributors].

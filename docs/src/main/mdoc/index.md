@@ -72,6 +72,11 @@ This creates the picture shown below.
 ![A picture of a red and black chessboard](chessboard.png)
 
 
+### Attention IntelliJ Users
+
+The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicits correctly. The above example might give you an Error warning in Line XX. You can ignore this warning, or fix it using `chessboard.draw[Algebra, Drawing, Frame, Canvas]()`. Please use any text editor and [Metals](https://scalameta.org/metals/) to get a better experience using Doodle.
+
+
 ## Guides
 
 @ref[Using the Image library](image/index.md) is the easiest way to get started drawing with Doodle.
