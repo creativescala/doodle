@@ -19,7 +19,6 @@ package syntax
 
 import doodle.algebra.Path
 import doodle.algebra.Picture
-import doodle.core.Angle
 import doodle.core.ClosedPath
 import doodle.core.OpenPath
 import doodle.core.Point

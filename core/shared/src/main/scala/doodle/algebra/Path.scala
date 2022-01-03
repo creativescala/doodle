@@ -17,7 +17,6 @@
 package doodle
 package algebra
 
-import doodle.core.Angle
 import doodle.core.ClosedPath
 import doodle.core.OpenPath
 import doodle.core.PathElement

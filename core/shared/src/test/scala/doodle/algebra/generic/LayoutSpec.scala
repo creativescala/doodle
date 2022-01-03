@@ -33,7 +33,6 @@ object LayoutSpec extends Properties("Layout properties") {
 
   property("hand generated path bounding boxes are correct") = {
     import doodle.core._
-    import doodle.syntax.all._
     import doodle.syntax.approximatelyEqual._
     import doodle.algebra.generic._
     import Instances._
@@ -97,8 +96,6 @@ object LayoutSpec extends Properties("Layout properties") {
 
   property("at never decreases the size of the bounding box") =
     forAllNoShrink(Generators.width, Generators.height) { (x, y) =>
-      import doodle.syntax.all._
-
       implicit val algebra = TestAlgebra()
       val hexagon = algebra.regularPolygon(6, 100)
       val initialBb = hexagon.boundingBox

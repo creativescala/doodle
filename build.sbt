@@ -48,7 +48,7 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= (
     if (scalaBinaryVersion.value == "2.13")
       compilerPlugin(
-        "org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full
+        "org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full
       ) :: Nil
     else Nil
   )
