@@ -24,9 +24,10 @@ to write to a file you'll need
 ```scala mdoc
 import doodle.java2d._
 import doodle.effect.Writer._
+import cats.effect.unsafe.implicits.global
 ```
 
-The first import pulls in the Java2D backend. The second import makes available the standard formats supported by Doodle.
+The first import pulls in the Java2D backend. The second import makes available the standard formats supported by Doodle. The third import brings in the Cats Effect runtime, needed to run code.
 
 
 ## Writing an Image

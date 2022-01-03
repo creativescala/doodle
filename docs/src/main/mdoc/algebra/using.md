@@ -14,12 +14,13 @@ Tagless final style allows for a lot of flexibility. Back ends only implement th
 
 Use the following recipe to write code using backend specific features (for example, the @scaladoc[Bitmap](doodle.algebra.Bitmap) algebra which is currently only supported by the @scaladoc[Java 2D](doodle.java2d.index) backend).
 
-The first step is to import the backend and syntax extensions, and some Cats implicits we'll need. We'll use `java2d` as our backend.
+The first step is to import the backend and syntax extensions, some Cats implicits we'll need, and the Cats Effect runtime. We'll use `java2d` as our backend.
 
 ```scala mdoc:silent
 import doodle.java2d._
 import doodle.syntax.all._
 import cats.implicits._
+import cats.effect.unsafe.implicits.global
 ```
 
 Now we can write code in a style very similar to using `Image`. There is one important difference: whenever we create an element of a picture that is not composed of other elements (for example, a primitive shape such as `circle`) we must provide two type parameters. Here is an example:

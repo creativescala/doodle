@@ -63,6 +63,8 @@ To draw these Images call the `draw` method like so
 import doodle.image.syntax.all._
 // Render to a window using Java2D (must be running in the JVM)
 import doodle.java2d._
+// Need the Cats Effect runtime to run everything
+import cats.effect.unsafe.implicits.global
 
 chessboard.draw()
 ```
@@ -79,13 +81,13 @@ The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicit
 
 ## Guides
 
-@ref[Using the Image library](image/index.md) is the easiest way to get started drawing with Doodle.
+@ref:[Using the Image library](image/index.md) is the easiest way to get started drawing with Doodle.
 
-@ref[Using the tagless final algebras](algebra/index.md) allows access to features that are specific to a backend.
+@ref:[Using the tagless final algebras](algebra/index.md) allows access to features that are specific to a backend.
 
 ## Concepts
 
-Understanding @ref[core concepts](concepts/index.md) in Doodle will help make sense of the library.
+Understanding @ref:[core concepts](concepts/index.md) in Doodle will help make sense of the library.
 
 *TODO*: layout, bounding boxes, and origins; paths; styles; debug
 
@@ -94,10 +96,10 @@ Understanding @ref[core concepts](concepts/index.md) in Doodle will help make se
 
 The main packages of Doodle are:
 
-- @ref[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
-- @ref[image](image/index.md)
-- @ref[algebra](algebra/index.md)
-- @ref[effect](effect/index.md)
+- @ref:[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
+- @ref:[image](image/index.md)
+- @ref:[algebra](algebra/index.md)
+- @ref:[effect](effect/index.md)
 - syntax
 - animation and interaction
 - interactive exploration

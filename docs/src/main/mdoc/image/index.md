@@ -27,6 +27,7 @@ You'll also need to import a backend. Most people will be working on the JVM, an
 
 ```scala mdoc
 import doodle.java2d._
+import cats.effect.unsafe.implicits.global
 ```
 
 

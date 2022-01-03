@@ -30,6 +30,7 @@ import doodle.core._
 import doodle.syntax.all._
 import doodle.java2d._
 import doodle.effect.Writer._
+import cats.effect.unsafe.implicits.global
 
 val picture = circle[Algebra, Drawing](100)
 
@@ -45,6 +46,7 @@ import doodle.core._
 import doodle.syntax.all._
 import doodle.java2d._
 import doodle.effect.Writer._
+import cats.effect.unsafe.implicits.global
 
 val picture = circle[Algebra, Drawing](100)
 
@@ -65,15 +67,17 @@ import doodle.core._
 import doodle.syntax.all._
 import doodle.java2d._
 import doodle.effect.Writer._
+import cats.effect.unsafe.implicits.global
 ```
-```scala mdoc
-// The value we throw away is the result of evaluating the `Picture`, which is `Unit`.
+```scala mdoc:silent
+// The value we throw away is the result of evaluating the
+// `Picture`, which is `Unit`.
 val (_, base64) = circle[Algebra, Drawing](100).base64[Png]()
 ```
 
 We can convert it right back to a `Picture` using the `toPicture` method.
 
-```scala mdoc
+```scala mdoc:silent
 val picture = base64.toPicture
 ```
 

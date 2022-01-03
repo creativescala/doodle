@@ -83,6 +83,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
       |import doodle.image.examples._
       |import doodle.interact.syntax._
       |import doodle.core._
+      |import cats.effect.unsafe.implicits.global
     """.trim.stripMargin,
     console / cleanupCommands := """
       |doodle.java2d.effect.Java2dRenderer.stop()
@@ -155,7 +156,7 @@ docs / copyScalaDoc := {
 }
 lazy val copyFinalDoc = taskKey[Unit]("Copy site to expected location")
 docs / copyFinalDoc := {
-  println("Copying documentation to docs/target/docs/site/main")
+  println("Copying documentation to docs/target/docs/")
   sbt.io.IO.copyDirectory(
     file("docs/target/paradox/site/main"),
     file("docs/target/docs")

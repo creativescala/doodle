@@ -24,7 +24,7 @@ Some more complex shapes are also available on the `Image` companion object:
 
 ## Paths
 
-Paths allow construction of custom shapes. They are described in @ref[their own section](path.md). There are three methods on the `Image` companion object that deal with paths:
+Paths allow construction of custom shapes. They are described in @ref:[their own section](path.md). There are three methods on the `Image` companion object that deal with paths:
 
 * `Image.openPath(pathElements)` converts a `Seq[PathElement]` into an `Image` representing an open path (a path that does not end where it begins).
 * `Image.closedPath` converts a `Seq[PathElement]` to an `Image` representing a closed path (a path that ends where it begins; a straight line will be inserted if to make this the case if needed.)
