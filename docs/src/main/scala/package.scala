@@ -6,7 +6,7 @@ package object docs {
   import doodle.java2d._
 
   implicit class ImageSaveSyntax(image: Image) {
-    import doodle.image.syntax._
+    import doodle.image.syntax.all._
     def save(filename: String)(implicit r: IORuntime): Unit = {
       val dir = new File("docs/src/main/mdoc/")
       val file = new File(dir, filename)

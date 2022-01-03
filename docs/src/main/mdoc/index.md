@@ -60,7 +60,7 @@ To draw these Images call the `draw` method like so
 
 ```scala
 // Extension methods
-import doodle.image.syntax._
+import doodle.image.syntax.all._
 // Render to a window using Java2D (must be running in the JVM)
 import doodle.java2d._
 

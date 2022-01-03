@@ -19,7 +19,7 @@ To use Image you'll need the following imports:
 
 ```scala mdoc
 import doodle.image._
-import doodle.image.syntax._
+import doodle.image.syntax.all._
 import doodle.core._
 ```
 

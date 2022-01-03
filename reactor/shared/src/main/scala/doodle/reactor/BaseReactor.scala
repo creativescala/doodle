@@ -7,7 +7,7 @@ import cats.instances.unit._
 import doodle.core.Point
 import doodle.effect.Renderer
 import doodle.image.Image
-import doodle.image.syntax._
+import doodle.image.syntax.all._
 import doodle.interact.algebra.MouseClick
 import doodle.interact.algebra.MouseMove
 import doodle.interact.effect.AnimationRenderer

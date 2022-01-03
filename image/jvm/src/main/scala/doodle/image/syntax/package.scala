@@ -1,7 +1,8 @@
 package doodle
 package image
 
-package object syntax extends JvmImageSyntax with TraverseImageSyntax {
+package object syntax {
+  object all extends JvmImageSyntax with TraverseImageSyntax
   object image extends JvmImageSyntax
   object traverse extends TraverseImageSyntax
 

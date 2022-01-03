@@ -5,7 +5,7 @@ package examples
 import cats.instances.list._
 import doodle.core._
 import doodle.image.Image
-import doodle.image.syntax._
+import doodle.image.syntax.all._
 import doodle.syntax.all._
 
 object Polygon {

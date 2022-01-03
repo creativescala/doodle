@@ -8,7 +8,7 @@ import munit._
 
 trait GoldenImage extends Golden { self: FunSuite =>
   import doodle.image._
-  import doodle.image.syntax._
+  import doodle.image.syntax.all._
 
   def assertGoldenImage(name: String, image: Image)(implicit loc: Location) = {
     import java.io.File

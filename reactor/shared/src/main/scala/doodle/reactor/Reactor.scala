@@ -72,7 +72,7 @@ final case class Reactor[A](
       renderer: Renderer[Alg, F, Frame, Canvas],
       runtime: IORuntime
   ): Unit = {
-    import doodle.image.syntax._
+    import doodle.image.syntax.all._
     this.image.draw(frame)(renderer, runtime)
   }
 
@@ -80,7 +80,7 @@ final case class Reactor[A](
       renderer: DefaultRenderer[Alg, F, Frame, Canvas],
       runtime: IORuntime
   ): Unit = {
-    import doodle.image.syntax._
+    import doodle.image.syntax.all._
     this.image.draw()(renderer, runtime)
   }
 }
