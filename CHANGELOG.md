@@ -2,7 +2,7 @@
 
 ## Next
 
-- Much more flexible layout using `Landmark` and `margin`
+- Much more flexible layout using `Landmark`, `originAt`, and `margin`
 
 - Syntax moves from `import doodle.syntax._` to `import doodle.syntax.all._`.
   This is consistent with Typelevel projects and avoids name collisions between

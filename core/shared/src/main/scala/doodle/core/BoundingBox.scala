@@ -81,6 +81,24 @@ final case class BoundingBox(
   def at(landmark: Landmark): BoundingBox =
     at(eval(landmark))
 
+  def originAt(landmark: Landmark): BoundingBox =
+    originAt(eval(landmark))
+
+  def originAt(point: Point): BoundingBox = {
+    // Vector maths to work out where the edges of the bounding box lie in
+    // relation to the new origin.
+    val newTopLeft = Point(left, top) - point
+    val newBottomRight = Point(right, bottom) - point
+
+    // Make sure the bounding box includes the origin
+    val newLeft = newTopLeft.x min 0
+    val newTop = newTopLeft.y max 0
+    val newRight = newBottomRight.x max 0
+    val newBottom = newBottomRight.y min 0
+
+    BoundingBox(newLeft, newTop, newRight, newBottom)
+  }
+
   /** Expand bounding box to enclose the given `Point`. */
   def enclose(toInclude: Point): BoundingBox =
     BoundingBox(

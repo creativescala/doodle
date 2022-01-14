@@ -89,6 +89,31 @@ trait LayoutSyntax {
         algebra.at(picture(algebra), offset)
       }
 
+    def originAt(landmark: Landmark): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.originAt(picture(algebra), landmark)
+      }
+
+    def originAt(x: Double, y: Double): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.originAt(picture(algebra), x, y)
+      }
+
+    def originAt(r: Double, a: Angle): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.originAt(picture(algebra), r, a)
+      }
+
+    def originAt(offset: Vec): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.originAt(picture(algebra), offset)
+      }
+
+    def originAt(offset: Point): Picture[Alg, F, A] =
+      Picture { implicit algebra: Alg[F] =>
+        algebra.originAt(picture(algebra), offset)
+      }
+
     def margin(
         top: Double,
         right: Double,

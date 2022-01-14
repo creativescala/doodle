@@ -24,10 +24,23 @@ import doodle.core.Point
 import doodle.core.Vec
 
 trait Layout[F[_]] extends Algebra[F] {
+
+  /** Place the origin of top on the origin of bottom */
   def on[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
   def beside[A](left: F[A], right: F[A])(implicit s: Semigroup[A]): F[A]
   def above[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]
+
+  /** Displace img by the given landmark relative to the origin, expanding the
+    * bounding box if necessary to include the relocated image.
+    */
   def at[A](img: F[A], landmark: Landmark): F[A]
+
+  /** Place the origin of img at the given landmark, expanding the bounding box
+    * if necessary to include the relocated origin.
+    */
+  def originAt[A](img: F[A], landmark: Landmark): F[A]
+
+  /** Expand the bounding box of img by the given amounts. */
   def margin[A](
       img: F[A],
       top: Double,
@@ -53,6 +66,17 @@ trait Layout[F[_]] extends Algebra[F] {
     at(img, offset.x, offset.y)
   def at[A](img: F[A], offset: Point): F[A] =
     at(img, offset.x, offset.y)
+
+  def originAt[A](img: F[A], x: Double, y: Double): F[A] =
+    originAt(img, Landmark.point(x, y))
+  def originAt[A](img: F[A], r: Double, a: Angle): F[A] = {
+    val offset = Point(r, a)
+    originAt(img, offset.x, offset.y)
+  }
+  def originAt[A](img: F[A], offset: Vec): F[A] =
+    originAt(img, offset.x, offset.y)
+  def originAt[A](img: F[A], offset: Point): F[A] =
+    originAt(img, offset.x, offset.y)
 
   def margin[A](img: F[A], width: Double, height: Double): F[A] =
     margin(img, height, width, height, width)

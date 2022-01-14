@@ -91,6 +91,16 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       )
     }
 
+  def originAt[A](img: Finalized[F, A], landmark: Landmark): Finalized[F, A] =
+    img.map { case (bb, rdr) =>
+      val point = bb.eval(landmark)
+      // Moving the origin to point p is equivalent to translating the image to -p
+      (
+        bb.originAt(landmark),
+        Renderable.transform(Transform.translate(-point.x, -point.y))(rdr)
+      )
+    }
+
   def margin[A](
       img: Finalized[F, A],
       top: Double,
