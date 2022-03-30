@@ -64,7 +64,7 @@ If you downloaded Doodle, rather than adding it to an existing Scala project, yo
 4.  You can also save your masterpieces to a file.
 
     ~~~ scala
-    scala> (Image.circle(10).fillColor.(Color.red)).write[Png]("masterpiece.png")
+    scala> (Image.circle(10).fillColor(Color.red)).write[Png]("masterpiece.png")
     ~~~
     
     Doodle currently supports writing to PNG, GIF, and JPG formats. Just alter the type parameter of `write` accordingly.
