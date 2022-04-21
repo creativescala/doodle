@@ -63,7 +63,7 @@ trait AnimationWriterSyntax {
           w: AnimationWriter[Alg, F, Frame, Format],
           runtime: IORuntime
       ): Unit =
-        w.write(file, frame, frames).unsafeRunAsync(nullCallback)
+        w.write(file, frame, frames).unsafeRunAsync(animationWriterNullCallback)
     }
   }
 }

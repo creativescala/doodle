@@ -81,7 +81,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
       |import doodle.image._
       |import doodle.image.syntax.all._
       |import doodle.image.examples._
-      |import doodle.interact.syntax._
+      |import doodle.interact.syntax.all._
       |import doodle.core._
       |import cats.effect.unsafe.implicits.global
     """.trim.stripMargin,

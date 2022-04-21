@@ -11,7 +11,7 @@ import doodle.image.syntax.all._
 import doodle.interact.algebra.MouseClick
 import doodle.interact.algebra.MouseMove
 import doodle.interact.effect.AnimationRenderer
-import doodle.interact.syntax._
+import doodle.interact.syntax.all._
 import doodle.language.Basic
 import doodle.syntax.renderer._
 import fs2.Stream

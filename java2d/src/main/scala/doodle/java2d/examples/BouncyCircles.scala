@@ -25,7 +25,7 @@ object BouncyCircles {
   import doodle.syntax.all._
   import doodle.java2d.effect._
   import doodle.interact.easing._
-  import doodle.interact.syntax._
+  import doodle.interact.syntax.all._
   import fs2.Stream
   import cats.effect.IO
   import cats.effect.unsafe.implicits.global

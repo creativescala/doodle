@@ -3,7 +3,7 @@ package interact
 package animation
 
 import cats.implicits._
-import doodle.interact.syntax._
+import doodle.interact.syntax.all._
 import org.scalacheck.Prop._
 import org.scalacheck._
 
