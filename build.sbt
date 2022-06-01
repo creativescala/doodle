@@ -27,7 +27,8 @@ ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
 // Run this (build) to do everything involved in building the project
 commands += Command.command("build") { state =>
-  "compile" ::
+  "dependencyUpdates" ::
+    "compile" ::
     "test" ::
     "golden/test" ::
     "scalafixAll" ::
