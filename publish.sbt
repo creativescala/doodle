@@ -2,7 +2,7 @@ ThisBuild / name := "doodle"
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Noel Welsh"
 ThisBuild / organizationHomepage := Some(url("http://creativescala.org/"))
-ThisBuild / version := "0.10.1"
+ThisBuild / version := "0.11.0"
 ThisBuild / versionScheme := Some("early-semver")
 ThisBuild / isSnapshot := false
 
