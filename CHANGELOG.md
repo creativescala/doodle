@@ -2,7 +2,17 @@
 
 ## Next
 
-- Add `originAt` even more layout flexibility
+- Add `originAt` for even more layout flexibility
+
+- Move all `interact` syntax into `all` object. Use
+
+    `import doodle.interact.syntax.all._`
+    
+  instead of 
+    
+    `import doodle.interact.syntax._`
+
+- Set compiler flag to generate Java 8 compatible output
 
 
 ## 0.10.1 Jan 2022
