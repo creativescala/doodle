@@ -13,8 +13,6 @@ object Dependencies {
 
   val batikVersion = "1.14"
 
-  val scalaTagsVersion = "0.11.1"
-
   val miniTestVersion = "2.9.6"
   val scalaCheckVersion = "1.15.4"
   val munitVersion = "0.7.29"
@@ -27,8 +25,6 @@ object Dependencies {
   val fs2 = Def.setting("co.fs2" %%% "fs2-core" % fs2Version)
 
   val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
-
-  val scalaTags = Def.setting("com.lihaoyi" %%% "scalatags" % scalaTagsVersion)
 
   val batik =
     Def.setting("org.apache.xmlgraphics" % "batik-transcoder" % batikVersion)
