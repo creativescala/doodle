@@ -43,7 +43,7 @@ lazy val commonSettings = Seq(
     Dependencies.miniTestLaws.value
   ),
   scalacOptions ++= Seq("-release", "8"),
-  javacOptions ++= Seq("-target", "1.8"),
+  javacOptions ++= Seq("-source", "8", "-target", "8"),
   startYear := Some(2015),
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")

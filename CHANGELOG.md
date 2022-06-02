@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.11.1 2-Jun-2022
 
 - Add `originAt` for even more layout flexibility
 
@@ -13,6 +13,9 @@
     `import doodle.interact.syntax._`
 
 - Set compiler flag to generate Java 8 compatible output
+
+- 0.11.0 was released with a mix of Java 11 and Java 8 code, so we're pretending
+  it doesn't exist.
 
 
 ## 0.10.1 Jan 2022
