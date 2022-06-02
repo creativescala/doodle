@@ -39,3 +39,32 @@ trait Shape[F[_]] extends Algebra[F] {
   /** The empty shape, which is no shape at all. */
   def empty: F[Unit]
 }
+
+/** Constructors for Shape algebra
+  */
+trait ShapeConstructor[A[x[_]] <: Shape[x]] {
+  self: BaseConstructor[A] =>
+
+  /** A rectangle with the given width and height. */
+  def rectangle(width: Double, height: Double): Picture[Unit] =
+    Picture(alg => alg.rectangle(width, height))
+
+  /** A square with the given side length. */
+  def square(width: Double): Picture[Unit] =
+    Picture(alg => alg.square(width))
+
+  /** An isoceles triangle with the given width and height. */
+  def triangle(width: Double, height: Double): Picture[Unit] =
+    Picture(alg => alg.triangle(width, height))
+
+  /** A circle with the given diameter. We use diamter rather than radius so
+    * circle(100) has the same size as square(100)
+    */
+  def circle(diameter: Double): Picture[Unit] =
+    Picture(alg => alg.circle(diameter))
+
+  /** The empty shape, which is no shape at all. */
+  def empty: Picture[Unit] =
+    Picture(alg => alg.empty)
+
+}

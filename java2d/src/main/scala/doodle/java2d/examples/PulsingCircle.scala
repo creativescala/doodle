@@ -39,12 +39,16 @@ object PulsingCircle {
   def disk(count: Int): Picture[Unit] =
     count match {
       case 0 =>
-        circle[Algebra, Drawing](minimumDiameter.toDouble).noFill
+        Picture
+          .circle(minimumDiameter.toDouble)
+          .noFill
           .strokeWidth(strokeWidth)
       case n =>
-        circle[Algebra, Drawing](
-          (n * 2 * (strokeWidth + gapWidth) + minimumDiameter)
-        ).noFill
+        Picture
+          .circle(
+            (n * 2 * (strokeWidth + gapWidth) + minimumDiameter)
+          )
+          .noFill
           .strokeWidth(strokeWidth)
     }
 

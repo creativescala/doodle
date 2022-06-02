@@ -55,3 +55,41 @@ trait Path[F[_]] extends Algebra[F] {
   def catmulRom(points: Seq[Point], tension: Double = 0.5): F[Unit] =
     path(OpenPath(PathElement.catmulRom(points, tension)))
 }
+
+/** Constructors for Path algebra */
+trait PathConstructor[A[x[_]] <: Path[x]] {
+  self: BaseConstructor[A] =>
+
+  def path(path: ClosedPath): Picture[Unit] =
+    Picture(alg => alg.path(path))
+
+  def path(path: OpenPath): Picture[Unit] =
+    Picture(alg => alg.path(path))
+
+  def regularPolygon(sides: Int, radius: Double): Picture[Unit] =
+    Picture(alg => alg.regularPolygon(sides, radius))
+
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double
+  ): Picture[Unit] =
+    Picture(alg => alg.star(points, outerRadius, innerRadius))
+
+  def roundedRectangle(
+      width: Double,
+      height: Double,
+      radius: Double
+  ): Picture[Unit] =
+    Picture(alg => alg.roundedRectangle(width, height, radius))
+
+  /** Create an equilateral triangle with the given side length. */
+  def equilateralTriangle(width: Double): Picture[Unit] =
+    Picture(alg => alg.equilateralTriangle(width))
+
+  def interpolatingSpline(points: Seq[Point]): Picture[Unit] =
+    Picture(alg => alg.interpolatingSpline(points))
+
+  def catmulRom(points: Seq[Point], tension: Double = 0.5): Picture[Unit] =
+    Picture(alg => alg.catmulRom(points, tension))
+}

@@ -78,12 +78,11 @@ package object java2d {
   val Frame = doodle.java2d.effect.Frame
 
   type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
-  object Picture {
-    def apply(f: Algebra[Drawing] => Drawing[Unit]): Picture[Unit] = {
-      new Picture[Unit] {
-        def apply(implicit algebra: Algebra[Drawing]): Drawing[Unit] =
-          f(algebra)
-      }
-    }
+  object Picture
+      extends doodle.algebra.BaseConstructor[Algebra]
+      with doodle.algebra.ShapeConstructor[Algebra]
+      with doodle.algebra.PathConstructor[Algebra] {
+
+    type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   }
 }
