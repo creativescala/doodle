@@ -9,8 +9,8 @@ package doodle.algebra
   * Algebras that define constructors should also define a constructor mixin.
   * See e.g. Shape for an example.
   */
-trait BaseConstructor[A[x[_]] <: doodle.algebra.Algebra[x]] {
-  type Algebra[x[_]] = A[x]
+trait BaseConstructor {
+  type Algebra[x[_]] <: doodle.algebra.Algebra[x]
   type Drawing[A]
 
   type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]

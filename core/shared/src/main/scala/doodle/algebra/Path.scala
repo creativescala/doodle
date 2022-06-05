@@ -57,8 +57,8 @@ trait Path[F[_]] extends Algebra[F] {
 }
 
 /** Constructors for Path algebra */
-trait PathConstructor[A[x[_]] <: Path[x]] {
-  self: BaseConstructor[A] =>
+trait PathConstructor {
+  self: BaseConstructor { type Algebra[x[_]] <: Path[x] } =>
 
   def path(path: ClosedPath): Picture[Unit] =
     Picture(alg => alg.path(path))

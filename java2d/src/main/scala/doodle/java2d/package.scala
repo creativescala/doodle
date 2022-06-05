@@ -79,10 +79,11 @@ package object java2d {
 
   type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
   object Picture
-      extends doodle.algebra.BaseConstructor[Algebra]
-      with doodle.algebra.ShapeConstructor[Algebra]
-      with doodle.algebra.PathConstructor[Algebra] {
+      extends doodle.algebra.BaseConstructor
+      with doodle.algebra.ShapeConstructor
+      with doodle.algebra.PathConstructor {
 
-    type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
+    type Algebra[x[_]] = java2d.Algebra[x]
+    type Drawing[A] = java2d.Drawing[A]
   }
 }

@@ -42,8 +42,8 @@ trait Shape[F[_]] extends Algebra[F] {
 
 /** Constructors for Shape algebra
   */
-trait ShapeConstructor[A[x[_]] <: Shape[x]] {
-  self: BaseConstructor[A] =>
+trait ShapeConstructor {
+  self: BaseConstructor { type Algebra[x[_]] <: Shape[x] } =>
 
   /** A rectangle with the given width and height. */
   def rectangle(width: Double, height: Double): Picture[Unit] =
