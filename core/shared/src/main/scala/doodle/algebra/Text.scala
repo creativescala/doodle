@@ -15,3 +15,14 @@ trait Text[F[_]] extends Algebra[F] {
     */
   def text(text: String): F[Unit]
 }
+
+/** Constructors for Text algebra
+  */
+trait TextConstructor {
+  self: BaseConstructor { type Algebra[x[_]] <: Text[x] } =>
+
+  /** Render the given String
+    */
+  def text(text: String): Picture[Unit] =
+    Picture(alg => alg.text(text))
+}
