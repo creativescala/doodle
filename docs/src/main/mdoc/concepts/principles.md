@@ -25,8 +25,7 @@ The implication of this is that the core of Doodle is built in "tagless final" s
 
 ## Be Easy to Use
 
-Doodle is designed to be easy to use, while keeping to the principles above. In particular we value ease-of-use above performance, though we will certainly optimize code where.
-
+Doodle is designed to be easy to use, while keeping to the principles above. In particular we value ease-of-use above performance, though we will certainly optimize code where possible.
 
 [retained-mode]: https://en.wikipedia.org/wiki/Retained_mode
 [immediate-mode]: https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics)

@@ -3,8 +3,10 @@
 @@@ index
 
 - [Guiding Principles](principles.md)
+- [Drawing and Picture](drawing-picture.md)
+- [Algebras](algebras.md)
 - [Frame and Canvas](frame-canvas.md)
 
 @@@
 
-This section attempts to explain the principles that guide the development of Doodle, and the concepts that span across the sub-projects that make up Doodle.
+This section describes the principles behind Doodle, and the main concepts that make up Doodle.

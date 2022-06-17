@@ -1,6 +1,6 @@
 # Frame and Canvas
 
-In Doodle, a *Canvas* is an area of screen that we can draw to. This could be a native window or part of a web browser, or something else. A *Frame* is a description of a Canvas, which tells a particular backend how to construct the Canvas. For example, the @scaladoc[Java2D Frame](doodle.java2d.effect.Frame) allows us to specify the title of the window, the size of the window, the background color, and more. 
+In Doodle, a *Canvas* is an area of screen that we can draw to. This could be a native window or part of a web page, or something else. A *Frame* is a description of a Canvas, which tells a particular backend how to construct the Canvas. For example, the @scaladoc[Java2D Frame](doodle.java2d.effect.Frame) allows us to specify the title of the window, the size of the window, the background color, and more. 
 
 Frames and Canvases are naturally back-end specific, so there is no code-level abstraction that unites, say, the @scaladoc[SVG frame](doodle.svg.effect.Frame) and the @scaladoc[Java2D Frame](doodle.java2d.effect.Frame). However, conceptually they are related so where it makes sense they have the same API.
 
