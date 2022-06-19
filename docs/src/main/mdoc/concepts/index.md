@@ -3,8 +3,8 @@
 @@@ index
 
 - [Guiding Principles](principles.md)
-- [Drawing and Picture](drawing-picture.md)
 - [Algebras](algebras.md)
+- [Drawing and Picture](drawing-picture.md)
 - [Frame and Canvas](frame-canvas.md)
 
 @@@
