@@ -4,7 +4,8 @@
 
 - [Guiding Principles](principles.md)
 - [Algebras](algebras.md)
-- [Drawing and Picture](drawing-picture.md)
+- [Picture and Drawing](drawing-picture.md)
+- [Picture Object](picture-object.md)
 - [Frame and Canvas](frame-canvas.md)
 
 @@@

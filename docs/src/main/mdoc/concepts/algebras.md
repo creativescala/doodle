@@ -9,4 +9,4 @@ Different backends offer different combinations of algebras, reflecting the diff
 
 All algebras extend @scaladoc[Algebra](doodle.algebra.Algebra). Algebra doesn't define anything important, but it serves as a marker that a trait is intended to be an algebra in the Doodle sense.
 
-All algebras are parameterized by an effect type `F[_]`, which is the type that
+All algebras are parameterized by an effect type `F[_]`, which corresponds to the `Drawing` type described next.
