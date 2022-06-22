@@ -4,11 +4,11 @@ Each Doodle backend defines, by convention, two types called `Picture` and `Draw
 
 A `Picture` is a first class value representing the description of the picture we want to draw. We usually work with a type like `Picture[Unit]`, which is a description of a picture that, when drawn, will yield a value of type `Unit`.
 
-A `Picture` is conceptually a function from an `Algebra` to an effect that will actually draw the picture. It's not actually a function because the input parameters---the algebra---is an implicit parameter. In Scala 3 this is a [context function][context-function]. As Doodle supports both Scala 2 and Scala 3 we can't use this feature and have a custom type instead.
+A `Picture` is conceptually a function from an `Algebra` to an effect that will actually draw the picture. It's not actually a function because the input parameter---the algebra---is an implicit parameter. In Scala 3 this is a [context function][context-function]. As Doodle supports both Scala 2 and Scala 3 we can't use this feature and have a custom type instead.
 
-Expanding a little bit further, each backend's `Picture` type is a specialization of @scaladoc[Picture](doodle.algebra.Picture).
+Expanding a little bit further, each backend's `Picture` type is a specialization of the generic @scaladoc[Picture](doodle.algebra.Picture).
 
-The full `Picture` has type signature 
+The generic `Picture` has type signature 
 
 ```scala
 trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A]
@@ -22,7 +22,7 @@ where
 
 Each backend specializes the full `Picture` type to fix `Alg` to the algebras the backend supports, and `F` to the backend's drawing type. This means that users, so long as they only target a single backend, can use a simpler `Picture[A]` type.
 
-The `Drawing` type is the effect type that the backend transforms a `Picture` into. A `Drawing[A]` will draw a picture and produce a value of type `A`. It is needed much less often than `Picture`.
+The `Drawing` type is the effect type that the backend transforms a `Picture` into. A `Drawing[A]` will draw a picture and produce a value of type `A` when it is run. It is needed much less often than `Picture`.
 
 
 [context-function]: https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html
