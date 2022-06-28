@@ -106,9 +106,9 @@ object Point {
     Cartesian(x, y)
 
   // This provides extractors / unapply methods that work in a slightly unusual
-  // way. that work is a slightly unusual way. As we can freely convert between
-  // the two representations, and thus there is no need to stop someone viewing
-  // a Point represented as, say, a Cartesian, as, say, a Polar.
+  // way. As we can freely convert between the two representations, and thus
+  // there is no need to stop someone viewing a Point represented as, say, a
+  // Cartesian, as, say, a Polar.
   //
   // You can use these extractors when you have a point and you want to view it
   // in a particular way (e.g. a Polar) and you don't care how it is actually
