@@ -17,6 +17,8 @@
 package doodle
 package core
 
+import cats.Monoid
+
 /** A 2D vector. We can't use the name `Vector` as Scala already uses it. */
 final case class Vec(x: Double, y: Double) {
   def +(that: Vec): Vec = Vec(this.x + that.x, this.y + that.y)
@@ -67,4 +69,14 @@ object Vec {
 
   def polar(r: Double, angle: Angle): Vec =
     apply(r, angle)
+
+  implicit val vecMonoid: Monoid[Vec] =
+    new Monoid[Vec] {
+      def combine(a: Vec, b: Vec): Vec = {
+        a + b
+      }
+
+      val empty: Vec =
+        Vec.zero
+    }
 }
