@@ -1,9 +1,23 @@
 # Picture Object
 
-Each backend provides an object named `Picture` that contains constructors. Constructors are methods on algebras that produce a `Drawing` but don't have a `Drawing` parameter. For example, all the methods on the @scaladoc[Shape](doodle.algebra.Shape) algebra are constructors. So to call the `circle` method on `Shape` you'll usually just write
+Each backend provides an object named `Picture` that provides easy access to constructors. Constructors are algebra methods that produce a `Drawing` but don't have a `Drawing` parameter. For example, all the methods on the @scaladoc[Shape](doodle.algebra.Shape) algebra are constructors. 
+
+The `Picture` object allows us to write
 
 ```scala
 Picture.circle(100)
 ```
 
-There is a subtle difference
+to call the `circle` method on `Shape` instead of the more verbose
+
+```scala
+circle[Algebra, Drawing](100)
+```
+
+So to call the `circle` method on `Shape` you'll usually just write
+
+```scala
+Picture.circle(100)
+```
+
+There is a subtle difference between the result of calling `circle` on the `Picture` object and same method on the `Shape` algebra. The former returns a `Picture` while the later returns a `Drawing`.

@@ -5,15 +5,15 @@ A few principles guide the design of Doodle, and differentiate it from other gra
 
 ## Pictures are Created by Composition
 
-In Doodle a picture is constructed by combining together smaller pictures. For example, we can create a row by putting pictures beside each other. This idea of creating complex things from simpler things is known as *composition*.
+In Doodle a picture is constructed by combining together smaller pictures. For example, we can create a row of pictures by putting pictures beside each other. This idea of creating complex things from simpler things is known as *composition*.
 
-There are several implications of this, which means that Doodle operates differently to many other graphics libraries. This first is that Doodle does not draw anything on the screen until you explicitly ask it to, say by calling the `draw` method. A picture represents a description of something we want to draw. A backend turns this description into something we can see (which might be on the screen or in a file). This separation of description and action is known as the *interpreter pattern*. The description is a "program" and a backend is an "interpreter" that runs that program. In the graphics world the approach that Doodle takes is sometimes known as [retained mode][retained-mode], while the approach of drawing immediately to the screen is known as [immediate mode][immediate-mode].
+There are several implications of this, which means that Doodle operates differently to many other graphics libraries. This first is that Doodle does not draw anything on the screen until you explicitly ask it to, usually by calling the `draw` method. A picture represents a description of something we want to draw. A backend turns this description into something we can see (which might be on the screen or in a file). This separation of description and action is known as the *interpreter pattern*. The description is a "program" and a backend is an "interpreter" that runs that program. In the graphics world the approach that Doodle takes is sometimes known as [retained mode][retained-mode], while the approach of drawing immediately to the screen is known as [immediate mode][immediate-mode].
 
 Another implication is that Doodle can allow relative layout of objects. In Doodle we can say that one picture is next to another and Doodle will work out where on the screen they should be. This requires a retained mode API as you need to keep around information about a picture to work out how much space it takes up.
 
 A final implication is that pictures have no mutable state. This is needed for composition so you can, for example, put a picture next to itself and have things render correctly.
 
-All of these ideas are core to functional programming, so you may have seen them in other contexts if you have experienced with functional programming. If not, don't worry. You'll quickly understand them once you start using Doodle, as Doodle makes the ideas very concrete.
+All of these ideas are core to functional programming, so you may have seen them in other contexts if you are experienced with functional programming. If not, don't worry. You'll quickly understand them once you start using Doodle, as Doodle makes the ideas very concrete.
 
 
 ## Support Differences Between Backends
