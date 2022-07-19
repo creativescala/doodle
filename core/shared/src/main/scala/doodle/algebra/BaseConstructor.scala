@@ -14,12 +14,10 @@ trait BaseConstructor {
   type Drawing[A]
 
   type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
-  object Picture {
-    def apply(f: Algebra[Drawing] => Drawing[Unit]): Picture[Unit] = {
-      new Picture[Unit] {
-        def apply(implicit algebra: Algebra[Drawing]): Drawing[Unit] =
-          f(algebra)
-      }
+  def apply(f: Algebra[Drawing] => Drawing[Unit]): Picture[Unit] = {
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra[Drawing]): Drawing[Unit] =
+        f(algebra)
     }
   }
 }
