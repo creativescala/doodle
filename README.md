@@ -11,13 +11,13 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 ## Using Doodle
 
-The current release is **0.11.1** and is on the `master` branch.
+The current release is **0.11.2** and is on the `master` branch.
 
 To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
 // Doodle is currently published for Scala 2.13 and Scala 3
-libraryDependencies += "org.creativescala" %% "doodle" % "0.11.1"
+libraryDependencies += "org.creativescala" %% "doodle" % "0.11.2"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
@@ -90,7 +90,7 @@ These are notes for developers.
 
 To generate the documentation run the `documentation` task in SBT *without* changing to any project. If you do the task just seems to disappear. I have no idea why. The output will be in `docs/target/docs`. Copy this to the website and upload.
 
-If you run out of metaspace you can punch SBT in the face. Alternatively run just the documentation task (i.e. `sbt documentation`) and it seems to be happier.
+If you run out of metaspace you can run just the documentation task (i.e. `sbt documentation`) and it seems to be happier.
 
 ### Publishing
 

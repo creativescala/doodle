@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.2 24-Jul-2022
+
+- Add "constructors" to algebras. Described in WIP documentation. This allows
+  construction of `Picture` without going via syntax, and in turn without
+  requiring explicit types.
+
+
 ## 0.11.1 2-Jun-2022
 
 - Add `originAt` for even more layout flexibility
