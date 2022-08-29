@@ -1,5 +1,9 @@
 # Changelog
 
+## NEXT
+
+- Add text and font to `Image`, courtesy of akiomik
+
 ## 0.11.2 24-Jul-2022
 
 - Add "constructors" to algebras. Described in WIP documentation. This allows
