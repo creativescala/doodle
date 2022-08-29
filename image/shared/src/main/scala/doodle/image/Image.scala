@@ -2,6 +2,7 @@ package doodle
 package image
 
 import doodle.core._
+import doodle.core.font.{Font => CoreFont}
 import doodle.language.Basic
 
 sealed abstract class Image extends Product with Serializable {
@@ -56,8 +57,8 @@ sealed abstract class Image extends Product with Serializable {
   def noFill: Image =
     NoFill(this)
 
-  // def font(font: Font): Image =
-  //   ContextTransform(_.font(font), this)
+  def font(font: CoreFont): Image =
+    Font(this, font)
 
   // Affine Transform -------------------------------------------------
 
@@ -133,7 +134,7 @@ object Image {
   object Elements {
     final case class OpenPath(elements: List[PathElement]) extends Path
     final case class ClosedPath(elements: List[PathElement]) extends Path
-    // final case class Text(get: String) extends Image
+    final case class Text(get: String) extends Image
     final case class Circle(d: Double) extends Image
     final case class Rectangle(w: Double, h: Double) extends Image
     final case class Triangle(w: Double, h: Double) extends Image
@@ -151,6 +152,7 @@ object Image {
         extends Image
     final case class NoStroke(image: Image) extends Image
     final case class NoFill(image: Image) extends Image
+    final case class Font(image: Image, font: CoreFont) extends Image
     // Debug
     final case class Debug(image: Image, color: Color) extends Image
 
@@ -172,8 +174,8 @@ object Image {
     OpenPath((PathElement.moveTo(0, 0) +: elements).toList)
   }
 
-  // def text(characters: String): Image =
-  //   Text(characters)
+  def text(characters: String): Image =
+    Text(characters)
 
   def line(x: Double, y: Double): Image = {
     val startX = -x / 2
@@ -273,6 +275,11 @@ object Image {
           algebra.path(doodle.core.OpenPath(elements))
         case ClosedPath(elements) =>
           algebra.path(doodle.core.ClosedPath(elements))
+
+        case Text(t) =>
+          algebra.text(t)
+        case Font(image, f) =>
+          algebra.font(compile(image)(algebra), f)
 
         case Circle(d) =>
           algebra.circle(d)

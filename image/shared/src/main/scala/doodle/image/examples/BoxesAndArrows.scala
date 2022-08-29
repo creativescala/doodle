@@ -21,7 +21,7 @@ object BoxesAndArrows {
     FontWeight.normal,
     FontSize.points((size / 2.0).toInt)
   )
-  // val equals = text("=").font(font)
+  val equals = text("=").font(font)
 
   val c = circle(size * 0.3).fillColor(Color.black)
   val t = triangle(size * 0.6, size * 0.6).fillColor(Color.black)
@@ -49,24 +49,33 @@ object BoxesAndArrows {
   val map: Image =
     besideWithSpace(
       List(
-        circleBox, /*text("map").font(font),*/ circleToTriangle,
-        /*equals,*/ triangleBox
+        circleBox,
+        text("map").font(font),
+        circleToTriangle,
+        equals,
+        triangleBox
       )
     )
 
   val applicative: Image =
     besideWithSpace(
       List(
-        circleBox, /* text("|@|").font(font), */ triangleBox,
-        /*equals,*/ circleAndTriangleBox
+        circleBox,
+        text("|@|").font(font),
+        triangleBox,
+        equals,
+        circleAndTriangleBox
       )
     )
 
   val flatMap: Image =
     besideWithSpace(
       List(
-        circleBox, /*text("flatMap").font(font),*/ circleToTriangleBox,
-        /*equals,*/ triangleBox
+        circleBox,
+        text("flatMap").font(font),
+        circleToTriangleBox,
+        equals,
+        triangleBox
       )
     )
 }
