@@ -573,8 +573,8 @@ object CreativeScala {
   object point {
     val point = Image.circle(5).at(40, 40).fillColor(Color.red).noStroke
     val spacer = Image.square(5).noStroke.noFill
-    val xAxis = Image.line(40, 0) above spacer //above Image.text("x")
-    val yAxis = Image.line(0, 40) beside spacer //beside Image.text("y")
+    val xAxis = Image.line(40, 0) above spacer above Image.text("x")
+    val yAxis = Image.line(0, 40) beside spacer beside Image.text("y")
     val cartesian = xAxis on yAxis on point
   }
 

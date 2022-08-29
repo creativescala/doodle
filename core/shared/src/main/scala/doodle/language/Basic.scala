@@ -27,6 +27,7 @@ trait Basic[F[_]]
     with Shape[F]
     with Size[F]
     with Style[F]
+    with Text[F]
     with Transform[F]
 object Basic {
   def picture[F[_], A](f: Basic[F] => F[A]): Picture[Basic, F, A] =
