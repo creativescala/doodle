@@ -16,9 +16,6 @@
 
 package doodle
 
-import doodle.algebra.Bitmap
-import doodle.algebra.Text
-import doodle.algebra.ToPicture
 import doodle.algebra._
 import doodle.core.format._
 import doodle.core.{Base64 => B64}
@@ -86,10 +83,13 @@ package object java2d extends Java2dToPicture {
 
   type Picture[A] = doodle.algebra.Picture[Algebra, A]
   object Picture
-      extends doodle.algebra.BaseConstructor
-      with doodle.algebra.PathConstructor
-      with doodle.algebra.ShapeConstructor
-      with doodle.algebra.TextConstructor {
+      extends BaseConstructor
+      with FromGifBase64Constructor
+      with FromPngBase64Constructor
+      with FromJpgBase64Constructor
+      with PathConstructor
+      with ShapeConstructor
+      with TextConstructor {
 
     type Algebra = java2d.Algebra
     type Drawing[A] = java2d.Drawing[A]

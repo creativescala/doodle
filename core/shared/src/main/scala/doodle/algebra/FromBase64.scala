@@ -57,7 +57,7 @@ trait FromJpgBase64 extends Algebra {
 trait FromGifBase64Constructor {
   self: BaseConstructor { type Algebra <: FromGifBase64 } =>
 
-  def fromBase64(base64: Base64[Gif]): Picture[Unit] =
+  def fromGifBase64(base64: Base64[Gif]): Picture[Unit] =
     new Picture[Unit] {
       def apply(implicit algebra: Algebra): algebra.F[Unit] =
         algebra.fromGifBase64(base64)
@@ -68,7 +68,7 @@ trait FromGifBase64Constructor {
 trait FromPngBase64Constructor {
   self: BaseConstructor { type Algebra <: FromPngBase64 } =>
 
-  def fromBase64(base64: Base64[Png]): Picture[Unit] =
+  def fromPngBase64(base64: Base64[Png]): Picture[Unit] =
     new Picture[Unit] {
       def apply(implicit algebra: Algebra): algebra.F[Unit] =
         algebra.fromPngBase64(base64)
@@ -79,7 +79,7 @@ trait FromPngBase64Constructor {
 trait FromJpgBase64Constructor {
   self: BaseConstructor { type Algebra <: FromJpgBase64 } =>
 
-  def fromBase64(base64: Base64[Jpg]): Picture[Unit] =
+  def fromJpgBase64(base64: Base64[Jpg]): Picture[Unit] =
     new Picture[Unit] {
       def apply(implicit algebra: Algebra): algebra.F[Unit] =
         algebra.fromJpgBase64(base64)
