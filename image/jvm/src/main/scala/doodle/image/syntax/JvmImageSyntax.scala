@@ -19,7 +19,9 @@ package image
 package syntax
 
 import cats.effect.unsafe.IORuntime
+import doodle.algebra.Algebra
 import doodle.algebra.Picture
+import doodle.core.format.Format
 import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
 import doodle.image.Image
@@ -27,19 +29,22 @@ import doodle.language.Basic
 
 trait JvmImageSyntax extends ImageSyntax {
   implicit class Base64ImageOps(image: Image) {
-    def base64[Format] = new Base64Ops[Format](image)
+    def base64[Fmt <: Format] = new Base64Ops[Fmt](image)
   }
 
   /** This strange construction allows the user to write
     * `anImage.base64[AFormat]` without having to specify other, mostly
     * irrelevant to the user, type parameters.
     */
-  final class Base64Ops[Format](image: Image) {
-    def apply[Alg[x[_]] <: Basic[x], F[_], Frame](implicit
-        w: Base64[Alg, F, Frame, Format],
+  final class Base64Ops[Fmt <: Format](image: Image) {
+    def apply[Alg <: Basic, Frame](implicit
+        w: Base64[Alg, Frame, Fmt],
         runtime: IORuntime
-    ): B64[Format] = {
-      val picture = Picture((algebra: Alg[F]) => image.compile(algebra))
+    ): B64[Fmt] = {
+      val picture = new Picture[Basic, Unit] {
+        def apply(implicit algebra: Basic): algebra.F[Unit] =
+          image.compile(algebra)
+      }
       val (_, base64) = w.base64(picture).unsafeRunSync()
       base64
     }

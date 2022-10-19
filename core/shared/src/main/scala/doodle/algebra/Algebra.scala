@@ -17,8 +17,22 @@
 package doodle
 package algebra
 
-/** Base type for algebras that produce results in some effect type F. This type
-  * serves to make sure algebras are internally consistent. E.g. they all
-  * produce an effect with the same type.
+import cats.Applicative
+
+/** Base type for algebras that produce results in some effect type F. Users of
+  * algebras should use dependent method types (or dependent function types in
+  * Scala 3) to return the `F` type of the method they are passed:
+  *
+  * ```scala
+  * def usingAlgebra(algebra: Algebra): algebra.F = ???
+  * ```
+  *
+  * All `F` types are required to implement `Applicative`
   */
-trait Algebra[+F[_]]
+trait Algebra {
+  type F[_]
+  implicit val fInstance: Applicative[F]
+}
+object Algebra {
+  type Aux[F0[_]] = Algebra { type F[A] = F0[A] }
+}

@@ -21,38 +21,43 @@ import doodle.algebra.Picture
 import doodle.algebra.Shape
 
 trait ShapeSyntax {
-  def rectangle[Alg[x[_]] <: Shape[x], F[_]](
+  def rectangle[Alg <: Shape](
       width: Double,
       height: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.rectangle(width, height)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.rectangle(width, height)
     }
 
-  def square[Alg[x[_]] <: Shape[x], F[_]](
+  def square[Alg <: Shape](
       width: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.square(width)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.square(width)
     }
 
-  def triangle[Alg[x[_]] <: Shape[x], F[_]](
+  def triangle[Alg <: Shape](
       width: Double,
       height: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.triangle(width, height)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.triangle(width, height)
     }
 
-  def circle[Alg[x[_]] <: Shape[x], F[_]](
+  def circle[Alg <: Shape](
       diameter: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.circle(diameter)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.circle(diameter)
     }
 
-  def empty[Alg[x[_]] <: Shape[x], F[_]]: Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.empty
+  def empty[Alg <: Shape]: Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.empty
     }
 }

@@ -359,12 +359,11 @@ trait Transducer[Output] { self =>
 
   /** Convenience method to animate a transducer.
     */
-  def animate[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](frame: Frame)(
-      implicit
+  def animate[Alg <: Algebra, Frame, Canvas](frame: Frame)(implicit
       a: AnimationRenderer[Canvas],
-      e: Renderer[Alg, F, Frame, Canvas],
+      e: Renderer[Alg, Frame, Canvas],
       r: Redraw[Canvas],
-      ev: Output <:< Picture[Alg, F, Unit],
+      ev: Output <:< Picture[Alg, Unit],
       runtime: IORuntime
   ): Unit =
     this.toStream.map(ev(_)).animateFrames(frame)

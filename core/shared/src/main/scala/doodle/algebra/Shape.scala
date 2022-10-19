@@ -20,7 +20,7 @@ package algebra
 /** Higher level shape primitives. These draw common geometric shapes with the
   * center of the shape the origin of the bounding box.
   */
-trait Shape[F[_]] extends Algebra[F] {
+trait Shape extends Algebra {
 
   /** A rectangle with the given width and height. */
   def rectangle(width: Double, height: Double): F[Unit]
@@ -43,28 +43,43 @@ trait Shape[F[_]] extends Algebra[F] {
 /** Constructors for Shape algebra
   */
 trait ShapeConstructor {
-  self: BaseConstructor { type Algebra[x[_]] <: Shape[x] } =>
+  self: BaseConstructor { type Algebra <: Shape } =>
 
   /** A rectangle with the given width and height. */
   def rectangle(width: Double, height: Double): Picture[Unit] =
-    Picture(alg => alg.rectangle(width, height))
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+        algebra.rectangle(width, height)
+    }
 
   /** A square with the given side length. */
   def square(width: Double): Picture[Unit] =
-    Picture(alg => alg.square(width))
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+        algebra.square(width)
+    }
 
   /** An isoceles triangle with the given width and height. */
   def triangle(width: Double, height: Double): Picture[Unit] =
-    Picture(alg => alg.triangle(width, height))
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+        algebra.triangle(width, height)
+    }
 
   /** A circle with the given diameter. We use diamter rather than radius so
     * circle(100) has the same size as square(100)
     */
   def circle(diameter: Double): Picture[Unit] =
-    Picture(alg => alg.circle(diameter))
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+        algebra.circle(diameter)
+    }
 
   /** The empty shape, which is no shape at all. */
   def empty: Picture[Unit] =
-    Picture(alg => alg.empty)
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+        algebra.empty
+    }
 
 }

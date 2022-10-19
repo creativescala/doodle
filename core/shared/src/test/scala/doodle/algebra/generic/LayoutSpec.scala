@@ -74,7 +74,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
     implicit val algebra = TestAlgebra()
     val hexagon =
-      regularPolygon[Algebra, Drawing](6, 100).noStroke
+      regularPolygon[Algebra](6, 100).noStroke
 
     val hexhex =
       List(

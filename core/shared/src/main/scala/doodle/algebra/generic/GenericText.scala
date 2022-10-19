@@ -23,7 +23,8 @@ import doodle.core.BoundingBox
 import doodle.core.font.Font
 import doodle.core.{Transform => Tx}
 
-trait GenericText[F[_]] extends Text[Finalized[F, *]] {
+trait GenericText[G[_]] extends Text {
+  self: Algebra { type F = Finalized[G, *] } =>
 
   trait TextApi {
 
@@ -48,16 +49,16 @@ trait GenericText[F[_]] extends Text[Finalized[F, *]] {
         font: Font,
         text: String,
         bounds: Bounds
-    ): F[Unit]
+    ): G[Unit]
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds)
   }
 
   def TextApi: TextApi
 
-  def font[A](image: Finalized[F, A], font: Font): Finalized[F, A] =
+  def font[A](image: Finalized[G, A], font: Font): Finalized[G, A] =
     Finalized.contextTransform(_.font(font))(image)
 
-  def text(text: String): Finalized[F, Unit] = {
+  def text(text: String): Finalized[G, Unit] = {
     val api = TextApi
 
     Finalized.leaf { dc =>

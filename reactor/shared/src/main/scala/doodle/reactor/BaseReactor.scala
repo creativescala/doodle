@@ -42,7 +42,7 @@ trait BaseReactor[A] {
   def tick[F[_], Frame, Canvas](
       frame: Frame
   )(implicit
-      e: Renderer[Basic, F, Frame, Canvas],
+      e: Renderer[Basic, Frame, Canvas],
       runtime: IORuntime
   ): Option[A] = {
     if (stop(initial)) None
@@ -56,16 +56,16 @@ trait BaseReactor[A] {
   /** Runs this reactor, drawing on the given `frame`, until `stop` indicates it
     * should stop.
     */
-  def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(implicit
+  def run[Alg <: Basic, F[_], Frame, Canvas](frame: Frame)(implicit
       a: AnimationRenderer[Canvas],
-      e: Renderer[Alg, F, Frame, Canvas],
+      e: Renderer[Alg, Frame, Canvas],
       m: MouseClick[Canvas] with MouseMove[Canvas],
       runtime: IORuntime
   ): Unit = {
     import BaseReactor._
 
     frame
-      .canvas[Alg, F, Canvas]()
+      .canvas[Alg, Canvas]()
       .flatMap { canvas =>
         val mouseMove: Stream[IO, Command] =
           canvas.mouseMove.map(pt => MouseMove(pt))
@@ -84,7 +84,7 @@ trait BaseReactor[A] {
             }
           }
           .takeWhile(a => !this.stop(a))
-          .map(a => Image.compile[Alg, F](this.render(a)))
+          .map(a => Image.compile[Alg](this.render(a)))
         frames.animateWithCanvasToIO(canvas)
       }
       .unsafeRunAsync(_ => ())

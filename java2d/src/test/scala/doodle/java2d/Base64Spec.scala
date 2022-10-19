@@ -3,12 +3,12 @@ package java2d
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.Base64
-import doodle.effect.Writer._
+import doodle.core.format._
 import doodle.syntax.all._
 import minitest._
 
 object Base64Spec extends SimpleTestSuite {
-  def base64Distance[A](b1: Base64[A], b2: Base64[A]): Double = {
+  def base64Distance[A <: Format](b1: Base64[A], b2: Base64[A]): Double = {
     import java.util.{Base64 => JBase64}
     val d1 = JBase64.getDecoder().decode(b1.value)
     val d2 = JBase64.getDecoder().decode(b2.value)
@@ -19,7 +19,7 @@ object Base64Spec extends SimpleTestSuite {
     }
   }
 
-  val image = circle[Algebra, Drawing](20.0)
+  val image = circle[Algebra](20.0)
 
   test("base64 should work with png") {
     val (_, b1) = image.base64[Png]()

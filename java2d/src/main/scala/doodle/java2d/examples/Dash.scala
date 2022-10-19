@@ -21,7 +21,7 @@ package examples
 object Dash {
   import cats.instances.all._
   import doodle.core._
-  import doodle.effect.Writer.Gif
+  import doodle.core.format.Gif
   import doodle.syntax.all._
   import doodle.java2d.effect._
   import doodle.interact.syntax.all._
@@ -42,7 +42,7 @@ object Dash {
       .moveTo(-size, -size)
       .curveTo(-size, size, -size, size, size, size)
       .curveTo(size, -size, size, -size, -size, -size))
-      .path[Algebra, Drawing]
+      .path[Algebra]
       .strokeDash(dash)
       .strokeColor(Color.limeGreen)
       .strokeWidth(5.0)

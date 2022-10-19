@@ -13,7 +13,9 @@ import doodle.core.Transform
 import java.io.File
 import javax.imageio.ImageIO
 
-trait ReifiedBitmap extends doodle.algebra.Bitmap[Drawing] {
+trait ReifiedBitmap extends doodle.algebra.Bitmap {
+  self: Algebra { type F[A] <: Drawing[A] } =>
+
   def read(file: File): Drawing[Unit] = {
     Finalized.leaf { _ =>
       val bi = ImageIO.read(file)

@@ -20,7 +20,7 @@ package effect
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.effect.Writer.Gif
+import doodle.core.format.Gif
 import doodle.interact.effect.AnimationWriter
 import fs2.Stream
 

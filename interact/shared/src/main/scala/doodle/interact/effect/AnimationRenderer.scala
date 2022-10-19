@@ -31,10 +31,10 @@ import fs2.Stream
 trait AnimationRenderer[Canvas] {
 
   /** Animate frames that are produced by a `Stream`. */
-  def animate[Alg[x[_]] <: Algebra[x], F[_], A, Frame](
+  def animate[Alg <: Algebra, F[_], A, Frame](
       canvas: Canvas
-  )(frames: Stream[IO, Picture[Alg, F, A]])(implicit
-      e: Renderer[Alg, F, Frame, Canvas],
+  )(frames: Stream[IO, Picture[Alg, A]])(implicit
+      e: Renderer[Alg, Frame, Canvas],
       m: Monoid[A]
   ): IO[A]
 }

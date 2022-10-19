@@ -2,7 +2,7 @@ package doodle
 package golden
 
 import cats.effect.unsafe.implicits.global
-import doodle.effect.Writer.Png
+import doodle.core.format.Png
 import doodle.java2d._
 import doodle.syntax.all._
 import munit._
@@ -25,13 +25,13 @@ trait Golden { self: FunSuite =>
     val expectedH = expected.getHeight()
     val expectedW = expected.getWidth()
 
-    val (_, actualBase64) = actual.toPicture[Algebra, Drawing].base64[Png]()
-    val (_, expectedBase64) = expected.toPicture[Algebra, Drawing].base64[Png]()
+    val (_, actualBase64) = actual.toPicture[Algebra].base64[Png]()
+    val (_, expectedBase64) = expected.toPicture[Algebra].base64[Png]()
 
     val diffMessage =
       diff
         .map { d =>
-          val (_, diffBase64) = d.toPicture[Algebra, Drawing].base64[Png]()
+          val (_, diffBase64) = d.toPicture[Algebra].base64[Png]()
 
           s"""
            | The diff image, PNG and Base 64 encoded is

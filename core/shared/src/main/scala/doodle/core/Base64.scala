@@ -17,12 +17,12 @@
 package doodle
 package core
 
+import doodle.core.format.Format
+
 /** Wrapper class for storing base-64 encoded bitmap data along with the format
   * of that bitmap.
   *
   * E.g. val pngData = Base64[Png]("data here ...") represents a base-64 bitmap
   * in Png format.
-  *
-  * By convention that formats in [[doodle.effect.Writer$]] should be used.
   */
-final case class Base64[Format](value: String)
+final case class Base64[Fmt <: Format](value: String)

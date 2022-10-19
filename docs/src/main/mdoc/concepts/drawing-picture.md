@@ -11,7 +11,7 @@ Expanding a little bit further, each backend's `Picture` type is a specializatio
 The generic `Picture` has type signature 
 
 ```scala
-trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A]
+trait Picture[-Alg <: Algebra, F[_], A]
 ```
 
 where 

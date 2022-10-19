@@ -18,7 +18,7 @@ package doodle
 package algebra
 
 /** Algebra describing color blending modes. */
-trait Blend[F[_]] extends Algebra[F] {
+trait Blend extends Algebra {
   def screen[A](image: F[A]): F[A]
   def burn[A](image: F[A]): F[A]
   def dodge[A](image: F[A]): F[A]

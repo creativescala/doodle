@@ -19,7 +19,7 @@ package algebra
 
 import doodle.core.Color
 
-trait Debug[F[_]] extends Algebra[F] {
+trait Debug extends Algebra {
 
   /** Draws the bounding box and origin of the given picture on top of the
     * picture. The given color is used for the bounding box and origin.

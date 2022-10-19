@@ -23,7 +23,7 @@ import doodle.effect.DefaultRenderer
 
 import javax.swing.JFrame
 
-object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Canvas] {
+object Java2dRenderer extends DefaultRenderer[Algebra, Frame, Canvas] {
 
   import cats.effect.unsafe.implicits.global
 

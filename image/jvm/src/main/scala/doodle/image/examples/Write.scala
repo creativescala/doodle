@@ -5,7 +5,7 @@ package examples
 // Example that demonstrates writing to a file
 import cats.effect.unsafe.implicits.global
 import doodle.core._
-import doodle.effect.Writer._
+import doodle.core.format._
 import doodle.image.syntax.all._
 import doodle.java2d._
 import doodle.java2d.effect.Frame

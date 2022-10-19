@@ -39,7 +39,7 @@ object LSystem {
 
     val rule = (i: Instruction) => {
       i match {
-        case NoOp => //  F−[[X]+X]+F[+FX]−X
+        case NoOp => //  F−[+X]+F[+FX]−X
           List(
             f,
             left,

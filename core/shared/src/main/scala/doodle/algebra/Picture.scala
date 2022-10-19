@@ -24,66 +24,35 @@ import cats.implicits._
   * some type F that represents drawing a picture with result A. Has a monad
   * instance if F does.
   */
-trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A] {
-  def apply(implicit algebra: Alg[F]): F[A]
+trait Picture[-Alg <: Algebra, A] { self =>
+  def apply(implicit algebra: Alg): algebra.F[A]
 }
 object Picture {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], A](
-      f: Alg[F] => F[A]
-  ): Picture[Alg, F, A] = {
-    new Picture[Alg, F, A] {
-      def apply(implicit algebra: Alg[F]): F[A] =
-        f(algebra)
-    }
-  }
 
-  /** Picture[Alg,F,?] has a Monoid instance if:
+  /** Picture[Alg,A] has a Monoid instance if:
     *
-    *   - the algebra has `Layout` and `Shape`;
-    *   - the effect type has a `Functor`; and
+    *   - the algebra has `Layout` and `Shape`; and
     *   - and the result type has a `Monoid`.
     *
     * In this case the combine is `on`, with identity `empty`.
     */
-  implicit def pictureMonoidInstance[Alg[x[_]] <: Layout[x] with Shape[x], F[
-      _
-  ], A](implicit
-      f: Functor[F],
+  implicit def pictureMonoidInstance[Alg <: Layout with Shape, A](implicit
       m: Monoid[A]
-  ): Monoid[Picture[Alg, F, A]] =
-    new Monoid[Picture[Alg, F, A]] {
-      val empty: Picture[Alg, F, A] =
-        Picture(alg => alg.empty.map(_ => m.empty))
+  ): Monoid[Picture[Alg, A]] =
+    new Monoid[Picture[Alg, A]] {
+      val empty: Picture[Alg, A] =
+        new Picture {
+          def apply(implicit algebra: Alg): algebra.F[A] =
+            algebra.empty.map(_ => m.empty)
+        }
 
       def combine(
-          x: Picture[Alg, F, A],
-          y: Picture[Alg, F, A]
-      ): Picture[Alg, F, A] =
-        Picture(alg => alg.on(x(alg), y(alg)))
-    }
-
-  /** Picture[Alg,F,?] has a Monad instance if F does
-    */
-  implicit def pictureMonadInstance[Alg[x[_]] <: Algebra[x], F[_]](implicit
-      m: Monad[F]
-  ): Monad[Picture[Alg, F, *]] =
-    new Monad[Picture[Alg, F, *]] {
-      def flatMap[A, B](
-          fa: Picture[Alg, F, A]
-      )(f: A => Picture[Alg, F, B]): Picture[Alg, F, B] =
-        Picture(alg => fa(alg).flatMap(a => f(a)(alg)))
-
-      def pure[A](x: A): Picture[Alg, F, A] =
-        Picture(_ => x.pure[F])
-
-      def tailRecM[A, B](
-          a: A
-      )(f: A => Picture[Alg, F, Either[A, B]]): Picture[Alg, F, B] =
-        f(a).flatMap(either =>
-          either match {
-            case Left(a)  => tailRecM(a)(f)
-            case Right(b) => pure(b)
-          }
-        )
+          x: Picture[Alg, A],
+          y: Picture[Alg, A]
+      ): Picture[Alg, A] =
+        new Picture {
+          def apply(implicit algebra: Alg): algebra.F[A] =
+            algebra.on(x(algebra), y(algebra))
+        }
     }
 }

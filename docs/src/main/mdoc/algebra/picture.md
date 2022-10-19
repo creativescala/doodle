@@ -29,7 +29,7 @@ In addition to drawing a picture to the screen we can write it to a file or conv
 import doodle.core._
 import doodle.syntax.all._
 import doodle.java2d._
-import doodle.effect.Writer._
+import doodle.core.format._
 import cats.effect.unsafe.implicits.global
 
 val picture = circle[Algebra, Drawing](100)
@@ -45,7 +45,7 @@ We can convert a `Picture` to a [Base64][base64] value using the `base64` method
 import doodle.core._
 import doodle.syntax.all._
 import doodle.java2d._
-import doodle.effect.Writer._
+import doodle.core.format._
 import cats.effect.unsafe.implicits.global
 
 val picture = circle[Algebra, Drawing](100)
@@ -66,7 +66,7 @@ Here is quick example of use. First we create a `Base64` value from a `Picture`.
 import doodle.core._
 import doodle.syntax.all._
 import doodle.java2d._
-import doodle.effect.Writer._
+import doodle.core.format._
 import cats.effect.unsafe.implicits.global
 ```
 ```scala mdoc:silent

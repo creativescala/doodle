@@ -24,13 +24,13 @@ import cats.implicits._
 import doodle.core.Landmark
 import doodle.core.Transform
 
-trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
-  self: GivenApply[F] =>
+trait GenericLayout[G[_]] extends Layout {
+  self: GivenApply[G] with Algebra { type F = Finalized[G, *] } =>
   import Renderable._
 
-  def on[A](top: Finalized[F, A], bottom: Finalized[F, A])(implicit
+  def on[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit
       s: Semigroup[A]
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
@@ -42,9 +42,9 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       }
     }
 
-  def beside[A](left: Finalized[F, A], right: Finalized[F, A])(implicit
+  def beside[A](left: Finalized[G, A], right: Finalized[G, A])(implicit
       s: Semigroup[A]
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     IndexedStateT { ctxTxs =>
       val l = left.runA(ctxTxs)
       val r = right.runA(ctxTxs)
@@ -62,9 +62,9 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       }
     }
 
-  def above[A](top: Finalized[F, A], bottom: Finalized[F, A])(implicit
+  def above[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit
       s: Semigroup[A]
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     IndexedStateT { ctxTxs =>
       val t = top.runA(ctxTxs)
       val b = bottom.runA(ctxTxs)
@@ -82,7 +82,7 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       }
     }
 
-  def at[A](img: Finalized[F, A], landmark: Landmark): Finalized[F, A] =
+  def at[A](img: Finalized[G, A], landmark: Landmark): Finalized[G, A] =
     img.map { case (bb, rdr) =>
       val point = bb.eval(landmark)
       (
@@ -91,7 +91,7 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
       )
     }
 
-  def originAt[A](img: Finalized[F, A], landmark: Landmark): Finalized[F, A] =
+  def originAt[A](img: Finalized[G, A], landmark: Landmark): Finalized[G, A] =
     img.map { case (bb, rdr) =>
       val point = bb.eval(landmark)
       // Moving the origin to point p is equivalent to translating the image to -p
@@ -102,12 +102,12 @@ trait GenericLayout[F[_]] extends Layout[Finalized[F, *]] {
     }
 
   def margin[A](
-      img: Finalized[F, A],
+      img: Finalized[G, A],
       top: Double,
       right: Double,
       bottom: Double,
       left: Double
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     img.map { case (bb, rdr) =>
       val newBb = bb.copy(
         left = bb.left - left,

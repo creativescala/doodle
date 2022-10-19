@@ -21,7 +21,7 @@ package examples
 object PulsingCircle {
   import cats.instances.all._
   import doodle.core._
-  import doodle.effect.Writer.Gif
+  import doodle.core.format.Gif
   import doodle.syntax.all._
   import doodle.java2d.effect._
   import doodle.interact.syntax.all._

@@ -8,14 +8,9 @@ import doodle.interact.algebra.MouseOver
 import fs2.Stream
 
 trait MouseOverSyntax {
-  implicit class MouseOverOps[F[_], A](picture: F[A]) {
-    def mouseOver(implicit m: MouseOver[F]): (F[A], Stream[IO, Unit]) =
-      m.mouseOver(picture)
-  }
-
-  implicit class MouseOverPictureOps[Alg[x[_]] <: MouseOver[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class MouseOverPictureOps[Alg <: MouseOver, A](
+      picture: Picture[Alg, A]
   ) {
-    def mouseOver: IO[(Picture[Alg, F, A], Stream[IO, Unit])] = ???
+    def mouseOver: IO[(Picture[Alg, A], Stream[IO, Unit])] = ???
   }
 }

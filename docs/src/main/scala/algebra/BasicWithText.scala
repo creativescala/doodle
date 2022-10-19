@@ -12,12 +12,11 @@ import doodle.syntax.all._
 
 object BasicWithText {
 
-  def basicWithText[Alg[x[_]] <: Basic[x] with Text[x], F[_]]
-      : Picture[Alg, F, Unit] = {
-    val redCircle = circle[Alg, F](100).strokeColor(Color.red)
-    val rad = text[Alg, F]("Doodle is rad")
+  def basicWithText[Alg <: Basic]: Picture[Alg, Unit] = {
+    val redCircle = circle[Alg](100).strokeColor(Color.red)
+    val rad = text[Alg]("Doodle is rad")
 
     rad.on(redCircle)
   }
-  basicWithText[Algebra, Drawing].save("algebra/basic-with-text.png")
+  basicWithText[Algebra].save("algebra/basic-with-text.png")
 }

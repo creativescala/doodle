@@ -69,7 +69,7 @@ If we want to use algebras directly and target multiple backends we need to do a
 To create a picture:
 
 1. We write a method that has two types parameters, one of which is a type parameter that is a subtype of the algebra we have chosen, and the other is just `F[_]`. See the code below for the example.
-2. We declare the result type of the method as `doodle.algebra.Picture[Alg, F, Unit]`, where `Alg` is the algebra type we declared in the first step.
+2. We declare the result type of the method as `doodle.algebra.Picture[Alg, Unit]`, where `Alg` is the algebra type we declared in the first step.
 3. We then write the code for creating the picture as usual in the body of the method, using `Alg` for `Algebra` and `F` for `Drawing`.
 
 Here's an example. The type declaration is complicated but you don't need to understand it. You can just copy and paste, changing `Basic` and `Text` as appropriate for your case.
@@ -78,7 +78,7 @@ Here's an example. The type declaration is complicated but you don't need to und
 import doodle.language.Basic
 import doodle.algebra.{Picture, Text}
 
-def basicWithText[Alg[x[_]] <: Basic[x] with Text[x], F[_]]: Picture[Alg, F, Unit] = {
+def basicWithText[Alg <: Basic with Text, F[_]]: Picture[Alg, Unit] = {
   val redCircle = circle[Alg, F](100).strokeColor(Color.red)
   val rad = text[Alg, F]("Doodle is rad")
   
@@ -108,7 +108,7 @@ import doodle.core._
 import doodle.algebra._
 
 // Two red circles beside each other
-def twoRedCircles[Alg[x[_]] <: Layout[x] with Style[x] with Shape[x], F[_]](algebra: Alg[F]): F[Unit] = {
+def twoRedCircles[Alg <: Layout with Style[x] with Shape[x], F[_]](algebra: Alg[F]): F[Unit] = {
   val redCircle = algebra.strokeColor(algebra.circle(100), Color.red)
   
   algebra.beside(redCircle, redCircle)

@@ -20,7 +20,9 @@ package generic
 
 import doodle.core.{Transform => Tx}
 
-trait GenericTransform[F[_]] extends Transform[Finalized[F, *]] {
-  def transform[A](img: Finalized[F, A], tx: Tx): Finalized[F, A] =
+trait GenericTransform[G[_]] extends Transform {
+  self: Algebra { type F = Finalized[G, *] } =>
+
+  def transform[A](img: Finalized[G, A], tx: Tx): Finalized[G, A] =
     Finalized.transform(tx)(img)
 }

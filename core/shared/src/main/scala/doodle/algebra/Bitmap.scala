@@ -3,7 +3,7 @@ package algebra
 
 import java.io.File
 
-trait Bitmap[F[_]] extends Algebra[F] {
+trait Bitmap extends Algebra {
 
   /** Read an image from the given file
     */

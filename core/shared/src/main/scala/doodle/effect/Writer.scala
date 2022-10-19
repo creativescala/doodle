@@ -20,25 +20,14 @@ package effect
 import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
+import doodle.core.format.Format
 
 import java.io.File
 
 /** The `Writer` typeclass represents write a picture to a file in a given
   * format.
   */
-trait Writer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
-  def write[A](file: File, description: Frame, image: Picture[Alg, F, A]): IO[A]
-  def write[A](file: File, image: Picture[Alg, F, A]): IO[A]
-}
-object Writer {
-  /* Standard format type for PDF writer */
-  sealed trait Pdf
-  /* Standard format type for GIF writer */
-  sealed trait Gif
-  /* Standard format type for PNG writer */
-  sealed trait Png
-  /* Standard format type for SVG writer */
-  sealed trait Svg
-  /* Standard format type for JPEG writer */
-  sealed trait Jpg
+trait Writer[+Alg <: Algebra, Frame, Fmt <: Format] {
+  def write[A](file: File, description: Frame, image: Picture[Alg, A]): IO[A]
+  def write[A](file: File, image: Picture[Alg, A]): IO[A]
 }

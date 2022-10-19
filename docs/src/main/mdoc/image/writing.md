@@ -23,7 +23,7 @@ to write to a file you'll need
 
 ```scala mdoc
 import doodle.java2d._
-import doodle.effect.Writer._
+import doodle.core.format._
 import cats.effect.unsafe.implicits.global
 ```
 

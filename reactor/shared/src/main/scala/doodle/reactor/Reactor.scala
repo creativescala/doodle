@@ -66,18 +66,18 @@ final case class Reactor[A](
   def step: Reactor[A] =
     this.copy(initial = this.onTick(this.initial))
 
-  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](
+  def draw[Alg <: Basic, F[_], Frame, Canvas](
       frame: Frame
   )(implicit
-      renderer: Renderer[Alg, F, Frame, Canvas],
+      renderer: Renderer[Alg, Frame, Canvas],
       runtime: IORuntime
   ): Unit = {
     import doodle.image.syntax.all._
     this.image.draw(frame)(renderer, runtime)
   }
 
-  def draw[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas]()(implicit
-      renderer: DefaultRenderer[Alg, F, Frame, Canvas],
+  def draw[Alg <: Basic, F[_], Frame, Canvas]()(implicit
+      renderer: DefaultRenderer[Alg, Frame, Canvas],
       runtime: IORuntime
   ): Unit = {
     import doodle.image.syntax.all._

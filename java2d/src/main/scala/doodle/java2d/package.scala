@@ -19,11 +19,12 @@ package doodle
 import doodle.algebra.Bitmap
 import doodle.algebra.Text
 import doodle.algebra.ToPicture
+import doodle.algebra._
+import doodle.core.format._
 import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
 import doodle.effect.DefaultRenderer
 import doodle.effect.Writer
-import doodle.effect.Writer._
 import doodle.interact.algebra._
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.effect.AnimationWriter
@@ -32,9 +33,15 @@ import doodle.language.Basic
 
 import java.awt.image.BufferedImage
 
-package object java2d {
-  type Algebra[F[_]] =
-    doodle.algebra.Algebra[F] with Basic[F] with Bitmap[F] with Text[F]
+package object java2d extends Java2dToPicture {
+  type Algebra =
+    doodle.algebra.Algebra
+      with Basic
+      with Bitmap
+      with FromBufferedImage
+      with FromPngBase64
+      with FromGifBase64
+      with FromJpgBase64
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
 
@@ -51,40 +58,40 @@ package object java2d {
     doodle.java2d.effect.Java2dAnimationWriter
 
   implicit val java2dRenderer
-      : DefaultRenderer[Algebra, Drawing, doodle.java2d.effect.Frame, Canvas] =
+      : DefaultRenderer[Algebra, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
-  implicit val java2dGifWriter: Writer[Algebra, Drawing, Frame, Gif]
-    with Base64[Algebra, Drawing, Frame, Gif] =
+  implicit val java2dGifWriter
+      : Writer[Algebra, Frame, Gif] with Base64[Algebra, Frame, Gif] =
     doodle.java2d.effect.Java2dGifWriter
-  implicit val java2dPngWriter: Writer[Algebra, Drawing, Frame, Png]
-    with Base64[Algebra, Drawing, Frame, Png] =
+  implicit val java2dPngWriter
+      : Writer[Algebra, Frame, Png] with Base64[Algebra, Frame, Png] =
     doodle.java2d.effect.Java2dPngWriter
-  implicit val java2dJpgWriter: Writer[Algebra, Drawing, Frame, Jpg]
-    with Base64[Algebra, Drawing, Frame, Jpg] =
+  implicit val java2dJpgWriter
+      : Writer[Algebra, Frame, Jpg] with Base64[Algebra, Frame, Jpg] =
     doodle.java2d.effect.Java2dJpgWriter
-  implicit val java2dPdfWriter: Writer[Algebra, Drawing, Frame, Pdf]
-    with Base64[Algebra, Drawing, Frame, Pdf] =
+  implicit val java2dPdfWriter
+      : Writer[Algebra, Frame, Pdf] with Base64[Algebra, Frame, Pdf] =
     doodle.java2d.effect.Java2dPdfWriter
 
-  implicit val java2dBufferedImageToPicture: ToPicture[Drawing, BufferedImage] =
-    doodle.java2d.algebra.reified.BufferedImageToPicture
-  implicit val java2dBase64PngToPicture: ToPicture[Drawing, B64[Png]] =
-    doodle.java2d.algebra.reified.Base64PngToPicture
-  implicit val java2dBase64GifToPicture: ToPicture[Drawing, B64[Gif]] =
-    doodle.java2d.algebra.reified.Base64GifToPicture
-  implicit val java2dBase64JpgToPicture: ToPicture[Drawing, B64[Jpg]] =
-    doodle.java2d.algebra.reified.Base64JpgToPicture
+  // implicit val java2dBufferedImageToPicture: ToPicture[BufferedImage, Algebra] =
+  //   doodle.java2d.algebra.reified.BufferedImageToPicture
+  // implicit val java2dBase64PngToPicture: ToPicture[B64[Png], Algebra] =
+  //   doodle.java2d.algebra.reified.Base64PngToPicture
+  // implicit val java2dBase64GifToPicture: ToPicture[B64[Gif], Algebra] =
+  //   doodle.java2d.algebra.reified.Base64GifToPicture
+  // implicit val java2dBase64JpgToPicture: ToPicture[B64[Jpg], Algebra] =
+  //   doodle.java2d.algebra.reified.Base64JpgToPicture
 
   val Frame = doodle.java2d.effect.Frame
 
-  type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
+  type Picture[A] = doodle.algebra.Picture[Algebra, A]
   object Picture
       extends doodle.algebra.BaseConstructor
       with doodle.algebra.PathConstructor
       with doodle.algebra.ShapeConstructor
       with doodle.algebra.TextConstructor {
 
-    type Algebra[x[_]] = java2d.Algebra[x]
+    type Algebra = java2d.Algebra
     type Drawing[A] = java2d.Drawing[A]
   }
 }

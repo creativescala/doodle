@@ -23,13 +23,15 @@ import doodle.algebra.Picture
 import java.io.File
 
 trait BitmapSyntax {
-  def read[Alg[x[_]] <: Bitmap[x], F[_]](file: File): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.read(file)
+  def read[Alg <: Bitmap](file: File): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.read(file)
     }
 
-  def read[Alg[x[_]] <: Bitmap[x], F[_]](file: String): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.read(file)
+  def read[Alg <: Bitmap](file: String): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.read(file)
     }
 }

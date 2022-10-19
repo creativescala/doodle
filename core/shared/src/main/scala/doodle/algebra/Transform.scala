@@ -21,7 +21,7 @@ import doodle.core.Angle
 import doodle.core.Vec
 import doodle.core.{Transform => Tx}
 
-trait Transform[F[_]] extends Algebra[F] {
+trait Transform extends Algebra {
   def transform[A](img: F[A], tx: Tx): F[A]
 
   // Derived methods

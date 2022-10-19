@@ -11,12 +11,12 @@ import fs2.Stream
 
 object Orbit {
 
-  def planet[F[_]](angle: Angle): Picture[Basic, F, Unit] =
-    circle[Basic, F](20)
+  def planet(angle: Angle): Picture[Basic, Unit] =
+    circle[Basic](20)
       .fillColor(Color.brown.spin(angle))
       .at(Point(200, angle))
 
-  def frames[F[_]]: Stream[Pure, Picture[Basic, F, Unit]] =
+  def frames: Stream[Pure, Picture[Basic, Unit]] =
     Stream
       .range(0, 360, 1)
       .map(a => a.toDouble.degrees)

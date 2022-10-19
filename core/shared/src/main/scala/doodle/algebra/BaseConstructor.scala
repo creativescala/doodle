@@ -10,14 +10,8 @@ package doodle.algebra
   * See e.g. Shape for an example.
   */
 trait BaseConstructor {
-  type Algebra[x[_]] <: doodle.algebra.Algebra[x]
+  type Algebra <: doodle.algebra.Algebra
   type Drawing[A]
 
-  type Picture[A] = doodle.algebra.Picture[Algebra, Drawing, A]
-  def apply(f: Algebra[Drawing] => Drawing[Unit]): Picture[Unit] = {
-    new Picture[Unit] {
-      def apply(implicit algebra: Algebra[Drawing]): Drawing[Unit] =
-        f(algebra)
-    }
-  }
+  type Picture[A] = doodle.algebra.Picture[Algebra, A]
 }

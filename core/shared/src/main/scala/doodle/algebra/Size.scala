@@ -21,7 +21,7 @@ import doodle.core.BoundingBox
 
 /** Get information about the size of the bounding box enclosing an picture.
   */
-trait Size[F[_]] extends Algebra[F] {
+trait Size extends Algebra {
 
   /** Get the height of the bounding box enclosing the picture
     */

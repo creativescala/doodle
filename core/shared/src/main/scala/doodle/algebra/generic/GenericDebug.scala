@@ -18,19 +18,19 @@ package doodle
 package algebra
 package generic
 
+import cats.Functor
+import cats.Semigroupal
 import doodle.core.Color
 
-trait GenericDebug[F[_]] extends Debug[Finalized[F, *]] {
-  self: Shape[Finalized[F, *]]
-    with Layout[Finalized[F, *]]
-    with GivenApply[F] =>
+trait GenericDebug[G[_]] extends Debug {
+  self: Shape with Layout with GivenApply[G] { type F = Finalized[G, *] } =>
 
   import cats.implicits._
 
   def debug[A](
-      picture: Finalized[F, A],
+      picture: Finalized[G, A],
       color: Color = Color.crimson
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     Finalized { ctxTxs =>
       picture
         .runA(ctxTxs)
@@ -51,8 +51,8 @@ trait GenericDebug[F[_]] extends Debug[Finalized[F, *]] {
             )
             .map { case (_, rdrDebug) =>
               val fullRdr = Renderable { tx =>
-                (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (fa, fdbg) =>
-                  (fa, fdbg).mapN((a, _) => a)
+                (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (ga, gdbg) =>
+                  (ga, gdbg).mapN((a, _) => a)
                 }
               }
               (ctxTxs, (bb, fullRdr))

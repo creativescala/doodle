@@ -5,7 +5,7 @@ import doodle.core.font.Font
 
 /** Algebra for creating and styling text.
   */
-trait Text[F[_]] extends Algebra[F] {
+trait Text extends Algebra {
 
   /** Specifies the font to use when rendering text
     */
@@ -19,10 +19,13 @@ trait Text[F[_]] extends Algebra[F] {
 /** Constructors for Text algebra
   */
 trait TextConstructor {
-  self: BaseConstructor { type Algebra[x[_]] <: Text[x] } =>
+  self: BaseConstructor { type Algebra <: Text } =>
 
   /** Render the given String
     */
   def text(text: String): Picture[Unit] =
-    Picture(alg => alg.text(text))
+    new Picture[Unit] {
+      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+        algebra.text(text)
+    }
 }

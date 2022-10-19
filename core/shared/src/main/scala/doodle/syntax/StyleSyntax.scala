@@ -25,57 +25,67 @@ import doodle.core.Gradient
 import doodle.core.Join
 
 trait StyleSyntax {
-  implicit class StylePictureOps[Alg[x[_]] <: Style[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class StylePictureOps[Alg <: Style, A](
+      picture: Picture[Alg, A]
   ) {
-    def fillColor(fillColor: Color): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.fillColor(picture(algebra), fillColor)
+    def fillColor(fillColor: Color): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.fillColor(picture(algebra), fillColor)
       }
 
-    def fillGradient(fillGradient: Gradient): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.fillGradient(picture(algebra), fillGradient)
+    def fillGradient(fillGradient: Gradient): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.fillGradient(picture(algebra), fillGradient)
       }
 
-    def strokeColor(strokeColor: Color): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.strokeColor(picture(algebra), strokeColor)
+    def strokeColor(strokeColor: Color): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.strokeColor(picture(algebra), strokeColor)
       }
 
-    def strokeWidth(strokeWidth: Double): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.strokeWidth(picture(algebra), strokeWidth)
+    def strokeWidth(strokeWidth: Double): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.strokeWidth(picture(algebra), strokeWidth)
       }
 
-    def strokeDash(pattern: Array[Double]): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.strokeDash(picture(algebra), pattern)
+    def strokeDash(pattern: Array[Double]): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.strokeDash(picture(algebra), pattern)
       }
 
-    def strokeCap(strokeCap: Cap): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.strokeCap(picture(algebra), strokeCap)
+    def strokeCap(strokeCap: Cap): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.strokeCap(picture(algebra), strokeCap)
       }
 
-    def strokeJoin(strokeJoin: Join): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.strokeJoin(picture(algebra), strokeJoin)
+    def strokeJoin(strokeJoin: Join): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.strokeJoin(picture(algebra), strokeJoin)
       }
 
-    def noDash: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.noDash(picture(algebra))
+    def noDash: Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.noDash(picture(algebra))
       }
 
-    def noFill: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.noFill(picture(algebra))
+    def noFill: Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.noFill(picture(algebra))
       }
 
-    def noStroke: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.noStroke(picture(algebra))
+    def noStroke: Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.noStroke(picture(algebra))
       }
   }
 }

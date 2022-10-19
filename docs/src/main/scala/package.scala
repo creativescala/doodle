@@ -2,7 +2,7 @@ package object docs {
   import java.io.File
   import cats.effect.unsafe.IORuntime
   import doodle.image.Image
-  import doodle.effect.Writer._
+  import doodle.core.format._
   import doodle.java2d._
 
   implicit class ImageSaveSyntax(image: Image) {

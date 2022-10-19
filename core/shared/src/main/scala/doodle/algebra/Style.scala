@@ -24,7 +24,7 @@ import doodle.core.Join
 
 /** Apply styling to a image.
   */
-trait Style[F[_]] extends Algebra[F] {
+trait Style extends Algebra {
   def fillColor[A](image: F[A], fillColor: Color): F[A]
   def fillGradient[A](image: F[A], fillGradient: Gradient): F[A]
 

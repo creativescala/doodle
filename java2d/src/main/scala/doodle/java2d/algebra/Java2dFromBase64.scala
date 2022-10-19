@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OReification ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -17,47 +17,42 @@
 package doodle
 package java2d
 package algebra
-package reified
 
 import cats.Eval
 import cats.data.State
 import cats.data.WriterT
-import doodle.algebra.ToPicture
+import doodle.algebra._
 import doodle.algebra.generic._
 import doodle.core.Base64
 import doodle.core.BoundingBox
 import doodle.core.Transform
-import doodle.effect.Writer._
+import doodle.core.format._
+import doodle.java2d.algebra.reified._
 
+import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.util.{Base64 => JBase64}
 import javax.imageio.ImageIO
 
-trait BaseToPicture[Input] extends ToPicture[Drawing, Input] {
-  def toPicture(in: Input): Drawing[Unit]
-}
+trait Java2dFromBase64
+    extends FromPngBase64
+    with FromGifBase64
+    with FromJpgBase64 {
+  self: Algebra { type F[A] = Drawing[A] } =>
 
-object BufferedImageToPicture extends BaseToPicture[BufferedImage] {
-  def toPicture(in: BufferedImage): Drawing[Unit] = {
-    Finalized.leaf { _ =>
-      val w = in.getWidth()
-      val h = in.getHeight()
-      val bb = BoundingBox.centered(w.toDouble, h.toDouble)
-      (
-        bb,
-        State.inspect { (tx: Transform) =>
-          WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, in)))
-        }
-      )
-    }
-  }
-}
+  def fromGifBase64(base64: core.Base64[Gif]): Drawing[Unit] =
+    genericFromBase64(base64.value)
 
-trait GenericBase64ToPicture[A] extends BaseToPicture[Base64[A]] {
-  def toPicture(in: Base64[A]): Drawing[Unit] = {
+  def fromPngBase64(base64: core.Base64[Png]): Drawing[Unit] =
+    genericFromBase64(base64.value)
+
+  def fromJpgBase64(base64: core.Base64[Jpg]): Drawing[Unit] =
+    genericFromBase64(base64.value)
+
+  def genericFromBase64(value: String): Drawing[Unit] =
     Finalized.leaf { _ =>
-      val bytes = JBase64.getDecoder().decode(in.value)
+      val bytes = JBase64.getDecoder().decode(value)
       val bs = new ByteArrayInputStream(bytes)
       val bi = ImageIO.read(bs)
       val w = bi.getWidth()
@@ -70,9 +65,4 @@ trait GenericBase64ToPicture[A] extends BaseToPicture[Base64[A]] {
         }
       )
     }
-
-  }
 }
-object Base64PngToPicture extends GenericBase64ToPicture[Png]
-object Base64GifToPicture extends GenericBase64ToPicture[Gif]
-object Base64JpgToPicture extends GenericBase64ToPicture[Jpg]

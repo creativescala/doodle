@@ -13,7 +13,10 @@ import java.awt.Graphics2D
 import java.awt.geom.Rectangle2D
 
 trait ReifiedText extends GenericText[Reification] {
-  def gc: Graphics2D
+  self: Algebra {
+    type F[A] <: Drawing[A]
+    def gc: Graphics2D
+  } =>
 
   val TextApi = new TextApi {
     type Bounds = Rectangle2D

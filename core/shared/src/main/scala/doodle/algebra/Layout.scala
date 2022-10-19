@@ -23,7 +23,7 @@ import doodle.core.Landmark
 import doodle.core.Point
 import doodle.core.Vec
 
-trait Layout[F[_]] extends Algebra[F] {
+trait Layout extends Algebra {
 
   /** Place the origin of top on the origin of bottom */
   def on[A](top: F[A], bottom: F[A])(implicit s: Semigroup[A]): F[A]

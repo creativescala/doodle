@@ -35,8 +35,8 @@ trait RendererSyntax {
       case Right(_) => ()
     }
 
-  implicit class RendererPictureOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class RendererPictureOps[Alg <: Algebra, A](
+      picture: Picture[Alg, A]
   ) {
 
     /** Convenience to immediately render a `Picture`, using the default `Frame`
@@ -44,7 +44,7 @@ trait RendererSyntax {
       */
     def draw[Frame, Canvas](cb: Either[Throwable, A] => Unit = nullCallback _)(
         implicit
-        renderer: DefaultRenderer[Alg, F, Frame, Canvas],
+        renderer: DefaultRenderer[Alg, Frame, Canvas],
         r: IORuntime
     ): Unit =
       drawToIO.unsafeRunAsync(cb)
@@ -55,7 +55,7 @@ trait RendererSyntax {
     def drawWithFrame[Frame, Canvas](
         frame: Frame,
         cb: Either[Throwable, A] => Unit = nullCallback _
-    )(implicit renderer: Renderer[Alg, F, Frame, Canvas], r: IORuntime): Unit =
+    )(implicit renderer: Renderer[Alg, Frame, Canvas], r: IORuntime): Unit =
       (for {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(picture)
@@ -67,14 +67,14 @@ trait RendererSyntax {
     def drawWithCanvas[Canvas](
         canvas: Canvas,
         cb: Either[Throwable, A] => Unit = nullCallback _
-    )(implicit renderer: Renderer[Alg, F, _, Canvas], r: IORuntime): Unit =
+    )(implicit renderer: Renderer[Alg, _, Canvas], r: IORuntime): Unit =
       drawWithCanvasToIO(canvas).unsafeRunAsync(cb)
 
     /** Create an effect that, when run, will draw `Picture` on the default
       * `Frame` for this `Renderer`.
       */
     def drawToIO[Frame, Canvas](implicit
-        renderer: DefaultRenderer[Alg, F, Frame, Canvas]
+        renderer: DefaultRenderer[Alg, Frame, Canvas]
     ): IO[A] =
       (for {
         canvas <- renderer.canvas(renderer.default)
@@ -85,14 +85,14 @@ trait RendererSyntax {
       * `Canvas`.
       */
     def drawWithCanvasToIO[Canvas](canvas: Canvas)(implicit
-        renderer: Renderer[Alg, F, _, Canvas]
+        renderer: Renderer[Alg, _, Canvas]
     ): IO[A] =
       renderer.render(canvas)(picture)
   }
 
   implicit class RendererFrameOps[Frame](frame: Frame) {
-    def canvas[Alg[x[_]] <: Algebra[x], F[_], Canvas]()(implicit
-        renderer: Renderer[Alg, F, Frame, Canvas]
+    def canvas[Alg <: Algebra, Canvas]()(implicit
+        renderer: Renderer[Alg, Frame, Canvas]
     ): IO[Canvas] =
       renderer.canvas(frame)
   }

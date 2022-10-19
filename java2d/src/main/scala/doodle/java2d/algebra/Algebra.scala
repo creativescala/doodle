@@ -19,8 +19,14 @@ package java2d
 package algebra
 
 import cats._
+import cats.data.IndexedStateT
+import cats.data.IndexedStateTMonad
+import cats.data.State
+import cats.data.StateT
+import cats.data.WriterT
 import cats.implicits._
 import doodle.algebra.generic._
+import doodle.core.BoundingBox
 import doodle.java2d.algebra.reified._
 import doodle.language.Basic
 
@@ -30,7 +36,9 @@ final case class Algebra(
     gc: Graphics2D,
     applyF: Apply[Reification] = Apply.apply[Reification],
     functorF: Functor[Reification] = Apply.apply[Reification]
-) extends Basic[Drawing]
+) extends Basic
+    with Java2dFromBufferedImage
+    with Java2dFromBase64
     with ReifiedBitmap
     with ReifiedPath
     with ReifiedShape
@@ -42,3 +50,19 @@ final case class Algebra(
     with GenericTransform[Reification]
     with GivenApply[Reification]
     with GivenFunctor[Reification]
+    with doodle.algebra.Algebra {
+  type F[A] = Drawing[A]
+  implicit val fInstance: Applicative[Drawing] =
+    new Applicative[Drawing] {
+      def ap[A, B](ff: Drawing[A => B])(fa: Drawing[A]): Drawing[B] = ???
+      def pure[A](x: A): Drawing[A] =
+        Finalized.leaf(_ =>
+          (
+            BoundingBox.empty,
+            Renderable.apply(_ =>
+              Eval.now(WriterT.liftF[Eval, List[Reified], A](Eval.now(x)))
+            )
+          )
+        )
+    }
+}

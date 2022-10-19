@@ -25,6 +25,7 @@ import de.erichseifert.vectorgraphics2d.util.PageSize
 import doodle.core.BoundingBox
 import doodle.core.Color
 import doodle.core.Transform
+import doodle.core.format._
 import doodle.core.{Base64 => B64}
 import doodle.effect._
 import doodle.java2d.algebra.Algebra
@@ -39,9 +40,9 @@ import java.io.OutputStream
 import java.util.{Base64 => JBase64}
 import javax.imageio.ImageIO
 
-trait Java2dWriter[Format]
-    extends Writer[doodle.java2d.Algebra, Drawing, Frame, Format]
-    with Base64[doodle.java2d.Algebra, Drawing, Frame, Format] {
+trait Java2dWriter[Fmt <: Format]
+    extends Writer[doodle.java2d.Algebra, Frame, Fmt]
+    with Base64[doodle.java2d.Algebra, Frame, Fmt] {
   def format: String
 
   // Allows formats to control the encoding of the buffered image. Not all
@@ -66,14 +67,14 @@ trait Java2dWriter[Format]
     } yield a
   }
 
-  def base64[A](frame: Frame, image: Picture[A]): IO[(A, B64[Format])] =
+  def base64[A](frame: Frame, image: Picture[A]): IO[(A, B64[Fmt])] =
     for {
       output <- IO.pure(new ByteArrayOutputStream())
       value <- writeToOutput(output, frame, image)
       base64 = JBase64.getEncoder.encodeToString(output.toByteArray)
-    } yield (value, B64[Format](base64))
+    } yield (value, B64[Fmt](base64))
 
-  def base64[A](image: Picture[A]): IO[(A, B64[Format])] =
+  def base64[A](image: Picture[A]): IO[(A, B64[Fmt])] =
     base64(Frame.fitToPicture(), image)
 
   private def writeToOutput[A](
@@ -144,26 +145,26 @@ object Java2dWriter {
     } yield (image, a)
 
 }
-object Java2dGifWriter extends Java2dWriter[Writer.Gif] {
+object Java2dGifWriter extends Java2dWriter[Gif] {
   val format = "gif"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 }
-object Java2dPngWriter extends Java2dWriter[Writer.Png] {
+object Java2dPngWriter extends Java2dWriter[Png] {
   val format = "png"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 }
-object Java2dJpgWriter extends Java2dWriter[Writer.Jpg] {
+object Java2dJpgWriter extends Java2dWriter[Jpg] {
   val format = "jpeg"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
 }
 
-object Java2dPdfWriter extends Java2dWriter[Writer.Pdf] {
+object Java2dPdfWriter extends Java2dWriter[Pdf] {
   val format = "pdf"
 
   def makeImage(width: Int, height: Int): BufferedImage =

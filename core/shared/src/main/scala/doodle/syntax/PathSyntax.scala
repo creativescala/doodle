@@ -25,64 +25,72 @@ import doodle.core.Point
 
 trait PathSyntax {
   implicit class ClosedPathOps(closedPath: ClosedPath) {
-    def path[Alg[x[_]] <: Path[x], F[_]]: Picture[Alg, F, Unit] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.path(closedPath)
+    def path[Alg <: Path]: Picture[Alg, Unit] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[Unit] =
+          algebra.path(closedPath)
       }
   }
 
   implicit class OpenPathOps(openPath: OpenPath) {
-    def path[Alg[x[_]] <: Path[x], F[_]]: Picture[Alg, F, Unit] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.path(openPath)
+    def path[Alg <: Path]: Picture[Alg, Unit] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[Unit] =
+          algebra.path(openPath)
       }
   }
 
-  def regularPolygon[Alg[x[_]] <: Path[x], F[_]](
+  def regularPolygon[Alg <: Path](
       sides: Int,
       radius: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.regularPolygon(sides, radius)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.regularPolygon(sides, radius)
     }
 
-  def star[Alg[x[_]] <: Path[x], F[_]](
+  def star[Alg <: Path](
       points: Int,
       outerRadius: Double,
       innerRadius: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.star(points, outerRadius, innerRadius)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.star(points, outerRadius, innerRadius)
     }
 
-  def roundedRectangle[Alg[x[_]] <: Path[x], F[_]](
+  def roundedRectangle[Alg <: Path](
       width: Double,
       height: Double,
       radius: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.roundedRectangle(width, height, radius)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.roundedRectangle(width, height, radius)
     }
 
-  def equilateralTriangle[Alg[x[_]] <: Path[x], F[_]](
+  def equilateralTriangle[Alg <: Path](
       width: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.equilateralTriangle(width)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.equilateralTriangle(width)
     }
 
-  def interpolatingSpline[Alg[x[_]] <: Path[x], F[_]](
+  def interpolatingSpline[Alg <: Path](
       points: Seq[Point]
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.interpolatingSpline(points)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.interpolatingSpline(points)
     }
 
-  def catmulRom[Alg[x[_]] <: Path[x], F[_]](
+  def catmulRom[Alg <: Path](
       points: Seq[Point],
       tension: Double = 0.5
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.catmulRom(points, tension)
+  ): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.catmulRom(points, tension)
     }
 }

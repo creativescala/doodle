@@ -22,17 +22,19 @@ import doodle.algebra.Text
 import doodle.core.font.Font
 
 trait TextSyntax {
-  implicit class TextPictureOps[Alg[x[_]] <: Text[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class TextPictureOps[Alg <: Text, A](
+      picture: Picture[Alg, A]
   ) {
-    def font(font: Font): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.font(picture(algebra), font)
+    def font(font: Font): Picture[Alg, A] =
+      new Picture {
+        def apply(implicit algebra: Alg): algebra.F[A] =
+          algebra.font(picture(algebra), font)
       }
   }
 
-  def text[Alg[x[_]] <: Text[x], F[_]](text: String): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.text(text)
+  def text[Alg <: Text](text: String): Picture[Alg, Unit] =
+    new Picture {
+      def apply(implicit algebra: Alg): algebra.F[Unit] =
+        algebra.text(text)
     }
 }

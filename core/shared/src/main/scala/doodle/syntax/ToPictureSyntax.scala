@@ -23,11 +23,9 @@ import doodle.algebra.ToPicture
 
 trait ToPictureSyntax {
   implicit class ToPictureOps[A](value: A) {
-    def toPicture[Alg[x[_]] <: Algebra[x], F[_]](implicit
-        tp: ToPicture[F, A]
-    ): Picture[Alg, F, Unit] =
-      Picture { (_: Alg[F]) =>
-        tp.toPicture(value)
-      }
+    def toPicture[Alg <: Algebra](implicit
+        tp: ToPicture[A, Alg]
+    ): Picture[Alg, Unit] =
+      tp.toPicture(value)
   }
 }

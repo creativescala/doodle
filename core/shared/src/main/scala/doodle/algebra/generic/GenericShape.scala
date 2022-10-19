@@ -22,7 +22,8 @@ import cats.data.State
 import doodle.core.BoundingBox
 import doodle.core.{Transform => Tx}
 
-trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
+trait GenericShape[G[_]] extends Shape {
+  self: Algebra { type F = Finalized[G, *] } =>
 
   trait ShapeApi {
     def rectangle(
@@ -31,26 +32,26 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
         stroke: Option[Stroke],
         width: Double,
         height: Double
-    ): F[Unit]
+    ): G[Unit]
     def triangle(
         tx: Tx,
         fill: Option[Fill],
         stroke: Option[Stroke],
         width: Double,
         height: Double
-    ): F[Unit]
+    ): G[Unit]
     def circle(
         tx: Tx,
         fill: Option[Fill],
         stroke: Option[Stroke],
         diameter: Double
-    ): F[Unit]
-    def unit: F[Unit]
+    ): G[Unit]
+    def unit: G[Unit]
   }
 
   def ShapeApi: ShapeApi
 
-  def rectangle(width: Double, height: Double): Finalized[F, Unit] =
+  def rectangle(width: Double, height: Double): Finalized[G, Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
@@ -62,10 +63,10 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
       )
     }
 
-  def square(width: Double): Finalized[F, Unit] =
+  def square(width: Double): Finalized[G, Unit] =
     rectangle(width, width)
 
-  def triangle(width: Double, height: Double): Finalized[F, Unit] =
+  def triangle(width: Double, height: Double): Finalized[G, Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
@@ -78,7 +79,7 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
       )
     }
 
-  def circle(diameter: Double): Finalized[F, Unit] =
+  def circle(diameter: Double): Finalized[G, Unit] =
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb =
@@ -89,7 +90,7 @@ trait GenericShape[F[_]] extends Shape[Finalized[F, *]] {
       )
     }
 
-  def empty: Finalized[F, Unit] =
+  def empty: Finalized[G, Unit] =
     Finalized.leaf { _ =>
       (BoundingBox.empty, Renderable.unit(ShapeApi.unit))
     }

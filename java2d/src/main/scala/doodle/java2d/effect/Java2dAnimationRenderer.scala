@@ -25,10 +25,10 @@ import doodle.interact.effect.AnimationRenderer
 import fs2.Stream
 
 object Java2dAnimationRenderer extends AnimationRenderer[Canvas] {
-  def animate[Alg[x[_]] <: doodle.algebra.Algebra[x], F[_], A, Frm](
+  def animate[Alg <: doodle.algebra.Algebra, F[_], A, Frm](
       canvas: Canvas
-  )(frames: Stream[IO, doodle.algebra.Picture[Alg, F, A]])(implicit
-      e: Renderer[Alg, F, Frm, Canvas],
+  )(frames: Stream[IO, doodle.algebra.Picture[Alg, A]])(implicit
+      e: Renderer[Alg, Frm, Canvas],
       m: Monoid[A]
   ): IO[A] =
     frames

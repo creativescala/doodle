@@ -79,7 +79,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
       |import cats.instances.all._
       |import doodle.java2d._
       |import doodle.syntax.all._
-      |import doodle.effect.Writer._
+      |import doodle.core.format._
       |import doodle.examples._
       |import doodle.image._
       |import doodle.image.syntax.all._

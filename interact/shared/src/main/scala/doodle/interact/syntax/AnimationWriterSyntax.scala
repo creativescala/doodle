@@ -22,8 +22,8 @@ trait AnimationWriterSyntax {
       case Right(_) => ()
     }
 
-  implicit class AnimationWriterStreamOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Stream[IO, Picture[Alg, F, A]]
+  implicit class AnimationWriterStreamOps[Alg <: Algebra, F[_], A](
+      frames: Stream[IO, Picture[Alg, A]]
   ) {
 
     def writeToIO[Format] =
@@ -33,7 +33,7 @@ trait AnimationWriterSyntax {
       new AnimationWriterOpsHelper[Format](frames)
 
     class AnimationWriterIOOpsHelper[Format](
-        frames: Stream[IO, Picture[Alg, F, A]]
+        frames: Stream[IO, Picture[Alg, A]]
     ) {
       def apply[Frame](file: String, frame: Frame)(implicit
           m: Monoid[A],
@@ -49,7 +49,7 @@ trait AnimationWriterSyntax {
     }
 
     class AnimationWriterOpsHelper[Format](
-        frames: Stream[IO, Picture[Alg, F, A]]
+        frames: Stream[IO, Picture[Alg, A]]
     ) {
       def apply[Frame](file: String, frame: Frame)(implicit
           m: Monoid[A],
