@@ -70,15 +70,6 @@ package object java2d extends Java2dToPicture {
       : Writer[Algebra, Frame, Pdf] with Base64[Algebra, Frame, Pdf] =
     doodle.java2d.effect.Java2dPdfWriter
 
-  // implicit val java2dBufferedImageToPicture: ToPicture[BufferedImage, Algebra] =
-  //   doodle.java2d.algebra.reified.BufferedImageToPicture
-  // implicit val java2dBase64PngToPicture: ToPicture[B64[Png], Algebra] =
-  //   doodle.java2d.algebra.reified.Base64PngToPicture
-  // implicit val java2dBase64GifToPicture: ToPicture[B64[Gif], Algebra] =
-  //   doodle.java2d.algebra.reified.Base64GifToPicture
-  // implicit val java2dBase64JpgToPicture: ToPicture[B64[Jpg], Algebra] =
-  //   doodle.java2d.algebra.reified.Base64JpgToPicture
-
   val Frame = doodle.java2d.effect.Frame
 
   type Picture[A] = doodle.algebra.Picture[Algebra, A]
