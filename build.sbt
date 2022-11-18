@@ -28,7 +28,7 @@ ThisBuild / developers := List(
 ThisBuild / tlSonatypeUseLegacyHost := true
 
 lazy val scala213 = "2.13.8"
-lazy val scala3 = "3.1.2"
+lazy val scala3 = "3.2.1"
 
 ThisBuild / crossScalaVersions := List(scala3, scala213)
 ThisBuild / scalaVersion := crossScalaVersions.value.head
