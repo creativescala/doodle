@@ -32,7 +32,7 @@ import doodle.java2d._
 import doodle.core.format._
 import cats.effect.unsafe.implicits.global
 
-val picture = circle[Algebra, Drawing](100)
+val picture = circle[Algebra](100)
 
 picture.write[Png]("circle.png")
 ```
@@ -48,7 +48,7 @@ import doodle.java2d._
 import doodle.core.format._
 import cats.effect.unsafe.implicits.global
 
-val picture = circle[Algebra, Drawing](100)
+val picture = circle[Algebra](100)
 
 val (result, b64) = picture.base64[Png]()
 ```
@@ -72,7 +72,7 @@ import cats.effect.unsafe.implicits.global
 ```scala mdoc:silent
 // The value we throw away is the result of evaluating the
 // `Picture`, which is `Unit`.
-val (_, base64) = circle[Algebra, Drawing](100).base64[Png]()
+val (_, base64) = circle[Algebra](100).base64[Png]()
 ```
 
 We can convert it right back to a `Picture` using the `toPicture` method.
