@@ -38,8 +38,6 @@ ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / tlSitePublishBranch := Some("main")
 
-// enablePlugins(AutomateHeaderPlugin)
-
 // Run this (build) to do everything involved in building the project
 commands += Command.command("build") { state =>
   "dependencyUpdates" ::
@@ -57,8 +55,8 @@ lazy val commonSettings = Seq(
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
-  scalacOptions ++= Seq("-release", "8"),
-  javacOptions ++= Seq("-source", "8", "-target", "8"),
+  // scalacOptions ++= Seq("-release", "8"),
+  // javacOptions ++= Seq("-source", "8", "-target", "8"),
   startYear := Some(2015),
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
@@ -99,7 +97,7 @@ lazy val docs =
   project
     .in(file("site"))
     .enablePlugins(TypelevelSitePlugin)
-    .dependsOn(root.jvm)
+    .dependsOn(core.jvm, image.jvm)
 
 lazy val unidocs = project
   .in(file("unidocs"))
