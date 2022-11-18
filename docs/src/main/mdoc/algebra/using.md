@@ -5,14 +5,14 @@ This section gives recipes for using Doodle's algebras, either to target one bac
 
 ## What Are Algebras?
 
-Each algebra defines an interface for something related to creating pictures. For example, the @scaladoc[Layout](doodle.algebra.Layout) algebra defines some basic methods for positioning pictures while the @scaladoc[Style](doodle.algebra.Style) algebra defines methods for changing the fill and stroke of a picture. All algebras extend the @scaladoc[Algebra](doodle.algebra.Algebra) base trait, which requires an algebra declare some type that indicates the type of value returned by calling methods on the algebra.
+Each algebra defines an interface for something related to creating pictures. For example, the @:api(doodle.algebra.Layout) algebra defines some basic methods for positioning pictures while the @:api(doodle.algebra.Style) algebra defines methods for changing the fill and stroke of a picture. All algebras extend the @:api(doodle.algebra.Algebra) base trait, which requires an algebra declare some type that indicates the type of value returned by calling methods on the algebra.
 
 Tagless final style allows for a lot of flexibility. Back ends only implement the algebras that they support, which means that different backends can support different features. This allows us to access the full capabilities of each backend (assuming that someone has taken the time to write an algebra for the features you are interested in!)
 
 
 ## Using Backend Specific Features
 
-Use the following recipe to write code using backend specific features (for example, the @scaladoc[Bitmap](doodle.algebra.Bitmap) algebra which is currently only supported by the @scaladoc[Java 2D](doodle.java2d.index) backend).
+Use the following recipe to write code using backend specific features (for example, the @:api(doodle.algebra.Bitmap) algebra which is currently only supported by the @:api(doodle.java2d.index) backend).
 
 The first step is to import the backend and syntax extensions, some Cats implicits we'll need, and the Cats Effect runtime. We'll use `java2d` as our backend.
 
@@ -26,7 +26,7 @@ import cats.effect.unsafe.implicits.global
 Now we can write code in a style very similar to using `Image`. There is one important difference: whenever we create an element of a picture that is not composed of other elements (for example, a primitive shape such as `circle`) we must provide two type parameters. Here is an example:
 
 ```scala mdoc:silent
-val aCircle = circle[Algebra, Drawing](100) // Circle with diameter 100
+val aCircle = circle[Algebra](100) // Circle with diameter 100
 ```
 
 By convention these two type parameters are always called `Algebra` and `Drawing` respectively, so the above code would work with the SVG backend by simply changing the import from `doodle.java2d._` to `doodle.svg._`
@@ -36,14 +36,14 @@ Once we have done this we can write code in a straightforward way. For example, 
 ```scala mdoc:silent
 import doodle.core._ // For Color
 
-val redCircle = circle[Algebra, Drawing](100).strokeColor(Color.red)
+val redCircle = circle[Algebra](100).strokeColor(Color.red)
 val twoRedCircles = redCircle.beside(redCircle)
 ```
 
 To use the `Bitmap` algebra, and assuming the bitmap we refer to exists on disk, we could write
 
 ```scala mdoc:silent
-val oldGod = read[Algebra, Drawing]("old-god.png")
+val oldGod = read[Algebra]("old-god.png")
 ```
 
 @@@note
@@ -64,7 +64,7 @@ We can then draw it using the `draw` method, which produces the output shown bel
 
 ## Creating Cross-Backend Pictures
 
-If we want to use algebras directly and target multiple backends we need to do a little bit more work then when working with a single backend. First we need to decide what algebras we need. Let's say we decide to use @scaladoc[Basic](doodle.language.Basic), which is a collection of the algebras that matches what `Image` supports, along with @scaladoc[Text](doodle.algebra.Text). We then have steps to follow to firstly create a picture and then to use the picture with a concrete backend.
+If we want to use algebras directly and target multiple backends we need to do a little bit more work then when working with a single backend. First we need to decide what algebras we need. Let's say we decide to use @:api(doodle.language.Basic), which is a collection of the algebras that matches what `Image` supports, along with @:api(doodle.algebra.Text). We then have steps to follow to firstly create a picture and then to use the picture with a concrete backend.
 
 To create a picture:
 
@@ -78,9 +78,9 @@ Here's an example. The type declaration is complicated but you don't need to und
 import doodle.language.Basic
 import doodle.algebra.{Picture, Text}
 
-def basicWithText[Alg <: Basic with Text, F[_]]: Picture[Alg, Unit] = {
-  val redCircle = circle[Alg, F](100).strokeColor(Color.red)
-  val rad = text[Alg, F]("Doodle is rad")
+def basicWithText[Alg <: Basic & Text]: Picture[Alg, Unit] = {
+  val redCircle = circle[Alg](100).strokeColor(Color.red)
+  val rad = text[Alg]("Doodle is rad")
   
   rad.on(redCircle)
 }
@@ -89,7 +89,7 @@ def basicWithText[Alg <: Basic with Text, F[_]]: Picture[Alg, Unit] = {
 To use this method with a concrete backend we call it providing the backend's `Algebra` and `Drawing` types for the `Alg` and `F` type parameters respectively. Note that method has no parameter list so we do not need to provide any parameters.
 
 ```scala mdoc:silent
-val java2dPicture = basicWithText[Algebra, Drawing]
+val java2dPicture = basicWithText[Algebra]
 ```
 
 We can then `draw` the picture as before. In this case we get the output below.
@@ -99,7 +99,7 @@ We can then `draw` the picture as before. In this case we get the output below.
 
 ## Using Raw Algebras
 
-We never need to call methods on algebras directly. Doodle provides the @scaladoc[Picture](doodle.algebra.Picture) abstraction and lots of @scaladoc[syntax](doodle.syntax.index) to avoid this. However, if some reason we did want to use algebras directly here is how we would do this. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.
+We never need to call methods on algebras directly. Doodle provides the @:api(doodle.algebra.Picture) abstraction and lots of @:api(doodle.syntax.index) to avoid this. However, if some reason we did want to use algebras directly here is how we would do this. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.
 
 To use these algebras to create a picture you could write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using `Layout`, `Style`, and `Shape` we might write the following.
 
@@ -108,7 +108,7 @@ import doodle.core._
 import doodle.algebra._
 
 // Two red circles beside each other
-def twoRedCircles[Alg <: Layout with Style[x] with Shape[x], F[_]](algebra: Alg[F]): F[Unit] = {
+def twoRedCircles[Alg <: Layout & Style & Shape](algebra: Alg): algebra.F[Unit] = {
   val redCircle = algebra.strokeColor(algebra.circle(100), Color.red)
   
   algebra.beside(redCircle, redCircle)

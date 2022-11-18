@@ -1,6 +1,6 @@
 # Writing to a File
 
-The @scaladoc[Image DSL](doodle.image.index) can write an `Image` to file as well as displaying it on screen. The file formats you can write depend on the backend you're using:
+The @:api(doodle.image.index) can write an `Image` to file as well as displaying it on screen. The file formats you can write depend on the backend you're using:
 
 * the Java2D backend can write PNG, GIF, and JPEG;
 * the SVG backend running on the JVM can write SVG; and

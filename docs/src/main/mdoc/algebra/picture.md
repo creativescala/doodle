@@ -1,6 +1,6 @@
 # Picture
 
-@scaladoc[Picture](doodle.algebra.Picture) is an imitation of a function whose input is an implicit parameter (which in Dotty would just be a [context function][context-function]). It has three type parameters. They are, in order:
+@:api(doodle.algebra.Picture) is an imitation of a function whose input is an implicit parameter (which in Dotty would just be a [context function][context-function]). It has three type parameters. They are, in order:
 
 - The type `Alg` of the algebras that the picture needs to draw. This is an input to the `Picture` and hence it is contravariant.
 - The type of the effect `F` that the picture will create.
@@ -11,14 +11,14 @@ Thus in effect a `Picture` is a function with type `Alg[F] => F[A]`.
 
 ## Pictures Are Values
 
-Algebras *do not* work directly with `Picture`. Instead they work with the `F[A]` type that is the output of a `Picture`. However, all the @scaladoc[syntax](doodle.syntax.index) that makes the algebras easier to use, and which we have used in our previous examples, create and consume `Picture`. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. `Picture` is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a `Picture` we know exactly what we're dealing with.
+Algebras *do not* work directly with `Picture`. Instead they work with the `F[A]` type that is the output of a `Picture`. However, all the @:api(doodle.syntax.index) that makes the algebras easier to use, and which we have used in our previous examples, create and consume `Picture`. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. `Picture` is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a `Picture` we know exactly what we're dealing with.
 
 [context-function]: https://dotty.epfl.ch/docs/reference/contextual/context-functions.html
 
 
 ## Drawing Pictures
 
-We can draw a picture to the screen using the `draw` method. This is @scaladoc[syntax](doodle.syntax.RendererSyntax) that depends on a having a @scaladoc[`Renderer` effect](doodle.effect.Renderer) in scope. There are other methods provided by the `Renderer` effect, as explained in its documentation.
+We can draw a picture to the screen using the `draw` method. This is @:api(doodle.syntax.RendererSyntax) that depends on a having a @:api(doodle.effect.Renderer) in scope. There are other methods provided by the `Renderer` effect, as explained in its documentation.
 
 
 ## Writing and Converting Pictures
@@ -37,9 +37,9 @@ val picture = circle[Algebra](100)
 picture.write[Png]("circle.png")
 ```
 
-The `write` method is @scaladoc[syntax](doodle.syntax.WriterSyntax) that comes from the @scaladoc[`Writer` effect](doodle.effect.Writer). There are other methods that allow, for example, specifying a `Frame` to use when saving the file.
+The `write` method is @:api(doodle.syntax.WriterSyntax) that comes from the @:api(doodle.effect.Writer). There are other methods that allow, for example, specifying a `Frame` to use when saving the file.
 
-We can convert a `Picture` to a [Base64][base64] value using the `base64` method. As with `write`, this method is @scaladoc[syntax](doodle.syntax.Base64Syntax) for the @scaladoc[`Base64` effect](doodle.effect.Base64). The parameters are similar to `write`: we must specify a format to encode the picture in but we don't specify a filename. Instead we get back the result of evaluating the `Picture` (the `A` in `F[A]` which is usually `()`) and a @scaladoc[Base64](doodle.core.Base64) value.
+We can convert a `Picture` to a [Base64][base64] value using the `base64` method. As with `write`, this method is @:api(doodle.syntax.Base64Syntax) for the @:api(doodle.effect.Base64). The parameters are similar to `write`: we must specify a format to encode the picture in but we don't specify a filename. Instead we get back the result of evaluating the `Picture` (the `A` in `F[A]` which is usually `()`) and a @:api(doodle.core.Base64) value.
 
 ```scala mdoc:silent:reset
 import doodle.core._
@@ -56,9 +56,9 @@ val (result, b64) = picture.base64[Png]()
 
 ## Converting Other Types to a Picture
 
-The @scaladoc[ToPicture](doodle.algebra.ToPicture) algebra provides a single method that converts some type (fixed for each instance of `ToPicture`) to a `F[Unit]`. The @scaladoc[corresponding syntax](doodle.syntax.ToPictureSyntax) wraps the result in a `Picture`, as is standard for syntax, and therefore gives a way to convert the input type to a `Picture`.
+The @:api(doodle.algebra.ToPicture) algebra provides a single method that converts some type (fixed for each instance of `ToPicture`) to a `F[Unit]`. The @:api(doodle.syntax.ToPictureSyntax) wraps the result in a `Picture`, as is standard for syntax, and therefore gives a way to convert the input type to a `Picture`.
 
-The available instances vary depending on the backend. For the Java2D backend, @scaladoc[Base64](doodle.core.Base64) and `BufferedImage` values can be converted to `Picture`. For SVG only `Base64` is currently supported.
+The available instances vary depending on the backend. For the Java2D backend, @:api(doodle.core.Base64) and `BufferedImage` values can be converted to `Picture`. For SVG only `Base64` is currently supported.
 
 Here is quick example of use. First we create a `Base64` value from a `Picture`.
 

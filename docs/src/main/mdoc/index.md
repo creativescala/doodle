@@ -24,7 +24,7 @@ libraryDependencies += "org.creativescala" %% "doodle" % "@VERSION@"
 
 ## ScalaDoc
 
-The @scaladoc[ScalaDoc](doodle.index) covers Doodle's APIs.
+The @:api(doodle.index) covers Doodle's APIs.
 
 
 ## Quick Example
@@ -96,7 +96,7 @@ Understanding @ref:[core concepts](concepts/index.md) in Doodle will help make s
 
 The main packages of Doodle are:
 
-- @ref:[core](core/index.md), which provides common utilities such as @scaladoc[colors](doodle.core.Color), @scaladoc[points](doodle.core.Point), and @scaladoc[parametric curves](doodle.core.Parametric$).
+- @ref:[core](core/index.md), which provides common utilities such as @:api(doodle.core.Color), @:api(doodle.core.Point), and @:api(doodle.core.Parametric$).
 - @ref:[image](image/index.md)
 - @ref:[algebra](algebra/index.md)
 - @ref:[effect](effect/index.md)

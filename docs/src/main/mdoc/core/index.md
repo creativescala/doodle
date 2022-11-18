@@ -1,8 +1,8 @@
 # Core
 
-The @scaladoc[core](doodle.core.index) package provides utilities, such as @scaladoc[Color](doodle.core.Color) and @scaladoc[Point](doodle.core.Point), that are useful in the rest of the libraries.
+The @:api(doodle.core.index) package provides utilities, such as @:api(doodle.core.Color) and @:api(doodle.core.Point), that are useful in the rest of the libraries.
 
-In this section we just cover the most important uses. You should see the @scaladoc[ScalaDoc](doodle.core.index) for details.
+In this section we just cover the most important uses. You should see the @:api(doodle.core.index) for details.
 
 ## Imports
 
@@ -16,7 +16,7 @@ import doodle.syntax.all._
 
 ## Angle
 
-The @scaladoc[Angle](doodle.core.Angle) type represents an angle, as the name suggests.
+The @:api(doodle.core.Angle) type represents an angle, as the name suggests.
 
 Most of the time you'll create `Angles` using the extension methods shown below. Degrees and radians should be familiar, but turns may not be. One turn corresponds to a full circle (i.e. 360 degrees), so using turns in a convenient way to represent simple fractions or multiples of circles.
 
@@ -26,7 +26,7 @@ Most of the time you'll create `Angles` using the extension methods shown below.
 0.5.turns // One turn is a full circle, so this is half a circle
 ```
 
-There are various methods to perform arithmetic on angles. Here are some examples. See the @scaladoc[ScalaDoc](doodle.core.Angle) for a complete list.
+There are various methods to perform arithmetic on angles. Here are some examples. See the @:api(doodle.core.Angle) for a complete list.
 
 ```scala mdoc
 (45.degrees + 45.degrees) < 180.degrees
@@ -45,7 +45,7 @@ Other useful methods are calculating the sine and cosine of an angle, and normal
 
 ## Color
 
-Working with @scaladoc[Color](doodle.core.Color) is something that most images will do. There are two representations of color used in Doodle:
+Working with @:api(doodle.core.Color) is something that most images will do. There are two representations of color used in Doodle:
 
 * hue, saturation, and lightness (HSL); and
 * red, green, and blue (RGB).
@@ -61,7 +61,7 @@ Color.rgba(0, 0, 255, 0.5) // Setting alpha
 Color.rgba(0.uByte, 0.uByte, 255.uByte, 0.5.normalized) // Setting alpha
 ```
 
-On the @scaladoc[Color companion object](doodle.core.Color$) all the standard CSS colors are defined. Here are a few examples.
+On the @:api(doodle.core.Color$) all the standard CSS colors are defined. Here are a few examples.
 
 ```scala mdoc:silent
 Color.steelBlue // Not to be confused with blue steel
@@ -69,12 +69,12 @@ Color.beige
 Color.limeGreen
 ```
 
-There are many methods to modify colors, such as `spin`, `desaturate`, and so on. See the @scaladoc[ScalaDoc](doodle.core.Color) for full details.
+There are many methods to modify colors, such as `spin`, `desaturate`, and so on. See the @:api(doodle.core.Color) for full details.
 
 
 ## Point
 
-A @scaladoc[Point](doodle.core.Point) represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.
+A @:api(doodle.core.Point) represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.
 
 ```scala mdoc
 Point(1.0, 1.0) // cartesian coordinates
@@ -94,7 +94,7 @@ pt1.angle
 
 ## Transform
 
-A @scaladoc[Transform](doodle.core.Transform), in Doodle, represents an [affine transform](https://en.wikipedia.org/wiki/Affine_transformation) in two-dimensions. The easiest way to create a `Transform` is via the methods on the @scaladoc[companion object](doodle.core.Transform$). Here are some examples.
+A @:api(doodle.core.Transform), in Doodle, represents an [affine transform](https://en.wikipedia.org/wiki/Affine_transformation) in two-dimensions. The easiest way to create a `Transform` is via the methods on the @:api(doodle.core.Transform$). Here are some examples.
 
 ```scala mdoc:silent
 Transform.scale(5.0, -2.0)
@@ -121,7 +121,7 @@ Transform.scale(5.0, -2.0).translate(10, 10)(Point(1,1)) // Shorter version
 
 ## Vec
 
-A @scaladoc[Vec](doodle.core.Vec) represents a two-dimensional vector. You can construct `Vecs` from cartesian (xy-coordinates) or polar (length and angle) coordinates, just like `Point`.
+A @:api(doodle.core.Vec) represents a two-dimensional vector. You can construct `Vecs` from cartesian (xy-coordinates) or polar (length and angle) coordinates, just like `Point`.
 
 ```scala mdoc
 Vec(0, 1)

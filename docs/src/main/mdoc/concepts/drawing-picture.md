@@ -6,7 +6,7 @@ A `Picture` is a first class value representing the description of the picture w
 
 A `Picture` is conceptually a function from an `Algebra` to an effect that will actually draw the picture. It's not actually a function because the input parameter---the algebra---is an implicit parameter. In Scala 3 this is a [context function][context-function]. As Doodle supports both Scala 2 and Scala 3 we can't use this language feature and have a custom type instead.
 
-Expanding a little bit further, each backend's `Picture` type is a specialization of the generic @scaladoc[Picture](doodle.algebra.Picture).
+Expanding a little bit further, each backend's `Picture` type is a specialization of the generic @:api(doodle.algebra.Picture).
 
 The generic `Picture` has type signature 
 

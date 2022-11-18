@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import laika.rewrite.link.LinkConfig
+import laika.rewrite.link.ApiLinks
+
 ThisBuild / tlBaseVersion := "0.12" // your current series x.y
 
 ThisBuild / organization := "org.creativescala"
@@ -96,6 +99,13 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 lazy val docs =
   project
     .in(file("site"))
+    .settings(
+      laikaConfig := laikaConfig.value.withConfigValue(
+        LinkConfig(apiLinks =
+          Seq(ApiLinks(baseUri = "https://example.com/api"))
+        )
+      )
+    )
     .enablePlugins(TypelevelSitePlugin)
     .dependsOn(core.jvm, image.jvm)
 
