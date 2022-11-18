@@ -31,7 +31,7 @@ trait TraverseSyntax {
 
     def allOn(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
       val empty: Picture[Alg, Unit] =
-        new Picture {
+        new Picture[Alg, Unit] {
           def apply(implicit algebra: Alg): algebra.F[Unit] =
             algebra.empty
         }
@@ -42,7 +42,7 @@ trait TraverseSyntax {
 
     def allBeside(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
       val empty: Picture[Alg, Unit] =
-        new Picture {
+        new Picture[Alg, Unit] {
           def apply(implicit algebra: Alg): algebra.F[Unit] =
             algebra.empty
         }
@@ -53,7 +53,7 @@ trait TraverseSyntax {
 
     def allAbove(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
       val empty: Picture[Alg, Unit] =
-        new Picture {
+        new Picture[Alg, Unit] {
           def apply(implicit algebra: Alg): algebra.F[Unit] =
             algebra.empty
         }

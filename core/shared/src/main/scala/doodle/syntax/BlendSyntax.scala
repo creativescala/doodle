@@ -25,31 +25,31 @@ trait BlendSyntax {
       picture: Picture[Alg, A]
   ) {
     def screen: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.screen(picture(algebra))
       }
 
     def burn: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.burn(picture(algebra))
       }
 
     def dodge: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.dodge(picture(algebra))
       }
 
     def lighten: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.lighten(picture(algebra))
       }
 
     def sourceOver: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.sourceOver(picture(algebra))
       }

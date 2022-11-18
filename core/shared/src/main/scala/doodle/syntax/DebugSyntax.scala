@@ -30,7 +30,7 @@ trait DebugSyntax {
       * picture.
       */
     def debug(color: Color): Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.debug(picture(algebra), color)
       }

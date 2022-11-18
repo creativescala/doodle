@@ -25,19 +25,19 @@ trait SizeSyntax {
       picture: Picture[Alg, A]
   ) {
     def height: Picture[Alg, Double] =
-      new Picture {
+      new Picture[Alg, Double] {
         def apply(implicit algebra: Alg): algebra.F[Double] =
           algebra.height(picture(algebra))
       }
 
     def width: Picture[Alg, Double] =
-      new Picture {
+      new Picture[Alg, Double] {
         def apply(implicit algebra: Alg): algebra.F[Double] =
           algebra.width(picture(algebra))
       }
 
     def size: Picture[Alg, (Double, Double)] =
-      new Picture {
+      new Picture[Alg, (Double, Double)] {
         def apply(implicit algebra: Alg): algebra.F[(Double, Double)] =
           algebra.size(picture(algebra))
       }

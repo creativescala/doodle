@@ -29,42 +29,42 @@ trait TransformSyntax {
   ) {
 
     def transform(tx: Tx): Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.transform(picture(algebra), tx)
       }
 
     def scale(x: Double, y: Double): Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.scale(picture(algebra), x, y)
       }
 
     def rotate(angle: Angle): Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.rotate(picture(algebra), angle)
       }
 
     def translate(x: Double, y: Double): Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.translate(picture(algebra), x, y)
       }
 
     def translate(vec: Vec): Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.translate(picture(algebra), vec)
       }
 
     def horizontalReflection: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.horizontalReflection(picture(algebra))
       }
     def verticalReflection: Picture[Alg, A] =
-      new Picture {
+      new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.F[A] =
           algebra.verticalReflection(picture(algebra))
       }

@@ -26,7 +26,7 @@ import doodle.core.Point
 trait PathSyntax {
   implicit class ClosedPathOps(closedPath: ClosedPath) {
     def path[Alg <: Path]: Picture[Alg, Unit] =
-      new Picture {
+      new Picture[Alg, Unit] {
         def apply(implicit algebra: Alg): algebra.F[Unit] =
           algebra.path(closedPath)
       }
@@ -34,7 +34,7 @@ trait PathSyntax {
 
   implicit class OpenPathOps(openPath: OpenPath) {
     def path[Alg <: Path]: Picture[Alg, Unit] =
-      new Picture {
+      new Picture[Alg, Unit] {
         def apply(implicit algebra: Alg): algebra.F[Unit] =
           algebra.path(openPath)
       }
@@ -44,7 +44,7 @@ trait PathSyntax {
       sides: Int,
       radius: Double
   ): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.regularPolygon(sides, radius)
     }
@@ -54,7 +54,7 @@ trait PathSyntax {
       outerRadius: Double,
       innerRadius: Double
   ): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.star(points, outerRadius, innerRadius)
     }
@@ -64,7 +64,7 @@ trait PathSyntax {
       height: Double,
       radius: Double
   ): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.roundedRectangle(width, height, radius)
     }
@@ -72,7 +72,7 @@ trait PathSyntax {
   def equilateralTriangle[Alg <: Path](
       width: Double
   ): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.equilateralTriangle(width)
     }
@@ -80,7 +80,7 @@ trait PathSyntax {
   def interpolatingSpline[Alg <: Path](
       points: Seq[Point]
   ): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.interpolatingSpline(points)
     }
@@ -89,7 +89,7 @@ trait PathSyntax {
       points: Seq[Point],
       tension: Double = 0.5
   ): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.catmulRom(points, tension)
     }

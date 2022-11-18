@@ -41,7 +41,7 @@ object Picture {
   ): Monoid[Picture[Alg, A]] =
     new Monoid[Picture[Alg, A]] {
       val empty: Picture[Alg, A] =
-        new Picture {
+        new Picture[Alg, A] {
           def apply(implicit algebra: Alg): algebra.F[A] =
             algebra.empty.map(_ => m.empty)
         }
@@ -50,7 +50,7 @@ object Picture {
           x: Picture[Alg, A],
           y: Picture[Alg, A]
       ): Picture[Alg, A] =
-        new Picture {
+        new Picture[Alg, A] {
           def apply(implicit algebra: Alg): algebra.F[A] =
             algebra.on(x(algebra), y(algebra))
         }

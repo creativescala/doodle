@@ -24,13 +24,13 @@ import java.io.File
 
 trait BitmapSyntax {
   def read[Alg <: Bitmap](file: File): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.read(file)
     }
 
   def read[Alg <: Bitmap](file: String): Picture[Alg, Unit] =
-    new Picture {
+    new Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.F[Unit] =
         algebra.read(file)
     }
