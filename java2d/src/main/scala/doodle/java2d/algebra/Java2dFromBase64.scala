@@ -39,7 +39,7 @@ trait Java2dFromBase64
     extends FromPngBase64
     with FromGifBase64
     with FromJpgBase64 {
-  self: Algebra { type F[A] = Drawing[A] } =>
+  self: doodle.algebra.Algebra { type F[A] = Drawing[A] } =>
 
   def fromGifBase64(base64: core.Base64[Gif]): Drawing[Unit] =
     genericFromBase64(base64.value)
