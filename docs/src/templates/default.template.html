@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="${?laika.site.metadata.language}">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>${cursor.currentDocument.title}</title>
+    @:for(laika.site.metadata.authors)
+    <meta name="author" content="${_}" />
+    @:@
+    @:for(laika.site.metadata.description)
+    <meta name="description" content="${_}" />
+    @:@
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    @:linkCSS { paths = ["/creative-scala.css"] }
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar">@:compactNavBar</nav>
+    <nav id="sidebar">
+        @:navigationTree {
+        entries = [
+        { target = "/", excludeSections = true, depth = 1 }
+        { target = "/", excludeRoot = true, excludeSections = true, excludeSelf = true, depth = 3 }
+        ]
+        }
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            ${cursor.currentDocument.content}
+            @:nextPage
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

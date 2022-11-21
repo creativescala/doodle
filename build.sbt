@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import scala.sys.process._
 import laika.rewrite.link.LinkConfig
 import laika.rewrite.link.ApiLinks
 
@@ -51,6 +52,8 @@ commands += Command.command("build") { state =>
     "scalafmtAll" ::
     state
 }
+
+lazy val css = taskKey[Unit]("Build the CSS")
 
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
@@ -105,7 +108,25 @@ lazy val docs =
           Seq(ApiLinks(baseUri = "https://example.com/api"))
         )
       ),
-      mdocIn := file("docs/src/pages")
+      mdocIn := file("docs/src/pages"),
+      css := {
+        val src = file("docs/src/css")
+        val dest1 = mdocOut.value
+        val dest2 = (laikaSite / target).value
+        val cmd1 =
+          s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
+        val cmd2 =
+          s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
+        cmd1 !
+
+        cmd2 !
+      },
+      Laika / sourceDirectories += file("docs/src/templates"),
+      laikaExtensions ++= Seq(
+        laika.markdown.github.GitHubFlavor,
+        laika.parse.code.SyntaxHighlighting,
+        CreativeScalaDirectives
+      )
     )
     .enablePlugins(TypelevelSitePlugin)
     .dependsOn(core.jvm, image.jvm)
