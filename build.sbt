@@ -104,7 +104,8 @@ lazy val docs =
         LinkConfig(apiLinks =
           Seq(ApiLinks(baseUri = "https://example.com/api"))
         )
-      )
+      ),
+      mdocIn := file("docs/src/pages")
     )
     .enablePlugins(TypelevelSitePlugin)
     .dependsOn(core.jvm, image.jvm)
