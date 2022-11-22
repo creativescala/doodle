@@ -1,15 +1,5 @@
 # Doodle
 
-@@@ index
-
-- [Core Concepts](concepts/index.md)
-- [Image](image/index.md)
-- [Algebras](algebra/index.md)
-- [Effects](effect/index.md)
-- [Core](core/index.md)
-
-@@@
-
 Doodle is a Scala library for 2D graphics, animation, data visualization, and creative coding. It runs in both the JVM, rendering via [Java2D][java2d], and the web browser using [SVG][svg].
 
 
