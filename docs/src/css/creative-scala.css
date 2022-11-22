@@ -23,10 +23,7 @@ ul.nav-list:first-child {
 ul.nav-list li:first-child {
     @apply uppercase;
 }
-li.level1.nav-node {
-    @apply list-none uppercase text-pink-300 mt-4;
-}
-li.level1.nav-header {
+li.level1 {
     @apply list-none uppercase text-pink-300 mt-4;
 }
 li.level2 {
