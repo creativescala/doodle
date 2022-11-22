@@ -83,6 +83,9 @@ p {
     grid-column-start: main-start;
     grid-column-end: overflow-end;
 }
+.content a {
+    @apply underline decoration-dotted decoration-1 hover:decoration-2 text-sky-500;
+}
 pre {
     @apply mb-4 p-2 bg-slate-100;
 }
