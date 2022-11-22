@@ -1,16 +1,5 @@
 # Image
 
-@@@ index
-
-* [Shapes](shape.md)
-* [Paths](path.md)
-* [Styling](styling.md)
-* [Layout](layout.md)
-* [Transforms](transform.md)
-* [Writing to a File](writing.md)
-
-@@@
-
 The @:api(doodle.image.index) library is the easiest way to create images using Doodle. The tradeoff the Image library makes is that it only support a (large but limited) subset of operations that are supported across all the backends.
 
 ## Imports
