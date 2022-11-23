@@ -71,13 +71,13 @@ The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicit
 
 ## Guides
 
-@ref:[Using the Image library](image/index.md) is the easiest way to get started drawing with Doodle.
+[Using the Image library](image/README.md) is the easiest way to get started drawing with Doodle.
 
-@ref:[Using the tagless final algebras](algebra/index.md) allows access to features that are specific to a backend.
+[Using the tagless final algebras](algebra/README.md) allows access to features that are specific to a backend.
 
 ## Concepts
 
-Understanding @ref:[core concepts](concepts/index.md) in Doodle will help make sense of the library.
+Understanding [core concepts](concepts/README.md) in Doodle will help make sense of the library.
 
 *TODO*: layout, bounding boxes, and origins; paths; styles; debug
 
@@ -86,10 +86,10 @@ Understanding @ref:[core concepts](concepts/index.md) in Doodle will help make s
 
 The main packages of Doodle are:
 
-- @ref:[core](core/index.md), which provides common utilities such as @:api(doodle.core.Color), @:api(doodle.core.Point), and @:api(doodle.core.Parametric$).
-- @ref:[image](image/index.md)
-- @ref:[algebra](algebra/index.md)
-- @ref:[effect](effect/index.md)
+- [core](core/README.md), which provides common utilities such as @:api(doodle.core.Color), @:api(doodle.core.Point), and @:api(doodle.core.Parametric$).
+- [image](image/README.md)
+- [algebra](algebra/README.md)
+- [effect](effect/README.md)
 - syntax
 - animation and interaction
 - interactive exploration
