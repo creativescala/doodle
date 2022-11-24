@@ -16,6 +16,7 @@
 import scala.sys.process._
 import laika.rewrite.link.LinkConfig
 import laika.rewrite.link.ApiLinks
+import laika.theme.Theme
 
 ThisBuild / tlBaseVersion := "0.12" // your current series x.y
 
@@ -122,6 +123,7 @@ lazy val docs =
         cmd2 !
       },
       Laika / sourceDirectories += file("docs/src/templates"),
+      laikaTheme := Theme.empty,
       laikaExtensions ++= Seq(
         laika.markdown.github.GitHubFlavor,
         laika.parse.code.SyntaxHighlighting,
