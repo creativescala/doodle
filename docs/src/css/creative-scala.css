@@ -49,10 +49,10 @@ h1 {
     @apply text-6xl mb-16;
 }
 h2 {
-    @apply text-4xl;
+    @apply text-4xl mb-2;
 }
 h3 {
-    @apply text-2xl;
+    @apply text-2xl mb-2;
 }
 h4 {
     @apply text-xl;
