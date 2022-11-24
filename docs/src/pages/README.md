@@ -14,7 +14,7 @@ libraryDependencies += "org.creativescala" %% "doodle" % "@VERSION@"
 
 ## ScalaDoc
 
-The @:api(doodle.index) covers Doodle's APIs.
+See @:api(doodle.index) for the ScalaDoc.
 
 
 ## Quick Example
@@ -96,5 +96,5 @@ The main packages of Doodle are:
 
 
 [java2d]: https://en.wikipedia.org/wiki/Java_2D
-[svg]: https://en.wikipedia.org/wiki/Scalable_Vector_Graphics
+[svg]: https://github.com/creativescala/doodle-svg
 [expression-problem]: https://en.wikipedia.org/wiki/Expression_problem
