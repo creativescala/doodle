@@ -269,7 +269,7 @@ object Image {
     import Elements._
 
     new doodle.algebra.Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         image match {
           case OpenPath(elements) =>
             algebra.path(doodle.core.OpenPath(elements))

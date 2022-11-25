@@ -14,7 +14,7 @@ import java.awt.geom.Rectangle2D
 
 trait ReifiedText extends GenericText[Reification] {
   self: Algebra {
-    type F[A] <: Drawing[A]
+    type Drawing[A] <: doodle.java2d.Drawing[A]
     def gc: Graphics2D
   } =>
 

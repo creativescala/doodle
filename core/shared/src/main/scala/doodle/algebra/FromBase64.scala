@@ -28,7 +28,7 @@ trait FromGifBase64 extends Algebra {
   /** Create a picture from a Base64 encoded bitmap in the given format. The
     * format is reified as a value so the method can dispatch on it.
     */
-  def fromGifBase64(base64: Base64[Gif]): F[Unit]
+  def fromGifBase64(base64: Base64[Gif]): Drawing[Unit]
 }
 
 /** Algebra indicating a Picture can be created from a base 64 encoded bitmap in
@@ -39,7 +39,7 @@ trait FromPngBase64 extends Algebra {
   /** Create a picture from a Base64 encoded bitmap in the given format. The
     * format is reified as a value so the method can dispatch on it.
     */
-  def fromPngBase64(base64: Base64[Png]): F[Unit]
+  def fromPngBase64(base64: Base64[Png]): Drawing[Unit]
 }
 
 /** Algebra indicating a Picture can be created from a base 64 encoded bitmap in
@@ -50,7 +50,7 @@ trait FromJpgBase64 extends Algebra {
   /** Create a picture from a Base64 encoded bitmap in the given format. The
     * format is reified as a value so the method can dispatch on it.
     */
-  def fromJpgBase64(base64: Base64[Jpg]): F[Unit]
+  def fromJpgBase64(base64: Base64[Jpg]): Drawing[Unit]
 }
 
 /** Constructor for FromGifBase64 algebra */
@@ -59,7 +59,7 @@ trait FromGifBase64Constructor {
 
   def fromGifBase64(base64: Base64[Gif]): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.fromGifBase64(base64)
     }
 }
@@ -70,7 +70,7 @@ trait FromPngBase64Constructor {
 
   def fromPngBase64(base64: Base64[Png]): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.fromPngBase64(base64)
     }
 }
@@ -81,7 +81,7 @@ trait FromJpgBase64Constructor {
 
   def fromJpgBase64(base64: Base64[Jpg]): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.fromJpgBase64(base64)
     }
 }

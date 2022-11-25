@@ -25,7 +25,7 @@ import doodle.core._
 import doodle.core.{Transform => Tx}
 
 trait ReifiedPath extends GenericPath[Reification] {
-  self: Algebra { type F[A] <: Drawing[A] } =>
+  self: Algebra { type Drawing[A] <: doodle.java2d.Drawing[A] } =>
 
   object PathApi extends PathApi {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =

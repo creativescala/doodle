@@ -1,6 +1,6 @@
 # Picture Object
 
-Each backend provides an object named `Picture` that provides easy access to constructors. Constructors are algebra methods that produce a `Drawing` but don't have a `Drawing` parameter. For example, all the methods on the @:api(doodle.algebra.Shape) algebra are constructors. 
+Each backend provides an object named `Picture` that provides easy access to constructors. Constructors are algebra methods that produce a `Picture` but don't have any `` parameter. For example, all the methods on the @:api(doodle.algebra.Shape) algebra are constructors. 
 
 The `Picture` object allows us to write
 

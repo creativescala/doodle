@@ -25,7 +25,7 @@ import doodle.core.Landmark
 import doodle.core.Transform
 
 trait GenericLayout[G[_]] extends Layout {
-  self: GivenApply[G] with Algebra { type F = Finalized[G, *] } =>
+  self: GivenApply[G] with Algebra { type Drawing = Finalized[G, *] } =>
   import Renderable._
 
   def on[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit

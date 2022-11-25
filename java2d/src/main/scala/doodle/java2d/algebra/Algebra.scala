@@ -34,8 +34,8 @@ import java.awt.Graphics2D
 
 final case class Algebra(
     gc: Graphics2D,
-    applyF: Apply[Reification] = Apply.apply[Reification],
-    functorF: Functor[Reification] = Apply.apply[Reification]
+    applyDrawing: Apply[Reification] = Apply.apply[Reification],
+    functorDrawing: Functor[Reification] = Apply.apply[Reification]
 ) extends Basic
     with Java2dFromBufferedImage
     with Java2dFromBase64
@@ -51,8 +51,8 @@ final case class Algebra(
     with GivenApply[Reification]
     with GivenFunctor[Reification]
     with doodle.algebra.Algebra {
-  type F[A] = Drawing[A]
-  implicit val fInstance: Applicative[Drawing] =
+  type Drawing[A] = doodle.java2d.Drawing[A]
+  implicit val drawingInstance: Applicative[Drawing] =
     new Applicative[Drawing] {
       def ap[A, B](ff: Drawing[A => B])(fa: Drawing[A]): Drawing[B] = ???
       def pure[A](x: A): Drawing[A] =

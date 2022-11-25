@@ -26,7 +26,7 @@ trait ShapeSyntax {
       height: Double
   ): Picture[Alg, Unit] =
     new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         algebra.rectangle(width, height)
     }
 
@@ -34,7 +34,7 @@ trait ShapeSyntax {
       width: Double
   ): Picture[Alg, Unit] =
     new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         algebra.square(width)
     }
 
@@ -43,7 +43,7 @@ trait ShapeSyntax {
       height: Double
   ): Picture[Alg, Unit] =
     new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         algebra.triangle(width, height)
     }
 
@@ -51,13 +51,13 @@ trait ShapeSyntax {
       diameter: Double
   ): Picture[Alg, Unit] =
     new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         algebra.circle(diameter)
     }
 
   def empty[Alg <: Shape]: Picture[Alg, Unit] =
     new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         algebra.empty
     }
 }

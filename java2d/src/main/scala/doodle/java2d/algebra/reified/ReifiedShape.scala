@@ -25,8 +25,7 @@ import doodle.core.Point
 import doodle.core.{Transform => Tx}
 
 trait ReifiedShape extends GenericShape[Reification] {
-  self: Algebra { type F[A] <: Drawing[A] } =>
-
+  self: Algebra { type Drawing[A] <: doodle.java2d.Drawing[A] } =>
   object ShapeApi extends ShapeApi {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =
       WriterT.tell(a.toList ++ b.toList)

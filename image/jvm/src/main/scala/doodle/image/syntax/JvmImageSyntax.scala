@@ -42,7 +42,7 @@ trait JvmImageSyntax extends ImageSyntax {
         runtime: IORuntime
     ): B64[Fmt] = {
       val picture = new Picture[Basic, Unit] {
-        def apply(implicit algebra: Basic): algebra.F[Unit] =
+        def apply(implicit algebra: Basic): algebra.Drawing[Unit] =
           image.compile(algebra)
       }
       val (_, base64) = w.base64(picture).unsafeRunSync()

@@ -23,16 +23,20 @@ import doodle.core.PathElement
 import doodle.core.Point
 
 trait Path extends Algebra {
-  def path(path: ClosedPath): F[Unit]
-  def path(path: OpenPath): F[Unit]
+  def path(path: ClosedPath): Drawing[Unit]
+  def path(path: OpenPath): Drawing[Unit]
 
   // Derived methods ------------
 
-  def regularPolygon(sides: Int, radius: Double): F[Unit] = {
+  def regularPolygon(sides: Int, radius: Double): Drawing[Unit] = {
     path(ClosedPath(PathElement.regularPolygon(sides, radius)))
   }
 
-  def star(points: Int, outerRadius: Double, innerRadius: Double): F[Unit] = {
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double
+  ): Drawing[Unit] = {
     path(ClosedPath(PathElement.star(points, outerRadius, innerRadius)))
   }
 
@@ -40,19 +44,19 @@ trait Path extends Algebra {
       width: Double,
       height: Double,
       radius: Double
-  ): F[Unit] = {
+  ): Drawing[Unit] = {
     path(ClosedPath(PathElement.roundedRectangle(width, height, radius)))
   }
 
   /** Create an equilateral triangle with the given side length. */
-  def equilateralTriangle(width: Double): F[Unit] = {
+  def equilateralTriangle(width: Double): Drawing[Unit] = {
     path(ClosedPath(PathElement.equilateralTriangle(width)))
   }
 
-  def interpolatingSpline(points: Seq[Point]): F[Unit] =
+  def interpolatingSpline(points: Seq[Point]): Drawing[Unit] =
     path(OpenPath(PathElement.interpolatingSpline(points)))
 
-  def catmulRom(points: Seq[Point], tension: Double = 0.5): F[Unit] =
+  def catmulRom(points: Seq[Point], tension: Double = 0.5): Drawing[Unit] =
     path(OpenPath(PathElement.catmulRom(points, tension)))
 }
 
@@ -62,19 +66,19 @@ trait PathConstructor {
 
   def path(path: ClosedPath): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.path(path)
     }
 
   def path(path: OpenPath): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.path(path)
     }
 
   def regularPolygon(sides: Int, radius: Double): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.regularPolygon(sides, radius)
     }
 
@@ -84,7 +88,7 @@ trait PathConstructor {
       innerRadius: Double
   ): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.star(points, outerRadius, innerRadius)
     }
 
@@ -94,26 +98,26 @@ trait PathConstructor {
       radius: Double
   ): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.roundedRectangle(width, height, radius)
     }
 
   /** Create an equilateral triangle with the given side length. */
   def equilateralTriangle(width: Double): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.equilateralTriangle(width)
     }
 
   def interpolatingSpline(points: Seq[Point]): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.interpolatingSpline(points)
     }
 
   def catmulRom(points: Seq[Point], tension: Double = 0.5): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.F[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.catmulRom(points, tension)
     }
 }

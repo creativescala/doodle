@@ -23,7 +23,9 @@ import cats.Semigroupal
 import doodle.core.Color
 
 trait GenericDebug[G[_]] extends Debug {
-  self: Shape with Layout with GivenApply[G] { type F = Finalized[G, *] } =>
+  self: Shape with Layout with GivenApply[G] {
+    type Drawing = Finalized[G, *]
+  } =>
 
   import cats.implicits._
 

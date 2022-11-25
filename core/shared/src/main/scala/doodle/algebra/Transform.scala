@@ -22,20 +22,20 @@ import doodle.core.Vec
 import doodle.core.{Transform => Tx}
 
 trait Transform extends Algebra {
-  def transform[A](img: F[A], tx: Tx): F[A]
+  def transform[A](img: Drawing[A], tx: Tx): Drawing[A]
 
   // Derived methods
 
-  def scale[A](img: F[A], x: Double, y: Double): F[A] =
+  def scale[A](img: Drawing[A], x: Double, y: Double): Drawing[A] =
     transform(img, Tx.scale(x, y))
-  def rotate[A](img: F[A], angle: Angle): F[A] =
+  def rotate[A](img: Drawing[A], angle: Angle): Drawing[A] =
     transform(img, Tx.rotate(angle))
-  def translate[A](img: F[A], x: Double, y: Double): F[A] =
+  def translate[A](img: Drawing[A], x: Double, y: Double): Drawing[A] =
     transform(img, Tx.translate(x, y))
-  def translate[A](img: F[A], vec: Vec): F[A] =
+  def translate[A](img: Drawing[A], vec: Vec): Drawing[A] =
     transform(img, Tx.translate(vec))
-  def horizontalReflection[A](img: F[A]): F[A] =
+  def horizontalReflection[A](img: Drawing[A]): Drawing[A] =
     transform(img, Tx.horizontalReflection)
-  def verticalReflection[A](img: F[A]): F[A] =
+  def verticalReflection[A](img: Drawing[A]): Drawing[A] =
     transform(img, Tx.verticalReflection)
 }

@@ -25,17 +25,17 @@ trait Size extends Algebra {
 
   /** Get the height of the bounding box enclosing the picture
     */
-  def height[A](picture: F[A]): F[Double]
+  def height[A](picture: Drawing[A]): Drawing[Double]
 
   /** Get the width of the bounding box enclosing the picture
     */
-  def width[A](picture: F[A]): F[Double]
+  def width[A](picture: Drawing[A]): Drawing[Double]
 
   /** Get the width and height of the bounding box enclosing the picture
     */
-  def size[A](picture: F[A]): F[(Double, Double)]
+  def size[A](picture: Drawing[A]): Drawing[(Double, Double)]
 
   /** Get the bounding box enclosing the picture
     */
-  def boundingBox[A](picture: F[A]): F[BoundingBox]
+  def boundingBox[A](picture: Drawing[A]): Drawing[BoundingBox]
 }

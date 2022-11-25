@@ -25,7 +25,7 @@ import cats.implicits._
   * instance if F does.
   */
 trait Picture[-Alg <: Algebra, A] { self =>
-  def apply(implicit algebra: Alg): algebra.F[A]
+  def apply(implicit algebra: Alg): algebra.Drawing[A]
 }
 object Picture {
 
@@ -42,7 +42,7 @@ object Picture {
     new Monoid[Picture[Alg, A]] {
       val empty: Picture[Alg, A] =
         new Picture[Alg, A] {
-          def apply(implicit algebra: Alg): algebra.F[A] =
+          def apply(implicit algebra: Alg): algebra.Drawing[A] =
             algebra.empty.map(_ => m.empty)
         }
 
@@ -51,7 +51,7 @@ object Picture {
           y: Picture[Alg, A]
       ): Picture[Alg, A] =
         new Picture[Alg, A] {
-          def apply(implicit algebra: Alg): algebra.F[A] =
+          def apply(implicit algebra: Alg): algebra.Drawing[A] =
             algebra.on(x(algebra), y(algebra))
         }
     }

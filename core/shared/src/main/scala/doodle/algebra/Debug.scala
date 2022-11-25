@@ -27,5 +27,5 @@ trait Debug extends Algebra {
     * The bounding box and origin are not included in layout calculations and
     * hence will not affect the picture's layout.
     */
-  def debug[A](picture: F[A], color: Color): F[A]
+  def debug[A](picture: Drawing[A], color: Color): Drawing[A]
 }

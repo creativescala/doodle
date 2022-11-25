@@ -32,7 +32,7 @@ trait TraverseSyntax {
     def allOn(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
       val empty: Picture[Alg, Unit] =
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             algebra.empty
         }
       traverse.foldLeft(t, empty) { (accum, img) =>
@@ -43,7 +43,7 @@ trait TraverseSyntax {
     def allBeside(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
       val empty: Picture[Alg, Unit] =
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             algebra.empty
         }
       traverse.foldLeft(t, empty) { (accum, img) =>
@@ -54,7 +54,7 @@ trait TraverseSyntax {
     def allAbove(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
       val empty: Picture[Alg, Unit] =
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             algebra.empty
         }
       traverse.foldLeft(t, empty) { (accum, img) =>

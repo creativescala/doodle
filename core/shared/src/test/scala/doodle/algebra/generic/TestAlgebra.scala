@@ -27,8 +27,8 @@ import doodle.core.BoundingBox
 import java.awt.Graphics2D
 
 final case class TestAlgebra(
-    applyF: Apply[Reification] = Apply.apply[Reification],
-    functorF: Functor[Reification] = Apply.apply[Reification]
+    applyDrawing: Apply[Reification] = Apply.apply[Reification],
+    functorDrawing: Functor[Reification] = Apply.apply[Reification]
 ) extends Algebra
     with ReifiedPath
     with ReifiedShape
@@ -41,8 +41,7 @@ final case class TestAlgebra(
     with GivenApply[Reification]
     with GivenFunctor[Reification] {
   type Drawing[A] = Finalized[Reification, A]
-  type F[A] = Drawing[A]
-  implicit val fInstance: Applicative[Drawing] =
+  implicit val drawingInstance: Applicative[Drawing] =
     new Applicative[Drawing] {
       def ap[A, B](ff: Drawing[A => B])(fa: Drawing[A]): Drawing[B] = ???
       def pure[A](x: A): Drawing[A] =

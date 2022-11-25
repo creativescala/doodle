@@ -27,14 +27,14 @@ trait TextSyntax {
   ) {
     def font(font: Font): Picture[Alg, A] =
       new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.F[A] =
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
           algebra.font(picture(algebra), font)
       }
   }
 
   def text[Alg <: Text](text: String): Picture[Alg, Unit] =
     new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.F[Unit] =
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         algebra.text(text)
     }
 }

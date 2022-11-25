@@ -108,7 +108,7 @@ import doodle.core._
 import doodle.algebra._
 
 // Two red circles beside each other
-def twoRedCircles[Alg <: Layout & Style & Shape](algebra: Alg): algebra.F[Unit] = {
+def twoRedCircles[Alg <: Layout & Style & Shape](algebra: Alg): algebra.Drawing[Unit] = {
   val redCircle = algebra.strokeColor(algebra.circle(100), Color.red)
   
   algebra.beside(redCircle, redCircle)

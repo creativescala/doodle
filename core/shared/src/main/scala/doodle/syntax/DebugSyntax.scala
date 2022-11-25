@@ -31,7 +31,7 @@ trait DebugSyntax {
       */
     def debug(color: Color): Picture[Alg, A] =
       new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.F[A] =
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
           algebra.debug(picture(algebra), color)
       }
 

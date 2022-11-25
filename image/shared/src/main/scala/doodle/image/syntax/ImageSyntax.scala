@@ -49,7 +49,7 @@ trait ImageSyntax {
         canvas <- renderer.canvas(frame)
         a <- renderer.render(canvas)(
           new Picture[Alg, Unit] {
-            def apply(implicit algebra: Alg): algebra.F[Unit] =
+            def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
               image.compile(algebra)
           }
         )
@@ -63,7 +63,7 @@ trait ImageSyntax {
         canvas <- renderer.canvas(renderer.default)
         a <- renderer.render(canvas)(
           new Picture[Alg, Unit] {
-            def apply(implicit algebra: Alg): algebra.F[Unit] =
+            def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
               image.compile(algebra)
           }
         )
@@ -90,7 +90,7 @@ trait ImageSyntax {
       w.write(
         file,
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             image.compile(algebra)
         }
       ).unsafeRunAsync(unitCallback)
@@ -109,7 +109,7 @@ trait ImageSyntax {
         file,
         frame,
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             image.compile(algebra)
         }
       ).unsafeRunAsync(unitCallback)
@@ -131,7 +131,7 @@ trait ImageSyntax {
       w.write(
         file,
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             image.compile(algebra)
         }
       )
@@ -148,7 +148,7 @@ trait ImageSyntax {
         file,
         frame,
         new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.F[Unit] =
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
             image.compile(algebra)
         }
       )

@@ -19,9 +19,9 @@ package algebra
 
 /** Algebra describing color blending modes. */
 trait Blend extends Algebra {
-  def screen[A](image: F[A]): F[A]
-  def burn[A](image: F[A]): F[A]
-  def dodge[A](image: F[A]): F[A]
-  def lighten[A](image: F[A]): F[A]
-  def sourceOver[A](image: F[A]): F[A]
+  def screen[A](image: Drawing[A]): Drawing[A]
+  def burn[A](image: Drawing[A]): Drawing[A]
+  def dodge[A](image: Drawing[A]): Drawing[A]
+  def lighten[A](image: Drawing[A]): Drawing[A]
+  def sourceOver[A](image: Drawing[A]): Drawing[A]
 }

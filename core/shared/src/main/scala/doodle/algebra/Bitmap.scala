@@ -7,10 +7,10 @@ trait Bitmap extends Algebra {
 
   /** Read an image from the given file
     */
-  def read(file: File): F[Unit]
+  def read(file: File): Drawing[Unit]
 
   /** Convenience to read an image from the file specified in the given String
     */
-  def read(file: String): F[Unit] =
+  def read(file: String): Drawing[Unit] =
     read(new File(file))
 }

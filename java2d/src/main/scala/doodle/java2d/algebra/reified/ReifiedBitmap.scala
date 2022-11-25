@@ -14,7 +14,7 @@ import java.io.File
 import javax.imageio.ImageIO
 
 trait ReifiedBitmap extends doodle.algebra.Bitmap {
-  self: Algebra { type F[A] <: Drawing[A] } =>
+  self: Algebra { type Drawing[A] <: doodle.java2d.Drawing[A] } =>
 
   def read(file: File): Drawing[Unit] = {
     Finalized.leaf { _ =>

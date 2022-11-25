@@ -19,20 +19,25 @@ package algebra
 
 import cats.Applicative
 
-/** Base type for algebras that produce results in some effect type F. Users of
-  * algebras should use dependent method types (or dependent function types in
-  * Scala 3) to return the `F` type of the method they are passed:
+/** Base type for algebras that produce results in some effect type `Drawing`.
+  * Users of algebras should use dependent method types (or dependent function
+  * types in Scala 3) to return the `Drawing` type of the method they are
+  * passed:
   *
   * ```scala
-  * def usingAlgebra(algebra: Algebra): algebra.F = ???
+  * def usingAlgebra(algebra: Algebra): algebra.Drawing = ???
   * ```
   *
-  * All `F` types are required to implement `Applicative`
+  * All `Drawing` types are required to implement `Applicative`
   */
 trait Algebra {
-  type F[_]
-  implicit val fInstance: Applicative[F]
+
+  /** The effect type that methods on this algebra produce. Represents an effect
+    * that, when run, will draw something and produce a value.
+    */
+  type Drawing[_]
+  implicit val drawingInstance: Applicative[Drawing]
 }
 object Algebra {
-  type Aux[F0[_]] = Algebra { type F[A] = F0[A] }
+  type Aux[F0[_]] = Algebra { type Drawing[A] = F0[A] }
 }

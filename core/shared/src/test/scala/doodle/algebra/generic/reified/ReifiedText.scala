@@ -26,7 +26,7 @@ import doodle.core.font.Font
 import doodle.core.{Transform => Tx}
 
 trait ReifiedText extends GenericText[Reification] {
-  self: Algebra { type F[A] = TestAlgebra.Drawing[A] } =>
+  self: Algebra { type Drawing[A] = TestAlgebra.Drawing[A] } =>
 
   object TextApi extends TextApi {
     type Bounds = Unit

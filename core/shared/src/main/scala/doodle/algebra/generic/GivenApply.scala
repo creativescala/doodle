@@ -20,6 +20,6 @@ package generic
 
 import cats.Apply
 
-trait GivenApply[F[_]] {
-  implicit val applyF: Apply[F]
+trait GivenApply[Drawing[_]] {
+  implicit val applyDrawing: Apply[Drawing]
 }

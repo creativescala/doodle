@@ -12,5 +12,5 @@ trait MouseOver extends Algebra {
   /** Attaches a mouse over event listener to the given img. The stream produces
     * an event every time the mouseOver event fires.
     */
-  def mouseOver[A](img: F[A]): (F[A], Stream[Pure, Unit])
+  def mouseOver[A](img: Drawing[A]): (Drawing[A], Stream[Pure, Unit])
 }

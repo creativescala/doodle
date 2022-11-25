@@ -23,7 +23,7 @@ import doodle.core.BoundingBox
 import doodle.core.{Transform => Tx}
 
 trait GenericShape[G[_]] extends Shape {
-  self: Algebra { type F = Finalized[G, *] } =>
+  self: Algebra { type Drawing = Finalized[G, *] } =>
 
   trait ShapeApi {
     def rectangle(

@@ -13,7 +13,7 @@ trait Java2dToPicture {
     new ToPicture[BufferedImage, Algebra] {
       def toPicture(in: BufferedImage): Picture[Unit] =
         new Picture[Unit] {
-          def apply(implicit algebra: Algebra): algebra.F[Unit] =
+          def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
             algebra.fromBufferedImage(in)
         }
     }
@@ -22,7 +22,7 @@ trait Java2dToPicture {
     new ToPicture[Base64[Gif], Algebra] {
       def toPicture(in: Base64[Gif]): Picture[Unit] =
         new Picture[Unit] {
-          def apply(implicit algebra: Algebra): algebra.F[Unit] =
+          def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
             algebra.fromGifBase64(in)
         }
     }
@@ -31,7 +31,7 @@ trait Java2dToPicture {
     new ToPicture[Base64[Png], Algebra] {
       def toPicture(in: Base64[Png]): Picture[Unit] =
         new Picture[Unit] {
-          def apply(implicit algebra: Algebra): algebra.F[Unit] =
+          def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
             algebra.fromPngBase64(in)
         }
     }
@@ -40,7 +40,7 @@ trait Java2dToPicture {
     new ToPicture[Base64[Jpg], Algebra] {
       def toPicture(in: Base64[Jpg]): Picture[Unit] =
         new Picture[Unit] {
-          def apply(implicit algebra: Algebra): algebra.F[Unit] =
+          def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
             algebra.fromJpgBase64(in)
         }
     }

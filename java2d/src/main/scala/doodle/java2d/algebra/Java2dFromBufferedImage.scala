@@ -13,7 +13,7 @@ import doodle.java2d.algebra.reified.Reified
 import java.awt.image.BufferedImage
 
 trait Java2dFromBufferedImage extends FromBufferedImage {
-  self: Algebra { type F[A] = Drawing[A] } =>
+  self: Algebra { type Drawing[A] = doodle.java2d.Drawing[A] } =>
 
   def fromBufferedImage(in: BufferedImage): Drawing[Unit] =
     Finalized.leaf { _ =>
