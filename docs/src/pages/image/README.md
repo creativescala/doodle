@@ -1,6 +1,6 @@
 # Image
 
-The @:api(doodle.image.index) library is the easiest way to create images using Doodle. The tradeoff the Image library makes is that it only support a (large but limited) subset of operations that are supported across all the backends.
+The @:api(doodle.image.Image) library is the easiest way to create pictures using Doodle. The tradeoff the Image library makes is that it only support a (large but limited) subset of operations that are supported across all the backends.
 
 ## Imports
 
