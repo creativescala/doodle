@@ -8,7 +8,7 @@ package object docs {
   implicit class ImageSaveSyntax(image: Image) {
     import doodle.image.syntax.all._
     def save(filename: String)(implicit r: IORuntime): Unit = {
-      val dir = new File("docs/src/main/mdoc/")
+      val dir = new File("docs/src/pages/")
       val file = new File(dir, filename)
       image.write[Png](file)
     }
@@ -17,7 +17,7 @@ package object docs {
   implicit class PictureSaveSyntax(picture: Picture[Unit]) {
     import doodle.syntax.all._
     def save(filename: String)(implicit r: IORuntime): Unit = {
-      val dir = new File("docs/src/main/mdoc/")
+      val dir = new File("docs/src/pages/")
       val file = new File(dir, filename)
       picture.write[Png](file)
     }
