@@ -102,7 +102,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 
 lazy val docs =
   project
-    .in(file("site"))
+    .in(file("docs"))
     .settings(
       laikaConfig := laikaConfig.value.withConfigValue(
         LinkConfig(apiLinks =

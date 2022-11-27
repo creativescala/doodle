@@ -31,11 +31,18 @@ val redSquare = Image.square(100).fillColor(Color.red)
 val blueSquare = Image.square(100).fillColor(Color.blue)
 ```
 
-we can create an Image describing a red square next to a blue square by combining them together.
+we can create an Image describing a red square next to a blue square by combining or composing them together.
 
 ```scala mdoc:silent
-val combination = redSquare.beside(blueSquare)
+val composition = redSquare.beside(blueSquare)
 ```
+
+When draw this has the output shown below. 
+
+@:image(red-blue.png) {
+  alt = A red square beside a blue square
+  title = A red square beside a blue square
+}
 
 The interpreter pattern means that we separate describing the Image from rendering it. Writing `Image.square(100)` doesn't draw anything. To draw an image we need to call the `draw()` method. This separation is important for composition; if we were to immediately draw we would lose composition. 
 
