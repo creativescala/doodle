@@ -12,7 +12,7 @@ Tagless final style allows for a lot of flexibility. Back ends only implement th
 
 ## Using Backend Specific Features
 
-Use the following recipe to write code using backend specific features (for example, the @:api(doodle.algebra.Bitmap) algebra which is currently only supported by the @:api(doodle.java2d.index) backend).
+Use the following recipe to write code using backend specific features (for example, the @:api(doodle.algebra.Bitmap) algebra which is currently only supported by the @:api(doodle.java2d) backend).
 
 The first step is to import the backend and syntax extensions, some Cats implicits we'll need, and the Cats Effect runtime. We'll use `java2d` as our backend.
 
@@ -23,27 +23,27 @@ import cats.implicits._
 import cats.effect.unsafe.implicits.global
 ```
 
-Now we can write code in a style very similar to using `Image`. There is one important difference: whenever we create an element of a picture that is not composed of other elements (for example, a primitive shape such as `circle`) we must provide two type parameters. Here is an example:
+Now we can write code in a style very similar to using `Image`, except the constructors are on the backend's `Picture` object. 
 
 ```scala mdoc:silent
-val aCircle = circle[Algebra](100) // Circle with diameter 100
+val aCircle = Picture.circle(100) // Circle with diameter 100
 ```
 
-By convention these two type parameters are always called `Algebra` and `Drawing` respectively, so the above code would work with the SVG backend by simply changing the import from `doodle.java2d._` to `doodle.svg._`
+By convention all backends provide a `Picture` companion object, so the above code would work with the SVG backend by simply changing the import from `doodle.java2d._` to `doodle.svg._`
 
-Once we have done this we can write code in a straightforward way. For example, to create two red circles beside each other we could write
+Once we have created a picture we can compose pictures in a straightforward way. For example, to create two red circles beside each other we could write
 
 ```scala mdoc:silent
 import doodle.core._ // For Color
 
-val redCircle = circle[Algebra](100).strokeColor(Color.red)
+val redCircle = Picture.circle(100).strokeColor(Color.red)
 val twoRedCircles = redCircle.beside(redCircle)
 ```
 
 To use the `Bitmap` algebra, and assuming the bitmap we refer to exists on disk, we could write
 
 ```scala mdoc:silent
-val oldGod = read[Algebra]("old-god.png")
+val oldGod = Picture.read("old-god.png")
 ```
 
 @@@note
