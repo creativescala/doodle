@@ -1,14 +1,23 @@
 # Using Algebras
 
-This section gives recipes for using Doodle's algebras, either to target one backend or to work across multiple backends.
+This section gives recipes for using Doodle's algebras, either to target one backend or to work across multiple backends. You should be familiar with the [concepts](/concepts/README.md) behind Doodle to understand everything here.
 
 
-## What Are Algebras?
+## Using a Single Backend
 
-Each algebra defines an interface for something related to creating pictures. For example, the @:api(doodle.algebra.Layout) algebra defines some basic methods for positioning pictures while the @:api(doodle.algebra.Style) algebra defines methods for changing the fill and stroke of a picture. All algebras extend the @:api(doodle.algebra.Algebra) base trait, which requires an algebra declare some type that indicates the type of value returned by calling methods on the algebra.
+Using a single backend should be straightforward:
 
-Tagless final style allows for a lot of flexibility. Back ends only implement the algebras that they support, which means that different backends can support different features. This allows us to access the full capabilities of each backend (assuming that someone has taken the time to write an algebra for the features you are interested in!)
+1. Import the backend you're interested in.
+2. Import the syntax.
+3. Construct pictures using the methods on the `Picture` object.
+4. Compose `Pictures` using the methods provided by the syntax imports.
 
+For example, the following imports are used for the Java2D backend:
+
+```scala
+import doodle.java2d._
+import doodle.syntax.all._
+```
 
 ## Using Backend Specific Features
 
