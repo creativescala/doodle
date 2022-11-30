@@ -75,6 +75,7 @@ package object java2d extends Java2dToPicture {
   type Picture[A] = doodle.algebra.Picture[Algebra, A]
   object Picture
       extends BaseConstructor
+      with BitmapConstructor
       with FromGifBase64Constructor
       with FromPngBase64Constructor
       with FromJpgBase64Constructor
