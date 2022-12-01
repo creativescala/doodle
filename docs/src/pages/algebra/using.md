@@ -8,23 +8,58 @@ This section gives recipes for using Doodle's algebras, targetting one backend o
 Using a single backend should be straightforward:
 
 1. Import the backend you're interested in.
+2. Import the core Doodle package.
 2. Import the syntax.
 3. Construct pictures using the methods on the `Picture` object.
 4. Compose `Pictures` using the methods provided by the syntax imports.
 
 For example, the following imports are used for the Java2D backend:
 
-```scala
+```scala mdoc:silent
 import doodle.java2d._
+import doodle.core._
 import doodle.syntax.all._
 ```
 
 Given these imports we can create pictures. To construct atomic elements we call the constructors on `Picture`.
 
-```scala
+```scala mdoc:silent
 val smallCircle = Picture.circle(100)
 val largeSquare = Picture.square(200)
 ```
+
+When we have some pictures we can compose them using the methods provided by the syntax import.
+
+```scala mdoc:silent
+val composition =
+  smallCircle
+    .fillColor(Color.crimson)
+    .noStroke
+    .on(largeSquare.fillColor(Color.midnightBlue).strokeWidth(5))
+```
+
+Naturally we might want to draw our creation. For this we need another import
+
+
+```scala mdoc:silent
+import cats.effect.unsafe.implicits.global
+```
+
+Now we can call `draw`
+
+```scala
+composition.draw()
+```
+
+producing the masterpiece shown below.
+
+@:image(circle-square.png) {
+  alt = A crimson circle on a midnight blue square
+  title = A crimson circle on a midnight blue square
+}
+
+
+As we've seen, using the algebras is mostly as simple as using `Image`. The only issue you're likely to see is that the error messages might be a bit harder to interpret in the case of mistakes.
 
 
 ## Using Backend Specific Features
