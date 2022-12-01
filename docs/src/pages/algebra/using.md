@@ -1,6 +1,6 @@
 # Using Algebras
 
-This section gives recipes for using Doodle's algebras, either to target one backend or to work across multiple backends. You should be familiar with the [concepts](/concepts/README.md) behind Doodle to understand everything here.
+This section gives recipes for using Doodle's algebras, targetting one backend or working across multiple backends. You should be familiar with the [concepts](/concepts/README.md) behind Doodle to understand everything here.
 
 
 ## Using a Single Backend
@@ -18,6 +18,14 @@ For example, the following imports are used for the Java2D backend:
 import doodle.java2d._
 import doodle.syntax.all._
 ```
+
+Given these imports we can create pictures. To construct atomic elements we call the constructors on `Picture`.
+
+```scala
+val smallCircle = Picture.circle(100)
+val largeSquare = Picture.square(200)
+```
+
 
 ## Using Backend Specific Features
 
