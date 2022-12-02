@@ -1,20 +1,19 @@
 # Picture
 
-@:api(doodle.algebra.Picture) is an imitation of a function whose input is an implicit parameter (which in Dotty would just be a [context function][context-function]). It has three type parameters. They are, in order:
+@:api(doodle.algebra.Picture) is an imitation of a function whose input is an implicit parameter (which in Scala 3 is a [context function][context-function]), and whose output type depends on the input type (which in Scala 3 is a [dependent function type]). It has two type parameters. They are, in order:
 
-- The type `Alg` of the algebras that the picture needs to draw. This is an input to the `Picture` and hence it is contravariant.
-- The type of the effect `F` that the picture will create.
+- The type `Alg` of the algebras that the picture needs to draw. This is an input to the `Picture` and hence it is contravariant. This type has a type member `Drawing[_]` that is the type of effect the `Picture` produces when it is applied to a concrete algebra.
 - The type `A` of the result the picture will produce when it is drawn. This is usually `Unit`, as we normally draw pictures just for their effect, but it could be something else.
 
-Thus in effect a `Picture` is a function with type `Alg[F] => F[A]`.
+In Scala 3 notation, a `Picture` is conceptually equivalent to a function with type `[Alg <: Algebra, A] => (a: Alg) ?=> a.Drawing[A]`.
 
 
 ## Pictures Are Values
 
-Algebras *do not* work directly with `Picture`. Instead they work with the `F[A]` type that is the output of a `Picture`. However, all the @:api(doodle.syntax.index) that makes the algebras easier to use, and which we have used in our previous examples, create and consume `Picture`. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. `Picture` is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a `Picture` we know exactly what we're dealing with.
+Algebras *do not* work directly with `Picture`. Instead they work with the `Drawing[A]` type that is the output of a `Picture`. However, all the @:api(doodle.syntax) that makes the algebras easier to use, and which we have used in our previous examples, create and consume `Picture`. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. `Picture` is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a `Picture` we know exactly what we're dealing with.
 
-[context-function]: https://dotty.epfl.ch/docs/reference/contextual/context-functions.html
-
+[context-function]: https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html
+[dependent function type]: https://docs.scala-lang.org/scala3/reference/new-types/dependent-function-types.html
 
 ## Drawing Pictures
 
@@ -84,17 +83,14 @@ val picture = base64.toPicture
 
 ## Type Class Instances for Picture
 
-There are a few type class instances defined for `Picture`.
+There is one type class instances defined for `Picture`.
 
 `Picture[Alg,F,?]` has a `Monoid` instance if:
 
-- the algebra has `Layout` and `Shape`;
-- the effect type `F` has a `Functor`; and
+- the algebra has `Layout` and `Shape`; and
 - and the result type has a `Monoid`.
    
 In this case the combine is `on`, with identity `empty`.
-
-`Picture[Alg,F,?]` has a `Monad` instance if `F` does.
 
 
 [png]: https://en.wikipedia.org/wiki/Portable_Network_Graphics
