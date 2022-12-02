@@ -4,6 +4,17 @@
 
 - Add text and font to `Image`, courtesy of akiomik
 
+- Simplify the `Picture` type, which requires a large refactoring.
+
+  - The `Drawing` type is now a type member of `Algebra`, not a type parameter.
+  
+  - `Pictures` are now equivalent to dependent function types, with the output being `a.Drawing[A]` where `a` is the `Algebra` the `Picture` is applied to.
+
+  This means the `Drawing` parameter no longer needs to propagated outward in backend independent code and in turn `Picture` can now be backend indepndent. In turn makes writing backend independent code, such as libraries that build on Doodle, dramatically easier to write.
+  
+  Overall, the `Picture` type, plus syntax, is as easy to use `Image`.
+
+
 ## 0.11.2 24-Jul-2022
 
 - Add "constructors" to algebras. Described in WIP documentation. This allows
