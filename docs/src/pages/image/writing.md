@@ -34,7 +34,7 @@ The first import pulls in the Java2D backend. The second import makes available 
 
 Call the `write` method to write to a file, giving the format as a type parameter and the file name as a normal parameter. For example, to write a PNG to the file called `"circle.png"`
 
-```scala mdoc
+```scala mdoc:silent
 val image = Image.circle(100)
   .strokeWidth(10.0)
   .fillColor(Color.crimson)
