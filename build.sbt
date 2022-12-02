@@ -131,8 +131,8 @@ lazy val docs =
       ),
       tlSite := Def
         .sequential(
-          mdoc.toTask(""),
           (Compile / run).toTask(""),
+          mdoc.toTask(""),
           css,
           laikaSite
         )
