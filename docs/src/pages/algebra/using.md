@@ -7,11 +7,9 @@ This section gives recipes for using Doodle's algebras, targetting one backend o
 
 Using a single backend should be straightforward:
 
-1. Import the backend you're interested in.
-2. Import the core Doodle package.
-2. Import the syntax.
-3. Construct pictures using the methods on the `Picture` object.
-4. Compose `Pictures` using the methods provided by the syntax imports.
+1. Import the Doodle core, syntax, and the backend you're using.
+2. Construct pictures using the methods on the `Picture` object.
+3. Compose `Pictures` using the methods provided by the syntax imports.
 
 For example, the following imports are used for the Java2D backend:
 
@@ -53,57 +51,32 @@ composition.draw()
 
 producing the masterpiece shown below.
 
-@:image(circle-square.png) {
-  alt = A crimson circle on a midnight blue square
-  title = A crimson circle on a midnight blue square
-}
+![A crimson circle on a midnight blue square](circle-square.png)
 
-
-As we've seen, using the algebras is mostly as simple as using `Image`. The only issue you're likely to see is that the error messages might be a bit harder to interpret in the case of mistakes.
+As we've seen, using the algebras is mostly as simple as using `Image`. The only issue you might see is that the error messages can be a bit harder to interpret.
 
 
 ## Using Backend Specific Features
 
-Use the following recipe to write code using backend specific features (for example, the @:api(doodle.algebra.Bitmap) algebra which is currently only supported by the @:api(doodle.java2d) backend).
+Using backend specific features follows the same pattern as using a single backend. Here's an example using the @:api(doodle.algebra.Bitmap) algebra, which is currently only supported by the @:api(doodle.java2d) backend. (The bitmap used is the [Old God](https://www.deviantart.com/kaiseto/journal/Most-of-my-Pixel-Art-is-now-Creative-Commons-369510391) created by Kevin Chaloux and released under Creative Commons.)
 
-The first step is to import the backend and syntax extensions, some Cats implicits we'll need, and the Cats Effect runtime. We'll use `java2d` as our backend.
+The first step is, as before, to import the Doodle core, Java2D backend, syntax extensions, and the Cats Effect runtime.
 
-```scala mdoc:silent
+```scala mdoc:reset:silent
+import doodle.core._
 import doodle.java2d._
 import doodle.syntax.all._
-import cats.implicits._
 import cats.effect.unsafe.implicits.global
 ```
-
-Now we can write code in a style very similar to using `Image`, except the constructors are on the backend's `Picture` object. 
-
-```scala mdoc:silent
-val aCircle = Picture.circle(100) // Circle with diameter 100
-```
-
-By convention all backends provide a `Picture` companion object, so the above code would work with the SVG backend by simply changing the import from `doodle.java2d._` to `doodle.svg._`
-
-Once we have created a picture we can compose pictures in a straightforward way. For example, to create two red circles beside each other we could write
+Now we can go about creating our picture, using the `read` method to load a bitmap image.
 
 ```scala mdoc:silent
-import doodle.core._ // For Color
-
 val redCircle = Picture.circle(100).strokeColor(Color.red)
 val twoRedCircles = redCircle.beside(redCircle)
-```
-
-To use the `Bitmap` algebra, and assuming the bitmap we refer to exists on disk, we could write
-
-```scala mdoc:silent
 val oldGod = Picture.read("old-god.png")
 ```
 
-@@@note
-The bitmap is the [Old God](https://www.deviantart.com/kaiseto/journal/Most-of-my-Pixel-Art-is-now-Creative-Commons-369510391
-) created by Kevin Chaloux and released under Creative Commons.
-@@@
-
-We could combine this bitmap value with other pictures in the usual way.
+We can combine this bitmap value with other pictures in the usual way.
 
 ```scala mdoc:silent
 twoRedCircles.above(oldGod)
@@ -116,32 +89,25 @@ We can then draw it using the `draw` method, which produces the output shown bel
 
 ## Creating Cross-Backend Pictures
 
-If we want to use algebras directly and target multiple backends we need to do a little bit more work then when working with a single backend. First we need to decide what algebras we need. Let's say we decide to use @:api(doodle.language.Basic), which is a collection of the algebras that matches what `Image` supports, along with @:api(doodle.algebra.Text). We then have steps to follow to firstly create a picture and then to use the picture with a concrete backend.
+Targeting multiple backends requires a little bit more work than working with a single backend. First we need to decide what algebras we need. Let's say we decide to use @:api(doodle.language.Basic), which is a collection of algebras that match what `Image` supports. We then have steps to follow to firstly create a picture and then to use the picture with a concrete backend.
 
-To create a picture:
+You can't use the usual constructor methods on a `Picture` object, as those methods target a specific backend and we want to work across multiple backends. However, every constructor method has a syntax equivalent that we can call. We just to provide the algebra we want for our creation as a type parameter. We decided above we're using `Basic` as our algebra, so to create a circle we can write
 
-1. We write a method that has two types parameters, one of which is a type parameter that is a subtype of the algebra we have chosen, and the other is just `F[_]`. See the code below for the example.
-2. We declare the result type of the method as `doodle.algebra.Picture[Alg, Unit]`, where `Alg` is the algebra type we declared in the first step.
-3. We then write the code for creating the picture as usual in the body of the method, using `Alg` for `Algebra` and `F` for `Drawing`.
-
-Here's an example. The type declaration is complicated but you don't need to understand it. You can just copy and paste, changing `Basic` and `Text` as appropriate for your case.
-
-```scala mdoc:silent
+```scala mdoc:reset:silent
+import doodle.core._
+import doodle.syntax.all._
 import doodle.language.Basic
-import doodle.algebra.{Picture, Text}
 
-def basicWithText[Alg <: Basic & Text]: Picture[Alg, Unit] = {
-  val redCircle = circle[Alg](100).strokeColor(Color.red)
-  val rad = text[Alg]("Doodle is rad")
-  
-  rad.on(redCircle)
-}
+circle[Basic](100)
 ```
 
-To use this method with a concrete backend we call it providing the backend's `Algebra` and `Drawing` types for the `Alg` and `F` type parameters respectively. Note that method has no parameter list so we do not need to provide any parameters.
+Once we know how to do this, everything proceeds as before. Here's a complete example.
 
 ```scala mdoc:silent
-val java2dPicture = basicWithText[Algebra]
+val redCircle = circle[Basic](100).strokeColor(Color.red)
+val rad = text[Basic]("Doodle is rad")
+  
+val picture = rad.on(redCircle)
 ```
 
 We can then `draw` the picture as before. In this case we get the output below.
@@ -151,9 +117,9 @@ We can then `draw` the picture as before. In this case we get the output below.
 
 ## Using Raw Algebras
 
-We never need to call methods on algebras directly. Doodle provides the @:api(doodle.algebra.Picture) abstraction and lots of @:api(doodle.syntax.index) to avoid this. However, if some reason we did want to use algebras directly here is how we would do this. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.
+We never need to call methods on algebras directly. Doodle provides the @:api(doodle.algebra.Picture) abstraction and lots of @:api(doodle.syntax) to avoid this. However, if some reason you did want to use algebras directly here is how to do it. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.
 
-To use these algebras to create a picture you could write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using `Layout`, `Style`, and `Shape` we might write the following.
+To use algebras directly, write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using `Layout`, `Style`, and `Shape` we might write the following.
 
 ```scala mdoc:silent
 import doodle.core._
@@ -168,4 +134,4 @@ def twoRedCircles[Alg <: Layout & Style & Shape](algebra: Alg): algebra.Drawing[
   
 ```
 
-This is not the most convenient way to write code, so Doodle provides several utilities to make it easier.
+This is not a convenient way to write code, so don't do it unless you have a good reason.
