@@ -128,7 +128,15 @@ lazy val docs =
         laika.markdown.github.GitHubFlavor,
         laika.parse.code.SyntaxHighlighting,
         CreativeScalaDirectives
-      )
+      ),
+      tlSite := Def
+        .sequential(
+          mdoc.toTask(""),
+          (Compile / run).toTask(""),
+          css,
+          laikaSite
+        )
+        .value
     )
     .enablePlugins(TypelevelSitePlugin)
     .dependsOn(core.jvm, image.jvm)
