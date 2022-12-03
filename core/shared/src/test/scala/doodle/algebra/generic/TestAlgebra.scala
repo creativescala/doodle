@@ -24,8 +24,6 @@ import cats.implicits._
 import doodle.algebra.generic.reified._
 import doodle.core.BoundingBox
 
-import java.awt.Graphics2D
-
 final case class TestAlgebra(
     applyDrawing: Apply[Reification] = Apply.apply[Reification],
     functorDrawing: Functor[Reification] = Apply.apply[Reification]
