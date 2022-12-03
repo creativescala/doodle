@@ -43,7 +43,7 @@ object Picture {
       val empty: Picture[Alg, A] =
         new Picture[Alg, A] {
           def apply(implicit algebra: Alg): algebra.Drawing[A] =
-            algebra.empty.map(_ => m.empty)
+            algebra.drawingInstance.as(algebra.empty, m.empty)
         }
 
       def combine(
@@ -53,6 +53,24 @@ object Picture {
         new Picture[Alg, A] {
           def apply(implicit algebra: Alg): algebra.Drawing[A] =
             algebra.on(x(algebra), y(algebra))
+        }
+    }
+
+  implicit def pictureApplicativeInstance[Alg <: Algebra]
+      : Applicative[Picture[Alg, *]] =
+    new Applicative[Picture[Alg, *]] {
+      def ap[A, B](ff: Picture[Alg, A => B])(
+          fa: Picture[Alg, A]
+      ): Picture[Alg, B] =
+        new Picture[Alg, B] {
+          def apply(implicit algebra: Alg): algebra.Drawing[B] =
+            algebra.drawingInstance.ap(ff.apply(algebra))(fa.apply(algebra))
+        }
+
+      def pure[A](x: A): Picture[Alg, A] =
+        new Picture[Alg, A] {
+          def apply(implicit algebra: Alg): algebra.Drawing[A] =
+            algebra.drawingInstance.pure(x)
         }
     }
 }

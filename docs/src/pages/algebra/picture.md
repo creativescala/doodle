@@ -83,9 +83,11 @@ val picture = base64.toPicture
 
 ## Type Class Instances for Picture
 
-There is one type class instances defined for `Picture`.
+There some type class instances defined for `Picture`.
 
-`Picture[Alg,F,?]` has a `Monoid` instance if:
+`Picture[Alg,*]` always has an `Applicative` instance.
+
+`Picture[Alg,*]` has a `Monoid` instance if:
 
 - the algebra has `Layout` and `Shape`; and
 - and the result type has a `Monoid`.
