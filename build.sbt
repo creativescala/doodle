@@ -32,8 +32,8 @@ ThisBuild / developers := List(
 // true by default, set to false to publish to s01.oss.sonatype.org
 ThisBuild / tlSonatypeUseLegacyHost := true
 
-lazy val scala213 = "2.13.8"
-lazy val scala3 = "3.1.3"
+lazy val scala213 = "2.13.10"
+lazy val scala3 = "3.2.1"
 
 ThisBuild / crossScalaVersions := List(scala3, scala213)
 ThisBuild / scalaVersion := crossScalaVersions.value.head
