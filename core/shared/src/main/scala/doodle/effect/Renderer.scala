@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,16 +25,16 @@ import doodle.algebra.Picture
   * render a picture (a Canvas) from a description (a Frame) and render a
   * picture to that Canvas.
   */
-trait Renderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas] {
+trait Renderer[+Alg <: Algebra, Frame, Canvas] {
 
   /** Construct a Canvas from a description. */
   def canvas(description: Frame): IO[Canvas]
 
   /** Render a picture to a Canvas. */
-  def render[A](canvas: Canvas)(picture: Picture[Alg, F, A]): IO[A]
+  def render[A](canvas: Canvas)(picture: Picture[Alg, A]): IO[A]
 }
 object Renderer {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](implicit
-      renderer: Renderer[Alg, F, Frame, Canvas]
-  ): Renderer[Alg, F, Frame, Canvas] = renderer
+  def apply[Alg <: Algebra, Frame, Canvas](implicit
+      renderer: Renderer[Alg, Frame, Canvas]
+  ): Renderer[Alg, Frame, Canvas] = renderer
 }

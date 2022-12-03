@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,33 +24,39 @@ import doodle.algebra.Picture
 import doodle.algebra.Shape
 
 trait TraverseSyntax {
-  implicit class TraverseOps[T[_], Alg[x[_]] <: Layout[x] with Shape[x], F[_]](
-      val t: T[Picture[Alg, F, Unit]]
+  implicit class TraverseOps[T[_], Alg <: Layout with Shape](
+      val t: T[Picture[Alg, Unit]]
   ) {
     import doodle.syntax.layout._
 
-    def allOn(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
-      val empty = Picture { (algebra: Alg[F]) =>
-        algebra.empty
-      }
+    def allOn(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
+      val empty: Picture[Alg, Unit] =
+        new Picture[Alg, Unit] {
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+            algebra.empty
+        }
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.on(img)
       }
     }
 
-    def allBeside(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
-      val empty = Picture { (algebra: Alg[F]) =>
-        algebra.empty
-      }
+    def allBeside(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
+      val empty: Picture[Alg, Unit] =
+        new Picture[Alg, Unit] {
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+            algebra.empty
+        }
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.beside(img)
       }
     }
 
-    def allAbove(implicit traverse: Traverse[T]): Picture[Alg, F, Unit] = {
-      val empty = Picture { (algebra: Alg[F]) =>
-        algebra.empty
-      }
+    def allAbove(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
+      val empty: Picture[Alg, Unit] =
+        new Picture[Alg, Unit] {
+          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+            algebra.empty
+        }
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.above(img)
       }

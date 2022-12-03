@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ package examples
 object PulsingCircle {
   import cats.instances.all._
   import doodle.core._
-  import doodle.effect.Writer.Gif
+  import doodle.core.format.Gif
   import doodle.syntax.all._
   import doodle.java2d.effect._
   import doodle.interact.syntax.all._

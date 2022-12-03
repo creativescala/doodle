@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,32 +23,33 @@ import doodle.core.BoundingBox
 
 /** Get information about the size of the bounding box enclosing an picture.
   */
-trait GenericSize[F[_]] extends Size[Finalized[F, *]] { self: GivenFunctor[F] =>
+trait GenericSize[G[_]] extends Size {
+  self: GivenFunctor[G] with Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   /** Get the height of the bounding box enclosing the picture
     */
-  def height[A](picture: Finalized[F, A]): Finalized[F, Double] =
+  def height[A](picture: Finalized[G, A]): Finalized[G, Double] =
     picture.map { case (bb, rdr) =>
       (bb, rdr.map(fa => fa.map(_ => bb.height)))
     }
 
   /** Get the width of the bounding box enclosing the picture
     */
-  def width[A](picture: Finalized[F, A]): Finalized[F, Double] =
+  def width[A](picture: Finalized[G, A]): Finalized[G, Double] =
     picture.map { case (bb, rdr) =>
       (bb, rdr.map(fa => fa.map(_ => bb.width)))
     }
 
   /** Get the width and height of the bounding box enclosing the picture
     */
-  def size[A](picture: Finalized[F, A]): Finalized[F, (Double, Double)] =
+  def size[A](picture: Finalized[G, A]): Finalized[G, (Double, Double)] =
     picture.map { case (bb, rdr) =>
       (bb, rdr.map(fa => fa.map(_ => (bb.width, bb.height))))
     }
 
   /** Get the bounding box enclosing the picture
     */
-  def boundingBox[A](picture: Finalized[F, A]): Finalized[F, BoundingBox] =
+  def boundingBox[A](picture: Finalized[G, A]): Finalized[G, BoundingBox] =
     picture.map { case (bb, rdr) =>
       (bb, rdr.map(fa => fa.map(_ => bb)))
     }

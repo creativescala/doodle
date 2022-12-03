@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ import java.io.File
 /** The `AnimationWriter` typeclass describes a data type that can write an
   * animation to a file.
   */
-trait AnimationWriter[Alg[x[_]] <: Algebra[x], F[_], Frame, Format] {
+trait AnimationWriter[Alg <: Algebra, F[_], Frame, Format] {
 
   def write[A](
       file: File,
       description: Frame,
-      frames: Stream[IO, Picture[Alg, F, A]]
+      frames: Stream[IO, Picture[Alg, A]]
   )(implicit m: Monoid[A]): IO[A]
 }

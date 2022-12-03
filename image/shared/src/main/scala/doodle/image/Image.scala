@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Noel Welsh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package doodle
 package image
 
@@ -97,8 +113,7 @@ sealed abstract class Image extends Product with Serializable {
 
   // Convert to tagless final format
 
-  def compile[Algebra[x[*]] <: Basic[x], F[_]]
-      : doodle.algebra.Picture[Algebra, F, Unit] =
+  def compile[Algebra <: Basic]: doodle.algebra.Picture[Algebra, Unit] =
     Image.compile(this)
 }
 sealed abstract class Path extends Image {
@@ -263,62 +278,63 @@ object Image {
     Empty
 
   /** Compile an `Image` to a `doodle.algebra.Picture` */
-  def compile[Alg[x[_]] <: Basic[x], F[_]](
+  def compile[Alg <: Basic](
       image: Image
-  ): doodle.algebra.Picture[Alg, F, Unit] = {
+  ): doodle.algebra.Picture[Alg, Unit] = {
     import cats.instances.unit._
     import Elements._
 
-    doodle.algebra.Picture[Alg, F, Unit] { algebra =>
-      image match {
-        case OpenPath(elements) =>
-          algebra.path(doodle.core.OpenPath(elements))
-        case ClosedPath(elements) =>
-          algebra.path(doodle.core.ClosedPath(elements))
+    new doodle.algebra.Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        image match {
+          case OpenPath(elements) =>
+            algebra.path(doodle.core.OpenPath(elements))
+          case ClosedPath(elements) =>
+            algebra.path(doodle.core.ClosedPath(elements))
 
-        case Text(t) =>
-          algebra.text(t)
-        case Font(image, f) =>
-          algebra.font(compile(image)(algebra), f)
+          case Text(t) =>
+            algebra.text(t)
+          case Font(image, f) =>
+            algebra.font(compile(image)(algebra), f)
 
-        case Circle(d) =>
-          algebra.circle(d)
-        case Rectangle(w, h) =>
-          algebra.rectangle(w, h)
-        case Triangle(w, h) =>
-          algebra.triangle(w, h)
+          case Circle(d) =>
+            algebra.circle(d)
+          case Rectangle(w, h) =>
+            algebra.rectangle(w, h)
+          case Triangle(w, h) =>
+            algebra.triangle(w, h)
 
-        case Beside(l, r) =>
-          algebra.beside(compile(l)(algebra), compile(r)(algebra))
-        case Above(l, r) =>
-          algebra.above(compile(l)(algebra), compile(r)(algebra))
-        case On(t, b) =>
-          algebra.on(compile(t)(algebra), compile(b)(algebra))
-        case At(image, x, y) =>
-          algebra.at(compile(image)(algebra), x, y)
+          case Beside(l, r) =>
+            algebra.beside(compile(l)(algebra), compile(r)(algebra))
+          case Above(l, r) =>
+            algebra.above(compile(l)(algebra), compile(r)(algebra))
+          case On(t, b) =>
+            algebra.on(compile(t)(algebra), compile(b)(algebra))
+          case At(image, x, y) =>
+            algebra.at(compile(image)(algebra), x, y)
 
-        case Transform(tx, i) =>
-          algebra.transform(compile(i)(algebra), tx)
+          case Transform(tx, i) =>
+            algebra.transform(compile(i)(algebra), tx)
 
-        case StrokeWidth(image, width) =>
-          algebra.strokeWidth(compile(image)(algebra), width)
-        case StrokeColor(image, color) =>
-          algebra.strokeColor(compile(image)(algebra), color)
-        case FillColor(image, color) =>
-          algebra.fillColor(compile(image)(algebra), color)
-        case FillGradient(image, gradient) =>
-          algebra.fillGradient(compile(image)(algebra), gradient)
-        case NoStroke(image) =>
-          algebra.noStroke(compile(image)(algebra))
-        case NoFill(image) =>
-          algebra.noFill(compile(image)(algebra))
+          case StrokeWidth(image, width) =>
+            algebra.strokeWidth(compile(image)(algebra), width)
+          case StrokeColor(image, color) =>
+            algebra.strokeColor(compile(image)(algebra), color)
+          case FillColor(image, color) =>
+            algebra.fillColor(compile(image)(algebra), color)
+          case FillGradient(image, gradient) =>
+            algebra.fillGradient(compile(image)(algebra), gradient)
+          case NoStroke(image) =>
+            algebra.noStroke(compile(image)(algebra))
+          case NoFill(image) =>
+            algebra.noFill(compile(image)(algebra))
 
-        case Debug(image, color) =>
-          algebra.debug(compile(image)(algebra), color)
+          case Debug(image, color) =>
+            algebra.debug(compile(image)(algebra), color)
 
-        case Empty =>
-          algebra.empty
-      }
+          case Empty =>
+            algebra.empty
+        }
     }
   }
 }

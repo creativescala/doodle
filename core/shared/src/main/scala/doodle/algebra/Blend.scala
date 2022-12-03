@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ package doodle
 package algebra
 
 /** Algebra describing color blending modes. */
-trait Blend[F[_]] extends Algebra[F] {
-  def screen[A](image: F[A]): F[A]
-  def burn[A](image: F[A]): F[A]
-  def dodge[A](image: F[A]): F[A]
-  def lighten[A](image: F[A]): F[A]
-  def sourceOver[A](image: F[A]): F[A]
+trait Blend extends Algebra {
+  def screen[A](image: Drawing[A]): Drawing[A]
+  def burn[A](image: Drawing[A]): Drawing[A]
+  def dodge[A](image: Drawing[A]): Drawing[A]
+  def lighten[A](image: Drawing[A]): Drawing[A]
+  def sourceOver[A](image: Drawing[A]): Drawing[A]
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import doodle.core.Point
 import doodle.core.{Transform => Tx}
 
 trait ReifiedShape extends GenericShape[Reification] {
+  self: Algebra { type Drawing[A] = TestAlgebra.Drawing[A] } =>
+
   object ShapeApi extends ShapeApi {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =
       WriterT.tell(a.toList ++ b.toList)

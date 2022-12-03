@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@ import doodle.algebra.Algebra
 /** The `DefaultRenderer` typeclass is a `Renderer` that has a reasonable
   * default frame.
   */
-trait DefaultRenderer[+Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas]
-    extends Renderer[Alg, F, Frame, Canvas] {
+trait DefaultRenderer[+Alg <: Algebra, Frame, Canvas]
+    extends Renderer[Alg, Frame, Canvas] {
   def default: Frame
 }
 object DefaultRenderer {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], Frame, Canvas](implicit
-      renderer: DefaultRenderer[Alg, F, Frame, Canvas]
-  ): DefaultRenderer[Alg, F, Frame, Canvas] = renderer
+  def apply[Alg <: Algebra, Frame, Canvas](implicit
+      renderer: DefaultRenderer[Alg, Frame, Canvas]
+  ): DefaultRenderer[Alg, Frame, Canvas] = renderer
 }

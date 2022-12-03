@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,22 +21,25 @@ import doodle.algebra.Picture
 import doodle.algebra.Size
 
 trait SizeSyntax {
-  implicit class SizePictureOps[Alg[x[_]] <: Size[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class SizePictureOps[Alg <: Size, A](
+      picture: Picture[Alg, A]
   ) {
-    def height: Picture[Alg, F, Double] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.height(picture(algebra))
+    def height: Picture[Alg, Double] =
+      new Picture[Alg, Double] {
+        def apply(implicit algebra: Alg): algebra.Drawing[Double] =
+          algebra.height(picture(algebra))
       }
 
-    def width: Picture[Alg, F, Double] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.width(picture(algebra))
+    def width: Picture[Alg, Double] =
+      new Picture[Alg, Double] {
+        def apply(implicit algebra: Alg): algebra.Drawing[Double] =
+          algebra.width(picture(algebra))
       }
 
-    def size: Picture[Alg, F, (Double, Double)] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.size(picture(algebra))
+    def size: Picture[Alg, (Double, Double)] =
+      new Picture[Alg, (Double, Double)] {
+        def apply(implicit algebra: Alg): algebra.Drawing[(Double, Double)] =
+          algebra.size(picture(algebra))
       }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,72 +18,58 @@ package doodle
 package algebra
 
 import cats._
-import cats.implicits._
 
 /** Represents a picture, which is a function from a tagless final algebra to
   * some type F that represents drawing a picture with result A. Has a monad
   * instance if F does.
   */
-trait Picture[-Alg[x[_]] <: Algebra[x], F[_], A] {
-  def apply(implicit algebra: Alg[F]): F[A]
+trait Picture[-Alg <: Algebra, A] { self =>
+  def apply(implicit algebra: Alg): algebra.Drawing[A]
 }
 object Picture {
-  def apply[Alg[x[_]] <: Algebra[x], F[_], A](
-      f: Alg[F] => F[A]
-  ): Picture[Alg, F, A] = {
-    new Picture[Alg, F, A] {
-      def apply(implicit algebra: Alg[F]): F[A] =
-        f(algebra)
-    }
-  }
 
-  /** Picture[Alg,F,?] has a Monoid instance if:
+  /** Picture[Alg,A] has a Monoid instance if:
     *
-    *   - the algebra has `Layout` and `Shape`;
-    *   - the effect type has a `Functor`; and
+    *   - the algebra has `Layout` and `Shape`; and
     *   - and the result type has a `Monoid`.
     *
     * In this case the combine is `on`, with identity `empty`.
     */
-  implicit def pictureMonoidInstance[Alg[x[_]] <: Layout[x] with Shape[x], F[
-      _
-  ], A](implicit
-      f: Functor[F],
+  implicit def pictureMonoidInstance[Alg <: Layout with Shape, A](implicit
       m: Monoid[A]
-  ): Monoid[Picture[Alg, F, A]] =
-    new Monoid[Picture[Alg, F, A]] {
-      val empty: Picture[Alg, F, A] =
-        Picture(alg => alg.empty.map(_ => m.empty))
+  ): Monoid[Picture[Alg, A]] =
+    new Monoid[Picture[Alg, A]] {
+      val empty: Picture[Alg, A] =
+        new Picture[Alg, A] {
+          def apply(implicit algebra: Alg): algebra.Drawing[A] =
+            algebra.drawingInstance.as(algebra.empty, m.empty)
+        }
 
       def combine(
-          x: Picture[Alg, F, A],
-          y: Picture[Alg, F, A]
-      ): Picture[Alg, F, A] =
-        Picture(alg => alg.on(x(alg), y(alg)))
+          x: Picture[Alg, A],
+          y: Picture[Alg, A]
+      ): Picture[Alg, A] =
+        new Picture[Alg, A] {
+          def apply(implicit algebra: Alg): algebra.Drawing[A] =
+            algebra.on(x(algebra), y(algebra))
+        }
     }
 
-  /** Picture[Alg,F,?] has a Monad instance if F does
-    */
-  implicit def pictureMonadInstance[Alg[x[_]] <: Algebra[x], F[_]](implicit
-      m: Monad[F]
-  ): Monad[Picture[Alg, F, *]] =
-    new Monad[Picture[Alg, F, *]] {
-      def flatMap[A, B](
-          fa: Picture[Alg, F, A]
-      )(f: A => Picture[Alg, F, B]): Picture[Alg, F, B] =
-        Picture(alg => fa(alg).flatMap(a => f(a)(alg)))
+  implicit def pictureApplicativeInstance[Alg <: Algebra]
+      : Applicative[Picture[Alg, *]] =
+    new Applicative[Picture[Alg, *]] {
+      def ap[A, B](ff: Picture[Alg, A => B])(
+          fa: Picture[Alg, A]
+      ): Picture[Alg, B] =
+        new Picture[Alg, B] {
+          def apply(implicit algebra: Alg): algebra.Drawing[B] =
+            algebra.drawingInstance.ap(ff.apply(algebra))(fa.apply(algebra))
+        }
 
-      def pure[A](x: A): Picture[Alg, F, A] =
-        Picture(_ => x.pure[F])
-
-      def tailRecM[A, B](
-          a: A
-      )(f: A => Picture[Alg, F, Either[A, B]]): Picture[Alg, F, B] =
-        f(a).flatMap(either =>
-          either match {
-            case Left(a)  => tailRecM(a)(f)
-            case Right(b) => pure(b)
-          }
-        )
+      def pure[A](x: A): Picture[Alg, A] =
+        new Picture[Alg, A] {
+          def apply(implicit algebra: Alg): algebra.Drawing[A] =
+            algebra.drawingInstance.pure(x)
+        }
     }
 }

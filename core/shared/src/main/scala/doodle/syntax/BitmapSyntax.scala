@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,15 @@ import doodle.algebra.Picture
 import java.io.File
 
 trait BitmapSyntax {
-  def read[Alg[x[_]] <: Bitmap[x], F[_]](file: File): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.read(file)
+  def read[Alg <: Bitmap](file: File): Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.read(file)
     }
 
-  def read[Alg[x[_]] <: Bitmap[x], F[_]](file: String): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.read(file)
+  def read[Alg <: Bitmap](file: String): Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.read(file)
     }
 }

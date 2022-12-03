@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,21 +22,22 @@ import doodle.algebra.Picture
 import doodle.core.Color
 
 trait DebugSyntax {
-  implicit class DebugPictureOps[Alg[x[_]] <: Debug[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class DebugPictureOps[Alg <: Debug, A](
+      picture: Picture[Alg, A]
   ) {
 
     /** Draw bounding box and origin in the given color on top of the given
       * picture.
       */
-    def debug(color: Color): Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.debug(picture(algebra), color)
+    def debug(color: Color): Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.debug(picture(algebra), color)
       }
 
     /** Draw bounding box and origin in crimson on top of the given picture.
       */
-    def debug: Picture[Alg, F, A] =
+    def debug: Picture[Alg, A] =
       debug(Color.crimson)
   }
 }

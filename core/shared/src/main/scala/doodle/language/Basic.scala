@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,13 @@ package language
 
 import doodle.algebra._
 
-trait Basic[F[_]]
-    extends Algebra[F]
-    with Debug[F]
-    with Layout[F]
-    with Path[F]
-    with Shape[F]
-    with Size[F]
-    with Style[F]
-    with Text[F]
-    with Transform[F]
-object Basic {
-  def picture[F[_], A](f: Basic[F] => F[A]): Picture[Basic, F, A] =
-    new Picture[Basic, F, A] {
-      def apply(implicit algebra: Basic[F]): F[A] =
-        f(algebra)
-    }
-}
+trait Basic
+    extends Algebra
+    with Debug
+    with Layout
+    with Path
+    with Shape
+    with Size
+    with Style
+    with Text
+    with Transform

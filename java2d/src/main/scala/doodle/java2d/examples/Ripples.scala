@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ object Ripples {
       this.copy(age = age + 1)
 
     def picture: Picture[Unit] =
-      circle[Algebra, Drawing](age.toDouble)
+      circle[Algebra](age.toDouble)
         .strokeColor(
           Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized)
         )

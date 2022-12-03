@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,6 @@ package generic
 
 import cats.Apply
 
-trait GivenApply[F[_]] {
-  implicit val applyF: Apply[F]
+trait GivenApply[Drawing[_]] {
+  implicit val applyDrawing: Apply[Drawing]
 }

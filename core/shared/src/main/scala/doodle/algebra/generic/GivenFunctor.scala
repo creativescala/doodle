@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,6 @@ package generic
 
 import cats.Functor
 
-trait GivenFunctor[F[_]] {
-  implicit val functorF: Functor[F]
+trait GivenFunctor[Drawing[_]] {
+  implicit val functorDrawing: Functor[Drawing]
 }

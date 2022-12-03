@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Noel Welsh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package doodle
 package interact
 package syntax
@@ -26,8 +42,8 @@ trait AnimationRendererSyntax {
 
   val theNullCallback = nullCallback _
 
-  implicit class AnimateStreamOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Stream[IO, Picture[Alg, F, A]]
+  implicit class AnimateStreamOps[Alg <: Algebra, F[_], A](
+      frames: Stream[IO, Picture[Alg, A]]
   ) {
 
     /** Makes this Stream produce frames with the given period between frames.
@@ -36,7 +52,7 @@ trait AnimationRendererSyntax {
       *
       * A convenience derived from the `metered` method on `Stream`.
       */
-    def withFrameRate(period: FiniteDuration): Stream[IO, Picture[Alg, F, A]] =
+    def withFrameRate(period: FiniteDuration): Stream[IO, Picture[Alg, A]] =
       frames.metered(period)
 
     /** Create an effect that, when run, will render a `Stream` that is
@@ -44,7 +60,7 @@ trait AnimationRendererSyntax {
       */
     def animateToIO[Frame, Canvas](frame: Frame)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, Frame, Canvas],
+        e: Renderer[Alg, Frame, Canvas],
         m: Monoid[A]
     ): IO[A] =
       (for {
@@ -60,7 +76,7 @@ trait AnimationRendererSyntax {
         cb: Either[Throwable, A] => Unit = theNullCallback
     )(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, Frame, Canvas],
+        e: Renderer[Alg, Frame, Canvas],
         m: Monoid[A],
         runtime: IORuntime
     ): Unit =
@@ -71,7 +87,7 @@ trait AnimationRendererSyntax {
       */
     def animateWithCanvasToIO[Canvas](canvas: Canvas)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, _, Canvas],
+        e: Renderer[Alg, _, Canvas],
         m: Monoid[A]
     ): IO[A] = {
       a.animate(canvas)(frames)
@@ -85,7 +101,7 @@ trait AnimationRendererSyntax {
         cb: Either[Throwable, A] => Unit = theNullCallback
     )(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, _, Canvas],
+        e: Renderer[Alg, _, Canvas],
         m: Monoid[A],
         runtime: IORuntime
     ): Unit = {
@@ -93,8 +109,8 @@ trait AnimationRendererSyntax {
     }
   }
 
-  implicit class AnimateToStreamOps[Alg[x[_]] <: Algebra[x], F[_], A](
-      frames: Stream[IO, Picture[Alg, F, A]]
+  implicit class AnimateToStreamOps[Alg <: Algebra, F[_], A](
+      frames: Stream[IO, Picture[Alg, A]]
   ) {
 
     /** Create an effect that, when run, will animate a source of frames that is
@@ -102,7 +118,7 @@ trait AnimationRendererSyntax {
       */
     def animateFramesToIO[Frame, Canvas](frame: Frame)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, Frame, Canvas],
+        e: Renderer[Alg, Frame, Canvas],
         r: Redraw[Canvas],
         m: Monoid[A]
     ): IO[A] = {
@@ -123,7 +139,7 @@ trait AnimationRendererSyntax {
         cb: Either[Throwable, A] => Unit = theNullCallback
     )(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, Frame, Canvas],
+        e: Renderer[Alg, Frame, Canvas],
         r: Redraw[Canvas],
         m: Monoid[A],
         runtime: IORuntime
@@ -133,11 +149,11 @@ trait AnimationRendererSyntax {
 
     def animateFramesWithCanvasToIO[Canvas](canvas: Canvas)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, _, Canvas],
+        e: Renderer[Alg, _, Canvas],
         r: Redraw[Canvas],
         m: Monoid[A]
     ): IO[A] = {
-      val animatable: Stream[IO, Picture[Alg, F, A]] =
+      val animatable: Stream[IO, Picture[Alg, A]] =
         frames.zip(r.redraw(canvas)).map { case (frame, _) => frame }
 
       animatable.animateWithCanvasToIO(canvas)
@@ -148,7 +164,7 @@ trait AnimationRendererSyntax {
         cb: Either[Throwable, A] => Unit = theNullCallback
     )(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, F, _, Canvas],
+        e: Renderer[Alg, _, Canvas],
         r: Redraw[Canvas],
         m: Monoid[A],
         runtime: IORuntime

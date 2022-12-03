@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import doodle.language.Basic
 import doodle.syntax.all._
 
 object Polygons {
-  def picture[F[_]]: Picture[Basic, F, Unit] = {
-    def polygon(sides: Int, radius: Double): Picture[Basic, F, Unit] = {
+  def picture: Picture[Basic, Unit] = {
+    def polygon(sides: Int, radius: Double): Picture[Basic, Unit] = {
       val centerAngle = 360.degrees / sides.toDouble
 
       val shape = (0 until sides).foldLeft(ClosedPath.empty) { (path, index) =>
@@ -34,7 +34,7 @@ object Polygons {
       }
 
       shape
-        .path[Basic, F]
+        .path[Basic]
         .strokeWidth(3)
         .strokeColor(Color.hsl(centerAngle, 1, .5))
     }

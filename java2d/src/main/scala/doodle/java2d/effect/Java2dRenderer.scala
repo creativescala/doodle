@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import doodle.effect.DefaultRenderer
 
 import javax.swing.JFrame
 
-object Java2dRenderer extends DefaultRenderer[Algebra, Drawing, Frame, Canvas] {
+object Java2dRenderer extends DefaultRenderer[Algebra, Frame, Canvas] {
 
   import cats.effect.unsafe.implicits.global
 

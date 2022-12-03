@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,15 @@ package algebra
 package generic
 
 import cats._
+import cats.data._
 import cats.implicits._
 import doodle.algebra.generic.reified._
+import doodle.core.BoundingBox
 
 final case class TestAlgebra(
-    applyF: Apply[Reification] = Apply.apply[Reification],
-    functorF: Functor[Reification] = Apply.apply[Reification]
-) extends Algebra[Finalized[Reification, *]]
+    applyDrawing: Apply[Reification] = Apply.apply[Reification],
+    functorDrawing: Functor[Reification] = Apply.apply[Reification]
+) extends Algebra
     with ReifiedPath
     with ReifiedShape
     with ReifiedText
@@ -35,17 +37,26 @@ final case class TestAlgebra(
     with GenericStyle[Reification]
     with GenericTransform[Reification]
     with GivenApply[Reification]
-    with GivenFunctor[Reification] {}
+    with GivenFunctor[Reification] {
+  type Drawing[A] = Finalized[Reification, A]
+  implicit val drawingInstance: Applicative[Drawing] =
+    new Applicative[Drawing] {
+      def ap[A, B](ff: Drawing[A => B])(fa: Drawing[A]): Drawing[B] = ???
+      def pure[A](x: A): Drawing[A] =
+        Finalized.leaf(_ =>
+          (
+            BoundingBox.empty,
+            Renderable.apply(_ =>
+              Eval.now(WriterT.liftF[Eval, List[Reified], A](Eval.now(x)))
+            )
+          )
+        )
+    }
+}
 object TestAlgebra {
   import doodle.algebra._
 
-  type Algebra[F[_]] =
-    Layout[F]
-      with Size[F]
-      with Path[F]
-      with Shape[F]
-      with Debug[F]
-      with Style[F]
-      with Text[F]
+  type Algebra =
+    Layout with Size with Path with Shape with Debug with Style with Text
   type Drawing[A] = Finalized[Reification, A]
 }

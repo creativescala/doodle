@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import doodle.core._
 import doodle.core.{Transform => Tx}
 
 trait ReifiedPath extends GenericPath[Reification] {
+  self: Algebra { type Drawing[A] = TestAlgebra.Drawing[A] } =>
+
   object PathApi extends PathApi {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =
       WriterT.tell(a.toList ++ b.toList)

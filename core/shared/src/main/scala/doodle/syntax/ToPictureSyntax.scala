@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,9 @@ import doodle.algebra.ToPicture
 
 trait ToPictureSyntax {
   implicit class ToPictureOps[A](value: A) {
-    def toPicture[Alg[x[_]] <: Algebra[x], F[_]](implicit
-        tp: ToPicture[F, A]
-    ): Picture[Alg, F, Unit] =
-      Picture { (_: Alg[F]) =>
-        tp.toPicture(value)
-      }
+    def toPicture[Alg <: Algebra](implicit
+        tp: ToPicture[A, Alg]
+    ): Picture[Alg, Unit] =
+      tp.toPicture(value)
   }
 }

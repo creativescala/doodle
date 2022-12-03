@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,47 +23,49 @@ import doodle.core.Color
 import doodle.core.Gradient
 import doodle.core.Join
 
-trait GenericStyle[F[_]] extends Style[Finalized[F, *]] {
-  def fillColor[A](image: Finalized[F, A], fillColor: Color): Finalized[F, A] =
+trait GenericStyle[G[_]] extends Style {
+  self: Algebra { type Drawing[A] = Finalized[G, A] } =>
+
+  def fillColor[A](image: Finalized[G, A], fillColor: Color): Finalized[G, A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
 
   def fillGradient[A](
-      image: Finalized[F, A],
+      image: Finalized[G, A],
       fillGradient: Gradient
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     Finalized.contextTransform(_.fillGradient(fillGradient))(image)
 
   def strokeColor[A](
-      image: Finalized[F, A],
+      image: Finalized[G, A],
       strokeColor: Color
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     Finalized.contextTransform(_.strokeColor(strokeColor))(image)
 
   def strokeWidth[A](
-      image: Finalized[F, A],
+      image: Finalized[G, A],
       strokeWidth: Double
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     Finalized.contextTransform(_.strokeWidth(strokeWidth))(image)
 
-  def strokeCap[A](image: Finalized[F, A], cap: Cap): Finalized[F, A] =
+  def strokeCap[A](image: Finalized[G, A], cap: Cap): Finalized[G, A] =
     Finalized.contextTransform(_.strokeCap(cap))(image)
 
-  def strokeJoin[A](image: Finalized[F, A], join: Join): Finalized[F, A] =
+  def strokeJoin[A](image: Finalized[G, A], join: Join): Finalized[G, A] =
     Finalized.contextTransform(_.strokeJoin(join))(image)
 
   def strokeDash[A](
-      image: Finalized[F, A],
+      image: Finalized[G, A],
       pattern: Iterable[Double]
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     Finalized
       .contextTransform(_.strokeDash(pattern.toArray.map(_.toFloat)))(image)
 
-  def noDash[A](image: Finalized[F, A]): Finalized[F, A] =
+  def noDash[A](image: Finalized[G, A]): Finalized[G, A] =
     Finalized.contextTransform(_.noDash)(image)
 
-  def noFill[A](image: Finalized[F, A]): Finalized[F, A] =
+  def noFill[A](image: Finalized[G, A]): Finalized[G, A] =
     Finalized.contextTransform(_.noFill)(image)
 
-  def noStroke[A](image: Finalized[F, A]): Finalized[F, A] =
+  def noStroke[A](image: Finalized[G, A]): Finalized[G, A] =
     Finalized.contextTransform(_.noStroke)(image)
 }

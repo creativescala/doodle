@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ package examples
 object BouncyCircles {
   import cats.implicits._
   import doodle.core._
-  import doodle.effect.Writer.Gif
+  import doodle.core.format.Gif
   import doodle.syntax.all._
   import doodle.java2d.effect._
   import doodle.interact.easing._
@@ -47,31 +47,31 @@ object BouncyCircles {
       .zip(bounce(Easing.circle))
       .zip(bounce(Easing.back))
       .map { case (((((r1, r2), r3), r4), r5), r6) =>
-        circle[Algebra, Drawing](r1 * 85 + 10)
+        circle[Algebra](r1 * 85 + 10)
           .strokeColor(Color.magenta.spin(180.degrees))
           .at(r1 * 400 - 200, 250)
           .on(
-            circle[Algebra, Drawing](r2 * 85 + 10)
+            circle[Algebra](r2 * 85 + 10)
               .strokeColor(Color.magenta.spin(170.degrees))
               .at(r2 * 400 - 200, 150)
           )
           .on(
-            circle[Algebra, Drawing](r3 * 85 + 10)
+            circle[Algebra](r3 * 85 + 10)
               .strokeColor(Color.magenta.spin(140.degrees))
               .at(r3 * 400 - 200, 50)
           )
           .on(
-            circle[Algebra, Drawing](r4 * 85 + 10)
+            circle[Algebra](r4 * 85 + 10)
               .strokeColor(Color.magenta.spin(150.degrees))
               .at(r4 * 400 - 200, -50)
           )
           .on(
-            circle[Algebra, Drawing](r5 * 85 + 10)
+            circle[Algebra](r5 * 85 + 10)
               .strokeColor(Color.magenta.spin(140.degrees))
               .at(r5 * 400 - 200, -150)
           )
           .on(
-            circle[Algebra, Drawing](r6 * 85 + 10)
+            circle[Algebra](r6 * 85 + 10)
               .strokeColor(Color.magenta.spin(120.degrees))
               .at(r6 * 400 - 200, -250)
           )

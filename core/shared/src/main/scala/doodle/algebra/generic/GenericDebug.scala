@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@ package generic
 
 import doodle.core.Color
 
-trait GenericDebug[F[_]] extends Debug[Finalized[F, *]] {
-  self: Shape[Finalized[F, *]]
-    with Layout[Finalized[F, *]]
-    with GivenApply[F] =>
+trait GenericDebug[G[_]] extends Debug {
+  self: Shape with Layout with GivenApply[G] {
+    type Drawing[A] = Finalized[G, A]
+  } =>
 
   import cats.implicits._
 
   def debug[A](
-      picture: Finalized[F, A],
+      picture: Finalized[G, A],
       color: Color = Color.crimson
-  ): Finalized[F, A] =
+  ): Finalized[G, A] =
     Finalized { ctxTxs =>
       picture
         .runA(ctxTxs)
@@ -51,8 +51,8 @@ trait GenericDebug[F[_]] extends Debug[Finalized[F, *]] {
             )
             .map { case (_, rdrDebug) =>
               val fullRdr = Renderable { tx =>
-                (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (fa, fdbg) =>
-                  (fa, fdbg).mapN((a, _) => a)
+                (rdr.runA(tx), rdrDebug.runA(tx)).mapN { (ga, gdbg) =>
+                  (ga, gdbg).mapN((a, _) => a)
                 }
               }
               (ctxTxs, (bb, fullRdr))

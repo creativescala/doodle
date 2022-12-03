@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,23 +24,23 @@ import doodle.core.Join
 
 /** Apply styling to a image.
   */
-trait Style[F[_]] extends Algebra[F] {
-  def fillColor[A](image: F[A], fillColor: Color): F[A]
-  def fillGradient[A](image: F[A], fillGradient: Gradient): F[A]
+trait Style extends Algebra {
+  def fillColor[A](image: Drawing[A], fillColor: Color): Drawing[A]
+  def fillGradient[A](image: Drawing[A], fillGradient: Gradient): Drawing[A]
 
-  def strokeColor[A](image: F[A], strokeColor: Color): F[A]
-  def strokeWidth[A](image: F[A], strokeWidth: Double): F[A]
-  def strokeCap[A](image: F[A], strokeCap: Cap): F[A]
-  def strokeJoin[A](image: F[A], strokeJoin: Join): F[A]
+  def strokeColor[A](image: Drawing[A], strokeColor: Color): Drawing[A]
+  def strokeWidth[A](image: Drawing[A], strokeWidth: Double): Drawing[A]
+  def strokeCap[A](image: Drawing[A], strokeCap: Cap): Drawing[A]
+  def strokeJoin[A](image: Drawing[A], strokeJoin: Join): Drawing[A]
 
   /** Specify the stroke dash pattern. The pattern gives the length, in local
     * coordinates, of opaque and transparent sections. The first element is the
     * length of an opaque section, the second of a transparent section, and so
     * on.
     */
-  def strokeDash[A](image: F[A], pattern: Iterable[Double]): F[A]
-  def noDash[A](image: F[A]): F[A]
+  def strokeDash[A](image: Drawing[A], pattern: Iterable[Double]): Drawing[A]
+  def noDash[A](image: Drawing[A]): Drawing[A]
 
-  def noFill[A](image: F[A]): F[A]
-  def noStroke[A](image: F[A]): F[A]
+  def noFill[A](image: Drawing[A]): Drawing[A]
+  def noStroke[A](image: Drawing[A]): Drawing[A]
 }

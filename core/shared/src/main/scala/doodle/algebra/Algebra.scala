@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,27 @@
 package doodle
 package algebra
 
-/** Base type for algebras that produce results in some effect type F. This type
-  * serves to make sure algebras are internally consistent. E.g. they all
-  * produce an effect with the same type.
+import cats.Applicative
+
+/** Base type for algebras that produce results in some effect type `Drawing`.
+  * Users of algebras should use dependent method types (or dependent function
+  * types in Scala 3) to return the `Drawing` type of the method they are
+  * passed:
+  *
+  * ```scala
+  * def usingAlgebra(algebra: Algebra): algebra.Drawing = ???
+  * ```
+  *
+  * All `Drawing` types are required to implement `Applicative`
   */
-trait Algebra[+F[_]]
+trait Algebra {
+
+  /** The effect type that methods on this algebra produce. Represents an effect
+    * that, when run, will draw something and produce a value.
+    */
+  type Drawing[_]
+  implicit val drawingInstance: Applicative[Drawing]
+}
+object Algebra {
+  type Aux[F0[_]] = Algebra { type Drawing[A] = F0[A] }
+}

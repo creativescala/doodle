@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ import doodle.core.{Transform => Tx}
 
 import scala.annotation.tailrec
 
-trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
+trait GenericPath[G[_]] extends Path {
+  self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait PathApi {
     def closedPath(
@@ -32,18 +33,18 @@ trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]
-    ): F[Unit]
+    ): G[Unit]
     def openPath(
         tx: Tx,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]
-    ): F[Unit]
+    ): G[Unit]
   }
 
   def PathApi: PathApi
 
-  def path(path: ClosedPath): Finalized[F, Unit] =
+  def path(path: ClosedPath): Finalized[G, Unit] =
     Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
@@ -57,7 +58,7 @@ trait GenericPath[F[_]] extends Path[Finalized[F, *]] {
       )
     }
 
-  def path(path: OpenPath): Finalized[F, Unit] =
+  def path(path: OpenPath): Finalized[G, Unit] =
     Finalized.leaf { dc =>
       val elements = path.elements
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)

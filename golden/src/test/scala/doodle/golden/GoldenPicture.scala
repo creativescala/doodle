@@ -1,22 +1,38 @@
+/*
+ * Copyright 2015 Noel Welsh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package doodle
 package golden
 
 import cats.effect.unsafe.implicits.global
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
+import doodle.core.format._
 import doodle.effect.Writer
-import doodle.effect.Writer._
 import doodle.java2d._
 import munit._
 
 trait GoldenPicture extends Golden { self: FunSuite =>
   import doodle.syntax.all._
 
-  def assertGoldenPicture[Alg[x[_]] <: Algebra[x], F[_]](
+  def assertGoldenPicture[Alg <: Algebra, F[_]](
       name: String,
-      picture: Picture[Alg, F, Unit],
+      picture: Picture[Alg, Unit],
       frame: Frame = Frame.fitToPicture()
-  )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) = {
+  )(implicit loc: Location, w: Writer[Alg, Frame, Png]) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
 
@@ -37,18 +53,18 @@ trait GoldenPicture extends Golden { self: FunSuite =>
     }
   }
 
-  def testPicture[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(
-      picture: Picture[Alg, F, Unit]
-  )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
+  def testPicture[Alg <: Algebra, F[_], A](name: String)(
+      picture: Picture[Alg, Unit]
+  )(implicit loc: Location, w: Writer[Alg, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture)
     }
 
-  def testPictureWithFrame[Alg[x[_]] <: Algebra[x], F[_], A](name: String)(
+  def testPictureWithFrame[Alg <: Algebra, F[_], A](name: String)(
       frame: Frame
   )(
-      picture: Picture[Alg, F, Unit]
-  )(implicit loc: Location, w: Writer[Alg, F, Frame, Png]) =
+      picture: Picture[Alg, Unit]
+  )(implicit loc: Location, w: Writer[Alg, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture, frame)
     }

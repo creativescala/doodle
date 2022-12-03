@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,32 +21,37 @@ import doodle.algebra.Blend
 import doodle.algebra.Picture
 
 trait BlendSyntax {
-  implicit class BlendPictureOps[Alg[x[_]] <: Blend[x], F[_], A](
-      picture: Picture[Alg, F, A]
+  implicit class BlendPictureOps[Alg <: Blend, A](
+      picture: Picture[Alg, A]
   ) {
-    def screen: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.screen(picture(algebra))
+    def screen: Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.screen(picture(algebra))
       }
 
-    def burn: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.burn(picture(algebra))
+    def burn: Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.burn(picture(algebra))
       }
 
-    def dodge: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.dodge(picture(algebra))
+    def dodge: Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.dodge(picture(algebra))
       }
 
-    def lighten: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.lighten(picture(algebra))
+    def lighten: Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.lighten(picture(algebra))
       }
 
-    def sourceOver: Picture[Alg, F, A] =
-      Picture { implicit algebra: Alg[F] =>
-        algebra.sourceOver(picture(algebra))
+    def sourceOver: Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.sourceOver(picture(algebra))
       }
   }
 }

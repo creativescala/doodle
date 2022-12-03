@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@
 package doodle
 package algebra
 
-/** Algebra that represents converting from the Input type to a F[Unit] (that in
-  * turn can be wrapped in a Picture). This can be used to represent, for
-  * example, creating a picture from a bitmap in a base64 encoded string.
+/** Represents converting from the Input type to a Picture, and depends on the
+  * support of some Algebra to actually do the conversion. This can be used to
+  * represent, for example, creating a picture from a bitmap in a base64 encoded
+  * string.
   */
-trait ToPicture[F[_], Input] extends Algebra[F] {
-  def toPicture(in: Input): F[Unit]
+trait ToPicture[Input, Alg <: Algebra] {
+  def toPicture(in: Input): Picture[Alg, Unit]
 }

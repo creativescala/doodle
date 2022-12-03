@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
     implicit val algebra = TestAlgebra()
     val hexagon =
-      regularPolygon[Algebra, Drawing](6, 100).noStroke
+      regularPolygon[Algebra](6, 100).noStroke
 
     val hexhex =
       List(

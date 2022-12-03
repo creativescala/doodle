@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package algebra
 
 import doodle.core.Color
 
-trait Debug[F[_]] extends Algebra[F] {
+trait Debug extends Algebra {
 
   /** Draws the bounding box and origin of the given picture on top of the
     * picture. The given color is used for the bounding box and origin.
@@ -27,5 +27,5 @@ trait Debug[F[_]] extends Algebra[F] {
     * The bounding box and origin are not included in layout calculations and
     * hence will not affect the picture's layout.
     */
-  def debug[A](picture: F[A], color: Color): F[A]
+  def debug[A](picture: Drawing[A], color: Color): Drawing[A]
 }

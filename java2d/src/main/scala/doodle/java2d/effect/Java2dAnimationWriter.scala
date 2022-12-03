@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package effect
 
 import cats.Monoid
 import cats.effect.IO
-import doodle.effect.Writer.Gif
+import doodle.core.format.Gif
 import doodle.interact.effect.AnimationWriter
 import fs2.Stream
 

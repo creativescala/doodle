@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Noel Welsh
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package doodle
 package reactor
 
@@ -42,7 +58,7 @@ trait BaseReactor[A] {
   def tick[F[_], Frame, Canvas](
       frame: Frame
   )(implicit
-      e: Renderer[Basic, F, Frame, Canvas],
+      e: Renderer[Basic, Frame, Canvas],
       runtime: IORuntime
   ): Option[A] = {
     if (stop(initial)) None
@@ -56,16 +72,16 @@ trait BaseReactor[A] {
   /** Runs this reactor, drawing on the given `frame`, until `stop` indicates it
     * should stop.
     */
-  def run[Alg[x[_]] <: Basic[x], F[_], Frame, Canvas](frame: Frame)(implicit
+  def run[Alg <: Basic, F[_], Frame, Canvas](frame: Frame)(implicit
       a: AnimationRenderer[Canvas],
-      e: Renderer[Alg, F, Frame, Canvas],
+      e: Renderer[Alg, Frame, Canvas],
       m: MouseClick[Canvas] with MouseMove[Canvas],
       runtime: IORuntime
   ): Unit = {
     import BaseReactor._
 
     frame
-      .canvas[Alg, F, Canvas]()
+      .canvas[Alg, Canvas]()
       .flatMap { canvas =>
         val mouseMove: Stream[IO, Command] =
           canvas.mouseMove.map(pt => MouseMove(pt))
@@ -84,7 +100,7 @@ trait BaseReactor[A] {
             }
           }
           .takeWhile(a => !this.stop(a))
-          .map(a => Image.compile[Alg, F](this.render(a)))
+          .map(a => Image.compile[Alg](this.render(a)))
         frames.animateWithCanvasToIO(canvas)
       }
       .unsafeRunAsync(_ => ())

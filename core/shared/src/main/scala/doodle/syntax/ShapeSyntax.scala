@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,38 +21,43 @@ import doodle.algebra.Picture
 import doodle.algebra.Shape
 
 trait ShapeSyntax {
-  def rectangle[Alg[x[_]] <: Shape[x], F[_]](
+  def rectangle[Alg <: Shape](
       width: Double,
       height: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.rectangle(width, height)
+  ): Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.rectangle(width, height)
     }
 
-  def square[Alg[x[_]] <: Shape[x], F[_]](
+  def square[Alg <: Shape](
       width: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.square(width)
+  ): Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.square(width)
     }
 
-  def triangle[Alg[x[_]] <: Shape[x], F[_]](
+  def triangle[Alg <: Shape](
       width: Double,
       height: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.triangle(width, height)
+  ): Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.triangle(width, height)
     }
 
-  def circle[Alg[x[_]] <: Shape[x], F[_]](
+  def circle[Alg <: Shape](
       diameter: Double
-  ): Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.circle(diameter)
+  ): Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.circle(diameter)
     }
 
-  def empty[Alg[x[_]] <: Shape[x], F[_]]: Picture[Alg, F, Unit] =
-    Picture { implicit algebra: Alg[F] =>
-      algebra.empty
+  def empty[Alg <: Shape]: Picture[Alg, Unit] =
+    new Picture[Alg, Unit] {
+      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+        algebra.empty
     }
 }

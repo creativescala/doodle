@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Noel Welsh
+ * Copyright 2015 Noel Welsh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ package generic
 
 import doodle.core.{Transform => Tx}
 
-trait GenericTransform[F[_]] extends Transform[Finalized[F, *]] {
-  def transform[A](img: Finalized[F, A], tx: Tx): Finalized[F, A] =
+trait GenericTransform[G[_]] extends Transform {
+  self: Algebra { type Drawing[A] = Finalized[G, A] } =>
+
+  def transform[A](img: Finalized[G, A], tx: Tx): Finalized[G, A] =
     Finalized.transform(tx)(img)
 }
