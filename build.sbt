@@ -106,7 +106,11 @@ lazy val docs =
     .settings(
       laikaConfig := laikaConfig.value.withConfigValue(
         LinkConfig(apiLinks =
-          Seq(ApiLinks(baseUri = "https://example.com/api"))
+          Seq(
+            ApiLinks(baseUri =
+              "https://javadoc.io/doc/org.creativescala/doodle_3/"
+            )
+          )
         )
       ),
       mdocIn := file("docs/src/pages"),
