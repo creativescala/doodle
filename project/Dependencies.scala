@@ -5,11 +5,9 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object Dependencies {
   // Library Versions
-  val catsVersion = "2.9.0"
-  val catsEffectVersion = "3.4.2"
-  val fs2Version = "3.4.0"
-
-  val monixVersion = "3.4.0"
+  val catsVersion = "2.7.0"
+  val catsEffectVersion = "3.3.14"
+  val fs2Version = "3.1.1"
 
   val batikVersion = "1.16"
 
@@ -23,8 +21,6 @@ object Dependencies {
   val catsCore = Def.setting("org.typelevel" %%% "cats-core" % catsVersion)
   val catsFree = Def.setting("org.typelevel" %%% "cats-free" % catsVersion)
   val fs2 = Def.setting("co.fs2" %%% "fs2-core" % fs2Version)
-
-  val monix = Def.setting("io.monix" %%% "monix" % monixVersion)
 
   val batik =
     Def.setting("org.apache.xmlgraphics" % "batik-transcoder" % batikVersion)
