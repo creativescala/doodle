@@ -234,6 +234,8 @@ lazy val golden = project
       Dependencies.munit.value,
       Dependencies.batik.value
     ),
+    // We don't publish golden so we don't need to do MiMA checks on it.
+    mimaPreviousArtifacts := Set.empty,
     testFrameworks += new TestFramework("munit.Framework")
   )
   .dependsOn(core.jvm, image.jvm, interact.jvm, java2d)
