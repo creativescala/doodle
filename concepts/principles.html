@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Principles</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="algebras.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="index.html">Core Concepts</a></li>
+          <li class="level2 active"><a href="#">Principles</a></li>
+          <li class="level2"><a href="algebras.html">Algebras</a></li>
+          <li class="level2"><a href="drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="syntax.html">Syntax</a></li>
+          <li class="level2"><a href="frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/path.html">Paths</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="principles" class="title">Principles</h1>
+            <p>A few principles guide the design of Doodle, and differentiate it from other graphics libraries. The section explains these principles.</p>
+            
+            <h2 id="pictures-are-created-by-composition" class="section">Pictures are Created by Composition</h2>
+            <p>In Doodle a picture is constructed by combining smaller pictures. For example, we can create a row of pictures by putting pictures beside each other. This idea of creating complex things from simpler things is known as <em>composition</em>.
+            There are several implications of this, which means that Doodle works differently from many other graphics libraries. </p>
+            <p>The first implication is that Doodle does not draw anything on the screen until you explicitly ask it to, usually by calling the <code>draw</code> method. A picture represents a description of something we want to draw. A backend turns this description into something we can see (which might be on the screen or in a file). This separation of description and action is known as the <em>interpreter pattern</em>. The description is a &quot;program&quot; and a backend is an &quot;interpreter&quot; that runs that program. In the graphics world the approach that Doodle takes is sometimes known as <a href="https://en.wikipedia.org/wiki/Retained_mode">retained mode</a>, while the approach of drawing immediately to the screen is known as <a href="https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics)">immediate mode</a>.</p>
+            <p>Another implication is that Doodle can allow relative layout of objects. In Doodle we can say that one picture is next to another and Doodle will work out where on the screen they should be. This requires a retained mode API as layout needs to keep around information about a picture to work out how much space it takes up.</p>
+            <p>A final implication is that pictures have no mutable state. This is needed so that we can, for example, put a picture next to itself and have things render correctly.</p>
+            <p>All of these ideas are core to functional programming, so you may have seen them in other contexts. If not, don&#39;t worry. You&#39;ll quickly understand them once you start using Doodle, as Doodle makes the ideas very concrete.</p>
+            
+            <h2 id="support-differences-between-backends" class="section">Support Differences Between Backends</h2>
+            <p>Another core goal of Doodle is to support the different capabilities of different backends. The alternative is to work only with the features that are found across all backends. In fact earlier versions of Doodle did this but we found it too limiting. There are lots of fun features only available on particular platforms and we want to be able to play with them!</p>
+            <p>The implication of this is that the core of Doodle is built in &quot;tagless final&quot; style, which means the core functionality is split across a number of interfaces or algebras. Backends only have to implement the subset of algebras that they support. </p>
+            
+            <h2 id="be-easy-to-use" class="section">Be Easy to Use</h2>
+            <p>Doodle is designed to be easy to use, while keeping to the principles above. In particular we value ease-of-use above performance, though we will certainly optimize code where possible.</p>
+            <p class="nextPage"><a href="algebras.html">Algebras→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Doodle</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p></p>
+<p><a href="../">Doodle</a></p>
+<p><a href="concepts/index.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1 active"><a href="#">Doodle</a></li>
+          <li class="level1"><a href="concepts/index.html">Core Concepts</a></li>
+          <li class="level2"><a href="concepts/principles.html">Principles</a></li>
+          <li class="level2"><a href="concepts/algebras.html">Algebras</a></li>
+          <li class="level2"><a href="concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="concepts/syntax.html">Syntax</a></li>
+          <li class="level2"><a href="concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1"><a href="image/index.html">Image</a></li>
+          <li class="level2"><a href="image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="image/path.html">Paths</a></li>
+          <li class="level2"><a href="image/styling.html">Styling</a></li>
+          <li class="level2"><a href="image/layout.html">Layout</a></li>
+          <li class="level2"><a href="image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="effect/index.html">Effects</a></li>
+          <li class="level1"><a href="core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="doodle" class="title">Doodle</h1>
+            <p>Doodle is a Scala library for 2D graphics, animation, data visualization, and creative coding. It runs in both the JVM, rendering via <a href="https://en.wikipedia.org/wiki/Java_2D">Java2D</a>, and the web browser using <a href="https://github.com/creativescala/doodle-svg">SVG</a>.</p>
+            
+            <h2 id="getting-started" class="section">Getting Started</h2>
+            <p>To use Doodle, add the following to your <code>build.sbt</code></p>
+            <pre><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.creativescala&quot;</span><span> %% </span><span class="string-literal">&quot;doodle&quot;</span><span> % </span><span class="string-literal">&quot;0.12.0&quot;</span></code></pre>
+            
+            <h2 id="scaladoc" class="section">ScalaDoc</h2>
+            <p>See <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/index.html">index</a> for the ScalaDoc.</p>
+            
+            <h2 id="quick-example" class="section">Quick Example</h2>
+            <p>The following example creates a Chessboard, by first creating a 2x2 board, then a 4x4 board from the 2x2 board, and finally the complete 8x8 board from the 4x4 board.</p>
+            <pre><code class="nohighlight"><span class="comment">// The &quot;Image&quot; DSL is the easiest way to create images
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// Colors and other useful stuff
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">blackSquare</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">30</span><span>, </span><span class="number-literal">30</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">redSquare</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">30</span><span>, </span><span class="number-literal">30</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+
+</span><span class="comment">// A chessboard, broken into steps showing the recursive construction
+</span><span class="keyword">val</span><span> </span><span class="identifier">twoByTwo</span><span> =
+  (</span><span class="identifier">redSquare</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">blackSquare</span><span>))
+    .</span><span class="identifier">above</span><span>(</span><span class="identifier">blackSquare</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">redSquare</span><span>))
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">fourByFour</span><span> =
+  (</span><span class="identifier">twoByTwo</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">twoByTwo</span><span>))
+    .</span><span class="identifier">above</span><span>(</span><span class="identifier">twoByTwo</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">twoByTwo</span><span>))
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">chessboard</span><span> =
+  (</span><span class="identifier">fourByFour</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">fourByFour</span><span>))
+    .</span><span class="identifier">above</span><span>(</span><span class="identifier">fourByFour</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">fourByFour</span><span>))</span></code></pre>
+            <p>To draw these Images call the <code>draw</code> method like so</p>
+            <pre><code class="nohighlight"><span class="comment">// Extension methods
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// Render to a window using Java2D (must be running in the JVM)
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// Need the Cats Effect runtime to run everything
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
+
+</span><span class="identifier">chessboard</span><span>.</span><span class="identifier">draw</span><span>()</span></code></pre>
+            <p>This creates the picture shown below.</p>
+            <p><img src="chessboard.png" alt="A picture of a red and black chessboard"></p>
+            
+            <h3 id="attention-intellij-users" class="section">Attention IntelliJ Users</h3>
+            <p>The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicits correctly. The above example might give you an Error warning in Line XX. You can ignore this warning, or fix it using <code>chessboard.draw[Algebra, Drawing, Frame, Canvas]()</code>. Please use any text editor and <a href="https://scalameta.org/metals/">Metals</a> to get a better experience using Doodle.</p>
+            
+            <h2 id="guides" class="section">Guides</h2>
+            <p><a href="image/index.html">Using the Image library</a> is the easiest way to get started drawing with Doodle.</p>
+            <p><a href="algebra/index.html">Using the tagless final algebras</a> allows access to features that are specific to a backend.</p>
+            
+            <h2 id="concepts" class="section">Concepts</h2>
+            <p>Understanding <a href="concepts/index.html">core concepts</a> in Doodle will help make sense of the library.</p>
+            <p><em>TODO</em>: layout, bounding boxes, and origins; paths; styles; debug</p>
+            
+            <h2 id="library-overview" class="section">Library Overview</h2>
+            <p>The main packages of Doodle are:</p>
+            <ul>
+              <li><a href="core/index.html">core</a>, which provides common utilities such as <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/core/Color.html">Color</a>, <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/core/Point.html">Point</a>, and <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/core/Parametric$.html">Parametric</a>.</li>
+              <li><a href="image/index.html">image</a></li>
+              <li><a href="algebra/index.html">algebra</a></li>
+              <li><a href="effect/index.html">effect</a></li>
+              <li>syntax</li>
+              <li>animation and interaction</li>
+              <li>interactive exploration</li>
+            </ul>
+            <p class="nextPage"><a href="concepts/index.html">Core Concepts→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

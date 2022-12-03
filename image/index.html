@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Image</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="../concepts/frame-canvas.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="shape.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
+          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1 active"><a href="#">Image</a></li>
+          <li class="level2"><a href="shape.html">Shapes</a></li>
+          <li class="level2"><a href="path.html">Paths</a></li>
+          <li class="level2"><a href="styling.html">Styling</a></li>
+          <li class="level2"><a href="layout.html">Layout</a></li>
+          <li class="level2"><a href="transform.html">Transforms</a></li>
+          <li class="level2"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="image" class="title">Image</h1>
+            <p>The <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/image/Image.html">Image</a> library is the easiest way to create pictures using Doodle. The tradeoff the Image library makes is that it only support a (large but limited) subset of operations that are supported across all the backends.</p>
+            
+            <h2 id="imports" class="section">Imports</h2>
+            <p>To use Image you&#39;ll need the following imports:</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span></code></pre>
+            <p>You&#39;ll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend:</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            
+            <h2 id="basic-concepts" class="section">Basic Concepts</h2>
+            <p>Image is based on <em>composition</em> and the <em>interpreter pattern</em>. </p>
+            <p>Composition basically means that we build big Images out of small Images. For example, if we have an Image describing a red square and an Image describing a blue square</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">redSquare</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">blueSquare</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>)</span></code></pre>
+            <p>we can create an Image describing a red square next to a blue square by combining or composing them together.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">composition</span><span> = </span><span class="identifier">redSquare</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">blueSquare</span><span>)</span></code></pre>
+            <p>When draw this has the output shown below. </p>
+            <div class="default-image-block">
+              <img src="red-blue.png" alt="A red square beside a blue square" title="A red square beside a blue square">
+            </div>
+            <p>The interpreter pattern means that we separate describing the Image from rendering it. Writing <code>Image.square(100)</code> doesn&#39;t draw anything. To draw an image we need to call the <code>draw()</code> method. This separation is important for composition; if we were to immediately draw we would lose composition. </p>
+            <p class="nextPage"><a href="shape.html">Shapes→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

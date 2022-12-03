@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Shapes</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="path.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
+          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1"><a href="index.html">Image</a></li>
+          <li class="level2 active"><a href="#">Shapes</a></li>
+          <li class="level2"><a href="path.html">Paths</a></li>
+          <li class="level2"><a href="styling.html">Styling</a></li>
+          <li class="level2"><a href="layout.html">Layout</a></li>
+          <li class="level2"><a href="transform.html">Transforms</a></li>
+          <li class="level2"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="shapes" class="title">Shapes</h1>
+            
+            <h2 id="basic-shapes" class="section">Basic Shapes</h2>
+            <p>The basic shapes are on the <code>Image</code> companion object. This includes:</p>
+            <ul>
+              <li><code>Image.empty</code> creates the empty Image that takes up no space and renders nothing. Useful for that sweet monoid identity and for the base case in recursions.</li>
+              <li><code>Image.square(sideLength)</code> creates a square with the given side length.</li>
+              <li><code>Image.rectangle(width, height)</code> creates a rectangle with the given width and height.</li>
+              <li><code>Image.circle(diameter)</code> creates a circle with the given diameter. Specified in terms of diameter rather than radius so that <code>Image.square(100)</code> and <code>Image.circle(100)</code> take up the same space.</li>
+              <li><code>Image.triangle(width, height)</code> creates an isoceles triangle with the given width and height.</li>
+            </ul>
+            
+            <h2 id="complex-shapes" class="section">Complex Shapes</h2>
+            <p>Some more complex shapes are also available on the <code>Image</code> companion object:</p>
+            <ul>
+              <li><code>Image.equilateralTriangle(width)</code> creates an equilateral triangle with the given side length.</li>
+              <li><code>Image.regularPolygon(sides, radius)</code> creates a regular polygon with the given number of sides and radius. </li>
+              <li><code>Image.star(points, outerRadius, innerRadius)</code> creates a star with the given number of points. The points extend as far as <code>outerRadius</code> and go in to <code>innerRadius</code>. </li>
+              <li><code>Image.rightArrow(width, height)</code> creates an arrow points to the right with the given width and height.</li>
+              <li><code>Image.roundedRectangle(width, height, radius)</code> creates a rectangle of the given width and height, with rounded corners with size given by <code>radius</code>.</li>
+            </ul>
+            
+            <h2 id="paths" class="section">Paths</h2>
+            <p>Paths allow construction of custom shapes. They are described in <a href="path.html">their own section</a>. There are three methods on the <code>Image</code> companion object that deal with paths:</p>
+            <ul>
+              <li><code>Image.openPath(pathElements)</code> converts a <code>Seq[PathElement]</code> into an <code>Image</code> representing an open path (a path that does not end where it begins).</li>
+              <li><code>Image.closedPath</code> converts a <code>Seq[PathElement]</code> to an <code>Image</code> representing a closed path (a path that ends where it begins; a straight line will be inserted if to make this the case if needed.)</li>
+              <li><code>Image.interpolatingSpline</code> converts a <code>Seq[Point]</code> to an <code>Image</code> by interpolating a smooth curve between the points using the <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">Catmull-Rom</a> algorithm.</li>
+            </ul>
+            <p class="nextPage"><a href="path.html">Paths→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

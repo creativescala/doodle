@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Picture and Drawing</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="algebras.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="picture-object.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="index.html">Core Concepts</a></li>
+          <li class="level2"><a href="principles.html">Principles</a></li>
+          <li class="level2"><a href="algebras.html">Algebras</a></li>
+          <li class="level2 active"><a href="#">Picture and Drawing</a></li>
+          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="syntax.html">Syntax</a></li>
+          <li class="level2"><a href="frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/path.html">Paths</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="picture-and-drawing" class="title">Picture and Drawing</h1>
+            <p>Each Doodle backend defines, by convention, two types called <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/algebra/Picture.html">Picture</a> and <code>Drawing</code>. These are the main types you&#39;ll interact with.</p>
+            <p>The quick overview is:</p>
+            <ul>
+              <li><code>Picture</code> is a backend independent description of a picture, that accepts backend specific algebra implementations to produce a backend specific <code>Drawing</code></li>
+              <li><code>Drawing</code> is an effect that, when run, draws a picture on a specific backend.</li>
+            </ul>
+            <p>The generic <code>Picture</code> has type signature </p>
+            <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Picture</span><span>[-</span><span class="type-name">Alg</span><span> &lt;: </span><span class="type-name">Algebra</span><span>, </span><span class="type-name">A</span><span>]</span></code></pre>
+            <p>where </p>
+            <ul>
+              <li><code>Alg</code> is the type of the algebras the <code>Picture</code> requires;</li>
+              <li><code>A</code> is the type of the result produced when the <code>Picture</code> is transformed into a <code>Drawing</code>, and that <code>Drawing</code> is run.</li>
+            </ul>
+            <p>Each backend specializes the full <code>Picture</code> type to fix <code>Alg</code> to the algebras the backend supports. Most of the time you&#39;ll only target a particular backend. In this case you can drop the <code>Alg</code> parameter and use a simpler <code>Picture[A]</code> type.</p>
+            <p>A <code>Picture</code> is a first class value (a value that can be passed to a method or returned from a method). A <code>Picture</code> is conceptually a function from an <code>Algebra</code> to a <code>Drawing[A]</code>. <code>Picture</code> is not implemented as a function, in the Scala sense, because the input parameter (the algebra) is an implicit parameter. In Scala 3 this is a <a href="https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html">context function</a>. As Doodle supports both Scala 2 and Scala 3 we can&#39;t use this language feature and have a custom type instead.</p>
+            <p>The <code>Drawing</code> type is the effect type that the backend transforms a <code>Picture</code> into. When run, a <code>Drawing[A]</code> will draw a picture and produce a value of type <code>A</code>. It is needed much less often than <code>Picture</code>. If you see the <code>Drawing</code> type you&#39;re probably either implementing your own backend or working directly with algebras instead of using the conveniences that Doodle provides.</p>
+            <p class="nextPage"><a href="picture-object.html">Picture Object→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

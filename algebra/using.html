@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Using Algebras</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="picture.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
+          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/path.html">Paths</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="index.html">Algebras</a></li>
+          <li class="level2 active"><a href="#">Using Algebras</a></li>
+          <li class="level2"><a href="picture.html">Picture</a></li>
+          <li class="level2"><a href="algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="using-algebras" class="title">Using Algebras</h1>
+            <p>This section gives recipes for using Doodle&#39;s algebras, targetting one backend or working across multiple backends. You should be familiar with the <a href="/concepts/README.md">concepts</a> behind Doodle to understand everything here.</p>
+            
+            <h2 id="using-a-single-backend" class="section">Using a Single Backend</h2>
+            <p>Using a single backend should be straightforward:</p>
+            <ol class="arabic">
+              <li>Import the Doodle core, syntax, and the backend you&#39;re using.</li>
+              <li>Construct pictures using the methods on the <code>Picture</code> object.</li>
+              <li>Compose <code>Pictures</code> using the methods provided by the syntax imports.</li>
+            </ol>
+            <p>For example, the following imports are used for the Java2D backend:</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <p>Given these imports we can create pictures. To construct atomic elements we call the constructors on <code>Picture</code>.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">smallCircle</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">largeSquare</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">200</span><span>)</span></code></pre>
+            <p>When we have some pictures we can compose them using the methods provided by the syntax import.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">composition</span><span> =
+  </span><span class="identifier">smallCircle</span><span>
+    .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>)
+    .</span><span class="identifier">noStroke</span><span>
+    .</span><span class="identifier">on</span><span>(</span><span class="identifier">largeSquare</span><span>.</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>).</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">5</span><span>))</span></code></pre>
+            <p>Naturally we might want to draw our creation. For this we need another import</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            <p>Now we can call <code>draw</code></p>
+            <pre><code class="nohighlight"><span class="identifier">composition</span><span>.</span><span class="identifier">draw</span><span>()</span></code></pre>
+            <p>producing the masterpiece shown below.</p>
+            <p><img src="circle-square.png" alt="A crimson circle on a midnight blue square"></p>
+            <p>As we&#39;ve seen, using the algebras is mostly as simple as using <code>Image</code>. The only issue you might see is that the error messages can be a bit harder to interpret.</p>
+            
+            <h2 id="using-backend-specific-features" class="section">Using Backend Specific Features</h2>
+            <p>Using backend specific features follows the same pattern as using a single backend. Here&#39;s an example using the <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/algebra/Bitmap.html">Bitmap</a> algebra, which is currently only supported by the <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/java2d.html">java2d</a> backend. (The bitmap used is the <a href="https://www.deviantart.com/kaiseto/journal/Most-of-my-Pixel-Art-is-now-Creative-Commons-369510391">Old God</a> created by Kevin Chaloux and released under Creative Commons.)</p>
+            <p>The first step is, as before, to import the Doodle core, Java2D backend, syntax extensions, and the Cats Effect runtime.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            <p>Now we can go about creating our picture, using the <code>read</code> method to load a bitmap image.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">redCircle</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">twoRedCircles</span><span> = </span><span class="identifier">redCircle</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">redCircle</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">oldGod</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">read</span><span>(</span><span class="string-literal">&quot;old-god.png&quot;</span><span>)</span></code></pre>
+            <p>We can combine this bitmap value with other pictures in the usual way.</p>
+            <pre><code class="nohighlight"><span class="identifier">twoRedCircles</span><span>.</span><span class="identifier">above</span><span>(</span><span class="identifier">oldGod</span><span>)</span></code></pre>
+            <p>We can then draw it using the <code>draw</code> method, which produces the output shown below.</p>
+            <p><img src="suns-old-god.png" alt="Double suns rising over the Old God"></p>
+            
+            <h2 id="creating-cross-backend-pictures" class="section">Creating Cross-Backend Pictures</h2>
+            <p>Targeting multiple backends requires a little bit more work than working with a single backend. First we need to decide what algebras we need. Let&#39;s say we decide to use <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/language/Basic.html">Basic</a>, which is a collection of algebras that match what <code>Image</code> supports. We then have steps to follow to firstly create a picture and then to use the picture with a concrete backend.</p>
+            <p>You can&#39;t use the usual constructor methods on a <code>Picture</code> object, as those methods target a specific backend and we want to work across multiple backends. However, every constructor method has a syntax equivalent that we can call. We just to provide the algebra we want for our creation as a type parameter. We decided above we&#39;re using <code>Basic</code> as our algebra, so to create a circle we can write</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">language</span><span>.</span><span class="type-name">Basic</span><span>
+
+</span><span class="identifier">circle</span><span>[</span><span class="type-name">Basic</span><span>](</span><span class="number-literal">100</span><span>)</span></code></pre>
+            <p>Once we know how to do this, everything proceeds as before. Here&#39;s a complete example.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">redCircle</span><span> = </span><span class="identifier">circle</span><span>[</span><span class="type-name">Basic</span><span>](</span><span class="number-literal">100</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">rad</span><span> = </span><span class="identifier">text</span><span>[</span><span class="type-name">Basic</span><span>](</span><span class="string-literal">&quot;Doodle is rad&quot;</span><span>)
+  
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">rad</span><span>.</span><span class="identifier">on</span><span>(</span><span class="identifier">redCircle</span><span>)</span></code></pre>
+            <p>We can then <code>draw</code> the picture as before. In this case we get the output below.</p>
+            <p><img src="basic-with-text.png" alt="Doodle is rad, and so is tagless final style"></p>
+            
+            <h2 id="using-raw-algebras" class="section">Using Raw Algebras</h2>
+            <p>We never need to call methods on algebras directly. Doodle provides the <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/algebra/Picture.html">Picture</a> abstraction and lots of <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/syntax.html">syntax</a> to avoid this. However, if some reason you did want to use algebras directly here is how to do it. Understanding this does help a bit in understanding the utilities that Doodle provides to avoid using algebras directly.</p>
+            <p>To use algebras directly, write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using <code>Layout</code>, <code>Style</code>, and <code>Shape</code> we might write the following.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">algebra</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="comment">// Two red circles beside each other
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">twoRedCircles</span><span>[</span><span class="type-name">Alg</span><span> &lt;: </span><span class="type-name">Layout</span><span> &amp; </span><span class="type-name">Style</span><span> &amp; </span><span class="type-name">Shape</span><span>](</span><span class="identifier">algebra</span><span>: </span><span class="type-name">Alg</span><span>): </span><span class="identifier">algebra</span><span>.</span><span class="type-name">Drawing</span><span>[</span><span class="type-name">Unit</span><span>] = {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">redCircle</span><span> = </span><span class="identifier">algebra</span><span>.</span><span class="identifier">strokeColor</span><span>(</span><span class="identifier">algebra</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>), </span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+  
+  </span><span class="identifier">algebra</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">redCircle</span><span>, </span><span class="identifier">redCircle</span><span>)
+}</span></code></pre>
+            <p>This is not a convenient way to write code, so don&#39;t do it unless you have a good reason.</p>
+            <p class="nextPage"><a href="picture.html">Picture→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

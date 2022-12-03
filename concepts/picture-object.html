@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Picture Object</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="drawing-picture.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="syntax.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="index.html">Core Concepts</a></li>
+          <li class="level2"><a href="principles.html">Principles</a></li>
+          <li class="level2"><a href="algebras.html">Algebras</a></li>
+          <li class="level2"><a href="drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 active"><a href="#">Picture Object</a></li>
+          <li class="level2"><a href="syntax.html">Syntax</a></li>
+          <li class="level2"><a href="frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/path.html">Paths</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="picture-object" class="title">Picture Object</h1>
+            <p>Each backend provides an object named <code>Picture</code> that provides easy access to constructors. Constructors are algebra methods that produce a <code>Picture</code> but don&#39;t have any `` parameter. For example, all the methods on the <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/algebra/Shape.html">Shape</a> algebra are constructors. </p>
+            <p>The <code>Picture</code> object allows us to write</p>
+            <pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)</span></code></pre>
+            <p>to call the <code>circle</code> method on <code>Shape</code> instead of the more verbose</p>
+            <pre><code class="nohighlight"><span class="identifier">circle</span><span>[</span><span class="type-name">Algebra</span><span>, </span><span class="type-name">Drawing</span><span>](</span><span class="number-literal">100</span><span>)</span></code></pre>
+            <p>So to call the <code>circle</code> method on <code>Shape</code> you&#39;ll usually just write</p>
+            <pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)</span></code></pre>
+            <p>There is a subtle difference between the result of calling <code>circle</code> on the <code>Picture</code> object and same method on the <code>Shape</code> algebra. The former returns a <code>Picture</code> while the later returns a <code>Drawing</code>.</p>
+            <p class="nextPage"><a href="syntax.html">Syntax→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

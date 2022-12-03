@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Frame and Canvas</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="syntax.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="../image/index.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="index.html">Core Concepts</a></li>
+          <li class="level2"><a href="principles.html">Principles</a></li>
+          <li class="level2"><a href="algebras.html">Algebras</a></li>
+          <li class="level2"><a href="drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="syntax.html">Syntax</a></li>
+          <li class="level2 active"><a href="#">Frame and Canvas</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/path.html">Paths</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="frame-and-canvas" class="title">Frame and Canvas</h1>
+            <p>In Doodle, a <em>canvas</em> is an area of screen that we can draw to. This could be a native window or part of a web page, or something else. A <em>frame</em> is a description of a canvas, which tells a particular backend how to construct the canvas. For example, the <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/java2d/effect/Frame.html">Frame</a> allows us to specify the title of the window, the size of the window, the background color, and more. </p>
+            <p>Frames and canvases are naturally back-end specific, so there is no code-level abstraction that unites, say, the SVG  <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/svg/effect/Frame.html">Frame</a> and the Java2d <a href="https://javadoc.io/doc/org.creativescala/doodle_3/doodle/java2d/effect/Frame.html">Frame</a>. However, conceptually they are related so where it makes sense they have the same API.</p>
+            <p>You can get quite far in Doodle without ever worrying about frames or canvases. When you <code>draw</code> a picture, for example, a default frame will be created if you don&#39;t specify one. Sometimes you must explicitly specify the frame. Animation is one example where this is required. Other times you will want more control over the output, such as to change the background color, and here creating a frame will give you that control.</p>
+            <p class="nextPage"><a href="../image/index.html">Image→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>
