@@ -19,10 +19,6 @@ package java2d
 package algebra
 
 import cats._
-import cats.data.IndexedStateT
-import cats.data.IndexedStateTMonad
-import cats.data.State
-import cats.data.StateT
 import cats.data.WriterT
 import cats.implicits._
 import doodle.algebra.generic._

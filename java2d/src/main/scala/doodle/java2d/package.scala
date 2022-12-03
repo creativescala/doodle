@@ -18,7 +18,6 @@ package doodle
 
 import doodle.algebra._
 import doodle.core.format._
-import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
 import doodle.effect.DefaultRenderer
 import doodle.effect.Writer
@@ -27,8 +26,6 @@ import doodle.interact.effect.AnimationRenderer
 import doodle.interact.effect.AnimationWriter
 import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
-
-import java.awt.image.BufferedImage
 
 package object java2d extends Java2dToPicture {
   type Algebra =

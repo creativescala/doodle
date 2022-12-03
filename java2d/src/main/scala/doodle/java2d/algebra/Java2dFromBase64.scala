@@ -23,14 +23,11 @@ import cats.data.State
 import cats.data.WriterT
 import doodle.algebra._
 import doodle.algebra.generic._
-import doodle.core.Base64
 import doodle.core.BoundingBox
 import doodle.core.Transform
 import doodle.core.format._
 import doodle.java2d.algebra.reified._
 
-import java.awt.Graphics2D
-import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.util.{Base64 => JBase64}
 import javax.imageio.ImageIO

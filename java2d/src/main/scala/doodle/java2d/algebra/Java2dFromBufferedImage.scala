@@ -23,7 +23,6 @@ import doodle.algebra.FromBufferedImage
 import doodle.algebra.generic.Finalized
 import doodle.core.BoundingBox
 import doodle.core.Transform
-import doodle.java2d.Drawing
 import doodle.java2d.algebra.reified.Reified
 
 import java.awt.image.BufferedImage
