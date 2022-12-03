@@ -3,7 +3,6 @@ package algebra
 
 import cats.effect.unsafe.implicits.global
 import doodle.core._
-import doodle.java2d._
 import doodle.language.Basic
 import doodle.syntax.all._
 
