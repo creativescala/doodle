@@ -108,7 +108,7 @@ lazy val docs =
         LinkConfig(apiLinks =
           Seq(
             ApiLinks(baseUri =
-              "https://javadoc.io/doc/org.creativescala/doodle_3/"
+              "https://javadoc.io/doc/org.creativescala/doodle-docs_3/"
             )
           )
         )
@@ -152,6 +152,7 @@ lazy val unidocs = project
     name := "doodle-docs",
     ScalaUnidoc / unidoc / unidocProjectFilter :=
       inAnyProject -- inProjects(
+        docs,
         core.js,
         interact.js,
         examples.js,
