@@ -25,7 +25,7 @@ import doodle.core.{Transform => Tx}
 import scala.annotation.tailrec
 
 trait GenericPath[G[_]] extends Path {
-  self: Algebra { type Drawing = Finalized[G, *] } =>
+  self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait PathApi {
     def closedPath(

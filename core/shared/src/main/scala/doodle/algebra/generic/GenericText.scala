@@ -24,7 +24,7 @@ import doodle.core.font.Font
 import doodle.core.{Transform => Tx}
 
 trait GenericText[G[_]] extends Text {
-  self: Algebra { type Drawing = Finalized[G, *] } =>
+  self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait TextApi {
 

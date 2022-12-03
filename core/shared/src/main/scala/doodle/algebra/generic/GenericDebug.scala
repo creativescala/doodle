@@ -22,7 +22,7 @@ import doodle.core.Color
 
 trait GenericDebug[G[_]] extends Debug {
   self: Shape with Layout with GivenApply[G] {
-    type Drawing = Finalized[G, *]
+    type Drawing[A] = Finalized[G, A]
   } =>
 
   import cats.implicits._

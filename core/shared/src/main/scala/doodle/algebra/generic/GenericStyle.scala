@@ -24,7 +24,7 @@ import doodle.core.Gradient
 import doodle.core.Join
 
 trait GenericStyle[G[_]] extends Style {
-  self: Algebra { type Drawing = Finalized[G, *] } =>
+  self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   def fillColor[A](image: Finalized[G, A], fillColor: Color): Finalized[G, A] =
     Finalized.contextTransform(_.fillColor(fillColor))(image)
