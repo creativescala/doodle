@@ -18,8 +18,6 @@ package doodle
 package algebra
 package generic
 
-import cats.Functor
-import cats.Semigroupal
 import doodle.core.Color
 
 trait GenericDebug[G[_]] extends Debug {
