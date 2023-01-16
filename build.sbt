@@ -77,20 +77,32 @@ lazy val commonSettings = Seq(
   )
 )
 
-lazy val root = tlCrossRootProject
-  .aggregate(
-    core,
-    java2d,
-    image,
-    interact,
-    reactor,
-    turtle,
+lazy val root = crossProject(JSPlatform, JVMPlatform)
+  .in(file("."))
+  .settings(moduleName := "doodle")
+lazy val rootJvm =
+  root.jvm
+    .aggregate(
+      core.jvm,
+      java2d,
+      image.jvm,
+      interact.jvm,
+      reactor.jvm,
+      turtle.jvm,
+      golden,
+      unidocs
+    )
+    .aggregate(core.jvm, java2d)
+lazy val rootJs =
+  root.js.aggregate(
+    core.js,
+    image.js,
+    interact.js,
+    reactor.js,
+    turtle.js,
     golden,
     unidocs
   )
-
-lazy val rootJVM = root.jvm.settings(moduleName := "doodle")
-lazy val rootJS = root.js.settings(moduleName := "doodle")
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
