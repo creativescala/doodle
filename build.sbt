@@ -88,6 +88,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
   )
 lazy val rootJvm =
   root.jvm
+    .settings(mimaPreviousArtifacts := Set.empty)
     .aggregate(
       core.jvm,
       java2d,
@@ -100,15 +101,17 @@ lazy val rootJvm =
     )
     .aggregate(core.jvm, java2d)
 lazy val rootJs =
-  root.js.aggregate(
-    core.js,
-    image.js,
-    interact.js,
-    reactor.js,
-    turtle.js,
-    golden,
-    unidocs
-  )
+  root.js
+    .settings(mimaPreviousArtifacts := Set.empty)
+    .aggregate(
+      core.js,
+      image.js,
+      interact.js,
+      reactor.js,
+      turtle.js,
+      golden,
+      unidocs
+    )
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
