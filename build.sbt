@@ -79,7 +79,11 @@ lazy val commonSettings = Seq(
 
 lazy val root = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
-  .settings(moduleName := "doodle")
+  .settings(
+    moduleName := "doodle",
+    // temporarily disable so we can publish the first artifacts here.
+    mimaPreviousArtifacts := Set.empty
+  )
 lazy val rootJvm =
   root.jvm
     .aggregate(
