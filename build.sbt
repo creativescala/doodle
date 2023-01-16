@@ -57,6 +57,8 @@ commands += Command.command("build") { state =>
 lazy val css = taskKey[Unit]("Build the CSS")
 
 lazy val commonSettings = Seq(
+  // temporarily disable so we can publish the first artifacts
+  mimaPreviousArtifacts := Set.empty,
   libraryDependencies ++= Seq(
     Dependencies.munit.value,
     Dependencies.miniTest.value,
