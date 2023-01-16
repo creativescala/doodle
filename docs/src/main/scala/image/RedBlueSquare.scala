@@ -17,9 +17,9 @@
 package docs
 package image
 
-import doodle.image._
-import doodle.core._
 import cats.effect.unsafe.implicits.global
+import doodle.core._
+import doodle.image._
 
 object RedBlueSquare {
   val redSquare = Image.square(100).fillColor(Color.red)
