@@ -30,7 +30,7 @@ jobs:
         os: [ubuntu-latest]
         scala: [3.1.3, 2.13.10]
         java: [temurin@8]
-        project: [rootJS, rootJVM]
+        project: []
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
@@ -70,31 +70,27 @@ jobs:
         run: sbt githubWorkflowCheck
 
       - name: Check headers and formatting
-        if: matrix.java == 'temurin@8'
+        if: matrix.java == 'temurin@8' && matrix.os == 'ubuntu-latest'
         run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' headerCheckAll scalafmtCheckAll 'project /' scalafmtSbtCheck
-
-      - name: scalaJSLink
-        if: matrix.project == 'rootJS'
-        run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' Test/scalaJSLinkerResult
 
       - name: Test
         run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' test
 
       - name: Check binary compatibility
-        if: matrix.java == 'temurin@8'
+        if: matrix.java == 'temurin@8' && matrix.os == 'ubuntu-latest'
         run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' mimaReportBinaryIssues
 
       - name: Generate API documentation
-        if: matrix.java == 'temurin@8'
+        if: matrix.java == 'temurin@8' && matrix.os == 'ubuntu-latest'
         run: sbt 'project ${{ matrix.project }}' '++ ${{ matrix.scala }}' doc
 
       - name: Make target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: mkdir -p target reactor/js/target image/js/target unidocs/target .js/target docs/target plot/jvm/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target .jvm/target interact/js/target interact/jvm/target java2d/target .native/target examples/jvm/target plot/js/target turtle/jvm/target image/jvm/target golden/target project/target
+        run: mkdir -p target reactor/js/target image/js/target unidocs/target docs/target plot/jvm/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target interact/js/target interact/jvm/target java2d/target examples/jvm/target plot/js/target turtle/jvm/target image/jvm/target golden/target project/target
 
       - name: Compress target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: tar cf targets.tar target reactor/js/target image/js/target unidocs/target .js/target docs/target plot/jvm/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target .jvm/target interact/js/target interact/jvm/target java2d/target .native/target examples/jvm/target plot/js/target turtle/jvm/target image/jvm/target golden/target project/target
+        run: tar cf targets.tar target reactor/js/target image/js/target unidocs/target docs/target plot/jvm/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target interact/js/target interact/jvm/target java2d/target examples/jvm/target plot/js/target turtle/jvm/target image/jvm/target golden/target project/target
 
       - name: Upload target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
@@ -146,46 +142,6 @@ jobs:
             ~/AppData/Local/Coursier/Cache/v1
             ~/Library/Caches/Coursier/v1
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
-
-      - name: Download target directories (3.1.3, rootJS)
-        uses: actions/download-artifact@v2
-        with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3.1.3-rootJS
-
-      - name: Inflate target directories (3.1.3, rootJS)
-        run: |
-          tar xf targets.tar
-          rm targets.tar
-
-      - name: Download target directories (3.1.3, rootJVM)
-        uses: actions/download-artifact@v2
-        with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-3.1.3-rootJVM
-
-      - name: Inflate target directories (3.1.3, rootJVM)
-        run: |
-          tar xf targets.tar
-          rm targets.tar
-
-      - name: Download target directories (2.13.10, rootJS)
-        uses: actions/download-artifact@v2
-        with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-2.13.10-rootJS
-
-      - name: Inflate target directories (2.13.10, rootJS)
-        run: |
-          tar xf targets.tar
-          rm targets.tar
-
-      - name: Download target directories (2.13.10, rootJVM)
-        uses: actions/download-artifact@v2
-        with:
-          name: target-${{ matrix.os }}-${{ matrix.java }}-2.13.10-rootJVM
-
-      - name: Inflate target directories (2.13.10, rootJVM)
-        run: |
-          tar xf targets.tar
-          rm targets.tar
 
       - name: Import signing key
         if: env.PGP_SECRET != '' && env.PGP_PASSPHRASE == ''
