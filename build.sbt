@@ -88,8 +88,9 @@ lazy val root = tlCrossRootProject
     golden,
     unidocs
   )
-  .all
-  .settings(moduleName := "doodle")
+
+lazy val rootJVM = root.jvm.settings(moduleName := "doodle")
+lazy val rootJS = root.js.settings(moduleName := "doodle")
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
