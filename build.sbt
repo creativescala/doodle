@@ -99,7 +99,6 @@ lazy val rootJvm =
       golden,
       unidocs
     )
-    .aggregate(core.jvm, java2d)
 lazy val rootJs =
   root.js
     .settings(mimaPreviousArtifacts := Set.empty)
