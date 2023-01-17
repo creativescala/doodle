@@ -43,7 +43,7 @@ ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / tlSitePublishBranch := Some("main")
 // Please stop trying to find artifacts that don't exist
-ThisBuild / mimaPreviousArtifacts := Set.empty,
+ThisBuild / mimaPreviousArtifacts := Set.empty
 
 // Run this (build) to do everything involved in building the project
 commands += Command.command("build") { state =>
