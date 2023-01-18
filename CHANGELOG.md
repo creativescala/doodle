@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.13.0 18-Jan-2023
+## 0.14.0 18-Jan-2023
 
-- We published 0.12, but it was broken and we weren't able to fix it. Hence the jump from 0.11 to 0.13
+- 0.12 and 0.13 were broken and we weren't able to fix them due to MIMA checks. Hence the jump from 0.11 to 0.14
 
 - Add text and font to `Image`, courtesy of akiomik
 

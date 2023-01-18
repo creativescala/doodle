@@ -11,13 +11,13 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 ## Using Doodle
 
-The current release is **0.13.0** and is on the `master` branch.
+The current release is **0.14.0** and is on the `master` branch.
 
 To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
-// Doodle is currently published for Scala 2.13 and Scala 3
-libraryDependencies += "org.creativescala" %% "doodle" % "0.13.0"
+// Doodle is currently published for Scala 2.14 and Scala 3
+libraryDependencies += "org.creativescala" %% "doodle" % "0.14.0"
 ~~~
 
 Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
@@ -48,4 +48,4 @@ Thanks to the *amazing* Typelevel SBT plugin, documentation should be built on e
 
 ### Publishing
 
-Push a tag of the form `v0.13.0`. Make sure `tlBaseVersion` matches the base version you're trying to release.
+Push a tag of the form `v0.14.0`. Make sure `tlBaseVersion` matches the base version you're trying to release.
