@@ -1,6 +1,6 @@
 # Using Algebras
 
-This section gives recipes for using Doodle's algebras, targetting one backend or working across multiple backends. You should be familiar with the [concepts](/concepts/README.md) behind Doodle to understand everything here.
+This section gives recipes for using Doodle's algebras, targetting one backend or working across multiple backends. You should be familiar with the [concepts](../concepts/README.md) behind Doodle to understand everything here.
 
 
 ## Using a Single Backend
