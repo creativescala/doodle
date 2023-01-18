@@ -18,7 +18,7 @@ import laika.rewrite.link.LinkConfig
 import laika.rewrite.link.ApiLinks
 import laika.theme.Theme
 
-ThisBuild / tlBaseVersion := "0.12" // your current series x.y
+ThisBuild / tlBaseVersion := "0.13" // your current series x.y
 
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Creative Scala"
@@ -42,8 +42,6 @@ ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports"
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / tlSitePublishBranch := Some("main")
-// Please stop trying to find artifacts that don't exist
-ThisBuild / mimaPreviousArtifacts := Set.empty
 
 // Run this (build) to do everything involved in building the project
 commands += Command.command("build") { state =>
@@ -59,8 +57,6 @@ commands += Command.command("build") { state =>
 lazy val css = taskKey[Unit]("Build the CSS")
 
 lazy val commonSettings = Seq(
-  // temporarily disable so we can publish the first artifacts
-  mimaPreviousArtifacts := Set.empty,
   libraryDependencies ++= Seq(
     Dependencies.munit.value,
     Dependencies.miniTest.value,
@@ -83,14 +79,9 @@ lazy val commonSettings = Seq(
 
 lazy val root = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
-  .settings(
-    moduleName := "doodle",
-    // temporarily disable so we can publish the first artifacts here.
-    mimaPreviousArtifacts := Set.empty
-  )
+  .settings(moduleName := "doodle")
 lazy val rootJvm =
   root.jvm
-    .settings(mimaPreviousArtifacts := Set.empty)
     .aggregate(
       core.jvm,
       java2d,
@@ -103,7 +94,6 @@ lazy val rootJvm =
     )
 lazy val rootJs =
   root.js
-    .settings(mimaPreviousArtifacts := Set.empty)
     .aggregate(
       core.js,
       image.js,
