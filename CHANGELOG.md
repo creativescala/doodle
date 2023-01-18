@@ -1,6 +1,8 @@
 # Changelog
 
-## NEXT
+## 0.13.0 18-Jan-2023
+
+- We published 0.12, but it was broken and we weren't able to fix it. Hence the jump from 0.11 to 0.13
 
 - Add text and font to `Image`, courtesy of akiomik
 
