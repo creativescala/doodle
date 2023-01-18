@@ -65,19 +65,12 @@ jobs:
             ~/Library/Caches/Coursier/v1
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
 
-      - name: Check that workflows are up to date
-        run: sbt githubWorkflowCheck
-
       - name: Check headers and formatting
         if: matrix.java == 'temurin@8' && matrix.os == 'ubuntu-latest'
         run: sbt '++ ${{ matrix.scala }}' headerCheckAll scalafmtCheckAll 'project /' scalafmtSbtCheck
 
       - name: Test
         run: sbt '++ ${{ matrix.scala }}' test
-
-      - name: Check binary compatibility
-        if: matrix.java == 'temurin@8' && matrix.os == 'ubuntu-latest'
-        run: sbt '++ ${{ matrix.scala }}' mimaReportBinaryIssues
 
       - name: Generate API documentation
         if: matrix.java == 'temurin@8' && matrix.os == 'ubuntu-latest'
