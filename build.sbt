@@ -82,6 +82,14 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
   .settings(moduleName := "doodle")
 lazy val rootJvm =
   root.jvm
+    .dependsOn(
+      core.jvm,
+      java2d,
+      image.jvm,
+      interact.jvm,
+      reactor.jvm,
+      turtle.jvm
+    )
     .aggregate(
       core.jvm,
       java2d,
@@ -94,6 +102,13 @@ lazy val rootJvm =
     )
 lazy val rootJs =
   root.js
+    .dependsOn(
+      core.js,
+      image.js,
+      interact.js,
+      reactor.js,
+      turtle.js
+    )
     .aggregate(
       core.js,
       image.js,
