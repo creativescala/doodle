@@ -20,9 +20,6 @@ To use doodle add the following to your `build.sbt`:
 libraryDependencies += "org.creativescala" %% "doodle" % "0.14.0"
 ~~~
 
-Alternatively you can `git clone` or download Doodle and use it directly from the SBT console. See the instructions below.
-
-
 ## Documentation
 
 [Documentation](https://creativescala.github.io/doodle/) is available on the microsite.
