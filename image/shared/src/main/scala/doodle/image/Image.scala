@@ -271,9 +271,6 @@ object Image {
   def catmulRom(points: Seq[Point], tension: Double = 0.5): Path =
     openPath(PathElement.catmulRom(points, tension))
 
-//  def draw(width: Double, height: Double)(f: Canvas => Unit): Image =
-//    Draw(width, height, f)
-
   val empty: Image =
     Empty
 
