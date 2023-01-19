@@ -82,6 +82,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
   .settings(moduleName := "doodle")
 lazy val rootJvm =
   root.jvm
+    .settings(mimaPreviousArtifacts := Set.empty)
     .dependsOn(
       core.jvm,
       java2d,
@@ -102,6 +103,7 @@ lazy val rootJvm =
     )
 lazy val rootJs =
   root.js
+    .settings(mimaPreviousArtifacts := Set.empty)
     .dependsOn(
       core.js,
       image.js,
@@ -235,8 +237,12 @@ lazy val plot = crossProject(JSPlatform, JVMPlatform)
   .jvmConfigure(_.dependsOn(core.jvm, interact.jvm))
   .jsConfigure(_.dependsOn(core.js, interact.js))
 
-lazy val plotJvm = plot.jvm.dependsOn(core.jvm, interact.jvm)
-lazy val plotJs = plot.js.dependsOn(core.js, interact.js)
+lazy val plotJvm = plot.jvm
+  .settings(mimaPreviousArtifacts := Set.empty)
+  .dependsOn(core.jvm, interact.jvm)
+lazy val plotJs = plot.js
+  .settings(mimaPreviousArtifacts := Set.empty)
+  .dependsOn(core.js, interact.js)
 
 lazy val turtle = crossProject(JSPlatform, JVMPlatform)
   .in(file("turtle"))
@@ -278,5 +284,11 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
     commonSettings,
     moduleName := "doodle-examples"
   )
-  .jvmConfigure(_.dependsOn(core.jvm, java2d, image.jvm, interact.jvm))
-  .jsConfigure(_.dependsOn(core.js, image.js, interact.js))
+  .jvmConfigure(
+    _.settings(mimaPreviousArtifacts := Set.empty)
+      .dependsOn(core.jvm, java2d, image.jvm, interact.jvm)
+  )
+  .jsConfigure(
+    _.settings(mimaPreviousArtifacts := Set.empty)
+      .dependsOn(core.js, image.js, interact.js)
+  )
