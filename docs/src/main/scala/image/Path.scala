@@ -17,7 +17,19 @@
 package docs
 package image
 
-object All {
-  RedBlueSquare
-  Path
+import cats.effect.unsafe.implicits.global
+import doodle.core._
+import doodle.syntax.all._
+
+object Path {
+  val path =
+    ClosedPath.empty
+      .lineTo(100, 100)
+      .curveTo(90, 75, 90, 25, 10, 10)
+      .moveTo(100, 100)
+      .curveTo(75, 90, 25, 90, 10, 10)
+
+  val picture = path.path.strokeWidth(3.0)
+
+  picture.save("image/open-path.png")
 }
