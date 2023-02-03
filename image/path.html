@@ -51,12 +51,27 @@
     <div id="content">
         <main class="content">
             <h1 id="paths" class="title">Paths</h1>
-            <p>Paths are a way to construct complex shapes. Paths is a sequence of three elements:</p>
+            <p>Paths are a way to construct complex shapes. A path specifies how to control a virtual pen to draw a line. There are three different commands that a path can contain:</p>
             <ul>
               <li>straight lines;</li>
               <li><a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve">bezier curves</a>; and</li>
               <li>straight line movement that doesn&#39;t draw to the screen.</li>
             </ul>
+            <p>Here&#39;s an example of creating a path. Notice that it has examples of all of the different components above.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">path</span><span> =
+  </span><span class="type-name">ClosedPath</span><span>.</span><span class="identifier">empty</span><span>
+    .</span><span class="identifier">lineTo</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
+    .</span><span class="identifier">curveTo</span><span>(</span><span class="number-literal">90</span><span>, </span><span class="number-literal">75</span><span>, </span><span class="number-literal">90</span><span>, </span><span class="number-literal">25</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)
+    .</span><span class="identifier">moveTo</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
+    .</span><span class="identifier">curveTo</span><span>(</span><span class="number-literal">75</span><span>, </span><span class="number-literal">90</span><span>, </span><span class="number-literal">25</span><span>, </span><span class="number-literal">90</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)</span></code></pre>
+            <p>Drawing this path creates the output below.</p>
+            <div class="default-image-block">
+              <img src="open-path.png">
+            </div>
+            <p>You probably noticed this is a <code>ClosedPath</code>, which suggests there is also an <code>OpenPath</code>. This is correct. The difference is how the path ends. If a <code>ClosedPath</code> doesn&#39;t end at the point it started (which is the origin), it will have a straight line inserted joining the end to the start. An <code>OpenPath</code> will not.</p>
             <p class="nextPage"><a href="styling.html">Styling→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
