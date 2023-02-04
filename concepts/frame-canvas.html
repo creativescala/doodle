@@ -21,7 +21,7 @@
 <body>
     <nav id="topbar"><p><a href="syntax.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="../image/index.html">→</a></p></nav>
+<p><a href="../pictures/index.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1"><a href="../index.html">Doodle</a></li>
@@ -32,6 +32,7 @@
           <li class="level2"><a href="picture-object.html">Picture Object</a></li>
           <li class="level2"><a href="syntax.html">Syntax</a></li>
           <li class="level2 active"><a href="#">Frame and Canvas</a></li>
+          <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
           <li class="level1"><a href="../image/index.html">Image</a></li>
           <li class="level2"><a href="../image/shape.html">Shapes</a></li>
           <li class="level2"><a href="../image/path.html">Paths</a></li>
@@ -54,7 +55,7 @@
             <p>In Doodle, a <em>canvas</em> is an area of screen that we can draw to. This could be a native window or part of a web page, or something else. A <em>frame</em> is a description of a canvas, which tells a particular backend how to construct the canvas. For example, the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/doodle/java2d/effect/Frame.html">Frame</a> allows us to specify the title of the window, the size of the window, the background color, and more. </p>
             <p>Frames and canvases are naturally back-end specific, so there is no code-level abstraction that unites, say, the SVG  <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/doodle/svg/effect/Frame.html">Frame</a> and the Java2d <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/doodle/java2d/effect/Frame.html">Frame</a>. However, conceptually they are related so where it makes sense they have the same API.</p>
             <p>You can get quite far in Doodle without ever worrying about frames or canvases. When you <code>draw</code> a picture, for example, a default frame will be created if you don&#39;t specify one. Sometimes you must explicitly specify the frame. Animation is one example where this is required. Other times you will want more control over the output, such as to change the background color, and here creating a frame will give you that control.</p>
-            <p class="nextPage"><a href="../image/index.html">Image→</a></p>
+            <p class="nextPage"><a href="../pictures/index.html">Creating Pictures→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
