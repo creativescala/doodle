@@ -29,7 +29,7 @@ object Path {
       .moveTo(100, 100)
       .curveTo(75, 90, 25, 90, 10, 10)
 
-  val picture = path.path.strokeWidth(3.0)
+  val picture = path.path.strokeWidth(3.0).strokeCap(Cap.round)
 
   picture.save("image/basic-path.png")
 
