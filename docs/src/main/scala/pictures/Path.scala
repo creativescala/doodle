@@ -15,7 +15,7 @@
  */
 
 package docs
-package image
+package pictures
 
 import cats.effect.unsafe.implicits.global
 import doodle.core._

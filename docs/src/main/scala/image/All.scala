@@ -19,5 +19,4 @@ package image
 
 object All {
   RedBlueSquare
-  Path
 }
