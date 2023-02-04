@@ -69,9 +69,20 @@
     .</span><span class="identifier">curveTo</span><span>(</span><span class="number-literal">75</span><span>, </span><span class="number-literal">90</span><span>, </span><span class="number-literal">25</span><span>, </span><span class="number-literal">90</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)</span></code></pre>
             <p>Drawing this path creates the output below.</p>
             <div class="default-image-block">
-              <img src="open-path.png">
+              <img src="basic-path.png">
             </div>
             <p>You probably noticed this is a <code>ClosedPath</code>, which suggests there is also an <code>OpenPath</code>. This is correct. The difference is how the path ends. If a <code>ClosedPath</code> doesn&#39;t end at the point it started (which is the origin), it will have a straight line inserted joining the end to the start. An <code>OpenPath</code> will not.</p>
+            <p>Here&#39;s an example showing the difference. We create a curve, drawn as an open and a closed path. Notice how the open path is just a curve, while the closed path has an extra line added joining the start and end points.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">open</span><span> =
+  </span><span class="type-name">OpenPath</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">curveTo</span><span>(</span><span class="number-literal">90</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">100</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>).</span><span class="identifier">path</span><span>.</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">closed</span><span> =
+  </span><span class="type-name">ClosedPath</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">curveTo</span><span>(</span><span class="number-literal">90</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">100</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>).</span><span class="identifier">path</span><span>.</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>)
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">paths</span><span> = </span><span class="identifier">open</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">closed</span><span>)</span></code></pre>
+            <div class="default-image-block">
+              <img src="open-closed-paths.png">
+            </div>
             <p class="nextPage"><a href="styling.html">Styling→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
