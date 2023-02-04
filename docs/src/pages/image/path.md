@@ -22,7 +22,20 @@ val path =
 
 Drawing this path creates the output below.
 
-@:image(open-path.png)
+@:image(basic-path.png)
 
 You probably noticed this is a `ClosedPath`, which suggests there is also an `OpenPath`. This is correct. The difference is how the path ends. If a `ClosedPath` doesn't end at the point it started (which is the origin), it will have a straight line inserted joining the end to the start. An `OpenPath` will not.
 
+Here's an example showing the difference. We create a curve, drawn as an open and a closed path. Notice how the open path is just a curve, while the closed path has an extra line added joining the start and end points.
+
+```scala mdoc:silent
+val open =
+  OpenPath.empty.curveTo(90, 0, 100, 10, 50, 50).path.strokeColor(Color.red)
+
+val closed =
+  ClosedPath.empty.curveTo(90, 0, 100, 10, 50, 50).path.strokeColor(Color.blue)
+
+val paths = open.beside(closed)
+```
+
+@:image(open-closed-paths.png)

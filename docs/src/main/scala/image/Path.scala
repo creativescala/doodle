@@ -31,5 +31,23 @@ object Path {
 
   val picture = path.path.strokeWidth(3.0)
 
-  picture.save("image/open-path.png")
+  picture.save("image/basic-path.png")
+
+  val open =
+    OpenPath.empty
+      .curveTo(90, 0, 100, 10, 50, 50)
+      .path
+      .strokeColor(Color.red)
+      .strokeWidth(3.0)
+
+  val closed =
+    ClosedPath.empty
+      .curveTo(90, 0, 100, 10, 50, 50)
+      .path
+      .strokeColor(Color.blue)
+      .strokeWidth(3.0)
+
+  val paths = open.beside(closed)
+
+  paths.save("image/open-closed-paths.png")
 }
