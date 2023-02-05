@@ -2,7 +2,7 @@
 
 ## Concept
 
-Paths are a way to construct complex shapes. A path specifies how to control a virtual pen to draw a line. There are three different commands that a path can contain:
+Paths are a way to construct complex shapes, implemented by the @:api(doodle.algebra.Path) algebra. A path specifies how to control a virtual pen to draw a line. There are three different commands that a path can contain:
 
 - straight lines;
 - [bezier curves](https://en.wikipedia.org/wiki/B%C3%A9zier_curve); and
