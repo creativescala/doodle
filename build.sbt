@@ -141,7 +141,7 @@ lazy val docs =
         LinkConfig(apiLinks =
           Seq(
             ApiLinks(baseUri =
-              "https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest"
+              "https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/"
             )
           )
         )
