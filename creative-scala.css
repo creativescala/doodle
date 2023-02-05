@@ -600,6 +600,7 @@ li.level2 {
 }
 
 .default-image-block {
+  clear: both;
   margin: 1rem;
 }
 
