@@ -14,4 +14,4 @@ to call the `circle` method on `Shape` instead of the more verbose
 circle[Algebra, Drawing](100)
 ```
 
-Both of these methods create a `Picture`. If we were to call the `Shape` algebra directly we'd end up with a `Drawing`, which is usually not what we want, so Doodle adds this convenience for the API it expects you to use. 
+Both of these methods create a `Picture`. Calling the `Shape` algebra directly produces a `Drawing`, which is usually not what we want, so Doodle adds this convenience for the API it expects you to use. 
