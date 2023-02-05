@@ -52,7 +52,15 @@
     <div id="content">
         <main class="content">
             <h1 id="syntax" class="title">Syntax</h1>
-            <p>Each algebra comes with extension methods, called <em>syntax</em>. These make algebras easier to use. It&#39;s because of this syntax that you can write, for example, <code>circle(10).on(circle(20))</code> instead of much more complicated expression that explicitly involves algebras. All packages that provide syntax have <code>syntax</code> in their name, so you can easily tell when you&#39;re bringing them into scope.</p>
+            <p>To use methods on algebras that are not constructors (constructors are explained in <a href="picture-object.html">Picture Object</a>) you would usually use syntax.</p>
+            <p>The standard import for syntax is</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <p>Say we want to use the <code>beside</code> method on <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a>. First we need some pictures to layout.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">left</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">10</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">right</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">20</span><span>)</span></code></pre>
+            <p>Then, with the syntax imported, we can just call the <code>beside</code> method as if it&#39;s a method on <code>Picture</code>.</p>
+            <pre><code class="nohighlight"><span class="identifier">left</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">right</span><span>)</span></code></pre>
+            <p>As with constructors, syntax methods will return a <code>Picture</code> not a <code>Drawing</code>.</p>
             <p class="nextPage"><a href="frame-canvas.html">Frame and Canvas→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
