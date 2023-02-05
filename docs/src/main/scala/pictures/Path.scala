@@ -49,5 +49,5 @@ object Path {
 
   val paths = open.beside(closed)
 
-  paths.save("image/open-closed-paths.png")
+  paths.save("pictures/open-closed-paths.png")
 }

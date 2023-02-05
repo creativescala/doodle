@@ -189,6 +189,12 @@ object Image {
     OpenPath((PathElement.moveTo(0, 0) +: elements).toList)
   }
 
+  def path(path: doodle.core.ClosedPath): Path =
+    ClosedPath(PathElement.moveTo(0, 0) +: path.elements)
+
+  def path(path: doodle.core.OpenPath): Path =
+    OpenPath(PathElement.moveTo(0, 0) +: path.elements)
+
   def text(characters: String): Image =
     Text(characters)
 

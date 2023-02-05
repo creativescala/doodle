@@ -1,12 +1,14 @@
 # Paths
 
+## Concept
+
 Paths are a way to construct complex shapes. A path specifies how to control a virtual pen to draw a line. There are three different commands that a path can contain:
 
 - straight lines;
 - [bezier curves](https://en.wikipedia.org/wiki/B%C3%A9zier_curve); and
 - straight line movement that doesn't draw to the screen.
 
-Here's an example of creating a path. Notice that it has examples of all of the different components above.
+Here's an example of a path. Notice that it has examples of all of the different components above.
 
 ```scala mdoc:silent
 import doodle.core._
@@ -39,3 +41,27 @@ val paths = open.beside(closed)
 ```
 
 @:image(open-closed-paths.png)
+
+
+## Implementation
+
+@:api(doodle.core.ClosedPath) and @:api(doodle.core.OpenPath) are both part of `doodle.core`, and not tied to either algebras or `Image`.
+
+You can create a path by calling the `empty` method on either `ClosedPath` or `OpenPath`, and then calling methods on the resulting object. This is the approach used above. You can also creates instances of @:api(doodle.core.PathElement) and create a path from a `List[PathElement]`.
+
+To convert a path to a `Picture` you can use the `path` syntax method, which is demonstrated in the examples above.
+
+To use a use a path with `Image` you can use the `path` method on `Image`, or call the `openPath` or `closedPath` methods with a sequence of `PathElement`. Here's an example.
+
+```scala mdoc:silent
+import doodle.image._
+
+val openPath = OpenPath.empty.lineTo(100, 100)
+
+val closedPath = ClosedPath.empty.lineTo(100, 100)
+
+val path1 = Image.path(openPath)
+val path2 = Image.path(closedPath)
+val path3 = Image.closedPath(List(PathElement.lineTo(100, 100)))
+val path4 = Image.openPath(List(PathElement.lineTo(100, 100)))
+```
