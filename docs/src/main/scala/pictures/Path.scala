@@ -31,7 +31,7 @@ object Path {
 
   val picture = path.path.strokeWidth(3.0).strokeCap(Cap.round)
 
-  picture.save("image/basic-path.png")
+  picture.save("pictures/basic-path.png")
 
   val open =
     OpenPath.empty
