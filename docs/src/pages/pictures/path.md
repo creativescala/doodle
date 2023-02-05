@@ -12,6 +12,7 @@ Here's an example of a path. Notice that it has examples of all of the different
 
 ```scala mdoc:silent
 import doodle.core._
+import doodle.java2d._
 import doodle.syntax.all._
 
 val path =
@@ -65,3 +66,24 @@ val path2 = Image.path(closedPath)
 val path3 = Image.closedPath(List(PathElement.lineTo(100, 100)))
 val path4 = Image.openPath(List(PathElement.lineTo(100, 100)))
 ```
+
+## Utilities
+
+There are several utilities to create common shapes. These are available on both `Picture` constructors and `Image`.
+
+* `equilateralTriangle(width)` creates an equilateral triangle with the given side length.
+* `regularPolygon(sides, radius)` creates a regular polygon with the given number of sides and radius. 
+* `star(points, outerRadius, innerRadius)` creates a star with the given number of points. The points extend as far as `outerRadius` and go in to `innerRadius`. 
+* `rightArrow(width, height)` creates an arrow points to the right with the given width and height.
+* `roundedRectangle(width, height, radius)` creates a rectangle of the given width and height, with rounded corners with size given by `radius`.
+
+There is also `interpolatingSpline`, which creates a curve that intersects a given sequence of points. Here's an example.
+
+```scala mdoc:silent
+val points =
+  for (x <- 0.to(360)) yield Point(x, x.degrees.sin * 100)
+
+val curve = Picture.interpolatingSpline(points.toList)
+```
+
+@:image(curve.png)

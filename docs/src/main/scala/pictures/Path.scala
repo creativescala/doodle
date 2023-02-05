@@ -19,6 +19,7 @@ package pictures
 
 import cats.effect.unsafe.implicits.global
 import doodle.core._
+import doodle.java2d._
 import doodle.syntax.all._
 
 object Path {
@@ -50,4 +51,11 @@ object Path {
   val paths = open.beside(closed)
 
   paths.save("pictures/open-closed-paths.png")
+
+  val points =
+    for (x <- 0.to(360)) yield Point(x, x.degrees.sin * 100)
+
+  val curve = Picture.interpolatingSpline(points.toList)
+
+  curve.save("pictures/curve.png")
 }
