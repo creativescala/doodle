@@ -31,7 +31,7 @@ li.level2 {
 }
 
 .default-image-block {
-    @apply m-4;
+    @apply m-4 clear-both;
 }
 
 #content {
