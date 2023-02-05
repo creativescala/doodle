@@ -62,6 +62,7 @@
             </ul>
             <p>Here&#39;s an example of a path. Notice that it has examples of all of the different components above.</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
 
 </span><span class="keyword">val</span><span> </span><span class="identifier">path</span><span> =
@@ -102,6 +103,24 @@
 </span><span class="keyword">val</span><span> </span><span class="identifier">path2</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">path</span><span>(</span><span class="identifier">closedPath</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">path3</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">closedPath</span><span>(</span><span class="type-name">List</span><span>(</span><span class="type-name">PathElement</span><span>.</span><span class="identifier">lineTo</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)))
 </span><span class="keyword">val</span><span> </span><span class="identifier">path4</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">openPath</span><span>(</span><span class="type-name">List</span><span>(</span><span class="type-name">PathElement</span><span>.</span><span class="identifier">lineTo</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)))</span></code></pre>
+            
+            <h2 id="utilities" class="section">Utilities</h2>
+            <p>There are several utilities to create common shapes. These are available on both <code>Picture</code> constructors and <code>Image</code>.</p>
+            <ul>
+              <li><code>equilateralTriangle(width)</code> creates an equilateral triangle with the given side length.</li>
+              <li><code>regularPolygon(sides, radius)</code> creates a regular polygon with the given number of sides and radius. </li>
+              <li><code>star(points, outerRadius, innerRadius)</code> creates a star with the given number of points. The points extend as far as <code>outerRadius</code> and go in to <code>innerRadius</code>. </li>
+              <li><code>rightArrow(width, height)</code> creates an arrow points to the right with the given width and height.</li>
+              <li><code>roundedRectangle(width, height, radius)</code> creates a rectangle of the given width and height, with rounded corners with size given by <code>radius</code>.</li>
+            </ul>
+            <p>There is also <code>interpolatingSpline</code>, which creates a curve that intersects a given sequence of points. Here&#39;s an example.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">points</span><span> =
+  </span><span class="keyword">for</span><span> (</span><span class="identifier">x</span><span> &lt;- </span><span class="number-literal">0</span><span>.</span><span class="identifier">to</span><span>(</span><span class="number-literal">360</span><span>)) </span><span class="keyword">yield</span><span> </span><span class="type-name">Point</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">x</span><span>.</span><span class="identifier">degrees</span><span>.</span><span class="identifier">sin</span><span> * </span><span class="number-literal">100</span><span>)
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">curve</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">interpolatingSpline</span><span>(</span><span class="identifier">points</span><span>.</span><span class="identifier">toList</span><span>)</span></code></pre>
+            <div class="default-image-block">
+              <img src="curve.png">
+            </div>
             <p class="nextPage"><a href="../image/index.html">Image→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
