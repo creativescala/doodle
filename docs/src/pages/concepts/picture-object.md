@@ -8,10 +8,6 @@ The `Picture` object allows us to write
 Picture.circle(100)
 ```
 
-to call the `circle` method on `Shape` instead of the more verbose
+to call the `circle` method on `Shape`.
 
-```scala
-circle[Algebra, Drawing](100)
-```
-
-Both of these methods create a `Picture`. Calling the `Shape` algebra directly produces a `Drawing`, which is usually not what we want, so Doodle adds this convenience for the API it expects you to use. 
+Be aware that calling `Picture.circle` will create a `Picture`. Calling the `Shape` algebra directly produces a `Drawing`, which is usually not what we want, so Doodle adds this convenience for the API it expects you to use. 
