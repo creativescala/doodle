@@ -1,3 +1,27 @@
 # Syntax
 
-Each algebra comes with extension methods, called *syntax*. These make algebras easier to use. It's because of this syntax that you can write, for example, `circle(10).on(circle(20))` instead of much more complicated expression that explicitly involves algebras. All packages that provide syntax have `syntax` in their name, so you can easily tell when you're bringing them into scope.
+To use methods on algebras that are not constructors (constructors are explained in [Picture Object](picture-object.md)) you would usually use syntax.
+
+The standard import for syntax is
+
+```scala mdoc:invisible
+import doodle.java2d._
+```
+```scala mdoc:silent
+import doodle.syntax.all._
+```
+
+Say we want to use the `beside` method on @:api(doodle.algebra.Layout). First we need some pictures to layout.
+
+```scala mdoc:silent
+val left = Picture.circle(10)
+val right = Picture.circle(20)
+```
+
+Then, with the syntax imported, we can just call the `beside` method as if it's a method on `Picture`.
+
+```scala mdoc:silent
+left.beside(right)
+```
+
+As with constructors, syntax methods will return a `Picture` not a `Drawing`.
