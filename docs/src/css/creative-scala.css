@@ -30,6 +30,10 @@ li.level2 {
     @apply list-none text-slate-300 pl-4;
 }
 
+.default-image-block {
+    @apply m-4;
+}
+
 #content {
     @apply flex-auto p-12;
 }
