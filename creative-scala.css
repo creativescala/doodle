@@ -599,6 +599,10 @@ li.level2 {
   color: rgb(203 213 225 / var(--tw-text-opacity));
 }
 
+.default-image-block {
+  margin: 1rem;
+}
+
 #content {
   flex: 1 1 auto;
   padding: 3rem;
