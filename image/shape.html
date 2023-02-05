@@ -21,7 +21,7 @@
 <body>
     <nav id="topbar"><p><a href="index.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="path.html">→</a></p></nav>
+<p><a href="styling.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1"><a href="../index.html">Doodle</a></li>
@@ -33,9 +33,9 @@
           <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
           <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
           <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
+          <li class="level2"><a href="../pictures/path.html">Paths</a></li>
           <li class="level1"><a href="index.html">Image</a></li>
           <li class="level2 active"><a href="#">Shapes</a></li>
-          <li class="level2"><a href="path.html">Paths</a></li>
           <li class="level2"><a href="styling.html">Styling</a></li>
           <li class="level2"><a href="layout.html">Layout</a></li>
           <li class="level2"><a href="transform.html">Transforms</a></li>
@@ -74,13 +74,13 @@
             </ul>
             
             <h2 id="paths" class="section">Paths</h2>
-            <p>Paths allow construction of custom shapes. They are described in <a href="path.html">their own section</a>. There are three methods on the <code>Image</code> companion object that deal with paths:</p>
+            <p>Paths allow construction of custom shapes. They are described in <a href="../pictures/path.html">their own section</a>. There are three methods on the <code>Image</code> companion object that deal with paths:</p>
             <ul>
               <li><code>Image.openPath(pathElements)</code> converts a <code>Seq[PathElement]</code> into an <code>Image</code> representing an open path (a path that does not end where it begins).</li>
               <li><code>Image.closedPath</code> converts a <code>Seq[PathElement]</code> to an <code>Image</code> representing a closed path (a path that ends where it begins; a straight line will be inserted if to make this the case if needed.)</li>
               <li><code>Image.interpolatingSpline</code> converts a <code>Seq[Point]</code> to an <code>Image</code> by interpolating a smooth curve between the points using the <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">Catmull-Rom</a> algorithm.</li>
             </ul>
-            <p class="nextPage"><a href="path.html">Paths→</a></p>
+            <p class="nextPage"><a href="styling.html">Styling→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
