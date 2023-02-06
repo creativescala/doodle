@@ -56,7 +56,9 @@
             <h1 id="layout" class="title">Layout</h1>
             
             <h2 id="concept" class="section">Concept</h2>
-            <p>Layout is important for most pictures, and the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> provides a system for flexible layout.</p>
+            <p>Positioning pictures relative to other pictures is important for man compositions, and the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> algebra provides a flexible system for handling this.</p>
+            
+            <h3 id="above-beside-and-on" class="section">Above, Beside, and On</h3>
             <p>The most basic layout methods are <code>above</code>, <code>beside</code>, and <code>on</code>. They do what their names suggest, putting a picture above, beside, or on another picture. Below is an example.</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
@@ -73,9 +75,10 @@
             <div class="default-image-block">
               <img src="basic-layout.png">
             </div>
+            <p>As a convenience, there are also methods <code>below</code> and <code>under</code>, which are the opposite of <code>above</code> and <code>on</code> respectively.</p>
             
             <h3 id="bounding-box-and-origin" class="section">Bounding Box and Origin</h3>
-            <p>To understand how more advanced layout works we have to understand the concepts underlying layout: bounding boxe and origin.</p>
+            <p>To understand how more advanced layout works we have to understand the concepts underlying layout: the bounding box and origin.</p>
             
             <h2 id="implementation" class="section">Implementation</h2>
             <p class="nextPage"><a href="path.html">Paths→</a></p>
