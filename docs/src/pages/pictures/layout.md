@@ -2,7 +2,10 @@
 
 ## Concept
 
-Layout is important for most pictures, and the @:api(doodle.algebra.Layout) provides a system for flexible layout.
+Positioning pictures relative to other pictures is important for man compositions, and the @:api(doodle.algebra.Layout) algebra provides a flexible system for handling this.
+
+
+### Above, Beside, and On
 
 The most basic layout methods are `above`, `beside`, and `on`. They do what their names suggest, putting a picture above, beside, or on another picture. Below is an example.
 
@@ -24,8 +27,12 @@ Here's the output this creates.
 
 @:image(basic-layout.png)
 
+As a convenience, there are also methods `below` and `under`, which are the opposite of `above` and `on` respectively.
+
+
 ### Bounding Box and Origin
 
-To understand how more advanced layout works we have to understand the concepts underlying layout: bounding boxe and origin.
+To understand how more advanced layout works we have to understand the concepts underlying layout: the bounding box and origin.
+
 
 ## Implementation
