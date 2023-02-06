@@ -25,10 +25,10 @@ import doodle.syntax.all._
 object Layout {
   val basicLayout =
     Picture
-      .circle(200)
+      .circle(100)
       .strokeColor(Color.blue)
-      .beside(Picture.square(200).strokeColor(Color.darkBlue))
-      .above(Picture.triangle(200, 200).strokeColor(Color.crimson))
+      .beside(Picture.square(100).strokeColor(Color.darkBlue))
+      .above(Picture.triangle(100, 100).strokeColor(Color.crimson))
       .strokeWidth(5.0)
 
   basicLayout.save("pictures/basic-layout.png")
