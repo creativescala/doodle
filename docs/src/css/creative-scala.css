@@ -32,6 +32,8 @@ li.level2 {
 
 .default-image-block {
     @apply m-4 clear-both;
+    grid-column-start: : main-start;
+    grid-column-end: : main-end;
 }
 
 #content {
