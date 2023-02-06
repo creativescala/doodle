@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Laika 0.19.0" />
-    <title>Shape</title>
+    <title>Layout</title>
     
     
     <meta name="description" content="docs" />
@@ -19,9 +19,9 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="index.html">←</a></p>
+    <nav id="topbar"><p><a href="shape.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="layout.html">→</a></p></nav>
+<p><a href="path.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1"><a href="../index.html">Doodle</a></li>
@@ -33,8 +33,8 @@
           <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
           <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
           <li class="level1"><a href="index.html">Creating Pictures</a></li>
-          <li class="level2 active"><a href="#">Shape</a></li>
-          <li class="level2"><a href="layout.html">Layout</a></li>
+          <li class="level2"><a href="shape.html">Shape</a></li>
+          <li class="level2 active"><a href="#">Layout</a></li>
           <li class="level2"><a href="path.html">Paths</a></li>
           <li class="level1"><a href="../image/index.html">Image</a></li>
           <li class="level2"><a href="../image/shape.html">Shapes</a></li>
@@ -53,37 +53,32 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="shape" class="title">Shape</h1>
+            <h1 id="layout" class="title">Layout</h1>
             
             <h2 id="concept" class="section">Concept</h2>
-            <p>Constructing simple geometric shapes is provided by the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> algebra. All the methods on the algebra are constructors, so typically you&#39;d access them by calling methods on the <code>Picture</code> object. Here&#39;s an example.</p>
+            <p>Layout is important for most pictures, and the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> provides a system for flexible layout.</p>
+            <p>The most basic layout methods are <code>above</code>, <code>beside</code>, and <code>on</code>. They do what their names suggest, putting a picture above, beside, or on another picture. Below is an example.</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">basicShapes</span><span> =
+</span><span class="keyword">val</span><span> </span><span class="identifier">basicLayout</span><span> =
   </span><span class="type-name">Picture</span><span>
     .</span><span class="identifier">circle</span><span>(</span><span class="number-literal">200</span><span>)
     .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>)
-    .</span><span class="identifier">on</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">125</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">darkBlue</span><span>))
-    .</span><span class="identifier">on</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">triangle</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>))
+    .</span><span class="identifier">beside</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">200</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">darkBlue</span><span>))
+    .</span><span class="identifier">above</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">triangle</span><span>(</span><span class="number-literal">200</span><span>, </span><span class="number-literal">200</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>))
     .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">5.0</span><span>)</span></code></pre>
-            <p>This program gives the output below.</p>
+            <p>Here&#39;s the output this creates.</p>
             <div class="default-image-block">
-              <img src="basic-shapes.png">
+              <img src="basic-layout.png">
             </div>
-            <p>Here is a short description of all the methods provided by <code>Shape</code>.</p>
-            <ul>
-              <li><code>empty</code> creates the empty picture that takes up no space and renders nothing. Useful for that sweet monoid identity and for the base case in recursions.</li>
-              <li><code>square(sideLength)</code> creates a square with the given side length.</li>
-              <li><code>rectangle(width, height)</code> creates a rectangle with the given width and height.</li>
-              <li><code>circle(diameter)</code> creates a circle with the given diameter. Specified in terms of diameter rather than radius so that <code>square(100)</code> and <code>circle(100)</code> take up the same space.</li>
-              <li><code>triangle(width, height)</code> creates an isoceles triangle with the given width and height.</li>
-            </ul>
+            
+            <h3 id="bounding-box-and-origin" class="section">Bounding Box and Origin</h3>
+            <p>To understand how more advanced layout works we have to understand the concepts underlying layout: bounding boxe and origin.</p>
             
             <h2 id="implementation" class="section">Implementation</h2>
-            <p>These methods are available on both the <code>Shape</code> algebra and <code>Image</code>.</p>
-            <p class="nextPage"><a href="layout.html">Layout→</a></p>
+            <p class="nextPage"><a href="path.html">Paths→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
