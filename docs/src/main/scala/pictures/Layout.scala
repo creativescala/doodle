@@ -17,8 +17,19 @@
 package docs
 package pictures
 
-object All {
-  Layout
-  Path
-  Shape
+import cats.effect.unsafe.implicits.global
+import doodle.core._
+import doodle.java2d._
+import doodle.syntax.all._
+
+object Layout {
+  val basicLayout =
+    Picture
+      .circle(200)
+      .strokeColor(Color.blue)
+      .beside(Picture.square(200).strokeColor(Color.darkBlue))
+      .above(Picture.triangle(200, 200).strokeColor(Color.crimson))
+      .strokeWidth(5.0)
+
+  basicLayout.save("pictures/basic-layout.png")
 }
