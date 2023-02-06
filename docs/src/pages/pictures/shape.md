@@ -11,10 +11,11 @@ import doodle.syntax.all._
 
 val basicShapes =
   Picture
-    .circle(100)
-    .strokeColor(Color.aqua)
-    .beside(Picture.triangle(100, 100).strokeColor(Color.blue))
-    .beside(Picture.square(100).strokeColor(Color.darkBlue))
+    .circle(200)
+    .strokeColor(Color.blue)
+    .on(Picture.square(125).strokeColor(Color.darkBlue))
+    .on(Picture.triangle(100, 100).strokeColor(Color.crimson))
+    .strokeWidth(5.0)
 ```
 
 This program gives the output below.
