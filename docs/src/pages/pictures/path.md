@@ -69,13 +69,15 @@ val path4 = Image.openPath(List(PathElement.lineTo(100, 100)))
 
 ## Utilities
 
-There are several utilities to create common shapes. These are available on both `Picture` constructors and `Image`.
+There are several utilities to create common shapes. These are available as both `Picture` and `Image` constructors.
 
 * `equilateralTriangle(width)` creates an equilateral triangle with the given side length.
 * `regularPolygon(sides, radius)` creates a regular polygon with the given number of sides and radius. 
 * `star(points, outerRadius, innerRadius)` creates a star with the given number of points. The points extend as far as `outerRadius` and go in to `innerRadius`. 
 * `rightArrow(width, height)` creates an arrow points to the right with the given width and height.
 * `roundedRectangle(width, height, radius)` creates a rectangle of the given width and height, with rounded corners with size given by `radius`.
+
+You can also create these paths as a `List[PathElement]` by calling the methods on @:api(doodle.core.PathElement).
 
 There is also `interpolatingSpline`, which creates a curve that intersects a given sequence of points. Here's an example.
 
