@@ -2,4 +2,33 @@
 
 ## Concept
 
-Constructing simple geometric shapes is provided by the @:api(doodle.algebra.Shape) algebra.
+Constructing simple geometric shapes is provided by the @:api(doodle.algebra.Shape) algebra. All the methods on the algebra are constructors, so typically you'd access them by calling methods on the `Picture` object. Here's an example.
+
+```scala mdoc:silent
+import doodle.java2d._
+import doodle.syntax.all._
+
+val basicShapes =
+  Picture
+    .circle(100)
+    .strokeColor(Color.aqua)
+    .beside(Picture.triangle(100, 100).strokeColor(Color.blue))
+    .beside(Picture.square(100).strokeColor(Color.darkBlue))
+```
+
+This program gives the output below.
+
+@:image(basic-shapes.png)
+
+Here is a short description of all the methods provided by `Shape`.
+
+* `empty` creates the empty picture that takes up no space and renders nothing. Useful for that sweet monoid identity and for the base case in recursions.
+* `square(sideLength)` creates a square with the given side length.
+* `rectangle(width, height)` creates a rectangle with the given width and height.
+* `circle(diameter)` creates a circle with the given diameter. Specified in terms of diameter rather than radius so that `square(100)` and `circle(100)` take up the same space.
+* `triangle(width, height)` creates an isoceles triangle with the given width and height.
+
+
+## Implementation
+
+These methods are available on both the `Shape` algebra and `Image`.
