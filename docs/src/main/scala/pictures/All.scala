@@ -19,4 +19,5 @@ package pictures
 
 object All {
   Path
+  Shapes
 }
