@@ -602,6 +602,8 @@ li.level2 {
 .default-image-block {
   clear: both;
   margin: 1rem;
+  grid-column-start: main-start;
+  grid-column-end: main-end;
 }
 
 #content {

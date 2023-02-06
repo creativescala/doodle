@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
         rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
-    
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
     <script> /* for avoiding page load transitions */</script>
 </head>
 
@@ -106,7 +106,7 @@
 </span><span class="keyword">val</span><span> </span><span class="identifier">path4</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">openPath</span><span>(</span><span class="type-name">List</span><span>(</span><span class="type-name">PathElement</span><span>.</span><span class="identifier">lineTo</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)))</span></code></pre>
             
             <h2 id="utilities" class="section">Utilities</h2>
-            <p>There are several utilities to create common shapes. These are available on both <code>Picture</code> constructors and <code>Image</code>.</p>
+            <p>There are several utilities to create common shapes. These are available as both <code>Picture</code> and <code>Image</code> constructors.</p>
             <ul>
               <li><code>equilateralTriangle(width)</code> creates an equilateral triangle with the given side length.</li>
               <li><code>regularPolygon(sides, radius)</code> creates a regular polygon with the given number of sides and radius. </li>
@@ -114,6 +114,7 @@
               <li><code>rightArrow(width, height)</code> creates an arrow points to the right with the given width and height.</li>
               <li><code>roundedRectangle(width, height, radius)</code> creates a rectangle of the given width and height, with rounded corners with size given by <code>radius</code>.</li>
             </ul>
+            <p>You can also create these paths as a <code>List[PathElement]</code> by calling the methods on <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/PathElement.html">PathElement</a>.</p>
             <p>There is also <code>interpolatingSpline</code>, which creates a curve that intersects a given sequence of points. Here&#39;s an example.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">points</span><span> =
   </span><span class="keyword">for</span><span> (</span><span class="identifier">x</span><span> &lt;- </span><span class="number-literal">0</span><span>.</span><span class="identifier">to</span><span>(</span><span class="number-literal">360</span><span>)) </span><span class="keyword">yield</span><span> </span><span class="type-name">Point</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">x</span><span>.</span><span class="identifier">degrees</span><span>.</span><span class="identifier">sin</span><span> * </span><span class="number-literal">100</span><span>)
