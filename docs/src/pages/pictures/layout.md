@@ -2,12 +2,12 @@
 
 ## Concept
 
-Positioning pictures relative to other pictures is important for man compositions, and the @:api(doodle.algebra.Layout) algebra provides a flexible system for handling this.
+Positioning pictures relative to other pictures is important for many compositions, and the @:api(doodle.algebra.Layout) algebra provides a flexible system for handling this.
 
 
 ### Above, Beside, and On
 
-The most basic layout methods are `above`, `beside`, and `on`. They do what their names suggest, putting a picture above, beside, or on another picture. Below is an example.
+The most basic layout methods are `above`, `beside`, and `on`. They do what their names suggest, putting a picture above, beside, or on top of another picture. Below is an example.
 
 ```scala mdoc:silent
 import doodle.core._
@@ -32,9 +32,9 @@ As a convenience, there are also methods `below` and `under`, which are the oppo
 
 ### Bounding Box and Origin
 
-To understand how more advanced layout works we have to understand the concepts underlying layout: the bounding box and origin. Every picture has a bounding box and origin. The bounding box defines the outer extent of the picture, and the origin is an arbitrary point within the bounding box. By convention, the built-in [shapes](shape.md) and [paths](path.md) have their origin in the center of the bounding box. You can position the origin anywhere you want, either by creating your own paths or using the `at` and `originAt` methods described below. If necessary, the bounding box will expand to include the origin.
+To really understand how layout works we have to understand how layout works with the bounding box and origin. Every picture has a bounding box and origin. The bounding box defines the outer extent of the picture, and the origin is an arbitrary point within the bounding box. By convention, the built-in [shapes](shape.md) and [paths](path.md) have their origin in the center of the bounding box. You can position the origin anywhere you want, either by creating your own paths or using the `at` and `originAt` methods described below. If necessary, the bounding box will expand to include the origin.
 
-We can see the bounding box and origin using the `debug` method. In the example below I'm displaying the bounding box and origin of the circle and pentagon, above the bounding box and origin of the circle beside the pentagon.
+We can see the bounding box and origin using the `debug` method. In the example below I'm displaying the bounding box and origin of the circle and pentagon separately, above the bounding box and origin of the circle beside the pentagon.
 
 ```scala mdoc:silent
 val debugLayout =
@@ -49,7 +49,7 @@ val debugLayout =
 
 @:image(debug-layout.png)
 
-This gives us some insight into how the basic layout works. Using `beside` horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. `Above` works in a similar way, while `on` simply places the origins at the same location.
+This gives us some insight into how the basic layout works. Using `beside` horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. `Above` works similarly, except the alignment is vertical, while `on` simply places the origins at the same location.
 
 
 ### Repositioning the Origin
@@ -88,13 +88,13 @@ val pentagon =
 @:image(pentagon.png)
 
 
-### Landmarks
+### Positioning using Landmarks
 
-@:api(doodle.core.Landmark) provides more flexible layout, by allowing you to specify points relative to the bounding box or origin instead of in absolute terms relative to the origin. For example, we can specify the top left of the bounding box by simply using `Landmark.topLeft` instead of working out the coordinates of this location.
+@:api(doodle.core.Landmark) provides more flexible layout, by allowing you to specify points relative to the bounding box or origin instead of in absolute terms relative to the origin. For example, we can specify the top left of the bounding box by simply using `Landmark.topLeft` instead of working out the coordinates of this location. Both `at` and `originAt` support landmarks.
 
-Ultimately, all landmarks are specified relative to the origin, but you can use a percentage @:api(doodle.core.Coordinate) instead of an absolute. Zero percent is the origin, 100% is the top or right edge of the bounding box, and -100% is the bottom or left edge of the bounding box.
+Ultimately, all landmarks are specified relative to the origin, but you can use a percentage @:api(doodle.core.Coordinate) instead of an absolute value. Zero percent is the origin, 100% is the top or right edge of the bounding box, and -100% is the bottom or left edge of the bounding box.
 
-In the example below we use landmarks to specify points that are halfway between the origin and the edge of the bounding box. In this simple example we could easily work out the absolute coordinate directly, but in more complex examples using landmarks come into their own.
+In the example below we use landmarks to specify points that are halfway between the origin and the edge of the bounding box. In this simple example we could easily work out the absolute coordinate directly, but landmarks come into their own in more complex examples.
 
 ```scala mdoc:silent
 val overlappingCircles =
@@ -121,6 +121,24 @@ val overlappingCircles =
 @:image(overlapping-circles.png)
 
 
+### Adjusting the Bounding Box
+
+To adjust the size of the bounding box, instead of the position of the origin, we can use `margin`. This allows us to add extra space around a picture or, with a negative margin, to have a picture that overflows its bounding box. Here's an example that uses the form of `margin` that adjusts both the width and height of the bounding box. There are other variants that allow us to adjust the width and the height separately, or adjust all four edges independently.
+
+```scala mdoc:silent
+val circle = Picture.circle(50)
+val rollingCircles =
+  circle
+    .margin(25)
+    .debug
+    .beside(circle.margin(15).debug)
+    .beside(circle.debug)
+    .beside(circle.margin(-15).debug)
+    .beside(circle.margin(-25).debug)
+```
+
+@:image(rolling-circles.png)
+
 ## Implementation
 
-The `Layout` algebra supports all the features described above. `Image` doesn't support `originAt` or landmarks.
+The `Layout` algebra supports all the features described above. `Image` doesn't support `originAt`, `margin`, or landmarks.

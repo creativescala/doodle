@@ -86,4 +86,18 @@ object Layout {
 
   overlappingCircles.save("pictures/overlapping-circles.png")
 
+  val circle = Picture.circle(50)
+  val rollingCircles =
+    circle
+      .margin(25)
+      .debug
+      .beside(circle.margin(15).debug)
+      .beside(circle.debug)
+      .beside(circle.margin(-15).debug)
+      .beside(circle.margin(-25).debug)
+      // Increase the bounding box so it covers the whole image.
+      // Otherwise the image is cropped when it is rendered.
+      .margin(0, 50, 0, 0)
+
+  rollingCircles.save("pictures/rolling-circles.png")
 }
