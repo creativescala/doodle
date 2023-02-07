@@ -27,12 +27,100 @@ Here's the output this creates.
 
 @:image(basic-layout.png)
 
-As a convenience, there are also methods `below` and `under`, which are the opposite of `above` and `on` respectively.
+As a convenience, there are also methods `below` and `under`, which are the opposite of `above` and `on` respectively. That is, `a.above(b) == b.below(a)` and `a.on(b) == b.under(a)`
 
 
 ### Bounding Box and Origin
 
-To understand how more advanced layout works we have to understand the concepts underlying layout: the bounding box and origin.
+To understand how more advanced layout works we have to understand the concepts underlying layout: the bounding box and origin. Every picture has a bounding box and origin. The bounding box defines the outer extent of the picture, and the origin is an arbitrary point within the bounding box. By convention, the built-in [shapes](shape.md) and [paths](path.md) have their origin in the center of the bounding box. You can position the origin anywhere you want, either by creating your own paths or using the `at` and `originAt` methods described below. If necessary, the bounding box will expand to include the origin.
+
+We can see the bounding box and origin using the `debug` method. In the example below I'm displaying the bounding box and origin of the circle and pentagon, above the bounding box and origin of the circle beside the pentagon.
+
+```scala mdoc:silent
+val debugLayout =
+  Picture
+    .circle(100)
+    .debug
+    .beside(Picture.regularPolygon(5, 30).debug)
+    .above(
+      Picture.circle(100).beside(Picture.regularPolygon(5, 30)).debug
+    )
+```
+
+@:image(debug-layout.png)
+
+This gives us some insight into how the basic layout works. Using `beside` horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. `Above` works in a similar way, while `on` simply places the origins at the same location.
+
+
+### Repositioning the Origin
+
+The origin defines a local coordinate system for each picture, and the origin is always the point (0, 0). Changing the location of the origin is the key to creative layouts. There are two methods that do this:
+
+- `at`, which changes the location of the picture relative to the origin; and
+- `originAt`, which changes the location of the origin relative to the picture.
+
+As you can see from the description, the two methods are opposites of one another. Let's see an example of use.
+
+```scala mdoc:silent
+val atAndOriginAt =
+  Picture
+    .circle(100)
+    .at(25, 25)
+    .debug
+    .beside(Picture.circle(100).originAt(25, 25).debug)
+```
+
+@:image(at-and-origin-at.png)
+
+When you want to position pictures at arbitrary locations, a common pattern is to use `at` and `on`. For example, here we position five shapes at the points of a pentagon. This also demonstrates we can use polar coordinates with `at`.
+
+```scala mdoc:silent
+val pentagon =
+  Picture
+    .circle(10)
+    .at(50, 0.degrees)
+    .on(Picture.circle(10).at(50, 72.degrees))
+    .on(Picture.circle(10).at(50, 144.degrees))
+    .on(Picture.circle(10).at(50, 216.degrees))
+    .on(Picture.circle(10).at(50, 288.degrees))
+```
+
+@:image(pentagon.png)
+
+
+### Landmarks
+
+@:api(doodle.core.Landmark) provides more flexible layout, by allowing you to specify points relative to the bounding box or origin instead of in absolute terms relative to the origin. For example, we can specify the top left of the bounding box by simply using `Landmark.topLeft` instead of working out the coordinates of this location.
+
+Ultimately, all landmarks are specified relative to the origin, but you can use a percentage @:api(doodle.core.Coordinate) instead of an absolute. Zero percent is the origin, 100% is the top or right edge of the bounding box, and -100% is the bottom or left edge of the bounding box.
+
+In the example below we use landmarks to specify points that are halfway between the origin and the edge of the bounding box. In this simple example we could easily work out the absolute coordinate directly, but in more complex examples using landmarks come into their own.
+
+```scala mdoc:silent
+val overlappingCircles =
+  Picture
+    .circle(100)
+    .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(-50)))
+    .on(
+      Picture
+        .circle(100)
+        .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(-50)))
+    )
+    .on(
+      Picture
+        .circle(100)
+        .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(50)))
+    )
+    .on(
+      Picture
+        .circle(100)
+        .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(50)))
+    )
+```
+
+@:image(overlapping-circles.png)
 
 
 ## Implementation
+
+The `Layout` algebra supports all the features described above. `Image` doesn't support `originAt` or landmarks.

@@ -32,4 +32,58 @@ object Layout {
       .strokeWidth(5.0)
 
   basicLayout.save("pictures/basic-layout.png")
+
+  val debugLayout =
+    Picture
+      .circle(100)
+      .debug
+      .beside(Picture.regularPolygon(5, 30).debug)
+      .above(
+        Picture.circle(100).beside(Picture.regularPolygon(5, 30)).debug
+      )
+
+  debugLayout.save("pictures/debug-layout.png")
+
+  val atAndOriginAt =
+    Picture
+      .circle(100)
+      .at(25, 25)
+      .debug
+      .beside(Picture.circle(100).originAt(25, 25).debug)
+
+  atAndOriginAt.save("pictures/at-and-origin-at.png")
+
+  val pentagon =
+    Picture
+      .circle(10)
+      .at(50, 0.degrees)
+      .on(Picture.circle(10).at(50, 72.degrees))
+      .on(Picture.circle(10).at(50, 144.degrees))
+      .on(Picture.circle(10).at(50, 216.degrees))
+      .on(Picture.circle(10).at(50, 288.degrees))
+
+  pentagon.save("pictures/pentagon.png")
+
+  val overlappingCircles =
+    Picture
+      .circle(100)
+      .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(-50)))
+      .on(
+        Picture
+          .circle(100)
+          .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(-50)))
+      )
+      .on(
+        Picture
+          .circle(100)
+          .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(50)))
+      )
+      .on(
+        Picture
+          .circle(100)
+          .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(50)))
+      )
+
+  overlappingCircles.save("pictures/overlapping-circles.png")
+
 }
