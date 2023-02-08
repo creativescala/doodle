@@ -21,4 +21,5 @@ object All {
   Layout
   Path
   Shape
+  Style
 }
