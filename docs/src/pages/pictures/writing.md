@@ -29,7 +29,7 @@ import doodle.core.format._
 This import makes available the standard formats supported by Doodle. 
 
 
-## Writing an Image
+## Writing to a File
 
 Call the `write` method to write to a file, giving the format as a type parameter and the file name as a `String` parameter. For example, to write a PNG to the file called `"circle.png"`
 
