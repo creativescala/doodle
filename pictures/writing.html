@@ -58,6 +58,32 @@
     <div id="content">
         <main class="content">
             <h1 id="writing-output" class="title">Writing Output</h1>
+            <p>An <code>Image</code> or <code>Picture</code> can be written to a file as well as displaying it on screen. The file formats you can write depend on the backend you&#39;re using:</p>
+            <ul>
+              <li>the Java2D backend can write PDF, PNG, GIF, and JPEG; and</li>
+              <li>the <a href="https://github.com/creativescala/doodle-svg">SVG backend</a> running on the JVM can write SVG; but</li>
+              <li>the <a href="https://github.com/creativescala/doodle-svg">SVG backend</a> running in the web browser cannot write files.</li>
+            </ul>
+            <p>Most people will use the Java2D backend and the examples below show this.</p>
+            
+            <h2 id="imports" class="section">Imports</h2>
+            <p>You need the normal imports to do anything with Doodle. Here are the imports for <code>Picture</code> and the JVM backend.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            <p>You&#39;ll also need an additional import to write output:</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.</span><span class="identifier">_</span></code></pre>
+            <p>This import makes available the standard formats supported by Doodle. </p>
+            
+            <h2 id="writing-an-image" class="section">Writing an Image</h2>
+            <p>Call the <code>write</code> method to write to a file, giving the format as a type parameter and the file name as a <code>String</code> parameter. For example, to write a PNG to the file called <code>&quot;circle.png&quot;</code></p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">circle</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
+  .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">10.0</span><span>)
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>)
+  
+</span><span class="identifier">circle</span><span>.</span><span class="identifier">write</span><span>[</span><span class="type-name">Png</span><span>](</span><span class="string-literal">&quot;circle.png&quot;</span><span>)</span></code></pre>
+            <p>Instead of using <code>Png</code> you could use <code>Gif</code> or <code>Jpg</code> to specify those file formats. You&#39;d probably want to change the file name as well if you change the format. That&#39;s it! Your masterpiece is now ready to share with the world.</p>
             <p class="nextPage"><a href="../image/index.html">Image→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
