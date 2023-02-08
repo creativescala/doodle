@@ -1,9 +1,6 @@
 # Picture and Image
 
-There are two types you can use to create pictures:
-
-1. @:api(doodle.algebra.Picture); and
-2. @:api(doodle.image.Image).
+There are two types you can use to create pictures: @:api(doodle.algebra.Picture) and @:api(doodle.image.Image).
 
 This section describes how to use and how to choose between them.
 
