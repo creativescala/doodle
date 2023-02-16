@@ -17,14 +17,15 @@
 package doodle
 package core
 
+import doodle.core.Color.{RGBA, HSLA}
 import doodle.syntax.all._
 import org.scalacheck.Gen
 
 trait Generators {
   val angle: Gen[Angle] =
-    Gen.choose(0, 360).map(_.degrees)
+    Gen.choose(-360, 360).map(_.degrees)
 
-  val color: Gen[Color] =
+  val hsla: Gen[HSLA] =
     for {
       h <- angle
       s <- normalized
@@ -32,8 +33,27 @@ trait Generators {
       a <- normalized
     } yield Color.HSLA(h, s, l, a)
 
+  val color: Gen[Color] = hsla
+
+  val point: Gen[Point] =
+    for {
+      x <- Gen.choose(-1000.0, 1000.0)
+      y <- Gen.choose(-1000.0, 1000.0)
+    } yield Point.cartesian(x, y)
+
   val normalized: Gen[Normalized] =
-    Gen.choose(0.0, 1.0).map(_.normalized)
+    Gen.choose(0.0, 1.0) map Normalized.clip
+
+  val unsignedByte: Gen[UnsignedByte] =
+    Gen.choose(0, 255) map (UnsignedByte.clip _)
+
+  val rgba: Gen[RGBA] =
+    for {
+      r <- unsignedByte
+      g <- unsignedByte
+      b <- unsignedByte
+      a <- normalized
+    } yield RGBA(r, g, b, a)
 
   val pathElement: Gen[PathElement] = {
     val point: Gen[Point] =
