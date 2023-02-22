@@ -31,7 +31,7 @@ import fs2.Stream
 trait AnimationRenderer[Canvas] {
 
   /** Animate frames that are produced by a `Stream`. */
-  def animate[Alg <: Algebra, F[_], A, Frame](
+  def animate[Alg <: Algebra, A, Frame](
       canvas: Canvas
   )(frames: Stream[IO, Picture[Alg, A]])(implicit
       e: Renderer[Alg, Frame, Canvas],

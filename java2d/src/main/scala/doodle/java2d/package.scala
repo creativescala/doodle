@@ -47,8 +47,7 @@ package object java2d extends Java2dToPicture {
 
   implicit val java2dAnimationRenderer: AnimationRenderer[Canvas] =
     doodle.java2d.effect.Java2dAnimationRenderer
-  implicit val java2dGifAnimationWriter
-      : AnimationWriter[Algebra, Drawing, Frame, Gif] =
+  implicit val java2dGifAnimationWriter: AnimationWriter[Algebra, Frame, Gif] =
     doodle.java2d.effect.Java2dAnimationWriter
 
   implicit val java2dRenderer

@@ -29,7 +29,7 @@ import java.io.File
 /** The `AnimationWriter` typeclass describes a data type that can write an
   * animation to a file.
   */
-trait AnimationWriter[Alg <: Algebra, F[_], Frame, Format] {
+trait AnimationWriter[Alg <: Algebra, Frame, Format] {
 
   def write[A](
       file: File,

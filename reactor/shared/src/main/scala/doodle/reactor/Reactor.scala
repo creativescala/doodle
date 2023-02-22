@@ -82,7 +82,7 @@ final case class Reactor[A](
   def step: Reactor[A] =
     this.copy(initial = this.onTick(this.initial))
 
-  def draw[Alg <: Basic, F[_], Frame, Canvas](
+  def draw[Alg <: Basic, Frame, Canvas](
       frame: Frame
   )(implicit
       renderer: Renderer[Alg, Frame, Canvas],
@@ -92,7 +92,7 @@ final case class Reactor[A](
     this.image.draw(frame)(renderer, runtime)
   }
 
-  def draw[Alg <: Basic, F[_], Frame, Canvas]()(implicit
+  def draw[Alg <: Basic, Frame, Canvas]()(implicit
       renderer: DefaultRenderer[Alg, Frame, Canvas],
       runtime: IORuntime
   ): Unit = {

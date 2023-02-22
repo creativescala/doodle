@@ -42,7 +42,7 @@ trait AnimationRendererSyntax {
 
   val theNullCallback = nullCallback _
 
-  implicit class AnimateStreamOps[Alg <: Algebra, F[_], A](
+  implicit class AnimateStreamOps[Alg <: Algebra, A](
       frames: Stream[IO, Picture[Alg, A]]
   ) {
 
@@ -109,7 +109,7 @@ trait AnimationRendererSyntax {
     }
   }
 
-  implicit class AnimateToStreamOps[Alg <: Algebra, F[_], A](
+  implicit class AnimateToStreamOps[Alg <: Algebra, A](
       frames: Stream[IO, Picture[Alg, A]]
   ) {
 

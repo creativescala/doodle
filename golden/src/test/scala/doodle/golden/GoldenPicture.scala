@@ -28,7 +28,7 @@ import munit._
 trait GoldenPicture extends Golden { self: FunSuite =>
   import doodle.syntax.all._
 
-  def assertGoldenPicture[Alg <: Algebra, F[_]](
+  def assertGoldenPicture[Alg <: Algebra](
       name: String,
       picture: Picture[Alg, Unit],
       frame: Frame = Frame.fitToPicture()
@@ -53,14 +53,14 @@ trait GoldenPicture extends Golden { self: FunSuite =>
     }
   }
 
-  def testPicture[Alg <: Algebra, F[_], A](name: String)(
+  def testPicture[Alg <: Algebra, A](name: String)(
       picture: Picture[Alg, Unit]
   )(implicit loc: Location, w: Writer[Alg, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture)
     }
 
-  def testPictureWithFrame[Alg <: Algebra, F[_], A](name: String)(
+  def testPictureWithFrame[Alg <: Algebra, A](name: String)(
       frame: Frame
   )(
       picture: Picture[Alg, Unit]

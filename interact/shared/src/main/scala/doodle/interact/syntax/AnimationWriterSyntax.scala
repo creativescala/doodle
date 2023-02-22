@@ -38,7 +38,7 @@ trait AnimationWriterSyntax {
       case Right(_) => ()
     }
 
-  implicit class AnimationWriterStreamOps[Alg <: Algebra, F[_], A](
+  implicit class AnimationWriterStreamOps[Alg <: Algebra, A](
       frames: Stream[IO, Picture[Alg, A]]
   ) {
 
@@ -53,13 +53,13 @@ trait AnimationWriterSyntax {
     ) {
       def apply[Frame](file: String, frame: Frame)(implicit
           m: Monoid[A],
-          w: AnimationWriter[Alg, F, Frame, Format]
+          w: AnimationWriter[Alg, Frame, Format]
       ): IO[A] =
         apply(new File(file), frame)
 
       def apply[Frame](file: File, frame: Frame)(implicit
           m: Monoid[A],
-          w: AnimationWriter[Alg, F, Frame, Format]
+          w: AnimationWriter[Alg, Frame, Format]
       ): IO[A] =
         w.write(file, frame, frames)
     }
@@ -69,14 +69,14 @@ trait AnimationWriterSyntax {
     ) {
       def apply[Frame](file: String, frame: Frame)(implicit
           m: Monoid[A],
-          w: AnimationWriter[Alg, F, Frame, Format],
+          w: AnimationWriter[Alg, Frame, Format],
           runtime: IORuntime
       ): Unit =
         apply(new File(file), frame)
 
       def apply[Frame](file: File, frame: Frame)(implicit
           m: Monoid[A],
-          w: AnimationWriter[Alg, F, Frame, Format],
+          w: AnimationWriter[Alg, Frame, Format],
           runtime: IORuntime
       ): Unit =
         w.write(file, frame, frames).unsafeRunAsync(animationWriterNullCallback)

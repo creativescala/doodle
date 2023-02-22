@@ -55,7 +55,7 @@ trait BaseReactor[A] {
   /** Run one tick of this reactor, drawing on the given `frame`. Returns the
     * next state, or None if the Reactor has stopped.
     */
-  def tick[F[_], Frame, Canvas](
+  def tick[Frame, Canvas](
       frame: Frame
   )(implicit
       e: Renderer[Basic, Frame, Canvas],
@@ -72,7 +72,7 @@ trait BaseReactor[A] {
   /** Runs this reactor, drawing on the given `frame`, until `stop` indicates it
     * should stop.
     */
-  def run[Alg <: Basic, F[_], Frame, Canvas](frame: Frame)(implicit
+  def run[Alg <: Basic, Frame, Canvas](frame: Frame)(implicit
       a: AnimationRenderer[Canvas],
       e: Renderer[Alg, Frame, Canvas],
       m: MouseClick[Canvas] with MouseMove[Canvas],

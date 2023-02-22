@@ -34,7 +34,7 @@ import java.io.FileOutputStream
   * fill with the background color on each frame, if the background is set.
   */
 object Java2dAnimationWriter
-    extends AnimationWriter[doodle.java2d.Algebra, Drawing, Frame, Gif] {
+    extends AnimationWriter[doodle.java2d.Algebra, Frame, Gif] {
 
   val gifEncoder: IO[GifEncoder] =
     IO { new GifEncoder() }
