@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.15.0 22-Feb-2023
+
+Remove `F[_]` parameters from animation. This should have been done in the previous release, but I forgot to do so. Breaks binary compatibility, requiring a new version.
+
+
 ## 0.14.0 18-Jan-2023
 
 - 0.12 and 0.13 were broken and we weren't able to fix them due to MIMA checks. Hence the jump from 0.11 to 0.14
