@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Laika 0.19.0" />
-    <title>Transforms</title>
+    <title>Effects</title>
     
     
     <meta name="description" content="docs" />
@@ -19,20 +19,20 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="layout.html">←</a></p>
+    <nav id="topbar"><p><a href="frame-canvas.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="writing.html">→</a></p></nav>
+<p><a href="../pictures/index.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
-          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1"><a href="index.html">Core Concepts</a></li>
+          <li class="level2"><a href="principles.html">Principles</a></li>
+          <li class="level2"><a href="algebras.html">Algebras</a></li>
+          <li class="level2"><a href="drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="syntax.html">Syntax</a></li>
+          <li class="level2"><a href="frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 active"><a href="#">Effects</a></li>
           <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
           <li class="level2"><a href="../pictures/picture-image.html">Picture and Image</a></li>
           <li class="level2"><a href="../pictures/shape.html">Shapes</a></li>
@@ -42,12 +42,12 @@
           <li class="level2"><a href="../pictures/transform.html">Transforms</a></li>
           <li class="level2"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
           <li class="level2"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="index.html">Image</a></li>
-          <li class="level2"><a href="shape.html">Shapes</a></li>
-          <li class="level2"><a href="styling.html">Styling</a></li>
-          <li class="level2"><a href="layout.html">Layout</a></li>
-          <li class="level2 active"><a href="#">Transforms</a></li>
-          <li class="level2"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
           <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
           <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
           <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
@@ -59,8 +59,10 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="transforms" class="title">Transforms</h1>
-            <p class="nextPage"><a href="writing.html">Writing to a File→</a></p>
+            <h1 id="effects" class="title">Effects</h1>
+            <p>In Doodle, an effect such as <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Renderer.html">Renderer</a> carries out the instructions in a <code>Picture</code>. In the case of <code>Renderer</code>, this is drawing the picture on the screen. Saving a <code>Picture</code> to a file is another very common effect.</p>
+            <p>You will mostly interact with effects by convenient syntax. For example, when you call <code>draw</code> on a <code>Picture</code> you are using an effect via such a convenience.</p>
+            <p class="nextPage"><a href="../pictures/index.html">Creating Pictures→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>

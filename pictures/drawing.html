@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Drawing to the Screen</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="transform.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="writing.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1"><a href="../index.html">Doodle</a></li>
+          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
+          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1"><a href="index.html">Creating Pictures</a></li>
+          <li class="level2"><a href="picture-image.html">Picture and Image</a></li>
+          <li class="level2"><a href="shape.html">Shapes</a></li>
+          <li class="level2"><a href="path.html">Paths</a></li>
+          <li class="level2"><a href="layout.html">Layout</a></li>
+          <li class="level2"><a href="style.html">Style</a></li>
+          <li class="level2"><a href="transform.html">Transforms</a></li>
+          <li class="level2 active"><a href="#">Drawing to the Screen</a></li>
+          <li class="level2"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../image/index.html">Image</a></li>
+          <li class="level2"><a href="../image/shape.html">Shapes</a></li>
+          <li class="level2"><a href="../image/styling.html">Styling</a></li>
+          <li class="level2"><a href="../image/layout.html">Layout</a></li>
+          <li class="level2"><a href="../image/transform.html">Transforms</a></li>
+          <li class="level2"><a href="../image/writing.html">Writing to a File</a></li>
+          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
+          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1"><a href="../effect/index.html">Effects</a></li>
+          <li class="level1"><a href="../core/index.html">Core</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="drawing-to-the-screen" class="title">Drawing to the Screen</h1>
+            <p>Drawing a picture to the screen is usually the end goal of using Doodle.
+            The usual way to draw a <code>Picture</code> is by calling the <code>draw</code> method. Using the Java2D backend will produce output in a window, while the <a href="https://github.com/creativescala/doodle-svg">SVG backend</a> can produce output inside a web page.</p>
+            <p>The examples below use the Java2D backend, but the general principles work with other backends.</p>
+            
+            <h2 id="imports" class="section">Imports</h2>
+            <p>You need the normal imports to do anything with Doodle. Here are the imports for <code>Picture</code> and the JVM backend.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            
+            <h2 id="drawing" class="section">Drawing</h2>
+            <p>The normal way to draw output is by calling the <code>draw</code> method.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>)</span></code></pre>
+            <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">draw</span><span>()</span></code></pre>
+            <p>When using the Java2D, the output will appear in separate window.</p>
+            <p>As explained <a href="../concepts/frame-canvas.html">in the concepts chapter</a>, Doodle has the concept of a frame and a canvas. A canvas is an area where a picture can be drawn, and a frame describes how to create a canvas. If you don&#39;t explicitly tell Doodle what frame you want, it uses a default. The default has a white background, is a little bit larger than the picture being drawn, and centers the picture in the middle of it.</p>
+            <p>The Java2D <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a> allows you specify the size of the window, a background color, and more. Here&#39;s an example where we change the size and background color.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">frame</span><span> = 
+  </span><span class="type-name">Frame</span><span>.</span><span class="keyword">default</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="number-literal">300</span><span>, </span><span class="number-literal">300</span><span>).</span><span class="identifier">withBackground</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>)</span></code></pre>
+            <p>Once we have a frame, we can pass it to <code>drawWithFrame</code>.</p>
+            <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithFrame</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
+            <p>Sometimes you&#39;ll want to draw several pictures on the same canvas. This is how animations work, repeatedly drawing to the same canvas. To do this you need to get a reference to a <code>Canvas</code>. The <code>canvas</code> syntax method on <code>Frame</code> will produce an <code>IO[Canvas]</code></p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">canvas</span><span> = </span><span class="identifier">frame</span><span>.</span><span class="identifier">canvas</span><span>()</span></code></pre>
+            <p>You can then call <code>drawWithCanvas</code>.</p>
+            <pre><code class="nohighlight"><span class="identifier">canvas</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">c</span><span> =&gt; </span><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithCanvas</span><span>(</span><span class="identifier">c</span><span>))</span></code></pre>
+            <p>However, this is not very idiomatic code. The above methods are all conveniences that hide the underlying use of <code>IO</code>. As soon as we introduce <code>IO</code> we should use the methods described below.</p>
+            
+            <h2 id="drawing-with-io" class="section">Drawing with IO</h2>
+            <p>It can be useful to convert a <code>Picture[A]</code> to an <code>IO[A]</code>. This could be because the picture is part of a larger program using <code>IO</code>, you are working with an <code>IO[Canvas]</code>, or you want to access the <code>A</code> value that is discarded by the <code>draw</code> variants discussed above. The <code>drawToIO</code> method does this conversion.</p>
+            <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">drawToIO</span><span>()</span></code></pre>
+            <p>There are also variants <code>drawWithFrameToIO</code> and <code>drawWithCanvasToIO</code>.</p>
+            <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithFrameToIO</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
+            <p>Using <code>drawWithCanvasToIO</code> is the idiomatic way to work with an <code>IO[Canvas]</code>.</p>
+            <pre><code class="nohighlight"><span class="identifier">canvas</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">c</span><span> =&gt; </span><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithCanvasToIO</span><span>(</span><span class="identifier">c</span><span>))</span></code></pre>
+            <p>Once you have an <code>IO</code>, you can run it in the usual way as part of an <code>IOApp</code>, with <code>unsafeRunSync</code>, or one of the other methods.</p>
+            <p class="nextPage"><a href="writing.html">Writing to a File→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>
