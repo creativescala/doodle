@@ -1,4 +1,4 @@
-# Writing Output
+# Writing to a File
 
 An `Image` or `Picture` can be written to a file as well as displaying it on screen. The file formats you can write depend on the backend you're using:
 

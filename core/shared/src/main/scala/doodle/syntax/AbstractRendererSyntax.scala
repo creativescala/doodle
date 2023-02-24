@@ -24,16 +24,21 @@ import doodle.algebra.Picture
 import doodle.effect.DefaultRenderer
 import doodle.effect.Renderer
 
-trait RendererSyntax {
+/** Rendering works differently on different platforms. The Javascript runtime
+  * must render asynchronously. The JVM runtime can render asychronously or
+  * sychronously. However, rendering in a Swing / Java2D context takes places on
+  * a daemon thread. This means the JVM will exit if this is the only thread
+  * running. The implication is that short Doodle program that does not block
+  * the main thread waiting for the Swing thread to complete will usually exit
+  * before the output appears. Therefore, at least in the common case of calling
+  * `draw`, rendering should be synchronous on the JVM.
+  */
+trait AbstractRendererSyntax {
 
-  def nullCallback[A](r: Either[Throwable, A]): Unit =
-    r match {
-      case Left(err) =>
-        println("There was an error rendering a picture")
-        err.printStackTrace()
-
-      case Right(_) => ()
-    }
+  /** Subtypes should implement this with unsafeRunSync or unsafeRunAsync as
+    * appropriate. Returns Unit because unsafeRunAsync cannot return a value.
+    */
+  protected def runIO[A](io: IO[A])(implicit runtime: IORuntime): Unit
 
   implicit class RendererPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
@@ -42,44 +47,45 @@ trait RendererSyntax {
     /** Convenience to immediately render a `Picture`, using the default `Frame`
       * options for this `Renderer`.
       */
-    def draw[Frame, Canvas](cb: Either[Throwable, A] => Unit = nullCallback _)(
-        implicit
+    def draw[Frame, Canvas]()(implicit
         renderer: DefaultRenderer[Alg, Frame, Canvas],
         r: IORuntime
     ): Unit =
-      drawToIO.unsafeRunAsync(cb)
+      runIO(drawToIO())
 
     /** Convenience to immediately render a `Picture`, using the given `Frame`
       * options for this `Renderer`.
       */
     def drawWithFrame[Frame, Canvas](
-        frame: Frame,
-        cb: Either[Throwable, A] => Unit = nullCallback _
+        frame: Frame
     )(implicit renderer: Renderer[Alg, Frame, Canvas], r: IORuntime): Unit =
-      (for {
-        canvas <- renderer.canvas(frame)
-        a <- renderer.render(canvas)(picture)
-      } yield a).unsafeRunAsync(cb)
+      runIO(drawWithFrameToIO(frame))
 
     /** Convenience to immediately render a `Picture`, using the given `Canvas`
       * for this `Renderer`.
       */
     def drawWithCanvas[Canvas](
-        canvas: Canvas,
-        cb: Either[Throwable, A] => Unit = nullCallback _
+        canvas: Canvas
     )(implicit renderer: Renderer[Alg, _, Canvas], r: IORuntime): Unit =
-      drawWithCanvasToIO(canvas).unsafeRunAsync(cb)
+      runIO(drawWithCanvasToIO(canvas))
 
     /** Create an effect that, when run, will draw `Picture` on the default
       * `Frame` for this `Renderer`.
       */
-    def drawToIO[Frame, Canvas](implicit
+    def drawToIO[Frame, Canvas]()(implicit
         renderer: DefaultRenderer[Alg, Frame, Canvas]
     ): IO[A] =
-      (for {
-        canvas <- renderer.canvas(renderer.default)
-        a <- renderer.render(canvas)(picture)
-      } yield a)
+      renderer
+        .canvas(renderer.default)
+        .flatMap(canvas => drawWithCanvasToIO(canvas))
+
+    /** Create an effect that, when run, will draw the `Picture` using the given
+      * `Frame` options.
+      */
+    def drawWithFrameToIO[Frame, Canvas](frame: Frame)(implicit
+        renderer: Renderer[Alg, Frame, Canvas]
+    ): IO[A] =
+      renderer.canvas(frame).flatMap(canvas => drawWithCanvasToIO(canvas))
 
     /** Create an effect that, when run, will draw the `Picture` on the given
       * `Canvas`.
@@ -88,6 +94,7 @@ trait RendererSyntax {
         renderer: Renderer[Alg, _, Canvas]
     ): IO[A] =
       renderer.render(canvas)(picture)
+
   }
 
   implicit class RendererFrameOps[Frame](frame: Frame) {

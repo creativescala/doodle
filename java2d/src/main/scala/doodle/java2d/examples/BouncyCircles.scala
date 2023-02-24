@@ -30,7 +30,7 @@ object BouncyCircles {
   import cats.effect.IO
   import cats.effect.unsafe.implicits.global
 
-  val frame = Frame.size(600, 600).background(Color.darkMagenta)
+  val frame = Frame.default.withSize(600, 600).withBackground(Color.darkMagenta)
   val steps = 60 * 10
 
   def bounce(easing: Easing): Stream[IO, Double] =

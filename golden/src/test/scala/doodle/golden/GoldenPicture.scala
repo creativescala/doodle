@@ -31,7 +31,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
   def assertGoldenPicture[Alg <: Algebra](
       name: String,
       picture: Picture[Alg, Unit],
-      frame: Frame = Frame.fitToPicture()
+      frame: Frame = Frame.default.withSizedToPicture()
   )(implicit loc: Location, w: Writer[Alg, Frame, Png]) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")

@@ -24,13 +24,13 @@ import munit._
 
 class FrameBackground extends FunSuite with GoldenPicture {
   testPictureWithFrame("black-background")(
-    Frame.fitToPicture().background(Color.black)
+    Frame.default.withSizedToPicture().withBackground(Color.black)
   ) {
     circle[Algebra](20).fillColor(Color.white)
   }
 
   testPictureWithFrame("red-background")(
-    Frame.fitToPicture().background(Color.red)
+    Frame.default.withSizedToPicture().withBackground(Color.red)
   ) {
     circle[Algebra](20).fillColor(Color.white)
   }

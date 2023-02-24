@@ -30,7 +30,8 @@ object Dash {
   import scala.concurrent.duration._
   import cats.effect.unsafe.implicits.global
 
-  val frame = Frame.size(600, 600).background(Color.midnightBlue)
+  val frame =
+    Frame.default.withSize(600, 600).withBackground(Color.midnightBlue)
   val maxSize = 300
   val minSize = 50
   val increment = 10

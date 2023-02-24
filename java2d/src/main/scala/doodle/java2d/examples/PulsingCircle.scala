@@ -29,7 +29,8 @@ object PulsingCircle {
   import cats.effect.IO
   import cats.effect.unsafe.implicits.global
 
-  val frame = Frame.size(600, 600).background(Color.midnightBlue)
+  val frame =
+    Frame.default.withSize(600, 600).withBackground(Color.midnightBlue)
 
   val strokeWidth = 9.0
   val gapWidth = 6.0

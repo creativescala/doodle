@@ -15,36 +15,21 @@
  */
 
 package doodle
-package java2d
-package effect
+package syntax
 
 import cats.effect.IO
+import cats.effect.unsafe.IORuntime
+import doodle.algebra.Algebra
+import doodle.algebra.Picture
 import doodle.effect.DefaultRenderer
+import doodle.effect.Renderer
 
-import javax.swing.JFrame
+trait RendererSyntax extends AbstractRendererSyntax {
 
-object Java2dRenderer extends DefaultRenderer[Algebra, Frame, Canvas] {
-
-  import cats.effect.unsafe.implicits.global
-
-  private var jFrames: List[JFrame] = List.empty
-
-  val default: Frame = Frame.default.withSizedToPicture(20)
-
-  def canvas(description: Frame): IO[Canvas] =
-    Canvas(description).flatMap { jFrame =>
-      IO {
-        jFrames.synchronized { jFrames = jFrame :: jFrames }
-      }.as(jFrame)
-    }
-
-  def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =
-    canvas.render(picture)
-
-  def stop(): Unit = {
-    jFrames.synchronized {
-      jFrames.foreach(_.dispose)
-      jFrames = List.empty
+  protected def runIO[A](io: IO[A])(implicit runtime: IORuntime): Unit = {
+    val _ = io.unsafeRunAsync {
+      case Left(exn) => println(s"Rendering failed with exception $exn")
+      case Right(_)  => ()
     }
   }
 }

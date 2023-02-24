@@ -31,7 +31,8 @@ object Ripples {
   import cats.instances.all._
   import cats.syntax.all._
 
-  val frame = Frame.size(600, 600).background(Color.midnightBlue)
+  val frame =
+    Frame.default.withSize(600, 600).withBackground(Color.midnightBlue)
 
   final case class Ripple(age: Int, x: Double, y: Double) {
     val maxAge = 200

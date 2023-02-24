@@ -24,7 +24,7 @@ import doodle.java2d.effect.Frame
 import doodle.syntax.all._
 
 object Background {
-  val frame = Frame.fitToPicture().background(Color.black)
+  val frame = Frame.default.withSizedToPicture(20).withBackground(Color.black)
 
   def rainbowCircles(count: Int, color: Color): Image =
     count match {

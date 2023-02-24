@@ -44,5 +44,5 @@ object Easing {
       )
 
   def go() =
-    reactor.run(Frame.size(600, 600))
+    reactor.run(Frame.default.withSize(600, 600))
 }

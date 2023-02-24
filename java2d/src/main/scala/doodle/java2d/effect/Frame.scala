@@ -20,45 +20,71 @@ package effect
 
 import doodle.core.Color
 
-/** The [[Frame]] specifies how to create a [[Canvas]].
+/** The [[Frame]] specifies how to create a [[Canvas]]. The idiomatic way to
+  * create a `Frame` is to start with `Frame.default` and then call the builder
+  * methods starting with `with`.
+  *
+  * For example, this `Frame` specifies a fixed size and a background color.
+  *
+  * ```
+  * Frame.default.withSize(300, 300).withBackground(Color.midnightBlue)
+  * ```
   */
 final case class Frame(
     size: Size,
-    title: String = "Doodle",
+    title: String,
     center: Center,
-    background: Option[Color] = Some(Color.white),
-    redraw: Redraw = Redraw.clearToBackground
+    background: Option[Color],
+    redraw: Redraw
 ) {
 
-  /** Change the background color to the given color.
+  /** Size the canvas with the given fixed dimensions. */
+  def withSize(width: Double, height: Double): Frame =
+    this.copy(size = Size.fixedSize(width, height))
+
+  /** Size the canvas to fit to the picture's bounding box, plus the given
+    * border around the bounding box.
     */
-  def background(color: Color): Frame =
+  def withSizedToPicture(border: Int = 20): Frame =
+    this.copy(size = Size.fitToPicture(border))
+
+  /** Use the given color as the background.
+    */
+  def withBackground(color: Color): Frame =
     this.copy(background = Some(color))
 
-  /** Change the background to fully transparent (no background).
+  /** Use a fully transparent background.
     */
-  def noBackground: Frame =
+  def withNoBackground: Frame =
     this.copy(background = None)
 
-  def clearToBackground: Frame =
+  /** When redrawing, clear the screen with the background color. */
+  def withClearToBackground: Frame =
     this.copy(redraw = Redraw.clearToBackground)
 
-  def clearToColor(color: Color): Frame =
+  /** When redrawing, clear the screen with the given color. */
+  def withClearToColor(color: Color): Frame =
     this.copy(redraw = Redraw.clearToColor(color))
 
-  def title(title: String): Frame =
+  /** Title the window with the given string. */
+  def withTitle(title: String): Frame =
     this.copy(title = title)
 
-  def centerOnPicture: Frame =
+  /** Make the center of the canvas the center of the picture's bounding box. */
+  def withCenterOnPicture: Frame =
     this.copy(center = Center.centeredOnPicture)
 
-  def centerAtOrigin: Frame =
+  /** Make the center of the canvas the origin. */
+  def wthCenterAtOrigin: Frame =
     this.copy(center = Center.atOrigin)
 }
 object Frame {
-  def fitToPicture(border: Int = 20): Frame =
-    Frame(Size.fitToPicture(border), center = Center.centeredOnPicture)
-
-  def size(width: Double, height: Double): Frame =
-    Frame(Size.fixedSize(width, height), center = Center.atOrigin)
+  val default =
+    Frame(
+      size = Size.fitToPicture(20),
+      title = "Doodle",
+      center = Center.centeredOnPicture,
+      background = Some(Color.white),
+      redraw = Redraw.clearToBackground
+    )
 }

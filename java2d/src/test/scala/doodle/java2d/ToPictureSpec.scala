@@ -45,9 +45,9 @@ object ToPictureSpec extends SimpleTestSuite {
       b: Base64[Algebra, Frame, A],
       tp: ToPicture[B64[A], Algebra]
   ) = {
-    val (_, b1) = picture.base64[A](Frame.fitToPicture(0))
+    val (_, b1) = picture.base64[A](Frame.default.withSizedToPicture(0))
     val (_, b2) =
-      b1.toPicture[Algebra].base64[A](Frame.fitToPicture(0))
+      b1.toPicture[Algebra].base64[A](Frame.default.withSizedToPicture(0))
     val error = base64Distance(b1, b2)
     // Large threshold because the round-trip introduces a small vertical
     // displacement that ends up causing a large error. Not sure of the source

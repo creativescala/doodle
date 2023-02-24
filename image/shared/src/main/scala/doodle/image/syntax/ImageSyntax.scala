@@ -27,6 +27,7 @@ import doodle.effect.Renderer
 import doodle.effect.Writer
 import doodle.image.Image
 import doodle.language.Basic
+import doodle.syntax.renderer._
 
 import java.io.File
 
