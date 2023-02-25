@@ -42,12 +42,6 @@
           <li class="level2"><a href="pictures/transform.html">Transforms</a></li>
           <li class="level2"><a href="pictures/drawing.html">Drawing to the Screen</a></li>
           <li class="level2"><a href="pictures/writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="image/index.html">Image</a></li>
-          <li class="level2"><a href="image/shape.html">Shapes</a></li>
-          <li class="level2"><a href="image/styling.html">Styling</a></li>
-          <li class="level2"><a href="image/layout.html">Layout</a></li>
-          <li class="level2"><a href="image/transform.html">Transforms</a></li>
-          <li class="level2"><a href="image/writing.html">Writing to a File</a></li>
           <li class="level1"><a href="algebra/index.html">Algebras</a></li>
           <li class="level2"><a href="algebra/using.html">Using Algebras</a></li>
           <li class="level2"><a href="algebra/picture.html">Picture</a></li>
@@ -67,7 +61,7 @@
             <pre><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;org.creativescala&quot;</span><span> %% </span><span class="string-literal">&quot;doodle&quot;</span><span> % </span><span class="string-literal">&quot;0.15.0&quot;</span></code></pre>
             
             <h2 id="scaladoc" class="section">ScalaDoc</h2>
-            <p>See <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/index.html">index</a> for the ScalaDoc.</p>
+            <p>See the ScalaDoc <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/index.html">index</a> for API documentation.</p>
             
             <h2 id="quick-example" class="section">Quick Example</h2>
             <p>The following example creates a Chessboard, by first creating a 2x2 board, then a 4x4 board from the 2x2 board, and finally the complete 8x8 board from the 4x4 board.</p>
@@ -106,24 +100,10 @@
             <h3 id="attention-intellij-users" class="section">Attention IntelliJ Users</h3>
             <p>The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicits correctly. The above example might give you an Error warning in Line XX. You can ignore this warning, or fix it using <code>chessboard.draw[Algebra, Frame, Canvas]()</code>. Please use any text editor and <a href="https://scalameta.org/metals/">Metals</a> to get a better experience using Doodle.</p>
             
-            <h2 id="guides" class="section">Guides</h2>
-            <p><a href="image/index.html">Using the Image library</a> is the easiest way to get started drawing with Doodle.</p>
-            <p><a href="algebra/index.html">Using the tagless final algebras</a> allows access to features that are specific to a backend.</p>
-            
-            <h2 id="concepts" class="section">Concepts</h2>
-            <p>Understanding <a href="concepts/index.html">core concepts</a> in Doodle will help make sense of the library.</p>
-            <p><em>TODO</em>: layout, bounding boxes, and origins; paths; styles; debug</p>
-            
-            <h2 id="library-overview" class="section">Library Overview</h2>
-            <p>The main packages of Doodle are:</p>
+            <h2 id="learning-doodle" class="section">Learning Doodle</h2>
             <ul>
-              <li><a href="core/index.html">core</a>, which provides common utilities such as <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a>, <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Point.html">Point</a>, and <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Parametric$.html">Parametric</a>.</li>
-              <li><a href="image/index.html">image</a></li>
-              <li><a href="algebra/index.html">algebra</a></li>
-              <li><a href="effect/index.html">effect</a></li>
-              <li>syntax</li>
-              <li>animation and interaction</li>
-              <li>interactive exploration</li>
+              <li>To get started drawing pictures, read the <a href="/pictures/">Creating Pictures</a> chapter.</li>
+              <li>To understand the concept behind Doodle, start with the <a href="/concepts/">Core Concepts</a> chapter.</li>
             </ul>
             <p class="nextPage"><a href="concepts/index.html">Core Concepts→</a></p>
         </main>
