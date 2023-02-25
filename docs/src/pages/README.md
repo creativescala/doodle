@@ -14,7 +14,7 @@ libraryDependencies += "org.creativescala" %% "doodle" % "@VERSION@"
 
 ## ScalaDoc
 
-See @:api(doodle.index) for the ScalaDoc.
+See the ScalaDoc @:api(doodle.index) for API documentation.
 
 
 ## Quick Example
@@ -69,31 +69,10 @@ This creates the picture shown below.
 The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicits correctly. The above example might give you an Error warning in Line XX. You can ignore this warning, or fix it using `chessboard.draw[Algebra, Frame, Canvas]()`. Please use any text editor and [Metals](https://scalameta.org/metals/) to get a better experience using Doodle.
 
 
-## Guides
+## Learning Doodle
 
-[Using the Image library](image/README.md) is the easiest way to get started drawing with Doodle.
-
-[Using the tagless final algebras](algebra/README.md) allows access to features that are specific to a backend.
-
-## Concepts
-
-Understanding [core concepts](concepts/README.md) in Doodle will help make sense of the library.
-
-*TODO*: layout, bounding boxes, and origins; paths; styles; debug
-
-
-## Library Overview
-
-The main packages of Doodle are:
-
-- [core](core/README.md), which provides common utilities such as @:api(doodle.core.Color), @:api(doodle.core.Point), and @:api(doodle.core.Parametric$).
-- [image](image/README.md)
-- [algebra](algebra/README.md)
-- [effect](effect/README.md)
-- syntax
-- animation and interaction
-- interactive exploration
-
+- To get started drawing pictures, read the [Creating Pictures](/pictures/) chapter.
+- To understand the concept behind Doodle, start with the [Core Concepts](/concepts/) chapter.
 
 [java2d]: https://en.wikipedia.org/wiki/Java_2D
 [svg]: https://github.com/creativescala/doodle-svg
