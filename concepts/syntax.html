@@ -24,30 +24,30 @@
 <p><a href="frame-canvas.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="index.html">Core Concepts</a></li>
-          <li class="level2"><a href="principles.html">Principles</a></li>
-          <li class="level2"><a href="algebras.html">Algebras</a></li>
-          <li class="level2"><a href="drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
-          <li class="level2 active"><a href="#">Syntax</a></li>
-          <li class="level2"><a href="frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="effects.html">Effects</a></li>
-          <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="../pictures/picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="../pictures/shape.html">Shapes</a></li>
-          <li class="level2"><a href="../pictures/path.html">Paths</a></li>
-          <li class="level2"><a href="../pictures/layout.html">Layout</a></li>
-          <li class="level2"><a href="../pictures/style.html">Style</a></li>
-          <li class="level2"><a href="../pictures/transform.html">Transforms</a></li>
-          <li class="level2"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
-          <li class="level2"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
-          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="index.html">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
@@ -57,7 +57,7 @@
             <p>To use methods on algebras that are not constructors (constructors are explained in <a href="picture-object.html">Picture Object</a>) you would usually use syntax.</p>
             <p>The standard import for syntax is</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
-            <p>Say we want to use the <code>beside</code> method on <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a>. First we need some pictures to layout.</p>
+            <p>Say we want to use the <code>beside</code> method on <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a>. First we need some pictures to layout.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">left</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">10</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">right</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">20</span><span>)</span></code></pre>
             <p>Then, with the syntax imported, we can just call the <code>beside</code> method as if it&#39;s a method on <code>Picture</code>.</p>

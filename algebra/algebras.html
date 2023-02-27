@@ -21,79 +21,79 @@
 <body>
     <nav id="topbar"><p><a href="picture.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="../effect/index.html">→</a></p></nav>
+<p><a href="../effect/">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
-          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="../concepts/effects.html">Effects</a></li>
-          <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="../pictures/picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="../pictures/shape.html">Shapes</a></li>
-          <li class="level2"><a href="../pictures/path.html">Paths</a></li>
-          <li class="level2"><a href="../pictures/layout.html">Layout</a></li>
-          <li class="level2"><a href="../pictures/style.html">Style</a></li>
-          <li class="level2"><a href="../pictures/transform.html">Transforms</a></li>
-          <li class="level2"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
-          <li class="level2"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="index.html">Algebras</a></li>
-          <li class="level2"><a href="using.html">Using Algebras</a></li>
-          <li class="level2"><a href="picture.html">Picture</a></li>
-          <li class="level2 active"><a href="#">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="index.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="picture.html">Picture</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
     <div id="content">
         <main class="content">
             <h1 id="available-algebras" class="title">Available Algebras</h1>
-            <p>This section gives a quick overview of the main algebras in Doodle. It is not intended to replicate the details you can find in the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/index.html">index</a>. Read that for more details. All algebras have corresponding syntax that adds the methods they define to <code>Picture</code>.</p>
+            <p>This section gives a quick overview of the main algebras in Doodle. It is not intended to replicate the details you can find in the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/index.html">index</a>. Read that for more details. All algebras have corresponding syntax that adds the methods they define to <code>Picture</code>.</p>
             <ul>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Algebra.html">Algebra</a> is a marker trait that allow other algebras extend. It provides no useful functionality of its own.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Algebra.html">Algebra</a> is a marker trait that allow other algebras extend. It provides no useful functionality of its own.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Bitmap.html">Bitmap</a> is a convenience to load a bitmap image as a <code>Picture</code>. This is easy to use but not very flexible, and it does not have any error handling. For more complex cases use the <code>ImageIO</code> in the Java standard library to load a <code>BufferedImage</code> and then use the <code>toPicture</code> method to convert to a <code>Picture</code>.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Bitmap.html">Bitmap</a> is a convenience to load a bitmap image as a <code>Picture</code>. This is easy to use but not very flexible, and it does not have any error handling. For more complex cases use the <code>ImageIO</code> in the Java standard library to load a <code>BufferedImage</code> and then use the <code>toPicture</code> method to convert to a <code>Picture</code>.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Blend.html">Blend</a> specifies blending modes.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Blend.html">Blend</a> specifies blending modes.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Debug.html">Debug</a> renders a picture&#39;s bounding box and origin, which is useful for debugging layout issues.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Debug.html">Debug</a> renders a picture&#39;s bounding box and origin, which is useful for debugging layout issues.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> provides basic layout operations.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> provides basic layout operations.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Path.html">Path</a> converts a <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/ClosedPath.html">ClosedPath</a> or an <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/OpenPath.html">OpenPath</a> into a <code>Picture</code>.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Path.html">Path</a> converts a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/ClosedPath.html">ClosedPath</a> or an <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/OpenPath.html">OpenPath</a> into a <code>Picture</code>.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> is a convenience for drawing some simple shapes, such as circles and squares.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> is a convenience for drawing some simple shapes, such as circles and squares.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Size.html">Size</a> gets the size of a <code>Picture</code>, which can be used for complex layout, for example.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Size.html">Size</a> gets the size of a <code>Picture</code>, which can be used for complex layout, for example.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Style.html">Style</a> allows changing the stroke, fill, and other characterisitics of a <code>Picture</code>.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Style.html">Style</a> allows changing the stroke, fill, and other characterisitics of a <code>Picture</code>.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Text.html">Text</a> adds text to a <code>Picture</code>.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Text.html">Text</a> adds text to a <code>Picture</code>.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/ToPicture.html">ToPicture</a> converts other types to a <code>Picture</code>.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/ToPicture.html">ToPicture</a> converts other types to a <code>Picture</code>.</p>
               </li>
               <li>
-                <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Transform.html">Transform</a> applies geometrics transformations, such as rotations and scaling, to a <code>Picture</code>.</p>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Transform.html">Transform</a> applies geometrics transformations, such as rotations and scaling, to a <code>Picture</code>.</p>
               </li>
             </ul>
-            <p class="nextPage"><a href="../effect/index.html">Effects→</a></p>
+            <p class="nextPage"><a href="../effect/">Effects→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>

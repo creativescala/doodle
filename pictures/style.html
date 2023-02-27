@@ -24,30 +24,30 @@
 <p><a href="transform.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
-          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="../concepts/effects.html">Effects</a></li>
-          <li class="level1"><a href="index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="shape.html">Shapes</a></li>
-          <li class="level2"><a href="path.html">Paths</a></li>
-          <li class="level2"><a href="layout.html">Layout</a></li>
-          <li class="level2 active"><a href="#">Style</a></li>
-          <li class="level2"><a href="transform.html">Transforms</a></li>
-          <li class="level2"><a href="drawing.html">Drawing to the Screen</a></li>
-          <li class="level2"><a href="writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
-          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="index.html">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="layout.html">Layout</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Style</a></li>
+          <li class="level2 nav-leaf"><a href="transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
@@ -56,7 +56,7 @@
             <h1 id="style" class="title">Style</h1>
             
             <h2 id="concept" class="section">Concept</h2>
-            <p>The <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Style.html">Style</a> algebra provides methods to style pictures. There are two main ways in which a picture can be styled:</p>
+            <p>The <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Style.html">Style</a> algebra provides methods to style pictures. There are two main ways in which a picture can be styled:</p>
             <ul>
               <li>the stroke, which specifies the outline of a picture; and</li>
               <li>the fill, which specifies what goes inside a picture.</li>
@@ -84,8 +84,8 @@
             <ul>
               <li>the color, <code>strokeColor</code>;</li>
               <li>the width, <code>strokeWidth</code>;</li>
-              <li>the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Cap.html">Cap</a>, <code>strokeCap</code>, which specifies how lines end;</li>
-              <li>the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Join.html">Join</a>, <code>strokeJoin</code>, which specifies how lines are joined together; and</li>
+              <li>the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Cap.html">Cap</a>, <code>strokeCap</code>, which specifies how lines end;</li>
+              <li>the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Join.html">Join</a>, <code>strokeJoin</code>, which specifies how lines are joined together; and</li>
               <li>the dash, <code>strokeDash</code>, which specifies a pattern to be used for the stroke.</li>
             </ul>
             <p>If you don&#39;t want any stroke, you can use <code>noStroke</code>.</p>
@@ -113,7 +113,7 @@
             <p>The fill can either be one of:</p>
             <ul>
               <li>a solid color, specified with <code>fillColor</code>;</li>
-              <li>a <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Gradient.html">Gradient</a>, specified with <code>fillGradient</code>;</li>
+              <li>a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Gradient.html">Gradient</a>, specified with <code>fillGradient</code>;</li>
               <li>no fill, specified with <code>noFill</code>.</li>
             </ul>
             <p>The example below shows examples of using gradient fills.</p>
@@ -143,7 +143,7 @@
             </div>
             
             <h2 id="implementation" class="section">Implementation</h2>
-            <p>The <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Style.html">Style</a> algebra supports all the features described above. <code>Image</code> supports only:</p>
+            <p>The <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Style.html">Style</a> algebra supports all the features described above. <code>Image</code> supports only:</p>
             <ul>
               <li><code>strokeColor</code>, <code>strokeWidth</code> and <code>noStroke</code>; and</li>
               <li><code>fillColor</code>, <code>fillGradient</code>, and <code>noFill</code>.</li>

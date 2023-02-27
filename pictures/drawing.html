@@ -24,30 +24,30 @@
 <p><a href="writing.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
-          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="../concepts/effects.html">Effects</a></li>
-          <li class="level1"><a href="index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="shape.html">Shapes</a></li>
-          <li class="level2"><a href="path.html">Paths</a></li>
-          <li class="level2"><a href="layout.html">Layout</a></li>
-          <li class="level2"><a href="style.html">Style</a></li>
-          <li class="level2"><a href="transform.html">Transforms</a></li>
-          <li class="level2 active"><a href="#">Drawing to the Screen</a></li>
-          <li class="level2"><a href="writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
-          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="index.html">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="transform.html">Transforms</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
@@ -71,7 +71,7 @@
             <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">draw</span><span>()</span></code></pre>
             <p>When using the Java2D, the output will appear in separate window.</p>
             <p>As explained <a href="../concepts/frame-canvas.html">in the concepts chapter</a>, Doodle has the concept of a frame and a canvas. A canvas is an area where a picture can be drawn, and a frame describes how to create a canvas. If you don&#39;t explicitly tell Doodle what frame you want, it uses a default. The default has a white background, is a little bit larger than the picture being drawn, and centers the picture in the middle of it.</p>
-            <p>The Java2D <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a> allows you specify the size of the window, a background color, and more. Here&#39;s an example where we change the size and background color.</p>
+            <p>The Java2D <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a> allows you specify the size of the window, a background color, and more. Here&#39;s an example where we change the size and background color.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">frame</span><span> = 
   </span><span class="type-name">Frame</span><span>.</span><span class="keyword">default</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="number-literal">300</span><span>, </span><span class="number-literal">300</span><span>).</span><span class="identifier">withBackground</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>)</span></code></pre>
             <p>Once we have a frame, we can pass it to <code>drawWithFrame</code>.</p>

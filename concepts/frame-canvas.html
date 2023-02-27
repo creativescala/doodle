@@ -24,38 +24,38 @@
 <p><a href="effects.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="index.html">Core Concepts</a></li>
-          <li class="level2"><a href="principles.html">Principles</a></li>
-          <li class="level2"><a href="algebras.html">Algebras</a></li>
-          <li class="level2"><a href="drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="syntax.html">Syntax</a></li>
-          <li class="level2 active"><a href="#">Frame and Canvas</a></li>
-          <li class="level2"><a href="effects.html">Effects</a></li>
-          <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="../pictures/picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="../pictures/shape.html">Shapes</a></li>
-          <li class="level2"><a href="../pictures/path.html">Paths</a></li>
-          <li class="level2"><a href="../pictures/layout.html">Layout</a></li>
-          <li class="level2"><a href="../pictures/style.html">Style</a></li>
-          <li class="level2"><a href="../pictures/transform.html">Transforms</a></li>
-          <li class="level2"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
-          <li class="level2"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
-          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="index.html">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="syntax.html">Syntax</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
     <div id="content">
         <main class="content">
             <h1 id="frame-and-canvas" class="title">Frame and Canvas</h1>
-            <p>In Doodle, a <em>canvas</em> is an area of screen that we can draw to. This could be a native window or part of a web page, or something else. A <em>frame</em> is a description of a canvas, which tells a particular backend how to construct the canvas. For example, the Java2D <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a> allows us to specify the title of the window, the size of the window, the background color, and more. </p>
-            <p>Frames and canvases are naturally back-end specific, so there is no code-level abstraction that unites, say, the SVG  <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/svg/effect/Frame.html">Frame</a> and the Java2D <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a>. However, conceptually they are related so where it makes sense they have the same API.</p>
+            <p>In Doodle, a <em>canvas</em> is an area of screen that we can draw to. This could be a native window or part of a web page, or something else. A <em>frame</em> is a description of a canvas, which tells a particular backend how to construct the canvas. For example, the Java2D <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a> allows us to specify the title of the window, the size of the window, the background color, and more. </p>
+            <p>Frames and canvases are naturally back-end specific, so there is no code-level abstraction that unites, say, the SVG  <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/svg/effect/Frame.html">Frame</a> and the Java2D <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a>. However, conceptually they are related so where it makes sense they have the same API.</p>
             <p>You can get quite far in Doodle without ever worrying about frames or canvases. When you <code>draw</code> a picture, for example, a default frame will be created if you don&#39;t specify one. Sometimes you must explicitly specify the frame. Animation is one example where this is required. Other times you will want more control over the output, such as to change the background color, and here creating a frame will give you that control.</p>
             <p class="nextPage"><a href="effects.html">Effects→</a></p>
         </main>

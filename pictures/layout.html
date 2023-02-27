@@ -24,30 +24,30 @@
 <p><a href="style.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="../concepts/index.html">Core Concepts</a></li>
-          <li class="level2"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="../concepts/effects.html">Effects</a></li>
-          <li class="level1"><a href="index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="shape.html">Shapes</a></li>
-          <li class="level2"><a href="path.html">Paths</a></li>
-          <li class="level2 active"><a href="#">Layout</a></li>
-          <li class="level2"><a href="style.html">Style</a></li>
-          <li class="level2"><a href="transform.html">Transforms</a></li>
-          <li class="level2"><a href="drawing.html">Drawing to the Screen</a></li>
-          <li class="level2"><a href="writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
-          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="index.html">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="path.html">Paths</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
@@ -56,7 +56,7 @@
             <h1 id="layout" class="title">Layout</h1>
             
             <h2 id="concept" class="section">Concept</h2>
-            <p>Positioning pictures relative to other pictures is important for many compositions, and the <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> algebra provides a flexible system for handling this.</p>
+            <p>Positioning pictures relative to other pictures is important for many compositions, and the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a> algebra provides a flexible system for handling this.</p>
             
             <h3 id="above-beside-and-on" class="section">Above, Beside, and On</h3>
             <p>The most basic layout methods are <code>above</code>, <code>beside</code>, and <code>on</code>. They do what their names suggest, putting a picture above, beside, or on top of another picture. Below is an example.</p>
@@ -123,8 +123,8 @@
             </div>
             
             <h3 id="positioning-using-landmarks" class="section">Positioning using Landmarks</h3>
-            <p><a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Landmark.html">Landmark</a> provides more flexible layout, by allowing you to specify points relative to the bounding box or origin instead of in absolute terms relative to the origin. For example, we can specify the top left of the bounding box by simply using <code>Landmark.topLeft</code> instead of working out the coordinates of this location. Both <code>at</code> and <code>originAt</code> support landmarks.</p>
-            <p>Ultimately, all landmarks are specified relative to the origin, but you can use a percentage <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Coordinate.html">Coordinate</a> instead of an absolute value. Zero percent is the origin, 100% is the top or right edge of the bounding box, and -100% is the bottom or left edge of the bounding box.</p>
+            <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Landmark.html">Landmark</a> provides more flexible layout, by allowing you to specify points relative to the bounding box or origin instead of in absolute terms relative to the origin. For example, we can specify the top left of the bounding box by simply using <code>Landmark.topLeft</code> instead of working out the coordinates of this location. Both <code>at</code> and <code>originAt</code> support landmarks.</p>
+            <p>Ultimately, all landmarks are specified relative to the origin, but you can use a percentage <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Coordinate.html">Coordinate</a> instead of an absolute value. Zero percent is the origin, 100% is the top or right edge of the bounding box, and -100% is the bottom or left edge of the bounding box.</p>
             <p>In the example below we use landmarks to specify points that are halfway between the origin and the edge of the bounding box. In this simple example we could easily work out the absolute coordinate directly, but landmarks come into their own in more complex examples.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">overlappingCircles</span><span> =
   </span><span class="type-name">Picture</span><span>

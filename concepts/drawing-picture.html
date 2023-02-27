@@ -24,37 +24,37 @@
 <p><a href="picture-object.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
-          <li class="level1"><a href="../index.html">Doodle</a></li>
-          <li class="level1"><a href="index.html">Core Concepts</a></li>
-          <li class="level2"><a href="principles.html">Principles</a></li>
-          <li class="level2"><a href="algebras.html">Algebras</a></li>
-          <li class="level2 active"><a href="#">Picture and Drawing</a></li>
-          <li class="level2"><a href="picture-object.html">Picture Object</a></li>
-          <li class="level2"><a href="syntax.html">Syntax</a></li>
-          <li class="level2"><a href="frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2"><a href="effects.html">Effects</a></li>
-          <li class="level1"><a href="../pictures/index.html">Creating Pictures</a></li>
-          <li class="level2"><a href="../pictures/picture-image.html">Picture and Image</a></li>
-          <li class="level2"><a href="../pictures/shape.html">Shapes</a></li>
-          <li class="level2"><a href="../pictures/path.html">Paths</a></li>
-          <li class="level2"><a href="../pictures/layout.html">Layout</a></li>
-          <li class="level2"><a href="../pictures/style.html">Style</a></li>
-          <li class="level2"><a href="../pictures/transform.html">Transforms</a></li>
-          <li class="level2"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
-          <li class="level2"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1"><a href="../algebra/index.html">Algebras</a></li>
-          <li class="level2"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1"><a href="../effect/index.html">Effects</a></li>
-          <li class="level1"><a href="../core/index.html">Core</a></li>
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="index.html">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="algebras.html">Algebras</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
         </ul>
     </nav>
 
     <div id="content">
         <main class="content">
             <h1 id="picture-and-drawing" class="title">Picture and Drawing</h1>
-            <p>Each Doodle backend defines, by convention, two types called <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Picture.html">Picture</a> and <code>Drawing</code>. These are the main types you&#39;ll interact with.</p>
+            <p>Each Doodle backend defines, by convention, two types called <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Picture.html">Picture</a> and <code>Drawing</code>. These are the main types you&#39;ll interact with.</p>
             <p>The quick overview is:</p>
             <ul>
               <li><code>Picture</code> is a backend independent description of a picture, that accepts backend specific algebra implementations to produce a backend specific <code>Drawing</code></li>
