@@ -52,6 +52,20 @@ sealed abstract class Image extends Product with Serializable {
   def strokeWidth(width: Double): Image =
     StrokeWidth(this, width)
 
+  def strokeCap[A](strokeCap: Cap): Image =
+    StrokeCap(this, strokeCap)
+
+  def strokeJoin[A](strokeJoin: Join): Image =
+    StrokeJoin(this, strokeJoin)
+
+  /** Specify the stroke dash pattern. The pattern gives the length, in local
+    * coordinates, of opaque and transparent sections. The first element is the
+    * length of an opaque section, the second of a transparent section, and so
+    * on.
+    */
+  def strokeDash[A](pattern: Iterable[Double]): Image =
+    StrokeDash(this, pattern)
+
   def fillColor(color: Color): Image =
     FillColor(this, color)
 
@@ -162,6 +176,11 @@ object Image {
     // Style
     final case class StrokeWidth(image: Image, width: Double) extends Image
     final case class StrokeColor(image: Image, color: Color) extends Image
+    final case class StrokeCap(image: Image, cap: Cap) extends Image
+    final case class StrokeJoin(image: Image, join: Join) extends Image
+    final case class StrokeDash(image: Image, pattern: Iterable[Double])
+        extends Image
+
     final case class FillColor(image: Image, color: Color) extends Image
     final case class FillGradient(image: Image, gradient: Gradient)
         extends Image
@@ -323,6 +342,12 @@ object Image {
             algebra.strokeWidth(compile(image)(algebra), width)
           case StrokeColor(image, color) =>
             algebra.strokeColor(compile(image)(algebra), color)
+          case StrokeCap(image, cap) =>
+            algebra.strokeCap(compile(image)(algebra), cap)
+          case StrokeJoin(image, join) =>
+            algebra.strokeJoin(compile(image)(algebra), join)
+          case StrokeDash(image, pattern) =>
+            algebra.strokeDash(compile(image)(algebra), pattern)
           case FillColor(image, color) =>
             algebra.fillColor(compile(image)(algebra), color)
           case FillGradient(image, gradient) =>

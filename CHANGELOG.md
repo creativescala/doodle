@@ -1,8 +1,15 @@
 # Changelog
 
+## Next
+
+- Rendering of pictures and animations is synchronous on the JVM. This should stop simple programs exiting before any output is displayed. Removed callbacks from rendering methods---they were never used, they don't make sense is rendering can be synchronous, and you can use the `IO` methods if you want that level of control.
+
+- Add `strokeCap`, `strokeJoin`, and `strokeDash` to `Image`, providing all the features of `Style`.
+
+
 ## 0.15.0 22-Feb-2023
 
-Remove `F[_]` parameters from animation. This should have been done in the previous release, but I forgot to do so. Breaks binary compatibility, requiring a new version.
+- Remove `F[_]` parameters from animation. This should have been done in the previous release, but I forgot to do so. Breaks binary compatibility, requiring a new version.
 
 
 ## 0.14.0 18-Jan-2023
