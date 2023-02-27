@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.16.0 27-Feb-2023
 
 - Write a lot of documentation
 
