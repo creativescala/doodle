@@ -19,10 +19,6 @@ package syntax
 
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
-import doodle.algebra.Algebra
-import doodle.algebra.Picture
-import doodle.effect.DefaultRenderer
-import doodle.effect.Renderer
 
 trait RendererSyntax extends AbstractRendererSyntax {
 

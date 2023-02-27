@@ -146,7 +146,7 @@ object Windswept {
       for {
         accum <- randomImage
         t <- tendril
-      } yield (t at (0, i.toDouble)) on accum
+      } yield (t.at(0, i.toDouble)).on(accum)
     }
 
   def image =
