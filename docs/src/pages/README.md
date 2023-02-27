@@ -71,8 +71,8 @@ The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicit
 
 ## Learning Doodle
 
-- To get started drawing pictures, read the [Creating Pictures](/pictures/) chapter.
-- To understand the concept behind Doodle, start with the [Core Concepts](/concepts/) chapter.
+- To get started drawing pictures, read the [Creating Pictures](pictures/README.md) chapter.
+- To understand the concept behind Doodle, start with the [Core Concepts](concepts/README.md) chapter.
 
 [java2d]: https://en.wikipedia.org/wiki/Java_2D
 [svg]: https://github.com/creativescala/doodle-svg
