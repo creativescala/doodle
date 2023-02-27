@@ -2,6 +2,10 @@
 
 ## Next
 
+- Write a lot of documentation
+
+- Update to Scala 3.2
+
 - Rendering of pictures and animations is synchronous on the JVM. This should stop simple programs exiting before any output is displayed. Removed callbacks from rendering methods---they were never used, they don't make sense is rendering can be synchronous, and you can use the `IO` methods if you want that level of control.
 
 - Add `strokeCap`, `strokeJoin`, and `strokeDash` to `Image`, providing all the features of `Style`.

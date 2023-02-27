@@ -102,7 +102,4 @@ val fillStyle =
 
 ## Implementation
 
-The @:api(doodle.algebra.Style) algebra supports all the features described above. `Image` supports only:
-
-- `strokeColor`, `strokeWidth` and `noStroke`; and
-- `fillColor`, `fillGradient`, and `noFill`.
+The @:api(doodle.algebra.Style) algebra supports all the features described above as does `Image`.
