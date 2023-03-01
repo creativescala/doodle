@@ -89,7 +89,7 @@ final case class Reactor[A](
       runtime: IORuntime
   ): Unit = {
     import doodle.image.syntax.all._
-    this.image.draw(frame)(renderer, runtime)
+    this.image.drawWithFrame(frame)(renderer, runtime)
   }
 
   def draw[Alg <: Basic, Frame, Canvas]()(implicit

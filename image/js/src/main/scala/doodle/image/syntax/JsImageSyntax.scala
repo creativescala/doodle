@@ -16,17 +16,6 @@
 
 package doodle
 package image
+package syntax
 
-package object syntax {
-  object all extends JsImageSyntax with TraverseImageSyntax
-  object image extends JsImageSyntax
-  object traverse extends TraverseImageSyntax
-
-  /** The core object defines syntax for doodle.core, which is a convenient way
-    * to avoid pulling in Algebra syntax that may conflict with Image.
-    */
-  object core
-      extends doodle.syntax.AngleSyntax
-      with doodle.syntax.NormalizedSyntax
-      with doodle.syntax.UnsignedByteSyntax
-}
+class JsImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {}

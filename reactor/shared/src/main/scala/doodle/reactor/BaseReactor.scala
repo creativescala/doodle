@@ -41,7 +41,7 @@ import scala.concurrent.duration._
   * This is the basic interface. See [[Reactor]] for a more user friendly
   * implementation.
   *
-  * It is based on * the same abstraction in Pyret.
+  * It is based on the same abstraction in Pyret.
   */
 trait BaseReactor[A] {
   def initial: A
@@ -63,7 +63,7 @@ trait BaseReactor[A] {
   ): Option[A] = {
     if (stop(initial)) None
     else {
-      (render(initial)).draw(frame)
+      (render(initial)).drawWithFrame(frame)
       val next = onTick(initial)
       Some(next)
     }
