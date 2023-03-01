@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.17.0 1-Mar-2023
+
+- Update `Image` render syntax to match changes to `Picture` render syntax
+
+
 ## 0.16.0 27-Feb-2023
 
 - Write a lot of documentation
