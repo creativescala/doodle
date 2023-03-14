@@ -75,7 +75,7 @@ final case class Frame(
     this.copy(center = Center.centeredOnPicture)
 
   /** Make the center of the canvas the origin. */
-  def wthCenterAtOrigin: Frame =
+  def withCenterAtOrigin: Frame =
     this.copy(center = Center.atOrigin)
 }
 object Frame {
