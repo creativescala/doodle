@@ -602,8 +602,6 @@ li.level2 {
 .default-image-block {
   clear: both;
   margin: 1rem;
-  grid-column-start: main-start;
-  grid-column-end: main-end;
 }
 
 #content {
@@ -616,14 +614,14 @@ main {
   grid-template-columns: [main-start] minmax(20ch, 70ch) [main-end] minmax(0ch,20ch) [overflow-end];
 }
 
+.content * {
+  grid-column-start: main-start;
+  grid-column-end: main-end;
+}
+
 h1, h2, h3, h4 {
   --tw-text-opacity: 1;
   color: rgb(157 23 77 / var(--tw-text-opacity));
-}
-
-.content h1, h2, h3, h4 {
-  grid-column-start: main-start;
-  grid-column-end: main-end;
 }
 
 h1 {
@@ -653,14 +651,7 @@ p {
   margin-bottom: 1rem;
 }
 
-.content p {
-  grid-column-start: main-start;
-  grid-column-end: main-end;
-}
-
 .content ol.arabic {
-  grid-column-start: main-start;
-  grid-column-end: main-end;
   margin-bottom: 1rem;
   list-style-position: outside;
   list-style-type: decimal;
@@ -668,8 +659,6 @@ p {
 }
 
 .content ul {
-  grid-column-start: main-start;
-  grid-column-end: main-end;
   margin-bottom: 1rem;
   list-style-position: outside;
   list-style-type: disc;

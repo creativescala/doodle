@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Animations</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script src="../main.js"></script>
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="../algebra/">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
+          <li class="level1 nav-node"><a href="index.html">Interactivity</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Animations</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="animations" class="title">Animations</h1>
+            <p>An animation, in Doodle, in a sequence of <code>Pictures</code> produced over time. Concretely, it is a <code>fs2.Stream[IO, Picture[Alg, A]]</code>. You can create such a <code>Stream</code> yourself, but Doodle provides tools that may be easier to work with:</p>
+            <ol class="arabic">
+              <li>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/interact/animation/Interpolation.html">Interpolation</a>, which can be used when an animation depends on a range of values between some starting and ending point. For example, an animation of a moving ball can be created from an <code>Interpolation</code> between the minimum and maximum position of the ball.</p>
+              </li>
+              <li>
+                <p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/interact/animation/Transducer.html">Transducer</a>, which represents an animation in terms of some internal state, a function to convert that internal state into a <code>Picture</code>, and a function to update that internal state into a new state. This can be used for more complex animations that cannot be represented by an <code>Interpolation</code>.</p>
+              </li>
+            </ol>
+            
+            <h2 id="using-animations" class="section">Using Animations</h2>
+            <p>To use animations we&#39;ll need the following imports:</p>
+            <pre><code class="nohighlight"><span class="comment">// The standard Doodle imports
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// Animation specific imports
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">interact</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">interact</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <p>To do anything useful we&#39;ll also need a backend. Here are the imports for the Java2D backend:</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            
+            <h2 id="example" class="section">Example</h2>
+            <p>Here&#39;s an example animating a ball moving across the screen. This uses an <code>Interpolation</code>, via the <code>upTo</code> method, because the position of the ball is a simple function of a value in the range -100.0 to 100.0.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">ball</span><span> =
+  -</span><span class="number-literal">100.0</span><span>
+    .</span><span class="identifier">upTo</span><span>(</span><span class="number-literal">100.0</span><span>)
+    .</span><span class="identifier">map</span><span>(</span><span class="identifier">x</span><span> =&gt;
+      </span><span class="type-name">Picture</span><span>
+        .</span><span class="identifier">circle</span><span>(</span><span class="number-literal">15</span><span>)
+        .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">aliceBlue</span><span>)
+        .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">3.0</span><span>)
+        .</span><span class="identifier">at</span><span>(</span><span class="identifier">x</span><span>, </span><span class="number-literal">0.0</span><span>)
+    )
+    .</span><span class="identifier">forSteps</span><span>(</span><span class="number-literal">100</span><span>)
+    .</span><span class="identifier">repeatForever</span></code></pre>
+            <p>This produces the animation below.</p>
+            <div id="simple"></div>
+            <script>Simple.ball("simple")</script>
+            <p class="nextPage"><a href="../algebra/">Algebras→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>
