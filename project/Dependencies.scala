@@ -30,4 +30,6 @@ object Dependencies {
   val miniTestLaws =
     Def.setting("io.monix" %%% "minitest-laws" % miniTestVersion % "test")
   val munit = Def.setting("org.scalameta" %% "munit" % munitVersion % "test")
+  val munitScalaCheck =
+    Def.setting("org.scalameta" %% "munit-scalacheck" % munitVersion % "test")
 }

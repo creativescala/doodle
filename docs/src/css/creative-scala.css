@@ -32,8 +32,6 @@ li.level2 {
 
 .default-image-block {
     @apply m-4 clear-both;
-    grid-column-start: main-start;
-    grid-column-end: main-end;
 }
 
 #content {
@@ -44,12 +42,12 @@ main {
     display: grid;
     grid-template-columns: [main-start] minmax(20ch, 70ch) [main-end] minmax(0ch,20ch) [overflow-end];
 }
-h1, h2, h3, h4 {
-    @apply text-pink-800;
-}
-.content h1, h2, h3, h4 {
+.content * {
     grid-column-start: main-start;
     grid-column-end: main-end;
+}
+h1, h2, h3, h4 {
+    @apply text-pink-800;
 }
 h1 {
     @apply text-6xl mb-16;
@@ -68,18 +66,10 @@ h4 {
 p {
     @apply mb-4;
 }
-.content p {
-    grid-column-start: main-start;
-    grid-column-end: main-end;
-}
 .content ol.arabic {
-    grid-column-start: main-start;
-    grid-column-end: main-end;
     @apply list-decimal list-outside pl-4 mb-4;
 }
 .content ul {
-    grid-column-start: main-start;
-    grid-column-end: main-end;
     @apply list-disc list-outside pl-4 mb-4;
 }
 .content pre {

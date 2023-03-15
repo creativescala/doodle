@@ -425,15 +425,23 @@ object Transducer {
         Transducer.empty[A]
     }
 
+  /** Create a transducer that immediately stops. */
   def empty[A]: Transducer[A] =
     apply()
 
+  /** Create a transducer that produces the given element and then stops. */
   def pure[A](elt: A): Transducer[A] =
     apply(elt)
 
+  /** Create a transducer that produces elements in-order from the given list
+    * and then stops.
+    */
   def fromList[A](elts: List[A]): Transducer[A] =
     apply(elts: _*)
 
+  /** Create a transducer that produces the given elements in-order and then
+    * stops.
+    */
   def apply[A](elts: A*): Transducer[A] =
     new Transducer[A] {
       type State = Seq[A]
@@ -456,5 +464,45 @@ object Transducer {
           case Seq() => true
           case _     => false
         }
+    }
+
+  /** Create a transducer that starts with given `start` state and runs forever.
+    * The function `update` is used to update the state.
+    */
+  def scanLeft[A](start: A)(update: A => A): Transducer[A] =
+    new Transducer[A] {
+      type State = A
+
+      val initial: State = initial
+
+      def next(current: State): State =
+        update(current)
+
+      def output(state: State): A =
+        state
+
+      def stopped(state: State): Boolean =
+        false
+    }
+
+  /** Create a transducer that starts with given `start` state, and runs until
+    * `stop` returns `false`. The function `f` is used to update the state.
+    */
+  def scanLeftUntil[A](
+      start: A
+  )(update: A => A)(stop: A => Boolean): Transducer[A] =
+    new Transducer[A] {
+      type State = A
+
+      val initial: State = initial
+
+      def next(current: State): State =
+        update(current)
+
+      def output(state: State): A =
+        state
+
+      def stopped(state: State): Boolean =
+        stop(state)
     }
 }

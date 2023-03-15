@@ -18,8 +18,8 @@ package doodle
 package interact
 package animation
 
-import cats.Functor
-import cats.Semigroupal
+import cats._
+import cats.syntax.all._
 import doodle.interact.easing.Easing
 
 import scala.concurrent.duration.Duration
@@ -99,6 +99,11 @@ sealed trait Interpolation[A] {
             case Some(e) => i.closed(start, stop, steps, e)
             case None    => i.closed(start, stop, steps)
           }
+        case Constant(value) =>
+          // Easing is irrelevant when we're generating a constant
+          Transducer
+            .scanLeftUntil(0L)(x => x + 1)(x => x >= steps)
+            .as(value)
       }
 
     loop(this, None)
@@ -127,6 +132,7 @@ object Interpolation {
       left: Interpolation[A],
       right: Interpolation[B]
   ) extends Interpolation[(A, B)]
+  final case class Constant[A](value: A) extends Interpolation[A]
 
   implicit val interpolationInstance
       : Functor[Interpolation] with Semigroupal[Interpolation] =
@@ -157,4 +163,7 @@ object Interpolation {
   ): Interpolation[A] =
     Closed(start, stop, i)
 
+  /** Construct an interpolation that has a constant value. */
+  def constant[A](value: A): Interpolation[A] =
+    Constant(value)
 }

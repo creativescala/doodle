@@ -59,6 +59,7 @@ lazy val css = taskKey[Unit]("Build the CSS")
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     Dependencies.munit.value,
+    Dependencies.munitScalaCheck.value,
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
@@ -159,7 +160,12 @@ lazy val docs =
 
         cmd2 !
       },
-      Laika / sourceDirectories += file("docs/src/templates"),
+      Laika / sourceDirectories ++=
+        Seq(
+          file("docs/src/templates"),
+          (examples.js / Compile / fastOptJS / artifactPath).value
+            .getParentFile() / s"${(examples.js / moduleName).value}-fastopt"
+        ),
       laikaTheme := Theme.empty,
       laikaExtensions ++= Seq(
         laika.markdown.github.GitHubFlavor,
@@ -168,6 +174,7 @@ lazy val docs =
       ),
       tlSite := Def
         .sequential(
+          (examples.js / Compile / fastLinkJS),
           (Compile / run).toTask(""),
           mdoc.toTask(""),
           css,
@@ -282,6 +289,24 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
   .in(file("examples"))
   .settings(
     commonSettings,
+    // To generate JS examples we depend on doodle-svg. This is a circular
+    // dependency! Be prepared to comment this out when APIs are in flux.
+    libraryDependencies ++= Seq(
+      "org.creativescala" %%% "doodle-svg" % "0.14.0",
+      Dependencies.catsCore.value
+    ),
+    // Tell sbt it's ok that the doodle-svg and doodle version don't match
+    libraryDependencySchemes += "org.creativescala" %% "doodle-svg" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-svg_sjs1" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-core" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-interact" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-image" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-java2d" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-examples" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-core_sjs1" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-interact_sjs1" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-image_sjs1" % VersionScheme.Always,
+    libraryDependencySchemes += "org.creativescala" %% "doodle-examples_sjs1" % VersionScheme.Always,
     moduleName := "doodle-examples"
   )
   .jvmConfigure(
