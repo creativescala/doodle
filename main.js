@@ -3585,7 +3585,7 @@ function $f_Ldoodle_core_CommonColors__$init$__V($thiz) {
   var this$14 = $m_Ldoodle_core_Color$();
   this$14.rgba__I__I__I__D__Ldoodle_core_Color(95, 158, 160, 1.0);
   var this$15 = $m_Ldoodle_core_Color$();
-  $thiz.Ldoodle_core_Color$__f_chartReuse = this$15.rgba__I__I__I__D__Ldoodle_core_Color(127, 255, 0, 1.0);
+  $thiz.Ldoodle_core_Color$__f_chartreuse = this$15.rgba__I__I__I__D__Ldoodle_core_Color(127, 255, 0, 1.0);
   var this$16 = $m_Ldoodle_core_Color$();
   this$16.rgba__I__I__I__D__Ldoodle_core_Color(210, 105, 30, 1.0);
   var this$17 = $m_Ldoodle_core_Color$();
@@ -4059,7 +4059,7 @@ $c_Ldoodle_examples_Simple$.prototype.ball__T__V = (function(id) {
     var this$4 = $m_Ldoodle_syntax_package$all$();
     var picture = new $c_Ldoodle_algebra_ShapeConstructor$$anon$4(15.0);
     var this$5 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$4, picture);
-    var fillColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_chartReuse;
+    var fillColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_chartreuse;
     var picture$1 = new $c_Ldoodle_syntax_StyleSyntax$$anon$1(fillColor, this$5);
     var this$7 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$6, picture$1);
     var picture$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(3.0, this$7);
@@ -35690,7 +35690,7 @@ function $asArrayOf_Ldoodle_core_Color(obj, depth) {
 /** @constructor */
 function $c_Ldoodle_core_Color$() {
   this.Ldoodle_core_Color$__f_black = null;
-  this.Ldoodle_core_Color$__f_chartReuse = null;
+  this.Ldoodle_core_Color$__f_chartreuse = null;
   $n_Ldoodle_core_Color$ = this;
   $f_Ldoodle_core_CommonColors__$init$__V(this)
 }
