@@ -40,7 +40,7 @@ val ball =
     .map(x =>
       Picture
         .circle(15)
-        .fillColor(Color.aliceBlue)
+        .fillColor(Color.chartreuse)
         .strokeWidth(3.0)
         .at(x, 0.0)
     )
