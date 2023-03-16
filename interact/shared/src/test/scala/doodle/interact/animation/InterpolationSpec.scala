@@ -20,9 +20,9 @@ package animation
 
 import cats.implicits._
 import doodle.interact.syntax.all._
+import munit.ScalaCheckSuite
 import org.scalacheck.Prop._
 import org.scalacheck._
-import munit.ScalaCheckSuite
 
 class InterpolationSpec extends ScalaCheckSuite {
   property("upTo empty range produces no output") {
