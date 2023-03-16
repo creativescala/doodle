@@ -1,5 +1,12 @@
 # Changelog
 
+## Next
+
+- Fix assorted typos
+
+- Add more constructors for creating animations
+
+
 ## 0.17.0 1-Mar-2023
 
 - Update `Image` render syntax to match changes to `Picture` render syntax
