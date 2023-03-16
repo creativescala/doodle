@@ -473,7 +473,7 @@ object Transducer {
     new Transducer[A] {
       type State = A
 
-      val initial: State = initial
+      val initial: State = start
 
       def next(current: State): State =
         update(current)
@@ -494,7 +494,7 @@ object Transducer {
     new Transducer[A] {
       type State = A
 
-      val initial: State = initial
+      val initial: State = start
 
       def next(current: State): State =
         update(current)
