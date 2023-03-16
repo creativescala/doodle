@@ -16,12 +16,13 @@
 
 package doodle.examples
 
+import cats.effect.unsafe.implicits.global
 import doodle.core._
 import doodle.interact._
-import doodle.syntax.all._
-import doodle.svg._
 import doodle.interact.syntax.all._
-import cats.effect.unsafe.implicits.global
+import doodle.svg._
+import doodle.syntax.all._
+
 import scala.scalajs.js.annotation._
 
 @JSExportTopLevel("Simple")
