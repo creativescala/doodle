@@ -4188,7 +4188,7 @@ function $ps_Ldoodle_interact_animation_Interpolation__loop$1__J__Ldoodle_intera
         var bhi = steps$1.RTLong__f_hi;
         return ((hi$2 === bhi) ? (((-2147483648) ^ lo$2) >= ((-2147483648) ^ steps$1.RTLong__f_lo)) : (hi$2 > bhi))
       }))(steps$1));
-      var target = new $c_Ldoodle_interact_animation_Transducer$$anon$12(update, stop);
+      var target = new $c_Ldoodle_interact_animation_Transducer$$anon$12($L0, update, stop);
       var tc = $m_Ldoodle_interact_animation_Transducer$().Ldoodle_interact_animation_Transducer$__f_transducerTraverseAndApplicative;
       var this$20 = new $c_Lcats_Functor$ToFunctorOps$$anon$4(target, tc);
       return $as_Ldoodle_interact_animation_Transducer($n(this$20.Lcats_Functor$ToFunctorOps$$anon$4__f_typeClassInstance).as__O__O__O(this$20.Lcats_Functor$ToFunctorOps$$anon$4__f_self, x10))
@@ -20560,13 +20560,13 @@ var $d_Ldoodle_interact_animation_Transducer$$anon$10 = new $TypeData().initClas
 });
 $c_Ldoodle_interact_animation_Transducer$$anon$10.prototype.$classData = $d_Ldoodle_interact_animation_Transducer$$anon$10;
 /** @constructor */
-function $c_Ldoodle_interact_animation_Transducer$$anon$12(update$4, stop$2) {
-  this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$2 = null;
-  this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$1 = null;
+function $c_Ldoodle_interact_animation_Transducer$$anon$12(start$2, update$3, stop$1) {
+  this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$4 = null;
+  this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$2 = null;
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial = null;
-  this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$2 = update$4;
-  this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$1 = stop$2;
-  this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial = this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial
+  this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$4 = update$3;
+  this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$2 = stop$1;
+  this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial = start$2
 }
 $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype = new $h_O();
 $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype.constructor = $c_Ldoodle_interact_animation_Transducer$$anon$12;
@@ -20579,13 +20579,13 @@ $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype.initial__O = (functi
   return this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial
 });
 $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype.next__O__O = (function(current) {
-  return $n(this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$2).apply__O__O(current)
+  return $n(this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$4).apply__O__O(current)
 });
 $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype.output__O__O = (function(state) {
   return state
 });
 $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype.stopped__O__Z = (function(state) {
-  return $uZ($n(this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$1).apply__O__O(state))
+  return $uZ($n(this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$2).apply__O__O(state))
 });
 var $d_Ldoodle_interact_animation_Transducer$$anon$12 = new $TypeData().initClass({
   Ldoodle_interact_animation_Transducer$$anon$12: 0
