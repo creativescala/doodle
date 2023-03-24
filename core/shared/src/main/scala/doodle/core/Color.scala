@@ -123,7 +123,7 @@ sealed abstract class Color extends Product with Serializable {
   }
 
   /** Lighten the color by the given *relative* amount. For example, calling
-    * `aColor.lightenBy(0.1.normalized` increases the lightness by 10% of the
+    * `aColor.lightenBy(0.1.normalized)` increases the lightness by 10% of the
     * current lightness.
     */
   def lightenBy(lightness: Normalized) = {
@@ -132,7 +132,7 @@ sealed abstract class Color extends Product with Serializable {
   }
 
   /** Darken the color by the given *relative* amount. For example, calling
-    * `aColor.darkenBy(0.1.normalized` decreases the lightness by 10% of the
+    * `aColor.darkenBy(0.1.normalized)` decreases the lightness by 10% of the
     * current lightness.
     */
   def darkenBy(darkness: Normalized) = {
