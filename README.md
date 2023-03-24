@@ -39,6 +39,12 @@ Doodle was written by Noel Welsh with contributions from [the contributors liste
 
 These are notes for developers.
 
+### General Development
+
+- Use the `build` task in sbt to compile and test everything, and run formatting.
+- Use the `prePR` task for additional checks before submitting a PR.
+
+
 ### Documentation
 
 Thanks to the *amazing* Typelevel SBT plugin, documentation should be built on every push to the master branch.
