@@ -42,17 +42,17 @@ sealed abstract class Image extends Product with Serializable {
     Above(top, this)
 
   def margin(
-              top: Double,
-              right: Double,
-              bottom: Double,
-              left: Double
-            ) : Image =
+      top: Double,
+      right: Double,
+      bottom: Double,
+      left: Double
+  ): Image =
     Margin(this, top, right, bottom, left)
 
-  def margin(width: Double, height: Double) : Image =
+  def margin(width: Double, height: Double): Image =
     Margin(this, height, width, height, width)
 
-  def margin(width: Double) : Image =
+  def margin(width: Double): Image =
     Margin(this, width, width, width, width)
 
   // Context Transform ------------------------------------------------
@@ -187,7 +187,13 @@ object Image {
     final case class On(t: Image, b: Image) extends Image
     final case class At(image: Image, x: Double, y: Double) extends Image
     final case class Transform(tx: core.Transform, i: Image) extends Image
-    final case class Margin(i: Image, top: Double, right: Double, bottom: Double, left: Double) extends Image
+    final case class Margin(
+        i: Image,
+        top: Double,
+        right: Double,
+        bottom: Double,
+        left: Double
+    ) extends Image
     // Style
     final case class StrokeWidth(image: Image, width: Double) extends Image
     final case class StrokeColor(image: Image, color: Color) extends Image
