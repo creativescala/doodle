@@ -131,8 +131,19 @@ sealed abstract class Image extends Product with Serializable {
     At(this, pt.x, pt.y)
   }
 
+  def originAt(vec: Vec): Image =
+    OriginAt(this, vec.x, vec.y)
+
+  def originAt(pt: Point): Image =
+    OriginAt(this, pt.x, pt.y)
+
   def originAt(x: Double, y: Double): Image =
     OriginAt(this, x, y)
+
+  def originAt(r: Double, a: Angle): Image = {
+    val pt = Point(r, a)
+    OriginAt(this, pt.x, pt.y)
+  }
 
   // Debug ------------------------------------------------------------
 
