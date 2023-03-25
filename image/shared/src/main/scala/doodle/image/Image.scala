@@ -131,6 +131,9 @@ sealed abstract class Image extends Product with Serializable {
     At(this, pt.x, pt.y)
   }
 
+  def originAt(x: Double, y: Double): Image =
+    OriginAt(this, x, y)
+
   // Debug ------------------------------------------------------------
 
   def debug(color: Color): Image =
@@ -194,6 +197,7 @@ object Image {
         bottom: Double,
         left: Double
     ) extends Image
+    final case class OriginAt(image: Image, x: Double, y: Double) extends Image
     // Style
     final case class StrokeWidth(image: Image, width: Double) extends Image
     final case class StrokeColor(image: Image, color: Color) extends Image
@@ -357,6 +361,8 @@ object Image {
             algebra.at(compile(image)(algebra), x, y)
           case Margin(image, top, right, bottom, left) =>
             algebra.margin(compile(image)(algebra), top, right, bottom, left)
+          case OriginAt(image, x, y) =>
+            algebra.originAt(compile(image)(algebra), x, y)
 
           case Transform(tx, i) =>
             algebra.transform(compile(i)(algebra), tx)
