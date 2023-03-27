@@ -2,7 +2,7 @@
 
 ## Next
 
-- Add `margin` to `Image`, thanks to `@danielost`
+- Add `margin` and `originAt` to `Image`, thanks to `@danielost`
  
 
 ## 0.18.0 16-Mar-2023
