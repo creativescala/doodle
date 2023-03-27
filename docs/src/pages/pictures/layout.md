@@ -141,4 +141,4 @@ val rollingCircles =
 
 ## Implementation
 
-The `Layout` algebra supports all the features described above. `Image` doesn't support `originAt`, or landmarks.
+The `Layout` algebra supports all the features described above. `Image` doesn't support landmarks.
