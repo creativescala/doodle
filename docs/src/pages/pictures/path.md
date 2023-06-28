@@ -42,7 +42,7 @@ val open =
 val closed =
   ClosedPath.empty.curveTo(90, 0, 100, 10, 50, 50).path.strokeColor(Color.blue)
 
-val curves = open.beside(closed).path
+val curves = open.beside(closed)
 ```
 
 @:image(open-closed-paths.png)
