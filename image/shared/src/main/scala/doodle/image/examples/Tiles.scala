@@ -27,9 +27,6 @@ import doodle.random._
 import doodle.syntax.all._
 
 object Tiles {
-
-  import PathElement._
-
   // Experiments generating tiles
 
   def randomColor(meanHue: Angle): Random[Color] =

@@ -22,9 +22,6 @@ import doodle.core._
 import doodle.image.Image
 
 object OpenClosedPaths {
-  import Point._
-  import PathElement._
-
   val openCurve = OpenPath.empty.curveTo(
     Point(50, 100),
     Point(100, 100),

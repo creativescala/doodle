@@ -23,8 +23,6 @@ import doodle.image._
 import doodle.syntax.all._
 
 object Tree {
-  import PathElement._
-
   def leaf(angle: Angle, length: Double): Image =
     Image
       .path(

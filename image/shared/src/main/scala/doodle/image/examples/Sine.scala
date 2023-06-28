@@ -124,8 +124,6 @@ object Sine {
   }
 
   def errorBars(data: List[Point], curve: AngularCurve, width: Int): Image = {
-    import PathElement._
-
     (
       data.map { pt =>
         val angle = ((pt.x + (width / 2)) / width).turns
