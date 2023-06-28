@@ -32,8 +32,8 @@ ThisBuild / developers := List(
 // true by default, set to false to publish to s01.oss.sonatype.org
 ThisBuild / tlSonatypeUseLegacyHost := true
 
-lazy val scala213 = "2.13.10"
-lazy val scala3 = "3.2.1"
+lazy val scala213 = "2.13.11"
+lazy val scala3 = "3.3.0"
 
 ThisBuild / crossScalaVersions := List(scala3, scala213)
 ThisBuild / scalaVersion := crossScalaVersions.value.head
@@ -292,7 +292,7 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
     // To generate JS examples we depend on doodle-svg. This is a circular
     // dependency! Be prepared to comment this out when APIs are in flux.
     libraryDependencies ++= Seq(
-      "org.creativescala" %%% "doodle-svg" % "0.14.0",
+      "org.creativescala" %%% "doodle-svg" % "0.15.1",
       Dependencies.catsCore.value
     ),
     // Tell sbt it's ok that the doodle-svg and doodle version don't match
