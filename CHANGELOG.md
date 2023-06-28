@@ -3,6 +3,8 @@
 ## Next
 
 - Add `margin` and `originAt` to `Image`, thanks to `@danielost`
+
+- Simplify handling of paths (#130). APIs prefer to work with `OpenPath` and `ClosedPath`
  
 
 ## 0.18.0 16-Mar-2023
