@@ -37,7 +37,7 @@ object Polygon {
     }
 
     Image
-      .closedPath(elements)
+      .path(ClosedPath(elements.toList))
       .strokeWidth(5)
       .strokeColor(Color.hsl(centerAngle, 1.0, .5))
   }

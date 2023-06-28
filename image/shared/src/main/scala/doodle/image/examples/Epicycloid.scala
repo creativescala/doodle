@@ -58,12 +58,14 @@ object Epicycloid {
   }
 
   def render(epicycloid: Epicycloid): Image =
-    Image.closedPath(
-      PathElement.moveTo(eval(Angle.zero, epicycloid).toPoint) ::
-        (BigDecimal(0.0) to 1.0 by 0.001).map { t =>
-          val angle = Angle.turns(t.doubleValue)
-          PathElement.lineTo(eval(angle, epicycloid).toPoint)
-        }.toList
+    Image.path(
+      ClosedPath(
+        PathElement.moveTo(eval(Angle.zero, epicycloid).toPoint) ::
+          (BigDecimal(0.0) to 1.0 by 0.001).map { t =>
+            val angle = Angle.turns(t.doubleValue)
+            PathElement.lineTo(eval(angle, epicycloid).toPoint)
+          }.toList
+      )
     )
 
   def image: Image =

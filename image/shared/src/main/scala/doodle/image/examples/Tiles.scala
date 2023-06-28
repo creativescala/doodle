@@ -49,8 +49,8 @@ object Tiles {
       pt1 <- point
       pt2 <- point
       pt3 <- point
-    } yield Image.closedPath(
-      Seq(moveTo(pt1), lineTo(pt2), lineTo(pt3), lineTo(pt1))
+    } yield Image.path(
+      ClosedPath.empty.moveTo(pt1).lineTo(pt2).lineTo(pt3).lineTo(pt1)
     )
   }
 

@@ -132,7 +132,9 @@ object Sine {
         val predicted = curve(angle)
 
         Image
-          .openPath(List(moveTo(pt.x, pt.y), lineTo(predicted.x, predicted.y)))
+          .path(
+            OpenPath.empty.moveTo(pt.x, pt.y).lineTo(predicted.x, predicted.y)
+          )
           .strokeColor(underBlue)
           .strokeWidth(7.0)
       }

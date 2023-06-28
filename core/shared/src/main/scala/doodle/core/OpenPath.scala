@@ -87,4 +87,45 @@ object OpenPath {
 
   def apply(elts: List[PathElement]): OpenPath =
     new OpenPath(elts.reverse)
+
+  def circle(center: Point, diameter: Double): OpenPath =
+    circle(center.x, center.y, diameter)
+
+  def circle(x: Double, y: Double, diameter: Double): OpenPath =
+    OpenPath(PathElement.circle(x, y, diameter))
+
+  def line(x: Double, y: Double): OpenPath =
+    OpenPath(PathElement.line(x, y))
+
+  def regularPolygon(sides: Int, radius: Double): OpenPath =
+    OpenPath(PathElement.regularPolygon(sides, radius))
+
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double
+  ): OpenPath =
+    OpenPath(PathElement.star(points, outerRadius, innerRadius))
+
+  def equilateralTriangle(width: Double): OpenPath =
+    OpenPath(PathElement.equilateralTriangle(width))
+
+  def rightArrow(width: Double, height: Double): OpenPath =
+    OpenPath(PathElement.rightArrow(width, height))
+
+  def roundedRectangle(
+      width: Double,
+      height: Double,
+      radius: Double
+  ): OpenPath =
+    OpenPath(PathElement.roundedRectangle(width, height, radius))
+
+  def interpolatingSpline(points: Seq[Point]): OpenPath =
+    OpenPath(PathElement.interpolatingSpline(points))
+
+  def catmulRom(
+      points: Seq[Point],
+      tension: Double = 0.5
+  ): OpenPath =
+    OpenPath(PathElement.catmulRom(points, tension))
 }

@@ -158,30 +158,6 @@ sealed abstract class Image extends Product with Serializable {
   def compile[Algebra <: Basic]: doodle.algebra.Picture[Algebra, Unit] =
     Image.compile(this)
 }
-sealed abstract class Path extends Image {
-  import Image.Elements._
-
-  def isOpen: Boolean =
-    this match {
-      case OpenPath(_)   => true
-      case ClosedPath(_) => false
-    }
-
-  def isClosed: Boolean =
-    !this.isOpen
-
-  def open: Path =
-    this match {
-      case OpenPath(_)      => this
-      case ClosedPath(elts) => OpenPath(elts)
-    }
-
-  def close: Path =
-    this match {
-      case OpenPath(elts) => ClosedPath(elts)
-      case ClosedPath(_)  => this
-    }
-}
 object Image {
 
   /** Contains the leaves of the Image algebraic data type. Packaged here so
@@ -189,8 +165,8 @@ object Image {
     * smart constructors.
     */
   object Elements {
-    final case class OpenPath(elements: List[PathElement]) extends Path
-    final case class ClosedPath(elements: List[PathElement]) extends Path
+    final case class OpenPath(path: doodle.core.OpenPath) extends Image
+    final case class ClosedPath(path: doodle.core.ClosedPath) extends Image
     final case class Text(get: String) extends Image
     final case class Circle(d: Double) extends Image
     final case class Rectangle(w: Double, h: Double) extends Image
@@ -232,39 +208,17 @@ object Image {
 
   // Smart constructors
 
-  def closedPath(elements: Seq[PathElement]): Path = {
-    // Paths must start at the origin. Thus we always move to the origin to
-    // start.
-    ClosedPath((PathElement.moveTo(0, 0) +: elements).toList)
-  }
+  def path(path: doodle.core.ClosedPath): Image =
+    ClosedPath(path)
 
-  def openPath(elements: Seq[PathElement]): Path = {
-    // Paths must start at the origin. Thus we always move to the origin to
-    // start.
-    OpenPath((PathElement.moveTo(0, 0) +: elements).toList)
-  }
-
-  def path(path: doodle.core.ClosedPath): Path =
-    ClosedPath(PathElement.moveTo(0, 0) +: path.elements)
-
-  def path(path: doodle.core.OpenPath): Path =
-    OpenPath(PathElement.moveTo(0, 0) +: path.elements)
+  def path(path: doodle.core.OpenPath): Image =
+    OpenPath(path)
 
   def text(characters: String): Image =
     Text(characters)
 
-  def line(x: Double, y: Double): Image = {
-    val startX = -x / 2
-    val startY = -y / 2
-    val endX = x / 2
-    val endY = y / 2
-    openPath(
-      List(
-        PathElement.moveTo(startX, startY),
-        PathElement.lineTo(endX, endY)
-      )
-    )
-  }
+  def line(x: Double, y: Double): Image =
+    path(doodle.core.OpenPath.line(x, y))
 
   def circle(diameter: Double): Image =
     Circle(diameter)
@@ -275,37 +229,20 @@ object Image {
   def square(side: Double): Image =
     rectangle(side, side)
 
-  def regularPolygon(sides: Int, radius: Double): Image = {
-    closedPath(PathElement.regularPolygon(sides, radius))
-  }
+  def regularPolygon(sides: Int, radius: Double): Image =
+    path(doodle.core.ClosedPath.regularPolygon(sides, radius))
 
-  def star(points: Int, outerRadius: Double, innerRadius: Double): Image = {
-    closedPath(PathElement.star(points, outerRadius, innerRadius))
-  }
+  def star(points: Int, outerRadius: Double, innerRadius: Double): Image =
+    path(doodle.core.ClosedPath.star(points, outerRadius, innerRadius))
 
-  def rightArrow(width: Double, height: Double): Image = {
-    import PathElement._
+  def rightArrow(width: Double, height: Double): Image =
+    path(doodle.core.ClosedPath.rightArrow(width, height))
 
-    val path = List(
-      moveTo(width / 2, 0),
-      lineTo(0, height / 2),
-      lineTo(0, height * 0.2),
-      lineTo(-width / 2, height * 0.2),
-      lineTo(-width / 2, -height * 0.2),
-      lineTo(0, -height * 0.2),
-      lineTo(0, -height / 2),
-      lineTo(width / 2, 0)
-    )
-
-    closedPath(path)
-  }
-
-  def roundedRectangle(width: Double, height: Double, radius: Double): Image = {
-    closedPath(PathElement.roundedRectangle(width, height, radius))
-  }
+  def roundedRectangle(width: Double, height: Double, radius: Double): Image =
+    path(doodle.core.ClosedPath.roundedRectangle(width, height, radius))
 
   def equilateralTriangle(width: Double): Image =
-    closedPath(PathElement.equilateralTriangle(width))
+    path(doodle.core.ClosedPath.equilateralTriangle(width))
 
   def triangle(width: Double, height: Double): Image =
     Triangle(width, height)
@@ -313,7 +250,7 @@ object Image {
   /** Construct an open path of bezier curves that intersects all the given
     * points. Defaults to `catmulRom` with the default tension.
     */
-  def interpolatingSpline(points: Seq[Point]): Path =
+  def interpolatingSpline(points: Seq[Point]): Image =
     catmulRom(points)
 
   /** Interpolate a spline (a curve) that passes through all the given points,
@@ -329,8 +266,8 @@ object Image {
     *
     * If `points` has less than two elements an empty `Path` is returned.
     */
-  def catmulRom(points: Seq[Point], tension: Double = 0.5): Path =
-    openPath(PathElement.catmulRom(points, tension))
+  def catmulRom(points: Seq[Point], tension: Double = 0.5): Image =
+    path(doodle.core.OpenPath.catmulRom(points, tension))
 
   val empty: Image =
     Empty
@@ -345,10 +282,10 @@ object Image {
     new doodle.algebra.Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         image match {
-          case OpenPath(elements) =>
-            algebra.path(doodle.core.OpenPath(elements))
-          case ClosedPath(elements) =>
-            algebra.path(doodle.core.ClosedPath(elements))
+          case OpenPath(path) =>
+            algebra.path(path)
+          case ClosedPath(path) =>
+            algebra.path(path)
 
           case Text(t) =>
             algebra.text(t)

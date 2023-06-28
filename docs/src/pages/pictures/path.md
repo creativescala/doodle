@@ -2,7 +2,10 @@
 
 ## Concept
 
-Paths are a way to construct complex shapes, implemented by the @:api(doodle.algebra.Path) algebra. A path specifies how to control a virtual pen to draw a line. There are three different commands that a path can contain:
+Paths are a way to construct complex shapes,
+implemented by the @:api(doodle.algebra.Path) algebra and the @:api(doodle.core.OpenPath) @:api(doodle.core.ClosedPath) types. 
+A path specifies how to control a virtual pen to draw a line. 
+There are three different commands that a path can contain:
 
 - straight lines;
 - [bezier curves](https://en.wikipedia.org/wiki/B%C3%A9zier_curve); and
@@ -15,12 +18,13 @@ import doodle.core._
 import doodle.java2d._
 import doodle.syntax.all._
 
-val path =
+val feather =
   ClosedPath.empty
     .lineTo(100, 100)
     .curveTo(90, 75, 90, 25, 10, 10)
     .moveTo(100, 100)
     .curveTo(75, 90, 25, 90, 10, 10)
+    .path
 ```
 
 Drawing this path creates the output below.
@@ -38,7 +42,7 @@ val open =
 val closed =
   ClosedPath.empty.curveTo(90, 0, 100, 10, 50, 50).path.strokeColor(Color.blue)
 
-val paths = open.beside(closed)
+val curves = open.beside(closed).path
 ```
 
 @:image(open-closed-paths.png)
@@ -50,9 +54,9 @@ val paths = open.beside(closed)
 
 You can create a path by calling the `empty` method on either `ClosedPath` or `OpenPath`, and then calling methods on the resulting object. This is the approach used above. You can also creates instances of @:api(doodle.core.PathElement) and create a path from a `List[PathElement]`.
 
-To convert a path to a `Picture` you can use the `path` syntax method, which is demonstrated in the examples above.
+To convert a path to a `Picture` you can use the `path` syntax method, which is demonstrated in the examples above, or use the `path` method on the `Picture` object.
 
-To use a use a path with `Image` you can use the `path` method on `Image`, or call the `openPath` or `closedPath` methods with a sequence of `PathElement`. Here's an example.
+To create an `Image` from a path, use the `path` method on `Image`. Here's an example.
 
 ```scala mdoc:silent
 import doodle.image._
@@ -63,8 +67,6 @@ val closedPath = ClosedPath.empty.lineTo(100, 100)
 
 val path1 = Image.path(openPath)
 val path2 = Image.path(closedPath)
-val path3 = Image.closedPath(List(PathElement.lineTo(100, 100)))
-val path4 = Image.openPath(List(PathElement.lineTo(100, 100)))
 ```
 
 ## Utilities
@@ -77,6 +79,7 @@ There are several utilities to create common shapes. These are available as both
 * `rightArrow(width, height)` creates an arrow points to the right with the given width and height.
 * `roundedRectangle(width, height, radius)` creates a rectangle of the given width and height, with rounded corners with size given by `radius`.
 
+These, and other methods, also exist on `OpenPath` and `ClosedPath`.
 You can also create these paths as a `List[PathElement]` by calling the methods on @:api(doodle.core.PathElement).
 
 There is also `interpolatingSpline`, which creates a curve that intersects a given sequence of points. Here's an example.

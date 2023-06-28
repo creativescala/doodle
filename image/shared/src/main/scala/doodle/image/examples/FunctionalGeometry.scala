@@ -31,8 +31,10 @@ object FunctionalGeometry {
   def grid(lines: List[((Int, Int), (Int, Int))]) = {
     import PathElement._
     val paths = lines.map { case (((a, b), (c, d))) =>
-      Image.openPath(
-        List(moveTo(a.toDouble, b.toDouble), lineTo(c.toDouble, d.toDouble))
+      Image.path(
+        OpenPath(
+          List(moveTo(a.toDouble, b.toDouble), lineTo(c.toDouble, d.toDouble))
+        )
       )
     }
     paths.foldLeft(Image.empty)(_ on _)

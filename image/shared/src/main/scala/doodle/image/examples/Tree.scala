@@ -27,11 +27,8 @@ object Tree {
 
   def leaf(angle: Angle, length: Double): Image =
     Image
-      .openPath(
-        Seq(
-          moveTo(Point.zero),
-          lineTo(Point.polar(length, angle))
-        )
+      .path(
+        OpenPath.empty.moveTo(Point.zero).lineTo(Point.polar(length, angle))
       )
       .strokeColor(Color.hsl(angle, .5, .5))
 

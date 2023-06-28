@@ -25,21 +25,19 @@ object OpenClosedPaths {
   import Point._
   import PathElement._
 
-  val openCurve =
-    Image.openPath(
-      List(curveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
-    )
+  val openCurve = OpenPath.empty.curveTo(
+    Point(50, 100),
+    Point(100, 100),
+    Point(150, 0)
+  )
 
   val closedCurve = openCurve.close
 
   val openTriangle =
-    Image.openPath(
-      List(
-        lineTo(cartesian(50, 100)),
-        lineTo(cartesian(100, 0)),
-        lineTo(cartesian(0, 0))
-      )
-    )
+    OpenPath.empty
+      .lineTo(Point(50, 100))
+      .lineTo(Point(100, 0))
+      .lineTo(Point(0, 0))
 
   val closedTriangle = openTriangle.close
 
@@ -50,7 +48,10 @@ object OpenClosedPaths {
       .on(image.strokeColor(Color.black).strokeWidth(10.0).at(10, 10))
 
   val image =
-    dropShadow(openCurve)
-      .beside(dropShadow(closedCurve))
-      .above(dropShadow(openTriangle).beside(dropShadow(closedTriangle)))
+    dropShadow(Image.path(openCurve))
+      .beside(dropShadow(Image.path(closedCurve)))
+      .above(
+        dropShadow(Image.path(openTriangle))
+          .beside(dropShadow(Image.path(closedTriangle)))
+      )
 }

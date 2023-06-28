@@ -75,8 +75,8 @@ object Rosette {
 
   val lines: Image =
     mapTails(pts) { (pt1, pt2) =>
-      Image.openPath(
-        Seq(PathElement.moveTo(pt1), PathElement.lineTo(pt2))
+      Image.path(
+        OpenPath.empty.moveTo(pt1).lineTo(pt2)
       ): Image
     }.allOn
 

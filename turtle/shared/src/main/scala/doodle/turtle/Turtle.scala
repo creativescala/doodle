@@ -61,6 +61,6 @@ object Turtle {
     }
 
     val (_, path) = iterate(initialState, instructions)
-    Image.openPath(moveTo(0, 0) :: path.reverse.toList)
+    Image.path(OpenPath(moveTo(0, 0) :: path.reverse.toList))
   }
 }

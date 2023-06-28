@@ -87,4 +87,45 @@ object ClosedPath {
 
   def apply(elts: List[PathElement]): ClosedPath =
     new ClosedPath(elts.reverse)
+
+  def circle(center: Point, diameter: Double): ClosedPath =
+    circle(center.x, center.y, diameter)
+
+  def circle(x: Double, y: Double, diameter: Double): ClosedPath =
+    ClosedPath(PathElement.circle(x, y, diameter))
+
+  def line(x: Double, y: Double): ClosedPath =
+    ClosedPath(PathElement.line(x, y))
+
+  def regularPolygon(sides: Int, radius: Double): ClosedPath =
+    ClosedPath(PathElement.regularPolygon(sides, radius))
+
+  def star(
+      points: Int,
+      outerRadius: Double,
+      innerRadius: Double
+  ): ClosedPath =
+    ClosedPath(PathElement.star(points, outerRadius, innerRadius))
+
+  def equilateralTriangle(width: Double): ClosedPath =
+    ClosedPath(PathElement.equilateralTriangle(width))
+
+  def rightArrow(width: Double, height: Double): ClosedPath =
+    ClosedPath(PathElement.rightArrow(width, height))
+
+  def roundedRectangle(
+      width: Double,
+      height: Double,
+      radius: Double
+  ): ClosedPath =
+    ClosedPath(PathElement.roundedRectangle(width, height, radius))
+
+  def interpolatingSpline(points: Seq[Point]): ClosedPath =
+    ClosedPath(PathElement.interpolatingSpline(points))
+
+  def catmulRom(
+      points: Seq[Point],
+      tension: Double = 0.5
+  ): ClosedPath =
+    ClosedPath(PathElement.catmulRom(points, tension))
 }

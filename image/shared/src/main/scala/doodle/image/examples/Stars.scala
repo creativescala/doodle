@@ -39,7 +39,7 @@ object Stars {
     }
 
     Image
-      .openPath(elements)
+      .path(OpenPath(elements.toList))
       .strokeWidth(2)
       .strokeColor(Color.hsl(centerAngle, 1, .25))
       .fillColor(Color.hsl(centerAngle, 1, .75))

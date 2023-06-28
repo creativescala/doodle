@@ -156,6 +156,19 @@ object PathElement {
 
   val oneOnSqrt3 = 1.0 / math.sqrt(3.0)
 
+  /** Construct a line with the origin at the center of the line */
+  def line(x: Double, y: Double): List[PathElement] = {
+    val startX = -x / 2
+    val startY = -y / 2
+    val endX = x / 2
+    val endY = y / 2
+
+    List(
+      PathElement.moveTo(startX, startY),
+      PathElement.lineTo(endX, endY)
+    )
+  }
+
   /** Construct an equilateral triangle */
   def equilateralTriangle(width: Double): List[PathElement] = {
     List(
@@ -167,6 +180,7 @@ object PathElement {
     )
   }
 
+  /** Construct an arrow pointing to the right */
   def rightArrow(width: Double, height: Double): List[PathElement] = {
     val path = List(
       moveTo(width / 2, 0),

@@ -30,23 +30,29 @@ object CreativeScala {
     import doodle.core.Color._
 
     val triangle =
-      List(
-        lineTo(cartesian(50, 100)),
-        lineTo(cartesian(100, 0)),
-        lineTo(cartesian(0, 0))
+      OpenPath(
+        List(
+          lineTo(cartesian(50, 100)),
+          lineTo(cartesian(100, 0)),
+          lineTo(cartesian(0, 0))
+        )
       )
 
     val curve =
-      List(curveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0)))
+      OpenPath(
+        List(
+          curveTo(cartesian(50, 100), cartesian(100, 100), cartesian(150, 0))
+        )
+      )
 
     def style(image: Image): Image =
       image.strokeWidth(6.0).strokeColor(royalBlue).fillColor(skyBlue)
 
     val openPaths =
-      style(Image.openPath(triangle).beside(Image.openPath(curve)))
+      style(Image.path(triangle).beside(Image.path(curve)))
 
     val closedPaths =
-      style(Image.closedPath(triangle).beside(Image.closedPath(curve)))
+      style(Image.path(triangle.close).beside(Image.path(curve.close)))
 
     val image = openPaths.above(closedPaths)
   }
@@ -57,27 +63,31 @@ object CreativeScala {
     import doodle.core.Color._
 
     val triangle =
-      Image.closedPath(
-        List(
-          moveTo(polar(50, 0.degrees)),
-          lineTo(polar(50, 120.degrees)),
-          lineTo(polar(50, 240.degrees))
+      Image.path(
+        ClosedPath(
+          List(
+            moveTo(polar(50, 0.degrees)),
+            lineTo(polar(50, 120.degrees)),
+            lineTo(polar(50, 240.degrees))
+          )
         )
       )
 
     val square =
-      Image.closedPath(
-        List(
-          moveTo(polar(50, 45.degrees)),
-          lineTo(polar(50, 135.degrees)),
-          lineTo(polar(50, 225.degrees)),
-          lineTo(polar(50, 315.degrees))
+      Image.path(
+        ClosedPath(
+          List(
+            moveTo(polar(50, 45.degrees)),
+            lineTo(polar(50, 135.degrees)),
+            lineTo(polar(50, 225.degrees)),
+            lineTo(polar(50, 315.degrees))
+          )
         )
       )
 
     val pentagon =
-      Image.closedPath(
-        (
+      Image.path(
+        ClosedPath(
           List(
             moveTo(polar(50, 72.degrees)),
             lineTo(polar(50, 144.degrees)),
@@ -113,29 +123,33 @@ object CreativeScala {
     }
 
     val triangle =
-      Image.closedPath(
-        List(
-          moveTo(polar(50, 0.degrees)),
-          curve(50, 0.degrees, 120.degrees),
-          curve(50, 120.degrees, 120.degrees),
-          curve(50, 240.degrees, 120.degrees)
+      Image.path(
+        ClosedPath(
+          List(
+            moveTo(polar(50, 0.degrees)),
+            curve(50, 0.degrees, 120.degrees),
+            curve(50, 120.degrees, 120.degrees),
+            curve(50, 240.degrees, 120.degrees)
+          )
         )
       )
 
     val square =
-      Image.closedPath(
-        List(
-          moveTo(polar(50, 45.degrees)),
-          curve(50, 45.degrees, 90.degrees),
-          curve(50, 135.degrees, 90.degrees),
-          curve(50, 225.degrees, 90.degrees),
-          curve(50, 315.degrees, 90.degrees)
+      Image.path(
+        ClosedPath(
+          List(
+            moveTo(polar(50, 45.degrees)),
+            curve(50, 45.degrees, 90.degrees),
+            curve(50, 135.degrees, 90.degrees),
+            curve(50, 225.degrees, 90.degrees),
+            curve(50, 315.degrees, 90.degrees)
+          )
         )
       )
 
     val pentagon =
-      Image.closedPath(
-        (
+      Image.path(
+        ClosedPath(
           List(
             moveTo(polar(50, 72.degrees)),
             curve(50, 72.degrees, 72.degrees),
@@ -172,10 +186,12 @@ object CreativeScala {
               polar(size.toDouble, rotation * n.toDouble + initialRotation)
             ) :: iter(n - 1, rotation)
         }
-      Image.closedPath(
-        moveTo(polar(size.toDouble, initialRotation)) :: iter(
-          sides,
-          360.degrees / sides.toDouble
+      Image.path(
+        ClosedPath(
+          moveTo(polar(size.toDouble, initialRotation)) :: iter(
+            sides,
+            360.degrees / sides.toDouble
+          )
         )
       )
     }
@@ -222,7 +238,7 @@ object CreativeScala {
         lineTo(point)
       }
 
-      Image.closedPath(start :: elements) strokeWidth 2
+      Image.path(ClosedPath(start :: elements)) strokeWidth 2
     }
 
     def allBeside(imgs: List[Image]): Image =

@@ -55,8 +55,15 @@ object Koch {
 
   def koch(depth: Int, length: Double): Image = {
     val origin = Point.cartesian(0, length / 6)
-    Image.openPath(
-      moveTo(origin) +: kochElements(depth, origin, 0.degrees, length)
+    Image.path(
+      OpenPath(
+        (moveTo(origin) +: kochElements(
+          depth,
+          origin,
+          0.degrees,
+          length
+        )).toList
+      )
     )
   }
 
