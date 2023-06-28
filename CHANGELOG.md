@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.19.0 28-Jun-2023
 
 - Add `margin` and `originAt` to `Image`, thanks to `@danielost`
 
