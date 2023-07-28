@@ -39,9 +39,8 @@ final case class TestAlgebra(
     with GivenApply[Reification]
     with GivenFunctor[Reification] {
   type Drawing[A] = Finalized[Reification, A]
-  implicit val drawingInstance: Applicative[Drawing] =
-    new Applicative[Drawing] {
-      def ap[A, B](ff: Drawing[A => B])(fa: Drawing[A]): Drawing[B] = ???
+  implicit val drawingInstance: Monad[Drawing] =
+    new Monad[Drawing] {
       def pure[A](x: A): Drawing[A] =
         Finalized.leaf(_ =>
           (
@@ -51,6 +50,24 @@ final case class TestAlgebra(
             )
           )
         )
+
+      def flatMap[A, B](fa: Drawing[A])(f: A => Drawing[B]): Drawing[B] =
+        fa.flatMap { (bb, rdr) =>
+          val reified = rdr.runA(doodle.core.Transform.identity).value
+          val (_, a) = reified.run.value
+          f(a)
+        }
+
+      def tailRecM[A, B](a: A)(f: A => Drawing[Either[A, B]]): Drawing[B] = {
+        // TODO: This implementation is not tail recursive but I don't think we need it for what we use in Doodle
+        val dAB = f(a)
+        flatMap(dAB)(either =>
+          either match {
+            case Left(a)  => tailRecM(a)(f)
+            case Right(b) => dAB.asInstanceOf[Drawing[B]]
+          }
+        )
+      }
     }
 }
 object TestAlgebra {

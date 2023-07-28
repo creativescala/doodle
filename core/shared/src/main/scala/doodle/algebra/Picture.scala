@@ -62,21 +62,31 @@ object Picture {
         }
     }
 
-  implicit def pictureApplicativeInstance[Alg <: Algebra]
-      : Applicative[Picture[Alg, *]] =
-    new Applicative[Picture[Alg, *]] {
-      def ap[A, B](ff: Picture[Alg, A => B])(
-          fa: Picture[Alg, A]
-      ): Picture[Alg, B] =
-        new Picture[Alg, B] {
-          def apply(implicit algebra: Alg): algebra.Drawing[B] =
-            algebra.drawingInstance.ap(ff.apply(algebra))(fa.apply(algebra))
-        }
-
+  implicit def pictureMonadInstance[Alg <: Algebra]: Monad[Picture[Alg, *]] =
+    new Monad[Picture[Alg, *]] {
       def pure[A](x: A): Picture[Alg, A] =
         new Picture[Alg, A] {
           def apply(implicit algebra: Alg): algebra.Drawing[A] =
             algebra.drawingInstance.pure(x)
         }
+
+      def flatMap[A, B](
+          fa: Picture[Alg, A]
+      )(f: A => Picture[Alg, B]): Picture[Alg, B] =
+        new Picture[Alg, B] {
+          def apply(implicit algebra: Alg): algebra.Drawing[B] =
+            algebra.drawingInstance.flatMap(fa.apply(algebra))(a =>
+              f(a).apply(algebra)
+            )
+        }
+
+      def tailRecM[A, B](
+          a: A
+      )(f: A => Picture[Alg, Either[A, B]]): Picture[Alg, B] =
+        new Picture[Alg, B] {
+          def apply(implicit algebra: Alg): algebra.Drawing[B] =
+            algebra.drawingInstance.tailRecM(a)(a => f(a).apply(algebra))
+        }
+
     }
 }

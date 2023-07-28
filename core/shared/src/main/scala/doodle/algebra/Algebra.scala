@@ -17,7 +17,7 @@
 package doodle
 package algebra
 
-import cats.Applicative
+import cats.Monad
 
 /** Base type for algebras that produce results in some effect type `Drawing`.
   * Users of algebras should use dependent method types (or dependent function
@@ -28,7 +28,7 @@ import cats.Applicative
   * def usingAlgebra(algebra: Algebra): algebra.Drawing = ???
   * ```
   *
-  * All `Drawing` types are required to implement `Applicative`
+  * All `Drawing` types are required to implement `Monad`
   */
 trait Algebra {
 
@@ -36,7 +36,7 @@ trait Algebra {
     * that, when run, will draw something and produce a value.
     */
   type Drawing[_]
-  implicit val drawingInstance: Applicative[Drawing]
+  implicit val drawingInstance: Monad[Drawing]
 }
 object Algebra {
   type Aux[F0[_]] = Algebra { type Drawing[A] = F0[A] }

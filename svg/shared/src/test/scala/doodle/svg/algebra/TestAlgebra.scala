@@ -41,8 +41,8 @@ trait TestAlgebraModule
       ???
     def text(text: String): Drawing[Unit] = ???
 
-    implicit val drawingInstance: cats.Applicative[Drawing] =
-      new Applicative[Drawing] {
+    implicit val drawingInstance: cats.Monad[Drawing] =
+      new Monad[Drawing] {
         def pure[A](x: A): Drawing[A] =
           Finalized.leaf(_ =>
             (
@@ -51,7 +51,22 @@ trait TestAlgebraModule
             )
           )
 
-        def ap[A, B](ff: Drawing[A => B])(fa: Drawing[A]): Drawing[B] = ???
+        def flatMap[A, B](fa: Drawing[A])(f: A => Drawing[B]): Drawing[B] =
+          fa.flatMap { (bb, rdr) =>
+            val (_, _, a) = rdr.runA(doodle.core.Transform.identity).value
+            f(a)
+          }
+
+        def tailRecM[A, B](a: A)(f: A => Drawing[Either[A, B]]): Drawing[B] = {
+          // TODO: This implementation is not tail recursive but I don't think we need it for what we use in Doodle
+          val dAB = f(a)
+          flatMap(dAB)(either =>
+            either match {
+              case Left(a)  => tailRecM(a)(f)
+              case Right(b) => dAB.asInstanceOf[Drawing[B]]
+            }
+          )
+        }
       }
 
     // Members declared in doodle.algebra.generic.GivenApply
