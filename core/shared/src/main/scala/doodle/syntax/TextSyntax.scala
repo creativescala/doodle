@@ -17,17 +17,18 @@
 package doodle
 package syntax
 
+import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.algebra.Text
 import doodle.core.font.Font
 
 trait TextSyntax {
-  implicit class TextPictureOps[Alg <: Text, A](
+  implicit class TextPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    def font(font: Font): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def font(font: Font): Picture[Alg with Text, A] =
+      new Picture[Alg with Text, A] {
+        def apply(implicit algebra: Alg with Text): algebra.Drawing[A] =
           algebra.font(picture(algebra), font)
       }
   }

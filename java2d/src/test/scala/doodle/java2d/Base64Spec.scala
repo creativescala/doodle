@@ -35,7 +35,7 @@ object Base64Spec extends SimpleTestSuite {
     }
   }
 
-  val image = circle[Algebra](20.0)
+  val image = circle(20.0)
 
   test("base64 should work with png") {
     val (_, b1) = image.base64[Png]()

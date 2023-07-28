@@ -17,6 +17,7 @@
 package doodle
 package syntax
 
+import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.algebra.Transform
 import doodle.core.Angle
@@ -24,48 +25,48 @@ import doodle.core.Vec
 import doodle.core.{Transform => Tx}
 
 trait TransformSyntax {
-  implicit class TransformPictureOps[Alg <: Transform, A](
+  implicit class TransformPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
 
-    def transform(tx: Tx): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def transform(tx: Tx): Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.transform(picture(algebra), tx)
       }
 
-    def scale(x: Double, y: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def scale(x: Double, y: Double): Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.scale(picture(algebra), x, y)
       }
 
-    def rotate(angle: Angle): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def rotate(angle: Angle): Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.rotate(picture(algebra), angle)
       }
 
-    def translate(x: Double, y: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def translate(x: Double, y: Double): Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.translate(picture(algebra), x, y)
       }
 
-    def translate(vec: Vec): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def translate(vec: Vec): Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.translate(picture(algebra), vec)
       }
 
-    def horizontalReflection: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def horizontalReflection: Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.horizontalReflection(picture(algebra))
       }
-    def verticalReflection: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def verticalReflection: Picture[Alg with Transform, A] =
+      new Picture[Alg with Transform, A] {
+        def apply(implicit algebra: Alg with Transform): algebra.Drawing[A] =
           algebra.verticalReflection(picture(algebra))
       }
   }

@@ -18,6 +18,7 @@ package doodle
 package syntax
 
 import cats.Semigroup
+import doodle.algebra.Algebra
 import doodle.algebra.Layout
 import doodle.algebra.Picture
 import doodle.core.Angle
@@ -26,106 +27,116 @@ import doodle.core.Point
 import doodle.core.Vec
 
 trait LayoutSyntax {
-  implicit class LayoutPictureOps[Alg <: Layout, A](
+  implicit class LayoutPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    def on(
-        that: Picture[Alg, A]
-    )(implicit s: Semigroup[A]): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def on[Alg2 <: Algebra](
+        that: Picture[Alg2, A]
+    )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =
+      new Picture[Alg with Alg2 with Layout, A] {
+        def apply(implicit
+            algebra: Alg with Alg2 with Layout
+        ): algebra.Drawing[A] =
           algebra.on(picture(algebra), that(algebra))
       }
 
-    def beside(
-        that: Picture[Alg, A]
-    )(implicit s: Semigroup[A]): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def beside[Alg2 <: Algebra](
+        that: Picture[Alg2, A]
+    )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =
+      new Picture[Alg with Alg2 with Layout, A] {
+        def apply(implicit
+            algebra: Alg with Alg2 with Layout
+        ): algebra.Drawing[A] =
           algebra.beside(picture(algebra), that(algebra))
       }
 
-    def above(
-        that: Picture[Alg, A]
-    )(implicit s: Semigroup[A]): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def above[Alg2 <: Algebra](
+        that: Picture[Alg2, A]
+    )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =
+      new Picture[Alg with Alg2 with Layout, A] {
+        def apply(implicit
+            algebra: Alg with Alg2 with Layout
+        ): algebra.Drawing[A] =
           algebra.above(picture(algebra), that(algebra))
       }
 
-    def under(
-        that: Picture[Alg, A]
-    )(implicit s: Semigroup[A]): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def under[Alg2 <: Algebra](
+        that: Picture[Alg2, A]
+    )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =
+      new Picture[Alg with Alg2 with Layout, A] {
+        def apply(implicit
+            algebra: Alg with Alg2 with Layout
+        ): algebra.Drawing[A] =
           algebra.under(picture(algebra), that(algebra))
       }
 
-    def below(
-        that: Picture[Alg, A]
-    )(implicit s: Semigroup[A]): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def below[Alg2 <: Algebra](
+        that: Picture[Alg2, A]
+    )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =
+      new Picture[Alg with Alg2 with Layout, A] {
+        def apply(implicit
+            algebra: Alg with Alg2 with Layout
+        ): algebra.Drawing[A] =
           algebra.below(picture(algebra), that(algebra))
       }
 
-    def at(landmark: Landmark): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def at(landmark: Landmark): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.at(picture(algebra), landmark)
       }
 
-    def at(x: Double, y: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def at(x: Double, y: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.at(picture(algebra), x, y)
       }
 
-    def at(r: Double, a: Angle): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def at(r: Double, a: Angle): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.at(picture(algebra), r, a)
       }
 
-    def at(offset: Vec): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def at(offset: Vec): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.at(picture(algebra), offset)
       }
 
-    def at(offset: Point): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def at(offset: Point): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.at(picture(algebra), offset)
       }
 
-    def originAt(landmark: Landmark): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def originAt(landmark: Landmark): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.originAt(picture(algebra), landmark)
       }
 
-    def originAt(x: Double, y: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def originAt(x: Double, y: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.originAt(picture(algebra), x, y)
       }
 
-    def originAt(r: Double, a: Angle): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def originAt(r: Double, a: Angle): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.originAt(picture(algebra), r, a)
       }
 
-    def originAt(offset: Vec): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def originAt(offset: Vec): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.originAt(picture(algebra), offset)
       }
 
-    def originAt(offset: Point): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def originAt(offset: Point): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.originAt(picture(algebra), offset)
       }
 
@@ -134,21 +145,21 @@ trait LayoutSyntax {
         right: Double,
         bottom: Double,
         left: Double
-    ): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    ): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.margin(picture(algebra), top, right, bottom, left)
       }
 
-    def margin(width: Double, height: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def margin(width: Double, height: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.margin(picture(algebra), width, height)
       }
 
-    def margin(width: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def margin(width: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.margin(picture(algebra), width)
       }
   }

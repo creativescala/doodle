@@ -47,31 +47,31 @@ object BouncyCircles {
       .zip(bounce(Easing.circle))
       .zip(bounce(Easing.back))
       .map { case (((((r1, r2), r3), r4), r5), r6) =>
-        circle[Algebra](r1 * 85 + 10)
+        circle(r1 * 85 + 10)
           .strokeColor(Color.magenta.spin(180.degrees))
           .at(r1 * 400 - 200, 250)
           .on(
-            circle[Algebra](r2 * 85 + 10)
+            circle(r2 * 85 + 10)
               .strokeColor(Color.magenta.spin(170.degrees))
               .at(r2 * 400 - 200, 150)
           )
           .on(
-            circle[Algebra](r3 * 85 + 10)
+            circle(r3 * 85 + 10)
               .strokeColor(Color.magenta.spin(140.degrees))
               .at(r3 * 400 - 200, 50)
           )
           .on(
-            circle[Algebra](r4 * 85 + 10)
+            circle(r4 * 85 + 10)
               .strokeColor(Color.magenta.spin(150.degrees))
               .at(r4 * 400 - 200, -50)
           )
           .on(
-            circle[Algebra](r5 * 85 + 10)
+            circle(r5 * 85 + 10)
               .strokeColor(Color.magenta.spin(140.degrees))
               .at(r5 * 400 - 200, -150)
           )
           .on(
-            circle[Algebra](r6 * 85 + 10)
+            circle(r6 * 85 + 10)
               .strokeColor(Color.magenta.spin(120.degrees))
               .at(r6 * 400 - 200, -250)
           )

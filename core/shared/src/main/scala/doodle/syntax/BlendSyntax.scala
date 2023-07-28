@@ -17,40 +17,41 @@
 package doodle
 package syntax
 
+import doodle.algebra.Algebra
 import doodle.algebra.Blend
 import doodle.algebra.Picture
 
 trait BlendSyntax {
-  implicit class BlendPictureOps[Alg <: Blend, A](
+  implicit class BlendPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    def screen: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def screen: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
           algebra.screen(picture(algebra))
       }
 
-    def burn: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def burn: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
           algebra.burn(picture(algebra))
       }
 
-    def dodge: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def dodge: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
           algebra.dodge(picture(algebra))
       }
 
-    def lighten: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def lighten: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
           algebra.lighten(picture(algebra))
       }
 
-    def sourceOver: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def sourceOver: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
           algebra.sourceOver(picture(algebra))
       }
   }

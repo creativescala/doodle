@@ -17,27 +17,28 @@
 package doodle
 package syntax
 
+import doodle.algebra.Algebra
 import doodle.algebra.Debug
 import doodle.algebra.Picture
 import doodle.core.Color
 
 trait DebugSyntax {
-  implicit class DebugPictureOps[Alg <: Debug, A](
+  implicit class DebugPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
 
     /** Draw bounding box and origin in the given color on top of the given
       * picture.
       */
-    def debug(color: Color): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def debug(color: Color): Picture[Alg with Debug, A] =
+      new Picture[Alg with Debug, A] {
+        def apply(implicit algebra: Alg with Debug): algebra.Drawing[A] =
           algebra.debug(picture(algebra), color)
       }
 
     /** Draw bounding box and origin in crimson on top of the given picture.
       */
-    def debug: Picture[Alg, A] =
+    def debug: Picture[Alg with Debug, A] =
       debug(Color.crimson)
   }
 }

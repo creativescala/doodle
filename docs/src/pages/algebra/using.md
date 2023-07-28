@@ -89,23 +89,20 @@ We can then draw it using the `draw` method, which produces the output shown bel
 
 ## Creating Cross-Backend Pictures
 
-Targeting multiple backends requires a little bit more work than working with a single backend. First we need to decide what algebras we need. Let's say we decide to use @:api(doodle.language.Basic), which is a collection of algebras that match what `Image` supports. We then have steps to follow to firstly create a picture and then to use the picture with a concrete backend.
-
-You can't use the usual constructor methods on a `Picture` object, as those methods target a specific backend and we want to work across multiple backends. However, every constructor method has a syntax equivalent that we can call. We just to provide the algebra we want for our creation as a type parameter. We decided above we're using `Basic` as our algebra, so to create a circle we can write
+Targeting multiple backends requires a little bit more work than working with a single backend. We can't use the usual constructor methods on a `Picture` object, as those methods target a specific backend and we want to work across multiple backends. However, every constructor method has a syntax equivalent that we can call. So to create a circle we can write
 
 ```scala mdoc:reset:silent
 import doodle.core._
 import doodle.syntax.all._
-import doodle.language.Basic
 
-circle[Basic](100)
+circle(100)
 ```
 
 Once we know how to do this, everything proceeds as before. Here's a complete example.
 
 ```scala mdoc:silent
-val redCircle = circle[Basic](100).strokeColor(Color.red)
-val rad = text[Basic]("Doodle is rad")
+val redCircle = circle(100).strokeColor(Color.red)
+val rad = text("Doodle is rad")
   
 val picture = rad.on(redCircle)
 ```

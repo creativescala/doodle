@@ -19,44 +19,44 @@ package syntax
 
 import cats.Traverse
 import cats.instances.unit._
+import doodle.algebra.Algebra
 import doodle.algebra.Layout
 import doodle.algebra.Picture
 import doodle.algebra.Shape
 
 trait TraverseSyntax {
-  implicit class TraverseOps[T[_], Alg <: Layout with Shape](
+  implicit class TraverseOps[T[_], Alg <: Algebra](
       val t: T[Picture[Alg, Unit]]
   ) {
     import doodle.syntax.layout._
 
-    def allOn(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
-      val empty: Picture[Alg, Unit] =
-        new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
-            algebra.empty
-        }
+    private val empty: Picture[Alg with Layout with Shape, Unit] =
+      new Picture[Alg with Layout with Shape, Unit] {
+        def apply(implicit
+            algebra: Alg with Layout with Shape
+        ): algebra.Drawing[Unit] =
+          algebra.empty
+      }
+
+    def allOn(implicit
+        traverse: Traverse[T]
+    ): Picture[Alg with Layout with Shape, Unit] = {
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.on(img)
       }
     }
 
-    def allBeside(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
-      val empty: Picture[Alg, Unit] =
-        new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
-            algebra.empty
-        }
+    def allBeside(implicit
+        traverse: Traverse[T]
+    ): Picture[Alg with Layout with Shape, Unit] = {
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.beside(img)
       }
     }
 
-    def allAbove(implicit traverse: Traverse[T]): Picture[Alg, Unit] = {
-      val empty: Picture[Alg, Unit] =
-        new Picture[Alg, Unit] {
-          def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
-            algebra.empty
-        }
+    def allAbove(implicit
+        traverse: Traverse[T]
+    ): Picture[Alg with Layout with Shape, Unit] = {
       traverse.foldLeft(t, empty) { (accum, img) =>
         accum.above(img)
       }

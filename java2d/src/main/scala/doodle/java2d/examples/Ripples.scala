@@ -42,7 +42,7 @@ object Ripples {
       this.copy(age = age + 1)
 
     def picture: Picture[Unit] =
-      circle[Algebra](age.toDouble)
+      circle(age.toDouble)
         .strokeColor(
           Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized)
         )

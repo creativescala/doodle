@@ -25,6 +25,13 @@ import cats._
   */
 trait Picture[-Alg <: Algebra, A] { self =>
   def apply(implicit algebra: Alg): algebra.Drawing[A]
+
+  /** Utility to change the Algebra of this Picture to a subtype. This is
+    * occasionally useful when you need to give type inference a hint as to what
+    * to infer.
+    */
+  def widen[AAlg <: Alg]: Picture[AAlg, A] =
+    this
 }
 object Picture {
 

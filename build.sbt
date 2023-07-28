@@ -51,6 +51,8 @@ commands += Command.command("build") { state =>
     "golden/test" ::
     "scalafixAll" ::
     "scalafmtAll" ::
+    "headerCreateAll" ::
+    "githubWorkflowGenerate" ::
     state
 }
 

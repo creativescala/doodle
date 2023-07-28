@@ -17,35 +17,40 @@
 package doodle
 package syntax
 
+import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.algebra.Size
 import doodle.core.BoundingBox
 
 trait SizeSyntax {
-  implicit class SizePictureOps[Alg <: Size, A](
+  implicit class SizePictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    def boundingBox: Picture[Alg, BoundingBox] =
-      new Picture[Alg, BoundingBox] {
-        def apply(implicit algebra: Alg): algebra.Drawing[BoundingBox] =
+    def boundingBox: Picture[Alg with Size, BoundingBox] =
+      new Picture[Alg with Size, BoundingBox] {
+        def apply(implicit
+            algebra: Alg with Size
+        ): algebra.Drawing[BoundingBox] =
           algebra.boundingBox(picture(algebra))
       }
 
-    def height: Picture[Alg, Double] =
-      new Picture[Alg, Double] {
-        def apply(implicit algebra: Alg): algebra.Drawing[Double] =
+    def height: Picture[Alg with Size, Double] =
+      new Picture[Alg with Size, Double] {
+        def apply(implicit algebra: Alg with Size): algebra.Drawing[Double] =
           algebra.height(picture(algebra))
       }
 
-    def width: Picture[Alg, Double] =
-      new Picture[Alg, Double] {
-        def apply(implicit algebra: Alg): algebra.Drawing[Double] =
+    def width: Picture[Alg with Size, Double] =
+      new Picture[Alg with Size, Double] {
+        def apply(implicit algebra: Alg with Size): algebra.Drawing[Double] =
           algebra.width(picture(algebra))
       }
 
-    def size: Picture[Alg, (Double, Double)] =
-      new Picture[Alg, (Double, Double)] {
-        def apply(implicit algebra: Alg): algebra.Drawing[(Double, Double)] =
+    def size: Picture[Alg with Size, (Double, Double)] =
+      new Picture[Alg with Size, (Double, Double)] {
+        def apply(implicit
+            algebra: Alg with Size
+        ): algebra.Drawing[(Double, Double)] =
           algebra.size(picture(algebra))
       }
   }

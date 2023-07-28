@@ -17,6 +17,7 @@
 package doodle
 package syntax
 
+import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.algebra.Style
 import doodle.core.Cap
@@ -25,66 +26,66 @@ import doodle.core.Gradient
 import doodle.core.Join
 
 trait StyleSyntax {
-  implicit class StylePictureOps[Alg <: Style, A](
+  implicit class StylePictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    def fillColor(fillColor: Color): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def fillColor(fillColor: Color): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.fillColor(picture(algebra), fillColor)
       }
 
-    def fillGradient(fillGradient: Gradient): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def fillGradient(fillGradient: Gradient): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.fillGradient(picture(algebra), fillGradient)
       }
 
-    def strokeColor(strokeColor: Color): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def strokeColor(strokeColor: Color): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.strokeColor(picture(algebra), strokeColor)
       }
 
-    def strokeWidth(strokeWidth: Double): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def strokeWidth(strokeWidth: Double): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.strokeWidth(picture(algebra), strokeWidth)
       }
 
-    def strokeDash(pattern: Array[Double]): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def strokeDash(pattern: Array[Double]): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.strokeDash(picture(algebra), pattern)
       }
 
-    def strokeCap(strokeCap: Cap): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def strokeCap(strokeCap: Cap): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.strokeCap(picture(algebra), strokeCap)
       }
 
-    def strokeJoin(strokeJoin: Join): Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def strokeJoin(strokeJoin: Join): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.strokeJoin(picture(algebra), strokeJoin)
       }
 
-    def noDash: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def noDash: Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.noDash(picture(algebra))
       }
 
-    def noFill: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def noFill: Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.noFill(picture(algebra))
       }
 
-    def noStroke: Picture[Alg, A] =
-      new Picture[Alg, A] {
-        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+    def noStroke: Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.noStroke(picture(algebra))
       }
   }
