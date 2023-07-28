@@ -19,11 +19,18 @@ package syntax
 
 import doodle.algebra.Picture
 import doodle.algebra.Size
+import doodle.core.BoundingBox
 
 trait SizeSyntax {
   implicit class SizePictureOps[Alg <: Size, A](
       picture: Picture[Alg, A]
   ) {
+    def boundingBox: Picture[Alg, BoundingBox] =
+      new Picture[Alg, BoundingBox] {
+        def apply(implicit algebra: Alg): algebra.Drawing[BoundingBox] =
+          algebra.boundingBox(picture(algebra))
+      }
+
     def height: Picture[Alg, Double] =
       new Picture[Alg, Double] {
         def apply(implicit algebra: Alg): algebra.Drawing[Double] =
