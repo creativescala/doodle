@@ -68,13 +68,6 @@ lazy val commonSettings = Seq(
   startYear := Some(2015),
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
-  ),
-  libraryDependencies ++= (
-    if (scalaBinaryVersion.value == "2.13")
-      compilerPlugin(
-        "org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full
-      ) :: Nil
-    else Nil
   )
 )
 
@@ -222,13 +215,7 @@ lazy val java2d = project
     libraryDependencies ++= Seq(
       "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
     ),
-    libraryDependencies += Dependencies.fs2.value,
-    libraryDependencies ++=
-      (if (scalaBinaryVersion == "2.13")
-         List(
-           "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided
-         )
-       else Nil)
+    libraryDependencies += Dependencies.fs2.value
   )
   .dependsOn(core.jvm, interact.jvm)
 
