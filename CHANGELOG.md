@@ -1,5 +1,12 @@
 # Changelog
 
+## NEXT
+
+- Rework type inference for syntax, making syntax more flexible and requiring fewer type annotations. (#133)
+
+- Doodle is now Scala 3 only, as the new syntax doesn't compile under 2.13
+
+
 ## 0.19.0 28-Jun-2023
 
 - Add `margin` and `originAt` to `Image`, thanks to `@danielost`

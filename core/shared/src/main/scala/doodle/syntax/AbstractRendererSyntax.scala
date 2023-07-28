@@ -66,7 +66,7 @@ trait AbstractRendererSyntax {
       */
     def drawWithCanvas[Canvas](
         canvas: Canvas
-    )(implicit renderer: Renderer[Alg, _, Canvas], r: IORuntime): Unit =
+    )(implicit renderer: Renderer[Alg, ?, Canvas], r: IORuntime): Unit =
       runIO(drawWithCanvasToIO(canvas))
 
     /** Create an effect that, when run, will draw `Picture` on the default
@@ -91,7 +91,7 @@ trait AbstractRendererSyntax {
       * `Canvas`.
       */
     def drawWithCanvasToIO[Canvas](canvas: Canvas)(implicit
-        renderer: Renderer[Alg, _, Canvas]
+        renderer: Renderer[Alg, ?, Canvas]
     ): IO[A] =
       renderer.render(canvas)(picture)
 

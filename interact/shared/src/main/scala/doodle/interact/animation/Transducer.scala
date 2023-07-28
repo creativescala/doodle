@@ -154,7 +154,7 @@ trait Transducer[Output] { self =>
     import Transducer._
 
     new Transducer[Output] {
-      type State = (Boolean, Box[_, Output])
+      type State = (Boolean, Box[?, Output])
 
       val initial = (true, Box[self.State, Output](self)(self.initial))
 
@@ -171,12 +171,12 @@ trait Transducer[Output] { self =>
         }
       }
 
-      def output(state: (Boolean, Transducer.Box[_, Output])): Output =
+      def output(state: (Boolean, Transducer.Box[?, Output])): Output =
         state match {
           case (_, box: Box[s, Output]) => box.output
         }
 
-      def stopped(state: (Boolean, Transducer.Box[_, Output])): Boolean =
+      def stopped(state: (Boolean, Transducer.Box[?, Output])): Boolean =
         state match {
           case (_, box: Box[s, Output]) => box.stopped
         }

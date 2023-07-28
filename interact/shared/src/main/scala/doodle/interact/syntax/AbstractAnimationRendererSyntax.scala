@@ -79,7 +79,7 @@ trait AbstractAnimationRendererSyntax {
       */
     def animateWithCanvas[Canvas](canvas: Canvas)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, _, Canvas],
+        e: Renderer[Alg, ?, Canvas],
         m: Monoid[A],
         runtime: IORuntime
     ): Unit = {
@@ -101,7 +101,7 @@ trait AbstractAnimationRendererSyntax {
       */
     def animateWithCanvasToIO[Canvas](canvas: Canvas)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, _, Canvas],
+        e: Renderer[Alg, ?, Canvas],
         m: Monoid[A]
     ): IO[A] = {
       a.animate(canvas)(frames)
@@ -137,7 +137,7 @@ trait AbstractAnimationRendererSyntax {
         canvas: Canvas
     )(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, _, Canvas],
+        e: Renderer[Alg, ?, Canvas],
         r: Redraw[Canvas],
         m: Monoid[A],
         runtime: IORuntime
@@ -164,7 +164,7 @@ trait AbstractAnimationRendererSyntax {
       */
     def animateFramesWithCanvasToIO[Canvas](canvas: Canvas)(implicit
         a: AnimationRenderer[Canvas],
-        e: Renderer[Alg, _, Canvas],
+        e: Renderer[Alg, ?, Canvas],
         r: Redraw[Canvas],
         m: Monoid[A]
     ): IO[A] = {

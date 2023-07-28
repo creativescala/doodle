@@ -18,7 +18,7 @@ import laika.rewrite.link.LinkConfig
 import laika.rewrite.link.ApiLinks
 import laika.theme.Theme
 
-ThisBuild / tlBaseVersion := "0.19" // your current series x.y
+ThisBuild / tlBaseVersion := "0.20" // your current series x.y
 
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Creative Scala"
@@ -32,13 +32,11 @@ ThisBuild / developers := List(
 // true by default, set to false to publish to s01.oss.sonatype.org
 ThisBuild / tlSonatypeUseLegacyHost := true
 
-lazy val scala213 = "2.13.11"
 lazy val scala3 = "3.3.0"
 
-ThisBuild / crossScalaVersions := List(scala3, scala213)
-ThisBuild / scalaVersion := crossScalaVersions.value.head
+ThisBuild / crossScalaVersions := List(scala3)
+ThisBuild / scalaVersion := scala3
 ThisBuild / useSuperShell := false
-ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.6.0"
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / tlSitePublishBranch := Some("main")
@@ -294,7 +292,7 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
     // To generate JS examples we depend on doodle-svg. This is a circular
     // dependency! Be prepared to comment this out when APIs are in flux.
     libraryDependencies ++= Seq(
-      "org.creativescala" %%% "doodle-svg" % "0.15.1",
+      "org.creativescala" %%% "doodle-svg" % "0.16.1",
       Dependencies.catsCore.value
     ),
     // Tell sbt it's ok that the doodle-svg and doodle version don't match

@@ -42,7 +42,7 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
 
   /** The channel communicates between the Swing thread and outside threads
     */
-  private val channel: LinkedBlockingQueue[RenderRequest[_]] =
+  private val channel: LinkedBlockingQueue[RenderRequest[?]] =
     new LinkedBlockingQueue(1)
 
   /** The pictures we've rendered, along with the bounding box for each picture.
