@@ -20,11 +20,14 @@ package effect
 
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
+import doodle.algebra.generic.Finalized
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Normalized
 import doodle.core.Transform
 import doodle.java2d.algebra.Algebra
 import doodle.java2d.algebra.Java2D
+import doodle.java2d.algebra.reified.Reification
 import doodle.java2d.algebra.reified.Reified
 
 import java.awt.Dimension
@@ -192,8 +195,8 @@ object Java2DPanel {
   ) {
     def render(algebra: Algebra): IO[RenderResult[A]] = {
       IO {
-        val drawing = picture(algebra)
-        val (bb, rdr) = drawing.runA(List.empty).value
+        val drawing: Finalized[Reification, A] = picture(algebra)
+        val (bb, rdr) = drawing.run(List.empty).value
         val (w, h) = Java2d.size(bb, frame.size)
         val (_, fa) = rdr.run(Transform.identity).value
         val (reified, a) = fa.run.value

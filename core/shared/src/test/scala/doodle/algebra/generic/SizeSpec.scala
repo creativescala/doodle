@@ -28,14 +28,14 @@ object SizeSpec extends Properties("Size properties") {
   implicit val algebra: TestAlgebra = TestAlgebra()
 
   def getA[A](f: Finalized[Reification, A]): A = {
-    val (_, rdr) = f.runA(List.empty).value
+    val (_, rdr) = f.run(List.empty).value
     rdr.runA(Tx.identity).value.extract
   }
 
   property("width matches bounding box width") =
     forAllNoShrink(Generators.finalized) { f =>
       val width = getA(algebra.width(f))
-      val (bb, _) = f.runA(List.empty).value
+      val (bb, _) = f.run(List.empty).value
 
       width ?= bb.width
     }
@@ -43,7 +43,7 @@ object SizeSpec extends Properties("Size properties") {
   property("height matches bounding box height") =
     forAllNoShrink(Generators.finalized) { f =>
       val height = getA(algebra.height(f))
-      val (bb, _) = f.runA(List.empty).value
+      val (bb, _) = f.run(List.empty).value
 
       height ?= bb.height
     }
@@ -51,7 +51,7 @@ object SizeSpec extends Properties("Size properties") {
   property("size matches bounding box size") =
     forAllNoShrink(Generators.finalized) { f =>
       val size = getA(algebra.size(f))
-      val (bb, _) = f.runA(List.empty).value
+      val (bb, _) = f.run(List.empty).value
 
       size ?= ((bb.width, bb.height))
     }

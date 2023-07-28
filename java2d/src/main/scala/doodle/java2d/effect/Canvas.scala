@@ -55,7 +55,7 @@ final class Canvas private (
         cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit
     ): Unit = {
       // val drawing = picture(algebra)
-      // val (bb, rdr) = drawing.runA(List.empty).value
+      // val (bb, rdr) = drawing.run(List.empty).value
       // val (w, h) = Java2d.size(bb, frame.size)
 
       // val rr = Java2DPanel.RenderRequest(bb, w, h, rdr, cb)

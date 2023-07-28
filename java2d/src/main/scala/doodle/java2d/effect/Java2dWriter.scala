@@ -22,14 +22,16 @@ import cats.effect.IO
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Color
 import doodle.core.Transform
 import doodle.core.format._
 import doodle.core.{Base64 => B64}
-import doodle.effect._
+import doodle.effect.*
 import doodle.java2d.algebra.Algebra
 import doodle.java2d.algebra.Java2D
+import doodle.java2d.algebra.reified.Reification
 
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
@@ -129,8 +131,8 @@ object Java2dWriter {
         val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
         Java2d.setup(bi.createGraphics())
       }
-      drawing <- IO { picture(Algebra(gc)) }
-      (bb, rdr) = drawing.runA(List.empty).value
+      drawing: Finalized[Reification, A] <- IO { picture(Algebra(gc)) }
+      (bb, rdr) = drawing.run(List.empty).value
       (_, fa) = rdr.run(Transform.identity).value
       (r, a) = fa.run.value
       (width, height) = Java2d.size(bb, size)

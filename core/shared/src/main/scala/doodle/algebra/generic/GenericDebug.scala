@@ -25,7 +25,7 @@ trait GenericDebug[G[_]] extends Debug {
     type Drawing[A] = Finalized[G, A]
   } =>
 
-  import cats.implicits._
+  import cats.implicits.*
 
   def debug[A](
       picture: Finalized[G, A],
@@ -33,16 +33,16 @@ trait GenericDebug[G[_]] extends Debug {
   ): Finalized[G, A] =
     Finalized { ctxTxs =>
       picture
-        .runA(ctxTxs)
+        .run(ctxTxs)
         .flatMap { case (bb, rdr) =>
           val xOffset = (bb.right - (bb.width / 2))
           val yOffset = (bb.top - (bb.height / 2))
           val bbOutline = at(rectangle(bb.width, bb.height), xOffset, yOffset)
           val bbOrigin = circle(5.0)
-          val bbPicture = on(bbOrigin, bbOutline)
+          val bbPicture: Finalized[G, Unit] = on(bbOrigin, bbOutline)
 
           bbPicture
-            .runA(
+            .run(
               List(dc =>
                 dc.strokeColor(color)
                   .strokeWidth(1.0)
@@ -55,9 +55,8 @@ trait GenericDebug[G[_]] extends Debug {
                   (ga, gdbg).mapN((a, _) => a)
                 }
               }
-              (ctxTxs, (bb, fullRdr))
+              (bb, fullRdr)
             }
         }
-        .value
     }
 }

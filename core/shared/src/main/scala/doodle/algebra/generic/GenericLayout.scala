@@ -19,7 +19,6 @@ package algebra
 package generic
 
 import cats._
-import cats.data.IndexedStateT
 import cats.implicits._
 import doodle.core.Landmark
 import doodle.core.Transform
@@ -31,23 +30,23 @@ trait GenericLayout[G[_]] extends Layout {
   def on[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit
       s: Semigroup[A]
   ): Finalized[G, A] =
-    IndexedStateT { ctxTxs =>
-      val t = top.runA(ctxTxs)
-      val b = bottom.runA(ctxTxs)
+    Finalized { ctxTxs =>
+      val t = top.run(ctxTxs)
+      val b = bottom.run(ctxTxs)
 
       (t, b).mapN { (t, b) =>
         val (bbT, rdrT) = t
         val (bbB, rdrB) = b
-        (ctxTxs, ((bbT.on(bbB)), rdrB |+| rdrT))
+        ((bbT.on(bbB)), rdrB |+| rdrT)
       }
     }
 
   def beside[A](left: Finalized[G, A], right: Finalized[G, A])(implicit
       s: Semigroup[A]
   ): Finalized[G, A] =
-    IndexedStateT { ctxTxs =>
-      val l = left.runA(ctxTxs)
-      val r = right.runA(ctxTxs)
+    Finalized { ctxTxs =>
+      val l = left.run(ctxTxs)
+      val r = right.run(ctxTxs)
 
       (l, r).mapN { (l, r) =>
         val (bbL, rdrL) = l
@@ -58,16 +57,16 @@ trait GenericLayout[G[_]] extends Layout {
         val txRight = Transform.translate(bb.right - bbR.right, 0)
         val rdr = Renderable.parallel(txLeft, txRight)(rdrL)(rdrR)
 
-        (ctxTxs, (bb, rdr))
+        (bb, rdr)
       }
     }
 
   def above[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit
       s: Semigroup[A]
   ): Finalized[G, A] =
-    IndexedStateT { ctxTxs =>
-      val t = top.runA(ctxTxs)
-      val b = bottom.runA(ctxTxs)
+    Finalized { ctxTxs =>
+      val t = top.run(ctxTxs)
+      val b = bottom.run(ctxTxs)
 
       (t, b).mapN { (t, b) =>
         val (bbT, rdrT) = t
@@ -78,7 +77,7 @@ trait GenericLayout[G[_]] extends Layout {
         val txBottom = Transform.translate(0, bb.bottom - bbB.bottom)
         val rdr = Renderable.parallel(txTop, txBottom)(rdrT)(rdrB)
 
-        (ctxTxs, (bb, rdr))
+        (bb, rdr)
       }
     }
 

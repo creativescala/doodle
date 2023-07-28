@@ -19,6 +19,7 @@ package algebra
 package generic
 
 import cats.implicits._
+import doodle.algebra.generic.reified.Reification
 import doodle.core.BoundingBox
 import doodle.core.{Transform => Tx}
 import org.scalacheck.Prop._
@@ -88,7 +89,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
     val height = hexagonHeight(200)
 
-    val actual = hexhex(algebra).boundingBox
+    val actual = (hexhex(algebra): Finalized[Reification, Unit]).boundingBox
     val expected = BoundingBox(-200, height, 200, -height)
 
     (actual ~= expected) :| s"Actual bounding box $actual while expected $expected"
@@ -97,9 +98,10 @@ object LayoutSpec extends Properties("Layout properties") {
   property("at never decreases the size of the bounding box") =
     forAllNoShrink(Generators.width, Generators.height) { (x, y) =>
       implicit val algebra = TestAlgebra()
-      val hexagon = algebra.regularPolygon(6, 100)
+      val hexagon: Finalized[Reification, Unit] = algebra.regularPolygon(6, 100)
       val initialBb = hexagon.boundingBox
-      val atBb = algebra.at(hexagon, x, y).boundingBox
+      val grow: Finalized[Reification, Unit] = algebra.at(hexagon, x, y)
+      val atBb = grow.boundingBox
 
       val atSize = (atBb.width * atBb.height)
       val initialSize = (initialBb.width * initialBb.height)
@@ -121,7 +123,7 @@ object LayoutSpec extends Properties("Layout properties") {
           j <- List(square, circle, triangle)
         } yield {
           val img = algebra.noStroke(algebra.above(i, j))
-          val (bb, rdr) = img.runA(List.empty).value
+          val (bb, rdr) = img.run(List.empty).value
           val (_, fa) = rdr.run(Tx.identity).value
           val (reified, _) = fa.run.value
 
@@ -140,7 +142,7 @@ object LayoutSpec extends Properties("Layout properties") {
       implicit val algebra = TestAlgebra()
       val square = algebra.square(width)
       val img = algebra.above(square, square)
-      val (_, rdr) = img.runA(List.empty).value
+      val (_, rdr) = img.run(List.empty).value
       val (_, fa) = rdr.run(Tx.identity).value
       val (reified, _) = fa.run.value
 
