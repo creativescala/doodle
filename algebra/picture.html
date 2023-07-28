@@ -78,7 +78,7 @@
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>[</span><span class="type-name">Algebra</span><span>](</span><span class="number-literal">100</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
 
 </span><span class="identifier">picture</span><span>.</span><span class="identifier">write</span><span>[</span><span class="type-name">Png</span><span>](</span><span class="string-literal">&quot;circle.png&quot;</span><span>)</span></code></pre>
             <p>The <code>write</code> method is <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax/WriterSyntax.html">WriterSyntax</a> that comes from the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Writer.html">Writer</a>. There are other methods that allow, for example, specifying a <code>Frame</code> to use when saving the file.</p>
@@ -89,7 +89,7 @@
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.</span><span class="identifier">_</span><span>
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>[</span><span class="type-name">Algebra</span><span>](</span><span class="number-literal">100</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
 
 </span><span class="keyword">val</span><span> (</span><span class="identifier">result</span><span>, </span><span class="identifier">b64</span><span>) = </span><span class="identifier">picture</span><span>.</span><span class="identifier">base64</span><span>[</span><span class="type-name">Png</span><span>]()</span></code></pre>
             
@@ -104,7 +104,7 @@
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
             <pre><code class="nohighlight"><span class="comment">// The value we throw away is the result of evaluating the
 // `Picture`, which is `Unit`.
-</span><span class="keyword">val</span><span> (</span><span class="identifier">_</span><span>, </span><span class="identifier">base64</span><span>) = </span><span class="identifier">circle</span><span>[</span><span class="type-name">Algebra</span><span>](</span><span class="number-literal">100</span><span>).</span><span class="identifier">base64</span><span>[</span><span class="type-name">Png</span><span>]()</span></code></pre>
+</span><span class="keyword">val</span><span> (</span><span class="identifier">_</span><span>, </span><span class="identifier">base64</span><span>) = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">base64</span><span>[</span><span class="type-name">Png</span><span>]()</span></code></pre>
             <p>We can convert it right back to a <code>Picture</code> using the <code>toPicture</code> method.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">base64</span><span>.</span><span class="identifier">toPicture</span></code></pre>
             
