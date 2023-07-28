@@ -1,7 +1,7 @@
 # Drawing to the Screen
 
 Drawing a picture to the screen is usually the end goal of using Doodle.
-The usual way to draw a `Picture` is by calling the `draw` method. Using the Java2D backend will produce output in a window, while the [SVG backend][doodle-svg] can produce output inside a web page.
+The usual way to draw a `Picture` is by calling the `draw` method. Using the Java2D backend will produce output in a window, while the SVG backend can produce output inside a web page.
 
 The examples below use the Java2D backend, but the general principles work with other backends.
 
@@ -82,5 +82,3 @@ canvas.flatMap(c => picture.drawWithCanvasToIO(c))
 ```
 
 Once you have an `IO`, you can run it in the usual way as part of an `IOApp`, with `unsafeRunSync`, or one of the other methods.
-
-[doodle-svg]: https://github.com/creativescala/doodle-svg

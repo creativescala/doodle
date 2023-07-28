@@ -3,8 +3,8 @@
 An `Image` or `Picture` can be written to a file as well as displaying it on screen. The file formats you can write depend on the backend you're using:
 
 * the Java2D backend can write PDF, PNG, GIF, and JPEG; and
-* the [SVG backend][doodle-svg] running on the JVM can write SVG; but
-* the [SVG backend][doodle-svg] running in the web browser cannot write files.
+* the SVG backend running on the JVM can write SVG; but
+* the SVG backend running in the web browser cannot write files.
 
 Most people will use the Java2D backend and the examples below show this.
 
@@ -42,5 +42,3 @@ circle.write[Png]("circle.png")
 ```
 
 Instead of using `Png` you could use `Gif` or `Jpg` to specify those file formats. You'd probably want to change the file name as well if you change the format. That's it! Your masterpiece is now ready to share with the world.
-
-[doodle-svg]: https://github.com/creativescala/doodle-svg
