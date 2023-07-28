@@ -83,6 +83,7 @@ lazy val rootJvm =
       image.jvm,
       interact.jvm,
       reactor.jvm,
+      svg.jvm,
       turtle.jvm
     )
     .aggregate(
@@ -91,6 +92,7 @@ lazy val rootJvm =
       image.jvm,
       interact.jvm,
       reactor.jvm,
+      svg.jvm,
       turtle.jvm,
       golden,
       unidocs
@@ -103,6 +105,7 @@ lazy val rootJs =
       image.js,
       interact.js,
       reactor.js,
+      svg.js,
       turtle.js
     )
     .aggregate(
@@ -110,6 +113,7 @@ lazy val rootJs =
       image.js,
       interact.js,
       reactor.js,
+      svg.js,
       turtle.js,
       golden,
       unidocs
@@ -191,8 +195,8 @@ lazy val unidocs = project
         examples.js,
         golden,
         image.js,
-        plot.js,
         reactor.js,
+        svg.js,
         turtle.js
       )
   )
@@ -225,19 +229,6 @@ lazy val image = crossProject(JSPlatform, JVMPlatform)
   .jvmConfigure(_.dependsOn(core.jvm, java2d))
   .jsConfigure(_.dependsOn(core.js))
 
-lazy val plot = crossProject(JSPlatform, JVMPlatform)
-  .in(file("plot"))
-  .settings(commonSettings, moduleName := "doodle-plot")
-  .jvmConfigure(_.dependsOn(core.jvm, interact.jvm))
-  .jsConfigure(_.dependsOn(core.js, interact.js))
-
-lazy val plotJvm = plot.jvm
-  .settings(mimaPreviousArtifacts := Set.empty)
-  .dependsOn(core.jvm, interact.jvm)
-lazy val plotJs = plot.js
-  .settings(mimaPreviousArtifacts := Set.empty)
-  .dependsOn(core.js, interact.js)
-
 lazy val turtle = crossProject(JSPlatform, JVMPlatform)
   .in(file("turtle"))
   .settings(commonSettings, moduleName := "doodle-turtle")
@@ -254,6 +245,19 @@ lazy val reactor = crossProject(JSPlatform, JVMPlatform)
   )
   .jvmConfigure(_.dependsOn(core.jvm, java2d, image.jvm, interact.jvm))
   .jsConfigure(_.dependsOn(core.js, image.js, interact.js))
+
+lazy val svg = crossProject(JSPlatform, JVMPlatform)
+  .in(file("svg"))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(
+      Dependencies.scalatags.value,
+      Dependencies.munitCatsEffect.value
+    ),
+    moduleName := "doodle-svg"
+  )
+  .dependsOn(core, interact)
+  .jvmConfigure(_.dependsOn(java2d))
 
 // Just for testing
 lazy val golden = project
@@ -276,24 +280,6 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
   .in(file("examples"))
   .settings(
     commonSettings,
-    // To generate JS examples we depend on doodle-svg. This is a circular
-    // dependency! Be prepared to comment this out when APIs are in flux.
-    libraryDependencies ++= Seq(
-      "org.creativescala" %%% "doodle-svg" % "0.16.1",
-      Dependencies.catsCore.value
-    ),
-    // Tell sbt it's ok that the doodle-svg and doodle version don't match
-    libraryDependencySchemes += "org.creativescala" %% "doodle-svg" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-svg_sjs1" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-core" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-interact" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-image" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-java2d" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-examples" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-core_sjs1" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-interact_sjs1" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-image_sjs1" % VersionScheme.Always,
-    libraryDependencySchemes += "org.creativescala" %% "doodle-examples_sjs1" % VersionScheme.Always,
     moduleName := "doodle-examples"
   )
   .jvmConfigure(
@@ -304,3 +290,4 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
     _.settings(mimaPreviousArtifacts := Set.empty)
       .dependsOn(core.js, image.js, interact.js)
   )
+  .dependsOn(svg)
