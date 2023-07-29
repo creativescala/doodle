@@ -11,14 +11,17 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 ## Using Doodle
 
-The current release is **0.19.0** and is on the `main` branch.
+The current release is **0.20.0** and is on the `main` branch.
 
 To use doodle add the following to your `build.sbt`:
 
 ~~~ scala
-// Doodle is currently published for Scala 2.13 and Scala 3
-libraryDependencies += "org.creativescala" %% "doodle" % "0.19.0"
+// Doodle is currently published for Scala 3
+libraryDependencies += "org.creativescala" %% "doodle" % "0.20.0"
 ~~~
+
+Scala 2.13 users should use version 0.19.0.
+
 
 ## Documentation
 
