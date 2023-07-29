@@ -85,7 +85,7 @@ val picture = base64.toPicture
 
 There some type class instances defined for `Picture`.
 
-`Picture[Alg,*]` always has an `Applicative` instance.
+`Picture[Alg,*]` always has an `Monad` instance.
 
 `Picture[Alg,*]` has a `Monoid` instance if:
 

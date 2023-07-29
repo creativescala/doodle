@@ -51,6 +51,7 @@ commands += Command.command("build") { state =>
     "scalafmtAll" ::
     "headerCreateAll" ::
     "githubWorkflowGenerate" ::
+    "docs / tlSite" ::
     state
 }
 

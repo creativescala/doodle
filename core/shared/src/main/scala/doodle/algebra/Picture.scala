@@ -26,6 +26,16 @@ import cats._
 trait Picture[-Alg <: Algebra, A] { self =>
   def apply(implicit algebra: Alg): algebra.Drawing[A]
 
+  def flatMap[B, AAlg <: Alg](f: A => Picture[AAlg, B]): Picture[AAlg, B] = {
+    val self = this
+    new Picture[AAlg, B] {
+      def apply(implicit algebra: AAlg): algebra.Drawing[B] =
+        algebra.drawingInstance.flatMap(self.apply(algebra))(a =>
+          f(a).apply(algebra)
+        )
+    }
+  }
+
   /** Utility to change the Algebra of this Picture to a subtype. This is
     * occasionally useful when you need to give type inference a hint as to what
     * to infer.
@@ -73,12 +83,7 @@ object Picture {
       def flatMap[A, B](
           fa: Picture[Alg, A]
       )(f: A => Picture[Alg, B]): Picture[Alg, B] =
-        new Picture[Alg, B] {
-          def apply(implicit algebra: Alg): algebra.Drawing[B] =
-            algebra.drawingInstance.flatMap(fa.apply(algebra))(a =>
-              f(a).apply(algebra)
-            )
-        }
+        fa.flatMap(f)
 
       def tailRecM[A, B](
           a: A
