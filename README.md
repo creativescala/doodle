@@ -13,7 +13,7 @@ Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.tx
 
 Doodle is a Scala 3 only project. The current release is shown above and is on the `main` branch.
 
-To use doodle add the following to your `build.sbt`:
+To use Doodle add the following to your `build.sbt`:
 
 ~~~ scala
 // Doodle is currently published for Scala 3
