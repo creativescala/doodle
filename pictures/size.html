@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.19.0" />
+    <title>Size</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script src="../main.js"></script>
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="transform.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="drawing.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="index.html">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="transform.html">Transforms</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Size</a></li>
+          <li class="level2 nav-leaf"><a href="drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="writing.html">Writing to a File</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
+          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
+          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../development/">Developing Doodle</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="size" class="title">Size</h1>
+            
+            <h2 id="concept" class="section">Concept</h2>
+            <p>Establishing the size of a picture is sometimes needed for complex layout, and the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Size.html">Size</a> algebra provides this.</p>
+            
+            <h2 id="bounding-box" class="section">Bounding Box</h2>
+            <p>The core method, <code>boundingBox</code>, gets the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/BoundingBox.html">BoundingBox</a> of a picture.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">circle</span><span> =
+  </span><span class="type-name">Picture</span><span>
+    .</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
+    .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>)
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">circleBoundingBox</span><span>: </span><span class="type-name">Picture</span><span>[</span><span class="type-name">BoundingBox</span><span>] =
+  </span><span class="identifier">circle</span><span>.</span><span class="identifier">boundingBox</span></code></pre>
+            <p>As the type annotation suggests, this returns a <code>Picture[BoundingBox]</code> rather than a <code>BoundingBox</code>. 
+            In other words, the <code>BoundingBox</code> will be calculated when the <code>Picture</code> is rendered and is not immediately available.
+            This is necessary because the size may depend on backend-specific calculations, such as the space occupied by text.</p>
+            <p>To make use of the <code>BoundingBox</code> in the creation of a picture we can use the <code>flatMap</code> method on <code>Picture</code>.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">boundingBox</span><span> =
+  </span><span class="identifier">circleBoundingBox</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">bb</span><span> =&gt; 
+    </span><span class="type-name">Picture</span><span>
+      .</span><span class="identifier">roundedRectangle</span><span>(</span><span class="identifier">bb</span><span>.</span><span class="identifier">width</span><span>, </span><span class="identifier">bb</span><span>.</span><span class="identifier">height</span><span>, </span><span class="number-literal">3.0</span><span>)
+      .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">hotpink</span><span>)
+      .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">3.0</span><span>)
+  )
+  
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>.</span><span class="identifier">on</span><span>(</span><span class="identifier">boundingBox</span><span>)</span></code></pre>
+            <p>This produces the picture shown below.</p>
+            <div class="default-image-block">
+              <img src="bounding-box.png">
+            </div>
+            
+            <h2 id="other-methods" class="section">Other Methods</h2>
+            <p>The <code>Size</code> algebra defines a few utilities derived from the <code>boundingBox</code> method:</p>
+            <ul>
+              <li><code>width</code> gets the height of the enclosing bounding box, as a <code>Double</code>;</li>
+              <li><code>height</code> gets the height of the enclosing bounding box, as a <code>Double</code>; and</li>
+              <li><code>size</code> gets the width and height of the enclosing bounding box, as a tuple <code>(Double, Double)</code>.</li>
+            </ul>
+            
+            <h2 id="implementation" class="section">Implementation</h2>
+            <p>The <code>Size</code> algebra supports all the features described above. <code>Image</code> does not currently support these operations.</p>
+            <p class="nextPage"><a href="drawing.html">Drawing to the Screen→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>
