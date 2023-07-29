@@ -1,10 +1,12 @@
 # Changelog
 
-## NEXT
+## 0.20.0 29-Jul-2023
 
 - Rework type inference for syntax, making syntax more flexible and requiring fewer type annotations. (#133)
 
 - Implement a `Monad` instance for `Picture` (#131)
+
+- Add `flatMap` method to `Picture`
 
 - Doodle is now Scala 3 only, as the new syntax doesn't compile under 2.13
 
