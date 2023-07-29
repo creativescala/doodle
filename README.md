@@ -6,8 +6,6 @@ Doodle is a Scala library for compositional vector graphics.
 
 Distributed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
-[![Build Status](https://travis-ci.org/creativescala/doodle.svg?branch=develop)](https://travis-ci.org/creativescala/doodle)
-
 
 ## Using Doodle
 
