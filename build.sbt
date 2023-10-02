@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import scala.sys.process._
-import laika.rewrite.link.LinkConfig
-import laika.rewrite.link.ApiLinks
+import laika.config.LinkConfig
+import laika.config.ApiLinks
 import laika.theme.Theme
 
 ThisBuild / tlBaseVersion := "0.20" // your current series x.y
@@ -137,13 +137,12 @@ lazy val docs =
     .in(file("docs"))
     .settings(
       laikaConfig := laikaConfig.value.withConfigValue(
-        LinkConfig(apiLinks =
-          Seq(
+        LinkConfig.empty
+          .addApiLinks(
             ApiLinks(baseUri =
               "https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/"
             )
           )
-        )
       ),
       mdocIn := file("docs/src/pages"),
       css := {
@@ -166,8 +165,8 @@ lazy val docs =
         ),
       laikaTheme := Theme.empty,
       laikaExtensions ++= Seq(
-        laika.markdown.github.GitHubFlavor,
-        laika.parse.code.SyntaxHighlighting,
+        laika.format.Markdown.GitHubFlavor,
+        laika.config.SyntaxHighlighting,
         CreativeScalaDirectives
       ),
       tlSite := Def
