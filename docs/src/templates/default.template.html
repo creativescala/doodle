@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Laika 0.19.0" />
+    <meta name="generator" content="Typelevel Laika" />
     <title>${cursor.currentDocument.title}</title>
     @:for(laika.site.metadata.authors)
     <meta name="author" content="${_}" />
@@ -16,8 +16,8 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
         rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
-    @:linkCSS { paths = ["/creative-scala.css"] }
-    @:linkJS { paths = ["/"] }
+    <link rel="stylesheet" type="text/css" href="@:target(creative-scala.css)" />
+    <script src="@:target(main.js)"></script>
     <script> /* for avoiding page load transitions */</script>
 </head>
 
