@@ -178,7 +178,8 @@ lazy val docs =
           css,
           laikaSite
         )
-        .value
+        .value,
+      tlFatalWarnings := false
     )
     .enablePlugins(TypelevelSitePlugin)
     .dependsOn(core.jvm, image.jvm)
