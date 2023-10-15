@@ -43,8 +43,9 @@ trait GoldenImage extends Golden { self: FunSuite =>
           .map(_ => imageDiff(file, temp))
           .unsafeRunSync()
       } finally {
-        if (temp.exists()) temp.delete()
-        ()
+        if (temp.exists())
+          temp.delete()
+          ()
       }
     } else {
       println(s"Golden: ${file} does not exist. Creating golden image.")
