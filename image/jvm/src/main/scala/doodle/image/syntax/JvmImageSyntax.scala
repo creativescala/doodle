@@ -25,7 +25,6 @@ import doodle.core.format.Format
 import doodle.core.{Base64 => B64}
 import doodle.effect.Base64
 import doodle.effect.Writer
-import doodle.image.Image
 import doodle.language.Basic
 
 import java.io.File

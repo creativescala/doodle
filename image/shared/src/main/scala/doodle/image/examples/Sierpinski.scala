@@ -19,7 +19,6 @@ package image
 package examples
 
 import doodle.core._
-import doodle.image.Image
 
 object Sierpinski {
   def triangle(size: Double): Image = {

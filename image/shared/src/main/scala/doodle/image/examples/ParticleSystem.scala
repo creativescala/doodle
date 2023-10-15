@@ -26,7 +26,6 @@ import cats.Monoid
 import cats.data.Kleisli
 import cats.data.WriterT
 import cats.implicits._
-import doodle.image.Image
 
 object ParticleSystem {
 

@@ -19,7 +19,6 @@ package image
 package examples
 
 import doodle.core._
-import doodle.image.Image
 
 object Layout {
   // Examples for debugging layout
