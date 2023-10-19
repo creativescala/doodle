@@ -20,7 +20,6 @@ package examples
 
 import cats.implicits._
 import doodle.core._
-import doodle.image.Image
 import doodle.random._
 
 object Layers {

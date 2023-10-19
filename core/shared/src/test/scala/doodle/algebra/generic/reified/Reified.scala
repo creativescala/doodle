@@ -19,9 +19,6 @@ package algebra
 package generic
 package reified
 
-import cats.implicits._
-import doodle.algebra.generic.Fill
-import doodle.algebra.generic.Stroke
 import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.font.Font

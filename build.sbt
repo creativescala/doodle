@@ -64,6 +64,7 @@ lazy val commonSettings = Seq(
     Dependencies.miniTest.value,
     Dependencies.miniTestLaws.value
   ),
+  testFrameworks += new TestFramework("minitest.runner.Framework"),
   // scalacOptions ++= Seq("-release", "8"),
   // javacOptions ++= Seq("-source", "8", "-target", "8"),
   startYear := Some(2015),
@@ -177,7 +178,8 @@ lazy val docs =
           css,
           laikaSite
         )
-        .value
+        .value,
+      tlFatalWarnings := false
     )
     .enablePlugins(TypelevelSitePlugin)
     .dependsOn(core.jvm, image.jvm)

@@ -21,7 +21,6 @@ package syntax
 import cats.effect.unsafe.IORuntime
 import doodle.effect.DefaultRenderer
 import doodle.effect.Renderer
-import doodle.image.Image
 import doodle.language.Basic
 import doodle.syntax.AbstractRendererSyntax
 

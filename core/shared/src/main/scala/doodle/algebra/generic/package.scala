@@ -20,7 +20,6 @@ package algebra
 import cats.*
 import cats.data.*
 import cats.syntax.all.*
-import doodle.core.BoundingBox
 import doodle.core.{Transform => Tx}
 
 package object generic {

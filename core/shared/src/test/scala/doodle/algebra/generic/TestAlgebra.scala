@@ -71,8 +71,6 @@ final case class TestAlgebra(
     }
 }
 object TestAlgebra {
-  import doodle.algebra._
-
   type Algebra =
     Layout with Size with Path with Shape with Debug with Style with Text
   type Drawing[A] = Finalized[Reification, A]

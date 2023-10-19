@@ -19,7 +19,6 @@ package image
 package examples
 
 import doodle.core._
-import doodle.image.Image
 import doodle.syntax.all._
 
 object RainbowSierpinski {

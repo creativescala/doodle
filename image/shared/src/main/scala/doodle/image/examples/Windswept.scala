@@ -20,7 +20,6 @@ package examples
 
 import cats.syntax.all._
 import doodle.core._
-import doodle.image.Image
 import doodle.random._
 import doodle.syntax.all._
 

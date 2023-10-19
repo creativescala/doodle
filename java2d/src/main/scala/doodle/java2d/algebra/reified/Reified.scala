@@ -19,7 +19,6 @@ package java2d
 package algebra
 package reified
 
-import cats.implicits._
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
 import doodle.core.PathElement
