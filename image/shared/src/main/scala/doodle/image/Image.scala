@@ -115,20 +115,23 @@ sealed abstract class Image extends Product with Serializable {
   def scale(x: Double, y: Double): Image =
     this.transform(core.Transform.scale(x, y))
 
+  def at(landmark: Landmark): Image =
+    At(this, landmark)
+
   def at(vec: Vec): Image =
     // Transform(core.transform.Transform.translate(vec.x, vec.y), this)
-    At(this, vec.x, vec.y)
+    at(vec.x, vec.y)
 
   def at(pt: Point): Image =
-    At(this, pt.x, pt.y)
+    at(pt.x, pt.y)
 
   def at(x: Double, y: Double): Image =
     // Transform(core.transform.Transform.translate(x, y), this)
-    At(this, x, y)
+    at(Landmark.point(x, y))
 
   def at(r: Double, a: Angle): Image = {
     val pt = Point(r, a)
-    At(this, pt.x, pt.y)
+    at(pt.x, pt.y)
   }
 
   def originAt(vec: Vec): Image =
@@ -175,7 +178,7 @@ object Image {
     final case class Beside(l: Image, r: Image) extends Image
     final case class Above(l: Image, r: Image) extends Image
     final case class On(t: Image, b: Image) extends Image
-    final case class At(image: Image, x: Double, y: Double) extends Image
+    final case class At(image: Image, landmark: Landmark) extends Image
     final case class Transform(tx: core.Transform, i: Image) extends Image
     final case class Margin(
         i: Image,
@@ -305,8 +308,8 @@ object Image {
             algebra.above(compile(l)(algebra), compile(r)(algebra))
           case On(t, b) =>
             algebra.on(compile(t)(algebra), compile(b)(algebra))
-          case At(image, x, y) =>
-            algebra.at(compile(image)(algebra), x, y)
+          case At(image, landmark) =>
+            algebra.at(compile(image)(algebra), landmark)
           case Margin(image, top, right, bottom, left) =>
             algebra.margin(compile(image)(algebra), top, right, bottom, left)
           case OriginAt(image, x, y) =>
