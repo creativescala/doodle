@@ -19,12 +19,14 @@ To use `Image` we need the following imports:
 ```scala mdoc:silent
 import doodle.core.*
 import doodle.image.*
+```
+```scala
 import doodle.image.syntax.all.*
 ```
 
 We'll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend.
 
-```scala mdoc:silent
+```scala
 import doodle.java2d.*
 import cats.effect.unsafe.implicits.global
 ```
@@ -67,6 +69,8 @@ We'll also need to import a backend. Most people will be working on the JVM, and
 
 ```scala mdoc:silent
 import doodle.java2d.*
+```
+```scala
 import cats.effect.unsafe.implicits.global
 ```
 

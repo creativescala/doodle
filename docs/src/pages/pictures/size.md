@@ -28,11 +28,7 @@ This is necessary because the size may depend on backend-specific calculations, 
 
 To make use of the `BoundingBox` in the creation of a picture we can use the `flatMap` method on `Picture`.
 
-```scala mdoc:silent
-import doodle.core.*
-import doodle.java2d.*
-import doodle.syntax.all.*
-
+```scala mdoc
 val boundingBox =
   circleBoundingBox.flatMap(bb => 
     Picture

@@ -25,6 +25,8 @@ To do anything useful we'll also need a backend. Here are the imports for the Ja
 
 ```scala mdoc:silent
 import doodle.java2d.*
+```
+```scala
 import cats.effect.unsafe.implicits.global
 ```
 

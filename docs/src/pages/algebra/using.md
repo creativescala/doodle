@@ -66,6 +66,8 @@ The first step is, as before, to import the Doodle core, Java2D backend, syntax 
 import doodle.core.*
 import doodle.java2d.*
 import doodle.syntax.all.*
+```
+```scala
 import cats.effect.unsafe.implicits.global
 ```
 Now we can go about creating our picture, using the `read` method to load a bitmap image.
@@ -91,15 +93,17 @@ We can then draw it using the `draw` method, which produces the output shown bel
 
 Targeting multiple backends requires a little bit more work than working with a single backend. We can't use the usual constructor methods on a `Picture` object, as those methods target a specific backend and we want to work across multiple backends. However, every constructor method has a syntax equivalent that we can call. So to create a circle we can write
 
-```scala mdoc:reset:silent
-import doodle.core.*
-import doodle.syntax.all.*
-
+```scala mdoc:silent
 circle(100)
 ```
 
 Once we know how to do this, everything proceeds as before. Here's a complete example.
 
+```scala mdoc:reset:invisible
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
+```
 ```scala mdoc:silent
 val redCircle = circle(100).strokeColor(Color.red)
 val rad = text("Doodle is rad")
@@ -119,7 +123,6 @@ We never need to call methods on algebras directly. Doodle provides the @:api(do
 To use algebras directly, write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using `Layout`, `Style`, and `Shape` we might write the following.
 
 ```scala mdoc:silent
-import doodle.core.*
 import doodle.algebra.*
 
 // Two red circles beside each other
@@ -128,7 +131,6 @@ def twoRedCircles[Alg <: Layout & Style & Shape](algebra: Alg): algebra.Drawing[
   
   algebra.beside(redCircle, redCircle)
 }
-  
 ```
 
 This is not a convenient way to write code, so don't do it unless you have a good reason.
