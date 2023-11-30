@@ -66,8 +66,8 @@
             Implementing syntax is a little bit more involved than defining an algebra due to the extra work we do to make type inference work nicely.
             The goal is to build up the algebra required by a <code>Picture</code> based on the operations used.
             For example, notice the inferred type of the <code>Picture</code> below.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
             <pre><code class="nohighlight"><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">beside</span><span>(</span><span class="identifier">square</span><span>(</span><span class="number-literal">20</span><span>)).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)</span></code></pre>
             <p>This type reflects exactly the algebras used in constructing the <code>Picture</code>. 
             For users working with a single backend this is never an issue as they work from the constructors on the <code>Picture</code> object which start with all the algebras supported by the backend.

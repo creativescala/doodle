@@ -3828,9 +3828,6 @@ function $h_Ldoodle_core_Normalized$() {
   /*<skip>*/
 }
 $h_Ldoodle_core_Normalized$.prototype = $c_Ldoodle_core_Normalized$.prototype;
-$c_Ldoodle_core_Normalized$.prototype.toString__T = (function() {
-  return "Normalized"
-});
 $c_Ldoodle_core_Normalized$.prototype.clip__D__D = (function(value) {
   return ((value < 0.0) ? this.Ldoodle_core_Normalized$__f_MinValue : ((value > 1.0) ? this.Ldoodle_core_Normalized$__f_MaxValue : ($m_Ldoodle_core_Normalized$(), value)))
 });
@@ -3900,9 +3897,6 @@ function $h_Ldoodle_core_UnsignedByte$() {
   /*<skip>*/
 }
 $h_Ldoodle_core_UnsignedByte$.prototype = $c_Ldoodle_core_UnsignedByte$.prototype;
-$c_Ldoodle_core_UnsignedByte$.prototype.toString__T = (function() {
-  return "UnsignedByte"
-});
 $c_Ldoodle_core_UnsignedByte$.prototype.clip__I__B = (function(value) {
   if ((value < 0)) {
     return this.Ldoodle_core_UnsignedByte$__f_MinValue
@@ -4085,7 +4079,7 @@ function $ps_Ldoodle_interact_animation_Interpolation__loop$1__J__Ldoodle_intera
     if (false) {
       var x$1$5 = $as_Ldoodle_interact_animation_Interpolation$Constant(x7);
       var x10 = $n(x$1$5)._1__O();
-      $m_Ldoodle_interact_animation_Transducer$();
+      var this$18 = $m_Ldoodle_interact_animation_Transducer$();
       var update = new $c_sjsr_AnonFunction1(((x$5) => {
         var t = $uJ(x$5);
         var lo = t.RTLong__f_lo;
@@ -4101,7 +4095,7 @@ function $ps_Ldoodle_interact_animation_Interpolation__loop$1__J__Ldoodle_intera
         var bhi = steps$1.RTLong__f_hi;
         return ((hi$2 === bhi) ? (((-2147483648) ^ lo$2) >= ((-2147483648) ^ steps$1.RTLong__f_lo)) : (hi$2 > bhi))
       }))(steps$1));
-      var target = new $c_Ldoodle_interact_animation_Transducer$$anon$12($L0, update, stop);
+      var target = new $c_Ldoodle_interact_animation_Transducer$$anon$12($L0, update, stop, this$18);
       var tc = $m_Ldoodle_interact_animation_Transducer$().Ldoodle_interact_animation_Transducer$__f_transducerTraverseAndApplicative;
       var this$20 = new $c_Lcats_Functor$ToFunctorOps$$anon$5(target, tc);
       return $as_Ldoodle_interact_animation_Transducer($n(this$20.Lcats_Functor$ToFunctorOps$$anon$5__f_typeClassInstance).as__O__O__O(this$20.Lcats_Functor$ToFunctorOps$$anon$5__f_self, x10))
@@ -4238,11 +4232,11 @@ function $h_Ldoodle_interact_animation_Transducer$() {
 $h_Ldoodle_interact_animation_Transducer$.prototype = $c_Ldoodle_interact_animation_Transducer$.prototype;
 $c_Ldoodle_interact_animation_Transducer$.prototype.empty__Ldoodle_interact_animation_Transducer = (function() {
   var elts = $m_sr_ScalaRunTime$().genericWrapArray__O__sci_ArraySeq(new $ac_O([]));
-  return new $c_Ldoodle_interact_animation_Transducer$$anon$10(elts)
+  return new $c_Ldoodle_interact_animation_Transducer$$anon$10(elts, this)
 });
 $c_Ldoodle_interact_animation_Transducer$.prototype.pure__O__Ldoodle_interact_animation_Transducer = (function(elt) {
   var elts = $m_sr_ScalaRunTime$().genericWrapArray__O__sci_ArraySeq(new $ac_O([elt]));
-  return new $c_Ldoodle_interact_animation_Transducer$$anon$10(elts)
+  return new $c_Ldoodle_interact_animation_Transducer$$anon$10(elts, this)
 });
 var $d_Ldoodle_interact_animation_Transducer$ = new $TypeData().initClass({
   Ldoodle_interact_animation_Transducer$: 0
@@ -4903,9 +4897,6 @@ function $h_Ldoodle_svg_effect_Canvas$() {
   /*<skip>*/
 }
 $h_Ldoodle_svg_effect_Canvas$.prototype = $c_Ldoodle_svg_effect_Canvas$.prototype;
-$c_Ldoodle_svg_effect_Canvas$.prototype.toString__T = (function() {
-  return "Canvas"
-});
 $c_Ldoodle_svg_effect_Canvas$.prototype.fromFrame__Ldoodle_svg_effect_Frame__Lcats_effect_unsafe_IORuntime__Lcats_effect_IO = (function(frame, runtime) {
   $m_Lcats_implicits$();
   var _1 = $as_Lcats_effect_IO($m_Lcats_effect_std_Queue$().circularBuffer__I__Lcats_effect_kernel_GenConcurrent__O(1, $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO));
@@ -20020,13 +20011,16 @@ var $d_Ldoodle_interact_animation_Interpolator$$anon$5 = new $TypeData().initCla
 });
 $c_Ldoodle_interact_animation_Interpolator$$anon$5.prototype.$classData = $d_Ldoodle_interact_animation_Interpolator$$anon$5;
 /** @constructor */
-function $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6(fa$2, f$2, g$2) {
+function $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6(fa$2, f$2, g$2, outer) {
   this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_fa$1 = null;
   this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_f$1 = null;
   this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_g$1 = null;
   this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_fa$1 = fa$2;
   this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_f$1 = f$2;
-  this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_g$1 = g$2
+  this.Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6__f_g$1 = g$2;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException())
+  }
 }
 $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6.prototype = new $h_O();
 $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6.prototype.constructor = $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6;
@@ -20103,8 +20097,11 @@ var $d_Ldoodle_interact_animation_Transducer$$anon$1 = new $TypeData().initClass
 });
 $c_Ldoodle_interact_animation_Transducer$$anon$1.prototype.$classData = $d_Ldoodle_interact_animation_Transducer$$anon$1;
 /** @constructor */
-function $c_Ldoodle_interact_animation_Transducer$$anon$10(elts$1) {
+function $c_Ldoodle_interact_animation_Transducer$$anon$10(elts$1, outer) {
   this.Ldoodle_interact_animation_Transducer$$anon$10__f_initial = null;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException())
+  };
   this.Ldoodle_interact_animation_Transducer$$anon$10__f_initial = elts$1
 }
 $c_Ldoodle_interact_animation_Transducer$$anon$10.prototype = new $h_O();
@@ -20154,12 +20151,15 @@ var $d_Ldoodle_interact_animation_Transducer$$anon$10 = new $TypeData().initClas
 });
 $c_Ldoodle_interact_animation_Transducer$$anon$10.prototype.$classData = $d_Ldoodle_interact_animation_Transducer$$anon$10;
 /** @constructor */
-function $c_Ldoodle_interact_animation_Transducer$$anon$12(start$2, update$3, stop$1) {
+function $c_Ldoodle_interact_animation_Transducer$$anon$12(start$2, update$3, stop$1, outer) {
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$4 = null;
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$2 = null;
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial = null;
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_update$4 = update$3;
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_stop$2 = stop$1;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException())
+  };
   this.Ldoodle_interact_animation_Transducer$$anon$12__f_initial = start$2
 }
 $c_Ldoodle_interact_animation_Transducer$$anon$12.prototype = new $h_O();
@@ -28119,9 +28119,6 @@ function $h_Ldoodle_algebra_generic_DrawingContext$() {
   /*<skip>*/
 }
 $h_Ldoodle_algebra_generic_DrawingContext$.prototype = $c_Ldoodle_algebra_generic_DrawingContext$.prototype;
-$c_Ldoodle_algebra_generic_DrawingContext$.prototype.toString__T = (function() {
-  return "DrawingContext"
-});
 $c_Ldoodle_algebra_generic_DrawingContext$.prototype.default__Ldoodle_algebra_generic_DrawingContext = (function() {
   var blendMode = $m_Ldoodle_algebra_generic_BlendMode$().Ldoodle_algebra_generic_BlendMode$__f_sourceOver;
   var strokeColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_black;
@@ -28160,9 +28157,6 @@ function $h_Ldoodle_algebra_generic_Finalized$() {
   /*<skip>*/
 }
 $h_Ldoodle_algebra_generic_Finalized$.prototype = $c_Ldoodle_algebra_generic_Finalized$.prototype;
-$c_Ldoodle_algebra_generic_Finalized$.prototype.toString__T = (function() {
-  return "Finalized"
-});
 $c_Ldoodle_algebra_generic_Finalized$.prototype.applyU__F1__Ldoodle_algebra_generic_Finalized = (function(f) {
   var f$1 = new $c_sjsr_AnonFunction1(((ctxTxs) => {
     var ctxTxs$1 = $as_sci_List(ctxTxs);
@@ -28267,9 +28261,6 @@ function $h_Ldoodle_core_BoundingBox$() {
   /*<skip>*/
 }
 $h_Ldoodle_core_BoundingBox$.prototype = $c_Ldoodle_core_BoundingBox$.prototype;
-$c_Ldoodle_core_BoundingBox$.prototype.toString__T = (function() {
-  return "BoundingBox"
-});
 $c_Ldoodle_core_BoundingBox$.prototype.centered__D__D__Ldoodle_core_BoundingBox = (function(width, height) {
   var w = (width / 2.0);
   var h = (height / 2.0);
@@ -28436,9 +28427,6 @@ function $h_Ldoodle_core_Landmark$() {
   /*<skip>*/
 }
 $h_Ldoodle_core_Landmark$.prototype = $c_Ldoodle_core_Landmark$.prototype;
-$c_Ldoodle_core_Landmark$.prototype.toString__T = (function() {
-  return "Landmark"
-});
 $c_Ldoodle_core_Landmark$.prototype.point__D__D__Ldoodle_core_Landmark = (function(x, y) {
   $m_Ldoodle_core_Landmark$();
   $m_Ldoodle_core_Coordinate$();
@@ -28511,9 +28499,6 @@ function $h_Ldoodle_core_Transform$() {
   /*<skip>*/
 }
 $h_Ldoodle_core_Transform$.prototype = $c_Ldoodle_core_Transform$.prototype;
-$c_Ldoodle_core_Transform$.prototype.toString__T = (function() {
-  return "Transform"
-});
 $c_Ldoodle_core_Transform$.prototype.scale__D__D__Ldoodle_core_Transform = (function(x, y) {
   $m_Ldoodle_core_Transform$();
   var elements = new $ac_D(new Float64Array([x, 0.0, 0.0, 0.0, y, 0.0, 0.0, 0.0, 1.0]));
@@ -28569,9 +28554,6 @@ function $h_Ldoodle_core_font_Font$() {
   /*<skip>*/
 }
 $h_Ldoodle_core_font_Font$.prototype = $c_Ldoodle_core_font_Font$.prototype;
-$c_Ldoodle_core_font_Font$.prototype.toString__T = (function() {
-  return "Font"
-});
 var $d_Ldoodle_core_font_Font$ = new $TypeData().initClass({
   Ldoodle_core_font_Font$: 0
 }, false, "doodle.core.font.Font$", {
@@ -28718,7 +28700,7 @@ function $h_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$() {
 $h_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$.prototype = $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$.prototype;
 $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$.prototype.imap__O__F1__F1__O = (function(fa, f, g) {
   var fa$1 = $as_Ldoodle_interact_animation_Interpolator(fa);
-  return new $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6(fa$1, f, g)
+  return new $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$$anon$6(fa$1, f, g, this)
 });
 var $d_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$ = new $TypeData().initClass({
   Ldoodle_interact_animation_Interpolator$interpolatorInvariant$: 0
@@ -28774,9 +28756,6 @@ function $h_Ldoodle_svg_effect_Frame$() {
   /*<skip>*/
 }
 $h_Ldoodle_svg_effect_Frame$.prototype = $c_Ldoodle_svg_effect_Frame$.prototype;
-$c_Ldoodle_svg_effect_Frame$.prototype.toString__T = (function() {
-  return "Frame"
-});
 $c_Ldoodle_svg_effect_Frame$.prototype.apply__T__Ldoodle_svg_effect_Frame = (function(id) {
   var size = new $c_Ldoodle_svg_effect_Size$FitToPicture(20);
   var background = $m_s_None$();

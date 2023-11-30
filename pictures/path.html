@@ -71,9 +71,9 @@
               <li>straight line movement that doesn&#39;t draw to the screen.</li>
             </ul>
             <p>Here&#39;s an example of a path. Notice that it has examples of all of the different components above.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
 
 </span><span class="keyword">val</span><span> </span><span class="identifier">feather</span><span> =
   </span><span class="type-name">ClosedPath</span><span>.</span><span class="identifier">empty</span><span>
@@ -104,7 +104,7 @@
             <p>You can create a path by calling the <code>empty</code> method on either <code>ClosedPath</code> or <code>OpenPath</code>, and then calling methods on the resulting object. This is the approach used above. You can also creates instances of <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/PathElement.html">PathElement</a> and create a path from a <code>List[PathElement]</code>.</p>
             <p>To convert a path to a <code>Picture</code> you can use the <code>path</code> syntax method, which is demonstrated in the examples above, or use the <code>path</code> method on the <code>Picture</code> object.</p>
             <p>To create an <code>Image</code> from a path, use the <code>path</code> method on <code>Image</code>. Here&#39;s an example.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">_</span><span>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.*
 
 </span><span class="keyword">val</span><span> </span><span class="identifier">openPath</span><span> = </span><span class="type-name">OpenPath</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">lineTo</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
 

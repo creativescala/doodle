@@ -61,7 +61,7 @@
             <h1 id="syntax" class="title">Syntax</h1>
             <p>To use methods on algebras that are not constructors (constructors are explained in <a href="picture-object.html">Picture Object</a>) you would usually use syntax.</p>
             <p>The standard import for syntax is</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
             <p>Say we want to use the <code>beside</code> method on <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Layout.html">Layout</a>. First we need some pictures to layout.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">left</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">10</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">right</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">20</span><span>)</span></code></pre>

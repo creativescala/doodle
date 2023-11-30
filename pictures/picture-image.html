@@ -68,11 +68,11 @@
             
             <h2 id="using-image" class="section">Using Image</h2>
             <p>To use <code>Image</code> we need the following imports:</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">_</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
             <p>We&#39;ll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
             <p><code>Image</code> is based on <em>composition</em> and the <em>interpreter pattern</em>. </p>
             <p>Composition basically means that we build big images out of small images. For example, if we have an image describing a red square and an image describing a blue square</p>
@@ -88,10 +88,10 @@
             
             <h2 id="using-picture" class="section">Using Picture</h2>
             <p>To use <code>Picture</code> we need the following imports:</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span></code></pre>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
             <p>We&#39;ll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
             <p><code>Picture</code> works the same way as <code>Image</code>, using composition and the interpreter pattern. In fact the above example can be rewritten using picture by simply changing <code>Image</code> to <code>Picture</code>.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">redSquare</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)

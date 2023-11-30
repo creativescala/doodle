@@ -71,9 +71,9 @@
             <h2 id="quick-example" class="section">Quick Example</h2>
             <p>The following example creates a Chessboard, by first creating a 2x2 board, then a 4x4 board from the 2x2 board, and finally the complete 8x8 board from the 4x4 board.</p>
             <pre><code class="nohighlight"><span class="comment">// The &quot;Image&quot; DSL is the easiest way to create images
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.*
 </span><span class="comment">// Colors and other useful stuff
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
 
 </span><span class="keyword">val</span><span> </span><span class="identifier">blackSquare</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">30</span><span>, </span><span class="number-literal">30</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">redSquare</span><span> = </span><span class="type-name">Image</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">30</span><span>, </span><span class="number-literal">30</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
@@ -92,9 +92,9 @@
     .</span><span class="identifier">above</span><span>(</span><span class="identifier">fourByFour</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">fourByFour</span><span>))</span></code></pre>
             <p>To draw these Images call the <code>draw</code> method like so</p>
             <pre><code class="nohighlight"><span class="comment">// Extension methods
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">image</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
 </span><span class="comment">// Render to a window using Java2D (must be running in the JVM)
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
 </span><span class="comment">// Need the Cats Effect runtime to run everything
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
 
