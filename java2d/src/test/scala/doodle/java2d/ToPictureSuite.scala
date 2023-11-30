@@ -19,13 +19,13 @@ package java2d
 
 import cats.effect.unsafe.implicits.global
 import doodle.algebra.ToPicture
-import doodle.core.format._
+import doodle.core.format.*
 import doodle.core.{Base64 => B64}
-import doodle.effect._
-import doodle.syntax.all._
-import minitest._
+import doodle.effect.*
+import doodle.syntax.all.*
+import munit.FunSuite
 
-object ToPictureSpec extends SimpleTestSuite {
+class ToPictureSuite extends FunSuite {
   def base64Distance[A <: Format](b1: B64[A], b2: B64[A]): Double = {
     import java.util.{Base64 => JBase64}
     val d1 = JBase64.getDecoder().decode(b1.value)

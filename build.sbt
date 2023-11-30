@@ -60,13 +60,8 @@ lazy val css = taskKey[Unit]("Build the CSS")
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     Dependencies.munit.value,
-    Dependencies.munitScalaCheck.value,
-    Dependencies.miniTest.value,
-    Dependencies.miniTestLaws.value
+    Dependencies.munitScalaCheck.value
   ),
-  testFrameworks += new TestFramework("minitest.runner.Framework"),
-  // scalacOptions ++= Seq("-release", "8"),
-  // javacOptions ++= Seq("-source", "8", "-target", "8"),
   startYear := Some(2015),
   licenses := List(
     "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")

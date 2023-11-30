@@ -19,11 +19,11 @@ package java2d
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.Base64
-import doodle.core.format._
-import doodle.syntax.all._
-import minitest._
+import doodle.core.format.*
+import doodle.syntax.all.*
+import munit.FunSuite
 
-object Base64Spec extends SimpleTestSuite {
+class Base64Suite extends FunSuite {
   def base64Distance[A <: Format](b1: Base64[A], b2: Base64[A]): Double = {
     import java.util.{Base64 => JBase64}
     val d1 = JBase64.getDecoder().decode(b1.value)

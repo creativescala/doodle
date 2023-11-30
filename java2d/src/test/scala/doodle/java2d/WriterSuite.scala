@@ -18,13 +18,13 @@ package doodle
 package java2d
 
 import cats.effect.unsafe.implicits.global
-import doodle.core.format._
-import doodle.syntax.all._
-import minitest._
+import doodle.core.format.*
+import doodle.syntax.all.*
+import munit.FunSuite
 
 import java.io.File
 
-object WriterSpec extends SimpleTestSuite {
+class WriterSuite extends FunSuite {
   val image = circle[Algebra](20.0)
 
   test("write should work with png") {

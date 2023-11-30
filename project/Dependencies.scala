@@ -13,7 +13,6 @@ object Dependencies {
 
   val batikVersion = "1.17"
 
-  val miniTestVersion = "2.9.6"
   val scalaCheckVersion = "1.15.4"
   val munitVersion = "0.7.29"
   val munitCatsEffectVersion = "1.0.7"
@@ -30,10 +29,6 @@ object Dependencies {
   val batik =
     Def.setting("org.apache.xmlgraphics" % "batik-transcoder" % batikVersion)
 
-  val miniTest =
-    Def.setting("io.monix" %%% "minitest" % miniTestVersion % "test")
-  val miniTestLaws =
-    Def.setting("io.monix" %%% "minitest-laws" % miniTestVersion % "test")
   val munit = Def.setting("org.scalameta" %%% "munit" % munitVersion % "test")
   val munitScalaCheck =
     Def.setting("org.scalameta" %%% "munit-scalacheck" % munitVersion % "test")

@@ -17,10 +17,10 @@
 package doodle
 package core
 
-import doodle.syntax.all._
-import minitest._
+import doodle.syntax.all.*
+import munit.FunSuite
 
-object ColorSuite extends SimpleTestSuite {
+class ColorSuite extends FunSuite {
   test("toRGBA should convert to expected RGBA color") {
     val blueHSLA = Color.hsl(240.degrees, 0.5, 0.5).toRGBA
     val blueRGBA = Color.rgb(64.uByte, 64.uByte, 191.uByte)
