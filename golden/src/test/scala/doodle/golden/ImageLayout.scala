@@ -17,6 +17,8 @@
 package doodle
 package golden
 
+import doodle.core.Coordinate
+import doodle.core.Landmark
 import doodle.image._
 import munit._
 
@@ -29,5 +31,26 @@ class ImageLayout extends FunSuite with GoldenImage {
       .beside(c.debug.at(5, -5))
       .above(c.debug.beside(c.at(5, 5).debug).beside(c.at(5, -5).debug))
       .above(c.beside(c.at(5, 5)).beside(c.at(5, -5)).debug)
+  }
+
+  testImage("image-landmarks") {
+    Image
+      .circle(100)
+      .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(-50)))
+      .on(
+        Image
+          .circle(100)
+          .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(-50)))
+      )
+      .on(
+        Image
+          .circle(100)
+          .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(50)))
+      )
+      .on(
+        Image
+          .circle(100)
+          .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(50)))
+      )
   }
 }

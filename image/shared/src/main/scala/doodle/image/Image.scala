@@ -134,18 +134,21 @@ sealed abstract class Image extends Product with Serializable {
     at(pt.x, pt.y)
   }
 
+  def originAt(landmark: Landmark): Image =
+    OriginAt(this, landmark)
+
   def originAt(vec: Vec): Image =
-    OriginAt(this, vec.x, vec.y)
+    originAt(vec.x, vec.y)
 
   def originAt(pt: Point): Image =
-    OriginAt(this, pt.x, pt.y)
+    originAt(pt.x, pt.y)
 
   def originAt(x: Double, y: Double): Image =
-    OriginAt(this, x, y)
+    originAt(Landmark.point(x, y))
 
   def originAt(r: Double, a: Angle): Image = {
     val pt = Point(r, a)
-    OriginAt(this, pt.x, pt.y)
+    originAt(pt.x, pt.y)
   }
 
   // Debug ------------------------------------------------------------
@@ -187,7 +190,7 @@ object Image {
         bottom: Double,
         left: Double
     ) extends Image
-    final case class OriginAt(image: Image, x: Double, y: Double) extends Image
+    final case class OriginAt(image: Image, landmark: Landmark) extends Image
     // Style
     final case class StrokeWidth(image: Image, width: Double) extends Image
     final case class StrokeColor(image: Image, color: Color) extends Image
@@ -312,8 +315,8 @@ object Image {
             algebra.at(compile(image)(algebra), landmark)
           case Margin(image, top, right, bottom, left) =>
             algebra.margin(compile(image)(algebra), top, right, bottom, left)
-          case OriginAt(image, x, y) =>
-            algebra.originAt(compile(image)(algebra), x, y)
+          case OriginAt(image, landmark) =>
+            algebra.originAt(compile(image)(algebra), landmark)
 
           case Transform(tx, i) =>
             algebra.transform(compile(i)(algebra), tx)
