@@ -101,7 +101,6 @@ Once we know how to do this, everything proceeds as before. Here's a complete ex
 
 ```scala mdoc:reset:invisible
 import doodle.core.*
-import doodle.java2d.*
 import doodle.syntax.all.*
 ```
 ```scala mdoc:silent
