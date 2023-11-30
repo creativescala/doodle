@@ -4,6 +4,8 @@
 
 - `Image` supports landmarks for layout with `at` and `originAt`.
 
+- Added `fromHex` method to `Color` to parse CSS hex-color
+
 
 ## 0.20.0 29-Jul-2023
 
