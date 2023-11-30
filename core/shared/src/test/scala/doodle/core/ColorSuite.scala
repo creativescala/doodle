@@ -83,17 +83,29 @@ class ColorSuite extends FunSuite {
     assertEquals(Color.fromHex("#0f0"), Color.lime)
     assertEquals(Color.fromHex("#00f"), Color.blue)
 
-    assert(Color.fromHex("#f009") ~= Color.red.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("#0f09") ~= Color.lime.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("#00f9") ~= Color.blue.alpha((153.0 / 255.0).normalized))
+    assert(
+      Color.fromHex("#f009") ~= Color.red.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("#0f09") ~= Color.lime.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("#00f9") ~= Color.blue.alpha((153.0 / 255.0).normalized)
+    )
 
     assertEquals(Color.fromHex("#ff0000"), Color.red)
     assertEquals(Color.fromHex("#00ff00"), Color.lime)
     assertEquals(Color.fromHex("#0000ff"), Color.blue)
 
-    assert(Color.fromHex("#ff000099") ~= Color.red.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("#00ff0099") ~= Color.lime.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("#0000ff99") ~= Color.blue.alpha((153.0 / 255.0).normalized))
+    assert(
+      Color.fromHex("#ff000099") ~= Color.red.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("#00ff0099") ~= Color.lime.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("#0000ff99") ~= Color.blue.alpha((153.0 / 255.0).normalized)
+    )
 
     // Without leading #
     assertEquals(Color.fromHex("f00"), Color.red)
@@ -101,15 +113,25 @@ class ColorSuite extends FunSuite {
     assertEquals(Color.fromHex("00f"), Color.blue)
 
     assert(Color.fromHex("f009") ~= Color.red.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("0f09") ~= Color.lime.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("00f9") ~= Color.blue.alpha((153.0 / 255.0).normalized))
+    assert(
+      Color.fromHex("0f09") ~= Color.lime.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("00f9") ~= Color.blue.alpha((153.0 / 255.0).normalized)
+    )
 
     assertEquals(Color.fromHex("ff0000"), Color.red)
     assertEquals(Color.fromHex("00ff00"), Color.lime)
     assertEquals(Color.fromHex("0000ff"), Color.blue)
 
-    assert(Color.fromHex("ff000099") ~= Color.red.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("00ff0099") ~= Color.lime.alpha((153.0 / 255.0).normalized))
-    assert(Color.fromHex("0000ff99") ~= Color.blue.alpha((153.0 / 255.0).normalized))
+    assert(
+      Color.fromHex("ff000099") ~= Color.red.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("00ff0099") ~= Color.lime.alpha((153.0 / 255.0).normalized)
+    )
+    assert(
+      Color.fromHex("0000ff99") ~= Color.blue.alpha((153.0 / 255.0).normalized)
+    )
   }
 }

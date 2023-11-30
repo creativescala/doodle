@@ -286,49 +286,51 @@ object Color extends CommonColors {
   def hsl(h: Angle, s: Double, l: Double): Color =
     hsla(h, s, l, 1.0)
 
-
-  /** Parse a hexadecimal `String`, as commonly used to specify colors on the web, into a `Color`.
-   *  The following formats are supported:
-   *
-   *  - RGB
-   *  - #RGB
-   *  - RGBA
-   *  - #RGBA
-   *  - RRGGBB
-   *  - #RRGGBB
-   *  - RRGGBBAA
-   *  - #RRGGBBAA
-   *
-   * Throws `java.lang.IllegalArgumentException` if the input is not a supported format.
-   * */
+  /** Parse a hexadecimal `String`, as commonly used to specify colors on the
+    * web, into a `Color`. The following formats are supported:
+    *
+    *   - RGB
+    *   - #RGB
+    *   - RGBA
+    *   - #RGBA
+    *   - RRGGBB
+    *   - #RRGGBB
+    *   - RRGGBBAA
+    *   - #RRGGBBAA
+    *
+    * Throws `java.lang.IllegalArgumentException` if the input is not a
+    * supported format.
+    */
   def fromHex(hex: String): Color = {
     def error(): Nothing =
-      throw new IllegalArgumentException(s"The string $hex doesn't represent a CSS hex-color")
+      throw new IllegalArgumentException(
+        s"The string $hex doesn't represent a CSS hex-color"
+      )
 
     def parseHex(offset: Int): Int =
       hex(offset) match {
-        case '0' => 0
-        case '1' => 1
-        case '2' => 2
-        case '3' => 3
-        case '4' => 4
-        case '5' => 5
-        case '6' => 6
-        case '7' => 7
-        case '8' => 8
-        case '9' => 9
-        case 'a' => 10
-        case 'A' => 10
-        case 'b' => 11
-        case 'B' => 11
-        case 'c' => 12
-        case 'C' => 12
-        case 'd' => 13
-        case 'D' => 13
-        case 'e' => 14
-        case 'E' => 14
-        case 'f' => 15
-        case 'F' => 15
+        case '0'   => 0
+        case '1'   => 1
+        case '2'   => 2
+        case '3'   => 3
+        case '4'   => 4
+        case '5'   => 5
+        case '6'   => 6
+        case '7'   => 7
+        case '8'   => 8
+        case '9'   => 9
+        case 'a'   => 10
+        case 'A'   => 10
+        case 'b'   => 11
+        case 'B'   => 11
+        case 'c'   => 12
+        case 'C'   => 12
+        case 'd'   => 13
+        case 'D'   => 13
+        case 'e'   => 14
+        case 'E'   => 14
+        case 'f'   => 15
+        case 'F'   => 15
         case other => error()
       }
 
@@ -349,10 +351,32 @@ object Color extends CommonColors {
     val offset = if hex(0) == '#' then 1 else 0
 
     (hex.size - offset) match {
-      case 3 => Color.rgb(parseSingleHex(0 + offset), parseSingleHex(1 + offset), parseSingleHex(2 + offset))
-      case 4 => Color.rgba(parseSingleHex(0 + offset), parseSingleHex(1 + offset), parseSingleHex(2 + offset), parseSingleAlpha(3 + offset))
-      case 6 => Color.rgb(parseDoubleHex(0 + offset), parseDoubleHex(2 + offset), parseDoubleHex(4 + offset))
-      case 8 => Color.rgba(parseDoubleHex(0 + offset), parseDoubleHex(2 + offset), parseDoubleHex(4 + offset), parseDoubleAlpha(6 + offset))
+      case 3 =>
+        Color.rgb(
+          parseSingleHex(0 + offset),
+          parseSingleHex(1 + offset),
+          parseSingleHex(2 + offset)
+        )
+      case 4 =>
+        Color.rgba(
+          parseSingleHex(0 + offset),
+          parseSingleHex(1 + offset),
+          parseSingleHex(2 + offset),
+          parseSingleAlpha(3 + offset)
+        )
+      case 6 =>
+        Color.rgb(
+          parseDoubleHex(0 + offset),
+          parseDoubleHex(2 + offset),
+          parseDoubleHex(4 + offset)
+        )
+      case 8 =>
+        Color.rgba(
+          parseDoubleHex(0 + offset),
+          parseDoubleHex(2 + offset),
+          parseDoubleHex(4 + offset),
+          parseDoubleAlpha(6 + offset)
+        )
       case other => error()
     }
   }
