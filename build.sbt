@@ -18,7 +18,9 @@ import laika.config.LinkConfig
 import laika.config.ApiLinks
 import laika.theme.Theme
 
-ThisBuild / tlBaseVersion := "0.20" // your current series x.y
+ThisBuild / tlBaseVersion := "0.21" // your current series x.y
+
+Global / onChangedBuildSource := ReloadOnSourceChanges
 
 ThisBuild / organization := "org.creativescala"
 ThisBuild / organizationName := "Creative Scala"
@@ -43,7 +45,7 @@ ThisBuild / tlSitePublishBranch := Some("main")
 
 // Run this (build) to do everything involved in building the project
 commands += Command.command("build") { state =>
-  "dependencyUpdates" ::
+  "clean" ::
     "compile" ::
     "test" ::
     "golden/test" ::
@@ -51,6 +53,8 @@ commands += Command.command("build") { state =>
     "scalafmtAll" ::
     "headerCreateAll" ::
     "githubWorkflowGenerate" ::
+    "dependencyUpdates" ::
+    "reload plugins; dependencyUpdates; reload return" ::
     "docs / tlSite" ::
     state
 }
