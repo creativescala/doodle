@@ -43,4 +43,13 @@ object Landmark {
       Coordinate.oneHundredPercent,
       Coordinate.minusOneHundredPercent
     )
+  val topCenter =
+    Landmark(Coordinate.zero, Coordinate.oneHundredPercent)
+  val bottomCenter =
+    Landmark(Coordinate.zero, Coordinate.minusOneHundredPercent)
+  val centerLeft =
+    Landmark(Coordinate.minusOneHundredPercent, Coordinate.zero)
+  val centerRight =
+    Landmark(Coordinate.oneHundredPercent, Coordinate.zero)
+
 }
