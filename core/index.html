@@ -106,6 +106,10 @@
             <pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">steelBlue</span><span> </span><span class="comment">// Not to be confused with blue steel
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">beige</span><span> 
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">limeGreen</span></code></pre>
+            <p>You can also parse colors from CSS hex-color strings. For example:</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">red</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#f00&quot;</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">green</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#00ff00&quot;</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">transparentBlue</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#0f09&quot;</span><span>)</span></code></pre>
             <p>There are many methods to modify colors, such as <code>spin</code>, <code>desaturate</code>, and so on. See the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a> for full details.</p>
             
             <h2 id="point" class="section">Point</h2>
