@@ -11,8 +11,8 @@ The goal is to build up the algebra required by a `Picture` based on the operati
 For example, notice the inferred type of the `Picture` below.
 
 ``` scala mdoc:silent
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 ```
 ``` scala mdoc
 circle(100).beside(square(20)).strokeColor(Color.red)

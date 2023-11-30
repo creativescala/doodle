@@ -11,9 +11,9 @@ The examples below use the Java2D backend, but the general principles work with 
 You need the normal imports to do anything with Doodle. Here are the imports for `Picture` and the JVM backend.
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.syntax.all._
-import doodle.java2d._
+import doodle.core.*
+import doodle.syntax.all.*
+import doodle.java2d.*
 import cats.effect.unsafe.implicits.global
 ```
 

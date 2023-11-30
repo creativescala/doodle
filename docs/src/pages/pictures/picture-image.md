@@ -17,15 +17,15 @@ If you're a more experienced Scala user you could choose `Picture`. It allows ac
 To use `Image` we need the following imports:
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.image._
-import doodle.image.syntax.all._
+import doodle.core.*
+import doodle.image.*
+import doodle.image.syntax.all.*
 ```
 
 We'll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend.
 
 ```scala mdoc:silent
-import doodle.java2d._
+import doodle.java2d.*
 import cats.effect.unsafe.implicits.global
 ```
 
@@ -59,14 +59,14 @@ The interpreter pattern means that we separate describing the Image from renderi
 To use `Picture` we need the following imports:
 
 ```scala mdoc:reset:silent
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 ```
 
 We'll also need to import a backend. Most people will be working on the JVM, and will use the Java2D backend.
 
 ```scala mdoc:silent
-import doodle.java2d._
+import doodle.java2d.*
 import cats.effect.unsafe.implicits.global
 ```
 

@@ -8,9 +8,9 @@ In this section we just cover the most important uses. You should see the @:api(
 
 ```scala mdoc:silent
 // You definitely want doodle.core
-import doodle.core._
+import doodle.core.*
 // You probably also want extension methods
-import doodle.syntax.all._
+import doodle.syntax.all.*
 ```
 
 

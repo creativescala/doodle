@@ -14,9 +14,9 @@ Using a single backend should be straightforward:
 For example, the following imports are used for the Java2D backend:
 
 ```scala mdoc:silent
-import doodle.java2d._
-import doodle.core._
-import doodle.syntax.all._
+import doodle.java2d.*
+import doodle.core.*
+import doodle.syntax.all.*
 ```
 
 Given these imports we can create pictures. To construct atomic elements we call the constructors on `Picture`.
@@ -39,7 +39,7 @@ val composition =
 Naturally we might want to draw our creation. For this we need another import
 
 
-```scala mdoc:silent
+```scala
 import cats.effect.unsafe.implicits.global
 ```
 
@@ -63,9 +63,9 @@ Using backend specific features follows the same pattern as using a single backe
 The first step is, as before, to import the Doodle core, Java2D backend, syntax extensions, and the Cats Effect runtime.
 
 ```scala mdoc:reset:silent
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
 import cats.effect.unsafe.implicits.global
 ```
 Now we can go about creating our picture, using the `read` method to load a bitmap image.
@@ -92,8 +92,8 @@ We can then draw it using the `draw` method, which produces the output shown bel
 Targeting multiple backends requires a little bit more work than working with a single backend. We can't use the usual constructor methods on a `Picture` object, as those methods target a specific backend and we want to work across multiple backends. However, every constructor method has a syntax equivalent that we can call. So to create a circle we can write
 
 ```scala mdoc:reset:silent
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 circle(100)
 ```
@@ -119,8 +119,8 @@ We never need to call methods on algebras directly. Doodle provides the @:api(do
 To use algebras directly, write a method with a parameter that is the algebras that you need. For example, if we were to write a simple program using `Layout`, `Style`, and `Shape` we might write the following.
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.algebra._
+import doodle.core.*
+import doodle.algebra.*
 
 // Two red circles beside each other
 def twoRedCircles[Alg <: Layout & Style & Shape](algebra: Alg): algebra.Drawing[Unit] = {

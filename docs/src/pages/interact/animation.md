@@ -14,17 +14,17 @@ To use animations we'll need the following imports:
 
 ```scala mdoc:silent
 // The standard Doodle imports
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 // Animation specific imports
-import doodle.interact._
-import doodle.interact.syntax.all._
+import doodle.interact.*
+import doodle.interact.syntax.all.*
 ```
 
 To do anything useful we'll also need a backend. Here are the imports for the Java2D backend:
 
 ```scala mdoc:silent
-import doodle.java2d._
+import doodle.java2d.*
 import cats.effect.unsafe.implicits.global
 ```
 

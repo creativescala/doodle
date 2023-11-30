@@ -25,10 +25,10 @@ We can draw a picture to the screen using the `draw` method. This is @:api(doodl
 In addition to drawing a picture to the screen we can write it to a file or convert it to some other type. The `write` method saves a picture to a file. When we call write we must pass two parameters: a normal parameter that is the file name to use and a type parameter that gives the format of the file. In the example below we save a file as a [PNG][png].
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.syntax.all._
-import doodle.java2d._
-import doodle.core.format._
+import doodle.core.*
+import doodle.syntax.all.*
+import doodle.java2d.*
+import doodle.core.format.*
 import cats.effect.unsafe.implicits.global
 
 val picture = circle(100)
@@ -41,10 +41,10 @@ The `write` method is @:api(doodle.syntax.WriterSyntax) that comes from the @:ap
 We can convert a `Picture` to a [Base64][base64] value using the `base64` method. As with `write`, this method is @:api(doodle.syntax.Base64Syntax) for the @:api(doodle.effect.Base64). The parameters are similar to `write`: we must specify a format to encode the picture in but we don't specify a filename. Instead we get back the result of evaluating the `Picture` (the `A` in `F[A]` which is usually `()`) and a @:api(doodle.core.Base64) value.
 
 ```scala mdoc:silent:reset
-import doodle.core._
-import doodle.syntax.all._
-import doodle.java2d._
-import doodle.core.format._
+import doodle.core.*
+import doodle.syntax.all.*
+import doodle.java2d.*
+import doodle.core.format.*
 import cats.effect.unsafe.implicits.global
 
 val picture = circle(100)
@@ -62,10 +62,10 @@ The available instances vary depending on the backend. For the Java2D backend, @
 Here is quick example of use. First we create a `Base64` value from a `Picture`.
 
 ```scala mdoc:silent:reset
-import doodle.core._
-import doodle.syntax.all._
-import doodle.java2d._
-import doodle.core.format._
+import doodle.core.*
+import doodle.syntax.all.*
+import doodle.java2d.*
+import doodle.core.format.*
 import cats.effect.unsafe.implicits.global
 ```
 ```scala mdoc:silent

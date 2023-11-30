@@ -10,9 +10,9 @@ Positioning pictures relative to other pictures is important for many compositio
 The most basic layout methods are `above`, `beside`, and `on`. They do what their names suggest, putting a picture above, beside, or on top of another picture. Below is an example.
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
 
 val basicLayout =
   Picture

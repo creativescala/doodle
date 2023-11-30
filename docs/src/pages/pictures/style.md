@@ -12,9 +12,9 @@ The default is a black stroke and an empty fill.
 The example below shows an unstyled circle next to a circle with a stroke color, stroke width, and a fill color.
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
 
 val basicStyle =
   Picture

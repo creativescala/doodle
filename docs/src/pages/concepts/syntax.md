@@ -5,10 +5,10 @@ To use methods on algebras that are not constructors (constructors are explained
 The standard import for syntax is
 
 ```scala mdoc:invisible
-import doodle.java2d._
+import doodle.java2d.*
 ```
 ```scala mdoc:silent
-import doodle.syntax.all._
+import doodle.syntax.all.*
 ```
 
 Say we want to use the `beside` method on @:api(doodle.algebra.Layout). First we need some pictures to layout.

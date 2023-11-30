@@ -5,9 +5,9 @@
 Constructing simple geometric shapes is provided by the @:api(doodle.algebra.Shape) algebra. All the methods on the algebra are constructors, so typically you'd access them by calling methods on the `Picture` object. Here's an example.
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
 
 val basicShapes =
   Picture

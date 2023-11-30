@@ -14,9 +14,9 @@ There are three different commands that a path can contain:
 Here's an example of a path. Notice that it has examples of all of the different components above.
 
 ```scala mdoc:silent
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
 
 val feather =
   ClosedPath.empty
@@ -59,7 +59,7 @@ To convert a path to a `Picture` you can use the `path` syntax method, which is 
 To create an `Image` from a path, use the `path` method on `Image`. Here's an example.
 
 ```scala mdoc:silent
-import doodle.image._
+import doodle.image.*
 
 val openPath = OpenPath.empty.lineTo(100, 100)
 
