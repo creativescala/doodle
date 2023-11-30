@@ -69,6 +69,14 @@ Color.beige
 Color.limeGreen
 ```
 
+You can also parse colors from CSS hex-color strings. For example:
+
+```scala mdoc:silent
+val red = Color.fromHex("#f00")
+val green = Color.fromHex("#00ff00")
+val transparentBlue = Color.fromHex("#0f09")
+```
+
 There are many methods to modify colors, such as `spin`, `desaturate`, and so on. See the @:api(doodle.core.Color) for full details.
 
 
