@@ -80,19 +80,17 @@
             In other words, the <code>BoundingBox</code> will be calculated when the <code>Picture</code> is rendered and is not immediately available.
             This is necessary because the size may depend on backend-specific calculations, such as the space occupied by text.</p>
             <p>To make use of the <code>BoundingBox</code> in the creation of a picture we can use the <code>flatMap</code> method on <code>Picture</code>.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
-
-</span><span class="keyword">val</span><span> </span><span class="identifier">boundingBox</span><span> =
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">boundingBox</span><span> =
   </span><span class="identifier">circleBoundingBox</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">bb</span><span> =&gt; 
     </span><span class="type-name">Picture</span><span>
       .</span><span class="identifier">roundedRectangle</span><span>(</span><span class="identifier">bb</span><span>.</span><span class="identifier">width</span><span>, </span><span class="identifier">bb</span><span>.</span><span class="identifier">height</span><span>, </span><span class="number-literal">3.0</span><span>)
       .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">hotpink</span><span>)
       .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">3.0</span><span>)
   )
-  
-</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>.</span><span class="identifier">on</span><span>(</span><span class="identifier">boundingBox</span><span>)</span></code></pre>
+</span><span class="comment">// boundingBox: Picture[FromGifBase64 &amp; Basic &amp; Bitmap &amp; FromBufferedImage &amp; FromPngBase64 &amp; FromJpgBase64, Unit] = doodle.algebra.Picture$$anon$1@3d898a50
+</span><span>  
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>.</span><span class="identifier">on</span><span>(</span><span class="identifier">boundingBox</span><span>)
+</span><span class="comment">// picture: Picture[Bitmap &amp; FromBufferedImage &amp; FromPngBase64 &amp; FromGifBase64 &amp; Basic &amp; FromJpgBase64, Unit] = doodle.syntax.LayoutSyntax$$anon$1@7b95e0f5</span></code></pre>
             <p>This produces the picture shown below.</p>
             <div class="default-image-block">
               <img src="bounding-box.png">
