@@ -28614,7 +28614,23 @@ function $c_Ldoodle_core_Landmark$() {
   $m_Ldoodle_core_Landmark$();
   var x$4 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_oneHundredPercent;
   var y$4 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_minusOneHundredPercent;
-  new $c_Ldoodle_core_Landmark(x$4, y$4)
+  new $c_Ldoodle_core_Landmark(x$4, y$4);
+  $m_Ldoodle_core_Landmark$();
+  var x$5 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_zero;
+  var y$5 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_oneHundredPercent;
+  new $c_Ldoodle_core_Landmark(x$5, y$5);
+  $m_Ldoodle_core_Landmark$();
+  var x$6 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_zero;
+  var y$6 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_minusOneHundredPercent;
+  new $c_Ldoodle_core_Landmark(x$6, y$6);
+  $m_Ldoodle_core_Landmark$();
+  var x$7 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_minusOneHundredPercent;
+  var y$7 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_zero;
+  new $c_Ldoodle_core_Landmark(x$7, y$7);
+  $m_Ldoodle_core_Landmark$();
+  var x$8 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_oneHundredPercent;
+  var y$8 = $m_Ldoodle_core_Coordinate$().Ldoodle_core_Coordinate$__f_zero;
+  new $c_Ldoodle_core_Landmark(x$8, y$8)
 }
 $c_Ldoodle_core_Landmark$.prototype = new $h_O();
 $c_Ldoodle_core_Landmark$.prototype.constructor = $c_Ldoodle_core_Landmark$;
