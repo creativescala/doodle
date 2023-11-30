@@ -5,7 +5,7 @@ var $linkingInfo = Object.freeze({
   "esVersion": 6,
   "assumingES6": true,
   "productionMode": false,
-  "linkerVersion": "1.13.2",
+  "linkerVersion": "1.14.0",
   "fileLevelThis": this
 });
 var $getOwnPropertyDescriptors = (Object.getOwnPropertyDescriptors || (() => {
@@ -70685,7 +70685,7 @@ $c_sci_LazyList.prototype.isEmpty__Z = (function() {
   return (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$())
 });
 $c_sci_LazyList.prototype.knownSize__I = (function() {
-  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && this.isEmpty__Z()) ? 0 : (-1))
+  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$())) ? 0 : (-1))
 });
 $c_sci_LazyList.prototype.head__O = (function() {
   return $n(this.scala$collection$immutable$LazyList$$state__sci_LazyList$State()).head__O()
@@ -70717,22 +70717,54 @@ $c_sci_LazyList.prototype.force__sci_LazyList = (function() {
   return this
 });
 $c_sci_LazyList.prototype.iterator__sc_Iterator = (function() {
-  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && this.isEmpty__Z()) ? $m_sc_Iterator$().sc_Iterator$__f_scala$collection$Iterator$$_empty : new $c_sci_LazyList$LazyIterator(this))
+  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$())) ? $m_sc_Iterator$().sc_Iterator$__f_scala$collection$Iterator$$_empty : new $c_sci_LazyList$LazyIterator(this))
 });
 $c_sci_LazyList.prototype.className__T = (function() {
   return "LazyList"
 });
 $c_sci_LazyList.prototype.map__F1__sci_LazyList = (function(f) {
-  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && this.isEmpty__Z()) ? $m_sci_LazyList$().sci_LazyList$__f__empty : $p_sci_LazyList__mapImpl__F1__sci_LazyList(this, f))
+  if ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$()))) {
+    return $m_sci_LazyList$().sci_LazyList$__f__empty
+  } else {
+    $m_sci_LazyList$();
+    var state = new $c_sjsr_AnonFunction0((() => {
+      if (this.isEmpty__Z()) {
+        return $m_sci_LazyList$State$Empty$()
+      } else {
+        $m_sci_LazyList$();
+        var hd = $n(f).apply__O__O($n(this.scala$collection$immutable$LazyList$$state__sci_LazyList$State()).head__O());
+        var tl = $p_sci_LazyList__mapImpl__F1__sci_LazyList($n($n(this.scala$collection$immutable$LazyList$$state__sci_LazyList$State()).tail__sci_LazyList()), f);
+        return new $c_sci_LazyList$State$Cons(hd, tl)
+      }
+    }));
+    return new $c_sci_LazyList(state)
+  }
 });
 $c_sci_LazyList.prototype.flatMap__F1__sci_LazyList = (function(f) {
-  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && this.isEmpty__Z()) ? $m_sci_LazyList$().sci_LazyList$__f__empty : $m_sci_LazyList$().scala$collection$immutable$LazyList$$flatMapImpl__sci_LazyList__F1__sci_LazyList(this, f))
+  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$())) ? $m_sci_LazyList$().sci_LazyList$__f__empty : $m_sci_LazyList$().scala$collection$immutable$LazyList$$flatMapImpl__sci_LazyList__F1__sci_LazyList(this, f))
 });
 $c_sci_LazyList.prototype.drop__I__sci_LazyList = (function(n) {
-  return ((n <= 0) ? this : ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && this.isEmpty__Z()) ? $m_sci_LazyList$().sci_LazyList$__f__empty : $m_sci_LazyList$().scala$collection$immutable$LazyList$$dropImpl__sci_LazyList__I__sci_LazyList(this, n)))
+  return ((n <= 0) ? this : ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$())) ? $m_sci_LazyList$().sci_LazyList$__f__empty : $m_sci_LazyList$().scala$collection$immutable$LazyList$$dropImpl__sci_LazyList__I__sci_LazyList(this, n)))
 });
 $c_sci_LazyList.prototype.take__I__sci_LazyList = (function(n) {
-  return ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && this.isEmpty__Z()) ? $m_sci_LazyList$().sci_LazyList$__f__empty : $p_sci_LazyList__takeImpl__I__sci_LazyList(this, n))
+  if ((this.sci_LazyList__f_scala$collection$immutable$LazyList$$stateEvaluated && (this.scala$collection$immutable$LazyList$$state__sci_LazyList$State() === $m_sci_LazyList$State$Empty$()))) {
+    return $m_sci_LazyList$().sci_LazyList$__f__empty
+  } else if ((n <= 0)) {
+    return $m_sci_LazyList$().sci_LazyList$__f__empty
+  } else {
+    $m_sci_LazyList$();
+    var state = new $c_sjsr_AnonFunction0((() => {
+      if (this.isEmpty__Z()) {
+        return $m_sci_LazyList$State$Empty$()
+      } else {
+        $m_sci_LazyList$();
+        var hd = $n(this.scala$collection$immutable$LazyList$$state__sci_LazyList$State()).head__O();
+        var tl = $p_sci_LazyList__takeImpl__I__sci_LazyList($n($n(this.scala$collection$immutable$LazyList$$state__sci_LazyList$State()).tail__sci_LazyList()), (((-1) + n) | 0));
+        return new $c_sci_LazyList$State$Cons(hd, tl)
+      }
+    }));
+    return new $c_sci_LazyList(state)
+  }
 });
 $c_sci_LazyList.prototype.addString__scm_StringBuilder__T__T__T__scm_StringBuilder = (function(sb, start, sep, end) {
   this.force__sci_LazyList();
