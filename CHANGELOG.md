@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.21.0
+
+- `Image` supports landmarks for layout with `at` and `originAt`.
+
+
 ## 0.20.0 29-Jul-2023
 
 - Rework type inference for syntax, making syntax more flexible and requiring fewer type annotations. (#133)
