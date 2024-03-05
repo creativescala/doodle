@@ -22,6 +22,7 @@ package object syntax {
       with Base64Syntax
       with BitmapSyntax
       with BlendSyntax
+      with BufferedImageConverterSyntax
       with DebugSyntax
       with LayoutSyntax
       with NormalizedSyntax
@@ -40,6 +41,7 @@ package object syntax {
   object base64 extends Base64Syntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
+  object bufferedImageConverter extends BufferedImageConverterSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax

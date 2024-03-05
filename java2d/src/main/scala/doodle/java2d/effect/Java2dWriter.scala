@@ -44,7 +44,8 @@ import javax.imageio.ImageIO
 
 trait Java2dWriter[Fmt <: Format]
     extends Writer[doodle.java2d.Algebra, Frame, Fmt]
-    with Base64[doodle.java2d.Algebra, Frame, Fmt] {
+    with Base64[doodle.java2d.Algebra, Frame, Fmt]
+    with BufferedImageConverter[doodle.java2d.Algebra, Frame, Fmt] {
   def format: String
 
   // Allows formats to control the encoding of the buffered image. Not all
@@ -78,6 +79,19 @@ trait Java2dWriter[Fmt <: Format]
 
   def base64[A](image: Picture[A]): IO[(A, B64[Fmt])] =
     base64(Frame.default.withSizedToPicture(20), image)
+
+  def bufferedImage[A](
+      frame: Frame,
+      picture: Picture[A]
+  ): IO[(A, BufferedImage)] = for {
+    result <- Java2dWriter.renderBufferedImage(
+      frame.size,
+      frame.center,
+      frame.background,
+      picture
+    )(makeImage _)
+    (bi, a) = result
+  } yield (a, bi)
 
   private def writeToOutput[A](
       output: OutputStream,
