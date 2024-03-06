@@ -21,9 +21,8 @@ import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import java.awt.image.BufferedImage
-import doodle.core.format.Format
 
-trait BufferedImageConverter[+Alg <: Algebra, Frame, Fmt <: Format] {
+trait BufferedImageConverter[+Alg <: Algebra, Frame] {
   def bufferedImage[A](
       description: Frame,
       picture: Picture[Alg, A]

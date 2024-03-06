@@ -22,37 +22,21 @@ import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.BufferedImageConverter
-import doodle.core.format.Format
 import java.awt.image.BufferedImage
 
 trait BufferedImageConverterSyntax {
   implicit class BufferedImageConverterOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    class BufferedImageConverterOpsHelper[Fmt <: Format](
-        picture: Picture[Alg, A]
-    ) {
-      def apply[Frame](frame: Frame)(implicit
-          w: BufferedImageConverter[Alg, Frame, Fmt],
-          r: IORuntime
-      ): (A, BufferedImage) =
-        w.bufferedImage(frame, picture).unsafeRunSync()
-    }
+    def bufferedImage[Frame](frame: Frame)(implicit
+        w: BufferedImageConverter[Alg, Frame],
+        r: IORuntime
+    ): (A, BufferedImage) =
+      w.bufferedImage(frame, picture).unsafeRunSync()
 
-    class BufferedImageConverterIOOpsHelper[Fmt <: Format](
-        picture: Picture[Alg, A]
-    ) {
-      def apply[Frame](frame: Frame)(implicit
-          w: BufferedImageConverter[Alg, Frame, Fmt],
-          r: IORuntime
-      ): IO[(A, BufferedImage)] =
-        w.bufferedImage(frame, picture)
-    }
-
-    def bufferedImage[Fmt <: Format] =
-      new BufferedImageConverterOpsHelper[Fmt](picture)
-
-    def bufferedImageToIO[Fmt <: Format] =
-      new BufferedImageConverterIOOpsHelper[Fmt](picture)
+    def bufferedImageToIO[Frame](frame: Frame)(implicit
+        w: BufferedImageConverter[Alg, Frame]
+    ): IO[(A, BufferedImage)] =
+      w.bufferedImage(frame, picture)
   }
 }
