@@ -23,7 +23,7 @@ import doodle.core.format.*
 import doodle.syntax.all.*
 import munit.FunSuite
 
-class Base64Suite extends FunSuite {
+class Base64WriterSuite extends FunSuite {
   def base64Distance[A <: Format](b1: Base64[A], b2: Base64[A]): Double = {
     import java.util.{Base64 => JBase64}
     val d1 = JBase64.getDecoder().decode(b1.value)

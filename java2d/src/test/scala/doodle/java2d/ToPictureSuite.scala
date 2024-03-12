@@ -42,7 +42,7 @@ class ToPictureSuite extends FunSuite {
   def testInverse[A <: Format](
       picture: Picture[Unit]
   )(implicit
-      b: Base64[Algebra, Frame, A],
+      b: Base64Writer[Algebra, Frame, A],
       tp: ToPicture[B64[A], Algebra]
   ) = {
     val (_, b1) = picture.base64[A](Frame.default.withSizedToPicture(0))

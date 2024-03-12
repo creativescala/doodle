@@ -19,10 +19,10 @@ package doodle
 package object syntax {
   object all
       extends AngleSyntax
-      with Base64Syntax
+      with Base64WriterSyntax
       with BitmapSyntax
       with BlendSyntax
-      with BufferedImageConverterSyntax
+      with BufferedImageWriterSyntax
       with DebugSyntax
       with LayoutSyntax
       with NormalizedSyntax
@@ -36,12 +36,12 @@ package object syntax {
       with TransformSyntax
       with TraverseSyntax
       with UnsignedByteSyntax
-      with WriterSyntax
+      with FileWriterSyntax
   object angle extends AngleSyntax
-  object base64 extends Base64Syntax
+  object base64Writer extends Base64WriterSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
-  object bufferedImageConverter extends BufferedImageConverterSyntax
+  object bufferedImageWriter extends BufferedImageWriterSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
@@ -55,5 +55,5 @@ package object syntax {
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
-  object writer extends WriterSyntax
+  object fileWriter extends FileWriterSyntax
 }

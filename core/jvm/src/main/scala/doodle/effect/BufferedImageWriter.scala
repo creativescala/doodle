@@ -15,28 +15,16 @@
  */
 
 package doodle
-package syntax
+package effect
 
 import cats.effect.IO
-import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import doodle.effect.BufferedImageConverter
 import java.awt.image.BufferedImage
 
-trait BufferedImageConverterSyntax {
-  implicit class BufferedImageConverterOps[Alg <: Algebra, A](
+trait BufferedImageWriter[+Alg <: Algebra, Frame] {
+  def bufferedImage[A](
+      description: Frame,
       picture: Picture[Alg, A]
-  ) {
-    def bufferedImage[Frame](frame: Frame)(implicit
-        w: BufferedImageConverter[Alg, Frame],
-        r: IORuntime
-    ): (A, BufferedImage) =
-      w.bufferedImage(frame, picture).unsafeRunSync()
-
-    def bufferedImageToIO[Frame](frame: Frame)(implicit
-        w: BufferedImageConverter[Alg, Frame]
-    ): IO[(A, BufferedImage)] =
-      w.bufferedImage(frame, picture)
-  }
+  ): IO[(A, BufferedImage)]
 }

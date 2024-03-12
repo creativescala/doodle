@@ -42,9 +42,9 @@ import java.io.OutputStream
 import java.util.{Base64 => JBase64}
 import javax.imageio.ImageIO
 
-trait Java2dWriter[Fmt <: Format]
-    extends Writer[doodle.java2d.Algebra, Frame, Fmt]
-    with Base64[doodle.java2d.Algebra, Frame, Fmt] {
+trait Java2dFileWriter[Fmt <: Format]
+    extends FileWriter[doodle.java2d.Algebra, Frame, Fmt]
+    with Base64Writer[doodle.java2d.Algebra, Frame, Fmt] {
   def format: String
 
   // Allows formats to control the encoding of the buffered image. Not all
@@ -147,26 +147,26 @@ object Java2dWriter {
     } yield (image, a)
 
 }
-object Java2dGifWriter extends Java2dWriter[Gif] {
+object Java2dGifWriter extends Java2dFileWriter[Gif] {
   val format = "gif"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 }
-object Java2dPngWriter extends Java2dWriter[Png] {
+object Java2dPngWriter extends Java2dFileWriter[Png] {
   val format = "png"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 }
-object Java2dJpgWriter extends Java2dWriter[Jpg] {
+object Java2dJpgWriter extends Java2dFileWriter[Jpg] {
   val format = "jpeg"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
 }
 
-object Java2dPdfWriter extends Java2dWriter[Pdf] {
+object Java2dPdfWriter extends Java2dFileWriter[Pdf] {
   val format = "pdf"
 
   def makeImage(width: Int, height: Int): BufferedImage =
@@ -209,7 +209,7 @@ object Java2dPdfWriter extends Java2dWriter[Pdf] {
 }
 
 object Java2dBufferedImageWriter
-    extends BufferedImageConverter[doodle.java2d.Algebra, Frame] {
+    extends BufferedImageWriter[doodle.java2d.Algebra, Frame] {
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 

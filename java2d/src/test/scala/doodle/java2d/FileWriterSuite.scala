@@ -24,7 +24,7 @@ import munit.FunSuite
 
 import java.io.File
 
-class WriterSuite extends FunSuite {
+class FileWriterSuite extends FunSuite {
   val image = circle[Algebra](20.0)
 
   test("write should work with png") {

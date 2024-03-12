@@ -24,10 +24,10 @@ import doodle.core.format.Format
 
 import java.io.File
 
-/** The `Writer` typeclass represents write a picture to a file in a given
+/** The `FileWriter` typeclass represents write a picture to a file in a given
   * format.
   */
-trait Writer[+Alg <: Algebra, Frame, Fmt <: Format] {
+trait FileWriter[+Alg <: Algebra, Frame, Fmt <: Format] {
   def write[A](file: File, description: Frame, image: Picture[Alg, A]): IO[A]
   def write[A](file: File, image: Picture[Alg, A]): IO[A]
 }
