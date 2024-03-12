@@ -26,6 +26,7 @@ import doodle.interact.effect.AnimationRenderer
 import doodle.interact.effect.AnimationWriter
 import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
+import doodle.effect.BufferedImageConverter
 
 package object java2d extends Java2dToPicture {
   type Algebra =
@@ -65,6 +66,9 @@ package object java2d extends Java2dToPicture {
   implicit val java2dPdfWriter
       : Writer[Algebra, Frame, Pdf] with Base64[Algebra, Frame, Pdf] =
     doodle.java2d.effect.Java2dPdfWriter
+  implicit val java2dBufferedImageWriter
+      : BufferedImageConverter[doodle.java2d.Algebra, Frame] =
+    doodle.java2d.effect.Java2dBufferedImageWriter
 
   val Frame = doodle.java2d.effect.Frame
 
