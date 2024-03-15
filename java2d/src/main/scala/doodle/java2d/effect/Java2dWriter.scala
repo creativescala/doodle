@@ -22,18 +22,12 @@ import cats.effect.IO
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
-import doodle.algebra.generic.*
 import doodle.core.BoundingBox
-import doodle.core.Color
-import doodle.core.Transform
 import doodle.core.format._
 import doodle.core.{Base64 => B64}
 import doodle.effect.*
-import doodle.java2d.algebra.Algebra
-import doodle.java2d.algebra.Java2D
-import doodle.java2d.algebra.reified.Reification
+import doodle.java2d.effect.{Java2d => Java2dEffect}
 
-import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -42,7 +36,7 @@ import java.io.OutputStream
 import java.util.{Base64 => JBase64}
 import javax.imageio.ImageIO
 
-trait Java2dFileWriter[Fmt <: Format]
+trait Java2dWriter[Fmt <: Format]
     extends FileWriter[doodle.java2d.Algebra, Frame, Fmt]
     with Base64Writer[doodle.java2d.Algebra, Frame, Fmt] {
   def format: String
@@ -58,7 +52,7 @@ trait Java2dFileWriter[Fmt <: Format]
 
   def write[A](file: File, frame: Frame, picture: Picture[A]): IO[A] = {
     for {
-      result <- Java2dWriter.renderBufferedImage(
+      result <- Java2d.renderBufferedImage(
         frame.size,
         frame.center,
         frame.background,
@@ -85,7 +79,7 @@ trait Java2dFileWriter[Fmt <: Format]
       picture: Picture[A]
   ): IO[A] = {
     for {
-      result <- Java2dWriter.renderBufferedImage(
+      result <- Java2dEffect.renderBufferedImage(
         frame.size,
         frame.center,
         frame.background,
@@ -101,72 +95,27 @@ trait Java2dFileWriter[Fmt <: Format]
   }
 
 }
-object Java2dWriter {
-  def renderBufferedImage[A](
-      size: Size,
-      center: Center,
-      background: Option[Color],
-      picture: Picture[A]
-  )(makeImage: (Int, Int) => BufferedImage): IO[(BufferedImage, A)] =
-    for {
-      rendered <- renderGraphics2D(size, center, background, picture) { bb =>
-        IO {
-          val (w, h) = Java2d.size(bb, size)
-          val image = makeImage(w.toInt, h.toInt)
 
-          (Java2d.setup(image.createGraphics()), image)
-        }
-      }
-      (image, a) = rendered
-    } yield (image, a)
-
-  private[java2d] def renderGraphics2D[A, I](
-      size: Size,
-      center: Center,
-      background: Option[Color],
-      picture: Picture[A]
-  )(graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
-    for {
-      gc <- IO {
-        val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
-        Java2d.setup(bi.createGraphics())
-      }
-      drawing: Finalized[Reification, A] <- IO { picture(Algebra(gc)) }
-      (bb, rdr) = drawing.run(List.empty).value
-      (_, fa) = rdr.run(Transform.identity).value
-      (r, a) = fa.run.value
-      (width, height) = Java2d.size(bb, size)
-      tx = Java2d.transform(bb, width, height, center)
-      contextWithImage <- graphicsContext(bb)
-      (gc, image) = contextWithImage
-      _ = background.foreach { c =>
-        gc.setColor(Java2D.toAwtColor(c))
-        gc.fillRect(0, 0, width.toInt, height.toInt)
-      }
-      _ = Java2d.render(gc, r, tx)
-    } yield (image, a)
-
-}
-object Java2dGifWriter extends Java2dFileWriter[Gif] {
+object Java2dGifWriter extends Java2dWriter[Gif] {
   val format = "gif"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 }
-object Java2dPngWriter extends Java2dFileWriter[Png] {
+object Java2dPngWriter extends Java2dWriter[Png] {
   val format = "png"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 }
-object Java2dJpgWriter extends Java2dFileWriter[Jpg] {
+object Java2dJpgWriter extends Java2dWriter[Jpg] {
   val format = "jpeg"
 
   def makeImage(width: Int, height: Int): BufferedImage =
     new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
 }
 
-object Java2dPdfWriter extends Java2dFileWriter[Pdf] {
+object Java2dPdfWriter extends Java2dWriter[Pdf] {
   val format = "pdf"
 
   def makeImage(width: Int, height: Int): BufferedImage =
@@ -179,7 +128,7 @@ object Java2dPdfWriter extends Java2dFileWriter[Pdf] {
       picture: Picture[A]
   ): IO[((CommandSequence, BoundingBox), A)] =
     for {
-      rendered <- Java2dWriter.renderGraphics2D(
+      rendered <- Java2dEffect.renderGraphics2D(
         frame.size,
         frame.center,
         frame.background,
@@ -206,23 +155,4 @@ object Java2dPdfWriter extends Java2dFileWriter[Pdf] {
         doc.writeTo(new FileOutputStream(file))
       }
     } yield value
-}
-
-object Java2dBufferedImageWriter
-    extends BufferedImageWriter[doodle.java2d.Algebra, Frame] {
-  def makeImage(width: Int, height: Int): BufferedImage =
-    new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-
-  def bufferedImage[A](
-      frame: Frame,
-      picture: Picture[A]
-  ): IO[(A, BufferedImage)] = for {
-    result <- Java2dWriter.renderBufferedImage(
-      frame.size,
-      frame.center,
-      frame.background,
-      picture
-    )(makeImage _)
-    (bi, a) = result
-  } yield (a, bi)
 }

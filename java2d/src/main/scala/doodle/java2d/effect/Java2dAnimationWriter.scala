@@ -49,7 +49,7 @@ object Java2dAnimationWriter
       a <- frames
         .evalMap { picture =>
           for {
-            result <- doodle.java2d.effect.Java2dWriter
+            result <- doodle.java2d.effect.Java2d
               .renderBufferedImage(
                 frame.size,
                 frame.center,

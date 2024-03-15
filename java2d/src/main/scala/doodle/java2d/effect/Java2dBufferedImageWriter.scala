@@ -15,20 +15,29 @@
  */
 
 package doodle
+package java2d
 package effect
 
 import cats.effect.IO
-import doodle.algebra.Algebra
-import doodle.algebra.Picture
-import doodle.core.format.Format
+import doodle.effect.*
+import doodle.java2d.effect.{Java2d => Java2dEffect}
+import java.awt.image.BufferedImage
 
-import java.io.File
+object Java2dBufferedImageWriter
+    extends BufferedImageWriter[doodle.java2d.Algebra, Frame] {
+  def makeImage(width: Int, height: Int): BufferedImage =
+    new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
-/** The `FileWriter` typeclass represents write a picture to a file in a given
-  * format.
-  */
-trait FileWriter[+Alg <: Algebra, Frame, Fmt <: Format]
-    extends Writer[Alg, Frame] {
-  def write[A](file: File, description: Frame, image: Picture[Alg, A]): IO[A]
-  def write[A](file: File, image: Picture[Alg, A]): IO[A]
+  def bufferedImage[A](
+      frame: Frame,
+      picture: Picture[A]
+  ): IO[(A, BufferedImage)] = for {
+    result <- Java2dEffect.renderBufferedImage(
+      frame.size,
+      frame.center,
+      frame.background,
+      picture
+    )(makeImage _)
+    (bi, a) = result
+  } yield (a, bi)
 }

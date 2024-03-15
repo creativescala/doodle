@@ -23,13 +23,15 @@ import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import fs2.Stream
+import doodle.effect.Writer
 
 import java.io.File
 
 /** The `AnimationWriter` typeclass describes a data type that can write an
   * animation to a file.
   */
-trait AnimationWriter[Alg <: Algebra, Frame, Format] {
+trait AnimationWriter[Alg <: Algebra, Frame, Format]
+    extends Writer[Alg, Frame] {
 
   def write[A](
       file: File,

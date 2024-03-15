@@ -22,7 +22,7 @@ import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import java.awt.image.BufferedImage
 
-trait BufferedImageWriter[+Alg <: Algebra, Frame] {
+trait BufferedImageWriter[+Alg <: Algebra, Frame] extends Writer[Alg, Frame] {
   def bufferedImage[A](
       description: Frame,
       picture: Picture[Alg, A]
