@@ -22,68 +22,68 @@ import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.core.format.Format
-import doodle.effect.Writer
+import doodle.effect.FileWriter
 
 import java.io.File
 
-trait WriterSyntax {
+trait FileWriterSyntax {
   implicit class WriterOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
     // This class exists solely so the user doesn't have to provide the `Frame`
     // type parameter when calling syntax methods.
-    class WriterOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
+    class FileWriterOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame](file: String)(implicit
-          w: Writer[Alg, Frame, Fmt],
+          w: FileWriter[Alg, Frame, Fmt],
           r: IORuntime
       ): A =
         apply(new File(file))
 
       def apply[Frame](file: File)(implicit
-          w: Writer[Alg, Frame, Fmt],
+          w: FileWriter[Alg, Frame, Fmt],
           r: IORuntime
       ): A =
         w.write(file, picture).unsafeRunSync()
 
       def apply[Frame](file: String, frame: Frame)(implicit
-          w: Writer[Alg, Frame, Fmt],
+          w: FileWriter[Alg, Frame, Fmt],
           r: IORuntime
       ): A =
         apply(new File(file), frame)
 
       def apply[Frame](file: File, frame: Frame)(implicit
-          w: Writer[Alg, Frame, Fmt],
+          w: FileWriter[Alg, Frame, Fmt],
           r: IORuntime
       ): A =
         w.write(file, frame, picture).unsafeRunSync()
     }
 
-    class WriterIOOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
+    class FileWriterIOOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame](file: String)(implicit
-          w: Writer[Alg, Frame, Fmt]
+          w: FileWriter[Alg, Frame, Fmt]
       ): IO[A] =
         apply(new File(file))
 
       def apply[Frame](file: File)(implicit
-          w: Writer[Alg, Frame, Fmt]
+          w: FileWriter[Alg, Frame, Fmt]
       ): IO[A] =
         w.write(file, picture)
 
       def apply[Frame](file: String, frame: Frame)(implicit
-          w: Writer[Alg, Frame, Fmt]
+          w: FileWriter[Alg, Frame, Fmt]
       ): IO[A] =
         apply(new File(file), frame)
 
       def apply[Frame](file: File, frame: Frame)(implicit
-          w: Writer[Alg, Frame, Fmt]
+          w: FileWriter[Alg, Frame, Fmt]
       ): IO[A] =
         w.write(file, frame, picture)
     }
 
     def write[Fmt <: Format] =
-      new WriterOpsHelper[Fmt](picture)
+      new FileWriterOpsHelper[Fmt](picture)
 
     def writeToIO[Fmt <: Format] =
-      new WriterIOOpsHelper[Fmt](picture)
+      new FileWriterIOOpsHelper[Fmt](picture)
   }
 }

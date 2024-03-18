@@ -15,28 +15,20 @@
  */
 
 package doodle
-package syntax
+package effect
 
 import cats.effect.IO
-import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import doodle.effect.BufferedImageConverter
-import java.awt.image.BufferedImage
+import doodle.core.format.Format
 
-trait BufferedImageConverterSyntax {
-  implicit class BufferedImageConverterOps[Alg <: Algebra, A](
-      picture: Picture[Alg, A]
-  ) {
-    def bufferedImage[Frame](frame: Frame)(implicit
-        w: BufferedImageConverter[Alg, Frame],
-        r: IORuntime
-    ): (A, BufferedImage) =
-      w.bufferedImage(frame, picture).unsafeRunSync()
+import java.io.File
 
-    def bufferedImageToIO[Frame](frame: Frame)(implicit
-        w: BufferedImageConverter[Alg, Frame]
-    ): IO[(A, BufferedImage)] =
-      w.bufferedImage(frame, picture)
-  }
+/** The `FileWriter` typeclass represents write a picture to a file in a given
+  * format.
+  */
+trait FileWriter[+Alg <: Algebra, Frame, Fmt <: Format]
+    extends Writer[Alg, Frame] {
+  def write[A](file: File, description: Frame, image: Picture[Alg, A]): IO[A]
+  def write[A](file: File, image: Picture[Alg, A]): IO[A]
 }

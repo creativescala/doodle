@@ -23,10 +23,11 @@ import doodle.algebra.Picture
 import doodle.core.format.Format
 import doodle.core.{Base64 => B64}
 
-/** The Base64 type represent the ability to encode an image as a Base64 String
-  * in a given format.
+/** The Base64Writer type represent the ability to encode an image as a Base64
+  * String in a given format.
   */
-trait Base64[+Alg <: Algebra, Frame, Fmt <: Format] {
+trait Base64Writer[+Alg <: Algebra, Frame, Fmt <: Format]
+    extends Writer[Alg, Frame] {
   def base64[A](
       description: Frame,
       picture: Picture[Alg, A]

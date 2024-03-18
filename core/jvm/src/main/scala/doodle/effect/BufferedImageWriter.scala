@@ -15,27 +15,19 @@
  */
 
 package doodle
-package interact
 package effect
 
-import cats.Monoid
 import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import fs2.Stream
-import doodle.effect.Writer
+import java.awt.image.BufferedImage
 
-import java.io.File
-
-/** The `AnimationWriter` typeclass describes a data type that can write an
-  * animation to a file.
+/** The BufferedImageWriter type represent the ability to encode an image as a
+  * java BufferedImage class.
   */
-trait AnimationWriter[Alg <: Algebra, Frame, Format]
-    extends Writer[Alg, Frame] {
-
-  def write[A](
-      file: File,
+trait BufferedImageWriter[+Alg <: Algebra, Frame] extends Writer[Alg, Frame] {
+  def bufferedImage[A](
       description: Frame,
-      frames: Stream[IO, Picture[Alg, A]]
-  )(implicit m: Monoid[A]): IO[A]
+      picture: Picture[Alg, A]
+  ): IO[(A, BufferedImage)]
 }

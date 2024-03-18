@@ -17,7 +17,7 @@
 package doodle
 
 import doodle.core.format.Svg
-import doodle.effect.Writer
+import doodle.effect.FileWriter
 
 package object svg {
   val jvm = new doodle.svg.algebra.JvmAlgebraModule {}
@@ -32,7 +32,7 @@ package object svg {
   type Tag = jvm.Tag
   type Frame = doodle.svg.effect.Frame
   val Frame = doodle.svg.effect.Frame
-  implicit val svgWriter: Writer[Algebra, Frame, Svg] =
+  implicit val svgWriter: FileWriter[Algebra, Frame, Svg] =
     doodle.svg.effect.SvgWriter
 
   type Picture[A] = doodle.algebra.Picture[Algebra, A]

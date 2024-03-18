@@ -23,9 +23,9 @@ import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.core.format.Format
 import doodle.core.{Base64 => B64}
-import doodle.effect.Base64
+import doodle.effect.Base64Writer
 
-trait Base64Syntax {
+trait Base64WriterSyntax {
   implicit class Base64Ops[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
@@ -33,13 +33,13 @@ trait Base64Syntax {
     // type parameter when calling syntax methods.
     class Base64OpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame]()(implicit
-          w: Base64[Alg, Frame, Fmt],
+          w: Base64Writer[Alg, Frame, Fmt],
           r: IORuntime
       ): (A, B64[Fmt]) =
         w.base64(picture).unsafeRunSync()
 
       def apply[Frame](frame: Frame)(implicit
-          w: Base64[Alg, Frame, Fmt],
+          w: Base64Writer[Alg, Frame, Fmt],
           r: IORuntime
       ): (A, B64[Fmt]) =
         w.base64(frame, picture).unsafeRunSync()
@@ -47,12 +47,12 @@ trait Base64Syntax {
 
     class Base64IOOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame]()(implicit
-          w: Base64[Alg, Frame, Fmt]
+          w: Base64Writer[Alg, Frame, Fmt]
       ): IO[(A, B64[Fmt])] =
         w.base64(picture)
 
       def apply[Frame](frame: Frame)(implicit
-          w: Base64[Alg, Frame, Fmt]
+          w: Base64Writer[Alg, Frame, Fmt]
       ): IO[(A, B64[Fmt])] =
         w.base64(frame, picture)
     }

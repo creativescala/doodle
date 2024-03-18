@@ -17,17 +17,8 @@
 package doodle
 package effect
 
-import cats.effect.IO
 import doodle.algebra.Algebra
-import doodle.algebra.Picture
-import doodle.core.format.Format
 
-import java.io.File
-
-/** The `Writer` typeclass represents write a picture to a file in a given
-  * format.
+/** Marker trait for effects that write a picture to a file or some other type.
   */
-trait Writer[+Alg <: Algebra, Frame, Fmt <: Format] {
-  def write[A](file: File, description: Frame, image: Picture[Alg, A]): IO[A]
-  def write[A](file: File, image: Picture[Alg, A]): IO[A]
-}
+trait Writer[+Alg <: Algebra, Frame]

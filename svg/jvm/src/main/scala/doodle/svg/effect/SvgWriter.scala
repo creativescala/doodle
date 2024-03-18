@@ -29,8 +29,8 @@ import java.nio.file.Files
 import java.util.{Base64 => JBase64}
 
 object SvgWriter
-    extends Writer[Algebra, Frame, format.Svg]
-    with Base64[Algebra, Frame, format.Svg] {
+    extends FileWriter[Algebra, Frame, format.Svg]
+    with Base64Writer[Algebra, Frame, format.Svg] {
   def write[A](
       file: File,
       description: Frame,

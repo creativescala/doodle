@@ -21,7 +21,7 @@ import cats.effect.unsafe.implicits.global
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.core.format._
-import doodle.effect.Writer
+import doodle.effect.FileWriter
 import doodle.java2d._
 import munit._
 
@@ -32,7 +32,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
       name: String,
       picture: Picture[Alg, Unit],
       frame: Frame = Frame.default.withSizedToPicture()
-  )(implicit loc: Location, w: Writer[Alg, Frame, Png]) = {
+  )(implicit loc: Location, w: FileWriter[Alg, Frame, Png]) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
 
@@ -56,7 +56,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
 
   def testPicture[Alg <: Algebra, A](name: String)(
       picture: Picture[Alg, Unit]
-  )(implicit loc: Location, w: Writer[Alg, Frame, Png]) =
+  )(implicit loc: Location, w: FileWriter[Alg, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture)
     }
@@ -65,7 +65,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
       frame: Frame
   )(
       picture: Picture[Alg, Unit]
-  )(implicit loc: Location, w: Writer[Alg, Frame, Png]) =
+  )(implicit loc: Location, w: FileWriter[Alg, Frame, Png]) =
     test(name) {
       assertGoldenPicture(name, picture, frame)
     }

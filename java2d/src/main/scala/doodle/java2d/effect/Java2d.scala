@@ -18,13 +18,22 @@ package doodle
 package java2d
 package effect
 
+import cats.effect.IO
 import doodle.core.BoundingBox
 import doodle.core.{Transform => Tx}
+import doodle.core.Color
+import doodle.core.Transform
+
+import doodle.algebra.generic.*
 import doodle.java2d.algebra.Graphics2DGraphicsContext
 import doodle.java2d.algebra.reified.Reified
+import doodle.java2d.algebra.Algebra
+import doodle.java2d.algebra.reified.Reification
+import doodle.java2d.algebra.{Java2D => Java2dAlgebra}
 
 import java.awt.Graphics2D
 import java.awt.RenderingHints
+import java.awt.image.BufferedImage
 
 /** Utilities for rendering with Java2D */
 object Java2d {
@@ -100,4 +109,47 @@ object Java2d {
     image.foreach { _.render(gc, transform)(Graphics2DGraphicsContext) }
   }
 
+  def renderBufferedImage[A](
+      size: Size,
+      center: Center,
+      background: Option[Color],
+      picture: Picture[A]
+  )(makeImage: (Int, Int) => BufferedImage): IO[(BufferedImage, A)] =
+    for {
+      rendered <- renderGraphics2D(size, center, background, picture) { bb =>
+        IO {
+          val (w, h) = Java2d.size(bb, size)
+          val image = makeImage(w.toInt, h.toInt)
+
+          (Java2d.setup(image.createGraphics()), image)
+        }
+      }
+      (image, a) = rendered
+    } yield (image, a)
+
+  private[java2d] def renderGraphics2D[A, I](
+      size: Size,
+      center: Center,
+      background: Option[Color],
+      picture: Picture[A]
+  )(graphicsContext: BoundingBox => IO[(Graphics2D, I)]): IO[(I, A)] =
+    for {
+      gc <- IO {
+        val bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
+        Java2d.setup(bi.createGraphics())
+      }
+      drawing: Finalized[Reification, A] <- IO { picture(Algebra(gc)) }
+      (bb, rdr) = drawing.run(List.empty).value
+      (_, fa) = rdr.run(Transform.identity).value
+      (r, a) = fa.run.value
+      (width, height) = Java2d.size(bb, size)
+      tx = Java2d.transform(bb, width, height, center)
+      contextWithImage <- graphicsContext(bb)
+      (gc, image) = contextWithImage
+      _ = background.foreach { c =>
+        gc.setColor(Java2dAlgebra.toAwtColor(c))
+        gc.fillRect(0, 0, width.toInt, height.toInt)
+      }
+      _ = Java2d.render(gc, r, tx)
+    } yield (image, a)
 }
