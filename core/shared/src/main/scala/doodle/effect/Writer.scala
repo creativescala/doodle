@@ -19,4 +19,6 @@ package effect
 
 import doodle.algebra.Algebra
 
+/** Marker trait for effects that write a picture to a file or some other type.
+  */
 trait Writer[+Alg <: Algebra, Frame]
