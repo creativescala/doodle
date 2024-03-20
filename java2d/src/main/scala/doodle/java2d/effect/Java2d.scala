@@ -19,16 +19,15 @@ package java2d
 package effect
 
 import cats.effect.IO
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
-import doodle.core.{Transform => Tx}
 import doodle.core.Color
 import doodle.core.Transform
-
-import doodle.algebra.generic.*
-import doodle.java2d.algebra.Graphics2DGraphicsContext
-import doodle.java2d.algebra.reified.Reified
+import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.Algebra
+import doodle.java2d.algebra.Graphics2DGraphicsContext
 import doodle.java2d.algebra.reified.Reification
+import doodle.java2d.algebra.reified.Reified
 import doodle.java2d.algebra.{Java2D => Java2dAlgebra}
 
 import java.awt.Graphics2D

@@ -21,14 +21,14 @@ import cats.effect.IO
 import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import doodle.effect.DefaultRenderer
+import doodle.effect.DefaultFrame
 import doodle.effect.Renderer
 
 /** Rendering works differently on different platforms. The Javascript runtime
   * must render asynchronously. The JVM runtime can render asychronously or
   * sychronously. However, rendering in a Swing / Java2D context takes places on
   * a daemon thread. This means the JVM will exit if this is the only thread
-  * running. The implication is that short Doodle program that does not block
+  * running. The implication is that a short Doodle program that does not block
   * the main thread waiting for the Swing thread to complete will usually exit
   * before the output appears. Therefore, at least in the common case of calling
   * `draw`, rendering should be synchronous on the JVM.
@@ -48,7 +48,8 @@ trait AbstractRendererSyntax {
       * options for this `Renderer`.
       */
     def draw[Frame, Canvas]()(implicit
-        renderer: DefaultRenderer[Alg, Frame, Canvas],
+        renderer: Renderer[Alg, Frame, Canvas],
+        frame: DefaultFrame[Frame],
         r: IORuntime
     ): Unit =
       runIO(drawToIO())
@@ -73,10 +74,11 @@ trait AbstractRendererSyntax {
       * `Frame` for this `Renderer`.
       */
     def drawToIO[Frame, Canvas]()(implicit
-        renderer: DefaultRenderer[Alg, Frame, Canvas]
+        renderer: Renderer[Alg, Frame, Canvas],
+        frame: DefaultFrame[Frame]
     ): IO[A] =
       renderer
-        .canvas(renderer.default)
+        .canvas(frame.default)
         .flatMap(canvas => drawWithCanvasToIO(canvas))
 
     /** Create an effect that, when run, will draw the `Picture` using the given

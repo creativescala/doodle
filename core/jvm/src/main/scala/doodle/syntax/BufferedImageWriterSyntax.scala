@@ -22,6 +22,7 @@ import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.BufferedImageWriter
+
 import java.awt.image.BufferedImage
 
 trait BufferedImageWriterSyntax {

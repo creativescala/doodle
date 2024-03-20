@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package doodle
-package effect
+package doodle.effect
 
-import cats.effect.IO
-import doodle.algebra.Algebra
-import doodle.algebra.Picture
-
-import java.awt.image.BufferedImage
-
-/** The BufferedImageWriter type represent the ability to encode an image as a
-  * java BufferedImage class.
+/** The `DefaultFrame` typeclass provides a reasonable default `Frame`. This is
+  * a convenience for `Renderer` or `Writer` users that don't want to have to
+  * create a `Frame` instance.
   */
-trait BufferedImageWriter[+Alg <: Algebra, Frame] extends Writer[Alg, Frame] {
-  def bufferedImage[A](
-      description: Frame,
-      picture: Picture[Alg, A]
-  ): IO[(A, BufferedImage)]
+trait DefaultFrame[Frame] {
+  def default: Frame
+}
+object DefaultFrame {
+  def apply[Frame](implicit frame: DefaultFrame[Frame]): DefaultFrame[Frame] =
+    frame
 }

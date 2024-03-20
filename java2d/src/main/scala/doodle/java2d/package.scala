@@ -19,14 +19,15 @@ package doodle
 import doodle.algebra._
 import doodle.core.format._
 import doodle.effect.Base64Writer
-import doodle.effect.DefaultRenderer
+import doodle.effect.BufferedImageWriter
+import doodle.effect.DefaultFrame
 import doodle.effect.FileWriter
+import doodle.effect.Renderer
 import doodle.interact.algebra._
 import doodle.interact.effect.AnimationRenderer
 import doodle.interact.effect.AnimationWriter
 import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
-import doodle.effect.BufferedImageWriter
 
 package object java2d extends Java2dToPicture {
   type Algebra =
@@ -52,8 +53,10 @@ package object java2d extends Java2dToPicture {
     doodle.java2d.effect.Java2dAnimationWriter
 
   implicit val java2dRenderer
-      : DefaultRenderer[Algebra, doodle.java2d.effect.Frame, Canvas] =
+      : Renderer[Algebra, doodle.java2d.effect.Frame, Canvas] =
     doodle.java2d.effect.Java2dRenderer
+  implicit val java2dFrame: DefaultFrame[doodle.java2d.effect.Frame] =
+    doodle.java2d.effect.Java2dDefaultFrame
   implicit val java2dGifWriter
       : FileWriter[Algebra, Frame, Gif] with Base64Writer[Algebra, Frame, Gif] =
     doodle.java2d.effect.Java2dGifWriter

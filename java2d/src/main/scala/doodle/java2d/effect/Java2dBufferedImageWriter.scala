@@ -21,6 +21,7 @@ package effect
 import cats.effect.IO
 import doodle.effect.*
 import doodle.java2d.effect.{Java2d => Java2dEffect}
+
 import java.awt.image.BufferedImage
 
 object Java2dBufferedImageWriter

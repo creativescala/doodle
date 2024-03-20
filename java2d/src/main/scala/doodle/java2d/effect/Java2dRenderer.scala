@@ -19,17 +19,15 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.effect.DefaultRenderer
+import doodle.effect.Renderer
 
 import javax.swing.JFrame
 
-object Java2dRenderer extends DefaultRenderer[Algebra, Frame, Canvas] {
+object Java2dRenderer extends Renderer[Algebra, Frame, Canvas] {
 
   import cats.effect.unsafe.implicits.global
 
   private var jFrames: List[JFrame] = List.empty
-
-  val default: Frame = Frame.default.withSizedToPicture(20)
 
   def canvas(description: Frame): IO[Canvas] =
     Canvas(description).flatMap { jFrame =>
