@@ -93,11 +93,12 @@ final case class Reactor[A](
   }
 
   def draw[Alg <: Basic, Frame, Canvas]()(implicit
-      renderer: DefaultRenderer[Alg, Frame, Canvas],
+      renderer: Renderer[Alg, Frame, Canvas],
+      frame: DefaultFrame[Frame],
       runtime: IORuntime
   ): Unit = {
     import doodle.image.syntax.all._
-    this.image.draw()(renderer, runtime)
+    this.image.draw()(renderer, frame, runtime)
   }
 }
 object Reactor {

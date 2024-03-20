@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package doodle
-package effect
+package doodle.java2d.effect
 
-import doodle.algebra.Algebra
+import doodle.effect.DefaultFrame
 
-/** The `DefaultRenderer` typeclass is a `Renderer` that has a reasonable
-  * default frame.
-  */
-trait DefaultRenderer[+Alg <: Algebra, Frame, Canvas]
-    extends Renderer[Alg, Frame, Canvas] {
-  def default: Frame
-}
-object DefaultRenderer {
-  def apply[Alg <: Algebra, Frame, Canvas](implicit
-      renderer: DefaultRenderer[Alg, Frame, Canvas]
-  ): DefaultRenderer[Alg, Frame, Canvas] = renderer
+object Java2dDefaultFrame extends DefaultFrame[Frame] {
+  val default: Frame = Frame.default.withSizedToPicture(20)
 }

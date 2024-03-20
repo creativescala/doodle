@@ -19,7 +19,7 @@ package image
 package syntax
 
 import cats.effect.unsafe.IORuntime
-import doodle.effect.DefaultRenderer
+import doodle.effect.DefaultFrame
 import doodle.effect.Renderer
 import doodle.language.Basic
 import doodle.syntax.AbstractRendererSyntax
@@ -34,7 +34,8 @@ abstract class AbstractImageSyntax(rendererSyntax: AbstractRendererSyntax) {
       image.compile[Alg].drawWithFrame(frame)
 
     def draw[Alg <: Basic, Frame, Canvas]()(implicit
-        renderer: DefaultRenderer[Alg, Frame, Canvas],
+        renderer: Renderer[Alg, Frame, Canvas],
+        frame: DefaultFrame[Frame],
         r: IORuntime
     ): Unit =
       image.compile[Alg].draw()
