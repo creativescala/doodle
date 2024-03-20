@@ -22,8 +22,8 @@ import cats.Monoid
 import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import fs2.Stream
 import doodle.effect.Writer
+import fs2.Stream
 
 import java.io.File
 

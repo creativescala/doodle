@@ -20,6 +20,7 @@ package effect
 import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
+
 import java.awt.image.BufferedImage
 
 /** The BufferedImageWriter type represent the ability to encode an image as a
