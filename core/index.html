@@ -76,18 +76,17 @@
 </span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span> </span><span class="comment">// One turn is a full circle, so this is half a circle</span></code></pre>
             <p>There are various methods to perform arithmetic on angles. Here are some examples. See the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Angle.html">Angle</a> for a complete list.</p>
             <pre><code class="nohighlight"><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> + </span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>) &lt; </span><span class="number-literal">180</span><span>.</span><span class="identifier">degrees</span><span>
-</span><span class="comment">// res3: Boolean = true
-</span><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> * </span><span class="number-literal">2</span><span>) &lt; </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>
-</span><span class="comment">// res4: Boolean = false
+(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> * </span><span class="number-literal">2</span><span>) &lt; </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="comment">// res3: Boolean = false
 </span><span class="number-literal">180</span><span>.</span><span class="identifier">degrees</span><span> - </span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>
-</span><span class="comment">// res5: Angle = Angle(0.0)</span></code></pre>
+</span><span class="comment">// res4: Angle = Angle(0.0)</span></code></pre>
             <p>Other useful methods are calculating the sine and cosine of an angle, and normalizing an angle to between zero and 360 degrees.</p>
             <pre><code class="nohighlight"><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">sin</span><span>
-</span><span class="comment">// res6: Double = 1.2246467991473532E-16
+</span><span class="comment">// res5: Double = 1.2246467991473532E-16
 </span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">cos</span><span>
-</span><span class="comment">// res7: Double = -1.0
+</span><span class="comment">// res6: Double = -1.0
 </span><span class="number-literal">2</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">normalize</span><span> == </span><span class="number-literal">1</span><span>.</span><span class="identifier">turns</span><span>
-</span><span class="comment">// res8: Boolean = true</span></code></pre>
+</span><span class="comment">// res7: Boolean = true</span></code></pre>
             
             <h2 id="color" class="section">Color</h2>
             <p>Working with <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a> is something that most images will do. There are two representations of color used in Doodle:</p>
@@ -115,20 +114,20 @@
             <h2 id="point" class="section">Point</h2>
             <p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Point.html">Point</a> represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.</p>
             <pre><code class="nohighlight"><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">1.0</span><span>) </span><span class="comment">// cartesian coordinates
-// res18: Point = Cartesian(x = 1.0, y = 1.0) // cartesian coordinates
+// res17: Point = Cartesian(x = 1.0, y = 1.0)
 </span><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>) </span><span class="comment">// polar coordinates
-// res19: Point = Polar(r = 1.0, angle = Angle(1.5707963267948966))</span></code></pre>
+// res18: Point = Polar(r = 1.0, angle = Angle(1.5707963267948966))</span></code></pre>
             <p>No matter how we construct a <code>Point</code> we can still access x- and y-coordinates or radius and angle.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">pt1</span><span> = </span><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">0.0</span><span>)
 </span><span class="comment">// pt1: Point = Cartesian(x = 1.0, y = 0.0)
 </span><span class="identifier">pt1</span><span>.</span><span class="identifier">x</span><span>
-</span><span class="comment">// res20: Double = 1.0
+</span><span class="comment">// res19: Double = 1.0
 </span><span class="identifier">pt1</span><span>.</span><span class="identifier">y</span><span>
-</span><span class="comment">// res21: Double = 0.0
+</span><span class="comment">// res20: Double = 0.0
 </span><span class="identifier">pt1</span><span>.</span><span class="identifier">r</span><span>
-</span><span class="comment">// res22: Double = 1.0
+</span><span class="comment">// res21: Double = 1.0
 </span><span class="identifier">pt1</span><span>.</span><span class="identifier">angle</span><span>
-</span><span class="comment">// res23: Angle = Angle(0.0)</span></code></pre>
+</span><span class="comment">// res22: Angle = Angle(0.0)</span></code></pre>
             
             <h2 id="transform" class="section">Transform</h2>
             <p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Transform.html">Transform</a>, in Doodle, represents an <a href="https://en.wikipedia.org/wiki/Affine_transformation">affine transform</a> in two-dimensions. The easiest way to create a <code>Transform</code> is via the methods on the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Transform$.html">Transform</a>. Here are some examples.</p>
@@ -137,23 +136,23 @@
 </span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)</span></code></pre>
             <p>A <code>Transform</code> can be applied to a <code>Point</code> to transform that point.</p>
             <pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
-</span><span class="comment">// res27: Point = Cartesian(x = 5.0, y = -2.0)
+</span><span class="comment">// res26: Point = Cartesian(x = 5.0, y = -2.0)
 </span><span class="type-name">Transform</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
-</span><span class="comment">// res28: Point = Cartesian(x = -0.9999999999999999, y = 1.0)
+</span><span class="comment">// res27: Point = Cartesian(x = -0.9999999999999999, y = 1.0)
 </span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
-</span><span class="comment">// res29: Point = Cartesian(x = 11.0, y = 11.0)</span></code></pre>
+</span><span class="comment">// res28: Point = Cartesian(x = 11.0, y = 11.0)</span></code></pre>
             <p><code>Transforms</code> can be composed together using the <code>andThen</code> method.</p>
             <pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>).</span><span class="identifier">andThen</span><span>(</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>))(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
-</span><span class="comment">// res30: Point = Cartesian(x = 15.0, y = 8.0)
+</span><span class="comment">// res29: Point = Cartesian(x = 15.0, y = 8.0)
 </span><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>).</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>)) </span><span class="comment">// Shorter version
-// res31: Point = Cartesian(x = 15.0, y = 8.0)</span></code></pre>
+// res30: Point = Cartesian(x = 15.0, y = 8.0)</span></code></pre>
             
             <h2 id="vec" class="section">Vec</h2>
             <p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Vec.html">Vec</a> represents a two-dimensional vector. You can construct <code>Vecs</code> from cartesian (xy-coordinates) or polar (length and angle) coordinates, just like <code>Point</code>.</p>
             <pre><code class="nohighlight"><span class="type-name">Vec</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">1</span><span>)
-</span><span class="comment">// res32: Vec = Vec(x = 0.0, y = 1.0)
+</span><span class="comment">// res31: Vec = Vec(x = 0.0, y = 1.0)
 </span><span class="type-name">Vec</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)
-</span><span class="comment">// res33: Vec = Vec(x = 6.123233995736766E-17, y = 1.0)</span></code></pre>
+</span><span class="comment">// res32: Vec = Vec(x = 6.123233995736766E-17, y = 1.0)</span></code></pre>
             <p class="nextPage"><a href="../interact/">Interactivity→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>

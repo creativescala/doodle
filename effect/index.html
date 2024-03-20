@@ -59,8 +59,16 @@
     <div id="content">
         <main class="content">
             <h1 id="effects" class="title">Effects</h1>
-            <p>A picture is a description of what should be drawn. An effect carries out the description by, for example, drawing a picture to the screen. Another example includes converting a picture to a different type or saving it to a file which is managed by a special class of effects called <code>Writers</code>.</p>
-            <p>Effects are defined in the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/index.html">index</a> package. All effects have <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax/index.html">index</a> that makes them easier to use. You should not have to use effects directly unless you are extending Doodle.</p>
+            <p>A picture is a description of what should be drawn. An effect carries out the description by, for example, drawing a picture to the screen or writing it to a file. Effects are implemented as type classes and defined in the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect.html">effect</a> package. Users will not usually interact directly with effects, but instead work with the syntax defined for them. For example calling <code>draw</code> on a <code>Picture</code> is syntax that uses the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Renderer.html">Renderer</a> effect.</p>
+            <p>The main effects are:</p>
+            <ul>
+              <li><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Renderer.html">Renderer</a>, which draws a <code>Picture</code> to the screen.</li>
+              <li><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Writer.html">Writer</a>, is a marker trait for effects that convert a <code>Picture</code> to some other type or write it to a file.</li>
+              <li><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/FileWriter.html">FileWriter</a>, for writing to a <code>File</code>.</li>
+              <li><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Base64Writer.html">Base64Writer</a>, for writing to a base 64 encoded value.</li>
+              <li><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/BufferedImageWriter.html">BufferedImageWriter</a>, for writing to a <code>BufferedImage</code> on the JVM.</li>
+              <li><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/DefaultFrame.html">DefaultFrame</a>, not strictly an effect but a useful for utility to obtain a default frame instance. This makes other operations more convenient, as the user does not need to specify a frame.</li>
+            </ul>
             <p class="nextPage"><a href="../development/">Developing Doodle→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
