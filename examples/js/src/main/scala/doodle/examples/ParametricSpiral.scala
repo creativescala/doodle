@@ -1,4 +1,3 @@
-
 import doodle.core._
 import doodle.svg._
 import doodle.syntax.all._
