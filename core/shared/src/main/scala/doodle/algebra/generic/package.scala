@@ -17,9 +17,9 @@
 package doodle
 package algebra
 
-import cats.*
-import cats.data.*
-import cats.syntax.all.*
+import cats._
+import cats.data._
+import cats.syntax.all._
 import doodle.core.{Transform => Tx}
 
 package object generic {

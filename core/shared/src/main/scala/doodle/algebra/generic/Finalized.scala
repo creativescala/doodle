@@ -20,7 +20,7 @@ package generic
 
 import cats.Eval
 import cats.Later
-import cats.data.*
+import cats.data._
 import doodle.core.BoundingBox
 import doodle.core.{Transform => Tx}
 

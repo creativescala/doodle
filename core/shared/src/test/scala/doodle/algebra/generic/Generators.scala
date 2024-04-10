@@ -19,7 +19,7 @@ package algebra
 package generic
 
 import cats.instances.unit._
-import doodle.algebra.generic.*
+import doodle.algebra.generic._
 import doodle.algebra.generic.reified.Reification
 import doodle.algebra.generic.reified.Reified
 import doodle.core.{Transform => Tx}

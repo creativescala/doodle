@@ -19,10 +19,10 @@ package java2d
 
 import cats.effect.unsafe.implicits.global
 import doodle.algebra.ToPicture
-import doodle.core.format.*
+import doodle.core.format._
 import doodle.core.{Base64 => B64}
-import doodle.effect.*
-import doodle.syntax.all.*
+import doodle.effect._
+import doodle.syntax.all._
 import munit.FunSuite
 
 class ToPictureSuite extends FunSuite {

@@ -21,7 +21,7 @@ package effect
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
 import doodle.algebra.generic.Finalized
-import doodle.algebra.generic.*
+import doodle.algebra.generic._
 import doodle.core.BoundingBox
 import doodle.core.Normalized
 import doodle.core.Transform

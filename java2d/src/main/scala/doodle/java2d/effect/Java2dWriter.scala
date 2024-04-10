@@ -25,7 +25,7 @@ import de.erichseifert.vectorgraphics2d.util.PageSize
 import doodle.core.BoundingBox
 import doodle.core.format._
 import doodle.core.{Base64 => B64}
-import doodle.effect.*
+import doodle.effect._
 import doodle.java2d.effect.{Java2d => Java2dEffect}
 
 import java.awt.image.BufferedImage

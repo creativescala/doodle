@@ -19,7 +19,7 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.effect.*
+import doodle.effect._
 import doodle.java2d.effect.{Java2d => Java2dEffect}
 
 import java.awt.image.BufferedImage

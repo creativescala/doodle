@@ -19,7 +19,7 @@ package java2d
 package effect
 
 import cats.effect.IO
-import doodle.algebra.generic.*
+import doodle.algebra.generic._
 import doodle.core.BoundingBox
 import doodle.core.Color
 import doodle.core.Transform

@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+import cats.effect.unsafe.implicits.global
 import doodle.core._
 import doodle.svg._
 import doodle.syntax.all._
+
 import scala.scalajs.js.annotation._
-import cats.effect.unsafe.implicits.global
 
 @JSExportTopLevel("ParametricSpiral")
 object ParametricSpiral {

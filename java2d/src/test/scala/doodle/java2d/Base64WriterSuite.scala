@@ -19,8 +19,8 @@ package java2d
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.Base64
-import doodle.core.format.*
-import doodle.syntax.all.*
+import doodle.core.format._
+import doodle.syntax.all._
 import munit.FunSuite
 
 class Base64WriterSuite extends FunSuite {
