@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.22.0 10-Apr-2024
 
 - Arcs are available as paths on `OpenPath`, `ClosedPath`, and `PathElement`,
   and as conveniences on `Image` and `Picture`.
