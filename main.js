@@ -3093,6 +3093,9 @@ function $c_Ldoodle_core_Angle$() {
   $n_Ldoodle_core_Angle$ = this;
   this.Ldoodle_core_Angle$__f_TwoPi = 6.283185307179586;
   this.Ldoodle_core_Angle$__f_zero = $m_Ldoodle_core_Angle$().apply__D__Ldoodle_core_Angle(0.0);
+  this.turns__D__Ldoodle_core_Angle(0.25);
+  $m_Ldoodle_core_Angle$().apply__D__Ldoodle_core_Angle(3.141592653589793);
+  this.turns__D__Ldoodle_core_Angle(0.75);
   this.Ldoodle_core_Angle$__f_one = $m_Ldoodle_core_Angle$().apply__D__Ldoodle_core_Angle(this.Ldoodle_core_Angle$__f_TwoPi);
 }
 $c_Ldoodle_core_Angle$.prototype = new $h_O();
