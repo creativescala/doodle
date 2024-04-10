@@ -40,5 +40,8 @@ val circle = Picture.circle(100)
   
 circle.write[Png]("circle.png")
 ```
+```scala mdoc:invisible
+new java.io.File("circle.png").delete()
+```
 
 Instead of using `Png` you could use `Gif` or `Jpg` to specify those file formats. You'd probably want to change the file name as well if you change the format. That's it! Your masterpiece is now ready to share with the world.
