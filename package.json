@@ -1,0 +1,16 @@
+{
+  "name": "doodle",
+  "version": "1.0.0",
+  "description": "Copyright [Noel Welsh](http://noelwelsh.com).",
+  "main": "tailwind.config.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

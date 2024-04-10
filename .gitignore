@@ -28,6 +28,7 @@ docs/src/main/mdoc/api
 docs/src/pages/**/*.png
 
 
+
 ### SublimeText ###
 doodle.sublime-project
 # cache files for sublime text
@@ -141,5 +142,6 @@ local.properties
 .metals
 .bloop
 project/metals.sbt
+.vscode
 
 .sbt-hydra-history
