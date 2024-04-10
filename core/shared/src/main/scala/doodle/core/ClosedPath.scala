@@ -97,6 +97,25 @@ object ClosedPath {
   def line(x: Double, y: Double): ClosedPath =
     ClosedPath(PathElement.line(x, y))
 
+  def pie(center: Point, diameter: Double, angle: Angle): ClosedPath =
+    pie(center.x, center.y, diameter, angle)
+
+  /** Create a `ClosedPath` representing a pie slice: a line from `(x, y)` to
+    * `(x + diameter / 2, y)`, followed by a circular arc, followed by a line
+    * back to the start.
+    */
+  def pie(x: Double, y: Double, diameter: Double, angle: Angle): ClosedPath =
+    ClosedPath(
+      List(
+        PathElement.moveTo(x, y),
+        PathElement.lineTo(x + (diameter / 2.0), y)
+      ) ++
+        PathElement.arc(x, y, diameter, angle).drop(1) :+ PathElement.lineTo(
+          x,
+          y
+        )
+    )
+
   def regularPolygon(sides: Int, radius: Double): ClosedPath =
     ClosedPath(PathElement.regularPolygon(sides, radius))
 

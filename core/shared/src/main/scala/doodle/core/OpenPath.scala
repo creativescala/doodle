@@ -88,6 +88,12 @@ object OpenPath {
   def apply(elts: List[PathElement]): OpenPath =
     new OpenPath(elts.reverse)
 
+  def arc(center: Point, diameter: Double, angle: Angle): OpenPath =
+    arc(center.x, center.y, diameter, angle)
+
+  def arc(x: Double, y: Double, diameter: Double, angle: Angle): OpenPath =
+    OpenPath(PathElement.arc(x, y, diameter, angle))
+
   def circle(center: Point, diameter: Double): OpenPath =
     circle(center.x, center.y, diameter)
 

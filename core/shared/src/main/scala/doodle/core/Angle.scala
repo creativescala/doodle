@@ -87,6 +87,9 @@ final class Angle(val toRadians: Double) {
 object Angle {
   val TwoPi = math.Pi * 2
   val zero = Angle(0.0)
+  val oneQuarter = turns(0.25)
+  val oneHalf = Angle(math.Pi)
+  val threeQuarters = turns(0.75)
   val one = Angle(TwoPi)
 
   def degrees(deg: Double): Angle =

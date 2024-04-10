@@ -119,6 +119,93 @@ object PathElement {
     )
   }
 
+  /** Utility to construct a `List[PathElement]` that represents a circular arc.
+    * The arc starts at the 3-o'clock position and rotates counter-clockwise to
+    * the given `angle`.
+    */
+  def arc(
+      x: Double,
+      y: Double,
+      diameter: Double,
+      angle: Angle
+  ): List[PathElement] = {
+    val r = diameter / 2.0
+    val c = 0.551915024494
+    val cR = c * r
+
+    // Create a bezier curve describing an arc from start to end angle
+    // Arc should be less than 90 degrees to have acceptable error
+    // Formula for arc from https://ecridge.com/bezier.pdf
+    def smallArc(startAngle: Angle, endAngle: Angle): PathElement = {
+      val origin = Point(x, y)
+      val angle = endAngle - startAngle
+      val alpha = angle / 2.0
+      val lambda = (4.0 - alpha.cos) / 3.0
+      val mu =
+        alpha.sin + (((4.0 * (alpha.cos - 1)) / 3.0) * (alpha.cos / alpha.sin))
+
+      // The points that define the bezier relative to the origin. We don't need
+      // the start (a) so it's commented out but left in the the code to make it
+      // clearer.
+      //
+      // val a = Vec(r, -alpha).rotate(startAngle + angle)
+      val b = (Vec(lambda, -mu) * r).rotate(startAngle + alpha)
+      val c = (Vec(lambda, mu) * r).rotate(startAngle + alpha)
+      val d = Vec(r, alpha).rotate(startAngle + alpha)
+
+      // Displace relative to x and y
+      BezierCurveTo(origin + b, origin + c, origin + d)
+    }
+
+    if (angle > Angle.one) circle(Point.zero, diameter)
+    else if (angle > Angle.threeQuarters) {
+      List(
+        moveTo(x + r, y),
+        BezierCurveTo(
+          Point(x + r, y + cR),
+          Point(x + cR, y + r),
+          Point(x, y + r)
+        ),
+        BezierCurveTo(
+          Point(x + -cR, y + r),
+          Point(x + -r, y + cR),
+          Point(x + -r, y)
+        ),
+        BezierCurveTo(
+          Point(x + -r, y + -cR),
+          Point(x + -cR, y + -r),
+          Point(x, y + -r)
+        ),
+        smallArc(Angle.threeQuarters, angle)
+      )
+    } else if (angle > Angle.oneHalf) {
+      List(
+        moveTo(x + r, y),
+        BezierCurveTo(
+          Point(x + r, y + cR),
+          Point(x + cR, y + r),
+          Point(x, y + r)
+        ),
+        BezierCurveTo(
+          Point(x + -cR, y + r),
+          Point(x + -r, y + cR),
+          Point(x + -r, y)
+        ),
+        smallArc(Angle.oneHalf, angle)
+      )
+    } else if (angle > Angle.oneQuarter) {
+      List(
+        moveTo(x + r, y),
+        BezierCurveTo(
+          Point(x + r, y + cR),
+          Point(x + cR, y + r),
+          Point(x, y + r)
+        ),
+        smallArc(Angle.oneQuarter, angle)
+      )
+    } else List(moveTo(x + r, y), smallArc(Angle.zero, angle))
+  }
+
   /** Construct a regular polygon
     */
   def regularPolygon(

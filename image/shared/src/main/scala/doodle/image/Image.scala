@@ -226,8 +226,14 @@ object Image {
   def line(x: Double, y: Double): Image =
     path(doodle.core.OpenPath.line(x, y))
 
+  def arc(diameter: Double, angle: Angle): Image =
+    path(doodle.core.OpenPath.arc(0.0, 0.0, diameter, angle))
+
   def circle(diameter: Double): Image =
     Circle(diameter)
+
+  def pie(diameter: Double, angle: Angle): Image =
+    path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle))
 
   def rectangle(width: Double, height: Double): Image =
     Rectangle(width, height)

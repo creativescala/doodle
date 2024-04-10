@@ -1,6 +1,18 @@
 # Changelog
 
-## 0.21.0
+## Next
+
+- Arcs are available as paths on `OpenPath`, `ClosedPath`, and `PathElement`,
+  and as conveniences on `Image` and `Picture`.
+
+- Add `BufferedImageWriter` algebra (by `@jCabala`)
+
+- Refactoring of writers (`@jCabala`)
+
+- SVG documentation (`@vosid8`)
+
+
+## 0.21.0 30-Nov-2023
 
 - `Image` supports landmarks for layout with `at` and `originAt`.
 

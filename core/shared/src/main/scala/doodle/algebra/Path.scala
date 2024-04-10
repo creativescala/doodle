@@ -17,6 +17,7 @@
 package doodle
 package algebra
 
+import doodle.core.Angle
 import doodle.core.ClosedPath
 import doodle.core.OpenPath
 import doodle.core.PathElement
@@ -75,6 +76,12 @@ trait PathConstructor {
       def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.path(path)
     }
+
+  def arc(diameter: Double, angle: Angle): Picture[Unit] =
+    path(doodle.core.OpenPath.arc(0.0, 0.0, diameter, angle))
+
+  def pie(diameter: Double, angle: Angle): Picture[Unit] =
+    path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle))
 
   def regularPolygon(sides: Int, radius: Double): Picture[Unit] =
     new Picture[Unit] {
