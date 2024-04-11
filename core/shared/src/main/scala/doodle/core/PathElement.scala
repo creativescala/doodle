@@ -122,6 +122,8 @@ object PathElement {
   /** Utility to construct a `List[PathElement]` that represents a circular arc.
     * The arc starts at the 3-o'clock position and rotates counter-clockwise to
     * the given `angle`.
+    *
+    * The `angle` must be greater than zero.
     */
   def arc(
       x: Double,
@@ -203,7 +205,9 @@ object PathElement {
         ),
         smallArc(Angle.oneQuarter, angle)
       )
-    } else List(moveTo(x + r, y), smallArc(Angle.zero, angle))
+    } else if (angle > Angle.zero)
+      List(moveTo(x + r, y), smallArc(Angle.zero, angle))
+    else List()
   }
 
   /** Construct a regular polygon
