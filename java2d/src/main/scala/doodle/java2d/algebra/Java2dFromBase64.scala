@@ -41,16 +41,14 @@ trait Java2dFromBase64
   def fromGifBase64(base64: core.Base64[Gif]): Drawing[Unit] =
     genericFromBase64(base64.value)
 
-  def fromPngBase64(base64: core.Base64[Png]): Drawing[Unit] = {
+  def fromPngBase64(base64: core.Base64[Png]): Drawing[Unit] =
     genericFromBase64(base64.value)
-  }
 
   def fromJpgBase64(base64: core.Base64[Jpg]): Drawing[Unit] =
     genericFromBase64(base64.value)
 
   def genericFromBase64(value: String): Drawing[Unit] =
     Finalized.leaf { _ =>
-      println("Bruh #2")
       val bytes = JBase64.getDecoder().decode(value)
       val bs = new ByteArrayInputStream(bytes)
       val bi = ImageIO.read(bs)

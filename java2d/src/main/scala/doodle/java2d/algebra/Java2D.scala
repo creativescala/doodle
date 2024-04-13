@@ -144,8 +144,6 @@ object Java2D {
     graphics.setPaint(paint)
   }
 
-  
-
   def toCycleMethod(cycleMethod: Gradient.CycleMethod): CycleMethod =
     cycleMethod match {
       case Gradient.CycleMethod.NoCycle => CycleMethod.NO_CYCLE
