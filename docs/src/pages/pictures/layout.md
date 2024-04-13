@@ -25,7 +25,10 @@ val basicLayout =
 
 Here's the output this creates.
 
-@:image(basic-layout.png)
+@:image(basic-layout.png) {
+  alt = A blue circle beside a dark blue square above a crimson triangle
+  title = A blue circle beside a dark blue square above a crimson triangle
+}
 
 As a convenience, there are also methods `below` and `under`, which are the opposite of `above` and `on` respectively. That is, `a.above(b) == b.below(a)` and `a.on(b) == b.under(a)`
 
@@ -47,7 +50,10 @@ val debugLayout =
     )
 ```
 
-@:image(debug-layout.png)
+@:image(debug-layout.png) {
+  alt = Demonstration of debug layout
+  title = Demonstration of debug layout
+}
 
 This gives us some insight into how the basic layout works. Using `beside` horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. `Above` works similarly, except the alignment is vertical, while `on` simply places the origins at the same location.
 
@@ -70,7 +76,7 @@ val atAndOriginAt =
     .beside(Picture.circle(100).originAt(25, 25).debug)
 ```
 
-@:image(at-and-origin-at.png)
+@:image(at-and-origin-at.png) 
 
 When you want to position pictures at arbitrary locations, a common pattern is to use `at` and `on`. For example, here we position five shapes at the points of a pentagon. This also demonstrates we can use polar coordinates with `at`.
 
@@ -85,7 +91,10 @@ val pentagon =
     .on(Picture.circle(10).at(50, 288.degrees))
 ```
 
-@:image(pentagon.png)
+@:image(pentagon.png) {
+  alt = A pentagon of circles
+  title = A pentagon of circles
+}
 
 
 ### Positioning using Landmarks
@@ -118,7 +127,10 @@ val overlappingCircles =
     )
 ```
 
-@:image(overlapping-circles.png)
+@:image(overlapping-circles.png) {
+  alt = Four circles with origins at the corners of the bounding box
+  title = Four circles with origins at the corners of the bounding box
+}
 
 
 ### Adjusting the Bounding Box
@@ -137,7 +149,10 @@ val rollingCircles =
     .beside(circle.margin(-25).debug)
 ```
 
-@:image(rolling-circles.png)
+@:image(rolling-circles.png) {
+  alt = Five circles with different margins
+  title = Five circles with different margins
+}
 
 ## Implementation
 

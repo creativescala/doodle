@@ -42,7 +42,10 @@ val picture = circle.on(boundingBox)
 
 This produces the picture shown below.
 
-@:image(bounding-box.png)
+@:image(bounding-box.png) {
+  alt = A circle with a bounding box outlined in hot pink
+  title = A circle with a bounding box outlined in hot pink
+}
 
 
 ## Other Methods
