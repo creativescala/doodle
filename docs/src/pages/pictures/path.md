@@ -29,7 +29,10 @@ val feather =
 
 Drawing this path creates the output below.
 
-@:image(basic-path.png)
+@:image(basic-path.png) {
+  alt = A path with straight lines and bezier curves 
+  title = A path with straight lines and bezier curves
+}
 
 You probably noticed this is a `ClosedPath`, which suggests there is also an `OpenPath`. This is correct. The difference is how the path ends. If a `ClosedPath` doesn't end at the point it started (which is the origin), it will have a straight line inserted joining the end to the start. An `OpenPath` will not.
 
@@ -45,7 +48,10 @@ val closed =
 val curves = open.beside(closed)
 ```
 
-@:image(open-closed-paths.png)
+@:image(open-closed-paths.png) {
+  alt = A curve drawn as an open and a closed path
+  title = A curve drawn as an open and a closed path
+}
 
 
 ## Implementation
@@ -91,4 +97,7 @@ val points =
 val curve = Picture.interpolatingSpline(points.toList)
 ```
 
-@:image(curve.png)
+@:image(curve.png) {
+  alt = A curve that intersects a sequence of points
+  title = A curve that intersects a sequence of points
+}
