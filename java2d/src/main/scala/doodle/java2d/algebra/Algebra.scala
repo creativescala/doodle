@@ -35,6 +35,7 @@ final case class Algebra(
 ) extends Basic
     with Java2dFromBufferedImage
     with Java2dFromBase64
+    with Java2dClip
     with ReifiedBitmap
     with ReifiedPath
     with ReifiedShape

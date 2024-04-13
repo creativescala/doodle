@@ -70,6 +70,7 @@ trait FromPngBase64Constructor {
 
   def fromPngBase64(base64: Base64[Png]): Picture[Unit] =
     new Picture[Unit] {
+      println("Inside fromPngBase64")
       def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
         algebra.fromPngBase64(base64)
     }

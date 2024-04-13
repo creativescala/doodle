@@ -41,7 +41,7 @@ trait Java2dFromBase64
   def fromGifBase64(base64: core.Base64[Gif]): Drawing[Unit] =
     genericFromBase64(base64.value)
 
-  def fromPngBase64(base64: core.Base64[Png]): Drawing[Unit] =
+  def fromPngBase64(base64: core.Base64[Png]): Drawing[Unit] = 
     genericFromBase64(base64.value)
 
   def fromJpgBase64(base64: core.Base64[Jpg]): Drawing[Unit] =
