@@ -26,7 +26,6 @@ project/project/project
 # Documentation intermediate files
 docs/src/main/paradox
 docs/src/main/mdoc/api
-docs/src/pages/**/*.png
 
 
 
