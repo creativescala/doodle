@@ -17,5 +17,4 @@ trait ClipSyntax {
           algebra.clipit(picture(algebra), clip_path)
       }
   }
-
 }
