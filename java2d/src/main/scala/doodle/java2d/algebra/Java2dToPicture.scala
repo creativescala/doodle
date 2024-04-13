@@ -19,10 +19,8 @@ package doodle.java2d
 import doodle.algebra.ToPicture
 import doodle.core.Base64
 import doodle.core.format._
-import doodle.core.ClosedPath
 
 import java.awt.image.BufferedImage
-import javax.sound.sampled.Clip
 
 /** ToPicture instances for the Java2d backend */
 trait Java2dToPicture {
@@ -46,12 +44,11 @@ trait Java2dToPicture {
 
   implicit val base64PngToPicture: ToPicture[Base64[Png], Algebra] =
     new ToPicture[Base64[Png], Algebra] {
-      def toPicture(in: Base64[Png]): Picture[Unit] = {
+      def toPicture(in: Base64[Png]): Picture[Unit] =
         new Picture[Unit] {
           def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
             algebra.fromPngBase64(in)
         }
-      }
     }
 
   implicit val base64JpgToPicture: ToPicture[Base64[Jpg], Algebra] =
@@ -62,5 +59,4 @@ trait Java2dToPicture {
             algebra.fromJpgBase64(in)
         }
     }
-
 }
