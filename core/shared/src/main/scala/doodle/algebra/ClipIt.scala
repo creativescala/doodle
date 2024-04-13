@@ -11,7 +11,6 @@ trait ClipIt extends Algebra {
 
 trait ClipItConstructor {
     self: BaseConstructor { type Algebra <: ClipIt } =>
-
     def clipit(image: Picture[Unit], clip_path: ClosedPath): Picture[Unit] =
         new Picture[Unit] {
             def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =

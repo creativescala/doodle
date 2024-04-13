@@ -16,10 +16,13 @@
 
 package doodle
 
+import javax.sound.sampled.Clip
+
 package object syntax {
   object all
       extends AngleSyntax
       with BitmapSyntax
+      with ClipSyntax
       with BlendSyntax
       with DebugSyntax
       with LayoutSyntax
@@ -36,6 +39,7 @@ package object syntax {
       with UnsignedByteSyntax
   object angle extends AngleSyntax
   object bitmap extends BitmapSyntax
+  object clipit extends ClipSyntax
   object blend extends BlendSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax

@@ -21,6 +21,7 @@ package object syntax {
       extends AngleSyntax
       with Base64WriterSyntax
       with BitmapSyntax
+      with ClipSyntax
       with BlendSyntax
       with BufferedImageWriterSyntax
       with DebugSyntax
