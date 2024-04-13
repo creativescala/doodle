@@ -18,6 +18,7 @@ package docs
 package pictures
 
 object All {
+  ImageObj
   Layout
   Path
   Shape
