@@ -48,7 +48,7 @@ val composition = redSquare.beside(blueSquare)
 
 When draw this has the output shown below. 
 
-@:image(red-blue.png) {
+@:image(composition.png) {
   alt = A red square beside a blue square
   title = A red square beside a blue square
 }
