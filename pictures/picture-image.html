@@ -83,7 +83,7 @@
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">composition</span><span> = </span><span class="identifier">redSquare</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">blueSquare</span><span>)</span></code></pre>
             <p>When draw this has the output shown below. </p>
             <div class="default-image-block">
-              <img src="red-blue.png" alt="A red square beside a blue square" title="A red square beside a blue square">
+              <img src="composition.png" alt="A red square beside a blue square" title="A red square beside a blue square">
             </div>
             <p>The interpreter pattern means that we separate describing the Image from rendering it. Writing <code>Image.square(100)</code> doesn&#39;t draw anything. To draw an image we need to call the <code>draw()</code> method. This separation is important for composition; if we were to immediately draw we would lose composition. </p>
             

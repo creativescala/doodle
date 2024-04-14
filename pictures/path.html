@@ -88,7 +88,7 @@
               <img src="basic-path.png" alt="A path with straight lines and bezier curves" title="A path with straight lines and bezier curves">
             </div>
             <p>You probably noticed this is a <code>ClosedPath</code>, which suggests there is also an <code>OpenPath</code>. This is correct. The difference is how the path ends. If a <code>ClosedPath</code> doesn&#39;t end at the point it started (which is the origin), it will have a straight line inserted joining the end to the start. An <code>OpenPath</code> will not.</p>
-            <p>Here&#39;s an example showing the difference. We create a curve, drawn as an open and a closed path. Notice how the open path is just a curve, while the closed path has an extra line added joining the start and end points.</p>
+            <p>Here&#39;s an example showing the difference. We create a curve, drawn as an open and as a closed path. Notice how the open path is just a curve, while the closed path has an extra line added joining the start and end points.</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">open</span><span> =
   </span><span class="type-name">OpenPath</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">curveTo</span><span>(</span><span class="number-literal">90</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">100</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>).</span><span class="identifier">path</span><span>.</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
 
@@ -97,7 +97,7 @@
 
 </span><span class="keyword">val</span><span> </span><span class="identifier">curves</span><span> = </span><span class="identifier">open</span><span>.</span><span class="identifier">beside</span><span>(</span><span class="identifier">closed</span><span>)</span></code></pre>
             <div class="default-image-block">
-              <img src="open-closed-paths.png" alt="A curve drawn as an open and a closed path" title="A curve drawn as an open and a closed path">
+              <img src="open-closed-paths.png" alt="A curve drawn as an open and as a closed path" title="A curve drawn as an open and as a closed path">
             </div>
             
             <h2 id="implementation" class="section">Implementation</h2>
