@@ -79,7 +79,7 @@
     .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">5.0</span><span>)</span></code></pre>
             <p>Here&#39;s the output this creates.</p>
             <div class="default-image-block">
-              <img src="basic-layout.png">
+              <img src="basic-layout.png" alt="A circle beside a square above a triangle" title="A circle beside a square above a triangle">
             </div>
             <p>As a convenience, there are also methods <code>below</code> and <code>under</code>, which are the opposite of <code>above</code> and <code>on</code> respectively. That is, <code>a.above(b) == b.below(a)</code> and <code>a.on(b) == b.under(a)</code></p>
             
@@ -95,7 +95,7 @@
       </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">beside</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">regularPolygon</span><span>(</span><span class="number-literal">5</span><span>, </span><span class="number-literal">30</span><span>)).</span><span class="identifier">debug</span><span>
     )</span></code></pre>
             <div class="default-image-block">
-              <img src="debug-layout.png">
+              <img src="debug-layout.png" alt="Demonstration of debug layout" title="Demonstration of debug layout">
             </div>
             <p>This gives us some insight into how the basic layout works. Using <code>beside</code> horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. <code>Above</code> works similarly, except the alignment is vertical, while <code>on</code> simply places the origins at the same location.</p>
             
@@ -125,7 +125,7 @@
     .</span><span class="identifier">on</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">10</span><span>).</span><span class="identifier">at</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">216</span><span>.</span><span class="identifier">degrees</span><span>))
     .</span><span class="identifier">on</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">10</span><span>).</span><span class="identifier">at</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">288</span><span>.</span><span class="identifier">degrees</span><span>))</span></code></pre>
             <div class="default-image-block">
-              <img src="pentagon.png">
+              <img src="pentagon.png" alt="A pentagon constructed from circles" title="A pentagon constructed from circles">
             </div>
             
             <h3 id="positioning-using-landmarks" class="section">Positioning using Landmarks</h3>
@@ -152,7 +152,7 @@
         .</span><span class="identifier">originAt</span><span>(</span><span class="type-name">Landmark</span><span>(</span><span class="type-name">Coordinate</span><span>.</span><span class="identifier">percent</span><span>(</span><span class="number-literal">50</span><span>), </span><span class="type-name">Coordinate</span><span>.</span><span class="identifier">percent</span><span>(</span><span class="number-literal">50</span><span>)))
     )</span></code></pre>
             <div class="default-image-block">
-              <img src="overlapping-circles.png">
+              <img src="overlapping-circles.png" alt="Four circles with origins at the midpoints of the bounding box edges" title="Four circles with origins at the midpoints of the bounding box edges">
             </div>
             
             <h3 id="adjusting-the-bounding-box" class="section">Adjusting the Bounding Box</h3>
@@ -167,7 +167,7 @@
     .</span><span class="identifier">beside</span><span>(</span><span class="identifier">circle</span><span>.</span><span class="identifier">margin</span><span>(-</span><span class="number-literal">15</span><span>).</span><span class="identifier">debug</span><span>)
     .</span><span class="identifier">beside</span><span>(</span><span class="identifier">circle</span><span>.</span><span class="identifier">margin</span><span>(-</span><span class="number-literal">25</span><span>).</span><span class="identifier">debug</span><span>)</span></code></pre>
             <div class="default-image-block">
-              <img src="rolling-circles.png">
+              <img src="rolling-circles.png" alt="Five circles with different margins" title="Five circles with different margins">
             </div>
             
             <h2 id="implementation" class="section">Implementation</h2>
