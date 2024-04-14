@@ -25,7 +25,10 @@ val basicLayout =
 
 Here's the output this creates.
 
-@:image(basic-layout.png)
+@:image(basic-layout.png) {
+  alt = A circle beside a square above a triangle
+  title = A circle beside a square above a triangle
+}
 
 As a convenience, there are also methods `below` and `under`, which are the opposite of `above` and `on` respectively. That is, `a.above(b) == b.below(a)` and `a.on(b) == b.under(a)`
 
@@ -47,7 +50,10 @@ val debugLayout =
     )
 ```
 
-@:image(debug-layout.png)
+@:image(debug-layout.png) {
+  alt = Demonstration of debug layout
+  title = Demonstration of debug layout
+}
 
 This gives us some insight into how the basic layout works. Using `beside` horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. `Above` works similarly, except the alignment is vertical, while `on` simply places the origins at the same location.
 
@@ -85,7 +91,10 @@ val pentagon =
     .on(Picture.circle(10).at(50, 288.degrees))
 ```
 
-@:image(pentagon.png)
+@:image(pentagon.png) {
+  alt = A pentagon constructed from circles
+  title = A pentagon constructed from circles
+}
 
 
 ### Positioning using Landmarks
@@ -118,7 +127,10 @@ val overlappingCircles =
     )
 ```
 
-@:image(overlapping-circles.png)
+@:image(overlapping-circles.png) {
+  alt = Four circles with origins at the midpoints of the bounding box edges
+  title = Four circles with origins at the midpoints of the bounding box edges
+}
 
 
 ### Adjusting the Bounding Box
@@ -137,7 +149,10 @@ val rollingCircles =
     .beside(circle.margin(-25).debug)
 ```
 
-@:image(rolling-circles.png)
+@:image(rolling-circles.png) {
+  alt = Five circles with different margins
+  title = Five circles with different margins
+}
 
 ## Implementation
 

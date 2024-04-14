@@ -20,7 +20,10 @@ val basicShapes =
 
 This program gives the output below.
 
-@:image(basic-shapes.png)
+@:image(basic-shapes.png) {
+  alt = A circle with square and triangle
+  title = A circle with square and triangle
+}
 
 Here is a short description of all the methods provided by `Shape`.
 

@@ -28,7 +28,10 @@ val basicStyle =
     )
 ```
 
-@:image(basic-style.png)
+@:image(basic-style.png) {
+  alt = A circle with no style and a circle with a purple stroke and lavender fill
+  title = A circle with no style and a circle with a purple stroke and lavender fill
+}
 
 The available settings for the stroke are:
 
@@ -63,7 +66,10 @@ val strokeStyle =
     )
 ```
 
-@:image(stroke-style.png)
+@:image(stroke-style.png) {
+  alt = Two stars with different stroke styles
+  title = Two stars with different stroke styles
+}
 
 The fill can either be one of:
 
@@ -97,7 +103,11 @@ val fillStyle =
     )
 ```
 
-@:image(fill-style.png)
+@:image(fill-style.png) {
+  alt = A square with a linear gradient fill and a circle with a radial gradient fill
+  title = A square with a linear gradient fill and a circle with a radial gradient fill
+
+}
 
 
 ## Implementation
