@@ -135,11 +135,36 @@ val overlappingCircles =
 
 ### Adjusting the Bounding Box
 
-To adjust the size of the bounding box, instead of the position of the origin, we can use `margin`. This allows us to add extra space around a picture or, with a negative margin, to have a picture that overflows its bounding box. Here's an example that uses the form of `margin` that adjusts both the width and height of the bounding box. There are other variants that allow us to adjust the width and the height separately, or adjust all four edges independently.
+The `size` and `margin` methods allow direct manipulation of the bounding box. We will show examples below to generate this image:
+
+@:image(rolling-circles.png) {
+  alt = Five circles with different bounding boxes
+  title = Five circles with different bounding boxes
+}
+
+We can directly adjust the size of the bounding box using `size`, which sets the width and height of the bounding box to the given values. These values must be non-negative, and the resulting bounding box distributes the width and height equally between the left and right, and top and bottom, respectively. Here's an example where we set the width and height to different values, and use `debug` to draw the resulting bounding boxes.
+
+```scala mdoc:silent
+val rollingCirclesSize =
+  circle
+    .size(100, 25)
+    .debug
+    .beside(circle.size(80, 20).debug)
+    .beside(circle.size(50, 15).debug)
+    .beside(circle.size(20, 10).debug)
+    .beside(circle.size(0, 0).debug)
+```
+
+@:image(rolling-circles-size.png) {
+  alt = Five circles with different bounding boxes
+  title = Five circles with different bounding boxes
+}
+
+To adjust the existing bounding box we can use `margin`. This allows us to add extra space around a picture or, with a negative margin, to have a picture that overflows its bounding box. Here's an example that uses the form of `margin` that adjusts both the width and height of the bounding box. There are other variants that allow us to adjust the width and the height separately, or adjust all four edges independently.
 
 ```scala mdoc:silent
 val circle = Picture.circle(50)
-val rollingCircles =
+val rollingCirclesMargin =
   circle
     .margin(25)
     .debug
@@ -149,7 +174,7 @@ val rollingCircles =
     .beside(circle.margin(-25).debug)
 ```
 
-@:image(rolling-circles.png) {
+@:image(rolling-circles-margin.png) {
   alt = Five circles with different margins
   title = Five circles with different margins
 }

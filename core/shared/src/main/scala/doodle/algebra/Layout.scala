@@ -55,6 +55,13 @@ trait Layout extends Algebra {
       left: Double
   ): Drawing[A]
 
+  /** Set the width and height of the given `Drawing's` bounding box to the
+    * given values. The new bounding box has the same origin as the original
+    * bounding box, and extends symmetrically above and below, and left and
+    * right of the origin.
+    */
+  def size[A](img: Drawing[A], width: Double, height: Double): Drawing[A]
+
   // Derived methods
 
   def under[A](bottom: Drawing[A], top: Drawing[A])(implicit
@@ -92,4 +99,8 @@ trait Layout extends Algebra {
     margin(img, height, width, height, width)
   def margin[A](img: Drawing[A], width: Double): Drawing[A] =
     margin(img, width, width, width, width)
+
+  /** Utility to set the width and height to the same value. */
+  def size[A](img: Drawing[A], extent: Double): Drawing[A] =
+    size(img, extent, extent)
 }

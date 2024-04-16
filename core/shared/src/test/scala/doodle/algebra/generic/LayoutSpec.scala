@@ -239,10 +239,27 @@ object LayoutSpec extends Properties("Layout properties") {
           .margin(shape, top, right, bottom, left)
           .boundingBox
 
-        newBb.left ?= bb.left - left
-        newBb.top ?= bb.top + top
-        newBb.right ?= bb.right + right
-        newBb.bottom ?= bb.bottom - bottom
+        (newBb.left ?= bb.left - left) &&
+        (newBb.top ?= bb.top + top) &&
+        (newBb.right ?= bb.right + right) &&
+        (newBb.bottom ?= bb.bottom - bottom)
+    }
+  }
+
+  property("size sets bounding box to the correct size") = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+    val genDim = Gen.choose[Double](0.0, 50.0)
+
+    forAllNoShrink(genShape, genDim, genDim) { (shape, width, height) =>
+      val newBb = algebra
+        .size(shape, width, height)
+        .boundingBox
+
+      (newBb.left ?= -(width / 2)) &&
+      (newBb.right ?= (width / 2)) &&
+      (newBb.top ?= (height / 2)) &&
+      (newBb.bottom ?= -(height / 2))
     }
   }
 }

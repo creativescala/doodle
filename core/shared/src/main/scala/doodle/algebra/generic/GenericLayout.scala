@@ -20,6 +20,7 @@ package generic
 
 import cats._
 import cats.implicits._
+import doodle.core.BoundingBox
 import doodle.core.Landmark
 import doodle.core.Transform
 
@@ -108,7 +109,7 @@ trait GenericLayout[G[_]] extends Layout {
       left: Double
   ): Finalized[G, A] =
     img.map { case (bb, rdr) =>
-      val newBb = bb.copy(
+      val newBb = BoundingBox(
         left = bb.left - left,
         top = bb.top + top,
         right = bb.right + right,
@@ -116,4 +117,32 @@ trait GenericLayout[G[_]] extends Layout {
       )
       (newBb, rdr)
     }
+
+  def size[A](
+      img: Finalized[G, A],
+      width: Double,
+      height: Double
+  ): Finalized[G, A] = {
+    assert(
+      width >= 0,
+      s"Called `size` with a width of ${width}. The bounding box's width must be non-negative."
+    )
+    assert(
+      height >= 0,
+      s"Called `size` with a height of ${height}. The bounding box's height must be non-negative."
+    )
+    val w = width / 2.0
+    val h = height / 2.0
+
+    img.map { case (bb, rdr) =>
+      val newBb = BoundingBox(
+        left = -w,
+        top = h,
+        right = w,
+        bottom = -h
+      )
+
+      (newBb, rdr)
+    }
+  }
 }

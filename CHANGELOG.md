@@ -1,5 +1,11 @@
 # Changelog
 
+## NEXT
+
+- Add `size` method to set bounding box width and height. Distinguished by the
+  existing `size` method on `Size` by it's arguments. (#158)
+
+
 ## 0.22.0 10-Apr-2024
 
 - Arcs are available as paths on `OpenPath`, `ClosedPath`, and `PathElement`,

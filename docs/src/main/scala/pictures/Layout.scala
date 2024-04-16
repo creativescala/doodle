@@ -90,6 +90,19 @@ object Layout {
   val rollingCircles =
     circle
       .margin(25)
+      .beside(circle.margin(15))
+      .beside(circle)
+      .beside(circle.margin(-15))
+      .beside(circle.margin(-25))
+      // Increase the bounding box so it covers the whole image.
+      // Otherwise the image is cropped when it is rendered.
+      .size(300, 100)
+
+  rollingCircles.save("pictures/rolling-circles.png")
+
+  val rollingCirclesMargin =
+    circle
+      .margin(25)
       .debug
       .beside(circle.margin(15).debug)
       .beside(circle.debug)
@@ -97,7 +110,20 @@ object Layout {
       .beside(circle.margin(-25).debug)
       // Increase the bounding box so it covers the whole image.
       // Otherwise the image is cropped when it is rendered.
-      .margin(0, 50, 0, 0)
+      .size(300, 100)
 
-  rollingCircles.save("pictures/rolling-circles.png")
+  rollingCirclesMargin.save("pictures/rolling-circles-margin.png")
+
+  // Rolling circles using the size method
+  val rollingCirclesSize =
+    circle
+      .size(100, 25)
+      .debug
+      .beside(circle.size(80, 20).debug)
+      .beside(circle.size(50, 15).debug)
+      .beside(circle.size(20, 10).debug)
+      .beside(circle.size(0, 0).debug)
+      .size(300, 100)
+
+  rollingCirclesSize.save("pictures/rolling-circles-size.png")
 }

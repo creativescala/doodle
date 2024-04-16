@@ -162,5 +162,17 @@ trait LayoutSyntax {
         def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.margin(picture(algebra), width)
       }
+
+    def size(width: Double, height: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.size(picture(algebra), width, height)
+      }
+
+    def size(extent: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.size(picture(algebra), extent)
+      }
   }
 }

@@ -53,4 +53,8 @@ class ImageLayout extends FunSuite with GoldenImage {
           .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(50)))
       )
   }
+
+  testImage("image-size") {
+    Image.circle(100).size(50, 50).beside(Image.square(50)).size(150, 150)
+  }
 }

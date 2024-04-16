@@ -55,6 +55,9 @@ sealed abstract class Image extends Product with Serializable {
   def margin(width: Double): Image =
     Margin(this, width, width, width, width)
 
+  def size(width: Double, height: Double): Image =
+    Size(this, width, height)
+
   // Context Transform ------------------------------------------------
 
   def strokeColor(color: Color): Image =
@@ -190,6 +193,8 @@ object Image {
         bottom: Double,
         left: Double
     ) extends Image
+    final case class Size(image: Image, width: Double, height: Double)
+        extends Image
     final case class OriginAt(image: Image, landmark: Landmark) extends Image
     // Style
     final case class StrokeWidth(image: Image, width: Double) extends Image
@@ -321,6 +326,8 @@ object Image {
             algebra.at(compile(image)(algebra), landmark)
           case Margin(image, top, right, bottom, left) =>
             algebra.margin(compile(image)(algebra), top, right, bottom, left)
+          case Size(image, width, height) =>
+            algebra.size(compile(image)(algebra), width, height)
           case OriginAt(image, landmark) =>
             algebra.originAt(compile(image)(algebra), landmark)
 
