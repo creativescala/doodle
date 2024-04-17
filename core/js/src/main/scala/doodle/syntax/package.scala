@@ -30,6 +30,7 @@ package object syntax {
       with SizeSyntax
       with StyleSyntax
       with TextSyntax
+      with ClipItSyntax
       with ToPictureSyntax
       with TransformSyntax
       with TraverseSyntax
@@ -46,6 +47,7 @@ package object syntax {
   object size extends SizeSyntax
   object style extends StyleSyntax
   object text extends TextSyntax
+  object clipit extends ClipItSyntax
   object toPicture extends ToPictureSyntax
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax

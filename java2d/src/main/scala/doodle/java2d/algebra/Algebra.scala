@@ -39,6 +39,7 @@ final case class Algebra(
     with ReifiedPath
     with ReifiedShape
     with ReifiedText
+    with ReifiedClip
     with GenericDebug[Reification]
     with GenericLayout[Reification]
     with GenericSize[Reification]

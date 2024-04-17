@@ -77,4 +77,14 @@ trait GraphicsContext[A] {
       font: Font,
       bounds: Rectangle2D
   ): Unit
+
+  def clipit(
+      gc: A
+  )(
+      transform: Transform,
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
+  ): Unit
 }

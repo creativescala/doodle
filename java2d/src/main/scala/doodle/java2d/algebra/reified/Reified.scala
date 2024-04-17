@@ -71,6 +71,9 @@ sealed abstract class Reified extends Product with Serializable {
 
       case Text(tx, _, stroke, text, font, bounds) =>
         ctx.text(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
+
+      case ClipIt(tx, _, stroke, text, font, bounds) =>
+        ctx.clipit(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
     }
 }
 object Reified {
@@ -145,6 +148,15 @@ object Reified {
       bounds: Rectangle2D
   ) extends Reified
 
+  final case class ClipIt(
+      transform: Tx,
+      fill: Option[Fill],
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
+  ) extends Reified
+
   def fillRect(
       transform: Tx,
       fill: Fill,
@@ -211,4 +223,14 @@ object Reified {
       bounds: Rectangle2D
   ): Reified =
     Text(transform, fill, stroke, text, font, bounds)
+
+  def clipit(
+      transform: Tx,
+      fill: Option[Fill],
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
+  ): Reified =
+    ClipIt(transform, fill, stroke, text, font, bounds)
 }

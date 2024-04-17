@@ -179,4 +179,28 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
         gc.drawString(text, x.toFloat, y.toFloat)
       }
     }
+  
+  def clipit(
+      gc: Graphics2D
+  )(
+      transform: Tx,
+      stroke: Option[Stroke],
+      text: String,
+      font: Font,
+      bounds: Rectangle2D
+  ): Unit =
+    stroke.foreach { s =>
+      Java2D.setStroke(gc, s)
+      // Our default transform adds reflection around the y-axis (to make positive
+      // y moving up). This has the effect of causing our text to be drawn upside
+      // down. Hence we add a transformation to undo this.
+      Java2D.withTransform(gc, Tx.verticalReflection.andThen(transform)) {
+        // Our origin is centered in the bounds. Work out the x and y coordinates
+        // of the reference point of the text relative to the origin.
+        val x = -bounds.getCenterX()
+        val y = -bounds.getCenterY()
+        gc.setFont(Java2D.toAwtFont(font))
+        gc.drawString(text, x.toFloat, y.toFloat)
+      }
+    }
 }
