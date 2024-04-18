@@ -17,31 +17,19 @@
 package doodle
 package algebra
 
-import doodle.core.font.Font
+import doodle.core.ClosedPath
 
-/** Algebra for creating and styling text.
-  */
 trait ClipIt extends Algebra {
 
-  /** Specifies the font to use when rendering text
-    */
-  def cfont[A](image: Drawing[A], font: Font): Drawing[A]
-
-  /** Render the given String
-    */
-  def clipit(text: String): Drawing[Unit]
+  def clipit[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A]
 }
 
-/** Constructors for Text algebra
-  */
 trait ClipItConstructor {
   self: BaseConstructor { type Algebra <: ClipIt } =>
 
-  /** Render the given String
-    */
-  def clipit(text: String): Picture[Unit] =
+  def clipit(image: Picture[Unit], clipPath: ClosedPath): Picture[Unit] =
     new Picture[Unit] {
       def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
-        algebra.clipit(text)
+        algebra.clipit(image(algebra), clipPath)
     }
 }

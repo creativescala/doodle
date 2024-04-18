@@ -20,22 +20,16 @@ package syntax
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.algebra.ClipIt
-import doodle.core.font.Font
+import doodle.core.ClosedPath
 
 trait ClipItSyntax {
-  implicit class ClipPictureOps[Alg <: Algebra, A](
+  implicit class ClipPictureOps[Alg <: ClipIt, A](
       picture: Picture[Alg, A]
   ) {
-    def cfont(font: Font): Picture[Alg with ClipIt, A] =
-      new Picture[Alg with ClipIt, A] {
-        def apply(implicit algebra: Alg with ClipIt): algebra.Drawing[A] =
-          algebra.cfont(picture(algebra), font)
+    def clipit(clipPath: ClosedPath): Picture[Alg, A] =
+      new Picture[Alg, A] {
+        def apply(implicit algebra: Alg): algebra.Drawing[A] =
+          algebra.clipit(picture(algebra), clipPath)
       }
   }
-
-  def clipit[Alg <: ClipIt](text: String): Picture[Alg, Unit] =
-    new Picture[Alg, Unit] {
-      def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
-        algebra.clipit(text)
-    }
 }

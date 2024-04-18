@@ -22,7 +22,7 @@ package reified
 import cats.data.WriterT
 import doodle.algebra.generic._
 import doodle.core.BoundingBox
-import doodle.core.font.Font
+import doodle.core.ClosedPath
 import doodle.core.{Transform => Tx}
 
 import java.awt.Graphics2D
@@ -37,31 +37,17 @@ trait ReifiedClip extends GenericClipIt[Reification] {
   val ClipApi = new ClipApi {
     type Bounds = Rectangle2D
 
-    def clipit(
+    def clipit[A](
         tx: Tx,
-        fill: Option[Fill],
-        stroke: Option[Stroke],
-        font: Font,
-        text: String,
-        bounds: Bounds
-    ): Reification[Unit] =
-      WriterT.tell(
-        List(
-          Reified.clipit(
-            tx,
-            fill,
-            stroke,
-            text,
-            font,
-            bounds
-          )
-        )
-      )
+        img: Drawing[A],
+        clipPath: ClosedPath
+    ): Reification[A] = ???
+      
 
-    def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
-      val bounds = Java2D.textBounds(gc, text, font)
+    // def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
+    //   val bounds = Java2D.textBounds(gc, text, font)
 
-      (BoundingBox.centered(bounds.getWidth(), bounds.getHeight()), bounds)
-    }
+    //   (BoundingBox.centered(bounds.getWidth(), bounds.getHeight()), bounds)
+    // }
   }
 }

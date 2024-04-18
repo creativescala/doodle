@@ -25,6 +25,7 @@ import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.font.Font
 import doodle.core.{Transform => Tx}
+import doodle.core.ClosedPath
 
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
@@ -72,8 +73,8 @@ sealed abstract class Reified extends Product with Serializable {
       case Text(tx, _, stroke, text, font, bounds) =>
         ctx.text(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
 
-      case ClipIt(tx, _, stroke, text, font, bounds) =>
-        ctx.clipit(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
+      case ClipIt(tx, img, clipPath) =>
+        ctx.clipit(gc)(tx.andThen(finalTransform), img, clipPath)
     }
 }
 object Reified {
@@ -150,11 +151,8 @@ object Reified {
 
   final case class ClipIt(
       transform: Tx,
-      fill: Option[Fill],
-      stroke: Option[Stroke],
-      text: String,
-      font: Font,
-      bounds: Rectangle2D
+      img: Drawing[Unit],
+      clipPath: ClosedPath
   ) extends Reified
 
   def fillRect(
@@ -226,11 +224,8 @@ object Reified {
 
   def clipit(
       transform: Tx,
-      fill: Option[Fill],
-      stroke: Option[Stroke],
-      text: String,
-      font: Font,
-      bounds: Rectangle2D
+      img: Drawing[Unit],
+      clipPath: ClosedPath
   ): Reified =
-    ClipIt(transform, fill, stroke, text, font, bounds)
+    ClipIt(transform, img, clipPath)
 }

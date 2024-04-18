@@ -20,7 +20,7 @@ package generic
 
 import cats.data.State
 import doodle.core.BoundingBox
-import doodle.core.font.Font
+import doodle.core.ClosedPath
 import doodle.core.{Transform => Tx}
 
 trait GenericClipIt[G[_]] extends ClipIt {
@@ -29,33 +29,25 @@ trait GenericClipIt[G[_]] extends ClipIt {
   trait ClipApi {
     type Bounds
 
-    def clipit(
+    def clipit[A](
         tx: Tx,
-        fill: Option[Fill],
-        stroke: Option[Stroke],
-        font: Font,
-        text: String,
-        bounds: Bounds
-    ): G[Unit]
-    def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds)
+        img: Drawing[A],
+        clipPath: ClosedPath
+    ): G[A]
   }
 
   def ClipApi: ClipApi
 
-  def cfont[A](image: Finalized[G, A], font: Font): Finalized[G, A] =
-    Finalized.contextTransform(_.font(font))(image)
-
-  def clipit(text: String): Finalized[G, Unit] = {
-    val api = ClipApi
-
-    Finalized.leaf { dc =>
-      val (bb, bounds) = api.textBoundingBox(text, dc.font)
+  def clipit[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A] =
+    Finalized.leaf {dc =>
+      val strokeWidth = dc.strokeWidth.getOrElse(0.0)
+      val bb = BoundingBox.centered(strokeWidth + 100, strokeWidth + 100)
       (
         bb,
         State.inspect(tx =>
-          api.clipit(tx, dc.fill, dc.stroke, dc.font, text, bounds)
+          ClipApi.clipit(tx, img, clipPath)
         )
       )
+
     }
-  }
 }

@@ -25,6 +25,7 @@ import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.Transform
 import doodle.core.font.Font
+import doodle.core.ClosedPath
 
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
@@ -82,9 +83,7 @@ trait GraphicsContext[A] {
       gc: A
   )(
       transform: Transform,
-      stroke: Option[Stroke],
-      text: String,
-      font: Font,
-      bounds: Rectangle2D
+      img: Drawing[Unit],
+      clipPath: ClosedPath
   ): Unit
 }
