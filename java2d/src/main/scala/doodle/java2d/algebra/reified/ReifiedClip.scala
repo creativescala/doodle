@@ -37,17 +37,14 @@ trait ReifiedClip extends GenericClipIt[Reification] {
   val ClipApi = new ClipApi {
     type Bounds = Rectangle2D
 
-    def clipit[A](
+    def clipit[Unit](
         tx: Tx,
-        img: Drawing[A],
+        img: Drawing[Unit],
         clipPath: ClosedPath
-    ): Reification[A] = ???
+    ): Reification[Unit] = ???
       
-
-    // def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
-    //   val bounds = Java2D.textBounds(gc, text, font)
-
-    //   (BoundingBox.centered(bounds.getWidth(), bounds.getHeight()), bounds)
+    // {
+    //   WriterT.tell(List(Reified.clipit(tx, img, clipPath)))
     // }
   }
 }

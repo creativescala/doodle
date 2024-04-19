@@ -23,6 +23,7 @@ package object syntax {
       with BitmapSyntax
       with BlendSyntax
       with BufferedImageWriterSyntax
+      with ClipItSyntax
       with DebugSyntax
       with LayoutSyntax
       with NormalizedSyntax
@@ -32,7 +33,6 @@ package object syntax {
       with SizeSyntax
       with StyleSyntax
       with TextSyntax
-      with ClipItSyntax
       with ToPictureSyntax
       with TransformSyntax
       with TraverseSyntax
@@ -43,6 +43,7 @@ package object syntax {
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
   object bufferedImageWriter extends BufferedImageWriterSyntax
+  object clipit extends ClipItSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
@@ -52,7 +53,6 @@ package object syntax {
   object size extends SizeSyntax
   object style extends StyleSyntax
   object text extends TextSyntax
-  object clipit extends ClipItSyntax
   object toPicture extends ToPictureSyntax
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax

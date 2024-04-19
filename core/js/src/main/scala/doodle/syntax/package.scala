@@ -21,6 +21,7 @@ package object syntax {
       extends AngleSyntax
       with BitmapSyntax
       with BlendSyntax
+      with ClipItSyntax
       with DebugSyntax
       with LayoutSyntax
       with NormalizedSyntax
@@ -30,7 +31,6 @@ package object syntax {
       with SizeSyntax
       with StyleSyntax
       with TextSyntax
-      with ClipItSyntax
       with ToPictureSyntax
       with TransformSyntax
       with TraverseSyntax
@@ -38,6 +38,7 @@ package object syntax {
   object angle extends AngleSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
+  object clipit extends ClipItSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
@@ -47,7 +48,6 @@ package object syntax {
   object size extends SizeSyntax
   object style extends StyleSyntax
   object text extends TextSyntax
-  object clipit extends ClipItSyntax
   object toPicture extends ToPictureSyntax
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax
