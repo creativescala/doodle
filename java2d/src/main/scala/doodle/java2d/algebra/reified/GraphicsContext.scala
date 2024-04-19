@@ -79,7 +79,7 @@ trait GraphicsContext[A] {
       bounds: Rectangle2D
   ): Unit
 
-  def clipit(
+  def clip(
       gc: A
   )(
       transform: Transform,

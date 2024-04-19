@@ -19,17 +19,17 @@ package syntax
 
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import doodle.algebra.ClipIt
+import doodle.algebra.Clip
 import doodle.core.ClosedPath
 
-trait ClipItSyntax {
-  implicit class ClipPictureOps[Alg <: ClipIt, A](
+trait ClipSyntax {
+  implicit class ClipPictureOps[Alg <: Clip, A](
       picture: Picture[Alg, A]
   ) {
-    def clipit(clipPath: ClosedPath): Picture[Alg, A] =
+    def clip(clipPath: ClosedPath): Picture[Alg, A] =
       new Picture[Alg, A] {
         def apply(implicit algebra: Alg): algebra.Drawing[A] =
-          algebra.clipit(picture(algebra), clipPath)
+          algebra.clip(picture(algebra), clipPath)
       }
   }
 }

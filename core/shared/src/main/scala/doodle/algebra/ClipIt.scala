@@ -19,17 +19,17 @@ package algebra
 
 import doodle.core.ClosedPath
 
-trait ClipIt extends Algebra {
+trait Clip extends Algebra {
 
-  def clipit[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A]
+  def clip[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A]
 }
 
-trait ClipItConstructor {
-  self: BaseConstructor { type Algebra <: ClipIt } =>
+trait ClipConstructor {
+  self: BaseConstructor { type Algebra <: Clip } =>
 
-  def clipit(image: Picture[Unit], clipPath: ClosedPath): Picture[Unit] =
+  def clip(image: Picture[Unit], clipPath: ClosedPath): Picture[Unit] =
     new Picture[Unit] {
       def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
-        algebra.clipit(image(algebra), clipPath)
+        algebra.clip(image(algebra), clipPath)
     }
 }

@@ -23,13 +23,13 @@ import doodle.core.BoundingBox
 import doodle.core.ClosedPath
 import doodle.core.{Transform => Tx}
 
-trait GenericClipIt[G[_]] extends ClipIt {
+trait GenericClip[G[_]] extends Clip {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait ClipApi {
     type Bounds
 
-    def clipit[A](
+    def clip[A](
         tx: Tx,
         img: Drawing[A],
         clipPath: ClosedPath
@@ -38,16 +38,15 @@ trait GenericClipIt[G[_]] extends ClipIt {
 
   def ClipApi: ClipApi
 
-  def clipit[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A] =
+  def clip[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A] =
     Finalized.leaf {dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + 100, strokeWidth + 100)
       (
         bb,
         State.inspect(tx =>
-          ClipApi.clipit(tx, img, clipPath)
+          ClipApi.clip(tx, img, clipPath)
         )
       )
-
     }
 }

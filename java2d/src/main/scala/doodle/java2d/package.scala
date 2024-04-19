@@ -34,7 +34,7 @@ package object java2d extends Java2dToPicture {
     doodle.algebra.Algebra
       with Basic
       with Bitmap
-      with ClipIt
+      with Clip
       with FromBufferedImage
       with FromPngBase64
       with FromGifBase64
@@ -80,7 +80,7 @@ package object java2d extends Java2dToPicture {
   object Picture
       extends BaseConstructor
       with BitmapConstructor
-      with ClipItConstructor
+      with ClipConstructor
       with FromGifBase64Constructor
       with FromPngBase64Constructor
       with FromJpgBase64Constructor

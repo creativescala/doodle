@@ -28,7 +28,7 @@ import doodle.core.{Transform => Tx}
 import java.awt.Graphics2D
 import java.awt.geom.Rectangle2D
 
-trait ReifiedClip extends GenericClipIt[Reification] {
+trait ReifiedClip extends GenericClip[Reification] {
   self: Algebra {
     type Drawing[A] <: doodle.java2d.Drawing[A]
     def gc: Graphics2D
@@ -37,14 +37,11 @@ trait ReifiedClip extends GenericClipIt[Reification] {
   val ClipApi = new ClipApi {
     type Bounds = Rectangle2D
 
-    def clipit[Unit](
+    def clip[Unit](
         tx: Tx,
         img: Drawing[Unit],
         clipPath: ClosedPath
     ): Reification[Unit] = ???
-      
-    // {
-    //   WriterT.tell(List(Reified.clipit(tx, img, clipPath)))
-    // }
+      // WriterT.tell(List(Reified.clip(tx,img, clipPath)))
   }
 }

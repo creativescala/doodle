@@ -181,7 +181,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       }
     }
   
-  def clipit(
+  def clip(
       gc: Graphics2D
   )(
       transform: Tx,
