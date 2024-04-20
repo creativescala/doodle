@@ -39,9 +39,9 @@ trait GenericClip[G[_]] extends Clip {
   def ClipApi: ClipApi
 
   def clip[A](img: Drawing[A], clipPath: ClosedPath): Drawing[A] =
-    Finalized.leaf {dc =>
+    Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
-      val bb = BoundingBox.centered(strokeWidth + 100, strokeWidth + 100)
+      val bb = BoundingBox.centered(strokeWidth, strokeWidth)
       (
         bb,
         State.inspect(tx =>

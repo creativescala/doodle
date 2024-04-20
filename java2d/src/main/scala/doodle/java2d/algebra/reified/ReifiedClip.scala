@@ -37,11 +37,14 @@ trait ReifiedClip extends GenericClip[Reification] {
   val ClipApi = new ClipApi {
     type Bounds = Rectangle2D
 
-    def clip[Unit](
+    def clip[A](
         tx: Tx,
-        img: Drawing[Unit],
+        img: Drawing[A],
         clipPath: ClosedPath
-    ): Reification[Unit] = ???
+    ): Reification[A] = {
+      //???
+      WriterT.tell(List(Reified.clip(tx,img, clipPath)))
+    }
       // WriterT.tell(List(Reified.clip(tx,img, clipPath)))
   }
 }

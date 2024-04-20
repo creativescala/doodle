@@ -29,7 +29,7 @@ trait ClipConstructor {
 
   def clip(image: Picture[Unit], clipPath: ClosedPath): Picture[Unit] =
     new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
+      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] = 
         algebra.clip(image(algebra), clipPath)
     }
 }
