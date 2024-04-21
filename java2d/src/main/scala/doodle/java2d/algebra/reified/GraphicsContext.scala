@@ -79,11 +79,11 @@ trait GraphicsContext[A] {
       bounds: Rectangle2D
   ): Unit
 
-  def clip(
+  def clip[C](
       gc: A
   )(
       transform: Transform,
-      img: Drawing[Unit],
+      img: Drawing[C],
       clipPath: ClosedPath
   ): Unit
 }

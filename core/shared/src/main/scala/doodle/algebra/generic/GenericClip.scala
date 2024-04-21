@@ -27,8 +27,7 @@ trait GenericClip[G[_]] extends Clip {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait ClipApi {
-    type Bounds
-
+    
     def clip[A](
         tx: Tx,
         img: Drawing[A],

@@ -181,11 +181,11 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       }
     }
   
-  def clip(
+  def clip[C](
       gc: Graphics2D
   )(
       transform: Tx,
-      img: Drawing[Unit],
+      img: Drawing[C],
       clipPath: ClosedPath
   ): Unit = {
     val clip_area = Java2D.toPath2D(clipPath.elements)

@@ -38,7 +38,7 @@ sealed abstract class Reified extends Product with Serializable {
   /** finalTransform gives an transform applied after any other reified
     * transform. Usually this is a transform from logical to screen coordinates.
     */
-  def render[A](gc: A, finalTransform: Tx)(implicit
+  def render[A,C](gc: A, finalTransform: Tx)(implicit
       ctx: GraphicsContext[A]
   ): Unit =
     this match {
@@ -151,9 +151,9 @@ object Reified {
       bounds: Rectangle2D
   ) extends Reified
 
-  final case class Clip(
+  final case class Clip[C](
       transform: Tx,
-      img: Drawing[Unit],
+      img: Drawing[C],
       clipPath: ClosedPath
   ) extends Reified
 
@@ -224,9 +224,9 @@ object Reified {
   ): Reified = 
     Text(transform, fill, stroke, text, font, bounds)
 
-  def clip(
+  def clip[C](
       transform: Tx,
-      img: Drawing[Unit],
+      img: Drawing[C],
       clipPath: ClosedPath
   ): Reified = {
     Clip(transform, img, clipPath)
