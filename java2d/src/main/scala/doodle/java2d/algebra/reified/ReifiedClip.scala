@@ -41,7 +41,7 @@ trait ReifiedClip extends GenericClip[Reification] {
         clipPath: ClosedPath
     ): Reification[A] = {
       //???
-      WriterT.tell(List(Reified.clip(tx,img, clipPath)))
+      WriterT.tell(List(Reified.clip(tx, img, clipPath)))
     }
   }
 }

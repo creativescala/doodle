@@ -27,7 +27,7 @@ trait GenericClip[G[_]] extends Clip {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait ClipApi {
-    
+
     def clip[A](
         tx: Tx,
         img: Drawing[A],
@@ -43,9 +43,7 @@ trait GenericClip[G[_]] extends Clip {
       val bb = BoundingBox.centered(strokeWidth, strokeWidth)
       (
         bb,
-        State.inspect(tx =>
-          ClipApi.clip(tx, img, clipPath)
-        )
+        State.inspect(tx => ClipApi.clip(tx, img, clipPath))
       )
     }
 }

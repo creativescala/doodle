@@ -44,7 +44,7 @@ trait ReifiedBitmap extends doodle.algebra.Bitmap {
           WriterT.tell[Eval, List[Reified]](List(Reified.bitmap(tx, bi)))
         }
       )
-      
+
     }
   }
 }

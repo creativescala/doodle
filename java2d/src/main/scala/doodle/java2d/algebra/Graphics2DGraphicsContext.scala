@@ -165,7 +165,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
       text: String,
       font: Font,
       bounds: Rectangle2D
-  ): Unit = 
+  ): Unit =
     stroke.foreach { s =>
       Java2D.setStroke(gc, s)
       // Our default transform adds reflection around the y-axis (to make positive
@@ -180,7 +180,7 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
         gc.drawString(text, x.toFloat, y.toFloat)
       }
     }
-  
+
   def clip[C](
       gc: Graphics2D
   )(

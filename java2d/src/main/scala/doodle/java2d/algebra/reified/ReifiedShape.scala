@@ -63,7 +63,7 @@ trait ReifiedShape extends GenericShape[Reification] {
         fill: Option[Fill],
         stroke: Option[Stroke],
         diameter: Double
-    ): Reification[Unit] = 
+    ): Reification[Unit] =
       append(
         fill.map(f => Reified.fillCircle(tx, f, diameter)),
         stroke.map(s => Reified.strokeCircle(tx, s, diameter))
