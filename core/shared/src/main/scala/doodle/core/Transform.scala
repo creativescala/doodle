@@ -17,6 +17,8 @@
 package doodle
 package core
 
+import scala.annotation.tailrec
+
 /** Representation of an affine transformation as an augmented matrix. */
 final case class Transform(elements: Array[Double]) {
   def apply(point: Point): Point = {
@@ -70,17 +72,20 @@ final case class Transform(elements: Array[Double]) {
   }
 
   override def equals(that: Any): Boolean = {
+    @scala.annotation.tailrec
+    def checkEquality(
+        thisElements: Array[Double],
+        otherElements: Array[Double],
+        index: Int
+    ): Boolean = {
+      if (index >= thisElements.length) true
+      else if (thisElements(index) != otherElements(index)) false
+      else checkEquality(thisElements, otherElements, index + 1)
+    }
+
     that.isInstanceOf[Transform] && {
       val other = that.asInstanceOf[Transform]
-      var i = 0
-      var isEqual = true
-      while (i < elements.length) {
-        if (this.elements(i) != other.elements(i))
-          isEqual = false
-
-        i = i + 1
-      }
-      isEqual
+      checkEquality(this.elements, other.elements, 0)
     }
   }
 

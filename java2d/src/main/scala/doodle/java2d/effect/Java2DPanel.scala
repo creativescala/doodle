@@ -126,8 +126,7 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
         Java2d.render(gc, reified, tx)
 
         // Draw remaining images, redrawing *before* each image
-        var i = 0
-        while (i < pictures.size) {
+        pictures.foreach { case (bb, reified) =>
           frame.redraw match {
             case Redraw.ClearToBackground =>
               frame.background.foreach { c =>
@@ -140,7 +139,6 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
               gc.fillRect(0, 0, getWidth(), getHeight())
           }
 
-          val (bb, reified) = pictures(i)
           val tx = Java2d.transform(
             bb,
             getWidth.toDouble,
@@ -149,9 +147,8 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
           )
 
           Java2d.render(gc, reified, tx)
-
-          i = i + 1
         }
+
     }
   }
 
