@@ -150,9 +150,9 @@ lazy val docs =
         val dest1 = mdocOut.value
         val dest2 = (laikaSite / target).value
         val cmd1 =
-          s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
+          s"cmd /c npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
         val cmd2 =
-          s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
+          s"cmd /c npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
         cmd1 !
 
         cmd2 !
