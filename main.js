@@ -30818,6 +30818,18 @@ function $isArrayOf_Ldoodle_core_Point(obj, depth) {
 function $asArrayOf_Ldoodle_core_Point(obj, depth) {
   return (($isArrayOf_Ldoodle_core_Point(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldoodle.core.Point;", depth));
 }
+function $ps_Ldoodle_core_Transform__checkEquality$1__AD__AD__I__Z(thisElements, otherElements, index) {
+  var index$tailLocal1 = index;
+  while (true) {
+    if ((index$tailLocal1 >= $n(thisElements).u.length)) {
+      return true;
+    } else if (($n(thisElements).get(index$tailLocal1) !== $n(otherElements).get(index$tailLocal1))) {
+      return false;
+    } else {
+      index$tailLocal1 = ((1 + index$tailLocal1) | 0);
+    }
+  }
+}
 /** @constructor */
 function $c_Ldoodle_core_Transform(elements) {
   this.Ldoodle_core_Transform__f_elements = null;
@@ -30870,15 +30882,7 @@ $c_Ldoodle_core_Transform.prototype.toString__T = (function() {
 $c_Ldoodle_core_Transform.prototype.equals__O__Z = (function(that) {
   if ((that instanceof $c_Ldoodle_core_Transform)) {
     var other = $as_Ldoodle_core_Transform(that);
-    var i = 0;
-    var isEqual = true;
-    while ((i < $n(this.Ldoodle_core_Transform__f_elements).u.length)) {
-      if (($n(this.Ldoodle_core_Transform__f_elements).get(i) !== $n($n(other).Ldoodle_core_Transform__f_elements).get(i))) {
-        isEqual = false;
-      }
-      i = ((1 + i) | 0);
-    }
-    return isEqual;
+    return $ps_Ldoodle_core_Transform__checkEquality$1__AD__AD__I__Z(this.Ldoodle_core_Transform__f_elements, $n(other).Ldoodle_core_Transform__f_elements, 0);
   } else {
     return false;
   }
