@@ -29,6 +29,34 @@ import doodle.core.{Transform => Tx}
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
 
+/** Each element of `Reified` is an instruction to draw something on the screen
+  * or to otherwise alter the state the graphics context.
+  *
+  * Each instruction should be atomic: there should be *no* nesting of
+  * instructions inside instructions. In compiler terms, this is a "linear IR",
+  * not a "tree IR".
+  *
+  * When defining a `Picture`, there are many operations that apply to some
+  * group of elements. For example, rotating a `Picture` or setting a stroke
+  * color applies to all the elements within the `Picture` on which the method
+  * is called. This has a natural representation as a tree, but we need to use a
+  * different strategy to represent it as a linear list of instructions. There
+  * are two implementation approaches:
+  *
+  *   - Push all these operations into the atomic instructions. This is the
+  *     approach currently taken, with each element containing the transform,
+  *     and fill or stroke as appropriate. The advantage of this approach is
+  *     that each reified instruction is independent of any other. The
+  *     disadvantage is that this doesn't scale as the amount of context grows,
+  *     as each instruction needs to have additional fields added.
+  *
+  *   - Have stateful operations to add and remove some context. For example,
+  *     push and pop a transform or stroke color. This is the approach taken in
+  *     the `Graphics2D` Java API. For example, calling the `transform` method
+  *     on Graphics2D adds the transform to the already existing transforms.
+  *     (However, the API lacks methods to undo these operations, which makes it
+  *     a bit limited.)
+  */
 sealed abstract class Reified extends Product with Serializable {
   import Reified._
 
