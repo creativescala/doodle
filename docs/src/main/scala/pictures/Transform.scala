@@ -22,23 +22,22 @@ import doodle.core.*
 import doodle.java2d.*
 import doodle.syntax.all.*
 
-
 object Transform {
-    val hut = 
+  val hut =
     Picture
-        .triangle(50, 50)
-        .fillColor(Color.black)
-        .strokeColor(Color.red)
-        .above(Picture.rectangle(50, 50).fillColor(Color.blue))
+      .triangle(50, 50)
+      .fillColor(Color.black)
+      .strokeColor(Color.red)
+      .above(Picture.rectangle(50, 50).fillColor(Color.blue))
 
-    val rotatedHut = hut.rotate(45.degrees)
-    val scaledHut = hut.scale(1.5, 1.5)
-    val translatedHut = hut.translate(500, 50)
-    val verticallyReflectedHut = hut.verticalReflection
+  val rotatedHut = hut.rotate(45.degrees)
+  val scaledHut = hut.scale(1.5, 1.5)
+  val translatedHut = hut.translate(500, 50)
+  val verticallyReflectedHut = hut.verticalReflection
 
-    rotatedHut.save("pictures/rotated-hut.png")
-    scaledHut.save("pictures/scaled-hut.png")
-    translatedHut.save("pictures/translated-hut.png")
-    verticallyReflectedHut.save("pictures/vertically-reflected-hut.png")
+  rotatedHut.save("pictures/rotated-hut.png")
+  scaledHut.save("pictures/scaled-hut.png")
+  translatedHut.save("pictures/translated-hut.png")
+  verticallyReflectedHut.save("pictures/vertically-reflected-hut.png")
 
 }
