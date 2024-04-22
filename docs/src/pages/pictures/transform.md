@@ -17,8 +17,8 @@ val hut =
         .above(Picture.rectangle(50, 50).fillColor(Color.blue))
 
 val rotatedHut = hut.rotate(45.degrees)
-val scaledHut = hut.scale(3.0, 3.0)
-val translatedHut = hut.translate(500, 500)
+val scaledHut = hut.scale(1.5, 1.5)
+val translatedHut = hut.translate(500, 50)
 val verticallyReflectedHut = hut.verticalReflection
 ```
 
@@ -26,7 +26,7 @@ In the following code, we create a hut (a triangle on top of a rectangle) and ap
 
 ### Rotation
 
-@:image(rotation.png) {
+@:image(rotated-hut.png) {
     alt = A hut rotated 45 degrees
     title = A hut rotated 45 degrees
 }
@@ -35,31 +35,30 @@ The `rotate` method rotates a picture by a given angle. The angle is specified i
 
 ### Scaling
 
-@:image(scaling.png) {
-    alt = A hut scaled by 3
-    title = A hut scaled by 3
+@:image(scaled-hut.png) {
+    alt = A hut scaled by 1.5
+    title = A hut scaled by 1.5
 }
 
 The `scale` method scales a picture by a given factor in the x and y directions.
 
 ### Translation
 
-@:image(translation.png) {
-    alt = A hut translated to (500, 500)
-    title = A hut translated to (500, 500)
+@:image(translated-hut.png) {
+    alt = A hut translated to 500 x 50
+    title = A hut translated to 500 x 50
 }
 
 The `translate` method moves a picture by a given amount in the x and y directions.
 
 ### Reflection
 
-@:image(reflection.png) {
+@:image(vertically-reflected-hut.png) {
     alt = A hut vertically reflected
     title = A hut vertically reflected
 }
 
-The `verticalReflection` method reflects a picture vertically. 
-[]: # The `horizontalReflection` method reflects a picture horizontally. 
+The `verticalReflection` method reflects a picture vertically. Similarly, the `horizontalReflection` method reflects a picture horizontally. 
 
 ## Implementation
 
