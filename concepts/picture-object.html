@@ -60,7 +60,7 @@
     <div id="content">
         <main class="content">
             <h1 id="picture-object" class="title">Picture Object</h1>
-            <p>Each backend provides an object named <code>Picture</code> that provides easy access to constructors. Constructors are algebra methods that produce a <code>Picture</code> but don&#39;t have any <code>Drawing[A]</code> parameter. For example, all the methods on the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> algebra are constructors. </p>
+            <p>Each backend provides an object named <code>Picture</code> that provides easy access to constructors. A constructor is any method on an algebra methods that produces a <code>Drawing[A]</code> but doesn&#39;t have any <code>Drawing[A]</code> input parameters. For example, all the methods on the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> algebra are constructors because they produce a <code>Drawing[Unit]</code> but none of them take a <code>Drawing</code> as an input.</p>
             <p>The <code>Picture</code> object allows us to write</p>
             <pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)</span></code></pre>
             <p>to call the <code>circle</code> method on <code>Shape</code>.</p>
