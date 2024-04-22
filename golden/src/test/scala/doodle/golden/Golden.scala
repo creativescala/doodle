@@ -79,19 +79,21 @@ trait Golden { self: FunSuite =>
   }
 
   def pixelAbsoluteError(a: Int, b: Int): Int = {
-    var error = 0
-    var i = 0
-    while (i < 4) {
-      val shift = i * 8
-      val mask = 0x000000ff << shift
-      val aValue = (a & mask) >> shift
-      val bValue = (b & mask) >> shift
+    @scala.annotation.tailrec
+    def calculateError(i: Int, acc: Int): Int = {
+      if (i >= 4) acc
+      else {
+        val shift = i * 8
+        val mask = 0x000000ff << shift
+        val aValue = (a & mask) >> shift
+        val bValue = (b & mask) >> shift
 
-      error = error + Math.abs(aValue - bValue)
-
-      i = i + 1
+        val newError = acc + Math.abs(aValue - bValue)
+        calculateError(i + 1, newError)
+      }
     }
-    error
+
+    calculateError(0, 0)
   }
 
   def absoluteError(
