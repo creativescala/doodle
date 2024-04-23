@@ -60,7 +60,52 @@
     <div id="content">
         <main class="content">
             <h1 id="transforms" class="title">Transforms</h1>
-            <p>Rotating, scaling, and sheering pictures can all be performed with the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Transform.html">Transform</a> algebra.</p>
+            
+            <h2 id="overview" class="section">Overview</h2>
+            <p>Doodle supports rotating, scaling, translation, and reflections with the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Transform.html">Transform</a> algebra. In theory, you can apply any transform to any picture. In practice, some transforms are more useful with some pictures than others. For example, a circle will look the same no matter how much you rotate it, but a square will look different.</p>
+            <p>In the following code, we create a hut (a triangle on top of a rectangle) and apply rotation, scaling, translation and vertical reflection to it. </p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">hut</span><span> = 
+    </span><span class="type-name">Picture</span><span>
+        .</span><span class="identifier">triangle</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>)
+        .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+        .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+        .</span><span class="identifier">above</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>))
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">rotatedHut</span><span> = </span><span class="identifier">hut</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">scaledHut</span><span> = </span><span class="identifier">hut</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">1.5</span><span>, </span><span class="number-literal">1.5</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">translatedHut</span><span> = </span><span class="identifier">hut</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">500</span><span>, </span><span class="number-literal">50</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">verticallyReflectedHut</span><span> = </span><span class="identifier">hut</span><span>.</span><span class="identifier">verticalReflection</span></code></pre>
+            
+            <h3 id="rotation" class="section">Rotation</h3>
+            <p>The <code>rotate</code> method rotates a picture by a given angle. The angle is specified in radians, but you can use the <code>degrees</code> method to convert degrees to radians. Here we rotate the hut by 45 degrees.</p>
+            <div class="default-image-block">
+              <img src="rotated-hut.png" alt="A hut rotated 45 degrees" title="A hut rotated 45 degrees">
+            </div>
+            
+            <h3 id="scaling" class="section">Scaling</h3>
+            <p>The <code>scale</code> method scales a picture by a given factor in the x and y directions. Here we scale the hut by 1.5 in both directions.</p>
+            <div class="default-image-block">
+              <img src="scaled-hut.png" alt="A hut scaled by 1.5" title="A hut scaled by 1.5">
+            </div>
+            
+            <h3 id="translation" class="section">Translation</h3>
+            <p>The <code>translate</code> method moves a picture by a given amount in the x and y directions. Here we move the hut to the point (500, 50).</p>
+            <div class="default-image-block">
+              <img src="translated-hut.png" alt="A hut translated to 500 x 50" title="A hut translated to 500 x 50">
+            </div>
+            
+            <h3 id="reflection" class="section">Reflection</h3>
+            <p>The <code>verticalReflection</code> method reflects a picture vertically. Similarly, the <code>horizontalReflection</code> method reflects a picture horizontally. </p>
+            <div class="default-image-block">
+              <img src="vertically-reflected-hut.png" alt="A hut vertically reflected" title="A hut vertically reflected">
+            </div>
+            
+            <h2 id="implementation" class="section">Implementation</h2>
+            <p>These methods are available on <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Transform.html">Transform</a> algebra. Rotation and scaling are available on <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/image/Image.html">Image</a> as well.</p>
             <p class="nextPage"><a href="size.html">Size→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
