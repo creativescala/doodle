@@ -2,7 +2,7 @@
 
 ## Overview
 
-Doodle supports rotating, scaling, translation and reflections with the @:api(doodle.algebra.Transform) algebra. In theory, you can apply any transform to any picture. In practice, some transforms are more useful with some pictures than others. For example, rotating a circle will look the same no matter how many times you rotate it, but rotating a square will look different.
+Doodle supports rotating, scaling, translation, and reflections with the @:api(doodle.algebra.Transform) algebra. In theory, you can apply any transform to any picture. In practice, some transforms are more useful with some pictures than others. For example, a circle will look the same no matter how much you rotate it, but a square will look different.
 
 ```scala mdoc:silent
 import doodle.core.*
