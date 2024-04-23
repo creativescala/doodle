@@ -63,7 +63,7 @@ The `verticalReflection` method reflects a picture vertically. Similarly, the `h
 
 ## Implementation
 
-These methods are available on @:api(doodle.algebra.Transform) algebra. Rotation and scaling are available on @:api(doodle.image.Image) algebra aswell.
+These methods are available on @:api(doodle.algebra.Transform) algebra. Rotation and scaling are available on @:api(doodle.image.Image) as well.
 
 
 
