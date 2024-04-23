@@ -36,6 +36,7 @@ final case class Algebra(
     with Java2dFromBufferedImage
     with Java2dFromBase64
     with ReifiedBitmap
+    with ReifiedClip
     with ReifiedPath
     with ReifiedShape
     with ReifiedText

@@ -23,6 +23,7 @@ package object syntax {
       with BitmapSyntax
       with BlendSyntax
       with BufferedImageWriterSyntax
+      with ClipSyntax
       with DebugSyntax
       with LayoutSyntax
       with NormalizedSyntax
@@ -42,6 +43,7 @@ package object syntax {
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
   object bufferedImageWriter extends BufferedImageWriterSyntax
+  object clip extends ClipSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax

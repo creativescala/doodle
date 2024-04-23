@@ -79,7 +79,7 @@ trait GenericShape[G[_]] extends Shape {
       )
     }
 
-  def circle(diameter: Double): Finalized[G, Unit] =
+  def circle(diameter: Double): Finalized[G, Unit] = {
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb =
@@ -89,6 +89,7 @@ trait GenericShape[G[_]] extends Shape {
         State.inspect(tx => ShapeApi.circle(tx, dc.fill, dc.stroke, diameter))
       )
     }
+  }
 
   def empty: Finalized[G, Unit] =
     Finalized.leaf { _ =>

@@ -24,6 +24,7 @@ import doodle.core.Point
 import doodle.core.font.Font
 import doodle.core.{Transform => Tx}
 import doodle.java2d.algebra.reified.GraphicsContext
+import doodle.core.ClosedPath
 
 import java.awt.Graphics2D
 import java.awt.geom.Rectangle2D
@@ -179,4 +180,16 @@ object Graphics2DGraphicsContext extends GraphicsContext[Graphics2D] {
         gc.drawString(text, x.toFloat, y.toFloat)
       }
     }
+
+  def clip[C](
+      gc: Graphics2D
+  )(
+      transform: Tx,
+      img: Drawing[C],
+      clipPath: ClosedPath
+  ): Unit = {
+    val clip_area = Java2D.toPath2D(clipPath.elements)
+    gc.setClip(clip_area)
+    //gc.clip(img)
+  }
 }

@@ -21,6 +21,7 @@ package object syntax {
       extends AngleSyntax
       with BitmapSyntax
       with BlendSyntax
+      with ClipSyntax
       with DebugSyntax
       with LayoutSyntax
       with NormalizedSyntax
@@ -37,6 +38,7 @@ package object syntax {
   object angle extends AngleSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
+  object clip extends ClipSyntax
   object debug extends DebugSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax

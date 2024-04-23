@@ -25,6 +25,7 @@ import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.font.Font
 import doodle.core.{Transform => Tx}
+import doodle.core.ClosedPath
 
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
@@ -65,7 +66,7 @@ sealed abstract class Reified extends Product with Serializable {
   /** finalTransform gives an transform applied after any other reified
     * transform. Usually this is a transform from logical to screen coordinates.
     */
-  def render[A](gc: A, finalTransform: Tx)(implicit
+  def render[A, C](gc: A, finalTransform: Tx)(implicit
       ctx: GraphicsContext[A]
   ): Unit =
     this match {
@@ -81,6 +82,7 @@ sealed abstract class Reified extends Product with Serializable {
 
       case FillCircle(tx, fill, diameter) =>
         ctx.fillCircle(gc)(tx.andThen(finalTransform), fill, diameter)
+
       case StrokeCircle(tx, stroke, diameter) =>
         ctx.strokeCircle(gc)(tx.andThen(finalTransform), stroke, diameter)
 
@@ -99,6 +101,10 @@ sealed abstract class Reified extends Product with Serializable {
 
       case Text(tx, _, stroke, text, font, bounds) =>
         ctx.text(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
+
+      case Clip(tx, img, clipPath) =>
+        ctx.clip(gc)(tx.andThen(finalTransform), img, clipPath)
+
     }
 }
 object Reified {
@@ -173,6 +179,12 @@ object Reified {
       bounds: Rectangle2D
   ) extends Reified
 
+  final case class Clip[C](
+      transform: Tx,
+      img: Drawing[C],
+      clipPath: ClosedPath
+  ) extends Reified
+
   def fillRect(
       transform: Tx,
       fill: Fill,
@@ -239,4 +251,12 @@ object Reified {
       bounds: Rectangle2D
   ): Reified =
     Text(transform, fill, stroke, text, font, bounds)
+
+  def clip[C](
+      transform: Tx,
+      img: Drawing[C],
+      clipPath: ClosedPath
+  ): Reified = {
+    Clip(transform, img, clipPath)
+  }
 }
