@@ -59,4 +59,4 @@ The `Size` algebra defines a few utilities derived from the `boundingBox` method
 
 ## Implementation
 
-The `Size` algebra supports all the features described above. `Image` does not currently support these operations.
+The @:api(doodle.algebra.Size) algebra supports all the features described above. @:api(doodle.image.Image) does not currently support these operations.

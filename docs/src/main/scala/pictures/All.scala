@@ -24,4 +24,5 @@ object All {
   Shape
   Size
   Style
+  Transform
 }

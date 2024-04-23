@@ -181,4 +181,4 @@ val rollingCirclesMargin =
 
 ## Implementation
 
-The `Layout` algebra supports all the features described above, as does `Image`.
+The @:api(doodle.algebra.Layout) algebra supports all the features described above, as does @:api(doodle.image.Image).
