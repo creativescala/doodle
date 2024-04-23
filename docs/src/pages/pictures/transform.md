@@ -62,7 +62,7 @@ The `verticalReflection` method reflects a picture vertically. Similarly, the `h
 
 ## Implementation
 
-These methods are available on `transform` algebra.
+These methods are available on @:api(doodle.algebra.Transform) algebra.
 
 
 

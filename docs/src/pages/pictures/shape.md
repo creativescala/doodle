@@ -36,4 +36,4 @@ Here is a short description of all the methods provided by `Shape`.
 
 ## Implementation
 
-These methods are available on both the `Shape` algebra and `Image`.
+These methods are available on both the @:api(doodle.algebra.Shape) algebra and @:api(doodle.image.Image).

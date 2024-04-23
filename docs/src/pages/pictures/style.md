@@ -111,4 +111,4 @@ val fillStyle =
 
 ## Implementation
 
-The @:api(doodle.algebra.Style) algebra supports all the features described above as does `Image`.
+The @:api(doodle.algebra.Style) algebra supports all the features described above as does @:api(doodle.image.Image).
