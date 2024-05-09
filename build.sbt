@@ -235,9 +235,8 @@ lazy val image = crossProject(JSPlatform, JVMPlatform)
 lazy val turtle = crossProject(JSPlatform, JVMPlatform)
   .in(file("turtle"))
   .settings(commonSettings, moduleName := "doodle-turtle")
-
-lazy val turtleJvm = turtle.jvm.dependsOn(core.jvm, image.jvm)
-lazy val turtleJs = turtle.js.dependsOn(core.js, image.js)
+  .jvmConfigure(_.dependsOn(core.jvm, image.jvm))
+  .jsConfigure(_.dependsOn(core.js, image.js))
 
 lazy val reactor = crossProject(JSPlatform, JVMPlatform)
   .in(file("reactor"))
