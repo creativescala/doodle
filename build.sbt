@@ -102,6 +102,7 @@ lazy val rootJs =
   root.js
     .settings(mimaPreviousArtifacts := Set.empty)
     .dependsOn(
+      canvas,
       core.js,
       image.js,
       interact.js,
@@ -110,6 +111,7 @@ lazy val rootJs =
       turtle.js
     )
     .aggregate(
+      canvas,
       core.js,
       image.js,
       interact.js,
@@ -259,6 +261,12 @@ lazy val svg = crossProject(JSPlatform, JVMPlatform)
   )
   .dependsOn(core, interact)
   .jvmConfigure(_.dependsOn(java2d))
+
+lazy val canvas = project
+  .in(file("canvas"))
+  .settings(commonSettings, moduleName := "doode-canvas")
+  .dependsOn(core.js)
+  .enablePlugins(ScalaJSPlugin)
 
 // Just for testing
 lazy val golden = project
