@@ -38,6 +38,8 @@ Scala 2.13 users should use version 0.19.0.
 
 Join the [Creative Scala Discord][discord].
 
+[discord]: https://discord.gg/rRhcFbJxVG
+
 
 ## Acknowledgements
 
