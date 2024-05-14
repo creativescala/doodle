@@ -18,12 +18,12 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.angle._
-import doodle.syntax.normalized._
+import doodle.core.*
+import doodle.syntax.angle.*
+import doodle.syntax.normalized.*
 
 object ChristmasTree {
-  import Color._
+  import Color.*
 
   val redBauble = Image.circle(7) strokeWidth 0 fillColor red
   val goldBauble = Image.circle(10) strokeWidth 0 fillColor gold

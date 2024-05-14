@@ -18,10 +18,10 @@ package doodle
 package turtle
 package examples
 
-import doodle.core._
-import doodle.syntax.all._
-import doodle.turtle.Instruction._
-import doodle.turtle._
+import doodle.core.*
+import doodle.syntax.all.*
+import doodle.turtle.Instruction.*
+import doodle.turtle.*
 
 object Geometry {
   val instructions =

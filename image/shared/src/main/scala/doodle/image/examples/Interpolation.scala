@@ -18,10 +18,10 @@ package doodle
 package image
 package examples
 
-import cats.instances.all._
-import doodle.core._
-import doodle.image.syntax.all._
-import doodle.syntax.all._
+import cats.instances.all.*
+import doodle.core.*
+import doodle.image.syntax.all.*
+import doodle.syntax.all.*
 
 object Interpolation {
   val pts =

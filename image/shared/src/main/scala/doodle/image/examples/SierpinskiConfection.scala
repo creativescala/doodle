@@ -18,9 +18,9 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.random._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.random.*
+import doodle.syntax.all.*
 
 object SierpinskiConfection {
   val reddish: Random[Color] = {
@@ -56,7 +56,7 @@ object SierpinskiConfection {
   }
 
   def sierpinski(n: Int, size: Double): Random[Image] = {
-    if (n == 1) {
+    if n == 1 then {
       shape(size)
     } else {
       val smaller = sierpinski(n - 1, size / 2)

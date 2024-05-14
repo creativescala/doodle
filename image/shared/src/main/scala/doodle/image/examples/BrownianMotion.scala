@@ -18,12 +18,12 @@ package doodle
 package image
 package examples
 
-import cats.instances.all._
-import cats.syntax.all._
-import doodle.core._
-import doodle.image.Image._
-import doodle.image.syntax.core._
-import doodle.random._
+import cats.instances.all.*
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.image.Image.*
+import doodle.image.syntax.core.*
+import doodle.random.*
 
 object BrownianMotion {
   def brownianMotion(start: Point, drift: Vec): Random[Point] =

@@ -20,6 +20,7 @@ See the ScalaDoc @:api(doodle.index) for API documentation.
 ## Community
 
 Join the [Creative Scala Discord][discord].
+
 [discord]: https://discord.gg/rRhcFbJxVG
 
 

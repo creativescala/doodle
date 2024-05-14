@@ -17,12 +17,12 @@
 package doodle
 package image
 
-import doodle.core._
-import doodle.core.font.{Font => CoreFont}
+import doodle.core.*
+import doodle.core.font.{Font as CoreFont}
 import doodle.language.Basic
 
 sealed abstract class Image extends Product with Serializable {
-  import Image.Elements._
+  import Image.Elements.*
 
   // Layout ----------------------------------------------------------
 
@@ -215,7 +215,7 @@ object Image {
 
     case object Empty extends Image
   }
-  import Elements._
+  import Elements.*
 
   // Smart constructors
 
@@ -293,8 +293,8 @@ object Image {
   def compile[Alg <: Basic](
       image: Image
   ): doodle.algebra.Picture[Alg, Unit] = {
-    import cats.instances.unit._
-    import Elements._
+    import cats.instances.unit.*
+    import Elements.*
 
     new doodle.algebra.Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.Drawing[Unit] =

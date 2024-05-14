@@ -18,13 +18,13 @@ package doodle
 package image
 package examples
 
-import cats.syntax.all._
-import doodle.core._
-import doodle.random._
-import doodle.syntax.all._
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.random.*
+import doodle.syntax.all.*
 
 object Windswept {
-  import PathElement._
+  import PathElement.*
 
   def randomColor(meanHue: Angle) =
     for {

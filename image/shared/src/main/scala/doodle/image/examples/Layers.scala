@@ -18,9 +18,9 @@ package doodle
 package image
 package examples
 
-import cats.implicits._
-import doodle.core._
-import doodle.random._
+import cats.implicits.*
+import doodle.core.*
+import doodle.random.*
 
 object Layers {
   val point =

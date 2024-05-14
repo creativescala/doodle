@@ -18,7 +18,7 @@ package doodle.java2d
 
 import doodle.algebra.ToPicture
 import doodle.core.Base64
-import doodle.core.format._
+import doodle.core.format.*
 
 import java.awt.image.BufferedImage
 

@@ -19,7 +19,7 @@ package core
 
 import doodle.core.Color.HSLA
 import doodle.core.Color.RGBA
-import doodle.syntax.all._
+import doodle.syntax.all.*
 import org.scalacheck.Gen
 
 trait Generators {

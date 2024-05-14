@@ -159,8 +159,8 @@ object PathElement {
       BezierCurveTo(origin + b, origin + c, origin + d)
     }
 
-    if (angle > Angle.one) circle(Point.zero, diameter)
-    else if (angle > Angle.threeQuarters) {
+    if angle > Angle.one then circle(Point.zero, diameter)
+    else if angle > Angle.threeQuarters then {
       List(
         moveTo(x + r, y),
         BezierCurveTo(
@@ -180,7 +180,7 @@ object PathElement {
         ),
         smallArc(Angle.threeQuarters, angle)
       )
-    } else if (angle > Angle.oneHalf) {
+    } else if angle > Angle.oneHalf then {
       List(
         moveTo(x + r, y),
         BezierCurveTo(
@@ -195,7 +195,7 @@ object PathElement {
         ),
         smallArc(Angle.oneHalf, angle)
       )
-    } else if (angle > Angle.oneQuarter) {
+    } else if angle > Angle.oneQuarter then {
       List(
         moveTo(x + r, y),
         BezierCurveTo(
@@ -205,7 +205,7 @@ object PathElement {
         ),
         smallArc(Angle.oneQuarter, angle)
       )
-    } else if (angle > Angle.zero)
+    } else if angle > Angle.zero then
       List(moveTo(x + r, y), smallArc(Angle.zero, angle))
     else List()
   }
@@ -236,10 +236,8 @@ object PathElement {
     val rotation = Angle.one / (points * 2.0)
     val path =
       (1 to (points * 2)).map { n =>
-        if (n % 2 == 0)
-          lineTo(outerRadius, rotation * n.toDouble)
-        else
-          lineTo(innerRadius, rotation * n.toDouble)
+        if n % 2 == 0 then lineTo(outerRadius, rotation * n.toDouble)
+        else lineTo(innerRadius, rotation * n.toDouble)
       }.toList
 
     (moveTo(outerRadius, Angle.zero) +: path)
@@ -297,10 +295,9 @@ object PathElement {
   ): List[PathElement] = {
     // Clamp radius to the smallest of width and height
     val cornerRadius =
-      if (radius > width / 2 || radius > height / 2)
+      if radius > width / 2 || radius > height / 2 then
         (width / 2) min (height / 2)
-      else
-        radius
+      else radius
 
     // Magic number for drawing circles with bezier curves
     // See http://spencermortensen.com/articles/bezier-circle/ for approximation

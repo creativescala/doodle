@@ -19,9 +19,9 @@ package image
 package examples
 
 // Example that demonstrates setting the background color
-import doodle.core._
+import doodle.core.*
 import doodle.java2d.effect.Frame
-import doodle.syntax.all._
+import doodle.syntax.all.*
 
 object Background {
   val frame = Frame.default.withSizedToPicture(20).withBackground(Color.black)

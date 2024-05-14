@@ -18,8 +18,8 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 // To use this example, open the SBT console and type:
 //
@@ -29,7 +29,7 @@ import doodle.syntax.all._
 object FunctionalGeometry {
 
   def grid(lines: List[((Int, Int), (Int, Int))]) = {
-    import PathElement._
+    import PathElement.*
     val paths = lines.map { case (((a, b), (c, d))) =>
       Image.path(
         OpenPath(

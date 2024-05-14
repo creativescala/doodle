@@ -18,9 +18,9 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.random._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.random.*
+import doodle.syntax.all.*
 
 object Smoke {
   val emitter =

@@ -18,23 +18,21 @@ package doodle
 package image
 package examples
 
-import cats.instances.list._
-import doodle.core._
-import doodle.image.syntax.all._
-import doodle.syntax.all._
+import cats.instances.list.*
+import doodle.core.*
+import doodle.image.syntax.all.*
+import doodle.syntax.all.*
 
 object Stars {
   def star(sides: Int, skip: Int, radius: Double) = {
-    import PathElement._
+    import PathElement.*
 
     val centerAngle = 360.degrees * skip.toDouble / sides.toDouble
 
     val elements = (0 to sides) map { index =>
       val pt = Point.polar(radius, centerAngle * index.toDouble)
-      if (index == 0)
-        moveTo(pt)
-      else
-        lineTo(pt)
+      if index == 0 then moveTo(pt)
+      else lineTo(pt)
     }
 
     Image

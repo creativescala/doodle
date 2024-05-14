@@ -21,7 +21,7 @@ package effect
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
 import doodle.algebra.generic.Finalized
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Normalized
 import doodle.core.Transform
@@ -160,16 +160,15 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
     val algebra = Algebra(gc)
 
     val rr = channel.poll(10L, TimeUnit.MILLISECONDS)
-    if (rr == null) ()
+    if rr == null then ()
     else {
       val result = rr.render(algebra).unsafeRunSync()
       val bb = result.boundingBox
       val picture = result.reified
       resize(result.width, result.height)
-      if (opaqueRedraw && pictures.size > 0)
+      if opaqueRedraw && pictures.size > 0 then
         pictures.update(0, (bb, picture))
-      else
-        pictures += ((bb, picture))
+      else pictures += ((bb, picture))
 
     }
 

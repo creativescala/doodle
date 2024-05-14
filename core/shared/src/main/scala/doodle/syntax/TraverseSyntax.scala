@@ -18,7 +18,7 @@ package doodle
 package syntax
 
 import cats.Traverse
-import cats.instances.unit._
+import cats.instances.unit.*
 import doodle.algebra.Algebra
 import doodle.algebra.Layout
 import doodle.algebra.Picture
@@ -28,7 +28,7 @@ trait TraverseSyntax {
   implicit class TraverseOps[T[_], Alg <: Algebra](
       val t: T[Picture[Alg, Unit]]
   ) {
-    import doodle.syntax.layout._
+    import doodle.syntax.layout.*
 
     private val empty: Picture[Alg with Layout with Shape, Unit] =
       new Picture[Alg with Layout with Shape, Unit] {

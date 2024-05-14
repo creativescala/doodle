@@ -18,15 +18,15 @@ package doodle
 package interact
 package animation
 
-import cats._
+import cats.*
 import cats.effect.unsafe.IORuntime
-import cats.implicits._
+import cats.implicits.*
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.Renderer
 import doodle.interact.algebra.Redraw
 import doodle.interact.effect.AnimationRenderer
-import doodle.interact.syntax.animationRenderer._
+import doodle.interact.syntax.animationRenderer.*
 import fs2.Pure
 import fs2.Stream
 
@@ -116,14 +116,14 @@ trait Transducer[Output] { self =>
       type State = Either[self.State, that.State]
 
       val initial: State =
-        if (self.stopped(self.initial)) that.initial.asRight
+        if self.stopped(self.initial) then that.initial.asRight
         else self.initial.asLeft
 
       def next(current: State): State =
         current match {
           case Left(a) =>
             val nextA = self.next(a)
-            if (self.stopped(nextA)) that.initial.asRight
+            if self.stopped(nextA) then that.initial.asRight
             else nextA.asLeft
           case Right(b) => that.next(b).asRight
         }
@@ -151,7 +151,7 @@ trait Transducer[Output] { self =>
     * transducer that is appended.
     */
   def andThen(f: Output => Transducer[Output]): Transducer[Output] = {
-    import Transducer._
+    import Transducer.*
 
     new Transducer[Output] {
       type State = (Boolean, Box[?, Output])
@@ -162,7 +162,7 @@ trait Transducer[Output] { self =>
         current match {
           case (first, box: Box[s, Output]) =>
             val nextS = box.next
-            if (first && box.transducer.stopped(nextS)) {
+            if first && box.transducer.stopped(nextS) then {
               val nextT = f(box.output)
               (false, Box[nextT.State, Output](nextT)(nextT.initial))
             } else {
@@ -204,9 +204,11 @@ trait Transducer[Output] { self =>
 
       val initial: State = (
         self.initial,
-        if (self.stopped(self.initial)) m.empty else self.output(self.initial),
+        if self.stopped(self.initial) then m.empty
+        else self.output(self.initial),
         that.initial,
-        if (that.stopped(that.initial)) m.empty else that.output(that.initial)
+        if that.stopped(that.initial) then m.empty
+        else that.output(that.initial)
       )
 
       def next(current: State): State = {
@@ -214,8 +216,8 @@ trait Transducer[Output] { self =>
         val nextA = self.next(a)
         val nextB = that.next(b)
 
-        val nextAO = if (self.stopped(nextA)) ao else self.output(nextA)
-        val nextBO = if (that.stopped(nextB)) bo else that.output(nextB)
+        val nextAO = if self.stopped(nextA) then ao else self.output(nextA)
+        val nextBO = if that.stopped(nextB) then bo else that.output(nextB)
 
         (nextA, nextAO, nextB, nextBO)
       }
@@ -276,8 +278,8 @@ trait Transducer[Output] { self =>
 
       def next(current: State): State = {
         val (a, b, flag) = current
-        if (flag) current
-        else if (self.stopped(a)) (a, b, true)
+        if flag then current
+        else if self.stopped(a) then (a, b, true)
         else (self.next(a), f(b, self.output(a)), false)
       }
 
@@ -294,7 +296,7 @@ trait Transducer[Output] { self =>
 
   def foldLeft[B](zero: B)(f: (B, Output) => B): B = {
     @tailrec def loop(b: B, state: State): B =
-      if (self.stopped(state)) b
+      if self.stopped(state) then b
       else loop(f(b, self.output(state)), self.next(state))
 
     loop(zero, this.initial)
@@ -302,7 +304,7 @@ trait Transducer[Output] { self =>
 
   def foldRight[B](zero: Eval[B])(f: (Output, Eval[B]) => Eval[B]): Eval[B] = {
     def loop(state: State): Eval[B] =
-      if (self.stopped(state)) zero
+      if self.stopped(state) then zero
       else f(self.output(state), loop(self.next(state)))
 
     loop(self.initial)
@@ -339,7 +341,7 @@ trait Transducer[Output] { self =>
 
       def next(current: State): State = {
         val next = self.next(current)
-        if (self.stopped(next)) self.initial
+        if self.stopped(next) then self.initial
         else next
       }
 
@@ -353,7 +355,7 @@ trait Transducer[Output] { self =>
     */
   def toStream: Stream[Pure, Output] =
     Stream.unfold(self.initial) { state =>
-      if (self.stopped(state)) None
+      if self.stopped(state) then None
       else Some((self.output(state), self.next(state)))
     }
 
@@ -437,7 +439,7 @@ object Transducer {
     * and then stops.
     */
   def fromList[A](elts: List[A]): Transducer[A] =
-    apply(elts: _*)
+    apply(elts*)
 
   /** Create a transducer that produces the given elements in-order and then
     * stops.
@@ -449,11 +451,11 @@ object Transducer {
       val initial: State = elts
 
       def next(current: State): State =
-        if (current.isEmpty) current
+        if current.isEmpty then current
         else current.tail
 
       def output(state: State): A =
-        if (state.isEmpty)
+        if state.isEmpty then
           throw new NoSuchElementException(
             "This transducer has no more output."
           )

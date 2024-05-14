@@ -17,7 +17,7 @@
 package doodle
 package algebra
 
-import cats._
+import cats.*
 
 /** Represents a picture, which is a function from a tagless final algebra to
   * some type F that represents drawing a picture with result A. Has a monad

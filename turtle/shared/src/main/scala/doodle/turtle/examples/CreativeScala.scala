@@ -18,14 +18,14 @@ package doodle
 package turtle
 package examples
 
-import doodle.core._
-import doodle.image._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.image.*
+import doodle.syntax.all.*
 
 object CreativeScala {
   object turtle {
-    import doodle.turtle._
-    import doodle.turtle.Instruction._
+    import doodle.turtle.*
+    import doodle.turtle.Instruction.*
 
     val instructions =
       List(
@@ -53,8 +53,8 @@ object CreativeScala {
   }
 
   object branching {
-    import doodle.turtle._
-    import doodle.turtle.Instruction._
+    import doodle.turtle.*
+    import doodle.turtle.Instruction.*
 
     val y = List(
       forward(100),

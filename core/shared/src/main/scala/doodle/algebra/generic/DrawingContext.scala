@@ -70,7 +70,7 @@ final case class DrawingContext(
     this.copy(strokeColor = color)
 
   def strokeWidth(width: Double): DrawingContext =
-    this.copy(strokeWidth = if (width <= 0) None else Some(width))
+    this.copy(strokeWidth = if width <= 0 then None else Some(width))
 
   def strokeCap(cap: Cap): DrawingContext =
     this.copy(strokeCap = cap)

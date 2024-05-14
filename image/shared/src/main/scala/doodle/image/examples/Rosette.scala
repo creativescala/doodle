@@ -18,10 +18,10 @@ package doodle
 package image
 package examples
 
-import cats.implicits._
-import doodle.core._
-import doodle.image.syntax.all._
-import doodle.syntax.all._
+import cats.implicits.*
+import doodle.core.*
+import doodle.image.syntax.all.*
+import doodle.syntax.all.*
 
 object Rosette {
   val pts = List(

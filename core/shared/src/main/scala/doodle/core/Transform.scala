@@ -78,8 +78,8 @@ final case class Transform(elements: Array[Double]) {
         otherElements: Array[Double],
         index: Int
     ): Boolean = {
-      if (index >= thisElements.length) true
-      else if (thisElements(index) != otherElements(index)) false
+      if index >= thisElements.length then true
+      else if thisElements(index) != otherElements(index) then false
       else checkEquality(thisElements, otherElements, index + 1)
     }
 

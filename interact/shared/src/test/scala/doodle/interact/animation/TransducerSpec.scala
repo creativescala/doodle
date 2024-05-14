@@ -18,10 +18,10 @@ package doodle
 package interact
 package animation
 
-import cats.implicits._
+import cats.implicits.*
 import munit.ScalaCheckSuite
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 class TransducerSpec extends ScalaCheckSuite {
   property("empty produces no output") {
@@ -36,13 +36,13 @@ class TransducerSpec extends ScalaCheckSuite {
 
   property("toList generates all elements from the transducer") {
     forAllNoShrink { (elts: List[Int]) =>
-      Transducer(elts: _*).toList ?= elts
+      Transducer(elts*).toList ?= elts
     }
   }
 
   property("product produces shortest pairs") {
     forAllNoShrink { (xs: List[Int], ys: List[Int]) =>
-      Transducer(xs: _*).product(Transducer(ys: _*)).toList ?= xs.zip(ys)
+      Transducer(xs*).product(Transducer(ys*)).toList ?= xs.zip(ys)
     }
   }
 
@@ -57,7 +57,7 @@ class TransducerSpec extends ScalaCheckSuite {
   property("and combines transducers in parallel") {
     forAllNoShrink { (xs: List[Int], ys: List[Int]) =>
       val (shortest, longest) =
-        if (xs.length < ys.length) (xs, ys) else (ys, xs)
+        if xs.length < ys.length then (xs, ys) else (ys, xs)
 
       val pad = List.fill(longest.length - shortest.length)(0)
       val a = Transducer.fromList(shortest ++ pad)
@@ -108,7 +108,7 @@ class TransducerSpec extends ScalaCheckSuite {
         var count = 0
         var data: List[Int] = Nil
         var state = t.initial
-        while (count < repeat * xs.length) {
+        while count < repeat * xs.length do {
           data = t.output(state) :: data
           state = t.next(state)
           count = count + 1

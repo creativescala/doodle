@@ -40,7 +40,7 @@ trait Easing extends Function1[Double, Double] {
     */
   def followedBy(that: Easing): Easing =
     Easing { t =>
-      if (t < 0.5) this(t * 2.0) / 2.0
+      if t < 0.5 then this(t * 2.0) / 2.0
       else (that((t - 0.5) * 2.0) / 2.0) + 0.5
     }
 
@@ -59,8 +59,8 @@ trait Easing extends Function1[Double, Double] {
     Stream
       .range(0L, steps.toLong)
       .map(step =>
-        if (step == 0) 0.0
-        else if (step == steps) 1.0
+        if step == 0 then 0.0
+        else if step == steps then 1.0
         else this(step.toDouble / steps.toDouble)
       )
 }

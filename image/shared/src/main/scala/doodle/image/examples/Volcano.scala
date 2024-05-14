@@ -18,11 +18,11 @@ package doodle
 package image
 package examples
 
-import cats.syntax.all._
-import doodle.core._
-import doodle.image._
-import doodle.random._
-import doodle.syntax.all._
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.image.*
+import doodle.random.*
+import doodle.syntax.all.*
 
 object Volcano {
   def rose(k: Int): Angle => Point =
@@ -84,10 +84,8 @@ object Volcano {
     (point: Angle => Random[Image]) =>
       {
         def iter(angle: Angle): Random[Image] = {
-          if (angle > Angle.one)
-            Random.always(Image.empty)
-          else
-            (point(angle), iter(angle + step)) mapN { _ on _ }
+          if angle > Angle.one then Random.always(Image.empty)
+          else (point(angle), iter(angle + step)) mapN { _ on _ }
         }
 
         iter(Angle.zero)

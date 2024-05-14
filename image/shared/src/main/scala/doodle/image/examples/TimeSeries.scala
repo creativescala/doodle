@@ -18,9 +18,9 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.image._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.image.*
+import doodle.syntax.all.*
 
 object TimeSeries {
   def ballOnStick(length: Int, ballColor: Color, stickColor: Color): Image = {

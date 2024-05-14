@@ -18,16 +18,16 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 object CreativeScala {
   // Images from Creative Scala
 
   object paths {
-    import doodle.core.Point._
-    import doodle.core.PathElement._
-    import doodle.core.Color._
+    import doodle.core.Point.*
+    import doodle.core.PathElement.*
+    import doodle.core.Color.*
 
     val triangle =
       OpenPath(
@@ -58,9 +58,9 @@ object CreativeScala {
   }
 
   object polygons {
-    import doodle.core.Point._
-    import doodle.core.PathElement._
-    import doodle.core.Color._
+    import doodle.core.Point.*
+    import doodle.core.PathElement.*
+    import doodle.core.Color.*
 
     val triangle =
       Image.path(
@@ -110,9 +110,9 @@ object CreativeScala {
   }
 
   object curvedPolygons {
-    import doodle.core.Point._
-    import doodle.core.PathElement._
-    import doodle.core.Color._
+    import doodle.core.Point.*
+    import doodle.core.PathElement.*
+    import doodle.core.Color.*
 
     def curve(radius: Int, start: Angle, increment: Angle): PathElement = {
       BezierCurveTo(
@@ -173,8 +173,8 @@ object CreativeScala {
   }
 
   object regularPolygons {
-    import Point._
-    import PathElement._
+    import Point.*
+    import PathElement.*
 
     def polygon(sides: Int, size: Int, initialRotation: Angle): Image = {
       def iter(n: Int, rotation: Angle): List[PathElement] =
@@ -226,8 +226,8 @@ object CreativeScala {
   }
 
   object stars {
-    import Point._
-    import PathElement._
+    import Point.*
+    import PathElement.*
 
     def star(sides: Int, skip: Int, radius: Double): Image = {
       val rotation = 360.degrees * skip.toDouble / sides.toDouble
@@ -278,7 +278,7 @@ object CreativeScala {
   }
 
   object randomConcentricCircles {
-    import doodle.random._
+    import doodle.random.*
 
     val randomAngle: Random[Angle] =
       Random.double.map(x => x.turns)
@@ -304,8 +304,8 @@ object CreativeScala {
   }
 
   object sequentialBoxes {
-    import doodle.random._
-    import cats.syntax.all._
+    import doodle.random.*
+    import cats.syntax.all.*
 
     val randomAngle: Random[Angle] =
       Random.double.map(x => x.turns)
@@ -461,8 +461,8 @@ object CreativeScala {
   }
 
   object scatterPlot {
-    import doodle.random._
-    import cats.syntax.all._
+    import doodle.random.*
+    import cats.syntax.all.*
 
     val normal = Random.normal(50, 15)
     val uniform = Random.natural(100).map(x => x.toDouble)
@@ -508,8 +508,8 @@ object CreativeScala {
   }
 
   object parametricNoise {
-    import doodle.random._
-    import cats.syntax.all._
+    import doodle.random.*
+    import cats.syntax.all.*
 
     def rose(k: Int): Angle => Point =
       (angle: Angle) => {

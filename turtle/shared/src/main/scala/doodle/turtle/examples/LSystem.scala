@@ -18,13 +18,13 @@ package doodle
 package turtle
 package examples
 
-import doodle.core._
+import doodle.core.*
 import doodle.image.Image
-import doodle.syntax.all._
-import doodle.turtle._
+import doodle.syntax.all.*
+import doodle.turtle.*
 
 object LSystem {
-  import Instruction._
+  import Instruction.*
 
   def iterate(
       steps: Int,
@@ -34,7 +34,7 @@ object LSystem {
     def rewrite(instructions: List[Instruction]): List[Instruction] =
       instructions.flatMap {
         case Branch(i) =>
-          List(branch(rewrite(i): _*))
+          List(branch(rewrite(i)*))
         case other =>
           rule(other)
       }

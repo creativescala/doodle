@@ -18,7 +18,7 @@ package doodle
 package image
 package examples
 
-import doodle.core._
+import doodle.core.*
 
 object OpenClosedPaths {
   val openCurve = OpenPath.empty.curveTo(

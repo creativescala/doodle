@@ -26,7 +26,7 @@ package core
   * right) edge of the bounding box.
   */
 sealed trait Coordinate {
-  import Coordinate._
+  import Coordinate.*
 
   def add(that: Coordinate): Coordinate =
     Add(this, that)
@@ -44,7 +44,7 @@ sealed trait Coordinate {
   def eval(negative: Double, positive: Double): Double =
     this match {
       case Percent(value) =>
-        if (value < 0) Math.abs(value) * negative
+        if value < 0 then Math.abs(value) * negative
         else value * positive
 
       case Point(value) => value

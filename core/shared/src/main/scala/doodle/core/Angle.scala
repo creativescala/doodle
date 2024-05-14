@@ -105,8 +105,6 @@ object Angle {
     Angle(t * TwoPi)
 
   def apply(radians: Double): Angle =
-    if (radians.isNaN)
-      new Angle(0.0)
-    else
-      new Angle(radians)
+    if radians.isNaN then new Angle(0.0)
+    else new Angle(radians)
 }

@@ -18,7 +18,7 @@ package doodle
 package interact
 package syntax
 
-import doodle.interact.animation._
+import doodle.interact.animation.*
 
 trait InterpolationSyntax {
   implicit class InterpolationBuilderOps[A](start: A) {

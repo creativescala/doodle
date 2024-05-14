@@ -18,8 +18,8 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 object SierpinskiRipple {
   def triangle(size: Double, color: Color): Image = {
@@ -27,7 +27,7 @@ object SierpinskiRipple {
   }
 
   def sierpinski(n: Int, size: Double, color: Color): Image = {
-    if (n == 1) {
+    if n == 1 then {
       triangle(size, color)
     } else {
       sierpinski(n - 1, size / 2, color.spin(-10.degrees))

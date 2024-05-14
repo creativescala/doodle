@@ -18,11 +18,11 @@ package doodle
 package interact
 package animation
 
-import cats.implicits._
-import doodle.interact.syntax.all._
+import cats.implicits.*
+import doodle.interact.syntax.all.*
 import munit.ScalaCheckSuite
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 class InterpolationSpec extends ScalaCheckSuite {
   property("upTo empty range produces no output") {
@@ -86,7 +86,7 @@ class InterpolationSpec extends ScalaCheckSuite {
       Gen.choose(0, 100) :| "Start",
       Gen.choose(0, 100) :| "Difference"
     ) { (start, difference) =>
-      if (difference == 0) {
+      if difference == 0 then {
         val t = start.toDouble.upTo(start.toDouble + difference).forSteps(1)
         assertEquals(t.toList, List.empty[Double])
       } else {

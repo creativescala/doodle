@@ -18,8 +18,8 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 object ColorPaletteAgain {
 
@@ -42,7 +42,7 @@ object ColorPaletteAgain {
 
   def complementCircles(n: Int, c: Color): Image = {
     val color = complement(c)
-    if (n == 1) {
+    if n == 1 then {
       singleCircle(n, color)
     } else {
       complementCircles(n - 1, color) on singleCircle(n, color)
@@ -51,7 +51,7 @@ object ColorPaletteAgain {
 
   def nearComplementCircles(n: Int, c: Color): Image = {
     val color = nearComplement(c)
-    if (n == 1) {
+    if n == 1 then {
       singleCircle(n, color)
     } else {
       nearComplementCircles(n - 1, color) on singleCircle(n, color)
@@ -60,7 +60,7 @@ object ColorPaletteAgain {
 
   def coloredCircles(n: Int, c: Color, palette: Color => Color): Image = {
     val color = palette(c)
-    if (n == 1) {
+    if n == 1 then {
       singleCircle(n, color)
     } else {
       coloredCircles(n - 1, color, palette) on singleCircle(n, color)
@@ -93,10 +93,8 @@ object ColorPaletteAgain {
     val r = m % a
 
     val result = a * (input % q) - r * (input / q)
-    if (result <= 0)
-      result + m
-    else
-      result
+    if result <= 0 then result + m
+    else result
   }
 
   def normalize(value: Int, max: Int): Normalized =

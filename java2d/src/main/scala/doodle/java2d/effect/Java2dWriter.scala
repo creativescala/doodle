@@ -23,17 +23,17 @@ import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor
 import de.erichseifert.vectorgraphics2d.util.PageSize
 import doodle.core.BoundingBox
-import doodle.core.format._
-import doodle.core.{Base64 => B64}
-import doodle.effect._
-import doodle.java2d.effect.{Java2d => Java2dEffect}
+import doodle.core.format.*
+import doodle.core.{Base64 as B64}
+import doodle.effect.*
+import doodle.java2d.effect.{Java2d as Java2dEffect}
 
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.util.{Base64 => JBase64}
+import java.util.{Base64 as JBase64}
 import javax.imageio.ImageIO
 
 trait Java2dWriter[Fmt <: Format]

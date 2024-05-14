@@ -17,12 +17,12 @@
 package doodle
 package core
 
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 class TransformSpec extends Properties("Transform") {
-  import doodle.arbitrary._
-  import doodle.syntax.approximatelyEqual._
+  import doodle.arbitrary.*
+  import doodle.syntax.approximatelyEqual.*
 
   property("scale scale the x and y coordinates appropriately") = forAll {
     (scale: Scale, point: Point) =>

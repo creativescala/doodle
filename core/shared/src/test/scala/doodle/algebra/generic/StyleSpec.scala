@@ -18,15 +18,15 @@ package doodle
 package algebra
 package generic
 
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object StyleSpec extends Properties("Style properties") {
   val style = TestAlgebra()
 
   property("last fillColor takes effect") =
     forAll(Generators.finalized, Generators.color) { (f, c) =>
-      import doodle.algebra.generic.reified.Reified._
+      import doodle.algebra.generic.reified.Reified.*
       val reified = Generators.reify(style.fillColor(f, c))
       reified.foldLeft(true: Prop) { (prop, elt) =>
         prop && (elt match {

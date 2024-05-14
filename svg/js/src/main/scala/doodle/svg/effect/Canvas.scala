@@ -41,7 +41,7 @@ final case class Canvas(
     mouseClickQueue: Queue[IO, Point],
     mouseMoveQueue: Queue[IO, Point]
 )(implicit runtime: IORuntime) {
-  import JsDom.all.{Tag => _, _}
+  import JsDom.all.{Tag as _, *}
 
   val nullCallback: Either[Throwable, Unit] => Unit = _ => ()
 
@@ -55,7 +55,7 @@ final case class Canvas(
     var lastTs = 0.0
     def register(): Unit = {
       val callback: (Double => Unit) = (ts: Double) => {
-        if (started) {
+        if started then {
           redrawQueue.offer((ts - lastTs).toInt).unsafeRunAsync(nullCallback)
         } else {
           redrawQueue.offer(0)
@@ -113,7 +113,7 @@ final case class Canvas(
 
     currentBB = bb
     val tx = Svg.inverseClientTransform(currentBB, frame.size)
-    if (svgRoot == null) {
+    if svgRoot == null then {
       val newRoot = addCallbacks(Svg.svgTag(bb, frame), tx)
       svgRoot = target.appendChild(newRoot.render)
       svgRoot
@@ -131,7 +131,7 @@ final case class Canvas(
 
   private var svgChild: dom.Node = _
   def renderChild(svgRoot: dom.Node, nodes: dom.Node): Unit = {
-    if (svgChild == null || !svgRoot.contains(svgChild)) {
+    if svgChild == null || !svgRoot.contains(svgChild) then {
       svgRoot.appendChild(nodes)
       svgChild = nodes
     } else {
@@ -169,13 +169,13 @@ final case class Canvas(
 }
 object Canvas {
   def fromFrame(frame: Frame)(implicit runtime: IORuntime): IO[Canvas] = {
-    import cats.implicits._
+    import cats.implicits.*
     def eventQueue[A]: IO[Queue[IO, A]] = Queue.circularBuffer[IO, A](1)
 
     (eventQueue[Int], eventQueue[Point], eventQueue[Point]).mapN {
       (redrawQueue, mouseClickQueue, mouseMoveQueue) =>
         val target = dom.document.getElementById(frame.id)
-        if (target == null) {
+        if target == null then {
           throw new java.util.NoSuchElementException(
             s"Doodle SVG Canvas could not be created, as could not find a DOM element with the requested id ${frame.id}"
           )

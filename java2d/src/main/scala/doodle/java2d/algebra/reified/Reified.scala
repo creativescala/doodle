@@ -24,7 +24,7 @@ import doodle.algebra.generic.Stroke
 import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.font.Font
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
@@ -58,7 +58,7 @@ import java.awt.image.BufferedImage
   *     a bit limited.)
   */
 sealed abstract class Reified extends Product with Serializable {
-  import Reified._
+  import Reified.*
 
   def transform: Tx
 
@@ -102,7 +102,7 @@ sealed abstract class Reified extends Product with Serializable {
     }
 }
 object Reified {
-  import PathElement._
+  import PathElement.*
 
   def transform(tx: Tx, elements: List[PathElement]): List[PathElement] =
     elements.map {

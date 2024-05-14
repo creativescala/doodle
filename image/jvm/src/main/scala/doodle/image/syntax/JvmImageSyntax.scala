@@ -22,7 +22,7 @@ import cats.effect.IO
 import cats.effect.unsafe.IORuntime
 import doodle.algebra.Picture
 import doodle.core.format.Format
-import doodle.core.{Base64 => B64}
+import doodle.core.{Base64 as B64}
 import doodle.effect.Base64Writer
 import doodle.effect.FileWriter
 import doodle.language.Basic
@@ -52,7 +52,7 @@ class JvmImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {
     }
   }
 
-  import doodle.syntax.fileWriter._
+  import doodle.syntax.fileWriter.*
 
   implicit class ImageWriterOps(image: Image) {
     def write[Fmt <: Format] = new ImageWriterUnitOps[Fmt](image)

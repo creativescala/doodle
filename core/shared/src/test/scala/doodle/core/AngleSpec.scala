@@ -17,12 +17,12 @@
 package doodle
 package core
 
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object AngleSpec extends Properties("Angle properties") {
-  import doodle.arbitrary._
-  import doodle.syntax.approximatelyEqual._
+  import doodle.arbitrary.*
+  import doodle.syntax.approximatelyEqual.*
 
   property("angle has bijection to Double as radians") = forAll { (a: Angle) =>
     a ~= Angle.radians(a.toRadians)

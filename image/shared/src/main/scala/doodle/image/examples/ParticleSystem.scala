@@ -25,7 +25,7 @@ import cats.Monad
 import cats.Monoid
 import cats.data.Kleisli
 import cats.data.WriterT
-import cats.implicits._
+import cats.implicits.*
 
 object ParticleSystem {
 

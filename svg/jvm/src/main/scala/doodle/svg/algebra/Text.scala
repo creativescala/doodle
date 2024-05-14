@@ -19,10 +19,10 @@ package svg
 package algebra
 
 import doodle.algebra.generic.Finalized
-import doodle.algebra.generic._
-import doodle.core._
+import doodle.algebra.generic.*
+import doodle.core.*
 import doodle.core.font.Font
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 import java.awt.geom.Rectangle2D
 import scala.collection.mutable
@@ -49,7 +49,7 @@ trait TextModule extends JvmBase {
           text: String,
           bounds: Rectangle2D
       ): SvgResult[Unit] = {
-        import bundle.implicits.{Tag => _, _}
+        import bundle.implicits.{Tag as _, *}
         val set = mutable.Set.empty[Tag]
         // (0,0) of the Rectangle2D is the left baseline. For Doodle (0,0) is the
         // center of the bounding box.

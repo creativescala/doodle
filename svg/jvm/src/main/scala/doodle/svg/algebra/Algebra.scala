@@ -18,7 +18,7 @@ package doodle
 package svg
 package algebra
 
-import cats._
+import cats.*
 import doodle.algebra.generic.Finalized
 import doodle.algebra.generic.Renderable
 import doodle.core.BoundingBox

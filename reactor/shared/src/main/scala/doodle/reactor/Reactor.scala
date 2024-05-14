@@ -19,11 +19,11 @@ package reactor
 
 import cats.effect.unsafe.IORuntime
 import doodle.core.Point
-import doodle.effect._
+import doodle.effect.*
 import doodle.image.Image
 import doodle.language.Basic
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 /** A [[Reactor]] that has reasonable defaults and a simple builder style for
   * creating more complicated behaviour.
@@ -88,7 +88,7 @@ final case class Reactor[A](
       renderer: Renderer[Alg, Frame, Canvas],
       runtime: IORuntime
   ): Unit = {
-    import doodle.image.syntax.all._
+    import doodle.image.syntax.all.*
     this.image.drawWithFrame(frame)(renderer, runtime)
   }
 
@@ -97,7 +97,7 @@ final case class Reactor[A](
       frame: DefaultFrame[Frame],
       runtime: IORuntime
   ): Unit = {
-    import doodle.image.syntax.all._
+    import doodle.image.syntax.all.*
     this.image.draw()(renderer, frame, runtime)
   }
 }

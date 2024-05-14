@@ -21,15 +21,15 @@ package examples
 object Ripples {
   import cats.effect.unsafe.implicits.global
   import cats.effect.IO
-  import doodle.core._
-  import doodle.syntax.all._
-  import doodle.interact.syntax.all._
-  import doodle.java2d.effect._
+  import doodle.core.*
+  import doodle.syntax.all.*
+  import doodle.interact.syntax.all.*
+  import doodle.java2d.effect.*
   import fs2.Stream
   import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
 
-  import cats.instances.all._
-  import cats.syntax.all._
+  import cats.instances.all.*
+  import cats.syntax.all.*
 
   val frame =
     Frame.default.withSize(600, 600).withBackground(Color.midnightBlue)

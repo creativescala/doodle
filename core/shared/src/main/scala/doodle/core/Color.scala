@@ -17,12 +17,12 @@
 package doodle
 package core
 
-import doodle.syntax.angle._
-import doodle.syntax.normalized._
-import doodle.syntax.unsignedByte._
+import doodle.syntax.angle.*
+import doodle.syntax.normalized.*
+import doodle.syntax.unsignedByte.*
 
 sealed abstract class Color extends Product with Serializable {
-  import Color._
+  import Color.*
 
   // Accessors ----------------------------------------------
 
@@ -193,21 +193,18 @@ sealed abstract class Color extends Product with Serializable {
         val delta = cMax - cMin
 
         val unnormalizedHue =
-          if (cMax == rNormalized)
+          if cMax == rNormalized then
             60 * (((gNormalized - bNormalized) / delta))
-          else if (cMax == gNormalized)
+          else if cMax == gNormalized then
             60 * (((bNormalized - rNormalized) / delta) + 2)
-          else
-            60 * (((rNormalized - gNormalized) / delta) + 4)
+          else 60 * (((rNormalized - gNormalized) / delta) + 4)
         val hue = unnormalizedHue.degrees
 
         val lightness = Normalized.clip((cMax + cMin) / 2)
 
         val saturation =
-          if (delta == 0.0)
-            Normalized.MinValue
-          else
-            Normalized.clip(delta / (1 - Math.abs(2 * lightness.get - 1)))
+          if delta == 0.0 then Normalized.MinValue
+          else Normalized.clip(delta / (1 - Math.abs(2 * lightness.get - 1)))
 
         HSLA(hue, saturation, lightness, a)
 
@@ -234,10 +231,8 @@ sealed abstract class Color extends Product with Serializable {
 
             val lightness = l.get
             val q =
-              if (lightness < 0.5)
-                lightness * (1 + s)
-              else
-                lightness + s - (lightness * s)
+              if lightness < 0.5 then lightness * (1 + s)
+              else lightness + s - (lightness * s)
             val p = 2 * lightness - q
             val r = hueToRgb(p, q, Normalized.wrap((h + 120.degrees).toTurns))
             val g = hueToRgb(p, q, Normalized.wrap(h.toTurns))

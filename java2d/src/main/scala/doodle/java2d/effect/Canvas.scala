@@ -25,7 +25,7 @@ import doodle.core.Point
 import doodle.core.Transform
 import fs2.Stream
 
-import java.awt.event._
+import java.awt.event.*
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.JFrame
 import javax.swing.Timer
@@ -84,7 +84,7 @@ final class Canvas private (
     new ActionListener {
       def actionPerformed(e: ActionEvent): Unit = {
         val now = e.getWhen()
-        if (firstFrame) {
+        if firstFrame then {
           firstFrame = false
           lastFrameTime = now
           redrawQueue.offer(0).unsafeRunSync()
@@ -158,7 +158,7 @@ final class Canvas private (
 object Canvas {
 
   def apply(frame: Frame)(implicit runtime: IORuntime): IO[Canvas] = {
-    import cats.implicits._
+    import cats.implicits.*
     def eventQueue[A]: IO[Queue[IO, A]] = Queue.circularBuffer[IO, A](1)
     (eventQueue[Int], eventQueue[Point], eventQueue[Point]).mapN {
       (redrawQueue, mouseClickQueue, mouseMoveQueue) =>

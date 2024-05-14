@@ -20,10 +20,10 @@ package algebra
 package reified
 
 import cats.data.WriterT
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.font.Font
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 import java.awt.Graphics2D
 import java.awt.geom.Rectangle2D

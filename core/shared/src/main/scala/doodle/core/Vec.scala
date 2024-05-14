@@ -39,7 +39,7 @@ final case class Vec(x: Double, y: Double) {
 
   def normalize: Vec = {
     val len = length
-    if (len == 0) Vec(1, 0) else this / len
+    if len == 0 then Vec(1, 0) else this / len
   }
 
   def rotate(by: Angle): Vec =

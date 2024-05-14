@@ -18,12 +18,12 @@ package doodle
 package algebra
 package generic
 
-import cats.instances.unit._
-import doodle.algebra.generic._
+import cats.instances.unit.*
+import doodle.algebra.generic.*
 import doodle.algebra.generic.reified.Reification
 import doodle.algebra.generic.reified.Reified
-import doodle.core.{Transform => Tx}
-import org.scalacheck._
+import doodle.core.{Transform as Tx}
+import org.scalacheck.*
 
 trait Generators extends doodle.core.Generators {
 
@@ -97,7 +97,7 @@ trait Generators extends doodle.core.Generators {
       algebra: TestAlgebra,
       depth: Int
   ): Gen[Finalized[Reification, Unit]] =
-    if (depth <= 0) shape(algebra)
+    if depth <= 0 then shape(algebra)
     else
       Gen.oneOf(
         /*blend(algebra, depth),*/ layout(algebra, depth),

@@ -17,10 +17,10 @@
 package doodle
 package golden
 
-import cats.implicits._
-import doodle.java2d._
-import doodle.syntax.all._
-import munit._
+import cats.implicits.*
+import doodle.java2d.*
+import doodle.syntax.all.*
+import munit.*
 
 class Path extends FunSuite with GoldenPicture {
 

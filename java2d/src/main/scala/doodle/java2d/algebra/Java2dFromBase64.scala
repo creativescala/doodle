@@ -21,15 +21,15 @@ package algebra
 import cats.Eval
 import cats.data.State
 import cats.data.WriterT
-import doodle.algebra._
-import doodle.algebra.generic._
+import doodle.algebra.*
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Transform
-import doodle.core.format._
-import doodle.java2d.algebra.reified._
+import doodle.core.format.*
+import doodle.java2d.algebra.reified.*
 
 import java.io.ByteArrayInputStream
-import java.util.{Base64 => JBase64}
+import java.util.{Base64 as JBase64}
 import javax.imageio.ImageIO
 
 trait Java2dFromBase64

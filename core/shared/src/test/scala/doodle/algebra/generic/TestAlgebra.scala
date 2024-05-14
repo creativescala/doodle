@@ -18,10 +18,10 @@ package doodle
 package algebra
 package generic
 
-import cats._
-import cats.data._
-import cats.implicits._
-import doodle.algebra.generic.reified._
+import cats.*
+import cats.data.*
+import cats.implicits.*
+import doodle.algebra.generic.reified.*
 import doodle.core.BoundingBox
 
 final case class TestAlgebra(

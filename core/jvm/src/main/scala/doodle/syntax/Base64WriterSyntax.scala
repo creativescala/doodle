@@ -22,7 +22,7 @@ import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.core.format.Format
-import doodle.core.{Base64 => B64}
+import doodle.core.{Base64 as B64}
 import doodle.effect.Base64Writer
 
 trait Base64WriterSyntax {

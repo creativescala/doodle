@@ -18,15 +18,15 @@ package doodle
 package algebra
 package generic
 
-import cats._
-import cats.implicits._
+import cats.*
+import cats.implicits.*
 import doodle.core.BoundingBox
 import doodle.core.Landmark
 import doodle.core.Transform
 
 trait GenericLayout[G[_]] extends Layout {
   self: GivenApply[G] with Algebra { type Drawing[A] = Finalized[G, A] } =>
-  import Renderable._
+  import Renderable.*
 
   def on[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit
       s: Semigroup[A]

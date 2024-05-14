@@ -18,10 +18,10 @@ package doodle
 package svg
 package algebra
 
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.font.Font
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 import org.scalajs.dom.svg.Rect
 import scalatags.JsDom.svgAttrs
 
@@ -46,7 +46,7 @@ trait TextModule extends JsBase {
           text: String,
           bounds: Rect
       ): SvgResult[Unit] = {
-        import bundle.implicits.{Tag => _, _}
+        import bundle.implicits.{Tag as _, *}
         val set = mutable.Set.empty[Tag]
         // (0,0) of the bounds Rect is the left baseline. See
         // https://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html#getBBox

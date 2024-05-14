@@ -23,9 +23,9 @@ import cats.effect.IO
 import doodle.algebra.Picture
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
-import doodle.core._
+import doodle.core.*
 import doodle.core.font.FontSize.Points
-import doodle.core.font._
+import doodle.core.font.*
 import doodle.svg.effect.Size
 
 import scala.collection.mutable
@@ -55,7 +55,7 @@ trait SvgModule { self: Base =>
     val svg = bundle.svgTags
     val svgAttrs = bundle.svgAttrs
     val implicits = bundle.implicits
-    import implicits.{Tag => _, _}
+    import implicits.{Tag as _, *}
 
     def render[Alg <: self.Algebra, A](
         frame: Frame,
@@ -75,7 +75,7 @@ trait SvgModule { self: Base =>
         drawing <- IO { picture(algebra) }
         (bb, rdr) = drawing.run(List.empty).value
         (_, (tags, set, a)) = rdr.run(Transform.verticalReflection).value
-        tagsWithGradients = svg.g(svg.defs(set.toList: _*), tags)
+        tagsWithGradients = svg.g(svg.defs(set.toList*), tags)
       } yield (bb, tagsWithGradients, a)
     }
 
@@ -214,7 +214,7 @@ trait SvgModule { self: Base =>
         svgAttrs.y2 := y2,
         svgAttrs.spreadMethod := spreadMethod,
         svgAttrs.gradientUnits := "objectBoundingBox"
-      )(stops: _*)
+      )(stops*)
 
       id -> domGradient
     }
@@ -239,7 +239,7 @@ trait SvgModule { self: Base =>
         svgAttrs.r := r,
         svgAttrs.spreadMethod := spreadMethod,
         svgAttrs.gradientUnits := "userSpaceOnUse"
-      )(stops: _*)
+      )(stops*)
 
       id -> domGradient
     }
@@ -299,7 +299,7 @@ trait SvgModule { self: Base =>
       d.toString.replaceFirst("\\.0+$", "")
 
     def toSvgPath(elts: List[PathElement], pathType: PathType): String = {
-      import PathElement._
+      import PathElement.*
       import scala.collection.mutable.StringBuilder
 
       val builder = new StringBuilder(64, "M 0,0 ")
@@ -325,7 +325,7 @@ trait SvgModule { self: Base =>
       val builder = new StringBuilder(points.size * 10)
       var first = true
       points.foreach { pt =>
-        if (first) {
+        if first then {
           first = false
           builder ++= s"M ${format(pt.x)},${format(pt.y)} "
         } else builder ++= s"L ${format(pt.x)},${format(pt.y)} "

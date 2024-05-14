@@ -18,11 +18,11 @@ package doodle
 package algebra
 package generic
 
-import cats.implicits._
+import cats.implicits.*
 import doodle.algebra.generic.reified.Reification
-import doodle.core.{Transform => Tx}
-import org.scalacheck.Prop._
-import org.scalacheck._
+import doodle.core.{Transform as Tx}
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object SizeSpec extends Properties("Size properties") {
   implicit val algebra: TestAlgebra = TestAlgebra()

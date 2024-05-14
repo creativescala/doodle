@@ -18,21 +18,21 @@ package doodle
 package image
 package examples
 
-import cats.instances.list._
-import doodle.core._
-import doodle.image.syntax.all._
-import doodle.syntax.all._
+import cats.instances.list.*
+import doodle.core.*
+import doodle.image.syntax.all.*
+import doodle.syntax.all.*
 
 object Polygon {
 
   def polygon(sides: Int, radius: Double) = {
-    import PathElement._
+    import PathElement.*
 
     val centerAngle = 360.degrees / sides.toDouble
 
     val elements = (0 until sides) map { index =>
       val point = Point.polar(radius, centerAngle * index.toDouble)
-      if (index == 0) moveTo(point) else lineTo(point)
+      if index == 0 then moveTo(point) else lineTo(point)
     }
 
     Image

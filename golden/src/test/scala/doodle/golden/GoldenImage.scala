@@ -18,19 +18,19 @@ package doodle
 package golden
 
 import cats.effect.unsafe.implicits.global
-import doodle.core.format._
-import doodle.java2d._
-import munit._
+import doodle.core.format.*
+import doodle.java2d.*
+import munit.*
 
 trait GoldenImage extends Golden { self: FunSuite =>
-  import doodle.image._
-  import doodle.image.syntax.all._
+  import doodle.image.*
+  import doodle.image.syntax.all.*
 
   def assertGoldenImage(name: String, image: Image)(implicit loc: Location) = {
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
 
-    if (file.exists()) {
+    if file.exists() then {
       val temp = new File(s"${goldenDir}/${name}.tmp.png")
 
       try {
@@ -43,7 +43,7 @@ trait GoldenImage extends Golden { self: FunSuite =>
           .map(_ => imageDiff(file, temp))
           .unsafeRunSync()
       } finally {
-        if (temp.exists())
+        if temp.exists() then
           temp.delete()
           ()
       }

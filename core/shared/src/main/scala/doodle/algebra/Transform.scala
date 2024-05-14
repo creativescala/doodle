@@ -19,7 +19,7 @@ package algebra
 
 import doodle.core.Angle
 import doodle.core.Vec
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 trait Transform extends Algebra {
   def transform[A](img: Drawing[A], tx: Tx): Drawing[A]

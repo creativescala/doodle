@@ -18,10 +18,10 @@ package doodle
 package image
 package examples
 
-import cats.instances.list._
-import cats.syntax.traverse._
-import doodle.core._
-import doodle.random._
+import cats.instances.list.*
+import cats.syntax.traverse.*
+import doodle.core.*
+import doodle.random.*
 
 import scala.math.BigDecimal
 
@@ -35,7 +35,7 @@ object Epicycloid {
         case Nil => Vec.zero
         case (weight, freq, flipped) :: tail => {
           val angle = (t * freq)
-          (if (flipped) Vec(weight * angle.sin, weight * angle.cos)
+          (if flipped then Vec(weight * angle.sin, weight * angle.cos)
            else Vec(weight * angle.cos, weight * angle.sin)) + loop(tail)
         }
       }

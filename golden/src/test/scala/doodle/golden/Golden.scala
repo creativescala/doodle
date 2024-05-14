@@ -19,9 +19,9 @@ package golden
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.format.Png
-import doodle.java2d._
-import doodle.syntax.all._
-import munit._
+import doodle.java2d.*
+import doodle.syntax.all.*
+import munit.*
 
 import java.awt.image.BufferedImage
 import java.io.File
@@ -81,7 +81,7 @@ trait Golden { self: FunSuite =>
   def pixelAbsoluteError(a: Int, b: Int): Int = {
     @scala.annotation.tailrec
     def calculateError(i: Int, acc: Int): Int = {
-      if (i >= 4) acc
+      if i >= 4 then acc
       else {
         val shift = i * 8
         val mask = 0x000000ff << shift
@@ -107,9 +107,9 @@ trait Golden { self: FunSuite =>
     var error = 0.0
 
     var x = 0
-    while (x < width) {
+    while x < width do {
       var y = 0
-      while (y < height) {
+      while y < height do {
         val pixelError = pixelAbsoluteError(
           actual.getRGB(x, y),
           golden.getRGB(x, y)

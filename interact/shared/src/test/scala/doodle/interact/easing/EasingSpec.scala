@@ -18,9 +18,9 @@ package doodle
 package interact
 package easing
 
-import doodle.syntax.approximatelyEqual._
-import org.scalacheck.Prop._
-import org.scalacheck._
+import doodle.syntax.approximatelyEqual.*
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object EasingSpec extends Properties("Easing properties") {
   property("identity is the identity") = forAllNoShrink { (t: Double) =>

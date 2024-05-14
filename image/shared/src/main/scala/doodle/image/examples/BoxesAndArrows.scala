@@ -18,10 +18,10 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.core.font._
+import doodle.core.*
+import doodle.core.font.*
 
-import Image._
+import Image.*
 
 object BoxesAndArrows {
   val size = 100.0

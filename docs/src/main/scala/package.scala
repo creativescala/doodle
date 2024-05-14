@@ -18,11 +18,11 @@ package object docs {
   import java.io.File
   import cats.effect.unsafe.IORuntime
   import doodle.image.Image
-  import doodle.core.format._
-  import doodle.java2d._
+  import doodle.core.format.*
+  import doodle.java2d.*
 
   implicit class ImageSaveSyntax(image: Image) {
-    import doodle.image.syntax.all._
+    import doodle.image.syntax.all.*
     def save(filename: String)(implicit r: IORuntime): Unit = {
       val dir = new File("docs/src/pages/")
       val file = new File(dir, filename)
@@ -31,7 +31,7 @@ package object docs {
   }
 
   implicit class PictureSaveSyntax(picture: Picture[Unit]) {
-    import doodle.syntax.all._
+    import doodle.syntax.all.*
     def save(filename: String)(implicit r: IORuntime): Unit = {
       val dir = new File("docs/src/pages/")
       val file = new File(dir, filename)

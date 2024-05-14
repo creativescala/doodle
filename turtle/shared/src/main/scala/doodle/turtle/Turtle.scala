@@ -17,7 +17,7 @@
 package doodle
 package turtle
 
-import doodle.core._
+import doodle.core.*
 import doodle.image.Image
 
 object Turtle {
@@ -27,8 +27,8 @@ object Turtle {
       instructions: List[Instruction],
       angle: Angle = Angle.zero
   ): Image = {
-    import Instruction._
-    import PathElement._
+    import Instruction.*
+    import PathElement.*
 
     val initialState = State(Vec.zero, angle)
 

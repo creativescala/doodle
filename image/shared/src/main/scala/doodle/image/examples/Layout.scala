@@ -18,13 +18,13 @@ package doodle
 package image
 package examples
 
-import doodle.core._
+import doodle.core.*
 
 object Layout {
   // Examples for debugging layout
 
-  import doodle.core.Point._
-  import doodle.core.PathElement._
+  import doodle.core.Point.*
+  import doodle.core.PathElement.*
 
   def addOrigin(image: Image): Image = {
     val origin = Image.circle(5).noStroke.fillColor(Color.red)

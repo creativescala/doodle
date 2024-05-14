@@ -18,8 +18,8 @@ package docs
 
 // The "Image" DSL is the easiest way to create images
 import cats.effect.unsafe.implicits.global
-import doodle.core._
-import doodle.image._
+import doodle.core.*
+import doodle.image.*
 
 object Chessboard {
   val blackSquare = Image.rectangle(30, 30).fillColor(Color.black)

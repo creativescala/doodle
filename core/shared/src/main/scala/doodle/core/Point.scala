@@ -18,7 +18,7 @@ package doodle
 package core
 
 sealed abstract class Point extends Product with Serializable {
-  import Point._
+  import Point.*
 
   def -(that: Point): Vec =
     Vec(this.x - that.x, this.y - that.y)

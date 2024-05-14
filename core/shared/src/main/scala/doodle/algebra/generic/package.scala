@@ -17,10 +17,10 @@
 package doodle
 package algebra
 
-import cats._
-import cats.data._
-import cats.syntax.all._
-import doodle.core.{Transform => Tx}
+import cats.*
+import cats.data.*
+import cats.syntax.all.*
+import doodle.core.{Transform as Tx}
 
 package object generic {
   type ContextTransform = DrawingContext => DrawingContext

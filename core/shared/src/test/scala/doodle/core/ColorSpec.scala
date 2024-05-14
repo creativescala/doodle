@@ -17,12 +17,12 @@
 package doodle
 package core
 
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object ColorSpec extends Properties("Color properties") {
-  import doodle.arbitrary._
-  import Color._
+  import doodle.arbitrary.*
+  import Color.*
 
   property(".toRGBA andThen .toHSLA is the identity") = forAll { (hsla: HSLA) =>
     (hsla ~= (hsla.toRGBA.toHSLA))

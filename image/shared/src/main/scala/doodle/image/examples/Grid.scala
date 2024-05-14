@@ -18,9 +18,9 @@ package doodle
 package image
 package examples
 
-import cats.implicits._
-import doodle.image.syntax.all._
-import doodle.random._
+import cats.implicits.*
+import doodle.image.syntax.all.*
+import doodle.random.*
 
 /** Grid patterns in the style of Sasj's geometric series such as
   * https://www.instagram.com/p/BohZM4RiWJk/?taken-by=sasj_nl

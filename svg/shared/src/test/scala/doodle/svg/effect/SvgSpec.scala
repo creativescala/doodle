@@ -18,8 +18,8 @@ package doodle
 package svg
 package effect
 
-import doodle.algebra.generic._
-import doodle.core._
+import doodle.algebra.generic.*
+import doodle.core.*
 import doodle.language.Basic
 import munit.CatsEffectSuite
 
@@ -29,7 +29,7 @@ class SvgSpec
     extends CatsEffectSuite
     with doodle.svg.algebra.TestAlgebraModule {
   import scalatags.Text.{svgAttrs, svgTags}
-  import scalatags.Text.implicits._
+  import scalatags.Text.implicits.*
 
   val blackStroke = Stroke(Color.black, 1.0, Cap.butt, Join.miter, None)
 
@@ -59,7 +59,7 @@ class SvgSpec
   }
 
   test("paths of path elements render correctly") {
-    import doodle.core.PathElement._
+    import doodle.core.PathElement.*
     val path1 = "M 0,0 M 5,5 L 10,10 C 20,20 30,30 40,40 "
     val path2 = "M 0,0 M 5,5 L 10,10 C 20,20 30,30 40,40 Z"
 

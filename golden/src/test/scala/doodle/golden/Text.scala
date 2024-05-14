@@ -17,12 +17,12 @@
 package doodle
 package golden
 
-import cats.implicits._
-import doodle.core._
-import doodle.core.font._
-import doodle.java2d._
-import doodle.syntax.all._
-import munit._
+import cats.implicits.*
+import doodle.core.*
+import doodle.core.font.*
+import doodle.java2d.*
+import doodle.syntax.all.*
+import munit.*
 
 class Text extends FunSuite with GoldenPicture {
   // Enusre the text images have the same size, which guards to some extent

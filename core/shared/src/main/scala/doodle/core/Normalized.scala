@@ -29,16 +29,12 @@ final case class Normalized(get: Double) extends AnyVal {
     this.get - that.get
 
   def max(that: Normalized): Normalized =
-    if (this.get > that.get)
-      this
-    else
-      that
+    if this.get > that.get then this
+    else that
 
   def min(that: Normalized): Normalized =
-    if (this.get < that.get)
-      this
-    else
-      that
+    if this.get < that.get then this
+    else that
 
   def toTurns: Angle =
     Angle.turns(get)

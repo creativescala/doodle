@@ -19,8 +19,8 @@ package golden
 
 import doodle.core.Coordinate
 import doodle.core.Landmark
-import doodle.image._
-import munit._
+import doodle.image.*
+import munit.*
 
 class ImageLayout extends FunSuite with GoldenImage {
   testImage("layout-at-debug") {

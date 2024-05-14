@@ -18,12 +18,12 @@ package doodle
 package image
 package examples
 
-import cats.implicits._
-import doodle.core._
-import doodle.image.Image._
-import doodle.image.syntax.all._
-import doodle.image.syntax.core._
-import doodle.random._
+import cats.implicits.*
+import doodle.core.*
+import doodle.image.Image.*
+import doodle.image.syntax.all.*
+import doodle.image.syntax.core.*
+import doodle.random.*
 
 object Sine {
   import Parametric.AngularCurve

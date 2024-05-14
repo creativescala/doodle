@@ -18,9 +18,9 @@ package doodle
 package svg
 package algebra
 
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.PathElement
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 import scala.collection.mutable
 
@@ -31,7 +31,7 @@ trait PathModule { root: Base with SvgModule =>
     } =>
     object PathApi extends PathApi {
       val b = bundle
-      import b.implicits._
+      import b.implicits.*
       import b.{svgAttrs, svgTags}
 
       def closedPath(

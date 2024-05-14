@@ -18,9 +18,9 @@ package doodle
 package svg
 package algebra
 
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.Point
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 import scala.collection.mutable
 
@@ -31,7 +31,7 @@ trait ShapeModule { root: Base with SvgModule =>
     } =>
     object ShapeApi extends ShapeApi {
       val b = bundle
-      import b.implicits._
+      import b.implicits.*
       import b.{svgAttrs, svgTags}
 
       def rectangle(

@@ -20,7 +20,7 @@ trait Distance[A] {
   def distance(a1: A, a2: A): Double
 }
 object Distance {
-  import doodle.core._
+  import doodle.core.*
 
   def apply[A](f: (A, A) => Double): Distance[A] =
     new Distance[A] {

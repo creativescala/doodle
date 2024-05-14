@@ -19,15 +19,15 @@ package java2d
 package examples
 
 object Dash {
-  import cats.instances.all._
-  import doodle.core._
+  import cats.instances.all.*
+  import doodle.core.*
   import doodle.core.format.Gif
-  import doodle.syntax.all._
-  import doodle.java2d.effect._
-  import doodle.interact.syntax.all._
+  import doodle.syntax.all.*
+  import doodle.java2d.effect.*
+  import doodle.interact.syntax.all.*
   import fs2.Stream
   import cats.effect.IO
-  import scala.concurrent.duration._
+  import scala.concurrent.duration.*
   import cats.effect.unsafe.implicits.global
 
   val frame =
@@ -53,8 +53,8 @@ object Dash {
       .debounce[IO](200.millis)
       .scan((1, 0)) { (state, _) =>
         val (inc, size) = state
-        if (size >= maxSize) (-increment, maxSize - increment)
-        else if (size <= minSize) (increment, minSize + increment)
+        if size >= maxSize then (-increment, maxSize - increment)
+        else if size <= minSize then (increment, minSize + increment)
         else (inc, size + inc)
       }
       .map { case (_, s) => curve(s.toDouble) }

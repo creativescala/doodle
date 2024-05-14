@@ -17,11 +17,11 @@
 package doodle
 package examples
 
-import cats.instances.list._
+import cats.instances.list.*
 import doodle.algebra.Picture
-import doodle.core._
+import doodle.core.*
 import doodle.language.Basic
-import doodle.syntax.all._
+import doodle.syntax.all.*
 
 object Polygons {
   def picture: Picture[Basic, Unit] = {
@@ -30,7 +30,7 @@ object Polygons {
 
       val shape = (0 until sides).foldLeft(ClosedPath.empty) { (path, index) =>
         val point = Point.polar(radius, centerAngle * index.toDouble)
-        if (index == 0) path.moveTo(point) else path.lineTo(point)
+        if index == 0 then path.moveTo(point) else path.lineTo(point)
       }
 
       shape

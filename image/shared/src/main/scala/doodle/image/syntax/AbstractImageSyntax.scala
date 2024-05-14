@@ -25,7 +25,7 @@ import doodle.language.Basic
 import doodle.syntax.AbstractRendererSyntax
 
 abstract class AbstractImageSyntax(rendererSyntax: AbstractRendererSyntax) {
-  import rendererSyntax._
+  import rendererSyntax.*
 
   implicit class ImageOps(image: Image) {
     def drawWithFrame[Alg <: Basic, Frame, Canvas](

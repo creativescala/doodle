@@ -18,7 +18,7 @@ package doodle
 package algebra
 package generic
 
-import cats.syntax.functor._
+import cats.syntax.functor.*
 import doodle.core.BoundingBox
 
 /** Get information about the size of the bounding box enclosing an picture.

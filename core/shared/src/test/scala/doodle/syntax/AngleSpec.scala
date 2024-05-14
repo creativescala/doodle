@@ -18,11 +18,11 @@ package doodle
 package syntax
 
 import doodle.core.Angle
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 class AngleSpec extends Properties("Angle syntax properties") {
-  import doodle.syntax.angle._
+  import doodle.syntax.angle.*
 
   property(".degrees") = forAll { (d: Double) => d.degrees ?= Angle.degrees(d) }
 

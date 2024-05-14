@@ -18,7 +18,7 @@ package doodle
 package algebra
 
 import doodle.core.Base64
-import doodle.core.format._
+import doodle.core.format.*
 
 /** Algebra indicating a Picture can be created from a base 64 encoded bitmap in
   * Gif format.

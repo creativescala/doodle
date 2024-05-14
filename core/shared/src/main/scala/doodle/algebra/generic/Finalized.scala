@@ -20,9 +20,9 @@ package generic
 
 import cats.Eval
 import cats.Later
-import cats.data._
+import cats.data.*
 import doodle.core.BoundingBox
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 /** A [[Finalized]] represents an effect that, when run, produces all the
   * information needed to layout an image (it "finalizes" all the information

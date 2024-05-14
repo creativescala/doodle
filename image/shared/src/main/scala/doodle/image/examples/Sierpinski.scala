@@ -18,7 +18,7 @@ package doodle
 package image
 package examples
 
-import doodle.core._
+import doodle.core.*
 
 object Sierpinski {
   def triangle(size: Double): Image = {
@@ -28,7 +28,7 @@ object Sierpinski {
 
   def sierpinski(n: Int, size: Double): Image = {
     println(s"Creating a Sierpinski with n = $n")
-    if (n == 1) {
+    if n == 1 then {
       triangle(size)
     } else {
       val smaller = sierpinski(n - 1, size / 2)

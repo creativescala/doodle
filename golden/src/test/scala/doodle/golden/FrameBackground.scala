@@ -18,9 +18,9 @@ package doodle
 package golden
 
 import doodle.core.Color
-import doodle.java2d._
-import doodle.syntax.all._
-import munit._
+import doodle.java2d.*
+import doodle.syntax.all.*
+import munit.*
 
 class FrameBackground extends FunSuite with GoldenPicture {
   testPictureWithFrame("black-background")(

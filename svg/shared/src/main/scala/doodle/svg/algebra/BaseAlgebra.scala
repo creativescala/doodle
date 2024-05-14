@@ -21,7 +21,7 @@ package algebra
 import doodle.algebra.Layout
 import doodle.algebra.Size
 import doodle.algebra.Text
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.language.Basic
 
 trait AlgebraModule {

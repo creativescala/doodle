@@ -18,8 +18,8 @@ package docs
 package algebra
 
 import cats.effect.unsafe.implicits.global
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 object BasicWithText {
 

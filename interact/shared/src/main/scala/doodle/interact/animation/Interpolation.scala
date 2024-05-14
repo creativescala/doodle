@@ -18,8 +18,8 @@ package doodle
 package interact
 package animation
 
-import cats._
-import cats.syntax.all._
+import cats.*
+import cats.syntax.all.*
 import doodle.interact.easing.Easing
 
 import scala.concurrent.duration.Duration
@@ -48,7 +48,7 @@ import scala.concurrent.duration.Duration
   *     transducers to run.
   */
 sealed trait Interpolation[A] {
-  import Interpolation._
+  import Interpolation.*
 
   /** Transform the output of this interpolation with the given function.
     */
@@ -85,7 +85,7 @@ sealed trait Interpolation[A] {
       interpolation match {
         case WithEasing(source, e) =>
           // Use outermost easing
-          if (easing.isEmpty) loop(source, Some(e))
+          if easing.isEmpty then loop(source, Some(e))
           else loop(source, easing)
         case Map(source, f) => loop(source, easing).map(f)
         case Product(l, r)  => loop(l, easing).product(loop(r, easing))

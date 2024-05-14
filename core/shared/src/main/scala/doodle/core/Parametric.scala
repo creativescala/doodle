@@ -17,7 +17,7 @@
 package doodle
 package core
 
-import doodle.syntax.all._
+import doodle.syntax.all.*
 
 import scala.annotation.tailrec
 
@@ -244,10 +244,8 @@ object Parametric {
 
     /* Get the index into the curves array from t, where each curve has a 1/size share of the space */
     def index(t: Normalized): Int = {
-      if (t.get == 1.0)
-        size - 1
-      else
-        Math.floor(t.get * size).toInt
+      if t.get == 1.0 then size - 1
+      else Math.floor(t.get * size).toInt
     }
 
     NormalizedCurve { (t: Normalized) =>

@@ -19,20 +19,20 @@ package reactor
 
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
-import cats.instances.unit._
+import cats.instances.unit.*
 import doodle.core.Point
 import doodle.effect.Renderer
 import doodle.image.Image
-import doodle.image.syntax.all._
+import doodle.image.syntax.all.*
 import doodle.interact.algebra.MouseClick
 import doodle.interact.algebra.MouseMove
 import doodle.interact.effect.AnimationRenderer
-import doodle.interact.syntax.all._
+import doodle.interact.syntax.all.*
 import doodle.language.Basic
-import doodle.syntax.renderer._
+import doodle.syntax.renderer.*
 import fs2.Stream
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 /** A reactor is a simple way to express an interactive program. It allows us to
   * write programs in terms of some initial state and transformations of that
@@ -61,7 +61,7 @@ trait BaseReactor[A] {
       e: Renderer[Basic, Frame, Canvas],
       runtime: IORuntime
   ): Option[A] = {
-    if (stop(initial)) None
+    if stop(initial) then None
     else {
       (render(initial)).drawWithFrame(frame)
       val next = onTick(initial)
@@ -78,7 +78,7 @@ trait BaseReactor[A] {
       m: MouseClick[Canvas] with MouseMove[Canvas],
       runtime: IORuntime
   ): Unit = {
-    import BaseReactor._
+    import BaseReactor.*
 
     frame
       .canvas[Alg, Canvas]()

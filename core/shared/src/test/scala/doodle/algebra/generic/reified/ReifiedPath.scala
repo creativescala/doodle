@@ -20,9 +20,9 @@ package generic
 package reified
 
 import cats.data.WriterT
-import doodle.algebra.generic._
-import doodle.core._
-import doodle.core.{Transform => Tx}
+import doodle.algebra.generic.*
+import doodle.core.*
+import doodle.core.{Transform as Tx}
 
 trait ReifiedPath extends GenericPath[Reification] {
   self: Algebra { type Drawing[A] = TestAlgebra.Drawing[A] } =>

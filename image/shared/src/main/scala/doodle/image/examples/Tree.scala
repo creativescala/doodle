@@ -18,9 +18,9 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.image._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.image.*
+import doodle.syntax.all.*
 
 object Tree {
   def leaf(angle: Angle, length: Double): Image =
@@ -31,7 +31,7 @@ object Tree {
       .strokeColor(Color.hsl(angle, .5, .5))
 
   def branch(depth: Int, angle: Angle, length: Double): Image = {
-    if (depth == 0) {
+    if depth == 0 then {
       leaf(angle, length)
     } else {
       val l = branch(depth - 1, angle + 20.degrees, length * 0.8)

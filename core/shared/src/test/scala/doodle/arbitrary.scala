@@ -20,7 +20,7 @@ import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 
 object arbitrary {
-  import doodle.core._
+  import doodle.core.*
   import doodle.core.Color.{RGBA, HSLA}
 
   final case class Translate(x: Double, y: Double)

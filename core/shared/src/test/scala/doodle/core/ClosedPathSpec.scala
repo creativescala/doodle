@@ -17,11 +17,11 @@
 package doodle
 package core
 
-import org.scalacheck.Prop._
-import org.scalacheck._
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object ClosedPathSpec extends Properties("ClosedPath properties") {
-  import Generators._
+  import Generators.*
 
   property("added element is last in the list of elements") =
     forAll(Gen.listOf(pathElement), pathElement) { (elts, elt) =>

@@ -18,12 +18,12 @@ package doodle
 package image
 package examples
 
-import cats.instances.list._
-import doodle.core._
-import doodle.image.syntax.all._
+import cats.instances.list.*
+import doodle.core.*
+import doodle.image.syntax.all.*
 
 object Street {
-  import Color._
+  import Color.*
 
   val roof = Image.triangle(50, 30) fillColor brown
 

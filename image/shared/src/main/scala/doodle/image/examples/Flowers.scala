@@ -18,8 +18,8 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.syntax.all.*
 
 object Flowers {
   def position(k: Int): Angle => Point =
@@ -75,10 +75,8 @@ object Flowers {
     (point: Angle => Image) =>
       {
         def iter(angle: Angle): Image = {
-          if (angle > Angle.one)
-            Image.empty
-          else
-            point(angle) on iter(angle + step)
+          if angle > Angle.one then Image.empty
+          else point(angle) on iter(angle + step)
         }
 
         iter(Angle.zero)

@@ -18,7 +18,7 @@ package doodle
 package image
 package examples
 
-import doodle.core._
+import doodle.core.*
 
 object ColorWheel {
   val blobs = for {

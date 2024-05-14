@@ -22,7 +22,7 @@ package reified
 import cats.Eval
 import cats.data.State
 import cats.data.WriterT
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Transform
 

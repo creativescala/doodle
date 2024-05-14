@@ -18,9 +18,9 @@ package docs
 package pictures
 
 import cats.effect.unsafe.implicits.global
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.*
 
 object Path {
   val path =

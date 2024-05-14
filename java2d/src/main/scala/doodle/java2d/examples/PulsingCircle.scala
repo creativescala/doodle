@@ -19,12 +19,12 @@ package java2d
 package examples
 
 object PulsingCircle {
-  import cats.instances.all._
-  import doodle.core._
+  import cats.instances.all.*
+  import doodle.core.*
   import doodle.core.format.Gif
-  import doodle.syntax.all._
-  import doodle.java2d.effect._
-  import doodle.interact.syntax.all._
+  import doodle.syntax.all.*
+  import doodle.java2d.effect.*
+  import doodle.interact.syntax.all.*
   import fs2.Stream
   import cats.effect.IO
   import cats.effect.unsafe.implicits.global
@@ -89,8 +89,8 @@ object PulsingCircle {
     Stream(1).repeat
       .scan((1, 0)) { (state, _) =>
         val (inc, count) = state
-        if (count >= maxNumberOfDisks) (-1, maxNumberOfDisks - 1)
-        else if (count <= 0) (1, 1)
+        if count >= maxNumberOfDisks then (-1, maxNumberOfDisks - 1)
+        else if count <= 0 then (1, 1)
         else (inc, count + inc)
       }
       .map { case (_, c) => pulse(c).on(background(maxNumberOfDisks)) }

@@ -18,12 +18,12 @@ package doodle
 package algebra
 package generic
 
-import cats.implicits._
+import cats.implicits.*
 import doodle.algebra.generic.reified.Reification
 import doodle.core.BoundingBox
-import doodle.core.{Transform => Tx}
-import org.scalacheck.Prop._
-import org.scalacheck._
+import doodle.core.{Transform as Tx}
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object LayoutSpec extends Properties("Layout properties") {
   val style = TestAlgebra()
@@ -33,9 +33,9 @@ object LayoutSpec extends Properties("Layout properties") {
     (Math.sqrt(3.0) * r) / 2.0
 
   property("hand generated path bounding boxes are correct") = {
-    import doodle.core._
-    import doodle.syntax.approximatelyEqual._
-    import Instances._
+    import doodle.core.*
+    import doodle.syntax.approximatelyEqual.*
+    import Instances.*
 
     implicit val algebra = TestAlgebra()
     val verticalLine =
@@ -66,11 +66,11 @@ object LayoutSpec extends Properties("Layout properties") {
   }
 
   property("hand generated at bounding boxes are correct") = {
-    import doodle.syntax.all._
-    import doodle.syntax.approximatelyEqual._
-    import doodle.algebra.generic._
-    import Instances._
-    import TestAlgebra._
+    import doodle.syntax.all.*
+    import doodle.syntax.approximatelyEqual.*
+    import doodle.algebra.generic.*
+    import Instances.*
+    import TestAlgebra.*
 
     implicit val algebra = TestAlgebra()
     val hexagon =
@@ -130,12 +130,12 @@ object LayoutSpec extends Properties("Layout properties") {
           (bb.width ?= width) :| s"Width is ${bb.width} when it should be $width for image that reified to $reified"
         }
 
-      all(examples: _*)
+      all(examples*)
   }
 
   property("above reifies correctly") = forAllNoShrink(Generators.width) {
     width =>
-      import doodle.algebra.generic.reified.Reified._
+      import doodle.algebra.generic.reified.Reified.*
       import doodle.core.Transform
 
       implicit val algebra = TestAlgebra()

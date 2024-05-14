@@ -20,7 +20,7 @@ import cats.Comonad
 import cats.free.Free
 
 import scala.annotation.tailrec
-import scala.util.{Random => Rng}
+import scala.util.{Random as Rng}
 
 object random {
   type Random[A] = Free[RandomOp, A]
@@ -39,16 +39,14 @@ object random {
       rng: Rng = scala.util.Random
   ): Comonad[RandomOp] =
     new Comonad[RandomOp] {
-      import RandomOp._
+      import RandomOp.*
 
       @tailrec
       def pick[A](total: Double, weight: Double, events: Seq[(A, Double)]): A =
         events match {
           case (a, p) +: rest =>
-            if (total < weight && weight < (total + p))
-              a
-            else
-              pick(total + p, weight, rest)
+            if total < weight && weight < (total + p) then a
+            else pick(total + p, weight, rest)
           case _ =>
             throw new Exception("Could not sample---ran out of events!")
         }
@@ -73,7 +71,7 @@ object random {
     }
 
   object Random {
-    import RandomOp._
+    import RandomOp.*
 
     /** Create a `Random` that always generates the given value. */
     def always[A](in: A): Random[A] =

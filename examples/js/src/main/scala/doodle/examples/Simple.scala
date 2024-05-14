@@ -17,12 +17,12 @@
 package doodle.examples
 
 import cats.effect.unsafe.implicits.global
-import doodle.core._
-import doodle.interact.syntax.all._
-import doodle.svg._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.interact.syntax.all.*
+import doodle.svg.*
+import doodle.syntax.all.*
 
-import scala.scalajs.js.annotation._
+import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("Simple")
 object Simple {

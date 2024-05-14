@@ -18,12 +18,12 @@ package doodle
 package image
 package examples
 
-import cats.instances.all._
-import cats.syntax.all._
-import doodle.core._
-import doodle.image._
-import doodle.random._
-import doodle.syntax.all._
+import cats.instances.all.*
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.image.*
+import doodle.random.*
+import doodle.syntax.all.*
 
 object Spirals {
   def scale(factor: Double): Point => Point =
@@ -47,7 +47,7 @@ object Spirals {
     angle => {
       val turns = {
         val t = angle.toTurns
-        if (t < 0.5) t else (t - 0.5)
+        if t < 0.5 then t else (t - 0.5)
       }
 
       (1 - turns)

@@ -18,12 +18,12 @@ package doodle
 package java2d
 package algebra
 
-import cats._
+import cats.*
 import cats.data.WriterT
-import cats.implicits._
-import doodle.algebra.generic._
+import cats.implicits.*
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
-import doodle.java2d.algebra.reified._
+import doodle.java2d.algebra.reified.*
 import doodle.language.Basic
 
 import java.awt.Graphics2D

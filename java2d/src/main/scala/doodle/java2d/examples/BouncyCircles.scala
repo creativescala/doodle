@@ -19,13 +19,13 @@ package java2d
 package examples
 
 object BouncyCircles {
-  import cats.implicits._
-  import doodle.core._
+  import cats.implicits.*
+  import doodle.core.*
   import doodle.core.format.Gif
-  import doodle.syntax.all._
-  import doodle.java2d.effect._
-  import doodle.interact.easing._
-  import doodle.interact.syntax.all._
+  import doodle.syntax.all.*
+  import doodle.java2d.effect.*
+  import doodle.interact.easing.*
+  import doodle.interact.syntax.all.*
   import fs2.Stream
   import cats.effect.IO
   import cats.effect.unsafe.implicits.global

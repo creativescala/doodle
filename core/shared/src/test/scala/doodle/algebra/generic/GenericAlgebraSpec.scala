@@ -18,9 +18,9 @@ package doodle
 package algebra
 package generic
 
-import cats.instances.unit._
-import org.scalacheck.Prop._
-import org.scalacheck._
+import cats.instances.unit.*
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 
 object GenericAlgebraspec extends Properties("Generic algebra properties") {
   implicit val algebra: TestAlgebra = TestAlgebra()

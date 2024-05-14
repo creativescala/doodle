@@ -18,7 +18,7 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 trait GenericTransform[G[_]] extends Transform {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>

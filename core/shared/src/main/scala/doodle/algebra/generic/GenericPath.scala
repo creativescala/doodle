@@ -19,8 +19,8 @@ package algebra
 package generic
 
 import cats.data.State
-import doodle.core._
-import doodle.core.{Transform => Tx}
+import doodle.core.*
+import doodle.core.{Transform as Tx}
 
 import scala.annotation.tailrec
 
@@ -71,7 +71,7 @@ trait GenericPath[G[_]] extends Path {
     }
 
   def boundingBox(elements: List[PathElement]): BoundingBox = {
-    import PathElement._
+    import PathElement.*
 
     // This implementation should avoid allocation
     var minX: Double = 0.0

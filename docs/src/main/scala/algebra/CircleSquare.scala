@@ -18,10 +18,10 @@ package docs
 package algebra
 
 import cats.effect.unsafe.implicits.global
-import cats.implicits._
-import doodle.core._
-import doodle.java2d._
-import doodle.syntax.all._ // For Color
+import cats.implicits.*
+import doodle.core.*
+import doodle.java2d.*
+import doodle.syntax.all.* // For Color
 
 object CircleSquare {
   val smallCircle = Picture.circle(100)

@@ -88,8 +88,8 @@ final case class Font(
 
 }
 object Font {
-  import FontFamily._
-  import FontSize._
+  import FontFamily.*
+  import FontSize.*
 
   val defaultSerif =
     Font(serif, FontStyle.normal, FontWeight.normal, points(12))

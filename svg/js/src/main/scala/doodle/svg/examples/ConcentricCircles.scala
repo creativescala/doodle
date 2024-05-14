@@ -17,13 +17,13 @@
 package doodle.svg.examples
 
 import cats.effect.IOApp
-import doodle.core._
-import doodle.svg._
-import doodle.syntax.all._
+import doodle.core.*
+import doodle.svg.*
+import doodle.syntax.all.*
 
 object ConcentricCircles extends IOApp.Simple {
   def circles(count: Int): Picture[Unit] =
-    if (count <= 0) Picture.empty
+    if count <= 0 then Picture.empty
     else
       Picture
         .circle(count.toDouble * 20.0)

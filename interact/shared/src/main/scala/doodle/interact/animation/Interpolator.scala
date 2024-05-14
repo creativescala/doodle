@@ -19,7 +19,7 @@ package interact
 package animation
 
 import cats.Invariant
-import cats.syntax.invariant._
+import cats.syntax.invariant.*
 import doodle.core.Angle
 import doodle.interact.easing.Easing
 
@@ -104,7 +104,7 @@ object Interpolator {
           stop: Double,
           steps: Long
       ): Transducer[Double] =
-        if (start == stop) Transducer.empty
+        if start == stop then Transducer.empty
         else
           new Transducer[Double] {
             // State is the current value and the number of steps
@@ -126,8 +126,8 @@ object Interpolator {
 
             def stopped(state: State): Boolean = {
               val (x, s) = state
-              if (s >= steps) true
-              else if (stop >= start) (x >= stop)
+              if s >= steps then true
+              else if stop >= start then (x >= stop)
               else (x <= stop)
             }
           }
@@ -138,7 +138,7 @@ object Interpolator {
           steps: Long,
           easing: Easing
       ): Transducer[Double] =
-        if (start == stop) Transducer.empty
+        if start == stop then Transducer.empty
         else
           new Transducer[Double] {
             // The state consists of a number between [0, 1) that we project to
@@ -167,7 +167,7 @@ object Interpolator {
 
             def stopped(state: State): Boolean = {
               val (x, s) = state
-              if (s >= steps) true
+              if s >= steps then true
               else (x >= 1.0)
             }
           }
@@ -177,7 +177,7 @@ object Interpolator {
           stop: Double,
           steps: Long
       ): Transducer[Double] =
-        if (start == stop) Transducer.pure(stop)
+        if start == stop then Transducer.pure(stop)
         else
           new Transducer[Double] {
             // State = (Current value, Steps, Error)
@@ -196,7 +196,7 @@ object Interpolator {
 
             def output(state: State): Double = {
               val (total, s, _) = state
-              if (s + 1 >= steps) stop
+              if s + 1 >= steps then stop
               else total
             }
 
@@ -212,7 +212,7 @@ object Interpolator {
           steps: Long,
           easing: Easing
       ): Transducer[Double] =
-        if (start == stop) Transducer.pure(stop)
+        if start == stop then Transducer.pure(stop)
         else
           new Transducer[Double] {
             // The state consists of a number between [0, 1] that we project to
@@ -237,7 +237,7 @@ object Interpolator {
 
             def output(state: State): Double = {
               val (total, s, _) = state
-              if (s + 1 >= steps) stop
+              if s + 1 >= steps then stop
               else project(total)
             }
 

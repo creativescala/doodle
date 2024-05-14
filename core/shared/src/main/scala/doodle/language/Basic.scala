@@ -17,7 +17,7 @@
 package doodle
 package language
 
-import doodle.algebra._
+import doodle.algebra.*
 
 trait Basic
     extends Algebra

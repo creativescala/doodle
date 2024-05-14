@@ -18,13 +18,13 @@ package doodle
 package image
 package examples
 
-import cats.instances.all._
-import doodle.core._
-import doodle.image.syntax.all._
-import doodle.syntax.all._
+import cats.instances.all.*
+import doodle.core.*
+import doodle.image.syntax.all.*
+import doodle.syntax.all.*
 
 object Koch {
-  import PathElement._
+  import PathElement.*
 
   def kochElements(
       depth: Int,
@@ -32,7 +32,7 @@ object Koch {
       angle: Angle,
       length: Double
   ): Seq[PathElement] = {
-    if (depth == 0) {
+    if depth == 0 then {
       Seq(lineTo(start + Vec.polar(length, angle)))
     } else {
       val lAngle = angle - 60.degrees

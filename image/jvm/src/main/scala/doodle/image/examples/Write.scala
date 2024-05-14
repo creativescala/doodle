@@ -20,12 +20,12 @@ package examples
 
 // Example that demonstrates writing to a file
 import cats.effect.unsafe.implicits.global
-import doodle.core._
-import doodle.core.format._
-import doodle.image.syntax.all._
-import doodle.java2d._
+import doodle.core.*
+import doodle.core.format.*
+import doodle.image.syntax.all.*
+import doodle.java2d.*
 import doodle.java2d.effect.Frame
-import doodle.syntax.all._
+import doodle.syntax.all.*
 
 object Write extends App {
   val frame = Frame.default.withSizedToPicture(20).withBackground(Color.black)

@@ -18,10 +18,10 @@ package doodle
 package image
 package examples
 
-import cats.syntax.all._
-import doodle.core._
-import doodle.random._
-import doodle.syntax.all._
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.random.*
+import doodle.syntax.all.*
 
 object DiffusionLimitedAggregation {
   def brownianMotion(start: Point, drift: Vec): Random[Point] =
@@ -74,10 +74,8 @@ object DiffusionLimitedAggregation {
         case 0 => Random.always(None)
         case _ =>
           point.flatMap { pt =>
-            if (isStuck(pt, stuck))
-              Random.always(Some(pt))
-            else
-              iter(step - 1, brownianMotion(pt, drift), drift)
+            if isStuck(pt, stuck) then Random.always(Some(pt))
+            else iter(step - 1, brownianMotion(pt, drift), drift)
           }
       }
 

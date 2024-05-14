@@ -20,13 +20,13 @@ package golden
 import cats.effect.unsafe.implicits.global
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
-import doodle.core.format._
+import doodle.core.format.*
 import doodle.effect.FileWriter
-import doodle.java2d._
-import munit._
+import doodle.java2d.*
+import munit.*
 
 trait GoldenPicture extends Golden { self: FunSuite =>
-  import doodle.syntax.all._
+  import doodle.syntax.all.*
 
   def assertGoldenPicture[Alg <: Algebra](
       name: String,
@@ -36,7 +36,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
     import java.io.File
     val file = new File(s"${goldenDir}/${name}.png")
 
-    if (file.exists()) {
+    if file.exists() then {
       val temp = new File(s"${goldenDir}/${name}.tmp.png")
 
       try {
@@ -44,7 +44,7 @@ trait GoldenPicture extends Golden { self: FunSuite =>
 
         imageDiff(file, temp)
       } finally {
-        if (temp.exists())
+        if temp.exists() then
           temp.delete()
           ()
       }

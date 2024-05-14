@@ -22,13 +22,13 @@ package reified
 import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.font.Font
-import doodle.core.{Transform => Tx}
+import doodle.core.{Transform as Tx}
 
 sealed abstract class Reified extends Product with Serializable {
   def transform: Tx
 }
 object Reified {
-  import PathElement._
+  import PathElement.*
 
   def transform(tx: Tx, elements: List[PathElement]): List[PathElement] =
     elements.map {
