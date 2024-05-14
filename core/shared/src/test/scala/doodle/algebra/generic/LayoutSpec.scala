@@ -149,17 +149,17 @@ object LayoutSpec extends Properties("Layout properties") {
       reified match {
         case List(StrokeRect(tx1, _, w1, h1), StrokeRect(tx2, _, w2, h2)) =>
           ((w1 ?= width) :| "Top width") &&
-            ((h1 ?= width) :| "Top height") &&
-            ((w2 ?= width) :| "Bottom width") &&
-            ((h2 ?= width) :| "Bottom height") &&
-            // The translation must account for the width of the line (1.0) in
-            // addition to the width of the shape.
-            ((tx1 ?= Tx.identity.andThen(
-              Transform.translate(0, (width + 1.0) / 2.0)
-            )) :| "Top transform") &&
-            ((tx2 ?= Tx.identity.andThen(
-              Transform.translate(0, -(width + 1.0) / 2.0)
-            )) :| "Bottom transform")
+          ((h1 ?= width) :| "Top height") &&
+          ((w2 ?= width) :| "Bottom width") &&
+          ((h2 ?= width) :| "Bottom height") &&
+          // The translation must account for the width of the line (1.0) in
+          // addition to the width of the shape.
+          ((tx1 ?= Tx.identity.andThen(
+            Transform.translate(0, (width + 1.0) / 2.0)
+          )) :| "Top transform") &&
+          ((tx2 ?= Tx.identity.andThen(
+            Transform.translate(0, -(width + 1.0) / 2.0)
+          )) :| "Bottom transform")
 
         case other =>
           falsified :| s"Reached a case with value ${other} which should not have happened"

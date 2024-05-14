@@ -310,8 +310,8 @@ trait SvgModule { self: Base =>
           builder ++= s"L ${format(end.x)},${format(end.y)} "
         case BezierCurveTo(cp1, cp2, end) =>
           builder ++= s"C ${format(cp1.x)},${format(cp1.y)} ${format(
-            cp2.x
-          )},${format(cp2.y)} ${format(end.x)},${format(end.y)} "
+              cp2.x
+            )},${format(cp2.y)} ${format(end.x)},${format(end.y)} "
       }
       pathType match {
         case Open   => builder.toString

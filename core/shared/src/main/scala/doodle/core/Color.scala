@@ -177,9 +177,9 @@ sealed abstract class Color extends Product with Serializable {
     (this.toRGBA, that.toRGBA) match {
       case (RGBA(r1, g1, b1, a1), RGBA(r2, g2, b2, a2)) =>
         Math.abs(r1 - r2) < 2 &&
-          Math.abs(g1 - g2) < 2 &&
-          Math.abs(b1 - b2) < 2 &&
-          Math.abs(a1 - a2) < 0.1
+        Math.abs(g1 - g2) < 2 &&
+        Math.abs(b1 - b2) < 2 &&
+        Math.abs(a1 - a2) < 0.1
     }
 
   def toHSLA: HSLA =

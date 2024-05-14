@@ -75,7 +75,7 @@ final case class Canvas(
   private def mouseClickCallback(tx: Transform): dom.MouseEvent => Unit =
     (evt: dom.MouseEvent) => {
       val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
-      val x = evt.clientX - rect.left; //x position within the element.
+      val x = evt.clientX - rect.left; // x position within the element.
       val y = evt.clientY - rect.top;
       mouseClickQueue
         .offer(tx(doodle.core.Point(x, y)))
@@ -89,7 +89,7 @@ final case class Canvas(
   private def mouseMoveCallback(tx: Transform): dom.MouseEvent => Unit =
     (evt: dom.MouseEvent) => {
       val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
-      val x = evt.clientX - rect.left; //x position within the element.
+      val x = evt.clientX - rect.left; // x position within the element.
       val y = evt.clientY - rect.top;
       mouseMoveQueue
         .offer(tx(doodle.core.Point(x, y)))

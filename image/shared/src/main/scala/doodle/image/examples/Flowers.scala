@@ -52,7 +52,7 @@ object Flowers {
   def square: Normalized => Image =
     (_: Normalized) => {
       // val alpha = (minAlpha.get + (r.get * (maxAlpha - minAlpha))).normalized
-      Image.rectangle(5, 5).noStroke //.fillColorTransform(_.alpha(alpha))
+      Image.rectangle(5, 5).noStroke // .fillColorTransform(_.alpha(alpha))
     }
 
   def point(
