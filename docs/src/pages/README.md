@@ -17,6 +17,12 @@ libraryDependencies += "org.creativescala" %% "doodle" % "@VERSION@"
 See the ScalaDoc @:api(doodle.index) for API documentation.
 
 
+## Community
+
+Join the [Creative Scala Discord][discord].
+[discord]: https://discord.gg/rRhcFbJxVG
+
+
 ## Quick Example
 
 The following example creates a Chessboard, by first creating a 2x2 board, then a 4x4 board from the 2x2 board, and finally the complete 8x8 board from the 4x4 board.

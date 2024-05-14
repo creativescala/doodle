@@ -33,6 +33,12 @@ Scala 2.13 users should use version 0.19.0.
 
 [creativescala]: http://creativescala.org/
 
+
+## Community
+
+Join the [Creative Scala Discord][discord].
+
+
 ## Acknowledgements
 
 Doodle was written by Noel Welsh with contributions from [the contributors listed by Github][github-contributors].
@@ -57,3 +63,5 @@ Thanks to the *amazing* Typelevel SBT plugin, documentation should be built on e
 ### Publishing
 
 Push a tag of the form `v0.14.0`. Make sure `tlBaseVersion` matches the base version you're trying to release.
+
+[discord]: https://discord.gg/rRhcFbJxVG
