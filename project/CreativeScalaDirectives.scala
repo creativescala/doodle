@@ -1,7 +1,7 @@
-import cats.data._
-import cats.implicits._
-import laika.ast._
-import laika.api.bundle._
+import cats.data.*
+import cats.implicits.*
+import laika.ast.*
+import laika.api.bundle.*
 
 object CreativeScalaDirectives extends DirectiveRegistry {
 
@@ -10,7 +10,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
 
   val divWithId: BlockDirectives.Directive =
     BlockDirectives.create("divWithId") {
-      import BlockDirectives.dsl._
+      import BlockDirectives.dsl.*
 
       attribute(0)
         .as[String]
@@ -25,7 +25,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
   // Parameters are id and then JS function to call
   val doodle: BlockDirectives.Directive =
     BlockDirectives.create("doodle") {
-      import BlockDirectives.dsl._
+      import BlockDirectives.dsl.*
 
       (attribute(0).as[String], attribute(1).as[String], cursor)
         .mapN { (id, js, _) =>
@@ -52,7 +52,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
   // caption: String. The caption for this image
   val figure: BlockDirectives.Directive =
     BlockDirectives.create("figure") {
-      import BlockDirectives.dsl._
+      import BlockDirectives.dsl.*
 
       (
         attribute("img").as[String].widen,
@@ -73,7 +73,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
 
   val footnote: BlockDirectives.Directive =
     BlockDirectives.create("footnote") {
-      import BlockDirectives.dsl._
+      import BlockDirectives.dsl.*
 
       (attribute(0).as[String], parsedBody).mapN { (id, body) =>
         Footnote(id, body)
@@ -86,7 +86,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
   // key: String. The name of the figure being referred to.
   val fref: SpanDirectives.Directive =
     SpanDirectives.create("fref") {
-      import SpanDirectives.dsl._
+      import SpanDirectives.dsl.*
 
       (attribute(0).as[String]).map { (key) => Text(s"Figure $key") }
     }
@@ -97,14 +97,14 @@ object CreativeScalaDirectives extends DirectiveRegistry {
   // key: String. The name of the footnote being referred to.
   val fnref: SpanDirectives.Directive =
     SpanDirectives.create("fnref") {
-      import SpanDirectives.dsl._
+      import SpanDirectives.dsl.*
 
       (attribute(0).as[String]).map { (key) => Text(s"Footnote $key") }
     }
 
   val script: BlockDirectives.Directive =
     BlockDirectives.create("script") {
-      import BlockDirectives.dsl._
+      import BlockDirectives.dsl.*
 
       (attribute(0).as[String]).map { (js) =>
         RawContent(NonEmptySet.one("html"), s"<script>$js</script>")
@@ -113,7 +113,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
 
   val solution: BlockDirectives.Directive =
     BlockDirectives.create("solution") {
-      import BlockDirectives.dsl._
+      import BlockDirectives.dsl.*
 
       parsedBody.map { body =>
         Section(Header(5, Text("Solution")), body)
@@ -126,14 +126,14 @@ object CreativeScalaDirectives extends DirectiveRegistry {
   // key: String. The name of the figure being referred to.
   val tref: SpanDirectives.Directive =
     SpanDirectives.create("tref") {
-      import SpanDirectives.dsl._
+      import SpanDirectives.dsl.*
 
       (attribute(0).as[String]).map { (key) => Text(s"Table $key") }
     }
 
   val compactNavBar: TemplateDirectives.Directive =
     TemplateDirectives.create("compactNavBar") {
-      import TemplateDirectives.dsl._
+      import TemplateDirectives.dsl.*
 
       val leftArrow = "←"
       val rightArrow = "→"
@@ -160,7 +160,7 @@ object CreativeScalaDirectives extends DirectiveRegistry {
 
   val nextPage: TemplateDirectives.Directive =
     TemplateDirectives.create("nextPage") {
-      import TemplateDirectives.dsl._
+      import TemplateDirectives.dsl.*
 
       val rightArrow = "→"
 
