@@ -36,7 +36,7 @@ trait GenericText[G[_]] extends Text {
       * usually want additional information. In particular we usually specify
       * the origin where we start rendering as the left-most point on the
       * baseline of the text (and text may descend below the baseline). This is
-      * difficult to calculate just from the Doodle bounding box, so we allows
+      * difficult to calculate just from the Doodle bounding box, so we allow
       * methods to return an additional piece of information that can be used to
       * layout the text.
       */
