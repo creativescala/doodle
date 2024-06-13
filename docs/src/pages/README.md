@@ -1,6 +1,6 @@
 # Doodle
 
-Doodle is a Scala library for 2D graphics, animation, data visualization, and creative coding. It runs in both the JVM, rendering via [Java2D][java2d], and the web browser using [SVG][svg].
+Doodle is a Scala library for 2D graphics, animation, data visualization, and creative coding. It runs in both the JVM, rendering via [Java2D][java2d], and the web browser using [SVG][svg] or the [Canvas][html-canvas].
 
 
 ## Getting Started
@@ -82,4 +82,5 @@ The Scala Plugin of IntelliJ still has an open bug which cannot resolve implicit
 
 [java2d]: https://en.wikipedia.org/wiki/Java_2D
 [svg]: https://en.wikipedia.org/wiki/SVG
+[html-canvas]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
 [expression-problem]: https://en.wikipedia.org/wiki/Expression_problem
