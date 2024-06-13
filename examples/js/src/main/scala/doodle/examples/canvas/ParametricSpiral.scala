@@ -33,11 +33,11 @@ package doodle.examples.canvas
  */
 
 import cats.effect.unsafe.implicits.global
-import doodle.canvas.{_, given}
-import doodle.core._
-import doodle.syntax.all._
+import doodle.canvas.{*, given}
+import doodle.core.*
+import doodle.syntax.all.*
 
-import scala.scalajs.js.annotation._
+import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("CanvasParametricSpiral")
 object ParametricSpiral {

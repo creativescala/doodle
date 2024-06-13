@@ -16,7 +16,7 @@
 
 package doodle.canvas
 
-import doodle.algebra._
+import doodle.algebra.*
 import doodle.effect.Renderer
 
 type Algebra = doodle.canvas.algebra.CanvasAlgebra
