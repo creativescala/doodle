@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Typelevel Laika" />
+    <title>Implementing a Backend</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script src="../main.js"></script>
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
+          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
+          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../svg/">Doodle SVG</a></li>
+          <li class="level1 nav-leaf"><a href="../canvas/">Doodle Canvas</a></li>
+          <li class="level1 nav-node"><a href="index.html">Developing Doodle</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Implementing a Backend</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="implementing-a-backend" class="title">Implementing a Backend</h1>
+            <p>This is a quick guide to implementing a backend. It assume familiarity with the major <a href="../concepts/">concepts</a> of Doodle.</p>
+            
+            <h2 id="code-organization" class="section">Code Organization</h2>
+            <p>The majority of the backend code should be in the package <code>doodle.&lt;backend&gt;.algebra</code>, with files in the corresponding directory. Here you&#39;ll implement all the algebras for your backend.</p>
+            <p>In <code>doodle.&lt;backend&gt;.effect</code> you should implement your <code>Frame</code>, <code>Canvas</code>, <code>Renderer</code>, and any other effect types.</p>
+            
+            <h2 id="drawing-type" class="section">Drawing Type</h2>
+            <p>Deciding on the <code>Drawing</code> type is the first step in implementing a backend. It must have the shape <code>F[A]</code>, where <code>A</code> is the value produced when drawing the drawing. You probably don&#39;t want to call it <code>Drawing</code>, because that name is used in the generic algebras you&#39;ll be extending. <code>&lt;Backend&gt;Drawing</code> is a good choice. This goes in the <code>algebra</code> package.</p>
+            
+            <h2 id="top-level-definitions" class="section">Top-level Definitions</h2>
+            <p>For ease of use, users should just be able to write</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.{*, </span><span class="identifier">given</span><span>}</span></code></pre>
+            <p>to use the backend.</p>
+            <p>In a file (usually called <code>package.scala</code>, though we don&#39;t use package objects any more in Scala 3) you should define all the types and values needed to use the backend. Something like the following. Make sure you add all the necessary constructors to the <code>Picture</code> object.</p>
+            <pre><code class="nohighlight"><span class="keyword">package</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;
+
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">algebra</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Renderer</span><span>
+
+</span><span class="keyword">type</span><span> </span><span class="type-name">Algebra</span><span> = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="identifier">algebra</span><span>.&lt;</span><span class="type-name">Backend</span><span>&gt;</span><span class="type-name">Algebra</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Canvas</span><span> = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Canvas</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Drawing</span><span>[</span><span class="type-name">A</span><span>] =
+  </span><span class="identifier">doodle</span><span>.</span><span class="identifier">algebra</span><span>.</span><span class="identifier">generic</span><span>.</span><span class="type-name">Finalized</span><span>[</span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="identifier">algebra</span><span>.&lt;</span><span class="type-name">Backend</span><span>&gt;</span><span class="type-name">Drawing</span><span>, </span><span class="type-name">A</span><span>]
+
+</span><span class="keyword">type</span><span> </span><span class="type-name">Frame</span><span> = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Frame</span><span>
+</span><span class="keyword">val</span><span> </span><span class="type-name">Frame</span><span> = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Frame</span><span>
+
+</span><span class="identifier">given</span><span> </span><span class="type-name">Renderer</span><span>[</span><span class="type-name">Algebra</span><span>, </span><span class="type-name">Frame</span><span>, </span><span class="type-name">Canvas</span><span>] = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="identifier">effect</span><span>.&lt;</span><span class="type-name">Backend</span><span>&gt;</span><span class="type-name">Renderer</span><span>
+
+</span><span class="keyword">type</span><span> </span><span class="type-name">Picture</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="identifier">doodle</span><span>.</span><span class="identifier">algebra</span><span>.</span><span class="type-name">Picture</span><span>[</span><span class="type-name">Algebra</span><span>, </span><span class="type-name">A</span><span>]
+</span><span class="keyword">object</span><span> </span><span class="type-name">Picture</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">BaseConstructor</span><span>, </span><span class="type-name">ShapeConstructor</span><span> {
+
+  </span><span class="keyword">type</span><span> </span><span class="type-name">Algebra</span><span> = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="type-name">Algebra</span><span>
+  </span><span class="keyword">type</span><span> </span><span class="type-name">Drawing</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="type-name">Drawing</span><span>[</span><span class="type-name">A</span><span>]
+}</span></code></pre>
+            
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

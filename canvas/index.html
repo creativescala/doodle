@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Doodle SVG</title>
+    <title>Doodle Canvas</title>
     
     
     <meta name="description" content="docs" />
@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="../effect/">←</a></p>
+    <nav id="topbar"><p><a href="../svg/">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="../canvas/">→</a></p></nav>
+<p><a href="../development/">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -52,8 +52,8 @@
           <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
           <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
           <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
-          <li class="level1 active nav-leaf"><a href="#">Doodle SVG</a></li>
-          <li class="level1 nav-leaf"><a href="../canvas/">Doodle Canvas</a></li>
+          <li class="level1 nav-leaf"><a href="../svg/">Doodle SVG</a></li>
+          <li class="level1 active nav-leaf"><a href="#">Doodle Canvas</a></li>
           <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
           <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
         </ul>
@@ -61,50 +61,36 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="doodle-svg" class="title">Doodle SVG</h1>
-            <p>Doodle SVG draws Doodle pictures to SVG, both in the browser using <a href="https://scala-js.org/">Scala JS</a> and to files on the JVM.</p>
+            <h1 id="doodle-canvas" class="title">Doodle Canvas</h1>
+            <p>The Canvas backend supports the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">HTML Canvas</a>. It currently supports the following algebras: <code>Debug</code>, <code>Layout</code>, <code>Path</code>, <code>Shape</code>, <code>Size</code>, <code>Style</code>, and <code>Transform</code>.</p>
             
             <h2 id="usage" class="section">Usage</h2>
             <p>Firstly, bring everything into scope</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">svg</span><span>.*</span></code></pre>
-            <p>Now what you can do depends on whether you are running in the browser or on the JVM.</p>
-            
-            <h3 id="running-in-the-browser" class="section">Running in the Browser</h3>
-            <p>In the browser you can draw a picture to SVG. To do this, construct a <code>Frame</code> with the <code>id</code> of the DOM element where you&#39;d like the picture drawn.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">canvas</span><span>.{*, </span><span class="identifier">given</span><span>}</span></code></pre>
+            <p>Construct a <code>Frame</code> with the <code>id</code> of the DOM element where you&#39;d like the picture drawn.</p>
             <p>For example, if you have the following element in your HTML</p>
-            <pre><code class="nohighlight"><span class="tag-punctuation">&lt;</span><span class="tag-name">div</span><span class="tag-punctuation"> </span><span class="attribute-name">id</span><span class="tag-punctuation">=</span><span class="string-literal">&quot;svg-root&quot;</span><span class="tag-punctuation">&gt;&lt;/</span><span class="tag-name">div</span><span class="tag-punctuation">&gt;</span></code></pre>
+            <pre><code class="nohighlight"><span class="tag-punctuation">&lt;</span><span class="tag-name">div</span><span class="tag-punctuation"> </span><span class="attribute-name">id</span><span class="tag-punctuation">=</span><span class="string-literal">&quot;canvas-root&quot;</span><span class="tag-punctuation">&gt;&lt;/</span><span class="tag-name">div</span><span class="tag-punctuation">&gt;</span></code></pre>
             <p>then you can create a <code>Frame</code> referring to it with</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">frame</span><span> = </span><span class="type-name">Frame</span><span>(</span><span class="string-literal">&quot;svg-root&quot;</span><span>)</span></code></pre>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">frame</span><span> = </span><span class="type-name">Frame</span><span>(</span><span class="string-literal">&quot;canvas-root&quot;</span><span>)</span></code></pre>
             <p>Now suppose you have a picture called <code>thePicture</code>. You can draw it using the frame you just created like so</p>
             <pre><code class="nohighlight"><span class="identifier">thePicture</span><span>.</span><span class="identifier">drawWithFrame</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
-            <p>The rendered SVG will appear where the element is positioned on your web page.</p>
+            <p>The rendered picture will appear where the element is positioned on your web page.</p>
             
-            <h2 id="running-on-the-jvm" class="section">Running on the JVM</h2>
-            <p>On the JVM you can&#39;t draw SVG to the screen. Use the <code>java2d</code> backend for that instead. However you can write SVG output in the usual way.</p>
+            <h2 id="frame" class="section">Frame</h2>
+            <p>The <code>Frame</code> must specify the <code>id</code> of the element where the drawing should be placed.
+            Additional options include the background color and the frame size. The frame size can either be determined by the size of the picture or a fixed size. The first case is the default, and includes a 20 pixel border. You can change this by calling <code>withSizedToPicture</code>. The picture will be drawn centered on the drawing area. A fixed size frame, specified with <code>withSize</code>, has the given size and the origin is set to the center of the drawing area. This means that pictures that are not centered a the origin will not be centered on the screen.</p>
             
             <h2 id="examples" class="section">Examples</h2>
-            <p>The source for these examples is <a href="https://github.com/creativescala/doodle-svg/tree/main/examples/src/main/scala">in the repository</a>.</p>
+            <p>The source for these examples is <a href="https://github.com/creativescala/doodle/tree/main/examples/src/main/scala/doodle/examples/canvas">in the repository</a>.</p>
             
             <h3 id="concentric-circles" class="section">Concentric Circles</h3>
             <div id="concentric-circles"></div>
-            <script>ConcentricCircles.draw("concentric-circles")</script>
-            
-            <h3 id="text-positioning" class="section">Text Positioning</h3>
-            <div id="text-positioning"></div>
-            <script>TextPositioning.draw("text-positioning")</script>
-            
-            <h3 id="doodle-logo" class="section">Doodle Logo</h3>
-            <div id="doodle-logo"></div>
-            <script>DoodleLogo.draw("doodle-logo")</script>
-            
-            <h3 id="pulsing-circle" class="section">Pulsing Circle</h3>
-            <div id="pulsing-circle"></div>
-            <script>PulsingCircle.draw("pulsing-circle")</script>
+            <script>CanvasConcentricCircles.draw("concentric-circles")</script>
             
             <h3 id="parametric-spiral" class="section">Parametric Spiral</h3>
             <div id="parametric-spiral"></div>
-            <script>ParametricSpiral.draw("parametric-spiral")</script>
-            <p class="nextPage"><a href="../canvas/">Doodle Canvas→</a></p>
+            <script>CanvasParametricSpiral.draw("parametric-spiral")</script>
+            <p class="nextPage"><a href="../development/">Developing Doodle→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
