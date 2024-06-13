@@ -129,6 +129,9 @@ object ClosedPath {
   def equilateralTriangle(width: Double): ClosedPath =
     ClosedPath(PathElement.equilateralTriangle(width))
 
+  def triangle(width: Double, height: Double): ClosedPath =
+    ClosedPath(PathElement.triangle(width, height))
+
   def rightArrow(width: Double, height: Double): ClosedPath =
     ClosedPath(PathElement.rightArrow(width, height))
 

@@ -7,7 +7,7 @@ Doodle SVG draws Doodle pictures to SVG, both in the browser using [Scala JS](ht
 Firstly, bring everything into scope
 
 ```scala 
-import doodle.svg._
+import doodle.svg.*
 ```
 
 Now what you can do depends on whether you are running in the browser or on the JVM.

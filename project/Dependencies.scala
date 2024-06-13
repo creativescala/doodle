@@ -10,6 +10,7 @@ object Dependencies {
   val fs2Version = "3.10.0"
 
   val scalatagsVersion = "0.12.0"
+  val scalajsDomVersion = "2.2.0"
 
   val batikVersion = "1.17"
 
@@ -25,6 +26,8 @@ object Dependencies {
   val fs2 = Def.setting("co.fs2" %%% "fs2-core" % fs2Version)
 
   val scalatags = Def.setting("com.lihaoyi" %%% "scalatags" % scalatagsVersion)
+  val scalajsDom =
+    Def.setting("org.scala-js" %%% "scalajs-dom" % scalajsDomVersion)
 
   val batik =
     Def.setting("org.apache.xmlgraphics" % "batik-transcoder" % batikVersion)

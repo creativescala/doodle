@@ -263,7 +263,11 @@ lazy val svg = crossProject(JSPlatform, JVMPlatform)
 
 lazy val canvas = project
   .in(file("canvas"))
-  .settings(commonSettings, moduleName := "doode-canvas")
+  .settings(
+    commonSettings,
+    libraryDependencies += Dependencies.scalajsDom.value,
+    moduleName := "doode-canvas"
+  )
   .dependsOn(core.js)
   .enablePlugins(ScalaJSPlugin)
 
@@ -296,6 +300,6 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
   )
   .jsConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(core.js, image.js, interact.js)
+      .dependsOn(core.js, canvas, image.js, interact.js)
   )
   .dependsOn(svg)
