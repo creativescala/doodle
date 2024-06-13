@@ -1,5 +1,8 @@
 # Doodle Canvas
 
+The Canvas backend supports the [HTML Canvas][html-canvas]. It currently supports the following algebras: `Debug`, `Layout`, `Path`, `Shape`, `Size`, `Style`, and `Transform`.
+
+
 ## Usage
 
 Firstly, bring everything into scope
@@ -50,3 +53,5 @@ The source for these examples is [in the repository](https://github.com/creative
 ### Parametric Spiral
 
 @:doodle("parametric-spiral", "CanvasParametricSpiral.draw")
+
+[html-canvas]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
