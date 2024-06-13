@@ -116,6 +116,9 @@ object OpenPath {
   def equilateralTriangle(width: Double): OpenPath =
     OpenPath(PathElement.equilateralTriangle(width))
 
+  def triangle(width: Double, height: Double): OpenPath =
+    OpenPath(PathElement.triangle(width, height))
+
   def rightArrow(width: Double, height: Double): OpenPath =
     OpenPath(PathElement.rightArrow(width, height))
 

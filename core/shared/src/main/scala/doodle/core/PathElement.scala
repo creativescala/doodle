@@ -269,6 +269,14 @@ object PathElement {
     )
   }
 
+  /** Construct an isoceles triangle with the given height and widht */
+  def triangle(width: Double, height: Double): List[PathElement] = {
+    val w = width / 2.0
+    val h = height / 2.0
+
+    List(moveTo(-w, -h), lineTo(0, h), lineTo(w, -h))
+  }
+
   /** Construct an arrow pointing to the right */
   def rightArrow(width: Double, height: Double): List[PathElement] = {
     val path = List(
