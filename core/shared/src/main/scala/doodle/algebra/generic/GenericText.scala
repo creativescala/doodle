@@ -50,6 +50,7 @@ trait GenericText[G[_]] extends Text {
         text: String,
         bounds: Bounds
     ): G[Unit]
+
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds)
   }
 
