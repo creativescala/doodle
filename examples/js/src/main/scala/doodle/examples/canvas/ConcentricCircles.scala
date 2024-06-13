@@ -17,16 +17,17 @@
 package doodle.examples.canvas
 
 import cats.effect.unsafe.implicits.global
-import doodle.canvas.{_, given}
-import doodle.core._
-import doodle.syntax.all._
+import doodle.canvas.{*, given}
+import doodle.core.*
+import doodle.syntax.all.*
 
-import scala.scalajs.js.annotation._
+import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("CanvasConcentricCircles")
 object ConcentricCircles {
   def circles(count: Int): Picture[Unit] =
-    if (count == 0) Picture.circle(20).fillColor(Color.hsl(0.degrees, 0.7, 0.6))
+    if count == 0 then
+      Picture.circle(20).fillColor(Color.hsl(0.degrees, 0.7, 0.6))
     else
       Picture
         .circle(count.toDouble * 20.0)

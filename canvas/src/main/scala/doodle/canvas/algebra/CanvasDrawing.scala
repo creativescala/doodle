@@ -38,7 +38,7 @@ import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
 
 import scala.scalajs.js
-import scala.scalajs.js.JSConverters._
+import scala.scalajs.js.JSConverters.*
 
 /** A canvas `Drawing` is a function that, when applied, produces a value of
   * type `A` and has the side-effect of drawing on the canvas.

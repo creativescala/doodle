@@ -20,7 +20,7 @@ import cats.Apply
 import cats.Eval
 import cats.Functor
 import cats.Monad
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import org.scalajs.dom.CanvasRenderingContext2D
 

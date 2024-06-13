@@ -72,7 +72,7 @@ object Canvas {
   def fromFrame(frame: Frame): IO[Canvas] = {
     IO {
       val target = dom.document.getElementById(frame.id)
-      if (target == null) {
+      if target == null then {
         throw new java.util.NoSuchElementException(
           s"Doodle Canvas could not be created, as could not find a DOM element with the requested id ${frame.id}"
         )
