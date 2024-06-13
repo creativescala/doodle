@@ -30,9 +30,15 @@ import doodle.core.PathElement.BezierCurveTo
 import doodle.core.PathElement.LineTo
 import doodle.core.PathElement.MoveTo
 import doodle.core.Transform
+import doodle.core.font.Font
+import doodle.core.font.FontFamily
+import doodle.core.font.FontSize
+import doodle.core.font.FontStyle
+import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
+
 import scala.scalajs.js
-import scala.scalajs.js.JSConverters.*
+import scala.scalajs.js.JSConverters._
 
 /** A canvas `Drawing` is a function that, when applied, produces a value of
   * type `A` and has the side-effect of drawing on the canvas.
@@ -121,6 +127,35 @@ object CanvasDrawing {
       }
     }
   }
+
+  def setFont(font: Font): CanvasDrawing[Unit] =
+    CanvasDrawing { ctx =>
+      val fontStyle =
+        font.style match {
+          case FontStyle.Italic => "italic"
+          case FontStyle.Normal => ""
+        }
+
+      val fontWeight =
+        font.weight match {
+          case FontWeight.Normal => "normal"
+          case FontWeight.Bold   => "bold"
+        }
+
+      val fontSize =
+        font.size match {
+          case FontSize.Points(pts) => s"${pts}pt"
+        }
+
+      val fontFamily = font.family match {
+        case FontFamily.Serif      => "serif"
+        case FontFamily.SansSerif  => "sans-serif"
+        case FontFamily.Monospaced => "monospace"
+        case FontFamily.Named(get) => get
+      }
+
+      ctx.font = s"$fontStyle $fontWeight $fontSize $fontFamily"
+    }
 
   def setStroke(stroke: Option[Stroke]): CanvasDrawing[Unit] =
     stroke.map(setStroke).getOrElse(unit)
