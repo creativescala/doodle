@@ -5,12 +5,12 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport.*
 
 object Dependencies {
   // Library Versions
-  val catsVersion = "2.10.0"
+  val catsVersion = "2.12.0"
   val catsEffectVersion = "3.5.4"
-  val fs2Version = "3.10.0"
+  val fs2Version = "3.10.2"
 
-  val scalatagsVersion = "0.12.0"
-  val scalajsDomVersion = "2.2.0"
+  val scalatagsVersion = "0.13.1"
+  val scalajsDomVersion = "2.8.0"
 
   val batikVersion = "1.17"
 
