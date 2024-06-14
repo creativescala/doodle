@@ -2,6 +2,8 @@
 
 ## NEXT
 
+- Add HTML Canvas backend. It currently have fairly limited functionality.
+
 - Add `size` method to set bounding box width and height. Distinguished by the
   existing `size` method on `Size` by it's arguments. (#158)
 
