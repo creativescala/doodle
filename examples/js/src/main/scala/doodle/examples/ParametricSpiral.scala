@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
+package doodle.examples
+
 import cats.effect.unsafe.implicits.global
+import doodle.algebra.*
 import doodle.core.*
-import doodle.svg.*
 import doodle.syntax.all.*
 
-import scala.scalajs.js.annotation.*
-
-@JSExportTopLevel("ParametricSpiral")
-object ParametricSpiral {
+trait ParametricSpiral[Alg <: Layout & Shape & Style] {
 
   def parametricSpiral(angle: Angle): Point =
     Point((Math.exp(angle.toTurns) - 1) * 200, angle)
 
   def drawCurve(
       points: Int,
-      marker: Point => Picture[Unit],
+      marker: Point => Picture[Alg, Unit],
       curve: Angle => Point
-  ): Picture[Unit] = {
+  ): Picture[Alg, Unit] = {
     // Angle.one is one complete turn. I.e. 360 degrees
     val turn = Angle.one / points.toDouble
-    def loop(count: Int): Picture[Unit] = {
+    def loop(count: Int): Picture[Alg, Unit] = {
       count match {
         case 0 =>
           val pt = curve(Angle.zero)
@@ -48,14 +47,11 @@ object ParametricSpiral {
     loop(points)
   }
 
-  @JSExport
-  def draw(id: String): Unit = {
-    val marker = (point: Point) =>
-      Picture
-        .circle(point.r * 0.125 + 7)
-        .fillColor(Color.red.spin(point.angle / 4.0))
-        .noStroke
+  val marker = (point: Point) =>
+    circle(point.r * 0.125 + 7)
+      .fillColor(Color.red.spin(point.angle / 4.0))
+      .noStroke
 
-    drawCurve(20, marker, parametricSpiral _).drawWithFrame(Frame(id))
-  }
+  val picture =
+    drawCurve(20, marker, parametricSpiral _)
 }

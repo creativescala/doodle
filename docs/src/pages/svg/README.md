@@ -60,4 +60,4 @@ The source for these examples is [in the repository](https://github.com/creative
 @:doodle("pulsing-circle", "PulsingCircle.draw")
 
 ### Parametric Spiral
-@:doodle("parametric-spiral", "ParametricSpiral.draw")
+@:doodle("parametric-spiral", "SvgParametricSpiral.draw")
