@@ -163,7 +163,9 @@
               <img src="rolling-circles.png" alt="Five circles with different bounding boxes" title="Five circles with different bounding boxes">
             </div>
             <p>We can directly adjust the size of the bounding box using <code>size</code>, which sets the width and height of the bounding box to the given values. These values must be non-negative, and the resulting bounding box distributes the width and height equally between the left and right, and top and bottom, respectively. Here&#39;s an example where we set the width and height to different values, and use <code>debug</code> to draw the resulting bounding boxes.</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">rollingCirclesSize</span><span> =
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">circle</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">50</span><span>)
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">rollingCirclesSize</span><span> =
   </span><span class="identifier">circle</span><span>
     .</span><span class="identifier">size</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">25</span><span>)
     .</span><span class="identifier">debug</span><span>
@@ -175,8 +177,7 @@
               <img src="rolling-circles-size.png" alt="Five circles with different bounding boxes" title="Five circles with different bounding boxes">
             </div>
             <p>To adjust the existing bounding box we can use <code>margin</code>. This allows us to add extra space around a picture or, with a negative margin, to have a picture that overflows its bounding box. Here&#39;s an example that uses the form of <code>margin</code> that adjusts both the width and height of the bounding box. There are other variants that allow us to adjust the width and the height separately, or adjust all four edges independently.</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">circle</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">50</span><span>)
-</span><span class="keyword">val</span><span> </span><span class="identifier">rollingCirclesMargin</span><span> =
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">rollingCirclesMargin</span><span> =
   </span><span class="identifier">circle</span><span>
     .</span><span class="identifier">margin</span><span>(</span><span class="number-literal">25</span><span>)
     .</span><span class="identifier">debug</span><span>
