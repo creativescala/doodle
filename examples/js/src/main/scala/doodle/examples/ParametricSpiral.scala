@@ -16,7 +16,6 @@
 
 package doodle.examples
 
-import cats.effect.unsafe.implicits.global
 import doodle.algebra.*
 import doodle.core.*
 import doodle.syntax.all.*
