@@ -34,8 +34,8 @@ trait Shape extends GenericShape[CanvasDrawing] {
         height: Double
     ): CanvasDrawing[Unit] =
       CanvasDrawing.setTransform(tx) >>
-        CanvasDrawing.withFill(fill) {
-          CanvasDrawing.withStroke(stroke) {
+        CanvasDrawing.withStroke(stroke) {
+          CanvasDrawing.withFill(fill) {
             CanvasDrawing.rectangle(width, height)
           }
         }
@@ -48,8 +48,8 @@ trait Shape extends GenericShape[CanvasDrawing] {
         height: Double
     ): CanvasDrawing[Unit] =
       CanvasDrawing.setTransform(tx) >>
-        CanvasDrawing.withFill(fill) {
-          CanvasDrawing.withStroke(stroke) {
+        CanvasDrawing.withStroke(stroke) {
+          CanvasDrawing.withFill(fill) {
             CanvasDrawing.closedPath(ClosedPath.triangle(width, height))
           }
         }
@@ -61,8 +61,8 @@ trait Shape extends GenericShape[CanvasDrawing] {
         diameter: Double
     ): CanvasDrawing[Unit] =
       CanvasDrawing.setTransform(tx) >>
-        CanvasDrawing.withFill(fill) {
-          CanvasDrawing.withStroke(stroke) {
+        CanvasDrawing.withStroke(stroke) {
+          CanvasDrawing.withFill(fill) {
             CanvasDrawing.closedPath(ClosedPath.circle(Point.zero, diameter))
           }
         }
