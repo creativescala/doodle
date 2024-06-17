@@ -71,12 +71,12 @@
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">hut</span><span> = 
-    </span><span class="type-name">Picture</span><span>
-        .</span><span class="identifier">triangle</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>)
-        .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
-        .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
-        .</span><span class="identifier">above</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>))
+</span><span class="keyword">val</span><span> </span><span class="identifier">hut</span><span> =
+  </span><span class="type-name">Picture</span><span>
+    .</span><span class="identifier">triangle</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>)
+    .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+    .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
+    .</span><span class="identifier">above</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="number-literal">50</span><span>, </span><span class="number-literal">50</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>))
 
 </span><span class="keyword">val</span><span> </span><span class="identifier">rotatedHut</span><span> = </span><span class="identifier">hut</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">scaledHut</span><span> = </span><span class="identifier">hut</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">1.5</span><span>, </span><span class="number-literal">1.5</span><span>)
