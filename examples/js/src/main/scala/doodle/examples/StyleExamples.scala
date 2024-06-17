@@ -23,7 +23,8 @@ import doodle.syntax.all.*
 /** All the examples from the Style documentation page, written in a backend
   * independent style.
   */
-trait StyleExamples[Alg <: Debug & Layout & Path & Shape & Style] {
+trait StyleExamples[Alg <: Debug & Layout & Path & Shape & Style]
+    extends BaseExamples[Alg] {
   val basicStyle =
     circle(100)
       .beside(
@@ -76,12 +77,4 @@ trait StyleExamples[Alg <: Debug & Layout & Path & Shape & Style] {
       strokeStyle,
       fillStyle
     )
-
-  // All the pictures as one picture
-  val all =
-    allPictures.tail
-      .foldLeft(allPictures.head) { (accum, elt) =>
-        accum.above(elt.margin(20, 0, 0, 0))
-      }
-      .margin(20)
 }
