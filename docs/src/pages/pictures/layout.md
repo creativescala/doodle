@@ -145,6 +145,8 @@ The `size` and `margin` methods allow direct manipulation of the bounding box. W
 We can directly adjust the size of the bounding box using `size`, which sets the width and height of the bounding box to the given values. These values must be non-negative, and the resulting bounding box distributes the width and height equally between the left and right, and top and bottom, respectively. Here's an example where we set the width and height to different values, and use `debug` to draw the resulting bounding boxes.
 
 ```scala mdoc:silent
+val circle = Picture.circle(50)
+
 val rollingCirclesSize =
   circle
     .size(100, 25)
@@ -163,7 +165,6 @@ val rollingCirclesSize =
 To adjust the existing bounding box we can use `margin`. This allows us to add extra space around a picture or, with a negative margin, to have a picture that overflows its bounding box. Here's an example that uses the form of `margin` that adjusts both the width and height of the bounding box. There are other variants that allow us to adjust the width and the height separately, or adjust all four edges independently.
 
 ```scala mdoc:silent
-val circle = Picture.circle(50)
 val rollingCirclesMargin =
   circle
     .margin(25)
