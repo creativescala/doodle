@@ -112,8 +112,11 @@ object CanvasDrawing {
       )
     }
 
-  def rectangle(width: Double, height: Double): CanvasDrawing[Unit] =
-    CanvasDrawing(ctx => ctx.rect(0, 0, width, height))
+  def rectangle(width: Double, height: Double): CanvasDrawing[Unit] = {
+    val w = width / 2.0
+    val h = height / 2.0
+    CanvasDrawing(ctx => ctx.rect(-w, -h, width, height))
+  }
 
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
