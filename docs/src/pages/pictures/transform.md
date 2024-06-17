@@ -11,12 +11,12 @@ import doodle.core.*
 import doodle.java2d.*
 import doodle.syntax.all.*
 
-val hut = 
-    Picture
-        .triangle(50, 50)
-        .fillColor(Color.black)
-        .strokeColor(Color.red)
-        .above(Picture.rectangle(50, 50).fillColor(Color.blue))
+val hut =
+  Picture
+    .triangle(50, 50)
+    .fillColor(Color.black)
+    .strokeColor(Color.red)
+    .above(Picture.rectangle(50, 50).fillColor(Color.blue))
 
 val rotatedHut = hut.rotate(45.degrees)
 val scaledHut = hut.scale(1.5, 1.5)
