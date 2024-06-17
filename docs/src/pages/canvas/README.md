@@ -42,7 +42,7 @@ Additional options include the background color and the frame size. The frame si
 
 ## Examples
 
-The source for these examples is [in the repository](https://github.com/creativescala/doodle/tree/main/examples/src/main/scala/doodle/examples/canvas).
+The source for these examples is [in the repository](https://github.com/creativescala/doodle/tree/main/examples/js/src/main/scala/doodle/examples/canvas).
 
 
 ### Concentric Circles
