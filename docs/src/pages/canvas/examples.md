@@ -9,3 +9,10 @@ The source for these examples is [in the repository](https://github.com/creative
 Examples from the [Layout](../pictures/layout.md) documentation.
 
 @:doodle("layout-examples", "CanvasLayoutExamples.draw")
+
+
+## Style
+
+Examples from the [Style](../pictures/style.md) documentation.
+
+@:doodle("style-examples", "CanvasStyleExamples.draw")
