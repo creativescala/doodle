@@ -12,7 +12,7 @@ object CanvasFrameBackground {
   @JSExport
   def draw(id: String): Unit = {
     Picture.empty.drawWithFrame(
-      Frame(id).withBackground(Color.midnightBlue).withSize(300, 300)
+      Frame(id).withBackground(Color.midnightBlue).withSize(150, 150)
     )
   }
 }

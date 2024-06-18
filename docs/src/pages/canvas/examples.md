@@ -15,6 +15,6 @@ The source for these examples is [in the repository](https://github.com/creative
 
 ## Frame Background
 
-This example merely checks that the frame background is correctly interpreted. There should be a dark blue square below.
+This example merely checks that the frame background is correctly interpreted. There should be a dark blue square.
 
 @:doodle("frame-background", "CanvasFrameBackground.draw")
