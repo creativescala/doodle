@@ -56,11 +56,16 @@ final case class Canvas(target: dom.Node, frame: Frame) {
               )
 
           case Size.FixedSize(width, height) =>
-            canvas.setAttribute("width", width.toString)
-            canvas.setAttribute("height", height.toString)
+            canvas.width = width.toInt
+            canvas.height = height.toInt
 
             Transform.logicalToScreen(width, height)
         }
+
+      frame.background.foreach { color =>
+        ctx.fillStyle = CanvasDrawing.colorToCSS(color)
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
 
       val drawing = rdr.runA(tx).value
       val a = drawing(ctx)

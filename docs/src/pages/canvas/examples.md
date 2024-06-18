@@ -11,3 +11,10 @@ The source for these examples is [in the repository](https://github.com/creative
 ## Parametric Spiral
 
 @:doodle("parametric-spiral", "CanvasParametricSpiral.draw")
+
+
+## Frame Background
+
+This example merely checks that the frame background is correctly interpreted. There should be a dark blue square below.
+
+@:doodle("frame-background", "CanvasFrameBackground.draw")
