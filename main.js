@@ -4169,7 +4169,7 @@ $h_Ldoodle_examples_canvas_CanvasFrameBackground$.prototype = $c_Ldoodle_example
 $c_Ldoodle_examples_canvas_CanvasFrameBackground$.prototype.draw__T__V = (function(id) {
   var this$2 = $m_Ldoodle_syntax_package$all$();
   var picture = new $c_Ldoodle_algebra_ShapeConstructor$$anon$5();
-  new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$2, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($n($m_Ldoodle_canvas_effect_Frame$().apply__T__Ldoodle_canvas_effect_Frame(id)).withBackground__Ldoodle_core_Color__Ldoodle_canvas_effect_Frame($m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_midnightBlue)).withSize__D__D__Ldoodle_canvas_effect_Frame(300.0, 300.0), $m_Ldoodle_canvas_package$package$().given_Renderer_Algebra_Frame_Canvas__Ldoodle_effect_Renderer(), $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
+  new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$2, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($n($m_Ldoodle_canvas_effect_Frame$().apply__T__Ldoodle_canvas_effect_Frame(id)).withBackground__Ldoodle_core_Color__Ldoodle_canvas_effect_Frame($m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_midnightBlue)).withSize__D__D__Ldoodle_canvas_effect_Frame(150.0, 150.0), $m_Ldoodle_canvas_package$package$().given_Renderer_Algebra_Frame_Canvas__Ldoodle_effect_Renderer(), $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
 $c_Ldoodle_examples_canvas_CanvasFrameBackground$.prototype.draw = (function(arg) {
   var prep0 = $as_T(arg);
