@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Algebras</title>
+    <title>Layout Examples</title>
     
     
     <meta name="description" content="docs" />
@@ -20,20 +20,20 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="principles.html">←</a></p>
+    <nav id="topbar"><p><a href="examples.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="drawing-picture.html">→</a></p></nav>
+<p><a href="style-examples.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
-          <li class="level1 nav-node"><a href="index.html">Core Concepts</a></li>
-          <li class="level2 nav-leaf"><a href="principles.html">Principles</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2 nav-leaf"><a href="picture-object.html">Picture Object</a></li>
-          <li class="level2 nav-leaf"><a href="syntax.html">Syntax</a></li>
-          <li class="level2 nav-leaf"><a href="frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2 nav-leaf"><a href="effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
           <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
           <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
           <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
@@ -53,10 +53,10 @@
           <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
           <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
           <li class="level1 nav-leaf"><a href="../svg/">Doodle SVG</a></li>
-          <li class="level1 nav-node"><a href="../canvas/">Doodle Canvas</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+          <li class="level1 nav-node"><a href="index.html">Doodle Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Layout Examples</a></li>
+          <li class="level2 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
           <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
           <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
         </ul>
@@ -64,14 +64,11 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="algebras" class="title">Algebras</h1>
-            <p>The majority of the functionality in Doodle is provided by algebras. Algebras are essentially interfaces describing pieces of functionality. A very simple example of an algebra is <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a>. It provides the functionality to create basic geometric shapes, like circles and squares.</p>
-            <p>Different backends offer different combinations of algebras, reflecting the different features they have available.</p>
-            
-            <h2 id="implementation" class="section">Implementation</h2>
-            <p>All algebras extend <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Algebra.html">Algebra</a>. One role of <code>Algebra</code> is to serve as a marker that a trait is intended to be an algebra in the Doodle sense. <code>Algebra</code> also defines a type member <code>Drawing[_]</code>, which corresponds to the type of value produced when a concrete algebra is used to create a picture. This is described in more detail in the next section.</p>
-            <p>You usually don&#39;t deal directly with algebras, instead working with the easier to use <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Picture.html">Picture</a> type, which is described in the next section.</p>
-            <p class="nextPage"><a href="drawing-picture.html">Picture and Drawing→</a></p>
+            <h1 id="layout-examples" class="title">Layout Examples</h1>
+            <p>Examples from the <a href="../pictures/layout.html">Layout</a> documentation.</p>
+            <div id="layout-examples"></div>
+            <script>CanvasLayoutExamples.draw("layout-examples")</script>
+            <p class="nextPage"><a href="style-examples.html">Style Examples→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>

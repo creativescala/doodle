@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Canvas Examples</title>
+    <title>Miscellaneous Examples</title>
     
     
     <meta name="description" content="docs" />
@@ -22,7 +22,7 @@
 <body>
     <nav id="topbar"><p><a href="index.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="../development/">→</a></p></nav>
+<p><a href="layout-examples.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -54,7 +54,9 @@
           <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
           <li class="level1 nav-leaf"><a href="../svg/">Doodle SVG</a></li>
           <li class="level1 nav-node"><a href="index.html">Doodle Canvas</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Canvas Examples</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Miscellaneous Examples</a></li>
+          <li class="level2 nav-leaf"><a href="layout-examples.html">Layout Examples</a></li>
+          <li class="level2 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
           <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
           <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
         </ul>
@@ -62,20 +64,17 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="canvas-examples" class="title">Canvas Examples</h1>
-            <p>This page has examples of pictures rendered using the Canvas backend.
-            The source for these examples is <a href="https://github.com/creativescala/doodle/tree/main/examples/js/src/main/scala/doodle/examples/canvas">in the repository</a>.</p>
+            <h1 id="miscellaneous-examples" class="title">Miscellaneous Examples</h1>
+            <p>The source for these examples is <a href="https://github.com/creativescala/doodle/tree/main/examples/js/src/main/scala/doodle/examples/canvas">in the repository</a>.</p>
             
-            <h2 id="layout" class="section">Layout</h2>
-            <p>Examples from the <a href="../pictures/layout.html">Layout</a> documentation.</p>
-            <div id="layout-examples"></div>
-            <script>CanvasLayoutExamples.draw("layout-examples")</script>
+            <h2 id="concentric-circles" class="section">Concentric Circles</h2>
+            <div id="concentric-circles"></div>
+            <script>CanvasConcentricCircles.draw("concentric-circles")</script>
             
-            <h2 id="style" class="section">Style</h2>
-            <p>Examples from the <a href="../pictures/style.html">Style</a> documentation.</p>
-            <div id="style-examples"></div>
-            <script>CanvasStyleExamples.draw("style-examples")</script>
-            <p class="nextPage"><a href="../development/">Developing Doodle→</a></p>
+            <h2 id="parametric-spiral" class="section">Parametric Spiral</h2>
+            <div id="parametric-spiral"></div>
+            <script>CanvasParametricSpiral.draw("parametric-spiral")</script>
+            <p class="nextPage"><a href="layout-examples.html">Layout Examples→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
