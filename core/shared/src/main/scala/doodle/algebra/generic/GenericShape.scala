@@ -33,6 +33,7 @@ trait GenericShape[G[_]] extends Shape {
         width: Double,
         height: Double
     ): G[Unit]
+
     def triangle(
         tx: Tx,
         fill: Option[Fill],
@@ -51,7 +52,7 @@ trait GenericShape[G[_]] extends Shape {
 
   def ShapeApi: ShapeApi
 
-  def rectangle(width: Double, height: Double): Finalized[G, Unit] =
+  def rectangle(width: Double, height: Double): Finalized[G, Unit] = {
     Finalized.leaf { dc =>
       val strokeWidth = dc.strokeWidth.getOrElse(0.0)
       val bb = BoundingBox.centered(strokeWidth + width, strokeWidth + height)
@@ -62,6 +63,7 @@ trait GenericShape[G[_]] extends Shape {
         )
       )
     }
+  }
 
   def square(width: Double): Finalized[G, Unit] =
     rectangle(width, width)

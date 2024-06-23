@@ -5,7 +5,7 @@ The source for these examples is [in the repository](https://github.com/creative
 
 ## Concentric Circles
 
-@:doodle("concentric-circles", "CanvasConcentricCircles.draw")
+@:doodle("Example1", "Example1.draw")
 
 
 ## Parametric Spiral
