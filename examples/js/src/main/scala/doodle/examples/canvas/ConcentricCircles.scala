@@ -23,33 +23,18 @@ import doodle.syntax.all.*
 
 import scala.scalajs.js.annotation.*
 
-// @JSExportTopLevel("Example1")
-// object ConcentricCircles {
-//   def circles(count: Int): Picture[Unit] =
-//     if count == 0 then
-//       Picture.circle(20).fillColor(Color.hsl(0.degrees, 0.7, 0.6))
-//     else
-//       Picture
-//         .circle(count.toDouble * 20.0)
-//         .fillColor(Color.hsl((count * 15).degrees, 0.7, 0.6))
-//         .under(circles(count - 1))
-
-//   @JSExport
-//   def draw(mount: String) =
-//     circles(7).drawWithFrame(Frame(mount))
-// }
-
-@JSExportTopLevel("Example1")
-object Rectangle {
-  val rect = Picture.rectangle(50, 50).fillColor(Color.red)
-  val cir = Picture.circle(50).fillColor(Color.blue)
-  val cir2 = Picture.circle(50).fillColor(Color.green)
-
-  val joint = rect.beside(cir).beside(cir2)
-
-  val bruh = raster(10,10)
+@JSExportTopLevel("CanvasConcentricCircles")
+object ConcentricCircles {
+  def circles(count: Int): Picture[Unit] =
+    if count == 0 then
+      Picture.circle(20).fillColor(Color.hsl(0.degrees, 0.7, 0.6))
+    else
+      Picture
+        .circle(count.toDouble * 20.0)
+        .fillColor(Color.hsl((count * 15).degrees, 0.7, 0.6))
+        .under(circles(count - 1))
 
   @JSExport
   def draw(mount: String) =
-    joint.drawWithFrame(Frame(mount))
+    circles(7).drawWithFrame(Frame(mount))
 }

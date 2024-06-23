@@ -32,14 +32,13 @@ trait Shape extends GenericShape[CanvasDrawing] {
         stroke: Option[Stroke],
         width: Double,
         height: Double
-    ): CanvasDrawing[Unit] = {
+    ): CanvasDrawing[Unit] =
       CanvasDrawing.setTransform(tx) >>
         CanvasDrawing.withStroke(stroke) {
           CanvasDrawing.withFill(fill) {
             CanvasDrawing.rectangle(width, height)
           }
         }
-    }
 
     def triangle(
         tx: Tx,
@@ -47,15 +46,13 @@ trait Shape extends GenericShape[CanvasDrawing] {
         stroke: Option[Stroke],
         width: Double,
         height: Double
-    ): CanvasDrawing[Unit] = {
-      println("Inside triangle here")
+    ): CanvasDrawing[Unit] =
       CanvasDrawing.setTransform(tx) >>
         CanvasDrawing.withStroke(stroke) {
           CanvasDrawing.withFill(fill) {
             CanvasDrawing.closedPath(ClosedPath.triangle(width, height))
           }
         }
-    }
 
     def circle(
         tx: Tx,

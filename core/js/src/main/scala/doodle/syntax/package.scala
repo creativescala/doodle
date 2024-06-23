@@ -16,8 +16,6 @@
 
 package doodle
 
-import java.awt.image.Raster
-
 package object syntax {
   object all
       extends AngleSyntax
