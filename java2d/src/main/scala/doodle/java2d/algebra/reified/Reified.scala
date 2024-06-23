@@ -99,6 +99,9 @@ sealed abstract class Reified extends Product with Serializable {
 
       case Text(tx, _, stroke, text, font, bounds) =>
         ctx.text(gc)(tx.andThen(finalTransform), stroke, text, font, bounds)
+
+      // case Raster[A](width, height)(f: A => Unit) =>
+      //   ctx.raster(gc)(width, height)(f)
     }
 }
 object Reified {
@@ -173,6 +176,11 @@ object Reified {
       bounds: Rectangle2D
   ) extends Reified
 
+  // final case class Raster[A](
+  //   width: Int, 
+  //   height: Int)
+  // (f: A => Unit) extends Reified 
+
   def fillRect(
       transform: Tx,
       fill: Fill,
@@ -239,4 +247,7 @@ object Reified {
       bounds: Rectangle2D
   ): Reified =
     Text(transform, fill, stroke, text, font, bounds)
+
+  // def raster[A](width: Int, height: Int)(f: A => Unit): Reified =
+  //   Raster(width, height)(f)
 }

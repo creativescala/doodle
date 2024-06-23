@@ -20,21 +20,19 @@ import cats.effect.unsafe.implicits.global
 import doodle.canvas.{*, given}
 import doodle.core.*
 import doodle.syntax.all.*
+import doodle.image.*
 
 import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("CanvasConcentricCircles")
 object ConcentricCircles {
-  def circles(count: Int): Picture[Unit] =
-    if count == 0 then
-      Picture.circle(20).fillColor(Color.hsl(0.degrees, 0.7, 0.6))
-    else
-      Picture
-        .circle(count.toDouble * 20.0)
-        .fillColor(Color.hsl((count * 15).degrees, 0.7, 0.6))
-        .under(circles(count - 1))
+  
+  def rect1 = Image.rectangle(100, 100).fillColor(Color.red)
+  def rect2 = Image.rectangle(100, 100).fillColor(Color.blue)
+
+  val joint = rect1.beside(rect2).raster(10,20)
 
   @JSExport
   def draw(mount: String) =
-    circles(7).drawWithFrame(Frame(mount))
+    joint.drawWithFrame(Frame(mount))
 }

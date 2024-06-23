@@ -24,6 +24,7 @@ trait Basic
     with Debug
     with Layout
     with Path
+    with Raster
     with Shape
     with Size
     with Style

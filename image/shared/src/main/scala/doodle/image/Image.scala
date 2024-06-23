@@ -178,6 +178,7 @@ object Image {
     final case class ClosedPath(path: doodle.core.ClosedPath) extends Image
     final case class Text(get: String) extends Image
     final case class Circle(d: Double) extends Image
+    final case class Raster[A](w: Int, h: Int, f: A => Unit) extends Image
     final case class Rectangle(w: Double, h: Double) extends Image
     final case class Triangle(w: Double, h: Double) extends Image
     // final case class Draw(w: Double, h: Double, f: Canvas => Unit) extends Image
@@ -239,6 +240,9 @@ object Image {
 
   def pie(diameter: Double, angle: Angle): Image =
     path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle))
+
+  def raster[A](width: Int, height: Int)(f: A => Unit): Image =
+    Raster(width, height, f)  
 
   def rectangle(width: Double, height: Double): Image =
     Rectangle(width, height)
@@ -311,6 +315,8 @@ object Image {
 
           case Circle(d) =>
             algebra.circle(d)
+          case Raster(w, h, f) =>
+            algebra.raster(w, h)(f)
           case Rectangle(w, h) =>
             algebra.rectangle(w, h)
           case Triangle(w, h) =>

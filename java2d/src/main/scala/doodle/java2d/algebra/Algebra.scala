@@ -37,10 +37,12 @@ final case class Algebra(
     with Java2dFromBase64
     with ReifiedBitmap
     with ReifiedPath
+    //with ReifiedRaster
     with ReifiedShape
     with ReifiedText
     with GenericDebug[Reification]
     with GenericLayout[Reification]
+    with GenericRaster[Reification]
     with GenericSize[Reification]
     with GenericStyle[Reification]
     with GenericTransform[Reification]
