@@ -27,7 +27,6 @@ package object syntax {
       with LayoutSyntax
       with NormalizedSyntax
       with PathSyntax
-      with RasterSyntax
       with RendererSyntax
       with ShapeSyntax
       with SizeSyntax
@@ -47,7 +46,6 @@ package object syntax {
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
-  object raster extends RasterSyntax
   object renderer extends RendererSyntax
   object shape extends ShapeSyntax
   object size extends SizeSyntax
