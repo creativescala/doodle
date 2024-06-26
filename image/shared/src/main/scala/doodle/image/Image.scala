@@ -315,8 +315,6 @@ object Image {
 
           case Circle(d) =>
             algebra.circle(d)
-          // case Raster(w, h, f) =>
-          //   algebra.raster(w, h)(f)
           case Rectangle(w, h) =>
             algebra.rectangle(w, h)
           case Triangle(w, h) =>
