@@ -112,6 +112,9 @@ sealed abstract class Image extends Product with Serializable {
   def transform(tx: core.Transform): Image =
     Transform(tx, this)
 
+  def raster[A](width: Int, height: Int)(f: A => Unit): Image =
+    Raster(width, height, f) 
+
   def rotate(angle: Angle): Image =
     this.transform(core.Transform.rotate(angle))
 
@@ -239,10 +242,7 @@ object Image {
     Circle(diameter)
 
   def pie(diameter: Double, angle: Angle): Image =
-    path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle))
-
-  def raster[A](width: Int, height: Int)(f: A => Unit): Image =
-    Raster(width, height, f)  
+    path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle)) 
 
   def rectangle(width: Double, height: Double): Image =
     Rectangle(width, height)
@@ -315,8 +315,8 @@ object Image {
 
           case Circle(d) =>
             algebra.circle(d)
-          case Raster(w, h, f) =>
-            algebra.raster(w, h)(f)
+          // case Raster(w, h, f) =>
+          //   algebra.raster(w, h)(f)
           case Rectangle(w, h) =>
             algebra.rectangle(w, h)
           case Triangle(w, h) =>

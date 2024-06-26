@@ -17,15 +17,15 @@
 package doodle.canvas.algebra
 
 import doodle.algebra.Algebra
-import doodle.algebra.generic.*
+import doodle.algebra.generic._
 
-trait Raster extends GenericRaster[CanvasDrawing] {
-  self: Algebra { type Drawing[Unit] = Finalized[CanvasDrawing, Unit] } =>
+trait Raster extends GenericRaster[CanvasDrawing, Unit] {
+  self: Algebra { type Drawing[U] = Finalized[CanvasDrawing, U] } =>
+
   object RasterApi extends RasterApi {
-    def raster[A](width: Int, height: Int)(
-        f: A => Unit
-    ): CanvasDrawing[Unit] = {
+    def raster(width: Int, height: Int)(f: Unit => Unit): CanvasDrawing[Unit] = {
       CanvasDrawing.raster(width, height)(f)
     }
   }
 }
+

@@ -5,7 +5,7 @@ import doodle.algebra.Picture
 import doodle.algebra.Raster
 
 trait RasterSyntax {
-  def raster[Alg <: Raster, A](
+  def raster[Alg <: Raster[A], A](
       width: Int,
       height: Int
   )(f: A => Unit): Picture[Alg, Unit] =

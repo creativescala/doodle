@@ -33,7 +33,7 @@ final case class CanvasAlgebra(
       Shape,
       GenericDebug[CanvasDrawing],
       GenericLayout[CanvasDrawing],
-      GenericRaster[CanvasDrawing],
+      GenericRaster[CanvasDrawing, Unit],
       GenericSize[CanvasDrawing],
       GenericStyle[CanvasDrawing],
       GenericTransform[CanvasDrawing],
