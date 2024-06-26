@@ -112,8 +112,8 @@ sealed abstract class Image extends Product with Serializable {
   def transform(tx: core.Transform): Image =
     Transform(tx, this)
 
-  def raster[A](width: Int, height: Int)(f: A => Unit): Image =
-    Raster(width, height, f) 
+  def raster(width: Int, height: Int): Image =
+    Raster(width, height) 
 
   def rotate(angle: Angle): Image =
     this.transform(core.Transform.rotate(angle))
@@ -181,7 +181,7 @@ object Image {
     final case class ClosedPath(path: doodle.core.ClosedPath) extends Image
     final case class Text(get: String) extends Image
     final case class Circle(d: Double) extends Image
-    final case class Raster[A](w: Int, h: Int, f: A => Unit) extends Image
+    final case class Raster(w: Int, h: Int) extends Image
     final case class Rectangle(w: Double, h: Double) extends Image
     final case class Triangle(w: Double, h: Double) extends Image
     // final case class Draw(w: Double, h: Double, f: Canvas => Unit) extends Image

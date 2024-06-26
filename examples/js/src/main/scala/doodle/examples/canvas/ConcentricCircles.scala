@@ -30,7 +30,8 @@ object ConcentricCircles {
   def rect1 = Image.rectangle(100, 100).fillColor(Color.red)
   def rect2 = Image.rectangle(100, 100).fillColor(Color.blue)
 
-  val joint = rect1.beside(rect2).raster(10,20)
+  val joint = rect1.beside(rect2)
+  //.raster(10,20)
 
   @JSExport
   def draw(mount: String) =
