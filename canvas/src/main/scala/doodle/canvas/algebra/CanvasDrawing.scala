@@ -123,9 +123,10 @@ object CanvasDrawing {
 
   def raster(width: Int, height: Int)(
       f: CanvasRenderingContext2D => Unit
-  ): CanvasDrawing[Unit] = {
-    CanvasDrawing.raster(width, height)(f)
-  }
+  ): CanvasDrawing[Unit] =
+    CanvasDrawing { ctx =>
+      f(ctx)
+    }
 
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)

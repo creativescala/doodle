@@ -94,4 +94,4 @@ trait GenericShape[G[_]] extends Shape {
     Finalized.leaf { _ =>
       (BoundingBox.empty, Renderable.unit(ShapeApi.unit))
     }
-  }
+}

@@ -17,17 +17,17 @@
 package doodle.canvas.algebra
 
 import doodle.algebra.Algebra
-import doodle.algebra.generic._
+import doodle.algebra.generic.*
 import org.scalajs.dom.CanvasRenderingContext2D
-
 
 trait Raster extends GenericRaster[CanvasDrawing, CanvasRenderingContext2D] {
   self: Algebra { type Drawing[U] = Finalized[CanvasDrawing, U] } =>
 
   object RasterApi extends RasterApi {
-    def raster(width: Int, height: Int)(f: CanvasRenderingContext2D => Unit): CanvasDrawing[Unit] = {
+    def raster(width: Int, height: Int)(
+        f: CanvasRenderingContext2D => Unit
+    ): CanvasDrawing[Unit] = {
       CanvasDrawing.raster(width, height)(f)
     }
   }
 }
-

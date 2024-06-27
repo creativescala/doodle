@@ -238,7 +238,7 @@ object Image {
     Circle(diameter)
 
   def pie(diameter: Double, angle: Angle): Image =
-    path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle)) 
+    path(doodle.core.ClosedPath.pie(0.0, 0.0, diameter, angle))
 
   def rectangle(width: Double, height: Double): Image =
     Rectangle(width, height)
