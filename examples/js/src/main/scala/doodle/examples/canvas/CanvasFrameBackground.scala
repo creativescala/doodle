@@ -17,8 +17,8 @@
 package doodle.examples.canvas
 
 import cats.effect.unsafe.implicits.global
-import doodle.core.Color
 import doodle.canvas.{*, given}
+import doodle.core.Color
 import doodle.syntax.all.*
 
 import scala.scalajs.js.annotation.*
