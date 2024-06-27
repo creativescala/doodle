@@ -178,7 +178,6 @@ object Image {
     final case class ClosedPath(path: doodle.core.ClosedPath) extends Image
     final case class Text(get: String) extends Image
     final case class Circle(d: Double) extends Image
-    final case class Raster(w: Int, h: Int) extends Image
     final case class Rectangle(w: Double, h: Double) extends Image
     final case class Triangle(w: Double, h: Double) extends Image
     // final case class Draw(w: Double, h: Double, f: Canvas => Unit) extends Image
