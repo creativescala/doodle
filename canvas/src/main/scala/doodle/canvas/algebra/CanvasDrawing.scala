@@ -121,7 +121,7 @@ object CanvasDrawing {
     }
   }
 
-  def raster[CanvasRenderingContext2D](width: Int, height: Int)(
+  def raster(width: Int, height: Int)(
       f: CanvasRenderingContext2D => Unit
   ): CanvasDrawing[Unit] = {
     CanvasDrawing.raster(width, height)(f)

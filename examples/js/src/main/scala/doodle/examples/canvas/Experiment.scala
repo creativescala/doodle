@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package doodle.canvas.algebra
+package doodle.examples.canvas
 
-import doodle.algebra.Algebra
-import doodle.algebra.generic._
-import org.scalajs.dom.CanvasRenderingContext2D
+import cats.effect.unsafe.implicits.global
+import doodle.canvas.{*, given}
+import doodle.core.*
+import doodle.syntax.all.*
 
+import scala.scalajs.js.annotation.*
 
-trait Raster extends GenericRaster[CanvasDrawing, CanvasRenderingContext2D] {
-  self: Algebra { type Drawing[U] = Finalized[CanvasDrawing, U] } =>
+@JSExportTopLevel("Experiment")
+object Experiment {
+  def rect1 = Picture.rectangle(100, 100).fillColor(Color.red)
+  def rect2 = Picture.rectangle(100, 100).fillColor(Color.blue)
 
-  object RasterApi extends RasterApi {
-    def raster(width: Int, height: Int)(f: CanvasRenderingContext2D => Unit): CanvasDrawing[Unit] = {
-      CanvasDrawing.raster(width, height)(f)
-    }
-  }
+  val joint = rect1.beside(rect2).raster(10,20)
+
+  @JSExport
+  def draw(mount: String) =
+    joint.drawWithFrame(Frame(mount))
 }
-

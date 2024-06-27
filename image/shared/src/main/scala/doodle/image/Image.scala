@@ -112,9 +112,6 @@ sealed abstract class Image extends Product with Serializable {
   def transform(tx: core.Transform): Image =
     Transform(tx, this)
 
-  def raster(width: Int, height: Int): Image =
-    Raster(width, height) 
-
   def rotate(angle: Angle): Image =
     this.transform(core.Transform.rotate(angle))
 
