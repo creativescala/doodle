@@ -20,6 +20,7 @@ import cats.effect.unsafe.implicits.global
 import doodle.canvas.{*, given}
 import doodle.core.*
 import doodle.syntax.all.*
+import org.scalajs.dom.CanvasRenderingContext2D
 
 import scala.scalajs.js.annotation.*
 
@@ -27,8 +28,14 @@ import scala.scalajs.js.annotation.*
 object Experiment {
   def rect1 = Picture.rectangle(100, 100).fillColor(Color.red)
   def rect2 = Picture.rectangle(100, 100).fillColor(Color.blue)
+  
+  val drawFunction =
+    (gc: CanvasRenderingContext2D) => {
+        gc.fillRect(130, 190, 40, 60)
+        gc.fillRect(100, 160, 10, 30)
+    }
 
-  val joint = rect1.beside(rect2).raster(10,20)
+  val joint = rect1.beside(rect2).raster(10,20)(drawFunction)
 
   @JSExport
   def draw(mount: String) =
