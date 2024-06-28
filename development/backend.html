@@ -74,6 +74,18 @@
             <h2 id="drawing-type" class="section">Drawing Type</h2>
             <p>Deciding on the <code>Drawing</code> type is the first step in implementing a backend. It must have the shape <code>F[A]</code>, where <code>A</code> is the value produced when drawing the drawing. You probably don&#39;t want to call it <code>Drawing</code>, because that name is used in the generic algebras you&#39;ll be extending. <code>&lt;Backend&gt;Drawing</code> is a good choice. This goes in the <code>algebra</code> package.</p>
             
+            <h2 id="implement-algebras" class="section">Implement Algebras</h2>
+            <p>You should create <code>&lt;Backend&gt;Algebra</code> in your <code>algebra</code> package to implement the algebras you have selected for your backend. Using the generic algebras, which you almost certainly should, will get a lot of functionality for free. You simply need to implement the <code>*Api</code> <code>trait</code> within a generic algebra, if one exists. This algebra often holds a reference to a <code>Canvas</code>, which does the actual drawing. See below.</p>
+            
+            <h2 id="implement-effects" class="section">Implement Effects</h2>
+            <p>In <code>doodle.&lt;backend&gt;.effect</code> you should implement:</p>
+            <ul>
+              <li><code>Canvas</code>, which is usually where actual drawing takes place;</li>
+              <li><code>Frame</code>, which specifies a <code>Canvas</code>. Make sure to follow existing naming conventions;</li>
+              <li><code>&lt;Backend&gt;Renderer</code>, which implements <code>doodle.effect.Renderer</code>; and</li>
+              <li>any other effects.</li>
+            </ul>
+            
             <h2 id="top-level-definitions" class="section">Top-level Definitions</h2>
             <p>For ease of use, users should just be able to write</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.{*, </span><span class="identifier">given</span><span>}</span></code></pre>
