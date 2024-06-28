@@ -15,6 +15,21 @@ In `doodle.<backend>.effect` you should implement your `Frame`, `Canvas`, `Rende
 Deciding on the `Drawing` type is the first step in implementing a backend. It must have the shape `F[A]`, where `A` is the value produced when drawing the drawing. You probably don't want to call it `Drawing`, because that name is used in the generic algebras you'll be extending. `<Backend>Drawing` is a good choice. This goes in the `algebra` package.
 
 
+## Implement Algebras
+
+You should create `<Backend>Algebra` in your `algebra` package to implement the algebras you have selected for your backend. Using the generic algebras, which you almost certainly should, will get a lot of functionality for free. You simply need to implement the `*Api` `trait` within a generic algebra, if one exists. This algebra often holds a reference to a `Canvas`, which does the actual drawing. See below.
+
+
+## Implement Effects
+
+In `doodle.<backend>.effect` you should implement:
+
+* `Canvas`, which is usually where actual drawing takes place;
+* `Frame`, which specifies a `Canvas`. Make sure to follow existing naming conventions;
+* `<Backend>Renderer`, which implements `doodle.effect.Renderer`; and
+* any other effects.
+
+
 ## Top-level Definitions
 
 For ease of use, users should just be able to write
