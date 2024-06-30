@@ -12,6 +12,10 @@ The source for these examples is [in the repository](https://github.com/creative
 
 @:doodle("parametric-spiral", "CanvasParametricSpiral.draw")
 
+## Experiment
+
+@:doodle("Experiment", "Experiment.draw")
+
 
 ## Frame Background
 

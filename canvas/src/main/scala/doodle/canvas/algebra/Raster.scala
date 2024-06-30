@@ -24,10 +24,10 @@ trait Raster extends GenericRaster[CanvasDrawing, CanvasRenderingContext2D] {
   self: Algebra { type Drawing[U] = Finalized[CanvasDrawing, U] } =>
 
   object RasterApi extends RasterApi {
-    def raster(width: Int, height: Int)(
+    def raster(img: Drawing[Unit])(width: Int, height: Int)(
         f: CanvasRenderingContext2D => Unit
     ): CanvasDrawing[Unit] = {
-      CanvasDrawing.raster(width, height)(f)
+      CanvasDrawing.raster(img)(width, height)(f)
     }
   }
 }

@@ -16,6 +16,9 @@
 
 package doodle.canvas.algebra
 
+import doodle.algebra.Algebra
+import doodle.algebra.generic.*
+
 import cats.Apply
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Fill.ColorFill
@@ -36,6 +39,10 @@ import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
+
+import doodle.algebra.Algebra
+import doodle.algebra.Raster
+import doodle.algebra.Picture
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
@@ -121,12 +128,21 @@ object CanvasDrawing {
     }
   }
 
-  def raster(width: Int, height: Int)(
+  // def raster(img: Drawing[Unit])(width: Int, height: Int)(
+  //     f: CanvasRenderingContext2D => Unit
+  // ): CanvasDrawing[Unit] = {
+  //   CanvasDrawing { ctx =>
+  //     f(ctx)
+  //   }
+  // }
+
+  def raster(img: Picture[Nothing, Unit])(width: Int, height: Int)(
       f: CanvasRenderingContext2D => Unit
-  ): CanvasDrawing[Unit] =
+  ): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>
       f(ctx)
     }
+  }
 
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)

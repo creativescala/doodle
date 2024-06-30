@@ -18,15 +18,7 @@ package doodle
 package algebra
 
 trait Raster[A] extends Algebra {
-  def raster(width: Int, height: Int)(f: A => Unit): Drawing[Unit]
+  def raster(img: Drawing[Unit])(width: Int, height: Int)(f: A => Unit): Drawing[Unit]
 }
 
-trait RasterConstructor[A] {
-  self: BaseConstructor { type Algebra <: Raster[A] } =>
 
-  def raster(width: Int, height: Int)(f: A => Unit): Picture[Unit] =
-    new Picture[Unit] {
-      def apply(implicit algebra: Algebra): algebra.Drawing[Unit] =
-        algebra.raster(width, height)(f)
-    }
-}
