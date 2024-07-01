@@ -29,9 +29,11 @@ final case class CanvasAlgebra(
     applyDrawing: Apply[CanvasDrawing] = Apply.apply[CanvasDrawing],
     functorDrawing: Functor[CanvasDrawing] = Apply.apply[CanvasDrawing]
 ) extends Path,
+      Raster,
       Shape,
       GenericDebug[CanvasDrawing],
       GenericLayout[CanvasDrawing],
+      GenericRaster[CanvasDrawing, CanvasRenderingContext2D],
       GenericSize[CanvasDrawing],
       GenericStyle[CanvasDrawing],
       GenericTransform[CanvasDrawing],
