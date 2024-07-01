@@ -22,7 +22,7 @@
 <body>
     <nav id="topbar"><p><a href="../canvas/style-examples.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="backend.html">→</a></p></nav>
+<p><a href="process.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -58,6 +58,8 @@
           <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
           <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
           <li class="level1 active nav-node"><a href="#">Developing Doodle</a></li>
+          <li class="level2 nav-leaf"><a href="process.html">Development Process</a></li>
+          <li class="level2 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
           <li class="level2 nav-leaf"><a href="backend.html">Implementing a Backend</a></li>
         </ul>
     </nav>
@@ -66,55 +68,8 @@
         <main class="content">
             <h1 id="developing-doodle" class="title">Developing Doodle</h1>
             <p>This section contains notes for developers who want to work on Doodle.</p>
-            
-            <h2 id="implementing-syntax" class="section">Implementing Syntax</h2>
-            <p>Every algebra should have associated syntax. 
-            Implementing syntax is a little bit more involved than defining an algebra due to the extra work we do to make type inference work nicely.
-            The goal is to build up the algebra required by a <code>Picture</code> based on the operations used.
-            For example, notice the inferred type of the <code>Picture</code> below.</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
-            <pre><code class="nohighlight"><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">beside</span><span>(</span><span class="identifier">square</span><span>(</span><span class="number-literal">20</span><span>)).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)</span></code></pre>
-            <p>This type reflects exactly the algebras used in constructing the <code>Picture</code>. 
-            For users working with a single backend this is never an issue as they work from the constructors on the <code>Picture</code> object which start with all the algebras supported by the backend.
-            However for users working across backends this is essential to avoid a lot of type juggling.</p>
-            <p>The pattern for implementing syntax so that this work is as follows.</p>
-            <ol class="arabic">
-              <li>
-                <p>Start with an <code>implicit class</code> extending a <code>Picture</code> with a polymorphic <code>Algebra</code> type parameter</p>
-                <pre><code class="nohighlight"><span class="keyword">implicit</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">ExampleOps</span><span>[</span><span class="type-name">Alg</span><span> &lt;: </span><span class="type-name">Algebra</span><span>, </span><span class="type-name">A</span><span>](</span><span class="identifier">picture</span><span>: </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span>, </span><span class="type-name">A</span><span>]) {</span></code></pre>
-              </li>
-              <li>
-                <p>Methods on the <code>implicit class</code> return a <code>Picture</code> with additional algebras that the method requires</p>
-                <pre><code class="nohighlight"><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">strokeColor</span><span>(</span><span class="identifier">color</span><span>: </span><span class="type-name">Color</span><span>): </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Style</span><span>] = ???
-}</span></code></pre>
-              </li>
-            </ol>
-            <p>Constructors, like <code>circle</code>, don&#39;t need to be defined on an implicit class. They don&#39;t <em>need</em> a polymorphic <code>Algebra</code> type parameter but I&#39;ve implemented them all with one just in case someone wants to fix that parameter to help with type inference. Here is an example:</p>
-            <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">rectangle</span><span>[</span><span class="type-name">Alg</span><span> &lt;: </span><span class="type-name">Shape</span><span>](
-    </span><span class="identifier">width</span><span>: </span><span class="type-name">Double</span><span>,
-    </span><span class="identifier">height</span><span>: </span><span class="type-name">Double</span><span>
-): </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span>, </span><span class="type-name">Unit</span><span>] =
-  </span><span class="keyword">new</span><span> </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span>, </span><span class="type-name">Unit</span><span>] {
-    </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>(</span><span class="keyword">implicit</span><span> </span><span class="identifier">algebra</span><span>: </span><span class="type-name">Alg</span><span>): </span><span class="identifier">algebra</span><span>.</span><span class="type-name">Drawing</span><span>[</span><span class="type-name">Unit</span><span>] =
-      </span><span class="identifier">algebra</span><span>.</span><span class="identifier">rectangle</span><span>(</span><span class="identifier">width</span><span>, </span><span class="identifier">height</span><span>)
-  }</span></code></pre>
-            <p>Binary operations, such as <code>on</code>, require <em>two</em> polymorphic <code>Algebra</code> type parameters.
-            Here&#39;s the implementation of <code>on</code> showing this (<code>Alg</code> and <code>Alg2</code>).</p>
-            <pre><code class="nohighlight"><span class="keyword">implicit</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">LayoutPictureOps</span><span>[</span><span class="type-name">Alg</span><span> &lt;: </span><span class="type-name">Algebra</span><span>, </span><span class="type-name">A</span><span>](
-    </span><span class="identifier">picture</span><span>: </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span>, </span><span class="type-name">A</span><span>]
-) {
-  </span><span class="keyword">def</span><span> </span><span class="declaration-name">on</span><span>[</span><span class="type-name">Alg2</span><span> &lt;: </span><span class="type-name">Algebra</span><span>](
-      </span><span class="identifier">that</span><span>: </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg2</span><span>, </span><span class="type-name">A</span><span>]
-  )(</span><span class="keyword">implicit</span><span> </span><span class="identifier">s</span><span>: </span><span class="type-name">Semigroup</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Alg2</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Layout</span><span>, </span><span class="type-name">A</span><span>] =
-    </span><span class="keyword">new</span><span> </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Alg</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Alg2</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Layout</span><span>, </span><span class="type-name">A</span><span>] {
-      </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>(</span><span class="keyword">implicit</span><span>
-          </span><span class="identifier">algebra</span><span>: </span><span class="type-name">Alg</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Alg2</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Layout</span><span>
-      ): </span><span class="identifier">algebra</span><span>.</span><span class="type-name">Drawing</span><span>[</span><span class="type-name">A</span><span>] =
-        </span><span class="identifier">algebra</span><span>.</span><span class="identifier">on</span><span>(</span><span class="identifier">picture</span><span>(</span><span class="identifier">algebra</span><span>), </span><span class="identifier">that</span><span>(</span><span class="identifier">algebra</span><span>))
-    }
-}</span></code></pre>
-            <p class="nextPage"><a href="backend.html">Implementing a Backend→</a></p>
+            <p>At the time of writing as majority of Doodle&#39;s code is written in Scala 2 style, but the proejct is transitioning to Scala 3 style. As a result, the coding idioms you see here may not match the code you find in the project but instead represent how we intend to write code in the future.</p>
+            <p class="nextPage"><a href="process.html">Development Process→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>

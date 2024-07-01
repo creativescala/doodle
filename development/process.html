@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Miscellaneous Examples</title>
+    <title>Development Process</title>
     
     
     <meta name="description" content="docs" />
@@ -22,7 +22,7 @@
 <body>
     <nav id="topbar"><p><a href="index.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="layout-examples.html">→</a></p></nav>
+<p><a href="syntax.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -53,35 +53,41 @@
           <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
           <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
           <li class="level1 nav-leaf"><a href="../svg/">Doodle SVG</a></li>
-          <li class="level1 nav-node"><a href="index.html">Doodle Canvas</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Miscellaneous Examples</a></li>
-          <li class="level2 nav-leaf"><a href="layout-examples.html">Layout Examples</a></li>
-          <li class="level2 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
-          <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
-          <li class="level2 nav-leaf"><a href="../development/process.html">Development Process</a></li>
-          <li class="level2 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
-          <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+          <li class="level1 nav-node"><a href="../canvas/">Doodle Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+          <li class="level1 nav-node"><a href="index.html">Developing Doodle</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Development Process</a></li>
+          <li class="level2 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="backend.html">Implementing a Backend</a></li>
         </ul>
     </nav>
 
     <div id="content">
         <main class="content">
-            <h1 id="miscellaneous-examples" class="title">Miscellaneous Examples</h1>
-            <p>The source for these examples is <a href="https://github.com/creativescala/doodle/tree/main/examples/js/src/main/scala/doodle/examples/canvas">in the repository</a>.</p>
+            <h1 id="development-process" class="title">Development Process</h1>
             
-            <h2 id="concentric-circles" class="section">Concentric Circles</h2>
-            <div id="concentric-circles"></div>
-            <script>CanvasConcentricCircles.draw("concentric-circles")</script>
+            <h2 id="automated-code-checks" class="section">Automated Code Checks</h2>
+            <p>The <code>build</code> task in sbt should be run whenever you have finished code that is ready to be pushed to the main repository. As well as compiling code and running tests this command formats code, organizes imports, checks dependencies are up to date, and more. Many of these are checked by CI, and your code will be rejected if the checks do not pass.</p>
             
-            <h2 id="parametric-spiral" class="section">Parametric Spiral</h2>
-            <div id="parametric-spiral"></div>
-            <script>CanvasParametricSpiral.draw("parametric-spiral")</script>
+            <h2 id="dependencies" class="section">Dependencies</h2>
+            <p>We are generally fast to update dependencies, so don&#39;t be afraid to add a commit that updates old dependencies if you see any. The <code>build</code> command will tell you if any new versions of dependencies are available.</p>
             
-            <h2 id="frame-background" class="section">Frame Background</h2>
-            <p>This example merely checks that the frame background is correctly interpreted. There should be a dark blue square.</p>
-            <div id="frame-background"></div>
-            <script>CanvasFrameBackground.draw("frame-background")</script>
-            <p class="nextPage"><a href="layout-examples.html">Layout Examples→</a></p>
+            <h2 id="testing" class="section">Testing</h2>
+            <p>Testing is difficult for a project like Doodle, where the output can be hard to capture and automatically assess. Thus we take a layered approach to testing. Small and fast unit tests (usually generative) are great, but to check that output is rendering correctly we have a few other options:</p>
+            <ul>
+              <li>
+                <p>In the <code>golden</code> project we have tests that compare rendered pictures to known good output. This runs on the JVM, and therefore only checks the Java2D output (and the generic algebras on which it depends).</p>
+              </li>
+              <li>
+                <p>Our documentation serves as a form of testing for pictures that render in the browser. There are backend independent implementation of many examples in the <code>examples</code> project.</p>
+              </li>
+            </ul>
+            
+            <h2 id="documentation" class="section">Documentation</h2>
+            <p>New functionality isn&#39;t finished until documentation is written. </p>
+            <p class="nextPage"><a href="syntax.html">Implementing Syntax→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
