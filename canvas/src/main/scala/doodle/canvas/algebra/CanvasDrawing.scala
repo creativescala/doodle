@@ -128,21 +128,12 @@ object CanvasDrawing {
     }
   }
 
-  // def raster(img: Drawing[Unit])(width: Int, height: Int)(
-  //     f: CanvasRenderingContext2D => Unit
-  // ): CanvasDrawing[Unit] = {
-  //   CanvasDrawing { ctx =>
-  //     f(ctx)
-  //   }
-  // }
-
-  def raster(img: Picture[Nothing, Unit])(width: Int, height: Int)(
+  def raster(width: Int, height: Int)(
       f: CanvasRenderingContext2D => Unit
-  ): CanvasDrawing[Unit] = {
+  ): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
       f(ctx)
     }
-  }
 
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)

@@ -18,19 +18,18 @@ package doodle
 package syntax
 
 import doodle.algebra.Algebra
-import doodle.algebra.Raster
 import doodle.algebra.Picture
+import doodle.algebra.Raster
 
 trait RasterSyntax {
-  extension [Alg <: Algebra, A](
-      picture: Picture[Alg, A]
-    ) {
-    def raster[R](img: Picture[Alg, Unit])(width: Int, height: Int)(
-        f: R => Unit
-    ): Picture[Alg & Raster[R], Unit] =
-      new Picture[Alg & Raster[R], Unit] {
-        def apply(implicit algebra: Alg & Raster[R]): algebra.Drawing[Unit] =
-          algebra.raster(img(algebra))(width, height)(f)
-      }
-  }
+  def raster[Alg <: Algebra, R](
+      width: Int,
+      height: Int
+  )(
+      f: R => Unit
+  ): Picture[Alg & Raster[R], Unit] =
+    new Picture[Alg & Raster[R], Unit] {
+      def apply(implicit algebra: Alg & Raster[R]): algebra.Drawing[Unit] =
+        algebra.raster(width, height)(f)
+    }
 }

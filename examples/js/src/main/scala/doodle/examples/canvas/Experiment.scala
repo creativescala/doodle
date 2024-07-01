@@ -26,7 +26,7 @@ import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("Experiment")
 object Experiment {
-  def circle = Picture.circle(1000).fillColor(Color.red)
+  def circle = Picture.circle(100).fillColor(Color.red)
 
   val drawFunction =
     (ctx: CanvasRenderingContext2D) => {
@@ -37,15 +37,19 @@ object Experiment {
       ctx.moveTo(50, 140);
       ctx.lineTo(150, 60);
       ctx.lineTo(250, 140);
-      ctx.ellipse(100, 100, 50, 75, Math.PI / 4, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
     }
 
-  val joint = circle.raster(300, 250)(drawFunction)
-  println(joint.getClass)
-  println(drawFunction.getClass)
-  println(circle.getClass)
+  val drawFunction2 = 
+    (ctx: CanvasRenderingContext2D) => {
+      ctx.fillRect(100, 100, 150, 110);
+    }
+
+  val joint = circle.on(raster(300, 250)(drawFunction))
+
+  val joint2 = Picture.circle(50).fillColor(Color.blue)
+                  .on(raster(250, 250)(drawFunction2))
 
   @JSExport
   def draw(mount: String) =

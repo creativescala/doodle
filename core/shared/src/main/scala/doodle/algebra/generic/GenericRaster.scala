@@ -25,17 +25,17 @@ trait GenericRaster[G[_], A] extends Raster[A] {
   self: Algebra { type Drawing[U] = Finalized[G, U] } =>
 
   trait RasterApi {
-    def raster(img: Drawing[Unit])(width: Int, height: Int)(f: A => Unit): G[Unit]
+    def raster(width: Int, height: Int)(f: A => Unit): G[Unit]
   }
 
   def RasterApi: RasterApi
 
-  def raster(img: Drawing[Unit])(width: Int, height: Int)(f: A => Unit): Finalized[G, Unit] = {
+  def raster(width: Int, height: Int)(f: A => Unit): Finalized[G, Unit] = {
     Finalized.leaf { dc =>
       val bb = BoundingBox.centered(width, height)
       (
         bb,
-        State.inspect(_ => RasterApi.raster(img)(width, height)(f))
+        State.inspect(_ => RasterApi.raster(width, height)(f))
       )
     }
   }
