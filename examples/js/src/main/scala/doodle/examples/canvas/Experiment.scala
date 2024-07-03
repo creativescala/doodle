@@ -45,13 +45,18 @@ object Experiment {
     (ctx: CanvasRenderingContext2D) => {
       ctx.fillRect(100, 100, 150, 110);
     }
+  
+  val joint = circle.on(raster(250, 250)(drawFunction))
+  val joint3 = circle.above((raster(250, 250)(drawFunction)))
+  val joint2 = circle.debug.fillColor(Color.blue)
+                  .on(raster(250, 250)(drawFunction).debug)
 
-  val joint = circle.on(raster(300, 250)(drawFunction))
+  val joint4 = (raster(250, 250)(drawFunction).debug).beside(circle.debug)
+  val joint5 = (circle.debug).beside(raster(250, 250)(drawFunction).debug)
 
-  val joint2 = Picture.circle(50).fillColor(Color.blue)
-                  .on(raster(250, 250)(drawFunction2))
+  val jjoint = (joint4).above(joint5)
 
   @JSExport
   def draw(mount: String) =
-    joint.drawWithFrame(Frame(mount))
+    jjoint.drawWithFrame(Frame(mount))
 }

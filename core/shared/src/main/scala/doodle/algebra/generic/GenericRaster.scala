@@ -20,12 +20,18 @@ package generic
 
 import cats.data.State
 import doodle.core.BoundingBox
+import doodle.core.{Transform as Tx}
 
 trait GenericRaster[G[_], A] extends Raster[A] {
   self: Algebra { type Drawing[U] = Finalized[G, U] } =>
 
   trait RasterApi {
-    def raster(width: Int, height: Int)(f: A => Unit): G[Unit]
+    def raster(
+        tx: Tx,
+        width: Int,
+        height: Int
+    )(f: A => Unit): G[Unit]
+    def unit: G[Unit]
   }
 
   def RasterApi: RasterApi
@@ -35,8 +41,15 @@ trait GenericRaster[G[_], A] extends Raster[A] {
       val bb = BoundingBox.centered(width, height)
       (
         bb,
-        State.inspect(_ => RasterApi.raster(width, height)(f))
+        State.inspect(tx =>
+          RasterApi.raster(tx, width, height)(f)
+        )
       )
     }
   }
+
+  def empty: Finalized[G, Unit] =
+    Finalized.leaf { _ =>
+      (BoundingBox.empty, Renderable.unit(RasterApi.unit))
+    }
 }

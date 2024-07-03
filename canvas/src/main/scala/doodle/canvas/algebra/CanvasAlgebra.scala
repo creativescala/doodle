@@ -20,7 +20,7 @@ import cats.Apply
 import cats.Eval
 import cats.Functor
 import cats.Monad
-import doodle.algebra.generic.*
+import doodle.algebra.generic._
 import doodle.core.BoundingBox
 import org.scalajs.dom.CanvasRenderingContext2D
 
@@ -34,6 +34,7 @@ final case class CanvasAlgebra(
       GenericDebug[CanvasDrawing],
       GenericLayout[CanvasDrawing],
       GenericRaster[CanvasDrawing, CanvasRenderingContext2D],
+      GenericShape[CanvasDrawing],
       GenericSize[CanvasDrawing],
       GenericStyle[CanvasDrawing],
       GenericTransform[CanvasDrawing],
@@ -41,6 +42,12 @@ final case class CanvasAlgebra(
       GivenFunctor[CanvasDrawing],
       doodle.algebra.Algebra {
   type Drawing[A] = doodle.canvas.Drawing[A]
+
+  override def empty: Finalized[CanvasDrawing, Unit] =
+    Finalized.leaf(_ =>
+      (BoundingBox.empty, Renderable.unit(CanvasDrawing.unit))
+    )
+
   implicit val drawingInstance: Monad[Drawing] =
     new Monad[Drawing] {
       def pure[A](x: A): Drawing[A] =
@@ -69,5 +76,4 @@ final case class CanvasAlgebra(
         )
       }
     }
-
 }
