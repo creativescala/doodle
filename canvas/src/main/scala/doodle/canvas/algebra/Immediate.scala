@@ -27,7 +27,7 @@ import org.scalajs.dom
 
 import org.scalajs.dom.CanvasRenderingContext2D
 
-trait immediate {
+trait Immediate {
   def circle(x: Double, y: Double, radius: Double): Unit =
     CanvasDrawing { ctx =>
       ctx.arc(x, y, radius, 0, 2 * Math.PI)

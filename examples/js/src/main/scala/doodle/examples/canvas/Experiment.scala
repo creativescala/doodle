@@ -18,7 +18,7 @@ package doodle.examples.canvas
 
 import cats.effect.unsafe.implicits.global
 import doodle.canvas.{*, given}
-import doodle.canvas.algebra.immediate
+import doodle.canvas.algebra.Immediate
 import doodle.core.*
 import doodle.syntax.all.*
 import org.scalajs.dom.CanvasRenderingContext2D
@@ -48,7 +48,7 @@ object Experiment {
     }
   
   val drawFunctionImmediate = 
-    (ctx: immediate) => {
+    (ctx: Immediate) => {
       ctx.fillColor(Color.green);
       ctx.rectangle(100, 100, 150, 110);
     }
@@ -73,7 +73,7 @@ object Experiment {
                   .on(raster(250, 250)(drawFunction).debug)
 
   val joint4 = (raster(250, 250)(drawFunction).debug).beside(circle.debug)
-  val joint5 = (circle.debug).beside(raster(250, 250)(drawFunctionImmediate).debug)
+  val joint5 = (circle).beside(raster(250, 250)(drawFunctionImmediate))
 
   val circle2 = Picture.circle(200).fillColor(Color.blue)
 
