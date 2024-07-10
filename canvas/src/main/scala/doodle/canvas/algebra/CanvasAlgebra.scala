@@ -31,6 +31,7 @@ final case class CanvasAlgebra(
 ) extends Path,
       Raster,
       Shape,
+      immediate,
       GenericDebug[CanvasDrawing],
       GenericLayout[CanvasDrawing],
       GenericRaster[CanvasDrawing, CanvasRenderingContext2D],
