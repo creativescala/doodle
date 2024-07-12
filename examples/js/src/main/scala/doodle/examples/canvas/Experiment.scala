@@ -56,7 +56,6 @@ object Experiment {
 
   val drawFunction3 = 
     (ctx: CanvasRenderingContext2D) => {
-      //ctx.fillColor(Color.green);
       ctx.fillStyle = "green";
       ctx.fillRect(-100, -100, 200, 200);
     }
@@ -78,7 +77,7 @@ object Experiment {
   val circle2 = Picture.circle(200).fillColor(Color.blue)
 
   val joint6 = (circle2.debug).beside(raster(200, 200)(drawFunction3).debug)
-  val joint7 = (raster(200, 200)(drawFunction3).debug).beside(circle2.debug)
+  val joint7 = (raster(200, 200)(drawFunction3).debug).beside(circle2)
 
   val joint8 = (circle2.debug).on(raster(200, 200)(drawFunction3).debug)
 

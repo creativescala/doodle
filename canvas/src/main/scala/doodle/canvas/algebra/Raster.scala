@@ -21,7 +21,7 @@ import doodle.algebra.generic.*
 import org.scalajs.dom.CanvasRenderingContext2D
 import doodle.core.Transform as Tx
 
-trait Raster extends GenericRaster[CanvasDrawing, CanvasRenderingContext2D] {
+trait Raster extends GenericRaster[CanvasDrawing, Immediate] {
   self: Algebra { type Drawing[U] = Finalized[CanvasDrawing, U] } =>
 
   object RasterApi extends RasterApi {
@@ -29,7 +29,7 @@ trait Raster extends GenericRaster[CanvasDrawing, CanvasRenderingContext2D] {
         tx: Tx,
         width: Int,
         height: Int
-    )(f: CanvasRenderingContext2D => Unit): CanvasDrawing[Unit] = {
+    )(f: Immediate => Unit): CanvasDrawing[Unit] = {
       CanvasDrawing.setTransform(tx) >>
         CanvasDrawing.raster(width, height)(f)
     }

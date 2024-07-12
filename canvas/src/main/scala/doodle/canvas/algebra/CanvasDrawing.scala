@@ -35,6 +35,7 @@ import scala.scalajs.js.JSConverters.*
   * type `A` and has the side-effect of drawing on the canvas.
   */
 opaque type CanvasDrawing[A] = Function[CanvasRenderingContext2D, A]
+
 object CanvasDrawing {
   given Apply[CanvasDrawing] with {
     def ap[A, B](ff: CanvasDrawing[A => B])(
@@ -113,13 +114,15 @@ object CanvasDrawing {
   }
 
   def raster(width: Int, height: Int)(
-    f: CanvasRenderingContext2D => Unit
+    f: Immediate => Unit
   ): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>
-      f(ctx)
+      implicit val implicitCtx: CanvasRenderingContext2D = ctx
+      val immediate = new Immediate {}
+      f(immediate)
     }
   }
-
+  
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
 
