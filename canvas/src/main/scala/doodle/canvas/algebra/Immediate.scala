@@ -20,14 +20,20 @@ import doodle.core.Color
 import org.scalajs.dom.CanvasRenderingContext2D
 
 trait Immediate {
-  def fillColor(color: Color)(implicit ctx: CanvasRenderingContext2D): Unit = {
+  def fillColor(color: Color): Unit
+  def rectangle(x: Double, y: Double, width: Double, height: Double): Unit
+}
+
+class ImmediateImpl(ctx: CanvasRenderingContext2D) extends Immediate {
+  def fillColor(color: Color): Unit = {
     ctx.fillStyle = CanvasDrawing.colorToCSS(color)
   }
 
-  def rectangle(x: Double, y: Double, width: Double, height: Double)(implicit ctx: CanvasRenderingContext2D): Unit = {
+  def rectangle(x: Double, y: Double, width: Double, height: Double): Unit = {
     ctx.fillRect(x, y, width, height)
   }
 }
+
 
 
 
