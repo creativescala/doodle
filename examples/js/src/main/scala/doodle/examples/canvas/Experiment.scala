@@ -50,7 +50,8 @@ object Experiment {
   val drawFunctionImmediate = 
     (ctx: Immediate) => {
       ctx.fillColor(Color.green);
-      ctx.rectangle(100, 100, 150, 110);
+      ctx.rectangle(50, 50, 150, 110);
+      //ctx.line(0,0,100,100)
     }
 
 
@@ -72,7 +73,7 @@ object Experiment {
                   .on(raster(250, 250)(drawFunction).debug)
 
   val joint4 = (raster(250, 250)(drawFunction).debug).beside(circle.debug)
-  val joint5 = (circle).beside(raster(250, 250)(drawFunctionImmediate))
+  val joint5 = (circle.debug).beside(raster(250, 250)(drawFunctionImmediate).debug)
 
   val circle2 = Picture.circle(200).fillColor(Color.blue)
 
