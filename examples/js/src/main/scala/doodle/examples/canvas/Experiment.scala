@@ -47,14 +47,6 @@ object Experiment {
       ctx.fillRect(100, 100, 150, 110);
     }
   
-  val drawFunctionImmediate = 
-    (ctx: Immediate) => {
-      ctx.fillColor(Color.green);
-      ctx.rectangle(50, 50, 150, 110);
-      //ctx.line(0,0,100,100)
-    }
-
-
   val drawFunction3 = 
     (ctx: CanvasRenderingContext2D) => {
       ctx.fillStyle = "green";
@@ -109,6 +101,16 @@ object Experiment {
     }
   
   val joint13 = (raster(250, 250)(drawFunction5).debug).beside(circle.debug)
+
+  def circle = Picture.circle(100).fillColor(Color.red)
+  
+  val drawFunctionImmediate = 
+    (ctx: Immediate) => {
+      ctx.fillColor(Color.green);
+      ctx.rectangle(0, 0, 100, 100);
+      ctx.line(0,0,50,50)
+      ctx.ellipse(50, 50, 50, 50);
+    }
 
   @JSExport
   def draw(mount: String) =
