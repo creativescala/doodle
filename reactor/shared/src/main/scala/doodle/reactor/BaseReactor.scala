@@ -88,7 +88,7 @@ trait BaseReactor[A] {
         val mouseClick: Stream[IO, Command] =
           canvas.mouseClick.map(pt => MouseClick(pt))
         val tick: Stream[IO, Command] =
-          Stream.fixedDelay[IO](this.tickRate).map(_ => Tick)
+          Stream.fixedRate[IO](this.tickRate).map(_ => Tick)
         val frames = tick
           .merge(mouseMove)
           .merge(mouseClick)
