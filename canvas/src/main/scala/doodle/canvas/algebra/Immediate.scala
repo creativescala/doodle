@@ -17,6 +17,8 @@
 package doodle.canvas.algebra
 
 import doodle.core.Color
+import doodle.core.*
+import doodle.syntax.all.*
 import org.scalajs.dom.CanvasRenderingContext2D
 
 trait Immediate {
@@ -32,9 +34,10 @@ trait Immediate {
   def ellipse(x: Double, y: Double, width: Double, height: Double): Unit
   def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double): Unit
   def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean): Unit
-  def fillColor(color: Color): Unit
+  def fill(color: Color): Unit
   def text(text: String, x: Double, y: Double): Unit
   def line(x1: Double, y1: Double, x2: Double, y2: Double): Unit
+  def line(x1: Double, y1: Double, x2: Double, y2: Double, closedPath: Boolean): Unit
   def quadraticCurveTo(cpx: Double, cpy: Double, x: Double, y: Double): Unit
   def rectangle(x: Double, y: Double, width: Double, height: Double): Unit
   def rotate(angle: Double): Unit
@@ -127,7 +130,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D) extends Immediate {
     ctx.fill()
   }
 
-  def fillColor(color: Color): Unit = {
+  def fill(color: Color): Unit = {
     ctx.fillStyle = CanvasDrawing.colorToCSS(color)
     ctx.fill()
   }
@@ -138,9 +141,17 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D) extends Immediate {
   }
 
   def line(x1: Double, y1: Double, x2: Double, y2: Double): Unit = {
-    ctx.beginPath()
+    //ctx.beginPath()
     ctx.moveTo(x1, y1)
     ctx.lineTo(x2, y2)
+    //ctx.stroke()
+  }
+
+  def line(x1: Double, y1: Double, x2: Double, y2: Double, closedPath: Boolean): Unit = {
+    //ctx.beginPath()
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2)
+    if(closedPath) ctx.closePath()
     ctx.stroke()
   }
 

@@ -106,19 +106,19 @@ object Experiment {
   val drawFunctionImmediate = 
     (ctx: Immediate) => {
       ctx.rectangle(0, 0, 100, 100);
-      ctx.fillColor(Color.green);
+      ctx.fill(Color.green);
       ctx.stroke(Color.red);
       ctx.triangle(-50, 50, 50, 50, 0, 80);
-      ctx.fillColor(Color.blue);
+      ctx.fill(Color.blue);
       ctx.transform(1, 0.2, 0.8, 1, 0, 0);
       ctx.translate(10,10);
       ctx.ellipse(0,0,50,30);
-      ctx.fillColor(Color.pink);
+      ctx.fill(Color.pink);
     }
 
-  val joint5 = (circle).beside(raster(200, 200)(drawFunctionImmediate))  
+  val joint5 = (circle).beside(raster(200, 200)(drawFunction5))  
 
   @JSExport
   def draw(mount: String) =
-    joint5.drawWithFrame(Frame(mount))
+    joint13.drawWithFrame(Frame(mount))
 }
