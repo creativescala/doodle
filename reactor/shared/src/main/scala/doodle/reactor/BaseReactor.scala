@@ -75,40 +75,75 @@ trait BaseReactor[A] {
   def run[Alg <: Basic, Frame, Canvas](frame: Frame)(implicit
       a: AnimationRenderer[Canvas],
       e: Renderer[Alg, Frame, Canvas],
-      m: MouseClick[Canvas] with MouseMove[Canvas],
+      m: MouseClick[Canvas] & MouseMove[Canvas],
       runtime: IORuntime
   ): Unit = {
     import BaseReactor.*
 
-    frame
-      .canvas[Alg, Canvas]()
-      .flatMap { canvas =>
-        val mouseMove: Stream[IO, Command] =
-          canvas.mouseMove.map(pt => MouseMove(pt))
-        val mouseClick: Stream[IO, Command] =
-          canvas.mouseClick.map(pt => MouseClick(pt))
-        val tick: Stream[IO, Command] =
-          Stream.fixedRate[IO](this.tickRate).map(_ => Tick)
-        val frames = tick
-          .merge(mouseMove)
-          .merge(mouseClick)
-          .scan(this.initial) { (a, cmd) =>
-            cmd match {
-              case Tick           => this.onTick(a)
-              case MouseMove(pt)  => this.onMouseMove(pt, a)
-              case MouseClick(pt) => this.onMouseClick(pt, a)
-            }
-          }
-          .takeWhile(a => !this.stop(a))
-          .map(a => Image.compile[Alg](this.render(a)))
-        frames.animateWithCanvasToIO(canvas)
-      }
-      .unsafeRunAsync(_ => ())
+    def mouseEventProducer(mouseEventQueue: Queue[IO, MouseEvent], canvas: Canvas): IO[Unit] = {
+      val mouseMove  = canvas.mouseMove.map(pt => MouseMove(pt))
+      val mouseClick = canvas.mouseClick.map(pt => MouseClick(pt))
+
+      mouseMove.merge(mouseClick)
+        .foreach(mouseEventQueue.offer)
+        .compile
+        .drain
+    }
+
+    def tickProducer(tickQueue: Queue[IO, A], mouseEventQueue: Queue[IO, MouseEvent]): IO[Unit] = {
+      Stream
+        .fixedRate[IO](this.tickRate)
+        .evalScan[IO, A](this.initial)((prev, _) =>
+          def drainMouseQueue(a: A): IO[A] =
+            for
+              mouseEvent <- mouseEventQueue.tryTake
+              state <- mouseEvent match
+                case Some(MouseMove(pt))  => drainMouseQueue(this.onMouseMove(pt, a))
+                case Some(MouseClick(pt)) => drainMouseQueue(this.onMouseClick(pt, a))
+                case None => IO.pure(a)
+            yield state
+          
+          for 
+            mouseState <- drainMouseQueue(prev)
+            state = this.onTick(mouseState)
+          yield state
+        )
+        .takeWhile(a => !this.stop(a))
+        .foreach(tickQueue.offer)
+        .compile
+        .drain
+    }
+    
+    def consumer(tickQueue: Queue[IO, A], canvas: Canvas): IO[Unit] = {
+      Stream.unit.repeat
+        .evalScan[IO, A](this.initial)((prev, _) =>
+          for
+            maybeTaken <- tickQueue.tryTake
+            state = maybeTaken match
+              case Some(a) => a
+              case None => prev
+          yield state
+        )
+        .takeWhile(a => !this.stop(a))
+        .map(a => Image.compile[Alg](this.render(a)))
+        .animateWithCanvasToIO(canvas)
+    }
+
+    (
+      for
+        canvas <- frame.canvas[Alg, Canvas]()
+        tickQueue <- Queue.circularBuffer[IO, A](1)
+        // mouseEventQueue <- Queue.circularBuffer[IO, MouseEvent](1)
+        mouseEventQueue <- Queue.unbounded[IO, MouseEvent]
+        _ <-
+          (mouseEventProducer(mouseEventQueue, canvas), tickProducer(tickQueue, mouseEventQueue), consumer(tickQueue, canvas))
+            .parMapN((_, _, _) => ())
+      yield ()
+    ).unsafeRunAsync(_ => ())
   }
 }
 object BaseReactor {
-  sealed abstract class Command extends Product with Serializable
-  case object Tick extends Command
-  final case class MouseMove(location: Point) extends Command
-  final case class MouseClick(location: Point) extends Command
+  sealed abstract class MouseEvent extends Product with Serializable
+  final case class MouseMove(location: Point) extends MouseEvent
+  final case class MouseClick(location: Point) extends MouseEvent
 }
