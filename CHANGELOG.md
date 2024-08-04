@@ -1,5 +1,10 @@
 # Changelog
 
+## NEXT
+
+- Improvements to reactor for more consistent animations (by `@lego-eden`)
+
+
 ## 0.23.0 26-Jul-2024
 
 - Add HTML Canvas backend. It currently has fairly limited functionality.
