@@ -17,13 +17,24 @@
 package docs
 package pictures
 
-object All {
-  PictureAndImage
-  Layout
-  Path
-  Shape
-  Size
-  Style
-  Text
-  Transform
+import cats.effect.unsafe.implicits.global
+import doodle.core.*
+import doodle.core.font.Font
+import doodle.core.font.FontSize
+import doodle.java2d.*
+import doodle.syntax.all.*
+
+object Text {
+  val hello =
+    Picture
+      .text("Hello from Doodle!")
+
+  hello.save("pictures/hello.png")
+
+  val font =
+    Picture
+      .text("Change the font")
+      .font(Font.defaultSansSerif.bold.size(FontSize.points(24)))
+
+  font.save("pictures/font.png")
 }
