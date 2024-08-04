@@ -17,10 +17,10 @@
 package doodle
 package reactor
 
-import cats.implicits.*
 import cats.effect.IO
 import cats.effect.std.Queue
 import cats.effect.unsafe.IORuntime
+import cats.syntax.all.*
 import doodle.core.Point
 import doodle.effect.Renderer
 import doodle.image.Image
