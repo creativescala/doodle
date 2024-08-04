@@ -81,17 +81,24 @@ trait BaseReactor[A] {
   ): Unit = {
     import BaseReactor.*
 
-    def mouseEventProducer(mouseEventQueue: Queue[IO, MouseEvent], canvas: Canvas): IO[Unit] = {
-      val mouseMove  = canvas.mouseMove.map(pt => MouseMove(pt))
+    def mouseEventProducer(
+        mouseEventQueue: Queue[IO, MouseEvent],
+        canvas: Canvas
+    ): IO[Unit] = {
+      val mouseMove = canvas.mouseMove.map(pt => MouseMove(pt))
       val mouseClick = canvas.mouseClick.map(pt => MouseClick(pt))
 
-      mouseMove.merge(mouseClick)
+      mouseMove
+        .merge(mouseClick)
         .foreach(mouseEventQueue.offer)
         .compile
         .drain
     }
 
-    def tickProducer(tickQueue: Queue[IO, A], mouseEventQueue: Queue[IO, MouseEvent]): IO[Unit] = {
+    def tickProducer(
+        tickQueue: Queue[IO, A],
+        mouseEventQueue: Queue[IO, MouseEvent]
+    ): IO[Unit] = {
       Stream
         .fixedRate[IO](this.tickRate)
         .evalScan[IO, A](this.initial)((prev, _) =>
@@ -99,12 +106,14 @@ trait BaseReactor[A] {
             for
               mouseEvent <- mouseEventQueue.tryTake
               state <- mouseEvent match
-                case Some(MouseMove(pt))  => drainMouseQueue(this.onMouseMove(pt, a))
-                case Some(MouseClick(pt)) => drainMouseQueue(this.onMouseClick(pt, a))
+                case Some(MouseMove(pt)) =>
+                  drainMouseQueue(this.onMouseMove(pt, a))
+                case Some(MouseClick(pt)) =>
+                  drainMouseQueue(this.onMouseClick(pt, a))
                 case None => IO.pure(a)
             yield state
-          
-          for 
+
+          for
             mouseState <- drainMouseQueue(prev)
             state = this.onTick(mouseState)
           yield state
@@ -114,7 +123,7 @@ trait BaseReactor[A] {
         .compile
         .drain
     }
-    
+
     def consumer(tickQueue: Queue[IO, A], canvas: Canvas): IO[Unit] = {
       Stream.unit.repeat
         .evalScan[IO, A](this.initial)((prev, _) =>
@@ -122,7 +131,7 @@ trait BaseReactor[A] {
             maybeTaken <- tickQueue.tryTake
             state = maybeTaken match
               case Some(a) => a
-              case None => prev
+              case None    => prev
           yield state
         )
         .takeWhile(a => !this.stop(a))
@@ -137,7 +146,11 @@ trait BaseReactor[A] {
         // mouseEventQueue <- Queue.circularBuffer[IO, MouseEvent](1)
         mouseEventQueue <- Queue.unbounded[IO, MouseEvent]
         _ <-
-          (mouseEventProducer(mouseEventQueue, canvas), tickProducer(tickQueue, mouseEventQueue), consumer(tickQueue, canvas))
+          (
+            mouseEventProducer(mouseEventQueue, canvas),
+            tickProducer(tickQueue, mouseEventQueue),
+            consumer(tickQueue, canvas)
+          )
             .parMapN((_, _, _) => ())
       yield ()
     ).unsafeRunAsync(_ => ())
