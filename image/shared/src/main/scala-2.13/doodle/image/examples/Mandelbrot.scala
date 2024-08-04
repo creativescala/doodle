@@ -18,8 +18,8 @@ package doodle
 package image
 package examples
 
-import doodle.core._
-import doodle.syntax.angle._
+import doodle.core.*
+import doodle.syntax.angle.*
 
 // Mandelbrot Fractal
 // Contributed by Mat Moore -- https://github.com/MatMoore
@@ -64,7 +64,7 @@ object Mandelbrot {
 
   class PaletteCellRenderer(val palette: List[Color]) extends CellRenderer {
     def color(count: Int) = {
-      if (count == maxApplys) {
+      if count == maxApplys then {
         // Use the first colour for points in the Mandelbrot set
         palette(0)
       } else {
@@ -98,7 +98,7 @@ object Mandelbrot {
       renderer: CellRenderer = defaultRenderer,
       minSize: Int = 4
   ): Image = {
-    if (displaySize <= minSize) {
+    if displaySize <= minSize then {
       cell(fractalCenter, displaySize, renderer)
     } else {
       val cellDisplaySize = displaySize / 2
