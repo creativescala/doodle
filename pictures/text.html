@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Shapes</title>
+    <title>Text</title>
     
     
     <meta name="description" content="docs" />
@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="picture-image.html">←</a></p>
+    <nav id="topbar"><p><a href="size.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="path.html">→</a></p></nav>
+<p><a href="drawing.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -36,13 +36,13 @@
           <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
           <li class="level1 nav-node"><a href="index.html">Creating Pictures</a></li>
           <li class="level2 nav-leaf"><a href="picture-image.html">Picture and Image</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="shape.html">Shapes</a></li>
           <li class="level2 nav-leaf"><a href="path.html">Paths</a></li>
           <li class="level2 nav-leaf"><a href="layout.html">Layout</a></li>
           <li class="level2 nav-leaf"><a href="style.html">Style</a></li>
           <li class="level2 nav-leaf"><a href="transform.html">Transforms</a></li>
           <li class="level2 nav-leaf"><a href="size.html">Size</a></li>
-          <li class="level2 nav-leaf"><a href="text.html">Text</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Text</a></li>
           <li class="level2 nav-leaf"><a href="drawing.html">Drawing to the Screen</a></li>
           <li class="level2 nav-leaf"><a href="writing.html">Writing to a File</a></li>
           <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
@@ -67,37 +67,35 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="shapes" class="title">Shapes</h1>
+            <h1 id="text" class="title">Text</h1>
             
             <h2 id="concept" class="section">Concept</h2>
-            <p>Constructing simple geometric shapes is provided by the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> algebra. All the methods on the algebra are constructors, so typically you&#39;d access them by calling methods on the <code>Picture</code> object. Here&#39;s an example.</p>
+            <p>Adding text to pictures is done with the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Text.html">Text</a> algebra.</p>
+            <p>Here&#39;s a very simple example creating some text using the <code>text</code> constructor.</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">basicShapes</span><span> =
+</span><span class="keyword">val</span><span> </span><span class="identifier">hello</span><span> =
   </span><span class="type-name">Picture</span><span>
-    .</span><span class="identifier">circle</span><span>(</span><span class="number-literal">200</span><span>)
-    .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blue</span><span>)
-    .</span><span class="identifier">on</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">square</span><span>(</span><span class="number-literal">125</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">darkBlue</span><span>))
-    .</span><span class="identifier">on</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">triangle</span><span>(</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>).</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>))
-    .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">5.0</span><span>)</span></code></pre>
-            <p>This program gives the output below.</p>
+    .</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Hello from Doodle!&quot;</span><span>)</span></code></pre>
+            <p>The output is shown below.</p>
             <div class="default-image-block">
-              <img src="basic-shapes.png" alt="A circle on a square on a triangle" title="A circle on a square on a triangle">
+              <img src="hello.png" alt="A picture showing the text Hello from Doodle!" title="Hello from Doodle!">
             </div>
-            <p>Here is a short description of all the methods provided by <code>Shape</code>.</p>
-            <ul>
-              <li><code>empty</code> creates the empty picture that takes up no space and renders nothing. Useful for that sweet monoid identity and for the base case in recursions.</li>
-              <li><code>square(sideLength)</code> creates a square with the given side length.</li>
-              <li><code>rectangle(width, height)</code> creates a rectangle with the given width and height.</li>
-              <li><code>circle(diameter)</code> creates a circle with the given diameter. Specified in terms of diameter rather than radius so that <code>square(100)</code> and <code>circle(100)</code> take up the same space.</li>
-              <li><code>triangle(width, height)</code> creates an isoceles triangle with the given width and height.</li>
-            </ul>
-            
-            <h2 id="implementation" class="section">Implementation</h2>
-            <p>These methods are available on both the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Shape.html">Shape</a> algebra and <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/image/Image.html">Image</a>.</p>
-            <p class="nextPage"><a href="path.html">Paths→</a></p>
+            <p>In addition to creating pictures containing text, it also allows specifying the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Font.html">Font</a> used for the text, via the <code>font</code> method.
+            In this example we use the default sans-serif font, in bold weight and 24 point size.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">font</span><span>.{</span><span class="type-name">Font</span><span>, </span><span class="type-name">FontSize</span><span>}
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">font</span><span> =
+  </span><span class="type-name">Picture</span><span>
+    .</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Change the font&quot;</span><span>)
+    .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSansSerif</span><span>.</span><span class="identifier">bold</span><span>.</span><span class="identifier">size</span><span>(</span><span class="type-name">FontSize</span><span>.</span><span class="identifier">points</span><span>(</span><span class="number-literal">24</span><span>)))</span></code></pre>
+            <p>This produces the picture below.</p>
+            <div class="default-image-block">
+              <img src="font.png" alt="A picture showing the text Change the font" title="Change the font">
+            </div>
+            <p class="nextPage"><a href="drawing.html">Drawing to the Screen→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
