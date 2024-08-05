@@ -1,4 +1,4 @@
-let CanvasLayoutExamples,PulsingCircle,SvgParametricSpiral,CanvasFrameBackground,CanvasParametricSpiral,TextPositioning,ConcentricCircles,CanvasConcentricCircles,CanvasStyleExamples,DoodleLogo,Simple;
+let CanvasLayoutExamples,PulsingCircle,SvgParametricSpiral,CanvasFrameBackground,CanvasParametricSpiral,TextPositioning,ConcentricCircles,CanvasConcentricCircles,CanvasStyleExamples,SvgTextExamples,DoodleLogo,Simple;
 (function(){
 'use strict';
 var $linkingInfo = Object.freeze(({
@@ -18543,6 +18543,26 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   var elems$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Ldoodle_algebra_Picture.getArrayOf().constr)([$thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_basicStyle, $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeStyle, $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_fillStyle]));
   $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_allPictures = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems$1);
 }
+function $f_Ldoodle_examples_TextExamples__$init$__V($thiz) {
+  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_hello = new $c_Ldoodle_syntax_TextSyntax$$anon$2("Hello from Doodle!");
+  var this$3 = $m_Ldoodle_syntax_package$all$();
+  var picture = new $c_Ldoodle_syntax_TextSyntax$$anon$2("Change the font");
+  var this$8 = new $c_Ldoodle_syntax_TextSyntax$TextPictureOps(this$3, picture);
+  var this$4 = $n($m_Ldoodle_core_font_Font$().Ldoodle_core_font_Font$__f_defaultSerif);
+  var weight = $m_Ldoodle_core_font_FontWeight$Bold$();
+  var family = this$4.Ldoodle_core_font_Font__f_family;
+  var style = this$4.Ldoodle_core_font_Font__f_style;
+  var size = this$4.Ldoodle_core_font_Font__f_size;
+  var this$7 = new $c_Ldoodle_core_font_Font(family, style, weight, size);
+  var size$1 = new $c_Ldoodle_core_font_FontSize$Points(24);
+  var family$1 = this$7.Ldoodle_core_font_Font__f_family;
+  var style$1 = this$7.Ldoodle_core_font_Font__f_style;
+  var weight$1 = this$7.Ldoodle_core_font_Font__f_weight;
+  var font = new $c_Ldoodle_core_font_Font(family$1, style$1, weight$1, size$1);
+  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_font = new $c_Ldoodle_syntax_TextSyntax$$anon$1(font, this$8);
+  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Ldoodle_algebra_Picture.getArrayOf().constr)([$thiz.Ldoodle_examples_svg_SvgTextExamples$__f_hello, $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_font]));
+  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_allPictures = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems);
+}
 /** @constructor */
 function $c_Ldoodle_examples_canvas_CanvasParametricSpiral$() {
   this.Ldoodle_examples_canvas_CanvasParametricSpiral$__f_marker = null;
@@ -20626,6 +20646,29 @@ $c_Ldoodle_syntax_TextSyntax$$anon$1.prototype.apply__Ldoodle_algebra_Algebra__O
 });
 var $d_Ldoodle_syntax_TextSyntax$$anon$1 = new $TypeData().initClass($c_Ldoodle_syntax_TextSyntax$$anon$1, "doodle.syntax.TextSyntax$$anon$1", ({
   Ldoodle_syntax_TextSyntax$$anon$1: 1,
+  Ldoodle_algebra_Picture: 1
+}));
+/** @constructor */
+function $c_Ldoodle_syntax_TextSyntax$$anon$2(text$2) {
+  this.Ldoodle_syntax_TextSyntax$$anon$2__f_text$1 = null;
+  this.Ldoodle_syntax_TextSyntax$$anon$2__f_text$1 = text$2;
+}
+$c_Ldoodle_syntax_TextSyntax$$anon$2.prototype = new $h_O();
+$c_Ldoodle_syntax_TextSyntax$$anon$2.prototype.constructor = $c_Ldoodle_syntax_TextSyntax$$anon$2;
+/** @constructor */
+function $h_Ldoodle_syntax_TextSyntax$$anon$2() {
+}
+$h_Ldoodle_syntax_TextSyntax$$anon$2.prototype = $c_Ldoodle_syntax_TextSyntax$$anon$2.prototype;
+$c_Ldoodle_syntax_TextSyntax$$anon$2.prototype.apply__Ldoodle_algebra_Text__O = (function(algebra) {
+  var this$1 = $n(algebra);
+  var text = this.Ldoodle_syntax_TextSyntax$$anon$2__f_text$1;
+  return $f_Ldoodle_algebra_generic_GenericText__text__T__Ldoodle_algebra_generic_Finalized(this$1, text);
+});
+$c_Ldoodle_syntax_TextSyntax$$anon$2.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
+  return this.apply__Ldoodle_algebra_Text__O($as_Ldoodle_algebra_Text(algebra));
+});
+var $d_Ldoodle_syntax_TextSyntax$$anon$2 = new $TypeData().initClass($c_Ldoodle_syntax_TextSyntax$$anon$2, "doodle.syntax.TextSyntax$$anon$2", ({
+  Ldoodle_syntax_TextSyntax$$anon$2: 1,
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
@@ -28471,9 +28514,15 @@ function $m_Ldoodle_core_Vec$() {
 }
 /** @constructor */
 function $c_Ldoodle_core_font_Font$() {
+  this.Ldoodle_core_font_Font$__f_defaultSerif = null;
   this.Ldoodle_core_font_Font$__f_defaultSansSerif = null;
   $n_Ldoodle_core_font_Font$ = this;
   $m_Ldoodle_core_font_Font$();
+  var family = $m_Ldoodle_core_font_FontFamily$Serif$();
+  var style = $m_Ldoodle_core_font_FontStyle$Normal$();
+  var weight = $m_Ldoodle_core_font_FontWeight$Normal$();
+  var size = new $c_Ldoodle_core_font_FontSize$Points(12);
+  this.Ldoodle_core_font_Font$__f_defaultSerif = new $c_Ldoodle_core_font_Font(family, style, weight, size);
   $m_Ldoodle_core_font_Font$();
   var family$1 = $m_Ldoodle_core_font_FontFamily$SansSerif$();
   var style$1 = $m_Ldoodle_core_font_FontStyle$Normal$();
@@ -28580,6 +28629,53 @@ function $m_Ldoodle_examples_canvas_CanvasStyleExamples$() {
     $n_Ldoodle_examples_canvas_CanvasStyleExamples$ = new $c_Ldoodle_examples_canvas_CanvasStyleExamples$();
   }
   return $n_Ldoodle_examples_canvas_CanvasStyleExamples$;
+}
+/** @constructor */
+function $c_Ldoodle_examples_svg_SvgTextExamples$() {
+  this.Ldoodle_examples_svg_SvgTextExamples$__f_hello = null;
+  this.Ldoodle_examples_svg_SvgTextExamples$__f_font = null;
+  this.Ldoodle_examples_svg_SvgTextExamples$__f_allPictures = null;
+  $n_Ldoodle_examples_svg_SvgTextExamples$ = this;
+  $f_Ldoodle_examples_TextExamples__$init$__V(this);
+}
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype = new $h_O();
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.constructor = $c_Ldoodle_examples_svg_SvgTextExamples$;
+/** @constructor */
+function $h_Ldoodle_examples_svg_SvgTextExamples$() {
+}
+$h_Ldoodle_examples_svg_SvgTextExamples$.prototype = $c_Ldoodle_examples_svg_SvgTextExamples$.prototype;
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.allPictures__sci_Seq = (function() {
+  return this.Ldoodle_examples_svg_SvgTextExamples$__f_allPictures;
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello__T__V = (function(id) {
+  var this$1 = $m_Ldoodle_syntax_package$all$();
+  var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_hello;
+  new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawfont__T__V = (function(id) {
+  var this$1 = $m_Ldoodle_syntax_package$all$();
+  var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_font;
+  new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawHello__T__V(prep0);
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawfont = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawfont__T__V(prep0);
+});
+var $d_Ldoodle_examples_svg_SvgTextExamples$ = new $TypeData().initClass($c_Ldoodle_examples_svg_SvgTextExamples$, "doodle.examples.svg.SvgTextExamples$", ({
+  Ldoodle_examples_svg_SvgTextExamples$: 1,
+  Ldoodle_examples_BaseExamples: 1,
+  Ldoodle_examples_TextExamples: 1
+}));
+var $n_Ldoodle_examples_svg_SvgTextExamples$;
+function $m_Ldoodle_examples_svg_SvgTextExamples$() {
+  if ((!$n_Ldoodle_examples_svg_SvgTextExamples$)) {
+    $n_Ldoodle_examples_svg_SvgTextExamples$ = new $c_Ldoodle_examples_svg_SvgTextExamples$();
+  }
+  return $n_Ldoodle_examples_svg_SvgTextExamples$;
 }
 /** @constructor */
 function $c_Ldoodle_interact_animation_Interpolator$interpolatorInvariant$() {
@@ -73623,6 +73719,7 @@ TextPositioning = $m_Ldoodle_svg_TextPositioning$();
 ConcentricCircles = $m_Ldoodle_svg_ConcentricCircles$();
 CanvasConcentricCircles = $m_Ldoodle_examples_canvas_ConcentricCircles$();
 CanvasStyleExamples = $m_Ldoodle_examples_canvas_CanvasStyleExamples$();
+SvgTextExamples = $m_Ldoodle_examples_svg_SvgTextExamples$();
 DoodleLogo = $m_Ldoodle_svg_DoodleLogo$();
 Simple = $m_Ldoodle_examples_Simple$();
 }).call(this);
