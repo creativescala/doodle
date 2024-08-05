@@ -18,10 +18,7 @@ val hello =
 
 The output is shown below.
 
-@:image(hello.png) {
-  alt = A picture showing the text "Hello from Doodle!"
-  title = "Hello from Doodle!"
-}
+@:doodle("hello-example", "SvgTextExamples.drawHello") 
 
 In addition to creating pictures containing text, it also allows specifying the @:api(doodle.core.Font) used for the text, via the `font` method.
 In this example we use the default serif font, in bold weight and 24 point size.
@@ -37,10 +34,7 @@ val font =
 
 This produces the picture below.
 
-@:image(font.png) {
-  alt = A picture showing the text "Change the font"
-  title = "Change the font"
-}
+@:doodle("font-example", "SvgTextExamples.drawFont") 
 
 
 ## Implementation
