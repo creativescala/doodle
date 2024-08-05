@@ -29,5 +29,5 @@ object SvgTextExamples extends TextExamples[Algebra] {
   def drawHello(id: String): Unit = hello.drawWithFrame(Frame(id))
 
   @JSExport
-  def drawfont(id: String): Unit = font.drawWithFrame(Frame(id))
+  def drawFont(id: String): Unit = font.drawWithFrame(Frame(id))
 }

@@ -24,12 +24,15 @@ import doodle.syntax.all.*
 /** All the examples from the Text documentation page, written in a backend
   * independent style.
   */
-trait TextExamples[Alg <: Layout & Text] extends BaseExamples[Alg] {
+trait TextExamples[Alg <: Layout & Style & Text] extends BaseExamples[Alg] {
   val hello =
     text("Hello from Doodle!")
+      .fillColor(Color.black)
 
   val font =
     text("Change the font")
+      .strokeColor(Color.blueViolet)
+      .fillColor(Color.royalBlue)
       .font(Font.defaultSerif.bold.size(FontSize.points(24)))
   //
   // If you add a new example, also add it in here
