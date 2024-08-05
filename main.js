@@ -3594,7 +3594,7 @@ function $f_Ldoodle_core_CommonColors__$init$__V($thiz) {
   var this$10 = $m_Ldoodle_core_Color$();
   $thiz.Ldoodle_core_Color$__f_blue = this$10.rgba__I__I__I__D__Ldoodle_core_Color(0, 0, 255, 1.0);
   var this$11 = $m_Ldoodle_core_Color$();
-  this$11.rgba__I__I__I__D__Ldoodle_core_Color(138, 43, 226, 1.0);
+  $thiz.Ldoodle_core_Color$__f_blueViolet = this$11.rgba__I__I__I__D__Ldoodle_core_Color(138, 43, 226, 1.0);
   var this$12 = $m_Ldoodle_core_Color$();
   this$12.rgba__I__I__I__D__Ldoodle_core_Color(165, 42, 42, 1.0);
   var this$13 = $m_Ldoodle_core_Color$();
@@ -3816,7 +3816,7 @@ function $f_Ldoodle_core_CommonColors__$init$__V($thiz) {
   var this$121 = $m_Ldoodle_core_Color$();
   this$121.rgba__I__I__I__D__Ldoodle_core_Color(188, 143, 143, 1.0);
   var this$122 = $m_Ldoodle_core_Color$();
-  this$122.rgba__I__I__I__D__Ldoodle_core_Color(65, 105, 225, 1.0);
+  $thiz.Ldoodle_core_Color$__f_royalBlue = this$122.rgba__I__I__I__D__Ldoodle_core_Color(65, 105, 225, 1.0);
   var this$123 = $m_Ldoodle_core_Color$();
   this$123.rgba__I__I__I__D__Ldoodle_core_Color(139, 69, 19, 1.0);
   var this$124 = $m_Ldoodle_core_Color$();
@@ -18544,22 +18544,34 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_allPictures = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems$1);
 }
 function $f_Ldoodle_examples_TextExamples__$init$__V($thiz) {
-  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_hello = new $c_Ldoodle_syntax_TextSyntax$$anon$2("Hello from Doodle!");
-  var this$3 = $m_Ldoodle_syntax_package$all$();
-  var picture = new $c_Ldoodle_syntax_TextSyntax$$anon$2("Change the font");
-  var this$8 = new $c_Ldoodle_syntax_TextSyntax$TextPictureOps(this$3, picture);
-  var this$4 = $n($m_Ldoodle_core_font_Font$().Ldoodle_core_font_Font$__f_defaultSerif);
+  var this$2 = $m_Ldoodle_syntax_package$all$();
+  var picture = new $c_Ldoodle_syntax_TextSyntax$$anon$2("Hello from Doodle!");
+  var this$3 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$2, picture);
+  var fillColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_black;
+  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_hello = new $c_Ldoodle_syntax_StyleSyntax$$anon$1(fillColor, this$3);
+  var this$9 = $m_Ldoodle_syntax_package$all$();
+  var this$7 = $m_Ldoodle_syntax_package$all$();
+  var this$5 = $m_Ldoodle_syntax_package$all$();
+  var picture$1 = new $c_Ldoodle_syntax_TextSyntax$$anon$2("Change the font");
+  var this$6 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$5, picture$1);
+  var strokeColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_blueViolet;
+  var picture$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$3(strokeColor, this$6);
+  var this$8 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$7, picture$2);
+  var fillColor$1 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_royalBlue;
+  var picture$3 = new $c_Ldoodle_syntax_StyleSyntax$$anon$1(fillColor$1, this$8);
+  var this$14 = new $c_Ldoodle_syntax_TextSyntax$TextPictureOps(this$9, picture$3);
+  var this$10 = $n($m_Ldoodle_core_font_Font$().Ldoodle_core_font_Font$__f_defaultSerif);
   var weight = $m_Ldoodle_core_font_FontWeight$Bold$();
-  var family = this$4.Ldoodle_core_font_Font__f_family;
-  var style = this$4.Ldoodle_core_font_Font__f_style;
-  var size = this$4.Ldoodle_core_font_Font__f_size;
-  var this$7 = new $c_Ldoodle_core_font_Font(family, style, weight, size);
+  var family = this$10.Ldoodle_core_font_Font__f_family;
+  var style = this$10.Ldoodle_core_font_Font__f_style;
+  var size = this$10.Ldoodle_core_font_Font__f_size;
+  var this$13 = new $c_Ldoodle_core_font_Font(family, style, weight, size);
   var size$1 = new $c_Ldoodle_core_font_FontSize$Points(24);
-  var family$1 = this$7.Ldoodle_core_font_Font__f_family;
-  var style$1 = this$7.Ldoodle_core_font_Font__f_style;
-  var weight$1 = this$7.Ldoodle_core_font_Font__f_weight;
+  var family$1 = this$13.Ldoodle_core_font_Font__f_family;
+  var style$1 = this$13.Ldoodle_core_font_Font__f_style;
+  var weight$1 = this$13.Ldoodle_core_font_Font__f_weight;
   var font = new $c_Ldoodle_core_font_Font(family$1, style$1, weight$1, size$1);
-  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_font = new $c_Ldoodle_syntax_TextSyntax$$anon$1(font, this$8);
+  $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_font = new $c_Ldoodle_syntax_TextSyntax$$anon$1(font, this$14);
   var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Ldoodle_algebra_Picture.getArrayOf().constr)([$thiz.Ldoodle_examples_svg_SvgTextExamples$__f_hello, $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_font]));
   $thiz.Ldoodle_examples_svg_SvgTextExamples$__f_allPictures = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems);
 }
@@ -28652,7 +28664,7 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello__T__V = (function(i
   var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_hello;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawfont__T__V = (function(id) {
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont__T__V = (function(id) {
   var this$1 = $m_Ldoodle_syntax_package$all$();
   var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_font;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
@@ -28661,9 +28673,9 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawHello__T__V(prep0);
 });
-$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawfont = (function(arg) {
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
   var prep0 = $as_T(arg);
-  this.drawfont__T__V(prep0);
+  this.drawFont__T__V(prep0);
 });
 var $d_Ldoodle_examples_svg_SvgTextExamples$ = new $TypeData().initClass($c_Ldoodle_examples_svg_SvgTextExamples$, "doodle.examples.svg.SvgTextExamples$", ({
   Ldoodle_examples_svg_SvgTextExamples$: 1,
@@ -34290,6 +34302,7 @@ function $asArrayOf_Ldoodle_core_Color(obj, depth) {
 function $c_Ldoodle_core_Color$() {
   this.Ldoodle_core_Color$__f_black = null;
   this.Ldoodle_core_Color$__f_blue = null;
+  this.Ldoodle_core_Color$__f_blueViolet = null;
   this.Ldoodle_core_Color$__f_chartreuse = null;
   this.Ldoodle_core_Color$__f_crimson = null;
   this.Ldoodle_core_Color$__f_darkBlue = null;
@@ -34300,6 +34313,7 @@ function $c_Ldoodle_core_Color$() {
   this.Ldoodle_core_Color$__f_midnightBlue = null;
   this.Ldoodle_core_Color$__f_purple = null;
   this.Ldoodle_core_Color$__f_red = null;
+  this.Ldoodle_core_Color$__f_royalBlue = null;
   this.Ldoodle_core_Color$__f_yellow = null;
   $n_Ldoodle_core_Color$ = this;
   $f_Ldoodle_core_CommonColors__$init$__V(this);
