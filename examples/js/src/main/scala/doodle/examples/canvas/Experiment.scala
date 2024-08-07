@@ -27,84 +27,14 @@ import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("Experiment")
 object Experiment {
-  //def circle = Picture.circle(100).fillColor(Color.red)
-
-  val drawFunction =
-    (ctx: CanvasRenderingContext2D) => {
-      ctx.lineWidth = 10;
-      ctx.strokeRect(75, 140, 150, 110);
-      ctx.fillRect(130, 190, 40, 60);
-      ctx.beginPath();
-      ctx.moveTo(50, 140);
-      ctx.lineTo(150, 60);
-      ctx.lineTo(250, 140);
-      ctx.closePath();
-      ctx.stroke();
-    }
-
-  val drawFunction2 = 
-    (ctx: CanvasRenderingContext2D) => {
-      ctx.fillRect(100, 100, 150, 110);
-    }
-  
-  val drawFunction3 = 
-    (ctx: CanvasRenderingContext2D) => {
-      ctx.fillStyle = "green";
-      ctx.fillRect(-100, -100, 200, 200);
-    }
-  
-  val drawFunction4 = 
-    (ctx: CanvasRenderingContext2D) => {
-      ctx.fillStyle = "green";
-      ctx.fillRect(-50, -50, 100, 100);
-    }
-  
-  val joint = circle.on(raster(250, 250)(drawFunction))
-  val joint3 = circle.above((raster(250, 250)(drawFunction)))
-  val joint2 = circle.debug.fillColor(Color.blue)
-                  .on(raster(250, 250)(drawFunction).debug)
-
-  val joint4 = (raster(250, 250)(drawFunction).debug).beside(circle.debug)
-
-  val circle2 = Picture.circle(200).fillColor(Color.blue)
-
-  val joint6 = (circle2.debug).beside(raster(200, 200)(drawFunction3).debug)
-  val joint7 = (raster(200, 200)(drawFunction3).debug).beside(circle2)
-
-  val joint8 = (circle2.debug).on(raster(200, 200)(drawFunction3).debug)
-
-  val joint9 = (circle2.debug).on(raster(200, 200)(drawFunction3).debug)
-  val joint10 = (raster(200, 200)(drawFunction3).debug).on(circle2.debug)
-  val joint11 = (raster(200, 200)(drawFunction4).debug).on(circle2.debug)
-  val jjoint = (joint9).above(joint10).beside(joint11)
-
-  val circle3 = Picture.circle(200).fillColor(Color.blue).at(100, 100)
-  val jjoint2 = (circle3.debug).beside(raster(200, 200)(drawFunction3).debug)
-
-  def tri = Picture.triangle(100,50).fillColor(Color.red)
-  def tri90 = tri.rotate(90.degrees)
-  def tri180 = tri.rotate(180.degrees)
-  def tri270 = tri.rotate(270.degrees)
-
-  val joint12 = (tri.above((tri90.beside(raster(200, 200)(drawFunction3)))
-                      .above(tri180))).beside(tri270)
-
-  val drawFunction5 = 
-    (ctx: CanvasRenderingContext2D) => {
-      ctx.beginPath();
-      ctx.moveTo(30, 140);
-      ctx.lineTo(130, 60);
-      ctx.lineTo(230, 140);
-      ctx.closePath();
-      ctx.stroke();
-    }
-  
-  val joint13 = (raster(250, 250)(drawFunction5).debug).beside(circle.debug)
 
   def circle = Picture.circle(100).fillColor(Color.red)
   
   val drawFunctionImmediate = 
     (ctx: Immediate) => {
+      ctx.clipRect(0,0,50,50);
+      ctx.clipArc(0, -50, 75, 0);
+      ctx.clip();
       ctx.rectangle(0, 0, 100, 100);
       ctx.fill(Color.green);
       ctx.stroke(Color.red);
@@ -116,9 +46,36 @@ object Experiment {
       ctx.fill(Color.pink);
     }
 
-  val joint5 = (circle).beside(raster(200, 200)(drawFunction5))  
+  val drawFunctionClosedPath = 
+    (ctx: Immediate) => {
+      ctx.line(0,0,0,50);
+      ctx.line(50,50);
+      ctx.line(50,0);
+      ctx.line(25,-25, true);
+      ctx.fill(Color.red)
+    }
+  
+  def drawFunctionPolygon = {
+    (ctx: Immediate) => {
+      ctx.pentagon(0,0,50);
+      ctx.fill(Color.green);
+      ctx.stroke(Color.blue)
+    }
+  }
+
+  def drawFunctionClip = {
+    (ctx: Immediate) => {
+      ctx.clipArc(0,0,50,0);
+      ctx.clipRect(65,65,15,15);
+      ctx.clip();
+      ctx.rectangle(0,0,100,100);
+      ctx.fill(Color.blue)
+    }
+  }
+
+  val joint = (circle).beside(raster(200, 200)(drawFunctionClip))  
 
   @JSExport
   def draw(mount: String) =
-    joint13.drawWithFrame(Frame(mount))
+    joint.drawWithFrame(Frame(mount))
 }

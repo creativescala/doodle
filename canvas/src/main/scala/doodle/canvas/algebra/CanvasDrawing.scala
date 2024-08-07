@@ -39,6 +39,7 @@ import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
+import org.scalajs.dom.Path2D
 
 import doodle.algebra.Algebra
 import doodle.algebra.Raster
@@ -133,7 +134,8 @@ object CanvasDrawing {
     f: Immediate => Unit
   ): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>
-      val immediate = new ImmediateImpl(ctx)
+      val path = new Path2D()
+      val immediate = new ImmediateImpl(ctx,path)
       f(immediate)
     }
   }
