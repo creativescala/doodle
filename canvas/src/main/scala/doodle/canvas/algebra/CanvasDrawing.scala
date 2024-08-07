@@ -16,6 +16,9 @@
 
 package doodle.canvas.algebra
 
+import doodle.algebra.Algebra
+import doodle.algebra.generic.*
+
 import cats.Apply
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Fill.ColorFill
@@ -29,13 +32,18 @@ import doodle.core.OpenPath
 import doodle.core.PathElement.BezierCurveTo
 import doodle.core.PathElement.LineTo
 import doodle.core.PathElement.MoveTo
-import doodle.core.Transform
+import doodle.core.Transform 
 import doodle.core.font.Font
 import doodle.core.font.FontFamily
 import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
+import org.scalajs.dom.Path2D
+
+import doodle.algebra.Algebra
+import doodle.algebra.Raster
+import doodle.algebra.Picture
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
@@ -44,6 +52,7 @@ import scala.scalajs.js.JSConverters.*
   * type `A` and has the side-effect of drawing on the canvas.
   */
 opaque type CanvasDrawing[A] = Function[CanvasRenderingContext2D, A]
+
 object CanvasDrawing {
   given Apply[CanvasDrawing] with {
     def ap[A, B](ff: CanvasDrawing[A => B])(
@@ -121,6 +130,16 @@ object CanvasDrawing {
     }
   }
 
+  def raster(width: Int, height: Int)(
+    f: Immediate => Unit
+  ): CanvasDrawing[Unit] = {
+    CanvasDrawing { ctx =>
+      val path = new Path2D()
+      val immediate = new ImmediateImpl(ctx,path)
+      f(immediate)
+    }
+  }
+  
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
 

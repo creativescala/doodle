@@ -61,3 +61,6 @@ The source for these examples is [in the repository](https://github.com/creative
 
 ### Parametric Spiral
 @:doodle("parametric-spiral", "SvgParametricSpiral.draw")
+
+### Experimenting
+@:doodle("Experiment", "Experiment.draw")
