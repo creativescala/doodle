@@ -220,9 +220,10 @@ lazy val java2d = project
     commonSettings,
     moduleName := "doodle-java2d",
     libraryDependencies ++= Seq(
-      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13"
-    ),
-    libraryDependencies += Dependencies.fs2.value
+      "de.erichseifert.vectorgraphics2d" % "VectorGraphics2D" % "0.13",
+      Dependencies.munitCatsEffect.value,
+      Dependencies.fs2.value
+    )
   )
   .dependsOn(core.jvm, interact.jvm)
 
