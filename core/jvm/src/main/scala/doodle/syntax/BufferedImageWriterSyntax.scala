@@ -22,6 +22,7 @@ import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.effect.BufferedImageWriter
+import doodle.effect.DefaultFrame
 
 import java.awt.image.BufferedImage
 
@@ -35,9 +36,23 @@ trait BufferedImageWriterSyntax {
     ): (A, BufferedImage) =
       w.bufferedImage(frame, picture).unsafeRunSync()
 
+    def bufferedImage[Frame]()(implicit
+        f: DefaultFrame[Frame],
+        w: BufferedImageWriter[Alg, Frame],
+        r: IORuntime
+    ): (A, BufferedImage) =
+      bufferedImage(f.default)
+
     def bufferedImageToIO[Frame](frame: Frame)(implicit
         w: BufferedImageWriter[Alg, Frame]
     ): IO[(A, BufferedImage)] =
       w.bufferedImage(frame, picture)
+
+    def bufferedImageToIO[Frame]()(implicit
+        f: DefaultFrame[Frame],
+        w: BufferedImageWriter[Alg, Frame],
+        r: IORuntime
+    ): IO[(A, BufferedImage)] =
+      bufferedImageToIO(f.default)
   }
 }

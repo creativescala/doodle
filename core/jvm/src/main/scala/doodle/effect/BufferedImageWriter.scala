@@ -31,4 +31,7 @@ trait BufferedImageWriter[+Alg <: Algebra, Frame] extends Writer[Alg, Frame] {
       description: Frame,
       picture: Picture[Alg, A]
   ): IO[(A, BufferedImage)]
+
+  def bufferedImage[A](picture: Picture[Alg, A])(using frame: DefaultFrame[Frame]): IO[(A, BufferedImage)] =
+    bufferedImage(frame.default, picture)
 }
