@@ -25,6 +25,7 @@ import doodle.effect.BufferedImageWriter
 import doodle.effect.FileWriter
 import doodle.java2d.*
 import munit.*
+
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -69,7 +70,8 @@ trait GoldenPicture extends Golden { self: FunSuite =>
     test(name) {
       assertGoldenPicture(name, picture)((file, frame, picture) =>
         val (_, bi) = picture.bufferedImage(frame)
-        ImageIO.write(bi, "png", file)
+        val success = ImageIO.write(bi, "png", file)
+        assert(success, "Image could not be written.")
       )
     }
 
