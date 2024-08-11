@@ -10,7 +10,9 @@ import java.io.File
 class BufferedImageWriteSuite extends CatsEffectSuite {
   val picture = Picture.circle(20.0)
 
-  test("writing to file produces the same output as writing BufferedImage to file") {
+  test(
+    "writing to file produces the same output as writing BufferedImage to file"
+  ) {
     val file = new File("buffered-image.png")
 
     for {

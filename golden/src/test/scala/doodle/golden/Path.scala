@@ -51,4 +51,32 @@ class Path extends FunSuite with GoldenPicture {
       .beside(equilateralTriangle[Algebra](50))
       .beside(equilateralTriangle[Algebra](200))
   }
+
+  testPictureViaBufferedImage("path-polygons") {
+    regularPolygon[Algebra](4, 100)
+      .beside(regularPolygon[Algebra](5, 100))
+      .beside(regularPolygon[Algebra](7, 100))
+      .beside(regularPolygon[Algebra](20, 100))
+  }
+
+  testPictureViaBufferedImage("path-stars") {
+    star[Algebra](4, 100, 50)
+      .beside(star[Algebra](5, 100, 50))
+      .beside(star[Algebra](7, 100, 50))
+      .beside(star[Algebra](20, 100, 50))
+  }
+
+  testPictureViaBufferedImage("path-rounded-rectangle") {
+    roundedRectangle[Algebra](100, 50, 10)
+      .beside(roundedRectangle[Algebra](100, 100, 15))
+      .beside(roundedRectangle[Algebra](50, 100, 20))
+      .beside(roundedRectangle[Algebra](100, 100, 0))
+  }
+
+  testPictureViaBufferedImage("path-equilateral-triangle") {
+    equilateralTriangle[Algebra](100)
+      .beside(equilateralTriangle[Algebra](150))
+      .beside(equilateralTriangle[Algebra](50))
+      .beside(equilateralTriangle[Algebra](200))
+  }
 }
