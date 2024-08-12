@@ -9,6 +9,8 @@ Internally, the implementation may be a stateful program, as the majority of gra
 
 We provide convenience operations for common operations. 
 For example, we can just `draw` a `Picture` without providing a `Canvas` or `Frame`, or having to deal with `IO`.
+The most convenient operation is usually presented as the default. 
+So we expect people will want to use `draw` more than `drawWithFrame` or `drawToIO`, and hence it has the shortest name and is introduced first in documentation.
 
 Conveniences that run `IO` should be implemented as syntax.
 Other conveniences should generally be implemented as methods on algebras,
@@ -19,3 +21,9 @@ The default operations, provided as syntax, generally do not expose `IO`.
 Altneratives that do expose `IO` are suffixed `toIO`.
 So, for example, `draw` is the default operation to render a `Picture` and does not expose an `IO`.
 The syntax that does is called `drawToIO`.
+
+There are a couple of naming conventions in use:
+
+* operations that require more parameters than the default are suffixed with `withA`, where `A` is the type. E.g. `drawWithFrame`.
+* operations that produces a different output type are suffixed with `toA`, where `A` is the type. E.g. `drawToIO`.
+* the above can be combined, as in `drawWithFrameToIO`.
