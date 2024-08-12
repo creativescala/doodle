@@ -75,7 +75,9 @@
             
             <h2 id="conveniences" class="section">Conveniences</h2>
             <p>We provide convenience operations for common operations. 
-            For example, we can just <code>draw</code> a <code>Picture</code> without providing a <code>Canvas</code> or <code>Frame</code>, or having to deal with <code>IO</code>.</p>
+            For example, we can just <code>draw</code> a <code>Picture</code> without providing a <code>Canvas</code> or <code>Frame</code>, or having to deal with <code>IO</code>.
+            The most convenient operation is usually presented as the default. 
+            So we expect people will want to use <code>draw</code> more than <code>drawWithFrame</code> or <code>drawToIO</code>, and hence it has the shortest name and is introduced first in documentation.</p>
             <p>Conveniences that run <code>IO</code> should be implemented as syntax.
             Other conveniences should generally be implemented as methods on algebras,
             implemented in terms of more basic methods on the algebra.
@@ -84,6 +86,12 @@
             Altneratives that do expose <code>IO</code> are suffixed <code>toIO</code>.
             So, for example, <code>draw</code> is the default operation to render a <code>Picture</code> and does not expose an <code>IO</code>.
             The syntax that does is called <code>drawToIO</code>.</p>
+            <p>There are a couple of naming conventions in use:</p>
+            <ul>
+              <li>operations that require more parameters than the default are suffixed with <code>withA</code>, where <code>A</code> is the type. E.g. <code>drawWithFrame</code>.</li>
+              <li>operations that produces a different output type are suffixed with <code>toA</code>, where <code>A</code> is the type. E.g. <code>drawToIO</code>.</li>
+              <li>the above can be combined, as in <code>drawWithFrameToIO</code>.</li>
+            </ul>
             <p class="nextPage"><a href="process.html">Development Process→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
