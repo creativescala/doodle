@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Developing Doodle</title>
+    <title>Design</title>
     
     
     <meta name="description" content="docs" />
@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="../canvas/style-examples.html">←</a></p>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="design.html">→</a></p></nav>
+<p><a href="process.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -58,8 +58,8 @@
           <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
           <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
           <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
-          <li class="level1 active nav-node"><a href="#">Developing Doodle</a></li>
-          <li class="level2 nav-leaf"><a href="design.html">Design</a></li>
+          <li class="level1 nav-node"><a href="index.html">Developing Doodle</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Design</a></li>
           <li class="level2 nav-leaf"><a href="process.html">Development Process</a></li>
           <li class="level2 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
           <li class="level2 nav-leaf"><a href="backend.html">Implementing a Backend</a></li>
@@ -68,10 +68,23 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="developing-doodle" class="title">Developing Doodle</h1>
-            <p>This section contains notes for developers who want to work on Doodle.</p>
-            <p>At the time of writing as majority of Doodle&#39;s code is written in Scala 2 style, but the proejct is transitioning to Scala 3 style. As a result, the coding idioms you see here may not match the code you find in the project but instead represent how we intend to write code in the future.</p>
-            <p class="nextPage"><a href="design.html">Design→</a></p>
+            <h1 id="design" class="title">Design</h1>
+            <p>The API that Doodle presents to the user should be compositional and easy to reason about. 
+            There are fundamental ideas in functional programming.
+            Internally, the implementation may be a stateful program, as the majority of graphics library are implemented in a stateful way.</p>
+            
+            <h2 id="conveniences" class="section">Conveniences</h2>
+            <p>We provide convenience operations for common operations. 
+            For example, we can just <code>draw</code> a <code>Picture</code> without providing a <code>Canvas</code> or <code>Frame</code>, or having to deal with <code>IO</code>.</p>
+            <p>Conveniences that run <code>IO</code> should be implemented as syntax.
+            Other conveniences should generally be implemented as methods on algebras,
+            implemented in terms of more basic methods on the algebra.
+            (Note that the current system is very mixed on whether this is followed or not.)</p>
+            <p>The default operations, provided as syntax, generally do not expose <code>IO</code>. 
+            Altneratives that do expose <code>IO</code> are suffixed <code>toIO</code>.
+            So, for example, <code>draw</code> is the default operation to render a <code>Picture</code> and does not expose an <code>IO</code>.
+            The syntax that does is called <code>drawToIO</code>.</p>
+            <p class="nextPage"><a href="process.html">Development Process→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
