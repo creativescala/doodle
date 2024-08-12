@@ -4,6 +4,8 @@
 
 - Improvements to reactor for more consistent animations (by `@lego-eden`)
 
+- Convenience methods on `BufferedImageWriter` use `DefaultFrame`
+
 
 ## 0.23.0 26-Jul-2024
 

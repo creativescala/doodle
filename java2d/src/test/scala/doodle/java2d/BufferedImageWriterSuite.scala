@@ -16,7 +16,6 @@
 
 package doodle.java2d
 
-import cats.effect.unsafe.implicits.global
 import doodle.core.format.*
 import doodle.syntax.all.*
 import munit.CatsEffectSuite
