@@ -29,6 +29,10 @@ import java.io.File
   */
 trait FileWriter[+Alg <: Algebra, Frame, Fmt <: Format]
     extends Writer[Alg, Frame] {
-  def write[A](file: File, description: Frame, image: Picture[Alg, A]): IO[A]
-  def write[A](file: File, image: Picture[Alg, A]): IO[A]
+  def write[A](file: File, description: Frame, picture: Picture[Alg, A]): IO[A]
+
+  def write[A](file: File, picture: Picture[Alg, A])(using
+      frame: DefaultFrame[Frame]
+  ): IO[A] =
+    write(file, frame.default, picture)
 }

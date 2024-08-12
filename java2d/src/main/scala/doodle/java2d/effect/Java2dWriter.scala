@@ -46,10 +46,6 @@ trait Java2dWriter[Fmt <: Format]
   // with alpha channels as described in https://bugs.openjdk.java.net/browse/JDK-8119048
   def makeImage(w: Int, h: Int): BufferedImage
 
-  def write[A](file: File, picture: Picture[A]): IO[A] = {
-    write(file, Frame.default.withSizedToPicture(20), picture)
-  }
-
   def write[A](file: File, frame: Frame, picture: Picture[A]): IO[A] = {
     for {
       result <- Java2d.renderBufferedImage(
@@ -69,9 +65,6 @@ trait Java2dWriter[Fmt <: Format]
       value <- writeToOutput(output, frame, image)
       base64 = JBase64.getEncoder.encodeToString(output.toByteArray)
     } yield (value, B64[Fmt](base64))
-
-  def base64[A](image: Picture[A]): IO[(A, B64[Fmt])] =
-    base64(Frame.default.withSizedToPicture(20), image)
 
   private def writeToOutput[A](
       output: OutputStream,

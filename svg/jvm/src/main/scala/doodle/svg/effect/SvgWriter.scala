@@ -46,9 +46,6 @@ object SvgWriter
       }
   }
 
-  def write[A](file: File, picture: Picture[Algebra, A]): IO[A] =
-    write(file, Frame("").withSizedToPicture(), picture)
-
   def base64[A](
       frame: Frame,
       image: Picture[Algebra, A]
@@ -59,9 +56,4 @@ object SvgWriter
       (nodes, value) = rendered
       b64 = JBase64.getEncoder.encodeToString(nodes.getBytes())
     } yield (value, B64[format.Svg](b64))
-
-  def base64[A](
-      picture: Picture[Algebra, A]
-  ): IO[(A, B64[format.Svg])] =
-    base64(Frame("").withSizedToPicture(), picture)
 }

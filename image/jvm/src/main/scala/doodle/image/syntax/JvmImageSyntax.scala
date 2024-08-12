@@ -24,6 +24,7 @@ import doodle.algebra.Picture
 import doodle.core.format.Format
 import doodle.core.{Base64 as B64}
 import doodle.effect.Base64Writer
+import doodle.effect.DefaultFrame
 import doodle.effect.FileWriter
 import doodle.language.Basic
 
@@ -41,6 +42,7 @@ class JvmImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {
   final class Base64Ops[Fmt <: Format](image: Image) {
     def apply[Alg <: Basic, Frame](implicit
         w: Base64Writer[Alg, Frame, Fmt],
+        f: DefaultFrame[Frame],
         runtime: IORuntime
     ): B64[Fmt] = {
       val picture = new Picture[Basic, Unit] {
@@ -66,6 +68,7 @@ class JvmImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {
   final class ImageWriterUnitOps[Fmt <: Format](image: Image) {
     def apply[Alg <: Basic, Frame](file: String)(implicit
         w: FileWriter[Alg, Frame, Fmt],
+        f: DefaultFrame[Frame],
         r: IORuntime
     ): Unit =
       apply(new File(file))
@@ -78,7 +81,11 @@ class JvmImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {
 
     def apply[Alg <: Basic, Frame](
         file: File
-    )(implicit w: FileWriter[Alg, Frame, Fmt], r: IORuntime): Unit =
+    )(implicit
+        w: FileWriter[Alg, Frame, Fmt],
+        f: DefaultFrame[Frame],
+        r: IORuntime
+    ): Unit =
       image.compile[Alg].write[Fmt](file)
 
     def apply[Alg <: Basic, Frame](file: File, frame: Frame)(implicit
@@ -94,7 +101,8 @@ class JvmImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {
     */
   final class ImageWriterIOOps[Fmt <: Format](image: Image) {
     def apply[Alg <: Basic, Frame](file: String)(implicit
-        w: FileWriter[Alg, Frame, Fmt]
+        w: FileWriter[Alg, Frame, Fmt],
+        f: DefaultFrame[Frame]
     ): IO[Unit] =
       apply(new File(file))
 
@@ -105,7 +113,10 @@ class JvmImageSyntax extends AbstractImageSyntax(doodle.syntax.renderer) {
 
     def apply[Alg <: Basic, Frame](
         file: File
-    )(implicit w: FileWriter[Alg, Frame, Fmt]): IO[Unit] =
+    )(implicit
+        w: FileWriter[Alg, Frame, Fmt],
+        f: DefaultFrame[Frame]
+    ): IO[Unit] =
       image.compile[Alg].writeToIO[Fmt](file)
 
     def apply[Alg <: Basic, Frame](file: File, frame: Frame)(implicit

@@ -24,6 +24,7 @@ import doodle.algebra.Picture
 import doodle.core.format.Format
 import doodle.core.{Base64 as B64}
 import doodle.effect.Base64Writer
+import doodle.effect.DefaultFrame
 
 trait Base64WriterSyntax {
   implicit class Base64Ops[Alg <: Algebra, A](
@@ -34,6 +35,7 @@ trait Base64WriterSyntax {
     class Base64OpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame]()(implicit
           w: Base64Writer[Alg, Frame, Fmt],
+          f: DefaultFrame[Frame],
           r: IORuntime
       ): (A, B64[Fmt]) =
         w.base64(picture).unsafeRunSync()
@@ -47,7 +49,8 @@ trait Base64WriterSyntax {
 
     class Base64IOOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame]()(implicit
-          w: Base64Writer[Alg, Frame, Fmt]
+          w: Base64Writer[Alg, Frame, Fmt],
+          f: DefaultFrame[Frame]
       ): IO[(A, B64[Fmt])] =
         w.base64(picture)
 

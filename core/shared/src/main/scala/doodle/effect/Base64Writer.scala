@@ -32,5 +32,9 @@ trait Base64Writer[+Alg <: Algebra, Frame, Fmt <: Format]
       description: Frame,
       picture: Picture[Alg, A]
   ): IO[(A, B64[Fmt])]
-  def base64[A](picture: Picture[Alg, A]): IO[(A, B64[Fmt])]
+
+  def base64[A](picture: Picture[Alg, A])(using
+      frame: DefaultFrame[Frame]
+  ): IO[(A, B64[Fmt])] =
+    base64(frame.default, picture)
 }

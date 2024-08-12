@@ -22,6 +22,7 @@ import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.core.format.Format
+import doodle.effect.DefaultFrame
 import doodle.effect.FileWriter
 
 import java.io.File
@@ -35,12 +36,14 @@ trait FileWriterSyntax {
     class FileWriterOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame](file: String)(implicit
           w: FileWriter[Alg, Frame, Fmt],
+          f: DefaultFrame[Frame],
           r: IORuntime
       ): A =
         apply(new File(file))
 
       def apply[Frame](file: File)(implicit
           w: FileWriter[Alg, Frame, Fmt],
+          f: DefaultFrame[Frame],
           r: IORuntime
       ): A =
         w.write(file, picture).unsafeRunSync()
@@ -60,12 +63,14 @@ trait FileWriterSyntax {
 
     class FileWriterIOOpsHelper[Fmt <: Format](picture: Picture[Alg, A]) {
       def apply[Frame](file: String)(implicit
-          w: FileWriter[Alg, Frame, Fmt]
+          w: FileWriter[Alg, Frame, Fmt],
+          f: DefaultFrame[Frame]
       ): IO[A] =
         apply(new File(file))
 
       def apply[Frame](file: File)(implicit
-          w: FileWriter[Alg, Frame, Fmt]
+          w: FileWriter[Alg, Frame, Fmt],
+          f: DefaultFrame[Frame]
       ): IO[A] =
         w.write(file, picture)
 
