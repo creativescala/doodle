@@ -139,6 +139,11 @@ object CanvasDrawing {
       f(immediate)
     }
   }
+
+  def text(text: String, x: Double, y: Double): CanvasDrawing[Unit] =
+    CanvasDrawing { ctx =>
+      ctx.fillText(text, x, y)
+    }
   
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)

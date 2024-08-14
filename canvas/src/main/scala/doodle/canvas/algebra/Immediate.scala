@@ -39,7 +39,7 @@ trait Immediate {
   def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double): Unit
   def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean): Unit
   def fill(color: Color): Unit
-  def text(text: String, x: Double, y: Double): Unit
+  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "50px serif"): Unit
   def line(x: Double, y: Double, closedPath: Boolean = false): Unit
   def line(x1: Double, y1: Double, x2: Double, y2: Double): Unit
   def pentagon(x: Double, y: Double, radius: Double): Unit
@@ -143,9 +143,16 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.fill()
   }
 
-  def text(text: String, x: Double, y: Double): Unit = {
+  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "50px serif"): Unit = {
     val x0 = x - text.length * 2
-    ctx.fillText(text, x0, y)
+    ctx.fillStyle = CanvasDrawing.colorToCSS(color)
+    ctx.font = font;
+    ctx.beginPath()
+    ctx.translate(x0, y)
+    ctx.rotate(Math.PI)
+    ctx.scale(-1, 1)
+    ctx.fillText(text, -ctx.measureText(text).width / 2, 0)
+    ctx.fill()
   }
 
   def line(x: Double, y: Double, closedPath: Boolean = false): Unit = {

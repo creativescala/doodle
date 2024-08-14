@@ -59,7 +59,7 @@ object Experiment {
     (ctx: Immediate) => {
       ctx.pentagon(0,0,50);
       ctx.fill(Color.green);
-      ctx.stroke(Color.blue)
+      ctx.stroke(Color.blue);
     }
   }
 
@@ -73,7 +73,17 @@ object Experiment {
     }
   }
 
-  val joint = (circle).beside(raster(200, 200)(drawFunctionClip))  
+  def drawFunctionText = {
+    (ctx: Immediate) => {
+      ctx.text("Hello, world!", 0, 0, font = "25px serif");
+      ctx.rectangle(60,60,20,20);
+      ctx.fill(Color.yellow)
+      ctx.rectangle(60,40,20,20);
+      ctx.fill(Color.blue)
+    }
+  }
+
+  val joint = (circle).beside(raster(200, 200)(drawFunctionText))  
 
   @JSExport
   def draw(mount: String) =

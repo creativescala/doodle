@@ -18,6 +18,7 @@ package doodle.canvas.algebra
 
 import doodle.algebra.Algebra
 import doodle.algebra.generic.*
+import doodle.core.*
 import doodle.core.BoundingBox
 import doodle.core.font.Font
 import doodle.core.{Transform as Tx}
@@ -36,8 +37,13 @@ trait Text extends GenericText[CanvasDrawing] {
         font: Font,
         text: String,
         bounds: Bounds
-    ): CanvasDrawing[Unit] =
-      ???
+    ): CanvasDrawing[Unit] = ???
+      // CanvasDrawing.setTransform(tx) >>
+      //   CanvasDrawing.withFill(fill) {
+      //     CanvasDrawing.withStroke(stroke) {
+      //       CanvasDrawing.text(text, bounds.width, bounds.actualBoundingBoxLeft)
+      //     }
+      //   }
 
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
       ???
