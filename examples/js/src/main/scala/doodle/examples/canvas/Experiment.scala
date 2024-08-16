@@ -48,7 +48,7 @@ object Experiment {
 
   val drawFunctionClosedPath = 
     (ctx: Immediate) => {
-      ctx.line(0,0,0,50);
+      ctx.lineTo(0,0,0,50);
       ctx.line(50,50);
       ctx.line(50,0);
       ctx.line(25,-25, true);
@@ -76,6 +76,7 @@ object Experiment {
   def drawFunctionText = {
     (ctx: Immediate) => {
       ctx.text("Hello, world!", 0, 0, font = "25px serif");
+      ctx.dashLine(0, 0, 200, 200, Array(5,5));
       ctx.rectangle(60,60,20,20);
       ctx.fill(Color.yellow)
       ctx.rectangle(60,40,20,20);

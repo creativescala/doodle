@@ -23,39 +23,41 @@ import org.scalajs.dom.CanvasRenderingContext2D
 import org.scalajs.dom.Path2D
 import scala.annotation.tailrec
 
+import scala.scalajs.js.JSConverters.*
+
 
 trait Immediate {
-  def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, closedPath: Boolean = false): Unit
+  def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit
   def arcTo(x1: Int, y1: Int, x2: Int, y2: Int, radius: Int): Unit
-  def bezierCurveTo(cp1x: Int, cp1y: Int, cp2x: Int, cp2y: Int, x: Int, y: Int): Unit
+  def bezierCurveTo(cp1x: Int, cp1y: Int, cp2x: Int, cp2y: Int, x: Int, y: Int, segments: Array[Double] = Array.empty[Double]): Unit
   def beginPath(): Unit
   def clearRect(x: Int, y: Int, width: Int, height: Int): Unit
   def clip(): Unit
   def clipArc(x: Int, y: Int, radius: Int, startAngle: Double): Unit
   def clipRect(x: Int, y: Int, width: Int, height: Int): Unit
   def closePath(): Unit
-  def circle(x: Double, y: Double, radius: Double): Unit
-  def ellipse(x: Double, y: Double, width: Double, height: Double): Unit
-  def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double): Unit
-  def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean): Unit
+  def circle(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def dashLine(x1: Double, y1: Double, x2: Double, y2: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def ellipse(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def ellipseWithRotation(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit
   def fill(color: Color): Unit
   def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "50px serif"): Unit
   def line(x: Double, y: Double, closedPath: Boolean = false): Unit
-  def line(x1: Double, y1: Double, x2: Double, y2: Double): Unit
-  def pentagon(x: Double, y: Double, radius: Double): Unit
+  def lineTo(x1: Double, y1: Double, x2: Double, y2: Double): Unit
+  def pentagon(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
   def quadraticCurveTo(cpx: Double, cpy: Double, x: Double, y: Double): Unit
-  def rectangle(x: Double, y: Double, width: Double, height: Double): Unit
+  def rectangle(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit
   def rotate(angle: Double): Unit
-  def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int): Unit
+  def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int, segments: Array[Double] = Array.empty[Double]): Unit
   def stroke(color: Color): Unit
   def strokeText(text: String, x: Double, y: Double): Unit
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit
   def translate(x: Double, y: Double): Unit
-  def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double): Unit
+  def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, segments: Array[Double] = Array.empty[Double]): Unit
 }
 
 class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immediate {
-  def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, closedPath: Boolean = false): Unit = {
+  def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - radius / 2
     val y0 = y - radius / 2
     ctx.beginPath()
@@ -70,7 +72,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.stroke()
   }
 
-  def bezierCurveTo(cp1x: Int, cp1y: Int, cp2x: Int, cp2y: Int, x: Int, y: Int): Unit = {
+  def bezierCurveTo(cp1x: Int, cp1y: Int, cp2x: Int, cp2y: Int, x: Int, y: Int, segments: Array[Double] = Array.empty[Double]): Unit = {
     ctx.beginPath()
     ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
     ctx.stroke()
@@ -106,15 +108,24 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.closePath()
   }
 
-  def circle(x: Double, y: Double, radius: Double): Unit = {
+  def circle(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - radius / 2.0
     val y0 = y - radius / 2.0
     ctx.beginPath()
+    ctx.setLineDash(segments.toJSArray)
     ctx.arc(x0, y0, radius, 0, 2 * Math.PI)
     ctx.stroke()
   }
 
-  def ellipse(x: Double, y: Double, width: Double, height: Double): Unit = {
+  def dashLine(x1: Double, y1: Double, x2: Double, y2: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+    ctx.beginPath()
+    ctx.setLineDash(segments.toJSArray)
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2)
+    ctx.stroke()
+  }
+
+  def ellipse(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - width / 2
     val y0 = y - height / 2
     ctx.beginPath()
@@ -122,15 +133,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.fill()
   }
 
-  def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double): Unit = {
-    val x0 = x - radiusX / 2
-    val y0 = y - radiusY / 2
-    ctx.beginPath()
-    ctx.ellipse(x0, y0, radiusX, radiusY, rotation, startAngle, endAngle)
-    ctx.fill()
-  }
-
-  def ellipse(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean): Unit = {
+  def ellipseWithRotation(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - radiusX / 2
     val y0 = y - radiusY / 2
     ctx.beginPath()
@@ -161,17 +164,17 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.stroke()
   }
 
-  def line(x1: Double, y1: Double, x2: Double, y2: Double): Unit = {
+  def lineTo(x1: Double, y1: Double, x2: Double, y2: Double): Unit = {
     ctx.beginPath();
     ctx.moveTo(x1, y1)
     ctx.lineTo(x2, y2)
     ctx.stroke()
   }
 
-  def pentagon(x: Double, y: Double, radius: Double): Unit = {
+  def pentagon(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - radius / 2
     val y0 = y - radius / 2
-
+    
     @tailrec
     def drawSide(i: Int): Unit = {
       if (i <= 5) {
@@ -194,7 +197,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.stroke()
   }
 
-  def rectangle(x: Double, y: Double, width: Double, height: Double): Unit = {
+  def rectangle(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - width / 2
     val y0 = y - height / 2
     ctx.beginPath()
@@ -205,7 +208,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.rotate(angle)
   }
 
-  def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int): Unit = {
+  def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int, segments: Array[Double] = Array.empty[Double]): Unit = {
     val x0 = x - width / 2
     val y0 = y - height / 2
     ctx.beginPath()
@@ -235,7 +238,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.translate(x, y)
   }
 
-  def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double): Unit = {
+  def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
     ctx.beginPath()
     ctx.moveTo(x1, y1)
     ctx.lineTo(x2, y2)
