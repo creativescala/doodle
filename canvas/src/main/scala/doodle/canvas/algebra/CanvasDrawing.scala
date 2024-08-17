@@ -135,7 +135,7 @@ object CanvasDrawing {
   ): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>
       val path = new Path2D()
-      val immediate = new ImmediateImpl(ctx,path)
+      val immediate = new ImmediateImpl(width, height, ctx, path)
       f(immediate)
     }
   }

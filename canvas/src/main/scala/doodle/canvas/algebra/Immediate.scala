@@ -41,7 +41,6 @@ trait Immediate {
   def ellipse(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit
   def ellipseWithRotation(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit
   def fill(color: Color): Unit
-  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "50px serif"): Unit
   def line(x: Double, y: Double, closedPath: Boolean = false): Unit
   def lineTo(x1: Double, y1: Double, x2: Double, y2: Double): Unit
   def pentagon(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
@@ -49,17 +48,19 @@ trait Immediate {
   def rectangle(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit
   def rotate(angle: Double): Unit
   def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int, segments: Array[Double] = Array.empty[Double]): Unit
+  def star(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
   def stroke(color: Color): Unit
   def strokeText(text: String, x: Double, y: Double): Unit
+  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "25px serif"): Unit
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit
   def translate(x: Double, y: Double): Unit
   def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, segments: Array[Double] = Array.empty[Double]): Unit
 }
 
-class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immediate {
+class ImmediateImpl(rasterHeight: Int, rasterWidth: Int, ctx: CanvasRenderingContext2D, region: Path2D) extends Immediate {
   def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
-    val x0 = x - radius / 2
-    val y0 = y - radius / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     ctx.beginPath()
     ctx.arc(x0, y0, radius, startAngle, endAngle)
     if(closedPath) ctx.closePath();
@@ -93,14 +94,14 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
   }
 
   def clipArc(x: Int, y: Int, radius: Int, startAngle: Double): Unit = {
-    val x0 = x - radius / 2
-    val y0 = y - radius / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     region.arc(x0, y0, radius, startAngle, 2 * Math.PI)
   }
 
   def clipRect(x: Int, y: Int, width: Int, height: Int): Unit = {
-    val x0 = x - width / 2
-    val y0 = y - height / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     region.rect(x0, y0, width, height)
   }
 
@@ -109,8 +110,8 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
   }
 
   def circle(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
-    val x0 = x - radius / 2.0
-    val y0 = y - radius / 2.0
+    val x0 = x - rasterWidth / 2.0
+    val y0 = y - rasterHeight / 2.0
     ctx.beginPath()
     ctx.setLineDash(segments.toJSArray)
     ctx.arc(x0, y0, radius, 0, 2 * Math.PI)
@@ -126,16 +127,16 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
   }
 
   def ellipse(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
-    val x0 = x - width / 2
-    val y0 = y - height / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     ctx.beginPath()
     ctx.ellipse(x0, y0, width / 2, height / 2, 0, 0, 2 * Math.PI)
     ctx.fill()
   }
 
   def ellipseWithRotation(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
-    val x0 = x - radiusX / 2
-    val y0 = y - radiusY / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     ctx.beginPath()
     ctx.ellipse(x0, y0, radiusX, radiusY, rotation, startAngle, endAngle, counterclockwise)
     ctx.fill()
@@ -146,7 +147,7 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.fill()
   }
 
-  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "50px serif"): Unit = {
+  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "25px serif"): Unit = {
     val x0 = x - text.length * 2
     ctx.fillStyle = CanvasDrawing.colorToCSS(color)
     ctx.font = font;
@@ -188,7 +189,6 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.beginPath()
     ctx.moveTo(x0 + radius, y0)
     drawSide(1)
-    //ctx.fill()
   }
 
   def quadraticCurveTo(cpx: Double, cpy: Double, x: Double, y: Double): Unit = {
@@ -198,8 +198,8 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
   }
 
   def rectangle(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
-    val x0 = x - width / 2
-    val y0 = y - height / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     ctx.beginPath()
     ctx.rect(x0, y0, width, height)
   }
@@ -209,8 +209,8 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
   }
 
   def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int, segments: Array[Double] = Array.empty[Double]): Unit = {
-    val x0 = x - width / 2
-    val y0 = y - height / 2
+    val x0 = x - rasterWidth / 2
+    val y0 = y - rasterHeight / 2
     ctx.beginPath()
     ctx.moveTo(x0 + radius, y0)
     ctx.arcTo(x0 + width, y0, x0 + width, y0 + height, radius)
@@ -220,13 +220,39 @@ class ImmediateImpl(ctx: CanvasRenderingContext2D, region: Path2D) extends Immed
     ctx.fill()   
   }
 
+  def star(x1: Double, y1: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+    val outerRadius = radius
+    val innerRadius = radius / 2
+    val angle = Math.PI / 5
+    val x = x1 - rasterWidth/2
+    val y = y1 - rasterHeight/2
+
+    ctx.beginPath()
+    ctx.moveTo(
+      x + Math.cos(0) * outerRadius, 
+      y + Math.sin(0) * outerRadius
+    )
+
+    for (i <- 1 to 10) {
+      val isOuter = i % 2 == 0
+      val r = if (isOuter) outerRadius else innerRadius
+      val a = i * angle
+      ctx.lineTo(
+        x + Math.cos(a) * r, 
+        y + Math.sin(a) * r
+      )
+    }
+    ctx.closePath()
+    ctx.fill() 
+  }
+
   def stroke(color: Color): Unit = {
     ctx.strokeStyle = CanvasDrawing.colorToCSS(color)
     ctx.stroke()
   }
 
   def strokeText(text: String, x: Double, y: Double): Unit = {
-    val x0 = x - text.length * 2
+    val x0 = x - rasterWidth * 2
     ctx.strokeText(text, x0, y)
   }
 
