@@ -18,7 +18,6 @@ package doodle.canvas.algebra
 
 import doodle.algebra.Algebra
 import doodle.algebra.generic.*
-import org.scalajs.dom.CanvasRenderingContext2D
 import doodle.core.Transform as Tx
 
 trait Raster extends GenericRaster[CanvasDrawing, Immediate] {

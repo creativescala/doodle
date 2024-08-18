@@ -16,7 +16,6 @@
 
 package doodle.canvas.algebra
 
-import doodle.algebra.Algebra
 import doodle.algebra.generic.*
 
 import cats.Apply
@@ -40,10 +39,6 @@ import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
 import org.scalajs.dom.Path2D
-
-import doodle.algebra.Algebra
-import doodle.algebra.Raster
-import doodle.algebra.Picture
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*

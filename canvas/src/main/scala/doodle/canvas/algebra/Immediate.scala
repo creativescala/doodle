@@ -18,7 +18,6 @@ package doodle.canvas.algebra
 
 import doodle.core.Color
 import doodle.core.*
-import doodle.syntax.all.*
 import org.scalajs.dom.CanvasRenderingContext2D
 import org.scalajs.dom.Path2D
 import scala.annotation.tailrec
