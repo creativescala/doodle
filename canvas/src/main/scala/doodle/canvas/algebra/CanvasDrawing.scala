@@ -32,7 +32,7 @@ import doodle.core.OpenPath
 import doodle.core.PathElement.BezierCurveTo
 import doodle.core.PathElement.LineTo
 import doodle.core.PathElement.MoveTo
-import doodle.core.Transform 
+import doodle.core.Transform
 import doodle.core.font.Font
 import doodle.core.font.FontFamily
 import doodle.core.font.FontSize
@@ -131,7 +131,7 @@ object CanvasDrawing {
   }
 
   def raster(width: Int, height: Int)(
-    f: Immediate => Unit
+      f: Immediate => Unit
   ): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>
       val path = new Path2D()
@@ -144,7 +144,7 @@ object CanvasDrawing {
     CanvasDrawing { ctx =>
       ctx.fillText(text, x, y)
     }
-  
+
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
 

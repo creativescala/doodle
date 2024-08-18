@@ -39,4 +39,3 @@ trait Raster extends GenericRaster[CanvasDrawing, Immediate] {
     }
   }
 }
-

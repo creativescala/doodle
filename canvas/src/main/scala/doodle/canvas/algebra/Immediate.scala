@@ -25,57 +25,196 @@ import scala.annotation.tailrec
 
 import scala.scalajs.js.JSConverters.*
 
-
 trait Immediate {
-  def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit
-  def arcTo(x1: Int, y1: Int, x2: Int, y2: Int, radius: Int, counterclockwise: Boolean = false, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit
-  def bezierCurveTo(cp1x: Int, cp1y: Int, cp2x: Int, cp2y: Int, x: Int, y: Int, segments: Array[Double] = Array.empty[Double]): Unit
+  def arc(
+      x: Int,
+      y: Int,
+      radius: Int,
+      startAngle: Double,
+      endAngle: Double,
+      counterclockwise: Boolean = false,
+      closedPath: Boolean = false,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def arcTo(
+      x1: Int,
+      y1: Int,
+      x2: Int,
+      y2: Int,
+      radius: Int,
+      counterclockwise: Boolean = false,
+      closedPath: Boolean = false,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def bezierCurveTo(
+      cp1x: Int,
+      cp1y: Int,
+      cp2x: Int,
+      cp2y: Int,
+      x: Int,
+      y: Int,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
   def beginPath(): Unit
   def clearRect(x: Int, y: Int, width: Int, height: Int): Unit
   def clip(): Unit
-  def clipArc(x: Int, y: Int, radius: Int, startAngle: Double = 0, endAngle: Double = 2 * Math.PI, counterclockwise: Boolean = false): Unit
+  def clipArc(
+      x: Int,
+      y: Int,
+      radius: Int,
+      startAngle: Double = 0,
+      endAngle: Double = 2 * Math.PI,
+      counterclockwise: Boolean = false
+  ): Unit
   def clipRect(x: Int, y: Int, width: Int, height: Int): Unit
   def closePath(): Unit
-  def circle(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
-  def dashLine(x1: Double, y1: Double, x2: Double, y2: Double, segments: Array[Double] = Array.empty[Double]): Unit
-  def ellipse(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit
-  def ellipseWithRotation(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit
+  def circle(
+      x: Double,
+      y: Double,
+      radius: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def dashLine(
+      x1: Double,
+      y1: Double,
+      x2: Double,
+      y2: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def ellipse(
+      x: Double,
+      y: Double,
+      width: Double,
+      height: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def ellipseWithRotation(
+      x: Double,
+      y: Double,
+      radiusX: Double,
+      radiusY: Double,
+      rotation: Double,
+      startAngle: Double,
+      endAngle: Double,
+      counterclockwise: Boolean = false,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
   def endClip(): Unit
   def fill(color: Color): Unit
   def line(x: Double, y: Double, closedPath: Boolean = false): Unit
   def lineTo(x1: Double, y1: Double, x2: Double, y2: Double): Unit
-  def pentagon(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def pentagon(
+      x: Double,
+      y: Double,
+      radius: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
   def quadraticCurveTo(cpx: Double, cpy: Double, x: Double, y: Double): Unit
-  def rectangle(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def rectangle(
+      x: Double,
+      y: Double,
+      width: Double,
+      height: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
   def rotate(angle: Double): Unit
-  def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int, segments: Array[Double] = Array.empty[Double]): Unit
-  def star(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def roundedRectangle(
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      radius: Int,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def star(
+      x: Double,
+      y: Double,
+      radius: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
   def stroke(color: Color): Unit
   def strokeText(text: String, x: Double, y: Double): Unit
-  def square(x: Double, y: Double, size: Double, segments: Array[Double] = Array.empty[Double]): Unit
-  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "25px serif"): Unit
-  def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit
+  def square(
+      x: Double,
+      y: Double,
+      size: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
+  def text(
+      text: String,
+      x: Double,
+      y: Double,
+      color: Color = Color.black,
+      font: String = "25px serif"
+  ): Unit
+  def transform(
+      a: Double,
+      b: Double,
+      c: Double,
+      d: Double,
+      e: Double,
+      f: Double
+  ): Unit
   def translate(x: Double, y: Double): Unit
-  def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, segments: Array[Double] = Array.empty[Double]): Unit
+  def triangle(
+      x1: Double,
+      y1: Double,
+      x2: Double,
+      y2: Double,
+      x3: Double,
+      y3: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit
 }
 
-class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingContext2D, region: Path2D) extends Immediate {
-  def arc(x: Int, y: Int, radius: Int, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
+class ImmediateImpl(
+    rasterWidth: Int,
+    rasterHeight: Int,
+    ctx: CanvasRenderingContext2D,
+    region: Path2D
+) extends Immediate {
+  def arc(
+      x: Int,
+      y: Int,
+      radius: Int,
+      startAngle: Double,
+      endAngle: Double,
+      counterclockwise: Boolean = false,
+      closedPath: Boolean = false,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
     ctx.arc(x0, y0, radius, startAngle, endAngle, counterclockwise)
-    if(closedPath) ctx.closePath();
+    if closedPath then ctx.closePath();
     ctx.stroke()
   }
 
-  def arcTo(x1: Int, y1: Int, x2: Int, y2: Int, radius: Int, counterclockwise: Boolean = false, closedPath: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def arcTo(
+      x1: Int,
+      y1: Int,
+      x2: Int,
+      y2: Int,
+      radius: Int,
+      counterclockwise: Boolean = false,
+      closedPath: Boolean = false,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     ctx.beginPath()
     ctx.arcTo(x1, y1, x2, y2, radius)
     ctx.stroke()
   }
 
-  def bezierCurveTo(cp1x: Int, cp1y: Int, cp2x: Int, cp2y: Int, x: Int, y: Int, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def bezierCurveTo(
+      cp1x: Int,
+      cp1y: Int,
+      cp2x: Int,
+      cp2y: Int,
+      x: Int,
+      y: Int,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     ctx.beginPath()
     ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
     ctx.stroke()
@@ -96,7 +235,14 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.clip(region)
   }
 
-  def clipArc(x: Int, y: Int, radius: Int, startAngle: Double = 0, endAngle: Double = 2 * Math.PI, counterclockwise: Boolean = false): Unit = {
+  def clipArc(
+      x: Int,
+      y: Int,
+      radius: Int,
+      startAngle: Double = 0,
+      endAngle: Double = 2 * Math.PI,
+      counterclockwise: Boolean = false
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     region.arc(x0, y0, radius, startAngle, endAngle, counterclockwise)
@@ -112,7 +258,12 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.closePath()
   }
 
-  def circle(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def circle(
+      x: Double,
+      y: Double,
+      radius: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2.0
     val y0 = y - rasterHeight / 2.0
     ctx.beginPath()
@@ -121,7 +272,13 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.stroke()
   }
 
-  def dashLine(x1: Double, y1: Double, x2: Double, y2: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def dashLine(
+      x1: Double,
+      y1: Double,
+      x2: Double,
+      y2: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x1 - rasterWidth / 2
     val y0 = y1 - rasterHeight / 2
     val x = x2 - rasterWidth / 2
@@ -133,7 +290,13 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.stroke()
   }
 
-  def ellipse(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def ellipse(
+      x: Double,
+      y: Double,
+      width: Double,
+      height: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
@@ -141,11 +304,30 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.fill()
   }
 
-  def ellipseWithRotation(x: Double, y: Double, radiusX: Double, radiusY: Double, rotation: Double, startAngle: Double, endAngle: Double, counterclockwise: Boolean = false, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def ellipseWithRotation(
+      x: Double,
+      y: Double,
+      radiusX: Double,
+      radiusY: Double,
+      rotation: Double,
+      startAngle: Double,
+      endAngle: Double,
+      counterclockwise: Boolean = false,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
-    ctx.ellipse(x0, y0, radiusX, radiusY, rotation, startAngle, endAngle, counterclockwise)
+    ctx.ellipse(
+      x0,
+      y0,
+      radiusX,
+      radiusY,
+      rotation,
+      startAngle,
+      endAngle,
+      counterclockwise
+    )
     ctx.fill()
   }
 
@@ -158,7 +340,13 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.fill()
   }
 
-  def text(text: String, x: Double, y: Double, color: Color = Color.black, font: String = "25px serif"): Unit = {
+  def text(
+      text: String,
+      x: Double,
+      y: Double,
+      color: Color = Color.black,
+      font: String = "25px serif"
+  ): Unit = {
     ctx.save()
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
@@ -174,8 +362,8 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
   }
 
   def line(x: Double, y: Double, closedPath: Boolean = false): Unit = {
-    ctx.lineTo(x - rasterWidth / 2,y - rasterHeight / 2)
-    if(closedPath) ctx.closePath()
+    ctx.lineTo(x - rasterWidth / 2, y - rasterHeight / 2)
+    if closedPath then ctx.closePath()
     ctx.stroke()
   }
 
@@ -190,13 +378,18 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.stroke()
   }
 
-  def pentagon(x: Double, y: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def pentagon(
+      x: Double,
+      y: Double,
+      radius: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - radius / 2
     val y0 = y - radius / 2
-    
+
     @tailrec
     def drawSide(i: Int): Unit = {
-      if (i <= 5) {
+      if i <= 5 then {
         val angle = 2 * Math.PI * i / 5
         val x1 = x0 + radius * Math.cos(angle)
         val y1 = y0 + radius * Math.sin(angle)
@@ -215,7 +408,13 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.stroke()
   }
 
-  def rectangle(x: Double, y: Double, width: Double, height: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def rectangle(
+      x: Double,
+      y: Double,
+      width: Double,
+      height: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
@@ -226,7 +425,14 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.rotate(angle)
   }
 
-  def roundedRectangle(x: Int, y: Int, width: Int, height: Int, radius: Int, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def roundedRectangle(
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      radius: Int,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
@@ -235,33 +441,38 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.arcTo(x0 + width, y0 + height, x0, y0 + height, radius)
     ctx.arcTo(x0, y0 + height, x0, y0, radius)
     ctx.arcTo(x0, y0, x0 + width, y0, radius)
-    ctx.fill()   
+    ctx.fill()
   }
 
-  def star(x1: Double, y1: Double, radius: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def star(
+      x1: Double,
+      y1: Double,
+      radius: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val outerRadius = radius
     val innerRadius = radius / 2
     val angle = Math.PI / 5
-    val x = x1 - rasterWidth/2
-    val y = y1 - rasterHeight/2
+    val x = x1 - rasterWidth / 2
+    val y = y1 - rasterHeight / 2
 
     ctx.beginPath()
     ctx.moveTo(
-      x + Math.cos(0) * outerRadius, 
+      x + Math.cos(0) * outerRadius,
       y + Math.sin(0) * outerRadius
     )
 
-    for (i <- 1 to 10) {
+    for i <- 1 to 10 do {
       val isOuter = i % 2 == 0
-      val r = if (isOuter) outerRadius else innerRadius
+      val r = if isOuter then outerRadius else innerRadius
       val a = i * angle
       ctx.lineTo(
-        x + Math.cos(a) * r, 
+        x + Math.cos(a) * r,
         y + Math.sin(a) * r
       )
     }
     ctx.closePath()
-    ctx.fill() 
+    ctx.fill()
   }
 
   def stroke(color: Color): Unit = {
@@ -274,7 +485,12 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.strokeText(text, x0, y)
   }
 
-  def square(x: Double, y: Double, size: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def square(
+      x: Double,
+      y: Double,
+      size: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
@@ -282,7 +498,14 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.stroke()
   }
 
-  def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = {
+  def transform(
+      a: Double,
+      b: Double,
+      c: Double,
+      d: Double,
+      e: Double,
+      f: Double
+  ): Unit = {
     ctx.transform(a, b, c, d, e, f)
   }
 
@@ -290,7 +513,15 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.translate(x, y)
   }
 
-  def triangle(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, segments: Array[Double] = Array.empty[Double]): Unit = {
+  def triangle(
+      x1: Double,
+      y1: Double,
+      x2: Double,
+      y2: Double,
+      x3: Double,
+      y3: Double,
+      segments: Array[Double] = Array.empty[Double]
+  ): Unit = {
     ctx.beginPath()
     ctx.moveTo(x1, y1)
     ctx.lineTo(x2, y2)
@@ -299,11 +530,3 @@ class ImmediateImpl(rasterWidth: Int, rasterHeight: Int, ctx: CanvasRenderingCon
     ctx.fill()
   }
 }
-
-
-
-
-
-
-
-

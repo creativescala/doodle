@@ -38,12 +38,6 @@ trait Text extends GenericText[CanvasDrawing] {
         text: String,
         bounds: Bounds
     ): CanvasDrawing[Unit] = ???
-      // CanvasDrawing.setTransform(tx) >>
-      //   CanvasDrawing.withFill(fill) {
-      //     CanvasDrawing.withStroke(stroke) {
-      //       CanvasDrawing.text(text, bounds.width, bounds.actualBoundingBoxLeft)
-      //     }
-      //   }
 
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
       ???

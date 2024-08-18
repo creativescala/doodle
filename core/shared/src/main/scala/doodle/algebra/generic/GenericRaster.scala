@@ -41,9 +41,7 @@ trait GenericRaster[G[_], A] extends Raster[A] {
       val bb = BoundingBox.centered(width, height)
       (
         bb,
-        State.inspect(tx =>
-          RasterApi.raster(tx, width, height)(f)
-        )
+        State.inspect(tx => RasterApi.raster(tx, width, height)(f))
       )
     }
   }

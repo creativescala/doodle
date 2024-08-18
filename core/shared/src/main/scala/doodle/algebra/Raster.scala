@@ -30,5 +30,3 @@ trait RasterConstructor[A] {
         algebra.raster(width, height)(f)
     }
 }
-
-
