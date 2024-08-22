@@ -28,13 +28,6 @@ import scala.scalajs.js.annotation.*
 @JSExportTopLevel("CanvasImmediateMode")
 object Experiment {
 
-  def roof =
-    Picture
-      .triangle(200, 100)
-      .fillColor(Color.blue)
-      .strokeColor(Color.black)
-      .debug
-
   def drawHotel =
     (ctx: Immediate) => {
 

@@ -54,7 +54,6 @@ trait Immediate {
       y: Int,
       segments: Array[Double] = Array.empty[Double]
   ): Unit
-  def beginPath(): Unit
   def clearRect(x: Int, y: Int, width: Int, height: Int): Unit
   def clip(): Unit
   def clipArc(
@@ -66,7 +65,6 @@ trait Immediate {
       counterclockwise: Boolean = false
   ): Unit
   def clipRect(x: Int, y: Int, width: Int, height: Int): Unit
-  def closePath(): Unit
   def circle(
       x: Double,
       y: Double,
@@ -185,6 +183,7 @@ class ImmediateImpl(
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
+    ctx.setLineDash(segments.toJSArray)
     ctx.arc(x0, y0, diameter / 2, startAngle, endAngle, counterclockwise)
     if closedPath then ctx.closePath();
     ctx.stroke()
@@ -219,10 +218,6 @@ class ImmediateImpl(
     ctx.stroke()
   }
 
-  def beginPath(): Unit = {
-    ctx.beginPath();
-  }
-
   def clearRect(x: Int, y: Int, width: Int, height: Int): Unit = {
     val x0 = x / 2
     val y0 = y / 2
@@ -251,10 +246,6 @@ class ImmediateImpl(
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     region.rect(x0, y0, width, height)
-  }
-
-  def closePath(): Unit = {
-    ctx.closePath()
   }
 
   def circle(
@@ -299,6 +290,7 @@ class ImmediateImpl(
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
+    ctx.setLineDash(segments.toJSArray)
     ctx.ellipse(x0, y0, width / 2, height / 2, 0, 0, 2 * Math.PI)
     ctx.fill()
   }
@@ -317,6 +309,7 @@ class ImmediateImpl(
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
+    ctx.setLineDash(segments.toJSArray)
     ctx.ellipse(
       x0,
       y0,
@@ -493,8 +486,8 @@ class ImmediateImpl(
     val x0 = x - rasterWidth / 2
     val y0 = y - rasterHeight / 2
     ctx.beginPath()
+    ctx.setLineDash(segments.toJSArray)
     ctx.rect(x0, y0, size, size)
-    ctx.stroke()
   }
 
   def transform(
