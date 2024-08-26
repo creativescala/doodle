@@ -12,10 +12,11 @@ For example, we can just `draw` a `Picture` without providing a `Canvas` or `Fra
 The most convenient operation is usually presented as the default. 
 So we expect people will want to use `draw` more than `drawWithFrame` or `drawToIO`, and hence it has the shortest name and is introduced first in documentation.
 
-Conveniences that run `IO` should be implemented as syntax.
-Other conveniences should generally be implemented as methods on algebras,
-implemented in terms of more basic methods on the algebra.
-(Note that the current system is very mixed on whether this is followed or not.)
+Conveniences should be implemented as syntax.
+Try to keep algebras to the minimal set of most basic operations.
+Note that the current system doesn't follow this advice very closely.
+Until we figured how to make the current architecture it was expected that people would frequently interact directly with algebras,
+so they tend to contain more methods than is strictly necessary.
 
 The default operations, provided as syntax, generally do not expose `IO`. 
 Altneratives that do expose `IO` are suffixed `toIO`.
