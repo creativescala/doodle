@@ -1,6 +1,14 @@
 # Development Process
 
 
+## Communication
+
+The majority of the work on Doodle is done by a very small number of people.
+Hence we have very simple processes for communication.
+If you are interested in developing some functionality we suggest you either discuss it in [Discord][discord], or, if the work is small in scope and well specified, just do it and submit a PR.
+We don't assign issues to people, or have other formalities, because they haven't proven necessary.
+
+
 ## Automated Code Checks
 
 The `build` task in sbt should be run whenever you have finished code that is ready to be pushed to the main repository. As well as compiling code and running tests this command formats code, organizes imports, checks dependencies are up to date, and more. Many of these are checked by CI, and your code will be rejected if the checks do not pass.
@@ -23,3 +31,5 @@ Testing is difficult for a project like Doodle, where the output can be hard to 
 ## Documentation
 
 New functionality isn't finished until documentation is written. 
+
+[discord]: https://discord.gg/rRhcFbJxVG
