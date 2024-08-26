@@ -5,7 +5,8 @@
 
 The majority of the work on Doodle is done by a very small number of people.
 Hence we have very simple processes for communication.
-If you are interested in developing some functionality we suggest you either discuss it in [Discord][discord], or, if the work is small in scope and well specified, just do it and submit a PR.
+If you are interested in developing some functionality we suggest you either discuss it in an associated issue (if there is one) or on [Discord][discord] if it doesn't have an issue.
+If the work is small in scope and well specified, you can just do it and submit a PR.
 We don't assign issues to people, or have other formalities, because they haven't proven necessary.
 
 
