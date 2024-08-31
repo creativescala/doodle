@@ -6266,7 +6266,7 @@ $c_Lfs2_Stream$CompileOps.prototype.foldMonoid__Lcats_kernel_Monoid__O = (functi
 var $d_Lfs2_Stream$CompileOps = new $TypeData().initClass($c_Lfs2_Stream$CompileOps, "fs2.Stream$CompileOps", ({
   Lfs2_Stream$CompileOps: 1
 }));
-function $p_Lfs2_Stream$StepLeg__go$32__Lfs2_Stream$StepLeg__Lfs2_Pull($thiz, leg) {
+function $p_Lfs2_Stream$StepLeg__go$34__Lfs2_Stream$StepLeg__Lfs2_Pull($thiz, leg) {
   var this$5 = $n($m_Lfs2_Pull$().output__Lfs2_Chunk__Lfs2_Pull($n(leg).Lfs2_Stream$StepLeg__f_head));
   var post = new $c_sjsr_AnonFunction0((() => {
     $m_Lfs2_Pull$();
@@ -6281,7 +6281,7 @@ function $p_Lfs2_Stream$StepLeg__go$32__Lfs2_Stream$StepLeg__Lfs2_Pull($thiz, le
       }
       if ((x$1$1 instanceof $c_s_Some)) {
         var nleg = $as_Lfs2_Stream$StepLeg($n($as_s_Some(x$1$1)).s_Some__f_value);
-        return $p_Lfs2_Stream$StepLeg__go$32__Lfs2_Stream$StepLeg__Lfs2_Pull($thiz, nleg);
+        return $p_Lfs2_Stream$StepLeg__go$34__Lfs2_Stream$StepLeg__Lfs2_Pull($thiz, nleg);
       }
       throw new $c_s_MatchError(x$1$1);
     }));
@@ -6307,7 +6307,7 @@ $h_Lfs2_Stream$StepLeg.prototype = $c_Lfs2_Stream$StepLeg.prototype;
 $c_Lfs2_Stream$StepLeg.prototype.stream__Lfs2_Stream = (function() {
   $m_Lfs2_Pull$();
   var nextHead = $m_Lfs2_Chunk$().Lfs2_Chunk$__f_empty_;
-  var self = $p_Lfs2_Stream$StepLeg__go$32__Lfs2_Stream$StepLeg__Lfs2_Pull(this, new $c_Lfs2_Stream$StepLeg(nextHead, this.Lfs2_Stream$StepLeg__f_scopeId, this.Lfs2_Stream$StepLeg__f_next));
+  var self = $p_Lfs2_Stream$StepLeg__go$34__Lfs2_Stream$StepLeg__Lfs2_Pull(this, new $c_Lfs2_Stream$StepLeg(nextHead, this.Lfs2_Stream$StepLeg__f_scopeId, this.Lfs2_Stream$StepLeg__f_next));
   return $m_Lfs2_Pull$StreamPullOps$().stream$extension__Lfs2_Pull__Lfs2_Stream(self);
 });
 function $as_Lfs2_Stream$StepLeg(obj) {
@@ -21170,8 +21170,8 @@ function $p_Lfs2_Pull$__closeTerminal$1__Lfs2_Pull$CloseScope__s_util_Either__Lf
           return $thiz.Lfs2_Pull$__f_fs2$Pull$$$unit;
         }
         if ((x284 instanceof $c_s_Some)) {
-          var err$2 = $as_jl_Throwable($n($as_s_Some(x284)).s_Some__f_value);
-          return new $c_Lfs2_Pull$Fail(err$2);
+          var e2 = $as_jl_Throwable($n($as_s_Some(x284)).s_Some__f_value);
+          return new $c_Lfs2_Pull$Fail(e2);
         }
         throw new $c_s_MatchError(x284);
       }
@@ -28669,13 +28669,13 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont__T__V = (function(id
   var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_font;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawHello__T__V(prep0);
-});
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawFont__T__V(prep0);
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawHello__T__V(prep0);
 });
 var $d_Ldoodle_examples_svg_SvgTextExamples$ = new $TypeData().initClass($c_Ldoodle_examples_svg_SvgTextExamples$, "doodle.examples.svg.SvgTextExamples$", ({
   Ldoodle_examples_svg_SvgTextExamples$: 1,
