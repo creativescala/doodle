@@ -7,7 +7,7 @@ object Dependencies {
   // Library Versions
   val catsVersion = "2.12.0"
   val catsEffectVersion = "3.5.4"
-  val fs2Version = "3.10.2"
+  val fs2Version = "3.11.0"
 
   val scalatagsVersion = "0.13.1"
   val scalajsDomVersion = "2.8.0"
@@ -15,8 +15,8 @@ object Dependencies {
   val batikVersion = "1.17"
 
   val scalaCheckVersion = "1.15.4"
-  val munitVersion = "0.7.29"
-  val munitCatsEffectVersion = "1.0.7"
+  val munitVersion = "1.0.0"
+  val munitCatsEffectVersion = "2.0.0"
 
   // Libraries
   val catsEffect =
@@ -37,6 +37,6 @@ object Dependencies {
     Def.setting("org.scalameta" %%% "munit-scalacheck" % munitVersion % "test")
   val munitCatsEffect =
     Def.setting(
-      "org.typelevel" %%% "munit-cats-effect-3" % munitCatsEffectVersion % Test
+      "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test
     )
 }
