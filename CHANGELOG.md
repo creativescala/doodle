@@ -6,6 +6,8 @@
 
 - Convenience methods on `BufferedImageWriter` use `DefaultFrame`
 
+- Fix monospaced font rendering on SVG (by `@kulsoom2003`)
+
 
 ## 0.23.0 26-Jul-2024
 
