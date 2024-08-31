@@ -5038,7 +5038,7 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.textTag__T__Ldoodle_core_font_Fo
     }
     var x$5 = $m_Ldoodle_core_font_FontFamily$Monospaced$();
     if ((x$5 === x46)) {
-      var fontFamily = "monospaced";
+      var fontFamily = "monospace";
       break matchResult9;
     }
     if (false) {
