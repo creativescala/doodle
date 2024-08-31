@@ -23,9 +23,9 @@ import cats.effect.IO
 import doodle.algebra.Picture
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
-import doodle.core.*
+import doodle.core._
 import doodle.core.font.FontSize.Points
-import doodle.core.font.*
+import doodle.core.font._
 import doodle.svg.effect.Size
 
 import scala.collection.mutable
@@ -116,7 +116,7 @@ trait SvgModule { self: Base =>
         font.family match {
           case FontFamily.Serif       => "serif"
           case FontFamily.SansSerif   => "sans-serif"
-          case FontFamily.Monospaced  => "monospaced"
+          case FontFamily.Monospaced  => "monospace"
           case FontFamily.Named(name) => name
         }
 

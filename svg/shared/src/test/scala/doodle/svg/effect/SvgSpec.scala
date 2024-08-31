@@ -18,8 +18,8 @@ package doodle
 package svg
 package effect
 
-import doodle.algebra.generic.*
-import doodle.core.*
+import doodle.algebra.generic._
+import doodle.core._
 import doodle.language.Basic
 import munit.CatsEffectSuite
 
@@ -80,6 +80,19 @@ class SvgSpec
         ),
       path2
     )
+  }
+
+  test("monospaced fonts render correctly") {
+    import doodle.core.font.Font
+    import doodle.core.font.FontFamily
+
+    assertEquals(
+      Svg
+        .textTag("abc", Font.defaultSansSerif.family(FontFamily.monospaced))
+        .toString,
+      """<text font-family="monospace" style="font-style: normal;" font-size="12pt" font-weight="normal">abc</text>"""
+    )
+
   }
 
   test("paths of points render correctly") {
