@@ -23,9 +23,9 @@ import cats.effect.IO
 import doodle.algebra.Picture
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
-import doodle.core._
+import doodle.core.*
 import doodle.core.font.FontSize.Points
-import doodle.core.font._
+import doodle.core.font.*
 import doodle.svg.effect.Size
 
 import scala.collection.mutable

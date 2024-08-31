@@ -18,8 +18,8 @@ package doodle
 package svg
 package effect
 
-import doodle.algebra.generic._
-import doodle.core._
+import doodle.algebra.generic.*
+import doodle.core.*
 import doodle.language.Basic
 import munit.CatsEffectSuite
 
