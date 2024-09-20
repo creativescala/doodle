@@ -23,12 +23,12 @@ import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Color
 import doodle.core.Transform
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 import doodle.java2d.algebra.Algebra
 import doodle.java2d.algebra.Graphics2DGraphicsContext
+import doodle.java2d.algebra.Java2D as Java2dAlgebra
 import doodle.java2d.algebra.reified.Reification
 import doodle.java2d.algebra.reified.Reified
-import doodle.java2d.algebra.{Java2D as Java2dAlgebra}
 
 import java.awt.Graphics2D
 import java.awt.RenderingHints

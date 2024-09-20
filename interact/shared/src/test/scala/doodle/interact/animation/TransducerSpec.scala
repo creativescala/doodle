@@ -20,8 +20,8 @@ package animation
 
 import cats.implicits.*
 import munit.ScalaCheckSuite
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 class TransducerSpec extends ScalaCheckSuite {
   property("empty produces no output") {

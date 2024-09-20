@@ -21,8 +21,8 @@ package algebra
 import doodle.algebra.generic.*
 import doodle.core.PathElement
 import doodle.core.Point
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 import doodle.java2d.algebra.reified.GraphicsContext
 
 import java.awt.Graphics2D

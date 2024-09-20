@@ -19,8 +19,8 @@ package doodle.canvas.algebra
 import doodle.algebra.Algebra
 import doodle.algebra.generic.*
 import doodle.core.BoundingBox
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 import org.scalajs.dom
 
 trait Text extends GenericText[CanvasDrawing] {

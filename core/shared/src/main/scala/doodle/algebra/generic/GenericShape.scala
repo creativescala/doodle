@@ -20,7 +20,7 @@ package generic
 
 import cats.data.State
 import doodle.core.BoundingBox
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 
 trait GenericShape[G[_]] extends Shape {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>

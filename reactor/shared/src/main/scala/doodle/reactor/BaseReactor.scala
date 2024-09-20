@@ -140,20 +140,24 @@ trait BaseReactor[A] {
     }
 
     (
-      for
-        canvas <- frame.canvas[Alg, Canvas]()
-        tickQueue <- Queue.circularBuffer[IO, A](1)
-        // mouseEventQueue <- Queue.circularBuffer[IO, MouseEvent](1)
-        mouseEventQueue <- Queue.unbounded[IO, MouseEvent]
-        _ <-
-          (
-            mouseEventProducer(mouseEventQueue, canvas),
-            tickProducer(tickQueue, mouseEventQueue),
-            consumer(tickQueue, canvas)
-          )
-            .parMapN((_, _, _) => ())
-      yield ()
-    ).unsafeRunAsync(_ => ())
+      frame
+        .canvas[Alg, Canvas]()
+        .use(canvas =>
+          for {
+            tickQueue <- Queue.circularBuffer[IO, A](1)
+            // mouseEventQueue <- Queue.circularBuffer[IO, MouseEvent](1)
+            mouseEventQueue <- Queue.unbounded[IO, MouseEvent]
+            _ <-
+              (
+                mouseEventProducer(mouseEventQueue, canvas),
+                tickProducer(tickQueue, mouseEventQueue),
+                consumer(tickQueue, canvas)
+              )
+                .parMapN((_, _, _) => ())
+          } yield ()
+        )
+        .unsafeRunAsync(_ => ())
+    )
   }
 }
 object BaseReactor {

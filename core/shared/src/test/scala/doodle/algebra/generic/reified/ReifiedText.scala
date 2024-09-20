@@ -22,8 +22,8 @@ package reified
 import cats.data.WriterT
 import doodle.algebra.generic.*
 import doodle.core.BoundingBox
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 
 trait ReifiedText extends GenericText[Reification] {
   self: Algebra { type Drawing[A] = TestAlgebra.Drawing[A] } =>

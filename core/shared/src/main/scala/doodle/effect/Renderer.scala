@@ -18,6 +18,7 @@ package doodle
 package effect
 
 import cats.effect.IO
+import cats.effect.Resource
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
 
@@ -28,7 +29,7 @@ import doodle.algebra.Picture
 trait Renderer[+Alg <: Algebra, Frame, Canvas] {
 
   /** Construct a Canvas from a description. */
-  def canvas(description: Frame): IO[Canvas]
+  def canvas(description: Frame): Resource[IO, Canvas]
 
   /** Render a picture to a Canvas. */
   def render[A](canvas: Canvas)(picture: Picture[Alg, A]): IO[A]

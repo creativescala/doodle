@@ -17,8 +17,8 @@
 package doodle
 package core
 
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 class TransformSpec extends Properties("Transform") {
   import doodle.arbitrary.*

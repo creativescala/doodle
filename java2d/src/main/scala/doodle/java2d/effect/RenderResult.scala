@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package doodle
-package algebra
-package generic
+package doodle.java2d.effect
 
-import org.scalacheck.*
-import org.scalacheck.Prop.*
+import doodle.core.BoundingBox
+import doodle.java2d.algebra.reified.Reified
 
-object TextSpec extends Properties("Text properties") {
-  val algebra = TestAlgebra()
-
-  property("strokeColor is preserved for text") = forAll(Generators.color) {
-    (c) =>
-      import doodle.algebra.generic.reified.Reified.*
-      val reified =
-        Generators.reify(algebra.strokeColor(algebra.text("Hello"), c))
-      reified match {
-        case List(Text(_, _, stroke, _, text)) =>
-          (stroke.get.color ?= c) && (text ?= "Hello")
-        case _ => Prop.falsified
-      }
-  }
-}
+/** Event that is returned from Java2DPanel to represent result of rendering of
+  * a Picture. This crosses the boundary between the Cats Effect and Swing
+  * threading model.
+  */
+private[effect] final case class RenderResult[A](
+    reified: List[Reified],
+    boundingBox: BoundingBox,
+    width: Double,
+    height: Double,
+    value: A
+)

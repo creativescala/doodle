@@ -19,30 +19,13 @@ package java2d
 package effect
 
 import cats.effect.IO
+import cats.effect.Resource
 import doodle.effect.Renderer
 
-import javax.swing.JFrame
-
 object Java2dRenderer extends Renderer[Algebra, Frame, Canvas] {
-
-  import cats.effect.unsafe.implicits.global
-
-  private var jFrames: List[JFrame] = List.empty
-
-  def canvas(description: Frame): IO[Canvas] =
-    Canvas(description).flatMap { jFrame =>
-      IO {
-        jFrames.synchronized { jFrames = jFrame :: jFrames }
-      }.as(jFrame)
-    }
+  def canvas(description: Frame): Resource[IO, Canvas] =
+    Canvas(description)
 
   def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =
     canvas.render(picture)
-
-  def stop(): Unit = {
-    jFrames.synchronized {
-      jFrames.foreach(_.dispose)
-      jFrames = List.empty
-    }
-  }
 }

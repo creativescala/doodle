@@ -18,8 +18,8 @@ package doodle
 package syntax
 
 import doodle.core.Angle
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 class AngleSpec extends Properties("Angle syntax properties") {
   import doodle.syntax.angle.*

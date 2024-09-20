@@ -28,10 +28,12 @@ import doodle.core.Gradient
 import doodle.core.Join
 import doodle.core.PathElement
 import doodle.core.Point
+import doodle.core.Transform as Tx
 import doodle.core.font.*
-import doodle.core.{Transform as Tx}
 
 import java.awt.BasicStroke
+import java.awt.Color as AwtColor
+import java.awt.Font as AwtFont
 import java.awt.FontMetrics
 import java.awt.Graphics2D
 import java.awt.LinearGradientPaint
@@ -42,8 +44,6 @@ import java.awt.geom.AffineTransform
 import java.awt.geom.Path2D
 import java.awt.geom.Point2D
 import java.awt.geom.Rectangle2D
-import java.awt.{Color as AwtColor}
-import java.awt.{Font as AwtFont}
 
 /** Various utilities for using Java2D */
 object Java2D {

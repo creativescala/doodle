@@ -19,7 +19,7 @@ package doodle.canvas.algebra
 import doodle.algebra.Algebra
 import doodle.algebra.generic.*
 import doodle.core.*
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 
 trait Path extends GenericPath[CanvasDrawing] {
   self: Algebra { type Drawing[A] = Finalized[CanvasDrawing, A] } =>

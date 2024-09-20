@@ -21,8 +21,8 @@ import doodle.algebra.Algebra
 import doodle.algebra.Picture
 import doodle.algebra.Transform
 import doodle.core.Angle
+import doodle.core.Transform as Tx
 import doodle.core.Vec
-import doodle.core.{Transform as Tx}
 
 trait TransformSyntax {
   implicit class TransformPictureOps[Alg <: Algebra, A](

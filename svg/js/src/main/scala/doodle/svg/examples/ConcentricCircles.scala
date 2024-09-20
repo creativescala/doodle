@@ -31,8 +31,7 @@ object ConcentricCircles extends IOApp.Simple {
         .under(circles(count - 1))
 
   val run =
-    for {
-      canvas <- Frame("svg-root").canvas()
-      a <- circles(10).drawWithCanvasToIO(canvas)
-    } yield a
+    Frame("svg-root")
+      .canvas()
+      .use(canvas => circles(10).drawWithCanvasToIO(canvas))
 }

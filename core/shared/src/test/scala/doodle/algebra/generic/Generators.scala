@@ -22,7 +22,7 @@ import cats.instances.unit.*
 import doodle.algebra.generic.*
 import doodle.algebra.generic.reified.Reification
 import doodle.algebra.generic.reified.Reified
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 import org.scalacheck.*
 
 trait Generators extends doodle.core.Generators {

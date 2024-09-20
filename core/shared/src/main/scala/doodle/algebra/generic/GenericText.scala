@@ -20,8 +20,8 @@ package generic
 
 import cats.data.State
 import doodle.core.BoundingBox
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 
 trait GenericText[G[_]] extends Text {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>

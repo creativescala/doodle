@@ -17,13 +17,14 @@
 package doodle.canvas.effect
 
 import cats.effect.IO
+import cats.effect.Resource
 import doodle.canvas.Algebra
 import doodle.canvas.Picture
 import doodle.effect.Renderer
 
 object CanvasRenderer extends Renderer[Algebra, Frame, Canvas] {
 
-  def canvas(description: Frame): IO[Canvas] =
+  def canvas(description: Frame): Resource[IO, Canvas] =
     Canvas.fromFrame(description)
 
   def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =

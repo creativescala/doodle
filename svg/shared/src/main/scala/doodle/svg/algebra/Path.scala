@@ -20,7 +20,7 @@ package algebra
 
 import doodle.algebra.generic.*
 import doodle.core.PathElement
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 
 import scala.collection.mutable
 

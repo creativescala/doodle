@@ -17,6 +17,13 @@ import doodle.java2d.*
 import cats.effect.unsafe.implicits.global
 ```
 
+For some of the examples below we also need
+
+```scala mdoc:silent
+import cats.effect.{IO, Resource}
+```
+
+
 ## Drawing
 
 The normal way to draw output is by calling the `draw` method.
@@ -46,24 +53,12 @@ Once we have a frame, we can pass it to `drawWithFrame`.
 picture.drawWithFrame(frame)
 ```
 
-Sometimes you'll want to draw several pictures on the same canvas. This is how animations work, repeatedly drawing to the same canvas. To do this you need to get a reference to a `Canvas`. The `canvas` syntax method on `Frame` will produce an `IO[Canvas]`
-
-```scala mdoc:silent
-val canvas = frame.canvas()
-```
-
-You can then call `drawWithCanvas`.
-
-```scala mdoc:silent
-canvas.map(c => picture.drawWithCanvas(c))
-```
-
-However, this is not very idiomatic code. The above methods are all conveniences that hide the underlying use of `IO`. As soon as we introduce `IO` we should use the methods described below.
+Sometimes you'll want to draw several pictures on the same canvas. By repeatedly drawing to the same canvas we can, for example, create animations. To do this we need to work with the underling `IO` and `Resource` types that the conveniences above hide.
 
 
-## Drawing with IO
+## Drawing with IO and Resource
 
-It can be useful to convert a `Picture[A]` to an `IO[A]`. This could be because the picture is part of a larger program using `IO`, you are working with an `IO[Canvas]`, or you want to access the `A` value that is discarded by the `draw` variants discussed above. The `drawToIO` method does this conversion.
+It can be useful to convert a `Picture[A]` to an `IO[A]`. This could be because the picture is part of a larger program using `IO`, you are working with an `Resource[IO, Canvas]`, or you want to access the `A` value that is discarded by the `draw` variants discussed above. The `drawToIO` method does this conversion.
 
 ```scala mdoc:silent
 picture.drawToIO()
@@ -75,10 +70,16 @@ There are also variants `drawWithFrameToIO` and `drawWithCanvasToIO`.
 picture.drawWithFrameToIO(frame)
 ```
 
-Using `drawWithCanvasToIO` is the idiomatic way to work with an `IO[Canvas]`.
+Using `drawWithCanvasToIO` requires we get hold of a `Canvas`. We call the `canvas()` method on a `Frame` to do so. This returns a `Resource[IO, Canvas]`.
 
 ```scala mdoc:silent
-canvas.flatMap(c => picture.drawWithCanvasToIO(c))
+val canvas: Resource[IO, Canvas] = frame.canvas()
+```
+
+When we have a `Resource[IO, Canvas]` we can `use` it to access the `Canvas` it manages. This is the idiomatic way to work with a `Resource[IO, Canvas]`.
+
+```scala mdoc:silent
+canvas.use(c => picture.drawWithCanvasToIO(c))
 ```
 
 Once you have an `IO`, you can run it in the usual way as part of an `IOApp`, with `unsafeRunSync`, or one of the other methods.

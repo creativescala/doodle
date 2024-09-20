@@ -20,7 +20,7 @@ import cats.Comonad
 import cats.free.Free
 
 import scala.annotation.tailrec
-import scala.util.{Random as Rng}
+import scala.util.Random as Rng
 
 object random {
   type Random[A] = Free[RandomOp, A]

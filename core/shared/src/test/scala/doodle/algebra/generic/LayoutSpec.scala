@@ -21,9 +21,9 @@ package generic
 import cats.implicits.*
 import doodle.algebra.generic.reified.Reification
 import doodle.core.BoundingBox
-import doodle.core.{Transform as Tx}
-import org.scalacheck.Prop.*
+import doodle.core.Transform as Tx
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object LayoutSpec extends Properties("Layout properties") {
   val style = TestAlgebra()

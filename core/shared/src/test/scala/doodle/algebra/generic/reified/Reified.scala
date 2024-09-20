@@ -21,8 +21,8 @@ package reified
 
 import doodle.core.PathElement
 import doodle.core.Point
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 
 sealed abstract class Reified extends Product with Serializable {
   def transform: Tx

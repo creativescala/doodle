@@ -19,151 +19,120 @@ package java2d
 package effect
 
 import cats.effect.IO
-import cats.effect.std.Queue
-import cats.effect.unsafe.IORuntime
+import cats.effect.kernel.Resource
+import cats.syntax.all.*
 import doodle.core.Point
-import doodle.core.Transform
-import fs2.Stream
+import fs2.*
+import fs2.concurrent.Topic
 
-import java.awt.event.*
-import java.util.concurrent.atomic.AtomicReference
-import javax.swing.JFrame
-import javax.swing.Timer
-import javax.swing.WindowConstants
+import javax.swing.SwingUtilities
+import scala.concurrent.duration.*
+import scala.reflect.ClassTag
 
 /** A [[Canvas]] is an area on the screen to which Pictures can be drawn.
   */
 final class Canvas private (
     frame: Frame,
-    redrawQueue: Queue[IO, Int],
-    mouseClickQueue: Queue[IO, Point],
-    mouseMoveQueue: Queue[IO, Point]
-)(implicit runtime: IORuntime)
-    extends JFrame(frame.title) {
-  private val panel = new Java2DPanel(frame)
+    redrawTopic: Topic[IO, Int],
+    mouseClickTopic: Topic[IO, Point],
+    mouseMoveTopic: Topic[IO, Point]
+) {
 
-  /** The current global transform from logical to screen coordinates
+  /** Construct the type of event queue we use to send events from Swing to Cats
+    * Effect land. We choose a circular buffer queue so that we consume
+    * unbounded memory if the Cats Effect side do pull from the queue (which
+    * will be a common case) nor does it block if the queue's capacity is
+    * reached.
     */
-  private val currentInverseTx: AtomicReference[Transform] =
-    new AtomicReference(Transform.identity)
+  private def eventQueue[A: ClassTag]: BlockingCircularQueue[A] =
+    BlockingCircularQueue(8)
+
+  private val redrawQueue: BlockingCircularQueue[Int] = eventQueue
+  private val mouseClickQueue: BlockingCircularQueue[Point] = eventQueue
+  private val mouseMoveQueue: BlockingCircularQueue[Point] = eventQueue
+
+  private var window: Java2dWindow = _
+
+  /** IO that evaluates when the underlying window has been closed. */
+  private var windowClosed: IO[Boolean] = _
+  SwingUtilities.invokeAndWait(() => {
+    window = new Java2dWindow(
+      frame,
+      16.67.milliseconds,
+      redrawQueue,
+      mouseClickQueue,
+      mouseMoveQueue
+    )
+
+    windowClosed = IO.fromCompletableFuture(IO.blocking(window.closed))
+  })
+
+  val closed: IO[Unit] = windowClosed.void
+
+  def pump[A](
+      queue: BlockingCircularQueue[A],
+      topic: Topic[IO, A]
+  ): Stream[IO, A] =
+    Stream.repeatEval(IO.interruptible(queue.take())).through(topic.publish)
+
+  /** The stream that runs everything the Canvas' internals need to work. You
+    * must make sure this is executed if you create a Canvas by hand.
+    */
+  val stream: Stream[IO, Nothing] = {
+    val redraw = pump(redrawQueue, redrawTopic).drain
+    val mouseClick =
+      pump(mouseClickQueue, mouseClickTopic).debug(a => s"Mouse click $a").drain
+    val mouseMove = pump(mouseMoveQueue, mouseMoveTopic).drain
+    val closeStream = Stream
+      .eval(
+        windowClosed >> IO.println("canvas.stop begin") >>
+          (
+            redrawTopic.close,
+            mouseClickTopic.close,
+            mouseMoveTopic.close
+          ).parTupled.void >> IO.println("canvas.stop end")
+      )
+      .drain
+
+    redraw.merge(mouseClick).merge(mouseMove).merge(closeStream)
+  }
+
+  private val interruptWhen = windowClosed.void.attempt
+  val redraw: Stream[IO, Int] =
+    redrawTopic.subscribe(4).interruptWhen(interruptWhen)
+  val mouseClick: Stream[IO, Point] = mouseClickTopic
+    .subscribe(4)
+    .debug(a => s"subscribed mouse click $a")
+    .interruptWhen(interruptWhen)
+  val mouseMove: Stream[IO, Point] =
+    mouseMoveTopic.subscribe(4).interruptWhen(interruptWhen)
 
   /** Draw the given Picture to this [[Canvas]].
     */
   def render[A](picture: Picture[A]): IO[A] = {
-    // Possible race condition here setting the currentInverseTx
-    def register(
-        cb: Either[Throwable, Java2DPanel.RenderResult[A]] => Unit
-    ): Unit = {
-      // val drawing = picture(algebra)
-      // val (bb, rdr) = drawing.run(List.empty).value
-      // val (w, h) = Java2d.size(bb, frame.size)
+    println("Rendering")
+    val f = window.render(picture)
 
-      // val rr = Java2DPanel.RenderRequest(bb, w, h, rdr, cb)
-      panel.render(Java2DPanel.RenderRequest(picture, frame, cb))
-    }
-
-    IO.async_(register).map { result =>
-      val inverseTx = Java2d.inverseTransform(
-        result.boundingBox,
-        result.width,
-        result.height,
-        frame.center
-      )
-      currentInverseTx.set(inverseTx)
-      result.value
-    }
+    IO.fromCompletableFuture(IO(f))
   }
 
-  val redraw: Stream[IO, Int] = Stream.fromQueueUnterminated(redrawQueue)
-  private val frameRateMs = (1000.0 * (1 / 60.0)).toInt
-  private val frameEvent = {
-
-    /** Delay between frames when rendering at 60fps */
-    var firstFrame = true
-    var lastFrameTime = 0L
-    new ActionListener {
-      def actionPerformed(e: ActionEvent): Unit = {
-        val now = e.getWhen()
-        if firstFrame then {
-          firstFrame = false
-          lastFrameTime = now
-          redrawQueue.offer(0).unsafeRunSync()
-          ()
-        } else {
-          redrawQueue.offer((now - lastFrameTime).toInt).unsafeRunSync()
-          lastFrameTime = now
-        }
-      }
-    }
+  def close(): IO[Boolean] = {
+    IO.println("Canvas close()") >>
+      IO(window.close()) >>
+      windowClosed
   }
-  private val timer = new Timer(frameRateMs, frameEvent)
-
-  val mouseClick: Stream[IO, Point] =
-    Stream.fromQueueUnterminated(mouseClickQueue)
-
-  this.addMouseListener(
-    new MouseListener {
-
-      def mouseClicked(e: MouseEvent): Unit = {
-        val pt = e.getPoint()
-        val inverseTx = currentInverseTx.get()
-        // ack
-        mouseClickQueue
-          .offer(inverseTx(Point(pt.getX(), pt.getY())))
-          .unsafeRunSync()
-        ()
-      }
-
-      def mouseEntered(e: MouseEvent): Unit = ()
-      def mouseExited(e: MouseEvent): Unit = ()
-      def mousePressed(e: MouseEvent): Unit = ()
-      def mouseReleased(e: MouseEvent): Unit = ()
-    }
-  )
-
-  val mouseMove: Stream[IO, Point] =
-    Stream.fromQueueUnterminated(mouseMoveQueue)
-  this.addMouseMotionListener(
-    new MouseMotionListener {
-
-      def mouseDragged(e: MouseEvent): Unit = ()
-      def mouseMoved(e: MouseEvent): Unit = {
-        val pt = e.getPoint()
-        val inverseTx = currentInverseTx.get()
-        // ack
-        mouseMoveQueue
-          .offer(inverseTx(Point(pt.getX(), pt.getY())))
-          .unsafeRunSync()
-        ()
-      }
-    }
-  )
-
-  this.addWindowListener(
-    new WindowAdapter {
-      override def windowClosed(evt: WindowEvent): Unit =
-        timer.stop()
-    }
-  )
-
-  getContentPane().add(panel)
-  pack()
-  setVisible(true)
-  setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
-  repaint()
-  timer.start()
-
 }
-
 object Canvas {
-
-  def apply(frame: Frame)(implicit runtime: IORuntime): IO[Canvas] = {
-    import cats.implicits.*
-    def eventQueue[A]: IO[Queue[IO, A]] = Queue.circularBuffer[IO, A](1)
-    (eventQueue[Int], eventQueue[Point], eventQueue[Point]).mapN {
-      (redrawQueue, mouseClickQueue, mouseMoveQueue) =>
-        new Canvas(frame, redrawQueue, mouseClickQueue, mouseMoveQueue)
-    }
+  def apply(frame: Frame): Resource[IO, Canvas] = {
+    (Topic[IO, Int], Topic[IO, Point], Topic[IO, Point])
+      .mapN { (redrawTopic, mouseClickTopic, mouseMoveTopic) =>
+        new Canvas(frame, redrawTopic, mouseClickTopic, mouseMoveTopic)
+      }
+      .toResource
+      .flatMap(canvas =>
+        canvas.stream.compile.drain.background
+          .as(canvas)
+          .onFinalize(canvas.close().void)
+      )
   }
-
 }

@@ -18,8 +18,8 @@ package doodle
 package algebra
 package generic
 
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object StyleSpec extends Properties("Style properties") {
   val style = TestAlgebra()

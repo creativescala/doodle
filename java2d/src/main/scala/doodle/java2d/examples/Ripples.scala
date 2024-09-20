@@ -84,10 +84,14 @@ object Ripples {
 
   def go(): Unit = {
     // frame.canvas.flatMap(canvas => ripples(canvas.mouseMove).map(_.animateToCanvas(canvas))).unsafeRunSync()
-    (for {
-      canvas <- frame.canvas()
-      frames <- ripples(canvas)
-      a <- frames.animateWithCanvasToIO(canvas)
-    } yield a).unsafeRunAsync(println _)
+    frame
+      .canvas()
+      .use(canvas =>
+        for {
+          frames <- ripples(canvas)
+          a <- frames.animateWithCanvasToIO(canvas)
+        } yield a
+      )
+      .unsafeRunAsync(println _)
   }
 }

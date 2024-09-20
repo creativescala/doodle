@@ -18,11 +18,11 @@ package doodle
 package svg
 package algebra
 
-import doodle.algebra.generic.Finalized
 import doodle.algebra.generic.*
+import doodle.algebra.generic.Finalized
 import doodle.core.*
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 
 import java.awt.geom.Rectangle2D
 import scala.collection.mutable

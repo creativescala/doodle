@@ -20,8 +20,8 @@ package examples
 
 import doodle.core.*
 import doodle.syntax.all.*
-import doodle.turtle.Instruction.*
 import doodle.turtle.*
+import doodle.turtle.Instruction.*
 
 object Geometry {
   val instructions =

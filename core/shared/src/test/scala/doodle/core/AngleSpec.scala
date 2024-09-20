@@ -17,8 +17,8 @@
 package doodle
 package core
 
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object AngleSpec extends Properties("Angle properties") {
   import doodle.arbitrary.*

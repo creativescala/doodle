@@ -17,8 +17,8 @@
 package doodle
 package core
 
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object ColorSpec extends Properties("Color properties") {
   import doodle.arbitrary.*

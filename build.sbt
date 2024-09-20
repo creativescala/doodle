@@ -31,8 +31,7 @@ ThisBuild / developers := List(
   tlGitHubDev("noelwelsh", "Noel Welsh")
 )
 
-// true by default, set to false to publish to s01.oss.sonatype.org
-ThisBuild / tlSonatypeUseLegacyHost := true
+ThisBuild / sonatypeCredentialHost := xerial.sbt.Sonatype.sonatypeLegacy
 
 lazy val scala3 = "3.3.3"
 
@@ -62,6 +61,8 @@ commands += Command.command("build") { state =>
 lazy val css = taskKey[Unit]("Build the CSS")
 
 lazy val commonSettings = Seq(
+  // This is needed when running examples
+  Compile / run / fork := true,
   libraryDependencies ++= Seq(
     Dependencies.munit.value,
     Dependencies.munitScalaCheck.value

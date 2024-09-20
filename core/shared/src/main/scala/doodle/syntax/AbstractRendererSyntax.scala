@@ -18,6 +18,7 @@ package doodle
 package syntax
 
 import cats.effect.IO
+import cats.effect.Resource
 import cats.effect.unsafe.IORuntime
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
@@ -79,7 +80,7 @@ trait AbstractRendererSyntax {
     ): IO[A] =
       renderer
         .canvas(frame.default)
-        .flatMap(canvas => drawWithCanvasToIO(canvas))
+        .use(canvas => drawWithCanvasToIO(canvas))
 
     /** Create an effect that, when run, will draw the `Picture` using the given
       * `Frame` options.
@@ -87,7 +88,7 @@ trait AbstractRendererSyntax {
     def drawWithFrameToIO[Frame, Canvas](frame: Frame)(implicit
         renderer: Renderer[Alg, Frame, Canvas]
     ): IO[A] =
-      renderer.canvas(frame).flatMap(canvas => drawWithCanvasToIO(canvas))
+      renderer.canvas(frame).use(canvas => drawWithCanvasToIO(canvas))
 
     /** Create an effect that, when run, will draw the `Picture` on the given
       * `Canvas`.
@@ -102,7 +103,7 @@ trait AbstractRendererSyntax {
   implicit class RendererFrameOps[Frame](frame: Frame) {
     def canvas[Alg <: Algebra, Canvas]()(implicit
         renderer: Renderer[Alg, Frame, Canvas]
-    ): IO[Canvas] =
+    ): Resource[IO, Canvas] =
       renderer.canvas(frame)
   }
 }

@@ -20,7 +20,7 @@ import doodle.algebra.Algebra
 import doodle.algebra.generic.*
 import doodle.core.ClosedPath
 import doodle.core.Point
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 
 trait Shape extends GenericShape[CanvasDrawing] {
   self: Algebra { type Drawing[A] = Finalized[CanvasDrawing, A] } =>

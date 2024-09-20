@@ -18,7 +18,7 @@ package doodle
 package image
 
 import doodle.core.*
-import doodle.core.font.{Font as CoreFont}
+import doodle.core.font.Font as CoreFont
 import doodle.language.Basic
 
 sealed abstract class Image extends Product with Serializable {

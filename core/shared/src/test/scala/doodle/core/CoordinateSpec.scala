@@ -18,8 +18,8 @@ package doodle
 package core
 
 import doodle.syntax.approximatelyEqual.*
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object CoordinateSpec extends Properties("Coordinate properties") {
   val smallNumber = Gen.choose(-300.0, 300.0)

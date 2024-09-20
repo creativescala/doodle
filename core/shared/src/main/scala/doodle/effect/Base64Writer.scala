@@ -20,8 +20,8 @@ package effect
 import cats.effect.IO
 import doodle.algebra.Algebra
 import doodle.algebra.Picture
+import doodle.core.Base64 as B64
 import doodle.core.format.Format
-import doodle.core.{Base64 as B64}
 
 /** The Base64Writer type represent the ability to encode an image as a Base64
   * String in a given format.

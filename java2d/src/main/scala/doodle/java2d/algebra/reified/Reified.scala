@@ -23,8 +23,8 @@ import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
 import doodle.core.PathElement
 import doodle.core.Point
+import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import doodle.core.{Transform as Tx}
 
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage

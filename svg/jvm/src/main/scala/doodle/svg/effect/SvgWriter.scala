@@ -20,13 +20,13 @@ package effect
 
 import cats.effect.IO
 import doodle.algebra.Picture
+import doodle.core.Base64 as B64
 import doodle.core.format
-import doodle.core.{Base64 as B64}
 import doodle.effect.*
 
 import java.io.File
 import java.nio.file.Files
-import java.util.{Base64 as JBase64}
+import java.util.Base64 as JBase64
 
 object SvgWriter
     extends FileWriter[Algebra, Frame, format.Svg]

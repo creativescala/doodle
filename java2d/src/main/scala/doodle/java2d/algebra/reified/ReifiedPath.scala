@@ -22,7 +22,7 @@ package reified
 import cats.data.WriterT
 import doodle.algebra.generic.*
 import doodle.core.*
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 
 trait ReifiedPath extends GenericPath[Reification] {
   self: Algebra { type Drawing[A] <: doodle.java2d.Drawing[A] } =>

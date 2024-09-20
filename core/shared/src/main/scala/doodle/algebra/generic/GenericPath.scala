@@ -20,7 +20,7 @@ package generic
 
 import cats.data.State
 import doodle.core.*
-import doodle.core.{Transform as Tx}
+import doodle.core.Transform as Tx
 
 import scala.annotation.tailrec
 

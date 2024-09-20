@@ -8,6 +8,8 @@
 
 - Fix monospaced font rendering on SVG (by `@kulsoom2003`)
 
+- Complete reworking of Java2D backend to remove race conditions and manage resources correctly.
+
 
 ## 0.23.0 26-Jul-2024
 

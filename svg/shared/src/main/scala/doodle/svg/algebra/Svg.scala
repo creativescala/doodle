@@ -24,8 +24,8 @@ import doodle.algebra.Picture
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
 import doodle.core.*
-import doodle.core.font.FontSize.Points
 import doodle.core.font.*
+import doodle.core.font.FontSize.Points
 import doodle.svg.effect.Size
 
 import scala.collection.mutable

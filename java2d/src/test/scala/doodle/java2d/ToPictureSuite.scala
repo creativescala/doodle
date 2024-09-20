@@ -19,8 +19,8 @@ package java2d
 
 import cats.effect.unsafe.implicits.global
 import doodle.algebra.ToPicture
+import doodle.core.Base64 as B64
 import doodle.core.format.*
-import doodle.core.{Base64 as B64}
 import doodle.effect.*
 import doodle.syntax.all.*
 import munit.FunSuite

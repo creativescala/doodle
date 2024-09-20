@@ -29,7 +29,7 @@ import doodle.core.format.*
 import doodle.java2d.algebra.reified.*
 
 import java.io.ByteArrayInputStream
-import java.util.{Base64 as JBase64}
+import java.util.Base64 as JBase64
 import javax.imageio.ImageIO
 
 trait Java2dFromBase64

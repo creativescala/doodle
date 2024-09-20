@@ -19,8 +19,8 @@ package algebra
 package generic
 
 import cats.instances.unit.*
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object GenericAlgebraspec extends Properties("Generic algebra properties") {
   implicit val algebra: TestAlgebra = TestAlgebra()

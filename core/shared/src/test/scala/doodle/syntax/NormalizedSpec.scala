@@ -18,8 +18,8 @@ package doodle
 package syntax
 
 import doodle.core.Normalized
-import org.scalacheck.Prop.*
 import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 class NormalizedSpec extends Properties("Normalized syntax") {
   import doodle.syntax.normalized.*

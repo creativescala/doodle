@@ -17,6 +17,7 @@
 package doodle.canvas.effect
 
 import cats.effect.IO
+import cats.effect.Resource
 import doodle.algebra.generic.Finalized
 import doodle.canvas.Picture
 import doodle.canvas.algebra.CanvasAlgebra
@@ -74,7 +75,7 @@ final case class Canvas(target: dom.Node, frame: Frame) {
   }
 }
 object Canvas {
-  def fromFrame(frame: Frame): IO[Canvas] = {
+  def fromFrame(frame: Frame): Resource[IO, Canvas] = {
     IO {
       val target = dom.document.getElementById(frame.id)
       if target == null then {
@@ -82,6 +83,6 @@ object Canvas {
           s"Doodle Canvas could not be created, as could not find a DOM element with the requested id ${frame.id}"
         )
       } else Canvas(target, frame)
-    }
+    }.toResource
   }
 }

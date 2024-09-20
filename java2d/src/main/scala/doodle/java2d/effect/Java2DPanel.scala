@@ -18,35 +18,39 @@ package doodle
 package java2d
 package effect
 
-import cats.effect.IO
-import cats.effect.unsafe.IORuntime
-import doodle.algebra.generic.Finalized
-import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Normalized
+import doodle.core.Point
 import doodle.core.Transform
 import doodle.java2d.algebra.Algebra
 import doodle.java2d.algebra.Java2D
-import doodle.java2d.algebra.reified.Reification
 import doodle.java2d.algebra.reified.Reified
+import doodle.java2d.effect.Size.FitToImage
+import doodle.java2d.effect.Size.FixedSize
 
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Graphics2D
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.TimeUnit
+import java.awt.event.*
+import java.util.concurrent.CompletableFuture
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
-    extends JPanel {
-  import Java2DPanel.RenderRequest
+/** frameDelay is the time between rendering frames of animations. It is 1 /
+  * frameRate.
+  */
+final class Java2DPanel(
+    frame: Frame,
+    mouseClickQueue: BlockingCircularQueue[Point],
+    mouseMoveQueue: BlockingCircularQueue[Point]
+) extends JPanel {
 
-  /** The channel communicates between the Swing thread and outside threads
+  /** The pictures we've been requested to render, but have not yet done so.
+    * Access to this should only be done via the Swing thread.
     */
-  private val channel: LinkedBlockingQueue[RenderRequest[?]] =
-    new LinkedBlockingQueue(1)
+  private val requests: mutable.Queue[RenderRequest[?]] = mutable.Queue()
 
   /** The pictures we've rendered, along with the bounding box for each picture.
     * Ordered so the last element is the most recent picture (which should be
@@ -62,6 +66,11 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
   private val pictures: ArrayBuffer[(BoundingBox, List[Reified])] =
     new ArrayBuffer(1)
 
+  /** Converts from the screen coordinates to Doodle's coordinates. Must only be
+    * accessed from the Swing thread to avoid race conditions.
+    */
+  private var inverseTx: Transform = Transform.identity
+
   /** True if the redraw is an opaque color and hence we don't need to keep
     * earlier pictures around.
     */
@@ -76,16 +85,71 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
         c.alpha == Normalized.MaxValue
     }
 
+  this.addMouseListener(
+    new MouseListener {
+
+      def mouseClicked(e: MouseEvent): Unit = {
+        val pt = e.getPoint()
+        println(s"Mouse click at $pt")
+        mouseClickQueue
+          .add(inverseTx(Point(pt.getX(), pt.getY())))
+        ()
+      }
+
+      def mouseEntered(e: MouseEvent): Unit = ()
+      def mouseExited(e: MouseEvent): Unit = ()
+      def mousePressed(e: MouseEvent): Unit = ()
+      def mouseReleased(e: MouseEvent): Unit = ()
+    }
+  )
+
+  this.addMouseMotionListener(
+    new MouseMotionListener {
+
+      def mouseDragged(e: MouseEvent): Unit = ()
+      def mouseMoved(e: MouseEvent): Unit = {
+        val pt = e.getPoint()
+        mouseMoveQueue
+          .add(inverseTx(Point(pt.getX(), pt.getY())))
+        ()
+      }
+    }
+  )
+
+  // A fixed size frame allows us to set the panel size and inverse transform
+  // without a picture present
+  frame.size match {
+    case FitToImage(border) => ()
+    case FixedSize(width, height) =>
+      setSize(width.toInt, height.toInt)
+      // resize(width, height)
+      inverseTx = Java2d.inverseTransform(
+        BoundingBox.centered(width, height),
+        width,
+        height,
+        frame.center
+      )
+  }
+
   def resize(width: Double, height: Double): Unit = {
-    setPreferredSize(new Dimension(width.toInt, height.toInt))
+    setPreferredSize(Dimension(width.toInt, height.toInt))
     SwingUtilities.windowForComponent(this).pack()
   }
 
-  def render[A](request: RenderRequest[A]): Unit = {
-    channel.put(request)
-    // println("Java2DPanel put in the channel")
-    this.repaint()
-    // println("Java2DPanel repaint request sent")
+  /** Queue a picture to be drawn. Returns a CompletableFuture that will be
+    * completed when the pictures has been drawn.
+    */
+  def render[A](picture: Picture[A]): CompletableFuture[A] = {
+    val f: CompletableFuture[A] = CompletableFuture()
+
+    // This runs on the Swing thread, and so it's safe to access requests
+    SwingUtilities.invokeLater { () =>
+      val request = RenderRequest(picture, f)
+      requests.enqueue(request)
+      this.repaint()
+    }
+
+    f
   }
 
   /** Draw all images this [[Java2DPanel]] has received. We assume the
@@ -159,48 +223,27 @@ final class Java2DPanel(frame: Frame)(implicit runtime: IORuntime)
 
     val algebra = Algebra(gc)
 
-    val rr = channel.poll(10L, TimeUnit.MILLISECONDS)
-    if rr == null then ()
-    else {
-      val result = rr.render(algebra).unsafeRunSync()
+    while requests.size > 0 do {
+      val r = requests.dequeue
+      val result = r.render(frame, algebra)
+
       val bb = result.boundingBox
-      val picture = result.reified
+      val reified = result.reified
+
       resize(result.width, result.height)
       if opaqueRedraw && pictures.size > 0 then
-        pictures.update(0, (bb, picture))
-      else pictures += ((bb, picture))
+        pictures.update(0, (bb, reified))
+      else pictures += ((bb, reified))
 
+      inverseTx = Java2d.inverseTransform(
+        result.boundingBox,
+        result.width,
+        result.height,
+        frame.center
+      )
     }
 
     draw(gc)
   }
-}
-object Java2DPanel {
-  final case class RenderResult[A](
-      boundingBox: BoundingBox,
-      width: Double,
-      height: Double,
-      reified: List[Reified],
-      value: A
-  )
 
-  final case class RenderRequest[A](
-      picture: Picture[A],
-      frame: Frame,
-      cb: Either[Throwable, RenderResult[A]] => Unit
-  ) {
-    def render(algebra: Algebra): IO[RenderResult[A]] = {
-      IO {
-        val drawing: Finalized[Reification, A] = picture(algebra)
-        val (bb, rdr) = drawing.run(List.empty).value
-        val (w, h) = Java2d.size(bb, frame.size)
-        val (_, fa) = rdr.run(Transform.identity).value
-        val (reified, a) = fa.run.value
-        val result = RenderResult(bb, w, h, reified, a)
-        cb(Right(result))
-
-        result
-      }
-    }
-  }
 }

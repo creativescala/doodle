@@ -94,7 +94,7 @@ trait AbstractAnimationRendererSyntax {
         e: Renderer[Alg, Frame, Canvas],
         m: Monoid[A]
     ): IO[A] =
-      e.canvas(frame).flatMap(c => animateWithCanvasToIO(c))
+      e.canvas(frame).use(c => animateWithCanvasToIO(c))
 
     /** Create an effect that, when run, will render a `Stream` that is
       * generating frames an appropriate rate for animation.
@@ -155,7 +155,7 @@ trait AbstractAnimationRendererSyntax {
         m: Monoid[A]
     ): IO[A] = {
       e.canvas(frame)
-        .flatMap(c => animateFramesWithCanvasToIO(c))
+        .use(c => animateFramesWithCanvasToIO(c))
     }
 
     /** Create an effect that, when run, will animate a source of frames that is

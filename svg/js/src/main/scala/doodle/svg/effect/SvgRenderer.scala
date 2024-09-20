@@ -19,14 +19,15 @@ package svg
 package effect
 
 import cats.effect.IO
+import cats.effect.Resource
 import doodle.effect.Renderer
 
 object SvgRenderer extends Renderer[Algebra, Frame, Canvas] {
 
   import cats.effect.unsafe.implicits.global
 
-  def canvas(description: Frame): IO[Canvas] =
-    Canvas.fromFrame(description)
+  def canvas(description: Frame): Resource[IO, Canvas] =
+    Canvas.fromFrame(description).toResource
 
   def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =
     canvas.render(picture)
