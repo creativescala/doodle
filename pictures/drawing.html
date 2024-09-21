@@ -79,6 +79,8 @@
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+            <p>For some of the examples below we also need</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.{</span><span class="type-name">IO</span><span>, </span><span class="type-name">Resource</span><span>}</span></code></pre>
             
             <h2 id="drawing" class="section">Drawing</h2>
             <p>The normal way to draw output is by calling the <code>draw</code> method.</p>
@@ -91,19 +93,17 @@
   </span><span class="type-name">Frame</span><span>.</span><span class="keyword">default</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="number-literal">300</span><span>, </span><span class="number-literal">300</span><span>).</span><span class="identifier">withBackground</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>)</span></code></pre>
             <p>Once we have a frame, we can pass it to <code>drawWithFrame</code>.</p>
             <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithFrame</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
-            <p>Sometimes you&#39;ll want to draw several pictures on the same canvas. This is how animations work, repeatedly drawing to the same canvas. To do this you need to get a reference to a <code>Canvas</code>. The <code>canvas</code> syntax method on <code>Frame</code> will produce an <code>IO[Canvas]</code></p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">canvas</span><span> = </span><span class="identifier">frame</span><span>.</span><span class="identifier">canvas</span><span>()</span></code></pre>
-            <p>You can then call <code>drawWithCanvas</code>.</p>
-            <pre><code class="nohighlight"><span class="identifier">canvas</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">c</span><span> =&gt; </span><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithCanvas</span><span>(</span><span class="identifier">c</span><span>))</span></code></pre>
-            <p>However, this is not very idiomatic code. The above methods are all conveniences that hide the underlying use of <code>IO</code>. As soon as we introduce <code>IO</code> we should use the methods described below.</p>
+            <p>Sometimes you&#39;ll want to draw several pictures on the same canvas. By repeatedly drawing to the same canvas we can, for example, create animations. To do this we need to work with the underling <code>IO</code> and <code>Resource</code> types that the conveniences above hide.</p>
             
-            <h2 id="drawing-with-io" class="section">Drawing with IO</h2>
-            <p>It can be useful to convert a <code>Picture[A]</code> to an <code>IO[A]</code>. This could be because the picture is part of a larger program using <code>IO</code>, you are working with an <code>IO[Canvas]</code>, or you want to access the <code>A</code> value that is discarded by the <code>draw</code> variants discussed above. The <code>drawToIO</code> method does this conversion.</p>
+            <h2 id="drawing-with-io-and-resource" class="section">Drawing with IO and Resource</h2>
+            <p>It can be useful to convert a <code>Picture[A]</code> to an <code>IO[A]</code>. This could be because the picture is part of a larger program using <code>IO</code>, you are working with an <code>Resource[IO, Canvas]</code>, or you want to access the <code>A</code> value that is discarded by the <code>draw</code> variants discussed above. The <code>drawToIO</code> method does this conversion.</p>
             <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">drawToIO</span><span>()</span></code></pre>
             <p>There are also variants <code>drawWithFrameToIO</code> and <code>drawWithCanvasToIO</code>.</p>
             <pre><code class="nohighlight"><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithFrameToIO</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
-            <p>Using <code>drawWithCanvasToIO</code> is the idiomatic way to work with an <code>IO[Canvas]</code>.</p>
-            <pre><code class="nohighlight"><span class="identifier">canvas</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">c</span><span> =&gt; </span><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithCanvasToIO</span><span>(</span><span class="identifier">c</span><span>))</span></code></pre>
+            <p>Using <code>drawWithCanvasToIO</code> requires we get hold of a <code>Canvas</code>. We call the <code>canvas()</code> method on a <code>Frame</code> to do so. This returns a <code>Resource[IO, Canvas]</code>.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">canvas</span><span>: </span><span class="type-name">Resource</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Canvas</span><span>] = </span><span class="identifier">frame</span><span>.</span><span class="identifier">canvas</span><span>()</span></code></pre>
+            <p>When we have a <code>Resource[IO, Canvas]</code> we can <code>use</code> it to access the <code>Canvas</code> it manages. This is the idiomatic way to work with a <code>Resource[IO, Canvas]</code>.</p>
+            <pre><code class="nohighlight"><span class="identifier">canvas</span><span>.</span><span class="identifier">use</span><span>(</span><span class="identifier">c</span><span> =&gt; </span><span class="identifier">picture</span><span>.</span><span class="identifier">drawWithCanvasToIO</span><span>(</span><span class="identifier">c</span><span>))</span></code></pre>
             <p>Once you have an <code>IO</code>, you can run it in the usual way as part of an <code>IOApp</code>, with <code>unsafeRunSync</code>, or one of the other methods.</p>
             <p class="nextPage"><a href="writing.html">Writing to a File→</a></p>
         </main>

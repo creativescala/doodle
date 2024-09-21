@@ -4531,7 +4531,7 @@ $c_Ldoodle_interact_syntax_AbstractAnimationRendererSyntax$AnimateToStreamOps.pr
   $f_Ldoodle_interact_syntax_AnimationRendererSyntax__runIO__Lcats_effect_IO__Lcats_effect_unsafe_IORuntime__V(this$1, io, runtime);
 });
 $c_Ldoodle_interact_syntax_AbstractAnimationRendererSyntax$AnimateToStreamOps.prototype.animateFramesToIO__O__Ldoodle_interact_effect_AnimationRenderer__Ldoodle_effect_Renderer__Ldoodle_interact_algebra_Redraw__Lcats_kernel_Monoid__Lcats_effect_IO = (function(frame, a, e, r, m) {
-  return $n($n(e).canvas__O__Lcats_effect_IO(frame)).flatMap__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1(((c) => this.animateFramesWithCanvasToIO__O__Ldoodle_interact_effect_AnimationRenderer__Ldoodle_effect_Renderer__Ldoodle_interact_algebra_Redraw__Lcats_kernel_Monoid__Lcats_effect_IO(c, a, e, r, m))));
+  return $as_Lcats_effect_IO($n($n(e).canvas__O__Lcats_effect_kernel_Resource(frame)).use__F1__Lcats_effect_kernel_MonadCancel__O(new $c_sjsr_AnonFunction1(((c) => this.animateFramesWithCanvasToIO__O__Ldoodle_interact_effect_AnimationRenderer__Ldoodle_effect_Renderer__Ldoodle_interact_algebra_Redraw__Lcats_kernel_Monoid__Lcats_effect_IO(c, a, e, r, m))), $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO));
 });
 $c_Ldoodle_interact_syntax_AbstractAnimationRendererSyntax$AnimateToStreamOps.prototype.animateFramesWithCanvasToIO__O__Ldoodle_interact_effect_AnimationRenderer__Ldoodle_effect_Renderer__Ldoodle_interact_algebra_Redraw__Lcats_kernel_Monoid__Lcats_effect_IO = (function(canvas, a, e, r, m) {
   var $x_1 = this.Ldoodle_interact_syntax_AbstractAnimationRendererSyntax$AnimateToStreamOps__f_frames;
@@ -5746,7 +5746,7 @@ $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps.prototype.drawWithFr
   $f_Ldoodle_syntax_RendererSyntax__runIO__Lcats_effect_IO__Lcats_effect_unsafe_IORuntime__V(this$1, io, r);
 });
 $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps.prototype.drawWithFrameToIO__O__Ldoodle_effect_Renderer__Lcats_effect_IO = (function(frame, renderer) {
-  return $n($n(renderer).canvas__O__Lcats_effect_IO(frame)).flatMap__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1(((canvas) => this.drawWithCanvasToIO__O__Ldoodle_effect_Renderer__Lcats_effect_IO(canvas, renderer))));
+  return $as_Lcats_effect_IO($n($n(renderer).canvas__O__Lcats_effect_kernel_Resource(frame)).use__F1__Lcats_effect_kernel_MonadCancel__O(new $c_sjsr_AnonFunction1(((canvas) => this.drawWithCanvasToIO__O__Ldoodle_effect_Renderer__Lcats_effect_IO(canvas, renderer))), $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO));
 });
 $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps.prototype.drawWithCanvasToIO__O__Ldoodle_effect_Renderer__Lcats_effect_IO = (function(canvas, renderer) {
   return $n(renderer).render__O__Ldoodle_algebra_Picture__Lcats_effect_IO(canvas, this.Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps__f_picture);
@@ -16792,16 +16792,17 @@ function $p_Lcats_effect_kernel_Resource__loop$1__F1__F2__Lcats_effect_kernel_Mo
       }
       throw new $c_s_MatchError(x20);
     }
-    if (false) {
+    if ((x25 instanceof $c_Lcats_effect_kernel_Resource$Eval)) {
       var x$1$8 = $as_Lcats_effect_kernel_Resource$Eval(x25);
-      var x28 = $n(x$1$8)._1__O();
-      var this$20 = new $c_Lcats_FlatMap$ToFlatMapOps$$anon$2(x28, F$1);
+      var this$17 = $n(x$1$8);
+      var x28 = this$17.Lcats_effect_kernel_Resource$Eval__f_fa;
+      var this$21 = new $c_Lcats_FlatMap$ToFlatMapOps$$anon$2(x28, F$1);
       var stack$tailLocal1$3$1 = stack$tailLocal1;
       var f = new $c_sjsr_AnonFunction1(((onOutput$1, onRelease$1, F$1, Nil$lzy1$3, Frame$lzy1$3, stack$tailLocal1$3) => ((a$1) => {
         var current$2 = new $c_Lcats_effect_kernel_Resource$Pure(a$1);
         return $p_Lcats_effect_kernel_Resource__loop$1__F1__F2__Lcats_effect_kernel_MonadCancel__sr_LazyRef__sr_LazyRef__Lcats_effect_kernel_Resource__Lcats_effect_kernel_Resource$Stack$1__O($thiz, onOutput$1, onRelease$1, F$1, Nil$lzy1$3, Frame$lzy1$3, current$2, stack$tailLocal1$3);
       }))(onOutput$1, onRelease$1, F$1, Nil$lzy1$3, Frame$lzy1$3, stack$tailLocal1$3$1));
-      return $n(this$20.Lcats_FlatMap$ToFlatMapOps$$anon$2__f_typeClassInstance).flatMap__O__F1__O(this$20.Lcats_FlatMap$ToFlatMapOps$$anon$2__f_self, f);
+      return $n(this$21.Lcats_FlatMap$ToFlatMapOps$$anon$2__f_typeClassInstance).flatMap__O__F1__O(this$21.Lcats_FlatMap$ToFlatMapOps$$anon$2__f_self, f);
     }
     throw new $c_s_MatchError(x25);
   }
@@ -18143,9 +18144,9 @@ $c_Ldoodle_canvas_effect_CanvasRenderer$.prototype.constructor = $c_Ldoodle_canv
 function $h_Ldoodle_canvas_effect_CanvasRenderer$() {
 }
 $h_Ldoodle_canvas_effect_CanvasRenderer$.prototype = $c_Ldoodle_canvas_effect_CanvasRenderer$.prototype;
-$c_Ldoodle_canvas_effect_CanvasRenderer$.prototype.canvas__O__Lcats_effect_IO = (function(description) {
+$c_Ldoodle_canvas_effect_CanvasRenderer$.prototype.canvas__O__Lcats_effect_kernel_Resource = (function(description) {
   var description$1 = $as_Ldoodle_canvas_effect_Frame(description);
-  return $m_Ldoodle_canvas_effect_Canvas$().fromFrame__Ldoodle_canvas_effect_Frame__Lcats_effect_IO(description$1);
+  return $m_Ldoodle_canvas_effect_Canvas$().fromFrame__Ldoodle_canvas_effect_Frame__Lcats_effect_kernel_Resource(description$1);
 });
 $c_Ldoodle_canvas_effect_CanvasRenderer$.prototype.render__O__Ldoodle_algebra_Picture__Lcats_effect_IO = (function(canvas, picture) {
   var canvas$1 = $as_Ldoodle_canvas_effect_Canvas(canvas);
@@ -19803,9 +19804,12 @@ $c_Ldoodle_svg_effect_SvgRenderer$.prototype.constructor = $c_Ldoodle_svg_effect
 function $h_Ldoodle_svg_effect_SvgRenderer$() {
 }
 $h_Ldoodle_svg_effect_SvgRenderer$.prototype = $c_Ldoodle_svg_effect_SvgRenderer$.prototype;
-$c_Ldoodle_svg_effect_SvgRenderer$.prototype.canvas__O__Lcats_effect_IO = (function(description) {
-  var description$1 = $as_Ldoodle_svg_effect_Frame(description);
-  return $m_Ldoodle_svg_effect_Canvas$().fromFrame__Ldoodle_svg_effect_Frame__Lcats_effect_unsafe_IORuntime__Lcats_effect_IO(description$1, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
+$c_Ldoodle_svg_effect_SvgRenderer$.prototype.canvas__Ldoodle_svg_effect_Frame__Lcats_effect_kernel_Resource = (function(description) {
+  var this$2 = $n($m_Ldoodle_svg_effect_Canvas$().fromFrame__Ldoodle_svg_effect_Frame__Lcats_effect_unsafe_IORuntime__Lcats_effect_IO(description, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime()));
+  return new $c_Lcats_effect_kernel_Resource$Eval(this$2);
+});
+$c_Ldoodle_svg_effect_SvgRenderer$.prototype.canvas__O__Lcats_effect_kernel_Resource = (function(description) {
+  return this.canvas__Ldoodle_svg_effect_Frame__Lcats_effect_kernel_Resource($as_Ldoodle_svg_effect_Frame(description));
 });
 $c_Ldoodle_svg_effect_SvgRenderer$.prototype.render__O__Ldoodle_algebra_Picture__Lcats_effect_IO = (function(canvas, picture) {
   var canvas$1 = $as_Ldoodle_svg_effect_Canvas(canvas);
@@ -28021,7 +28025,7 @@ $c_Ldoodle_canvas_effect_Canvas$.prototype.constructor = $c_Ldoodle_canvas_effec
 function $h_Ldoodle_canvas_effect_Canvas$() {
 }
 $h_Ldoodle_canvas_effect_Canvas$.prototype = $c_Ldoodle_canvas_effect_Canvas$.prototype;
-$c_Ldoodle_canvas_effect_Canvas$.prototype.fromFrame__Ldoodle_canvas_effect_Frame__Lcats_effect_IO = (function(frame) {
+$c_Ldoodle_canvas_effect_Canvas$.prototype.fromFrame__Ldoodle_canvas_effect_Frame__Lcats_effect_kernel_Resource = (function(frame) {
   var this$3 = $m_Lcats_effect_IO$();
   var thunk = new $c_sjsr_AnonFunction0((() => {
     var target = document.getElementById($n(frame).Ldoodle_canvas_effect_Frame__f_id);
@@ -28031,7 +28035,8 @@ $c_Ldoodle_canvas_effect_Canvas$.prototype.fromFrame__Ldoodle_canvas_effect_Fram
       return new $c_Ldoodle_canvas_effect_Canvas(target, frame);
     }
   }));
-  return this$3.delay__F0__Lcats_effect_IO(thunk);
+  var this$4 = $n(this$3.delay__F0__Lcats_effect_IO(thunk));
+  return new $c_Lcats_effect_kernel_Resource$Eval(this$4);
 });
 var $d_Ldoodle_canvas_effect_Canvas$ = new $TypeData().initClass($c_Ldoodle_canvas_effect_Canvas$, "doodle.canvas.effect.Canvas$", ({
   Ldoodle_canvas_effect_Canvas$: 1,
@@ -40904,8 +40909,53 @@ function $isArrayOf_Lcats_effect_kernel_Resource$Bind(obj, depth) {
 function $asArrayOf_Lcats_effect_kernel_Resource$Bind(obj, depth) {
   return (($isArrayOf_Lcats_effect_kernel_Resource$Bind(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lcats.effect.kernel.Resource$Bind;", depth));
 }
+/** @constructor */
+function $c_Lcats_effect_kernel_Resource$Eval(fa) {
+  this.Lcats_effect_kernel_Resource$Eval__f_fa = null;
+  this.Lcats_effect_kernel_Resource$Eval__f_fa = fa;
+}
+$c_Lcats_effect_kernel_Resource$Eval.prototype = new $h_Lcats_effect_kernel_Resource();
+$c_Lcats_effect_kernel_Resource$Eval.prototype.constructor = $c_Lcats_effect_kernel_Resource$Eval;
+/** @constructor */
+function $h_Lcats_effect_kernel_Resource$Eval() {
+}
+$h_Lcats_effect_kernel_Resource$Eval.prototype = $c_Lcats_effect_kernel_Resource$Eval.prototype;
+$c_Lcats_effect_kernel_Resource$Eval.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_s_Product$$anon$1(this);
+});
+$c_Lcats_effect_kernel_Resource$Eval.prototype.hashCode__I = (function() {
+  var this$2 = $m_s_util_hashing_MurmurHash3$();
+  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false);
+});
+$c_Lcats_effect_kernel_Resource$Eval.prototype.equals__O__Z = (function(x$0) {
+  if ((this === x$0)) {
+    return true;
+  } else if ((x$0 instanceof $c_Lcats_effect_kernel_Resource$Eval)) {
+    var x$0$2 = $as_Lcats_effect_kernel_Resource$Eval(x$0);
+    var x = this.Lcats_effect_kernel_Resource$Eval__f_fa;
+    var y = $n(x$0$2).Lcats_effect_kernel_Resource$Eval__f_fa;
+    return $m_sr_BoxesRunTime$().equals__O__O__Z(x, y);
+  } else {
+    return false;
+  }
+});
+$c_Lcats_effect_kernel_Resource$Eval.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$()._toString__s_Product__T(this);
+});
+$c_Lcats_effect_kernel_Resource$Eval.prototype.productArity__I = (function() {
+  return 1;
+});
+$c_Lcats_effect_kernel_Resource$Eval.prototype.productPrefix__T = (function() {
+  return "Eval";
+});
+$c_Lcats_effect_kernel_Resource$Eval.prototype.productElement__I__O = (function(n) {
+  if ((n === 0)) {
+    return this.Lcats_effect_kernel_Resource$Eval__f_fa;
+  }
+  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n));
+});
 function $as_Lcats_effect_kernel_Resource$Eval(obj) {
-  return ((false || (obj === null)) ? obj : $throwClassCastException(obj, "cats.effect.kernel.Resource$Eval"));
+  return (((obj instanceof $c_Lcats_effect_kernel_Resource$Eval) || (obj === null)) ? obj : $throwClassCastException(obj, "cats.effect.kernel.Resource$Eval"));
 }
 function $isArrayOf_Lcats_effect_kernel_Resource$Eval(obj, depth) {
   return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lcats_effect_kernel_Resource$Eval)));
@@ -40913,6 +40963,13 @@ function $isArrayOf_Lcats_effect_kernel_Resource$Eval(obj, depth) {
 function $asArrayOf_Lcats_effect_kernel_Resource$Eval(obj, depth) {
   return (($isArrayOf_Lcats_effect_kernel_Resource$Eval(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lcats.effect.kernel.Resource$Eval;", depth));
 }
+var $d_Lcats_effect_kernel_Resource$Eval = new $TypeData().initClass($c_Lcats_effect_kernel_Resource$Eval, "cats.effect.kernel.Resource$Eval", ({
+  Lcats_effect_kernel_Resource$Eval: 1,
+  Lcats_effect_kernel_Resource: 1,
+  Ljava_io_Serializable: 1,
+  s_Equals: 1,
+  s_Product: 1
+}));
 /** @constructor */
 function $c_Lcats_effect_kernel_Resource$ExitCase$Errored(e) {
   this.Lcats_effect_kernel_Resource$ExitCase$Errored__f_e = null;
