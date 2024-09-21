@@ -44,7 +44,6 @@ object Pointillism extends IOApp {
 
         clicks
           .scan(List.empty[Point])((pts, pt) => pt :: pts)
-          .debug(a => s"Point $a")
           .map(pts => curve(pts))
           .evalMap(picture => canvas.render(picture))
           .compile

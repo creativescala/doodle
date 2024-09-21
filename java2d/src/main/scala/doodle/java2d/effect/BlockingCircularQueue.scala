@@ -29,36 +29,43 @@ final class BlockingCircularQueue[A: ClassTag](capacity: Int) {
   private val data: Array[A] = Array.ofDim(capacity)
   private var writeIdx = 0
   private var readIdx = 0
+
+  private val readLock = Object()
+  private val writeLock = Object()
+
   // Number of elements that can be read from data. 0 <= readable < capacity
   var readable = 0
 
   def add(e: A): Boolean = {
     // Acquire the monitor, so we can safely modify internal state and notify
     // readers waiting on it when we've added the element.
-    this.synchronized {
-      try {
-        data(writeIdx) = e
-        readable = (readable + 1).min(capacity)
+    writeLock.synchronized {
+      readLock.synchronized {
 
-        // If we just caught up to readIdx, increement readIdx so it now points
-        // to the oldest data
-        if writeIdx == readIdx && readable == capacity
-        then readIdx = (readIdx + 1) % capacity
+        try {
+          data(writeIdx) = e
+          readable = (readable + 1).min(capacity)
 
-        writeIdx = (writeIdx + 1) % capacity
-      } finally {
-        // Wake up any readers waiting for data
-        this.notifyAll()
+          // If we just caught up to readIdx, increement readIdx so it now points
+          // to the oldest data
+          if writeIdx == readIdx && readable == capacity
+          then readIdx = (readIdx + 1) % capacity
+
+          writeIdx = (writeIdx + 1) % capacity
+        } finally {
+          // Wake up any readers waiting for data
+          readLock.notifyAll()
+        }
       }
-    }
 
-    true
+      true
+    }
   }
 
   def take(): A = {
-    this.synchronized {
+    readLock.synchronized {
       while readable == 0 do {
-        this.wait()
+        readLock.wait()
       }
 
       val elt = data(readIdx)

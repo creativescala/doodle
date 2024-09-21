@@ -216,6 +216,7 @@ final class Java2DPanel(
   }
 
   override def paintComponent(context: Graphics): Unit = {
+    super.paintComponents(context)
     val gc = context.asInstanceOf[Graphics2D]
     Java2d.setup(gc)
 
