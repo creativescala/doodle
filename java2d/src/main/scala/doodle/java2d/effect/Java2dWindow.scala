@@ -50,6 +50,7 @@ final class Java2dWindow(
     timer.stop()
     dispose()
     closed.complete(true)
+    ()
   }
 
   def close(): CompletableFuture[Boolean] = {
