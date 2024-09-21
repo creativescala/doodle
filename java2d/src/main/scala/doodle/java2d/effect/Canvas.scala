@@ -116,7 +116,7 @@ final class Canvas private (
 
   def close(): IO[Boolean] = {
     IO(window.close()) >>
-    windowClosed
+      windowClosed
   }
 }
 object Canvas {
