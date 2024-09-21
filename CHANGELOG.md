@@ -1,6 +1,6 @@
 # Changelog
 
-## NEXT
+## 0.24.0 21-Sep-2024
 
 - Improvements to reactor for more consistent animations (by `@lego-eden`)
 
