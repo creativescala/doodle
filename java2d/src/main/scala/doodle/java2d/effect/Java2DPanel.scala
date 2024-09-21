@@ -90,7 +90,6 @@ final class Java2DPanel(
 
       def mouseClicked(e: MouseEvent): Unit = {
         val pt = e.getPoint()
-        println(s"Mouse click at $pt")
         mouseClickQueue
           .add(inverseTx(Point(pt.getX(), pt.getY())))
         ()
@@ -217,7 +216,6 @@ final class Java2DPanel(
   }
 
   override def paintComponent(context: Graphics): Unit = {
-    // println("Java2DPanel painting")
     val gc = context.asInstanceOf[Graphics2D]
     Java2d.setup(gc)
 

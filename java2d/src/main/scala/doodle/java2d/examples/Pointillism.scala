@@ -42,15 +42,14 @@ object Pointillism extends IOApp {
       .use { canvas =>
         val clicks = canvas.mouseClick
 
-        IO.println("We got canvas lets go") >>
-          clicks
-            .scan(List.empty[Point])((pts, pt) => pt :: pts)
-            .debug(a => s"Point $a")
-            .map(pts => curve(pts))
-            .evalMap(picture => canvas.render(picture))
-            .compile
-            .drain
-            .as(ExitCode.Success)
+        clicks
+          .scan(List.empty[Point])((pts, pt) => pt :: pts)
+          .debug(a => s"Point $a")
+          .map(pts => curve(pts))
+          .evalMap(picture => canvas.render(picture))
+          .compile
+          .drain
+          .as(ExitCode.Success)
       }
   }
 }

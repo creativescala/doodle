@@ -81,16 +81,16 @@ final class Canvas private (
   val stream: Stream[IO, Nothing] = {
     val redraw = pump(redrawQueue, redrawTopic).drain
     val mouseClick =
-      pump(mouseClickQueue, mouseClickTopic).debug(a => s"Mouse click $a").drain
+      pump(mouseClickQueue, mouseClickTopic).drain
     val mouseMove = pump(mouseMoveQueue, mouseMoveTopic).drain
     val closeStream = Stream
       .eval(
-        windowClosed >> IO.println("canvas.stop begin") >>
+        windowClosed >>
           (
             redrawTopic.close,
             mouseClickTopic.close,
             mouseMoveTopic.close
-          ).parTupled.void >> IO.println("canvas.stop end")
+          ).parTupled.void
       )
       .drain
 
@@ -102,7 +102,6 @@ final class Canvas private (
     redrawTopic.subscribe(4).interruptWhen(interruptWhen)
   val mouseClick: Stream[IO, Point] = mouseClickTopic
     .subscribe(4)
-    .debug(a => s"subscribed mouse click $a")
     .interruptWhen(interruptWhen)
   val mouseMove: Stream[IO, Point] =
     mouseMoveTopic.subscribe(4).interruptWhen(interruptWhen)
@@ -110,16 +109,14 @@ final class Canvas private (
   /** Draw the given Picture to this [[Canvas]].
     */
   def render[A](picture: Picture[A]): IO[A] = {
-    println("Rendering")
     val f = window.render(picture)
 
     IO.fromCompletableFuture(IO(f))
   }
 
   def close(): IO[Boolean] = {
-    IO.println("Canvas close()") >>
-      IO(window.close()) >>
-      windowClosed
+    IO(window.close()) >>
+    windowClosed
   }
 }
 object Canvas {

@@ -47,15 +47,12 @@ final class Java2dWindow(
 
   // Only call from within the event thread
   private def internalClose(): Unit = {
-    println("window.close begin")
     timer.stop()
     dispose()
     closed.complete(true)
-    println("window.close end")
   }
 
   def close(): CompletableFuture[Boolean] = {
-    println("Java2dWindow close()")
     SwingUtilities.invokeAndWait(() => internalClose())
     closed
   }
@@ -91,27 +88,22 @@ final class Java2dWindow(
   this.addWindowListener(
     new WindowAdapter {
       override def windowClosed(evt: WindowEvent): Unit = {
-        println("Java2dWindow windowClosed")
         internalClose()
         ()
       }
     }
   )
 
-  println("a")
   getContentPane().add(panel)
   frame.size match {
     case FixedSize(width, height) =>
-      println("b")
       setSize(width.toInt, height.toInt)
     case _ => ()
   }
-  println("c")
   pack()
   setVisible(true)
   setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
   repaint()
   timer.start()
-  println("end")
 
 }
