@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.25.0 23-Sep-2024
+
+- Java2d rendering waits for window to close before rendering is complete. See
+  issue #176.
+
+
 ## 0.24.0 21-Sep-2024
 
 - Improvements to reactor for more consistent animations (by `@lego-eden`)
