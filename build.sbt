@@ -268,7 +268,7 @@ lazy val canvas = project
   .settings(
     commonSettings,
     libraryDependencies += Dependencies.scalajsDom.value,
-    moduleName := "doode-canvas"
+    moduleName := "doodle-canvas"
   )
   .dependsOn(core.js)
   .enablePlugins(ScalaJSPlugin)
