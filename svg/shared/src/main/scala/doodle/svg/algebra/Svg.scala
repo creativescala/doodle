@@ -100,6 +100,7 @@ trait SvgModule { self: Base =>
 
         case Size.FixedSize(w, h) =>
           svg.svg(
+            svgAttrs.xmlns := s"http://www.w3.org/2000/svg",
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
