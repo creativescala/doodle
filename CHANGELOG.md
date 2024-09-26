@@ -1,4 +1,7 @@
-# Changelog
+## 0.26.0 26-Sept-2024
+
+- Complete reworking of SVG backend to remove race conditions and manage resources correctly.
+
 
 ## 0.25.0 23-Sep-2024
 
