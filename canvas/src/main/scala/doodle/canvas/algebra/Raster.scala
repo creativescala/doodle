@@ -18,29 +18,23 @@ package doodle.canvas.algebra
 
 import doodle.algebra.Algebra
 import doodle.algebra.generic.*
-import doodle.core.*
-import doodle.core.BoundingBox
 import doodle.core.Transform as Tx
-import doodle.core.font.Font
-import org.scalajs.dom
 
-trait Text extends GenericText[CanvasDrawing] {
-  self: Algebra { type Drawing[A] = Finalized[CanvasDrawing, A] } =>
+trait Raster extends GenericRaster[CanvasDrawing, Immediate] {
+  self: Algebra { type Drawing[U] = Finalized[CanvasDrawing, U] } =>
 
-  object TextApi extends TextApi {
-    type Bounds = dom.TextMetrics
-
-    def text(
+  object RasterApi extends RasterApi {
+    def raster(
         tx: Tx,
-        fill: Option[Fill],
-        stroke: Option[Stroke],
-        font: Font,
-        text: String,
-        bounds: Bounds
-    ): CanvasDrawing[Unit] = ???
+        width: Int,
+        height: Int
+    )(f: Immediate => Unit): CanvasDrawing[Unit] = {
+      CanvasDrawing.setTransform(tx) >>
+        CanvasDrawing.raster(width, height)(f)
+    }
 
-    def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
-      ???
+    def unit: CanvasDrawing[Unit] = {
+      CanvasDrawing.unit
     }
   }
 }
