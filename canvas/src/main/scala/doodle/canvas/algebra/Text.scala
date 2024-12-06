@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package doodle.canvas.algebra
 
 import doodle.algebra.Algebra
@@ -29,6 +28,7 @@ trait Text extends GenericText[CanvasDrawing] {
   object TextApi extends TextApi {
     type Bounds = dom.TextMetrics
 
+ 
     def text(
         tx: Tx,
         fill: Option[Fill],
@@ -36,11 +36,68 @@ trait Text extends GenericText[CanvasDrawing] {
         font: Font,
         text: String,
         bounds: Bounds
-    ): CanvasDrawing[Unit] =
-      ???
+    ): CanvasDrawing[Unit] = {
+ 
+      CanvasDrawing { ctx =>
+        ctx.save() 
 
+        
+        tx(ctx)
+
+        
+        ctx.font = font.toString
+
+      
+        fill.foreach { f =>
+          ctx.fillStyle = f.toCanvas
+        }
+
+      
+        stroke.foreach { s =>
+          ctx.strokeStyle = s.toCanvas
+          ctx.lineWidth = s.width.toFloat
+        }
+
+        
+        ctx.fillText(text, 0, 0) 
+
+        
+        stroke.foreach { _ =>
+          ctx.strokeText(text, 0, 0)
+        }
+
+        ctx.restore() 
+      }
+    }
+
+    
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
-      ???
+      CanvasDrawing { ctx =>
+        ctx.save() 
+
+       
+        ctx.font = font.toString
+
+       
+        val textMetrics = ctx.measureText(text)
+
+        
+        val width = textMetrics.width
+        val height = font.size.toDouble 
+
+      
+        val boundingBox = BoundingBox(
+          x = 0.0,
+          y = 0.0,
+          width = width,
+          height = height
+        )
+
+        ctx.restore() 
+
+       
+        (boundingBox, textMetrics)
+      }
     }
   }
 }
