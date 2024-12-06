@@ -39,9 +39,9 @@ final class Canvas private (
 ) {
 
   /** Construct the type of event queue we use to send events from Swing to Cats
-    * Effect land. We choose a circular buffer queue so that we consume
-    * unbounded memory if the Cats Effect side do pull from the queue (which
-    * will be a common case) nor does it block if the queue's capacity is
+    * Effect land. We choose a circular buffer queue so that we consume bounded
+    * memory if the Cats Effect side does not pull from the queue (which will be
+    * a common case), and neither does it block if the queue's capacity is
     * reached.
     */
   private def eventQueue[A: ClassTag]: BlockingCircularQueue[A] =

@@ -18,17 +18,21 @@ package doodle
 package java2d
 package examples
 
-object BouncyCircles {
-  import cats.implicits.*
-  import doodle.core.*
-  import doodle.core.format.Gif
-  import doodle.syntax.all.*
-  import doodle.java2d.effect.*
-  import doodle.interact.easing.*
-  import doodle.interact.syntax.all.*
-  import fs2.Stream
-  import cats.effect.IO
-  import cats.effect.unsafe.implicits.global
+import cats.effect.ExitCode
+import cats.effect.IO
+import cats.effect.IOApp
+import cats.effect.unsafe.implicits.global
+import doodle.core.*
+import doodle.core.format.Gif
+import doodle.interact.easing.*
+import doodle.interact.syntax.all.*
+import doodle.java2d.*
+import doodle.syntax.all.*
+import fs2.Stream
+
+import scala.concurrent.duration.*
+
+object BouncyCircles extends IOApp {
 
   val frame = Frame.default.withSize(600, 600).withBackground(Color.darkMagenta)
   val steps = 60 * 10
@@ -78,8 +82,11 @@ object BouncyCircles {
           .strokeWidth(2.0)
       }
 
+  def run(args: List[String]): IO[ExitCode] =
+    animation.animateToIO(frame).as(cats.effect.ExitCode.Success)
+
   def go() =
-    animation.animate(frame)
+    animation.withFrameRate(16.milliseconds).animate(frame)
 
   def write() =
     animation.take(steps.toLong).write[Gif]("bouncy-circles.gif", frame)

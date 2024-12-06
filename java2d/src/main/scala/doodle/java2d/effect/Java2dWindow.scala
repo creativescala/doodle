@@ -39,6 +39,8 @@ final class Java2dWindow(
     mouseClickQueue: BlockingCircularQueue[Point],
     mouseMoveQueue: BlockingCircularQueue[Point]
 ) extends JFrame(frame.title) {
+  private val panel = Java2DPanel(frame, mouseClickQueue, mouseMoveQueue)
+
   def render[A](picture: Picture[A]): CompletableFuture[A] =
     panel.render(picture)
 
@@ -58,12 +60,10 @@ final class Java2dWindow(
     closed
   }
 
-  val panel = Java2DPanel(frame, mouseClickQueue, mouseMoveQueue)
-
   /** Event listener for redraw events. Translates events into the time since
     * the last frame (TODO: what are the units)?
     */
-  private val frameEvent = {
+  private val frameEvent: ActionListener = {
 
     /** Delay between frames when rendering at 60fps */
     var firstFrame = true
@@ -86,6 +86,7 @@ final class Java2dWindow(
 
   /** Timer that ticks every frameDelay */
   private val timer = new Timer(frameDelay.toMillis.toInt, frameEvent)
+
   this.addWindowListener(
     new WindowAdapter {
       override def windowClosed(evt: WindowEvent): Unit = {

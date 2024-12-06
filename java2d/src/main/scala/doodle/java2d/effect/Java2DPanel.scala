@@ -38,8 +38,11 @@ import javax.swing.SwingUtilities
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-/** frameDelay is the time between rendering frames of animations. It is 1 /
-  * frameRate.
+/** A Swing component (a JPanel) that can render a Doodle Picture.
+  *
+  * The majority of the code within here runs on the Swing thread. To avoid
+  * deadlock, communication with the outside world must be mediated through
+  * concurrency safe data structures or similar means.
   */
 final class Java2DPanel(
     frame: Frame,
@@ -74,7 +77,7 @@ final class Java2DPanel(
   /** True if the redraw is an opaque color and hence we don't need to keep
     * earlier pictures around.
     */
-  private val opaqueRedraw =
+  private val opaqueRedraw: Boolean =
     frame.redraw match {
       case Redraw.ClearToBackground =>
         frame.background match {
