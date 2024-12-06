@@ -47,6 +47,7 @@ trait ReifiedText extends GenericText[Reification] {
     ): Reification[Unit] =
       WriterT.tell(
         List(
+
           Reified.text(
             tx,
             fill,
