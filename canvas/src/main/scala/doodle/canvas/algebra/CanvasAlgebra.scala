@@ -29,9 +29,12 @@ final case class CanvasAlgebra(
     applyDrawing: Apply[CanvasDrawing] = Apply.apply[CanvasDrawing],
     functorDrawing: Functor[CanvasDrawing] = Apply.apply[CanvasDrawing]
 ) extends Path,
+      Raster,
       Shape,
       GenericDebug[CanvasDrawing],
       GenericLayout[CanvasDrawing],
+      GenericRaster[CanvasDrawing, Immediate],
+      GenericShape[CanvasDrawing],
       GenericSize[CanvasDrawing],
       GenericStyle[CanvasDrawing],
       GenericTransform[CanvasDrawing],
@@ -39,6 +42,12 @@ final case class CanvasAlgebra(
       GivenFunctor[CanvasDrawing],
       doodle.algebra.Algebra {
   type Drawing[A] = doodle.canvas.Drawing[A]
+
+  override def empty: Finalized[CanvasDrawing, Unit] =
+    Finalized.leaf(_ =>
+      (BoundingBox.empty, Renderable.unit(CanvasDrawing.unit))
+    )
+
   implicit val drawingInstance: Monad[Drawing] =
     new Monad[Drawing] {
       def pure[A](x: A): Drawing[A] =
@@ -67,5 +76,4 @@ final case class CanvasAlgebra(
         )
       }
     }
-
 }
