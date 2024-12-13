@@ -20,6 +20,7 @@ import doodle.core.Point
 import doodle.java2d.Picture
 import doodle.java2d.effect.Size.FixedSize
 
+import java.awt.Dimension
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.WindowAdapter
@@ -99,7 +100,7 @@ final class Java2dWindow(
   getContentPane().add(panel)
   frame.size match {
     case FixedSize(width, height) =>
-      setSize(width.toInt, height.toInt)
+      setMinimumSize(Dimension(width.toInt, height.toInt))
     case _ => ()
   }
   pack()
