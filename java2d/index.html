@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Typelevel Laika" />
+    <title>Doodle Java2D</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script src="../main.js"></script>
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="../effect/">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="../svg/">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
+          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
+          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+          <li class="level2 nav-leaf"><a href="../interact/examples.html">Examnples</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 active nav-leaf"><a href="#">Doodle Java2D</a></li>
+          <li class="level1 nav-leaf"><a href="../svg/">Doodle SVG</a></li>
+          <li class="level1 nav-node"><a href="../canvas/">Doodle Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+          <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
+          <li class="level2 nav-leaf"><a href="../development/design.html">Design</a></li>
+          <li class="level2 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+          <li class="level2 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="doodle-java2d" class="title">Doodle Java2D</h1>
+            <p>Doodle Java2D draws Doodle pictures using <a href="https://www.oracle.com/java/technologies/java-2d-api.html">Java 2D</a>, the graphic library that ships with the JVM.</p>
+            
+            <h2 id="usage" class="section">Usage</h2>
+            <p>Firstly, import the Doodle core and syntax, the Java2D definitions, and the default Cats Effect runtime.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
+            <p>Now you can draw <code>Pictures</code> like so:</p>
+            <pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">draw</span><span>()</span></code></pre>
+            <p>The drawing will appear in a window on the screen.</p>
+            <p>You can define a @api:(doodle.java2d.Frame) to have more control over the appearance of the window in which a <code>Picture</code> is drawn.
+            The <code>Frame</code>  allows you to specify, for example, the title for the window, the background color, or the size of the window.
+            Here&#39;s an example:</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">frame</span><span> =
+  </span><span class="type-name">Frame</span><span>.</span><span class="keyword">default</span><span>
+    .</span><span class="identifier">withSize</span><span>(</span><span class="number-literal">600</span><span>, </span><span class="number-literal">600</span><span>)
+    .</span><span class="identifier">withCenterAtOrigin</span><span>
+    .</span><span class="identifier">withBackground</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>)
+    .</span><span class="identifier">withTitle</span><span>(</span><span class="string-literal">&quot;Oodles of Doodles!&quot;</span><span>)</span></code></pre>
+            <p>This sets:</p>
+            <ul>
+              <li>the size of the window to 600 pixels wide and high;</li>
+              <li>the center of the window to the origin (0, 0), instead of the center of the bounding box of the <code>Picture</code> that is rendered;</li>
+              <li>the background color to midnight blue; and</li>
+              <li>the window&#39;s title to &quot;Oodles of Doodles!&quot;</li>
+            </ul>
+            <p>We can drawn to a frame using the <code>drawWithFrame</code> syntax.</p>
+            <pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">drawWithFrame</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
+            
+            <h2 id="canvas" class="section">Canvas</h2>
+            <p>The Java2D <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/Canvas.html">Canvas</a> offers several features that are useful for interactive programs.
+            It provides the following streams of events:</p>
+            <ul>
+              <li><code>mouseClick</code>, which is a <code>Stream[IO, Point]</code> producing the position of mouse clicks;</li>
+              <li><code>mouseMove</code>, which is a <code>Stream[IO, Point]</code> producing the position of the mouse cursor and updates when the mouse moves;</li>
+              <li><code>redraw</code>, which is a <code>Stream[IO, Int]</code> producing a value approximately every 16.67ms (i.e. at a rate of 60fps). The value is the duration, in milliseconds, since the previous event.</li>
+            </ul>
+            <p>Also available are</p>
+            <ul>
+              <li><code>closed</code>, an <code>IO[Unit]</code> that produces a value when the window has been closed; and</li>
+              <li><code>close()</code>, a method to programmatically close the window instead of waiting for the user to do so.</li>
+            </ul>
+            <p>To create a <code>Canvas</code> you call the <code>canvas()</code> method on a <code>Frame</code>.
+            The returns a <code>Resource</code> that will produce the canvas when <code>use</code>d.
+            Here&#39;s a small example:</p>
+            <pre><code class="nohighlight"><span class="identifier">frame</span><span>
+  .</span><span class="identifier">canvas</span><span>()
+  .</span><span class="identifier">use</span><span> { </span><span class="identifier">canvas</span><span> =&gt;
+    </span><span class="comment">// Do stuff here
+</span><span>    </span><span class="comment">// This example just closes the canvas
+</span><span>    </span><span class="identifier">canvas</span><span>.</span><span class="identifier">close</span><span>()
+  }</span></code></pre>
+            <p>`</p>
+            <p class="nextPage"><a href="../svg/">Doodle SVG→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>

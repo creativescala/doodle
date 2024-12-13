@@ -107,7 +107,7 @@
 }
 
 /*
-! tailwindcss v3.4.13 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -550,18 +550,18 @@ video {
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
-[hidden] {
+[hidden]:where(:not([hidden="until-found"])) {
   display: none;
 }
 
 body {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   font-family: Crimson Pro, serif;
   font-size: 1.125rem;
   line-height: 1.75rem;
   --tw-text-opacity: 1;
-  color: rgb(15 23 42 / var(--tw-text-opacity));
+  color: rgb(15 23 42 / var(--tw-text-opacity, 1));
 }
 
 @media (min-width: 1280px) {
@@ -576,12 +576,12 @@ nav#topbar {
   align-content: center;
   justify-content: space-around;
   --tw-bg-opacity: 1;
-  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
   padding: 0.5rem;
   font-size: 1.25rem;
   line-height: 1.75rem;
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 @media (min-width: 1280px) {
@@ -599,7 +599,7 @@ nav#sidebar {
   display: none;
   max-width: 24rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
   padding: 3rem;
 }
 
@@ -614,7 +614,7 @@ li.level1.nav-leaf {
   margin-top: 1rem;
   list-style-type: none;
   --tw-text-opacity: 1;
-  color: rgb(249 168 212 / var(--tw-text-opacity));
+  color: rgb(249 168 212 / var(--tw-text-opacity, 1));
 }
 
 ul.nav-list:first-child {
@@ -630,14 +630,14 @@ li.level1 {
   list-style-type: none;
   text-transform: uppercase;
   --tw-text-opacity: 1;
-  color: rgb(249 168 212 / var(--tw-text-opacity));
+  color: rgb(249 168 212 / var(--tw-text-opacity, 1));
 }
 
 li.level2 {
   list-style-type: none;
   padding-left: 1rem;
   --tw-text-opacity: 1;
-  color: rgb(203 213 225 / var(--tw-text-opacity));
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
 }
 
 .default-image-block {
@@ -662,7 +662,7 @@ main {
 
 h1, h2, h3, h4 {
   --tw-text-opacity: 1;
-  color: rgb(157 23 77 / var(--tw-text-opacity));
+  color: rgb(157 23 77 / var(--tw-text-opacity, 1));
 }
 
 h1 {
@@ -713,7 +713,7 @@ p {
 
 .content a {
   --tw-text-opacity: 1;
-  color: rgb(14 165 233 / var(--tw-text-opacity));
+  color: rgb(14 165 233 / var(--tw-text-opacity, 1));
   text-decoration-line: underline;
   text-decoration-style: dotted;
   text-decoration-thickness: 1px;
@@ -726,7 +726,7 @@ p {
 pre {
   margin-bottom: 1rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
   padding: 0.5rem;
 }
 
@@ -738,27 +738,27 @@ code {
 
 pre code .number-literal, .char-literal, .boolean-literal, .string-literal {
   --tw-text-opacity: 1;
-  color: rgb(2 132 199 / var(--tw-text-opacity));
+  color: rgb(2 132 199 / var(--tw-text-opacity, 1));
 }
 
 pre code .keyword {
   --tw-text-opacity: 1;
-  color: rgb(225 29 72 / var(--tw-text-opacity));
+  color: rgb(225 29 72 / var(--tw-text-opacity, 1));
 }
 
 pre code .identifier {
   --tw-text-opacity: 1;
-  color: rgb(71 85 105 / var(--tw-text-opacity));
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
 }
 
 pre code .type-name {
   --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
+  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
 }
 
 pre code .declaration-name {
   --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
 }
 
 pre code .comment {
@@ -771,19 +771,19 @@ pre code .comment {
   font-size: 1.25rem;
   line-height: 1.75rem;
   --tw-text-opacity: 1;
-  color: rgb(157 23 77 / var(--tw-text-opacity));
+  color: rgb(157 23 77 / var(--tw-text-opacity, 1));
 }
 
 footer {
   margin-top: 1rem;
   border-top-width: 2px;
   --tw-border-opacity: 1;
-  border-color: rgb(203 213 225 / var(--tw-border-opacity));
+  border-color: rgb(203 213 225 / var(--tw-border-opacity, 1));
   padding-top: 1rem;
   text-align: center;
   font-family: Source Sans Pro, sans-serif;
   font-size: 0.875rem;
   line-height: 1.25rem;
   --tw-text-opacity: 1;
-  color: rgb(203 213 225 / var(--tw-text-opacity));
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
 }

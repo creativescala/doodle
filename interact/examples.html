@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Design</title>
+    <title>Examnples</title>
     
     
     <meta name="description" content="docs" />
@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="index.html">←</a></p>
+    <nav id="topbar"><p><a href="animation.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="process.html">→</a></p></nav>
+<p><a href="../algebra/">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -46,9 +46,9 @@
           <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
           <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
           <li class="level1 nav-leaf"><a href="../core/">Core</a></li>
-          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
-          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
-          <li class="level2 nav-leaf"><a href="../interact/examples.html">Examnples</a></li>
+          <li class="level1 nav-node"><a href="index.html">Interactivity</a></li>
+          <li class="level2 nav-leaf"><a href="animation.html">Animations</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Examnples</a></li>
           <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
           <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
           <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
@@ -60,42 +60,21 @@
           <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
           <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
           <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
-          <li class="level1 nav-node"><a href="index.html">Developing Doodle</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Design</a></li>
-          <li class="level2 nav-leaf"><a href="process.html">Development Process</a></li>
-          <li class="level2 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
-          <li class="level2 nav-leaf"><a href="backend.html">Implementing a Backend</a></li>
+          <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
+          <li class="level2 nav-leaf"><a href="../development/design.html">Design</a></li>
+          <li class="level2 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+          <li class="level2 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
         </ul>
     </nav>
 
     <div id="content">
         <main class="content">
-            <h1 id="design" class="title">Design</h1>
-            <p>The API that Doodle presents to the user should be compositional and easy to reason about. 
-            There are fundamental ideas in functional programming.
-            Internally, the implementation may be a stateful program, as the majority of graphics library are implemented in a stateful way.</p>
-            
-            <h2 id="conveniences" class="section">Conveniences</h2>
-            <p>We provide convenience operations for common operations. 
-            For example, we can just <code>draw</code> a <code>Picture</code> without providing a <code>Canvas</code> or <code>Frame</code>, or having to deal with <code>IO</code>.
-            The most convenient operation is usually presented as the default. 
-            So we expect people will want to use <code>draw</code> more than <code>drawWithFrame</code> or <code>drawToIO</code>, and hence it has the shortest name and is introduced first in documentation.</p>
-            <p>Conveniences should be implemented as syntax.
-            Try to keep algebras to the minimal set of most basic operations.
-            Note that the current system doesn&#39;t follow this advice very closely.
-            Until we figured how to make the current architecture it was expected that people would frequently interact directly with algebras,
-            so they tend to contain more methods than is strictly necessary.</p>
-            <p>The default operations, provided as syntax, generally do not expose <code>IO</code>. 
-            Altneratives that do expose <code>IO</code> are suffixed <code>toIO</code>.
-            So, for example, <code>draw</code> is the default operation to render a <code>Picture</code> and does not expose an <code>IO</code>.
-            The syntax that does is called <code>drawToIO</code>.</p>
-            <p>There are a couple of naming conventions in use:</p>
-            <ul>
-              <li>operations that require more parameters than the default are suffixed with <code>withA</code>, where <code>A</code> is the type. E.g. <code>drawWithFrame</code>.</li>
-              <li>operations that produces a different output type are suffixed with <code>toA</code>, where <code>A</code> is the type. E.g. <code>drawToIO</code>.</li>
-              <li>the above can be combined, as in <code>drawWithFrameToIO</code>.</li>
-            </ul>
-            <p class="nextPage"><a href="process.html">Development Process→</a></p>
+            <h1 id="examnples" class="title">Examnples</h1>
+            <p>These are miscellaneous examples of animations and interactivity.</p>
+            <div id="bouncy-circles"></div>
+            <script>SvgBouncyCircles.go("bouncy-circles")</script>
+            <p class="nextPage"><a href="../algebra/">Algebras→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
