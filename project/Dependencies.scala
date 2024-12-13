@@ -6,16 +6,17 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport.*
 object Dependencies {
   // Library Versions
   val catsVersion = "2.12.0"
-  val catsEffectVersion = "3.5.4"
+  val catsEffectVersion = "3.5.7"
   val fs2Version = "3.11.0"
 
   val scalatagsVersion = "0.13.1"
   val scalajsDomVersion = "2.8.0"
 
-  val batikVersion = "1.17"
+  val batikVersion = "1.18"
 
   val scalaCheckVersion = "1.15.4"
-  val munitVersion = "1.0.0"
+  val munitVersion = "1.0.3"
+  val munitScalacheckVersion = "1.0.0"
   val munitCatsEffectVersion = "2.0.0"
 
   // Libraries
@@ -34,7 +35,9 @@ object Dependencies {
 
   val munit = Def.setting("org.scalameta" %%% "munit" % munitVersion % "test")
   val munitScalaCheck =
-    Def.setting("org.scalameta" %%% "munit-scalacheck" % munitVersion % "test")
+    Def.setting(
+      "org.scalameta" %%% "munit-scalacheck" % munitScalacheckVersion % "test"
+    )
   val munitCatsEffect =
     Def.setting(
       "org.typelevel" %%% "munit-cats-effect" % munitCatsEffectVersion % Test
