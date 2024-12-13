@@ -20,7 +20,6 @@ package examples
 
 import doodle.core.*
 import doodle.syntax.all.*
-import doodle.turtle.*
 import doodle.turtle.Instruction.*
 
 object Geometry {

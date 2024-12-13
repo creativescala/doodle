@@ -20,7 +20,6 @@ package generic
 package reified
 
 import cats.data.WriterT
-import doodle.algebra.generic.*
 import doodle.core.*
 import doodle.core.Transform as Tx
 

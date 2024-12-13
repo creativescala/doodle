@@ -68,7 +68,6 @@ object LayoutSpec extends Properties("Layout properties") {
   property("hand generated at bounding boxes are correct") = {
     import doodle.syntax.all.*
     import doodle.syntax.approximatelyEqual.*
-    import doodle.algebra.generic.*
     import Instances.*
     import TestAlgebra.*
 

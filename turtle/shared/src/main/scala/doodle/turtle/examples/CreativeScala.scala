@@ -24,7 +24,6 @@ import doodle.syntax.all.*
 
 object CreativeScala {
   object turtle {
-    import doodle.turtle.*
     import doodle.turtle.Instruction.*
 
     val instructions =

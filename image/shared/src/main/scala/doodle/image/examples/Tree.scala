@@ -19,7 +19,6 @@ package image
 package examples
 
 import doodle.core.*
-import doodle.image.*
 import doodle.syntax.all.*
 
 object Tree {

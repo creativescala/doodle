@@ -20,7 +20,6 @@ package examples
 
 import doodle.core.*
 import doodle.syntax.all.*
-import doodle.turtle.*
 
 object SquareSpiral {
   import Instruction.*

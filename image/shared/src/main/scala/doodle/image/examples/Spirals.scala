@@ -21,7 +21,6 @@ package examples
 import cats.instances.all.*
 import cats.syntax.all.*
 import doodle.core.*
-import doodle.image.*
 import doodle.random.*
 import doodle.syntax.all.*
 

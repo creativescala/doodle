@@ -97,7 +97,7 @@ final class Canvas private (
     redraw.merge(mouseClick).merge(mouseMove).merge(closeStream)
   }
 
-  private val interruptWhen = windowClosed.void.attempt
+  private val interruptWhen = closed.attempt
   val redraw: Stream[IO, Int] =
     redrawTopic.subscribe(4).interruptWhen(interruptWhen)
   val mouseClick: Stream[IO, Point] = mouseClickTopic
@@ -120,16 +120,22 @@ final class Canvas private (
   }
 }
 object Canvas {
+
+  /** Creates a Canvas Resource from the given Frame.
+    *
+    * The Resource, when used, will wait for the user to close the window before
+    * the use block returns. Call the close() method to programmatically close
+    * the window if that is desired.
+    */
   def apply(frame: Frame): Resource[IO, Canvas] = {
     (Topic[IO, Int], Topic[IO, Point], Topic[IO, Point])
       .mapN { (redrawTopic, mouseClickTopic, mouseMoveTopic) =>
         new Canvas(frame, redrawTopic, mouseClickTopic, mouseMoveTopic)
       }
       .toResource
+      .flatMap(canvas => canvas.stream.compile.drain.background.as(canvas))
       .flatMap(canvas =>
-        canvas.stream.compile.drain.background
-          .as(canvas)
-          .onFinalize(canvas.close().void)
+        Resource.make(IO.pure(canvas))(canvas => canvas.closed)
       )
   }
 }

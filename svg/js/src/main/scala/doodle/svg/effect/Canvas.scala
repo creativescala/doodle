@@ -30,7 +30,6 @@ import fs2.Stream
 import fs2.concurrent.Topic
 import org.scalajs.dom
 import org.scalajs.dom.Element
-import org.scalajs.dom.EventListenerOptions
 import org.scalajs.dom.svg.Rect
 import scalatags.JsDom
 import scalatags.JsDom.svgAttrs

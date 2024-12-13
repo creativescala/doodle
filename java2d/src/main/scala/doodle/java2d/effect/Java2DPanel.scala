@@ -62,9 +62,9 @@ final class Java2DPanel(
     * Default size is 1 as the most common case is being asked to render only
     * one picture.
     *
-    * As an optimization with check the [[Redraw]] property of the [[Frame]],
-    * and if we use an opaque color to redraw we only keep the last element
-    * around. See [[opaqueRedraw]].
+    * As an optimization we check the [[Redraw]] property of the [[Frame]], and
+    * if we use an opaque color to redraw we only keep the last element around.
+    * See [[opaqueRedraw]].
     */
   private val pictures: ArrayBuffer[(BoundingBox, List[Reified])] =
     new ArrayBuffer(1)

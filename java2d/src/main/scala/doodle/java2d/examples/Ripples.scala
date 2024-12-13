@@ -18,21 +18,26 @@ package doodle
 package java2d
 package examples
 
-object Ripples {
-  import cats.effect.unsafe.implicits.global
-  import cats.effect.IO
-  import doodle.core.*
-  import doodle.syntax.all.*
-  import doodle.interact.syntax.all.*
-  import doodle.java2d.effect.*
-  import fs2.Stream
-  import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
+import cats.effect.ExitCode
+import cats.effect.IO
+import cats.effect.IOApp
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.interact.syntax.all.*
+import doodle.java2d.effect.*
+import doodle.syntax.all.*
+import fs2.Stream
 
-  import cats.instances.all.*
-  import cats.syntax.all.*
+import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.duration.MILLISECONDS
+
+object Ripples extends IOApp {
 
   val frame =
-    Frame.default.withSize(600, 600).withBackground(Color.midnightBlue)
+    Frame.default
+      .withSize(600, 600)
+      .withCenterAtOrigin
+      .withBackground(Color.midnightBlue)
 
   final case class Ripple(age: Int, x: Double, y: Double) {
     val maxAge = 200
@@ -53,36 +58,39 @@ object Ripples {
     import cats.effect.std.Queue
     Queue
       .bounded[IO, Option[Ripple]](5)
-      .flatMap { queue =>
-        val redraw = canvas.redraw
-          .map(_ => none[Ripple])
-          .evalMap(r => queue.offer(r))
-          .compile
-          .drain
+      .map { queue =>
+        val redraw: Stream[IO, Unit] =
+          canvas.redraw
+            .map(_ => none[Ripple])
+            .evalMap(r => queue.offer(r))
 
-        val mouseMove = canvas.mouseMove
-          .debounce(
-            FiniteDuration(100, MILLISECONDS)
-          ) // Stop spamming with too many mouse events
-          .map(pt => Ripple(0, pt.x, pt.y).some)
-          .evalMap(r => queue.offer(r))
-          .compile
-          .drain
+        val mouseMove: Stream[IO, Unit] =
+          canvas.mouseMove
+            .debounce(
+              FiniteDuration(100, MILLISECONDS)
+            ) // Stop spamming with too many mouse events
+            .map(pt => Ripple(0, pt.x, pt.y).some)
+            .evalMap(r => queue.offer(r))
 
-        val ripples: Stream[IO, Picture[Unit]] = Stream
-          .fromQueueUnterminated(queue)
-          .scan(List.empty[Ripple]) { (ripples, ripple) =>
-            ripple match {
-              case Some(r) => r :: ripples
-              case None    => ripples.filter(_.alive).map(_.older)
+        val ripples: Stream[IO, Picture[Unit]] =
+          Stream
+            .fromQueueUnterminated(queue)
+            .scan(List.empty[Ripple]) { (ripples, ripple) =>
+              ripple match {
+                case Some(r) => r :: ripples
+                case None    => ripples.filter(_.alive).map(_.older)
+              }
             }
-          }
-          .map(ripples => ripples.map(_.picture).allOn)
-        (redraw.start >> mouseMove.start).as(ripples)
+            .map(ripples => ripples.map(_.picture).allOn)
+
+        redraw.drain
+          .merge(mouseMove.drain)
+          .merge(ripples)
+          .interruptWhen(canvas.closed.attempt)
       }
   }
 
-  def go(): Unit = {
+  val go: IO[Unit] = {
     // frame.canvas.flatMap(canvas => ripples(canvas.mouseMove).map(_.animateToCanvas(canvas))).unsafeRunSync()
     frame
       .canvas()
@@ -92,6 +100,8 @@ object Ripples {
           a <- frames.animateWithCanvasToIO(canvas)
         } yield a
       )
-      .unsafeRunAsync(println _)
   }
+
+  def run(args: List[String]): IO[ExitCode] =
+    go.as(cats.effect.ExitCode.Success)
 }

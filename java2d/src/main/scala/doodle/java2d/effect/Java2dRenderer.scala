@@ -26,8 +26,6 @@ object Java2dRenderer extends Renderer[Algebra, Frame, Canvas] {
   def canvas(description: Frame): Resource[IO, Canvas] =
     Canvas(description)
 
-  def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] = {
-    val result = canvas.render(picture)
-    canvas.closed >> result
-  }
+  def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =
+    canvas.render(picture)
 }

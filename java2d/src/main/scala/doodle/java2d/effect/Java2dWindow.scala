@@ -61,7 +61,7 @@ final class Java2dWindow(
   }
 
   /** Event listener for redraw events. Translates events into the time since
-    * the last frame (TODO: what are the units)?
+    * the last frame, in milliseconds.
     */
   private val frameEvent: ActionListener = {
 
