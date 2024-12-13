@@ -1,6 +1,6 @@
-# Doodle SVG
+# SVG Backend
 
-Doodle SVG draws Doodle pictures to SVG, both in the browser using [Scala JS](https://scala-js.org/) and to files on the JVM.
+The SVG backend draws Doodle pictures to SVG in the browser using [Scala JS](https://scala-js.org/), and writes them to files on the JVM.
 
 ## Usage
 

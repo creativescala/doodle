@@ -1,6 +1,6 @@
-# Doodle Java2D
+# Java2D Backend
 
-Doodle Java2D draws Doodle pictures using [Java 2D](https://www.oracle.com/java/technologies/java-2d-api.html), the graphic library that ships with the JVM.
+The Java2D backend draws Doodle pictures using [Java 2D](https://www.oracle.com/java/technologies/java-2d-api.html), the graphic library that ships with the JVM.
 
 
 ## Usage
