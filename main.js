@@ -17501,10 +17501,12 @@ $c_Lcats_effect_IO.prototype.unsafeRunAsync__F1__Lcats_effect_unsafe_IORuntime__
 $c_Lcats_effect_IO.prototype.unsafeRunFiber__F0__F1__F1__Z__Lcats_effect_unsafe_IORuntime__Lcats_effect_IOFiber = (function(canceled, failure, success, registerCallback, runtime) {
   var fiber = new $c_Lcats_effect_IOFiber($m_sci_Map$EmptyMap$(), new $c_sjsr_AnonFunction1(((oc) => {
     var oc$1 = $as_Lcats_effect_kernel_Outcome(oc);
+    if (registerCallback) {
+      $n($n(runtime).Lcats_effect_unsafe_IORuntime__f_fiberErrorCbs).remove__F1__V(failure);
+    }
     var this$2 = $n(oc$1);
     matchResult1: {
       if (((this$2 instanceof $c_Lcats_effect_kernel_Outcome$Canceled) && ($as_Lcats_effect_kernel_Outcome$Canceled(this$2), true))) {
-        $n($n(runtime).Lcats_effect_unsafe_IORuntime__f_fiberErrorCbs).remove__F1__V(failure);
         $n(canceled).apply__O();
         break matchResult1;
       }
@@ -17512,9 +17514,7 @@ $c_Lcats_effect_IO.prototype.unsafeRunFiber__F0__F1__F1__Z__Lcats_effect_unsafe_
         var x$1 = $as_Lcats_effect_kernel_Outcome$Errored(this$2);
         var this$4 = $n(x$1);
         var x7 = this$4.Lcats_effect_kernel_Outcome$Errored__f_e;
-        var t = $as_jl_Throwable(x7);
-        $n($n(runtime).Lcats_effect_unsafe_IORuntime__f_fiberErrorCbs).remove__F1__V(failure);
-        $n(failure).apply__O__O(t);
+        $n(failure).apply__O__O(x7);
         break matchResult1;
       }
       if ((this$2 instanceof $c_Lcats_effect_kernel_Outcome$Succeeded)) {
@@ -17522,7 +17522,6 @@ $c_Lcats_effect_IO.prototype.unsafeRunFiber__F0__F1__F1__Z__Lcats_effect_unsafe_
         var this$6 = $n(x$1$1);
         var x4 = this$6.Lcats_effect_kernel_Outcome$Succeeded__f_fa;
         var ioa = $as_Lcats_effect_IO(x4);
-        $n($n(runtime).Lcats_effect_unsafe_IORuntime__f_fiberErrorCbs).remove__F1__V(failure);
         $n(success).apply__O__O($n($as_Lcats_effect_IO$Pure(ioa)).Lcats_effect_IO$Pure__f_value);
         break matchResult1;
       }
