@@ -1,4 +1,4 @@
-# Examnples
+# Examples
 
 These are miscellaneous examples of animations and interactivity.
 
