@@ -1,3 +1,10 @@
+## 0.27.0 13-Dec-2024
+
+- Fix rendering deadlock in the Java2D backend. See #176
+
+- Correctly set window size in Java2D backend. See #179
+
+
 ## 0.26.0 26-Sept-2024
 
 - Complete reworking of SVG backend to remove race conditions and manage resources correctly.
