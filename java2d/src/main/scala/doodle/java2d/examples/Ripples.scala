@@ -49,7 +49,7 @@ object Ripples extends IOApp {
     def picture: Picture[Unit] =
       circle(age.toDouble)
         .strokeColor(
-          Color.hotpink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized)
+          Color.hotPink.alpha(((maxAge - age) / (maxAge.toDouble)).normalized)
         )
         .at(x, y)
   }

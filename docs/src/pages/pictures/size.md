@@ -33,7 +33,7 @@ val boundingBox =
   circleBoundingBox.flatMap(bb => 
     Picture
       .roundedRectangle(bb.width, bb.height, 3.0)
-      .strokeColor(Color.hotpink)
+      .strokeColor(Color.hotPink)
       .strokeWidth(3.0)
   )
   

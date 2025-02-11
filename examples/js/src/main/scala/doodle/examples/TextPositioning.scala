@@ -29,7 +29,7 @@ import scala.scalajs.js.annotation.*
 object TextPositioning {
   val font = Font.defaultSansSerif.size(FontSize.points(18))
   def text(string: String): Picture[Unit] =
-    Picture.text(string).font(font).fillColor(Color.hotpink)
+    Picture.text(string).font(font).fillColor(Color.hotPink)
 
   val textPositioning: Picture[Unit] =
     text("Above")

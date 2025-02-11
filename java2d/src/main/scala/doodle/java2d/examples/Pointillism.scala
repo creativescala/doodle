@@ -34,7 +34,7 @@ object Pointillism extends IOApp {
         .interpolatingSpline(points)
         .path
         .strokeWidth(7.0)
-        .strokeColor(Color.hotpink)
+        .strokeColor(Color.hotPink)
     }
 
     frame
