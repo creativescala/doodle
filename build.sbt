@@ -152,6 +152,7 @@ lazy val docs =
         val src = file("docs/src/css")
         val dest1 = mdocOut.value
         val dest2 = (laikaSite / target).value
+        "npm install" !
         val cmd1 =
           s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
         val cmd2 =
