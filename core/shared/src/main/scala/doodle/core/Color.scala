@@ -21,56 +21,69 @@ import doodle.syntax.angle.*
 import doodle.syntax.normalized.*
 import doodle.syntax.unsignedByte.*
 
+import scala.math.*
+
+/** Represents a color. Internally two representations are used: RGB and Oklch.
+  * Other formats are converted to one of these two representations. All colors
+  * always have an alpha channel.
+  */
 sealed abstract class Color extends Product with Serializable {
   import Color.*
 
   // Accessors ----------------------------------------------
 
   def red: UnsignedByte =
-    this.toRGBA.r
+    this.toRgb.r
 
   def green: UnsignedByte =
-    this.toRGBA.g
+    this.toRgb.g
 
   def blue: UnsignedByte =
-    this.toRGBA.b
+    this.toRgb.b
 
   def hue: Angle =
-    this.toHSLA.h
+    this.toOklch.h
 
-  def saturation: Normalized =
-    this.toHSLA.s
+  /** An alias for chroma */
+  def saturation: Double =
+    chroma
+
+  def chroma: Double =
+    this.toOklch.c
 
   def lightness: Normalized =
-    this.toHSLA.l
+    this.toOklch.l
 
   def alpha: Normalized =
     this match {
-      case RGBA(_, _, _, a) => a
-      case HSLA(_, _, _, a) => a
+      case Rgb(_, _, _, a)   => a
+      case Oklch(_, _, _, a) => a
     }
 
   // Color manipulation ------------------------------------
 
   /** Copies this color, changing the hue to the given value */
   def hue(angle: Angle): Color =
-    this.toHSLA.copy(h = angle)
+    this.toOklch.copy(h = angle)
 
   /** Copies this color, changing the saturation to the given value */
-  def saturation(s: Normalized): Color =
-    this.toHSLA.copy(s = s)
+  def saturation(c: Double): Color =
+    this.toOklch.copy(c = c)
 
   /** Copies this color, changing the lightness to the given value */
   def lightness(l: Normalized): Color =
-    this.toHSLA.copy(l = l)
+    this.toOklch.copy(l = l)
 
   /** Copies this color, changing the alpha to the given value */
   def alpha(a: Normalized): Color =
-    this.toHSLA.copy(a = a)
+    this match {
+      case Rgb(r, g, b, _)   => Rgb(r, g, b, a)
+      case Oklch(l, c, h, _) => Oklch(l, c, h, a)
+    }
 
   /** Rotate hue by the given angle */
-  def spin(angle: Angle) = {
-    val original = this.toHSLA
+  def spin(angle: Angle): Color = {
+    val original = this.toOklch
     original.copy(h = original.h + angle)
   }
 
@@ -78,8 +91,8 @@ sealed abstract class Color extends Product with Serializable {
     * amount relative to the Color's current lightness. Lightness is clipped at
     * Normalized.MaxValue
     */
-  def lighten(lightness: Normalized) = {
-    val original = this.toHSLA
+  def lighten(lightness: Normalized): Color = {
+    val original = this.toOklch
     original.copy(l = Normalized.clip(original.l + lightness))
   }
 
@@ -87,47 +100,53 @@ sealed abstract class Color extends Product with Serializable {
     * amount relative to the Color's current lightness. Lightness is clipped at
     * Normalized.MaxValue
     */
-  def darken(darkness: Normalized) = {
-    val original = this.toHSLA
+  def darken(darkness: Normalized): Color = {
+    val original = this.toOklch
     original.copy(l = Normalized.clip(original.l - darkness))
   }
 
   /** Saturate the color by the given amount. This is an absolute amount, not an
-    * amount relative to the Color's current saturation. Saturation is clipped
-    * at Normalized.MaxValue
+    * amount relative to the Color's current saturation.
     */
-  def saturate(saturation: Normalized) = {
-    val original = this.toHSLA
-    original.copy(s = Normalized.clip(original.s + saturation))
+  def saturate(saturation: Double): Color = {
+    val original = this.toOklch
+    original.copy(c = original.c + saturation)
   }
 
   /** Desaturate the color by the given amount. This is an absolute amount, not
-    * an amount relative to the Color's current saturation. Saturation is
-    * clipped at Normalized.MaxValue
+    * an amount relative to the Color's current saturation.
     */
-  def desaturate(desaturation: Normalized) = {
-    val original = this.toHSLA
-    original.copy(s = Normalized.clip(original.s - desaturation))
+  def desaturate(desaturation: Double): Color = {
+    val original = this.toOklch
+    original.copy(c = original.c - desaturation)
   }
 
   /** Increase the alpha channel by the given amount. */
-  def fadeIn(opacity: Normalized) = {
-    val original = this.toHSLA
-    original.copy(a = Normalized.clip(original.a + opacity))
+  def fadeIn(opacity: Normalized): Color = {
+    this match {
+      case Rgb(r, g, b, a) =>
+        Rgb(r, g, b, Normalized.clip(a + opacity))
+      case Oklch(l, c, h, a) =>
+        Oklch(l, c, h, Normalized.clip(a + opacity))
+    }
   }
 
   /** Decrease the alpha channel by the given amount. */
-  def fadeOut(opacity: Normalized) = {
-    val original = this.toHSLA
-    original.copy(a = Normalized.clip(original.a - opacity))
+  def fadeOut(opacity: Normalized): Color = {
+    this match {
+      case Rgb(r, g, b, a) =>
+        Rgb(r, g, b, Normalized.clip(a - opacity))
+      case Oklch(l, c, h, a) =>
+        Oklch(l, c, h, Normalized.clip(a - opacity))
+    }
   }
 
   /** Lighten the color by the given *relative* amount. For example, calling
     * `aColor.lightenBy(0.1.normalized)` increases the lightness by 10% of the
     * current lightness.
     */
-  def lightenBy(lightness: Normalized) = {
-    val original = this.toHSLA
+  def lightenBy(lightness: Normalized): Color = {
+    val original = this.toOklch
     original.copy(l = Normalized.clip(original.l.get * (1 + lightness.get)))
   }
 
@@ -136,55 +155,66 @@ sealed abstract class Color extends Product with Serializable {
     * current lightness.
     */
   def darkenBy(darkness: Normalized) = {
-    val original = this.toHSLA
+    val original = this.toOklch
     original.copy(l = Normalized.clip(original.l.get * (1 - darkness.get)))
   }
 
   /** Saturate the color by the given *relative* amount. For example, calling
-    * `aColor.saturateBy(0.1.normalized` increases the saturation by 10% of the
-    * current saturation.
+    * `aColor.saturateBy(0.1)` increases the saturation by 10% of the current
+    * saturation.
     */
-  def saturateBy(saturation: Normalized) = {
-    val original = this.toHSLA
-    original.copy(s = Normalized.clip(original.s.get * (1 + saturation.get)))
+  def saturateBy(saturation: Double) = {
+    val original = this.toOklch
+    original.copy(c = original.c * (1 + saturation))
   }
 
   /** Desaturate the color by the given *relative* amount. For example, calling
-    * `aColor.desaturateBy(0.1.normalized` decreases the saturation by 10% of
-    * the current saturation.
+    * `aColor.desaturateBy(0.1)` decreases the saturation by 10% of the current
+    * saturation.
     */
-  def desaturateBy(desaturation: Normalized) = {
-    val original = this.toHSLA
-    original.copy(s = Normalized.clip(original.s.get * (1 - desaturation.get)))
+  def desaturateBy(desaturation: Double) = {
+    val original = this.toOklch
+    original.copy(c = original.c * (1 - desaturation))
   }
 
   /** Increase the alpha channel by the given relative amount. */
   def fadeInBy(opacity: Normalized) = {
-    val original = this.toHSLA
-    original.copy(a = Normalized.clip(original.a.get * (1 + opacity.get)))
+    this match {
+      case Rgb(r, g, b, a) =>
+        Rgb(r, g, b, Normalized.clip(a.get * (1 + opacity.get)))
+      case Oklch(l, c, h, a) =>
+        Oklch(l, c, h, Normalized.clip(a.get * (1 + opacity.get)))
+    }
   }
 
   /** Decrease the alpha channel by the given relative amount. */
   def fadeOutBy(opacity: Normalized) = {
-    val original = this.toHSLA
-    original.copy(a = Normalized.clip(original.a.get * (1 - opacity.get)))
+    this match {
+      case Rgb(r, g, b, a) =>
+        Rgb(r, g, b, Normalized.clip(a.get * (1 - opacity.get)))
+      case Oklch(l, c, h, a) =>
+        Oklch(l, c, h, Normalized.clip(a.get * (1 - opacity.get)))
+    }
   }
 
   // Other -------------------------------------------------
 
   /** True if this is approximately equal to that */
   def ~=(that: Color): Boolean =
-    (this.toRGBA, that.toRGBA) match {
-      case (RGBA(r1, g1, b1, a1), RGBA(r2, g2, b2, a2)) =>
+    (this.toRgb, that.toRgb) match {
+      case (Rgb(r1, g1, b1, a1), Rgb(r2, g2, b2, a2)) =>
         Math.abs(r1 - r2) < 2 &&
         Math.abs(g1 - g2) < 2 &&
         Math.abs(b1 - b2) < 2 &&
         Math.abs(a1 - a2) < 0.1
     }
 
-  def toHSLA: HSLA =
-    this match {
-      case RGBA(r, g, b, a) =>
+  /** Convert to hue, saturation, and lightness components. Might be useful for
+    * legacy applications that use HSL instead of OkLCh.
+    */
+  def toHsl: (Angle, Normalized, Normalized) =
+    this.toRgb match {
+      case Rgb(r, g, b, a) =>
         val rNormalized = r.toNormalized
         val gNormalized = g.toNormalized
         val bNormalized = b.toNormalized
@@ -206,88 +236,175 @@ sealed abstract class Color extends Product with Serializable {
           if delta == 0.0 then Normalized.MinValue
           else Normalized.clip(delta / (1 - Math.abs(2 * lightness.get - 1)))
 
-        HSLA(hue, saturation, lightness, a)
-
-      case HSLA(h, s, l, a) => HSLA(h, s, l, a)
+        (hue, saturation, lightness)
     }
 
-  def toRGBA: RGBA =
+  def toOklch: Oklch =
     this match {
-      case RGBA(r, g, b, a) => RGBA(r, g, b, a)
-      case HSLA(h, s, l, a) =>
-        s.get match {
-          case 0 =>
-            val lightness = l.toUnsignedByte
-            RGBA(lightness, lightness, lightness, a)
-          case s =>
-            def hueToRgb(p: Double, q: Double, t: Normalized): Normalized = {
-              Normalized.wrap(t.get match {
-                case t if t < 1.0 / 6.0 => p + (q - p) * 6 * t
-                case t if t < 0.5       => q
-                case t if t < 2.0 / 3.0 => p + (q - p) * (2.0 / 3.0 - t) * 6
-                case _                  => p
-              })
-            }
+      case c: Oklch                     => c
+      case Rgb(red, green, blue, alpha) =>
+        // See https://bottosson.github.io/posts/oklab/
+        // for conversions to and from OkLch
 
-            val lightness = l.get
-            val q =
-              if lightness < 0.5 then lightness * (1 + s)
-              else lightness + s - (lightness * s)
-            val p = 2 * lightness - q
-            val r = hueToRgb(p, q, Normalized.wrap((h + 120.degrees).toTurns))
-            val g = hueToRgb(p, q, Normalized.wrap(h.toTurns))
-            val b = hueToRgb(p, q, Normalized.wrap((h - 120.degrees).toTurns))
+        // Convert sRGB to Linear RGB
+        def inverseGammaCorrect(c: Double): Double =
+          if c <= 0.04045 then c / 12.92 else pow((c + 0.055) / 1.055, 2.4)
 
-            RGBA(r.toUnsignedByte, g.toUnsignedByte, b.toUnsignedByte, a)
-        }
+        val rLinear = inverseGammaCorrect(red.get / 255.0)
+        val gLinear = inverseGammaCorrect(green.get / 255.0)
+        val bLinear = inverseGammaCorrect(blue.get / 255.0)
+
+        // Convert Linearear RGB to LMS
+        val l =
+          0.4122214708f * rLinear + 0.5363325363f * gLinear + 0.0514459929f * bLinear
+        val m =
+          0.2119034982f * rLinear + 0.6806995451f * gLinear + 0.1073969566f * bLinear
+        val s =
+          0.0883024619f * rLinear + 0.2817188376f * gLinear + 0.6299787005f * bLinear
+
+        val l_ = cbrt(l)
+        val m_ = cbrt(m)
+        val s_ = cbrt(s)
+
+        // LMS to OkLab
+        val L = 0.2104542553f * l_ + 0.7936177850f * m_ - 0.0040720468f * s_
+        val a = 1.9779984951f * l_ - 2.4285922050f * m_ + 0.4505937099f * s_
+        val b = 0.0259040371f * l_ + 0.7827717662f * m_ - 0.8086757660f * s_
+
+        // Convert OkLab to OKLCh
+        val C = sqrt(a * a + b * b)
+        val h = Angle.radians(atan2(b, a))
+
+        Oklch(L.normalized, C, h, alpha)
+    }
+
+  def toRgb: Rgb =
+    this match {
+      case c: Rgb                => c
+      case Oklch(l, c, h, alpha) =>
+        // See https://bottosson.github.io/posts/oklab/ for the conversion
+
+        // Convert to Lab
+        val L = l.get
+        val a = c * h.cos
+        val b = c * h.sin
+
+        val l_ = L + 0.3963377774f * a + 0.2158037573f * b
+        val m_ = L - 0.1055613458f * a - 0.0638541728f * b
+        val s_ = L - 0.0894841775f * a - 1.2914855480f * b
+
+        val l3 = l_ * l_ * l_
+        val m3 = m_ * m_ * m_
+        val s3 = s_ * s_ * s_
+
+        val rLinear =
+          +4.0767416621f * l3 - 3.3077115913f * m3 + 0.2309699292f * s3
+        val gLinear =
+          -1.2684380046f * l3 + 2.6097574011f * m3 - 0.3413193965f * s3
+        val bLinear =
+          -0.0041960863f * l3 - 0.7034186147f * m3 + 1.7076147010f * s3
+
+        def gammaCorrect(c: Double): Double =
+          if c < 0.0031308 then 12.92 * c
+          else 1.055 * pow(c, 1.0 / 2.4) - 0.055
+
+        val red = (gammaCorrect(rLinear) * 255).round.toInt.uByte
+        val green = (gammaCorrect(gLinear) * 255).round.toInt.uByte
+        val blue = (gammaCorrect(bLinear) * 255).round.toInt.uByte
+        Rgb(red, green, blue, alpha)
     }
 }
 object Color extends CommonColors {
-  final case class RGBA(
+  final case class Rgb(
       r: UnsignedByte,
       g: UnsignedByte,
       b: UnsignedByte,
       a: Normalized
   ) extends Color
-  final case class HSLA(h: Angle, s: Normalized, l: Normalized, a: Normalized)
+  final case class Oklch(l: Normalized, c: Double, h: Angle, a: Normalized)
       extends Color
 
-  def rgba(
-      r: UnsignedByte,
-      g: UnsignedByte,
-      b: UnsignedByte,
-      a: Normalized
-  ): Color =
-    RGBA(r, g, b, a)
-
-  def rgba(r: Int, g: Int, b: Int, a: Double): Color =
-    RGBA(r.uByte, g.uByte, b.uByte, a.normalized)
-
-  def hsla(h: Angle, s: Double, l: Double, a: Double): Color =
-    HSLA(h, s.normalized, l.normalized, a.normalized)
-
-  def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
-    rgba(r, g, b, 1.0.normalized)
-
-  /** Construct a [[Color]] in terms of red, green, and blue components. The
-    * alpha value defaults to 1.0 (fully opaque).
+  /** Construct a [[Color]] in terms of hue, saturation, lightness, and alpha
+    * components.
     */
-  def rgb(r: Int, g: Int, b: Int): Color =
-    rgba(r, g, b, 1.0)
+  def hsl(h: Angle, s: Double, l: Double, a: Double): Color = {
+    s match {
+      case 0 =>
+        val lightness = l.normalized.toUnsignedByte
+        Rgb(lightness, lightness, lightness, a.normalized)
+      case s =>
+        def hueToRgb(p: Double, q: Double, t: Normalized): Normalized = {
+          Normalized.wrap(t.get match {
+            case t if t < 1.0 / 6.0 => p + (q - p) * 6 * t
+            case t if t < 0.5       => q
+            case t if t < 2.0 / 3.0 => p + (q - p) * (2.0 / 3.0 - t) * 6
+            case _                  => p
+          })
+        }
+
+        val lightness = l
+        val q =
+          if lightness < 0.5 then lightness * (1 + s)
+          else lightness + s - (lightness * s)
+        val p = 2 * lightness - q
+        val r = hueToRgb(p, q, Normalized.wrap((h + 120.degrees).toTurns))
+        val g = hueToRgb(p, q, Normalized.wrap(h.toTurns))
+        val b = hueToRgb(p, q, Normalized.wrap((h - 120.degrees).toTurns))
+
+        Rgb(r.toUnsignedByte, g.toUnsignedByte, b.toUnsignedByte, a.normalized)
+    }
+  }
 
   /** Construct a [[Color]] in terms of hue, saturation, and lightness
     * components. The alpha value defaults to 1.0 (fully opaque).
     */
   def hsl(h: Angle, s: Double, l: Double): Color =
-    hsla(h, s, l, 1.0)
+    hsl(h, s, l, 1.0)
+
+  /** Construct a [[Color]] in terms of perceptual lightness, chroma, hue, and
+    * alpha.
+    */
+  def oklch(l: Double, c: Double, h: Angle, a: Double): Color =
+    Oklch(l.normalized, c, h, a.normalized)
+
+  /** Construct a [[Color]] in terms of perceptual lightness, chroma, hue. The
+    * alpha values defaults to 1.0 (fully opaque).
+    */
+  def oklch(l: Double, c: Double, h: Angle): Color =
+    oklch(l, c, h, 1.0)
+
+  def rgb(
+      r: UnsignedByte,
+      g: UnsignedByte,
+      b: UnsignedByte,
+      a: Normalized
+  ): Color =
+    Rgb(r, g, b, a)
+
+  /** Construct a [[Color]] in terms of red, green, blue, and alpha components.
+    */
+  def rgb(r: Int, g: Int, b: Int, a: Double): Color =
+    rgb(r.uByte, g.uByte, b.uByte, a.normalized)
+
+  /** Construct a [[Color]] in terms of red, green, and blue components. The
+    * alpha value defaults to 1.0 (fully opaque).
+    */
+  def rgb(r: UnsignedByte, g: UnsignedByte, b: UnsignedByte): Color =
+    rgb(r, g, b, 1.0.normalized)
+
+  /** Construct a [[Color]] in terms of red, green, and blue components. The
+    * alpha value defaults to 1.0 (fully opaque).
+    */
+  def rgb(r: Int, g: Int, b: Int): Color =
+    rgb(r, g, b, 1.0)
 
   /** Parse a hexadecimal `String`, as commonly used to specify colors on the
     * web, into a `Color`. The following formats are supported:
     *
     *   - RGB
     *   - #RGB
-    *   - RGBA
-    *   - #RGBA
+    *   - Rgb
+    *   - #Rgb
     *   - RRGGBB
     *   - #RRGGBB
     *   - RRGGBBAA
@@ -353,7 +470,7 @@ object Color extends CommonColors {
           parseSingleHex(2 + offset)
         )
       case 4 =>
-        Color.rgba(
+        Color.rgb(
           parseSingleHex(0 + offset),
           parseSingleHex(1 + offset),
           parseSingleHex(2 + offset),
@@ -366,7 +483,7 @@ object Color extends CommonColors {
           parseDoubleHex(4 + offset)
         )
       case 8 =>
-        Color.rgba(
+        Color.rgb(
           parseDoubleHex(0 + offset),
           parseDoubleHex(2 + offset),
           parseDoubleHex(4 + offset),

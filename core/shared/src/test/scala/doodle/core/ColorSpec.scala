@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package doodle
-package core
+package doodle.core
 
-import org.scalacheck.*
+import doodle.core.Color.Oklch
+import doodle.core.Color.Rgb
+import munit.ScalaCheckSuite
 import org.scalacheck.Prop.*
 
-object ColorSpec extends Properties("Color properties") {
-  import doodle.arbitrary.*
-  import Color.*
-
-  property(".toRGBA andThen .toHSLA is the identity") = forAll { (hsla: HSLA) =>
-    (hsla ~= (hsla.toRGBA.toHSLA))
+class ColorSpec extends ScalaCheckSuite {
+  property(".toRgb andThen .toOklch is the identity") {
+    forAll(Generators.oklch) { (oklch: Oklch) =>
+      (oklch ~= (oklch.toRgb.toOklch))
+    }
   }
 
-  property(".toHSLA andThen .toRGBA is the identity") = forAll { (rgba: RGBA) =>
-    (rgba ~= (rgba.toHSLA.toRGBA))
+  property(".toOklch andThen .toRgb is the identity") {
+    forAll(Generators.rgb) { (rgb: Rgb) =>
+      (rgb ~= (rgb.toOklch.toRgb))
+    }
   }
 }

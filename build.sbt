@@ -156,8 +156,10 @@ lazy val docs =
           s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
         val cmd2 =
           s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
+        println(cmd1)
         cmd1 !
 
+        println(cmd2)
         cmd2 !
       },
       Laika / sourceDirectories ++=

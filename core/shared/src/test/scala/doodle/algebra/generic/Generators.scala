@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package doodle
-package algebra
-package generic
+package doodle.algebra.generic
 
 import cats.instances.unit.*
 import doodle.algebra.generic.*

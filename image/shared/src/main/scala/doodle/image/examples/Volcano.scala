@@ -52,7 +52,7 @@ object Volcano {
     val lightness = Random.normal(0.8, 0.4)
     val color =
       (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
-        Color.hsla(h, s, l, a)
+        Color.hsl(h, s, l, a)
       }
     val c = Random.normal(5, 5) map (r => Image.circle(r))
 
