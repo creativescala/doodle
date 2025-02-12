@@ -18,7 +18,7 @@ package doodle.core
 
 import doodle.syntax.all.*
 
-/** This object contains the Tailwind CSS 4.0 default color palette. See
+/** The Tailwind CSS 4.0 default color palette. See
   * https://tailwindcss.com/docs/colors
   */
 object TailwindColors {
