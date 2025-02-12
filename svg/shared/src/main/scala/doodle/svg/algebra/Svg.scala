@@ -347,8 +347,8 @@ trait SvgModule { self: Base =>
 
     def toOklch(color: Color): String = {
       val (l, c, h, a) =
-        (color.lightness, color.saturation, color.hue, color.alpha)
-      s"oklch(${l.get * 100}% ${c}, ${h.toDegrees}, ${a.get})"
+        (color.lightness, color.chroma, color.hue, color.alpha)
+      s"oklch(${l.get * 100}% ${c} ${h.toDegrees} / ${a.get})"
     }
 
     def toRgb(color: Color): String = {
