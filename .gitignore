@@ -144,5 +144,10 @@ local.properties
 .bloop
 project/metals.sbt
 .vscode
+.scala-build
 
 .sbt-hydra-history
+
+
+## NPM
+node_modules/

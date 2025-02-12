@@ -18,7 +18,7 @@ import laika.config.LinkConfig
 import laika.config.ApiLinks
 import laika.theme.Theme
 
-ThisBuild / tlBaseVersion := "0.27" // your current series x.y
+ThisBuild / tlBaseVersion := "0.28" // your current series x.y
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -152,12 +152,15 @@ lazy val docs =
         val src = file("docs/src/css")
         val dest1 = mdocOut.value
         val dest2 = (laikaSite / target).value
+        "npm install" !
         val cmd1 =
           s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
         val cmd2 =
           s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
+        println(cmd1)
         cmd1 !
 
+        println(cmd2)
         cmd2 !
       },
       Laika / sourceDirectories ++=

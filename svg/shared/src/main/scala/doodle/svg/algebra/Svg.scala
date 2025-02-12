@@ -94,7 +94,7 @@ trait SvgModule { self: Base =>
             svgAttrs.viewBox := s"${bb.left - border} ${-bb.top - border} ${w} ${h}",
             bundle.attrs.style :=
               frame.background
-                .map(c => s"background-color: ${Svg.toHSLA(c)};")
+                .map(c => s"background-color: ${Svg.toOklch(c)};")
                 .getOrElse("")
           )
 
@@ -106,7 +106,7 @@ trait SvgModule { self: Base =>
             svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
             bundle.attrs.style :=
               frame.background
-                .map(c => s"background-color: ${Svg.toHSLA(c)};")
+                .map(c => s"background-color: ${Svg.toOklch(c)};")
                 .getOrElse("")
           )
 
@@ -187,7 +187,7 @@ trait SvgModule { self: Base =>
       */
     def toStyle(fill: Fill, gradients: mutable.Set[Tag]): String = {
       fill match {
-        case Fill.ColorFill(c) => s"fill: ${Svg.toHSLA(c)};"
+        case Fill.ColorFill(c) => s"fill: ${Svg.toOklch(c)};"
         case Fill.GradientFill(g) =>
           val (id, gradient) = toSvgGradient(g)
           gradients += gradient
@@ -247,7 +247,7 @@ trait SvgModule { self: Base =>
 
     def toSvgGradientStop(tuple: (Color, Double)): Tag = {
       val (c, offset) = tuple
-      val color = Svg.toRGB(c)
+      val color = Svg.toRgb(c)
       val opacity = c.alpha.get
       svg.stop(
         svgAttrs.offset := offset,
@@ -270,7 +270,7 @@ trait SvgModule { self: Base =>
         case Join.Miter => "miter"
       }
       builder ++= s"stroke-width: ${stroke.width}px; "
-      builder ++= s"stroke: ${toHSLA(stroke.color)}; "
+      builder ++= s"stroke: ${toOklch(stroke.color)}; "
       builder ++= s"stroke-linecap: ${linecap}; "
       builder ++= s"stroke-linejoin: ${linejoin}; "
       builder ++= (stroke.dash match {
@@ -345,13 +345,13 @@ trait SvgModule { self: Base =>
         case Gradient.CycleMethod.Repeat  => "repeat"
       }
 
-    def toHSLA(color: Color): String = {
-      val (h, s, l, a) =
-        (color.hue, color.saturation, color.lightness, color.alpha)
-      s"hsla(${h.toDegrees}, ${s.get * 100}%, ${l.get * 100}%, ${a.get})"
+    def toOklch(color: Color): String = {
+      val (l, c, h, a) =
+        (color.lightness, color.chroma, color.hue, color.alpha)
+      s"oklch(${l.get * 100}% ${c} ${h.toDegrees} / ${a.get})"
     }
 
-    def toRGB(color: Color): String = {
+    def toRgb(color: Color): String = {
       val (r, g, b) = (color.red, color.green, color.blue)
       s"rgb(${r.get}, ${g.get}, ${b.get})"
     }

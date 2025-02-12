@@ -1,3 +1,11 @@
+## NEXT
+
+- Rework the color system to use OkLCh or RGB, instead of HSL or RGB. This gives
+  much better results when transforming one color into another. Also add some
+  additional palettes (Tailwind and Crayola colors) and fix a few typos in the
+  common color names (e.g. `hotpink` becomes `hotPink`).
+
+
 ## 0.27.0 13-Dec-2024
 
 - Fix rendering deadlock in the Java2D backend. See #176

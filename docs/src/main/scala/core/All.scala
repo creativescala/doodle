@@ -14,23 +14,9 @@
  * limitations under the License.
  */
 
-package doodle.core
+package docs
+package core
 
-import doodle.core.Color.Oklch
-import doodle.core.Color.Rgb
-import munit.ScalaCheckSuite
-import org.scalacheck.Prop.*
-
-class ColorSpec extends ScalaCheckSuite {
-  property(".toRgb andThen .toOklch is the identity") {
-    forAll(Generators.oklch) { (oklch: Oklch) =>
-      (oklch ~= (oklch.toRgb.toOklch))
-    }
-  }
-
-  property(".toOklch andThen .toRgb is the identity") {
-    forAll(Generators.rgb) { (rgb: Rgb) =>
-      (rgb ~= (rgb.toOklch.toRgb))
-    }
-  }
+object All {
+  Gradients
 }

@@ -34,7 +34,7 @@ object Tiles {
       sat <- Random.normal(0.8, 0.05)
       light <- Random.normal(0.6, 0.05)
       alpha <- Random.normal(0.5, 0.1)
-    } yield Color.hsla(hue, sat, light, alpha)
+    } yield Color.hsl(hue, sat, light, alpha)
 
   def randomTriangle(width: Double): Random[Image] = {
     val coord = Random.natural(width.floor.toInt).map(_.toDouble)

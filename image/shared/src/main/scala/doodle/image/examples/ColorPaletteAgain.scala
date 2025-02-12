@@ -113,7 +113,7 @@ object ColorPaletteAgain {
       0.5
     )
     println(s"saturation ${saturation} lightness ${lightness}")
-    spun.saturation(saturation).lightness(lightness)
+    spun.saturation(saturation.get).lightness(lightness)
   }
 
   // def murmurColor(c: Color): Color = {

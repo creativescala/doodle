@@ -15,29 +15,27 @@
  */
 
 package docs
-package pictures
+package core
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.*
 import doodle.java2d.*
 import doodle.syntax.all.*
 
-object Size {
-  val circle =
-    Picture
-      .circle(100)
-      .strokeColor(Color.midnightBlue)
+object Gradients {
+  val box = Picture.rectangle(10, 40).noStroke
 
-  val circleBoundingBox: Picture[BoundingBox] =
-    circle.boundingBox
+  def gradient(count: Int, step: Angle, f: Angle => Color): Picture[Unit] =
+    if count == 0 then Picture.empty
+    else box.fillColor(f(step * count)).beside(gradient(count - 1, step, f))
 
-  val boundingBox =
-    circleBoundingBox.flatMap(bb =>
-      Picture
-        .roundedRectangle(bb.width, bb.height, 3.0)
-        .strokeColor(Color.hotPink)
-        .strokeWidth(3.0)
-    )
+  val hsl =
+    gradient(40, 5.degrees, angle => Color.hsl(angle, 0.5, 0.5))
 
-  circle.on(boundingBox).save("pictures/bounding-box.png")
+  val oklch =
+    gradient(40, 5.degrees, angle => Color.oklch(0.7, 0.2, angle + 36.degrees))
+
+  val picture = hsl.above(oklch.margin(0, 20))
+
+  picture.save("core/gradients.png")
 }

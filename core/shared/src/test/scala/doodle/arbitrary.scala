@@ -21,7 +21,7 @@ import org.scalacheck.Gen
 
 object arbitrary {
   import doodle.core.*
-  import doodle.core.Color.{RGBA, HSLA}
+  import doodle.core.Color.{Rgb, Oklch}
 
   final case class Translate(x: Double, y: Double)
   final case class Scale(x: Double, y: Double)
@@ -56,9 +56,9 @@ object arbitrary {
   implicit val arbitraryScreen: Arbitrary[Screen] =
     Arbitrary(genScreen)
 
-  implicit val arbitraryHSLA: Arbitrary[HSLA] =
-    Arbitrary(Generators.hsla)
+  implicit val arbitraryOklch: Arbitrary[Oklch] =
+    Arbitrary(Generators.oklch)
 
-  implicit val arbitraryRGBA: Arbitrary[RGBA] =
-    Arbitrary(Generators.rgba)
+  implicit val arbitraryRgb: Arbitrary[Rgb] =
+    Arbitrary(Generators.rgb)
 }

@@ -96,7 +96,7 @@ object Java2D {
     new Point2D.Double(point.x, point.y)
 
   def toAwtColor(color: Color): AwtColor = {
-    val rgba = color.toRGBA
+    val rgba = color.toRgb
     new AwtColor(rgba.r.get, rgba.g.get, rgba.b.get, rgba.a.toUnsignedByte.get)
   }
 

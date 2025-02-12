@@ -15,8 +15,8 @@ object Dependencies {
   val batikVersion = "1.18"
 
   val scalaCheckVersion = "1.15.4"
-  val munitVersion = "1.0.3"
-  val munitScalacheckVersion = "1.0.0"
+  val munitVersion = "1.1.0"
+  val munitScalacheckVersion = "1.1.0"
   val munitCatsEffectVersion = "2.0.0"
 
   // Libraries
@@ -33,10 +33,10 @@ object Dependencies {
   val batik =
     Def.setting("org.apache.xmlgraphics" % "batik-transcoder" % batikVersion)
 
-  val munit = Def.setting("org.scalameta" %%% "munit" % munitVersion % "test")
+  val munit = Def.setting("org.scalameta" %%% "munit" % munitVersion % Test)
   val munitScalaCheck =
     Def.setting(
-      "org.scalameta" %%% "munit-scalacheck" % munitScalacheckVersion % "test"
+      "org.scalameta" %%% "munit-scalacheck" % munitScalacheckVersion % Test
     )
   val munitCatsEffect =
     Def.setting(

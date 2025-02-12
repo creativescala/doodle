@@ -49,7 +49,7 @@ object BrownianMotion {
     val lightness = Random.normal(0.4, 0.1)
     val color =
       (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
-        Color.hsla(h, s, l, a)
+        Color.hsl(h, s, l, a)
       }
     val points = Random.int(3, 7)
     val radius = Random.normal(2, 1)

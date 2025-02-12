@@ -29,7 +29,7 @@ object ColorsAndShapes {
     Color.blue fadeOut (1 - n / 20.0).normalized
 
   def spinning(n: Int): Color =
-    Color.blue desaturate 0.5.normalized spin (n * 30).degrees
+    Color.blue.desaturate(0.5).spin((n * 30).degrees)
 
   def circle(n: Int): Image =
     Image.circle(size(n))
@@ -41,7 +41,7 @@ object ColorsAndShapes {
     Image.triangle(2 * size(n), 2 * size(n))
 
   def colored(shape: Int => Image, color: Int => Color): Int => Image =
-    (n: Int) => shape(n) strokeWidth 10 strokeColor color(n)
+    (n: Int) => shape(n).strokeWidth(10).strokeColor(color(n))
 
   def concentricShapes(count: Int, singleShape: Int => Image): Image =
     count match {

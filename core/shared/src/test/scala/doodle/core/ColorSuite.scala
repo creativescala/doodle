@@ -21,55 +21,60 @@ import doodle.syntax.all.*
 import munit.FunSuite
 
 class ColorSuite extends FunSuite {
-  test("toRGBA should convert to expected RGBA color") {
-    val blueHSLA = Color.hsl(240.degrees, 0.5, 0.5).toRGBA
-    val blueRGBA = Color.rgb(64.uByte, 64.uByte, 191.uByte)
-    assert(blueHSLA ~= blueRGBA)
+  test("toRgb should convert to expected Rgb color") {
+    val blueHsl = Color.hsl(240.degrees, 0.5, 0.5).toRgb
+    val blueRgb = Color.rgb(64.uByte, 64.uByte, 191.uByte)
+    assert(blueHsl ~= blueRgb)
 
-    val greenHSLA = Color.hsl(120.degrees, 0.5, 0.5).toRGBA
-    val greenRGBA = Color.rgb(64.uByte, 191.uByte, 64.uByte)
-    assert(greenHSLA ~= greenRGBA)
+    val greenHsl = Color.hsl(120.degrees, 0.5, 0.5).toRgb
+    val greenRgb = Color.rgb(64.uByte, 191.uByte, 64.uByte)
+    assert(greenHsl ~= greenRgb)
 
-    val redHSLA = Color.hsl(0.degrees, 0.75, 0.5).toRGBA
-    val redRGBA = Color.rgb(223.uByte, 32.uByte, 32.uByte)
-    assert(redHSLA ~= redRGBA)
+    val redHsl = Color.hsl(0.degrees, 0.75, 0.5).toRgb
+    val redRgb = Color.rgb(223.uByte, 32.uByte, 32.uByte)
+    assert(redHsl ~= redRgb)
   }
 
-  test("toHSLA should converts to expected HSLA color") {
-    val blueHSLA = Color.hsl(240.degrees, 0.5, 0.5)
-    val blueRGBA = Color.rgb(64.uByte, 64.uByte, 191.uByte).toHSLA
-    assert(blueHSLA ~= blueRGBA)
+  test("toOkLCh should convert to expected OkLCh color") {
+    // Oklch values obtained from https://oklch.com
+    val redRgb = Color.rgb(255.uByte, 0.uByte, 0.uByte)
+    val redOkLCh = Color.oklch(0.6279, 0.2577, 29.23.degrees)
+    assertEquals(redRgb, redOkLCh.toRgb)
 
-    val greenHSLA = Color.hsl(120.degrees, 0.5, 0.5)
-    val greenRGBA = Color.rgb(64.uByte, 191.uByte, 64.uByte).toHSLA
-    assert(greenHSLA ~= greenRGBA)
+    val greenRgb = Color.rgb(0.uByte, 255.uByte, 0.uByte)
+    val greenOkLCh = Color.oklch(0.8664, 0.294827, 142.49.degrees)
+    assert(greenRgb ~= greenOkLCh.toRgb)
 
-    val redHSLA = Color.hsl(0.degrees, 0.75, 0.5)
-    val redRGBA = Color.rgb(223.uByte, 32.uByte, 32.uByte).toHSLA
-    assert(redHSLA ~= redRGBA)
+    val blueRgb = Color.rgb(0.uByte, 0.uByte, 255.uByte)
+    val blueOkLCh = Color.oklch(0.4520, 0.313214, 264.052.degrees)
+    assert(blueRgb ~= blueOkLCh.toRgb)
   }
 
-  test("HSLA with 0 saturation should convert to gray RGBA") {
-    val grey1HSLA = Color.hsl(0.degrees, 0, 0.5).toRGBA
-    val grey1RGBA = Color.rgb(128.uByte, 128.uByte, 128.uByte)
-    assert(grey1HSLA ~= grey1RGBA)
+  test("Hsl with 0 saturation should convert to gray Rgb") {
+    val grey1Hsl = Color.hsl(0.degrees, 0, 0.5).toRgb
+    val grey1Rgb = Color.rgb(128.uByte, 128.uByte, 128.uByte)
+    assert(grey1Hsl ~= grey1Rgb)
 
-    val grey2HSLA = Color.hsl(0.degrees, 0, 1.0).toRGBA
-    val grey2RGBA = Color.rgb(255.uByte, 255.uByte, 255.uByte)
-    assert(grey2HSLA ~= grey2RGBA)
+    val grey2Hsl = Color.hsl(0.degrees, 0, 1.0).toRgb
+    val grey2Rgb = Color.rgb(255.uByte, 255.uByte, 255.uByte)
+    assert(grey2Hsl ~= grey2Rgb)
   }
 
-  test("HSLA spin should transform correctly") {
-    val original = Color.hsl(120.degrees, 0.5, 0.5)
+  test("Hsl spin should transform correctly") {
+    val original = Color.oklch(0.5, 0.5, 180.degrees)
     val spun = original.spin(60.degrees)
     val unspun = original.spin(-60.degrees)
 
-    assert(spun ~= Color.hsl(180.degrees, 0.5, 0.5))
-    assert(unspun ~= Color.hsl(60.degrees, 0.5, 0.5))
+    assertEquals(spun.hue, 180.degrees + 60.degrees)
+    assertEquals(spun.lightness, original.lightness)
+    assertEquals(spun.saturation, original.saturation)
+    assertEquals(unspun.hue, 180.degrees - 60.degrees)
+    assertEquals(unspun.lightness, original.lightness)
+    assertEquals(unspun.saturation, original.saturation)
   }
 
   test("Fade in/out should transform correctly") {
-    val original = Color.hsla(120.degrees, 0.5, 0.5, 0.5)
+    val original = Color.hsl(120.degrees, 0.5, 0.5, 0.5)
     val fadeOut = original.fadeOut(0.5.normalized)
     val fadeIn = original.fadeIn(0.5.normalized)
 

@@ -534,7 +534,7 @@ object CreativeScala {
       val alpha = Random.double
 
       (size, lightness, alpha, at) mapN { (r, l, a, at) =>
-        val fill = Color.hsla(hue, l, 0.4, a)
+        val fill = Color.hsl(hue, l, 0.4, a)
         Image.circle(r.toDouble).noFill.strokeColor(fill).at(at)
       }
     }
@@ -624,7 +624,7 @@ object CreativeScala {
 
     val dot = Image
       .circle(5)
-      .fillColor(Color.crimson.spin(15.degrees).desaturate(0.4.normalized))
+      .fillColor(Color.crimson.spin(15.degrees).desaturate(0.4))
       .strokeColor(Color.crimson)
       .strokeWidth(3)
 

@@ -78,7 +78,7 @@ object Spirals {
     val lightness = Random.normal(0.4, 0.1)
     val color =
       (hue, saturation, lightness, alpha) mapN { (h, s, l, a) =>
-        Color.hsla(h, s, l, a)
+        Color.hsl(h, s, l, a)
       }
     val c = Random.normal(2, 1) map (r => Image.circle(r))
 

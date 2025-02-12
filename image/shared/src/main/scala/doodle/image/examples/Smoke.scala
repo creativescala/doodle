@@ -40,8 +40,8 @@ object Smoke {
     }
 
   def cool(color: Color): Random[Color] =
-    Random.double map (_ * 0.2) map (_.normalized) map { d =>
-      color.desaturateBy(d).fadeOutBy(d).spin((d.get * -100).degrees)
+    Random.double.map(_ * 0.2).map { d =>
+      color.desaturateBy(d).fadeOutBy(d.normalized).spin((d * -100).degrees)
     }
 
   def widen(radius: Double): Random[Double] =
