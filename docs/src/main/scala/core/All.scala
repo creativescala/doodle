@@ -15,10 +15,8 @@
  */
 
 package docs
+package core
 
-object All extends App {
-  Chessboard
-  algebra.All
-  core.All
-  pictures.All
+object All {
+  Gradients
 }
