@@ -12,6 +12,10 @@ The source for these examples is [in the repository](https://github.com/creative
 
 @:doodle("parametric-spiral", "CanvasParametricSpiral.draw")
 
+## Canvas Immediate Mode
+
+@:doodle("CanvasImmediateMode", "CanvasImmediateMode.draw")
+
 
 ## Frame Background
 

@@ -16,6 +16,8 @@
 
 package doodle.canvas.algebra
 
+import doodle.algebra.generic.*
+
 import cats.Apply
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Fill.ColorFill
@@ -36,6 +38,7 @@ import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
+import org.scalajs.dom.Path2D
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
@@ -44,6 +47,7 @@ import scala.scalajs.js.JSConverters.*
   * type `A` and has the side-effect of drawing on the canvas.
   */
 opaque type CanvasDrawing[A] = Function[CanvasRenderingContext2D, A]
+
 object CanvasDrawing {
   given Apply[CanvasDrawing] with {
     def ap[A, B](ff: CanvasDrawing[A => B])(
@@ -120,6 +124,21 @@ object CanvasDrawing {
       ctx.rect(-w, -h, width, height)
     }
   }
+
+  def raster(width: Int, height: Int)(
+      f: Immediate => Unit
+  ): CanvasDrawing[Unit] = {
+    CanvasDrawing { ctx =>
+      val path = new Path2D()
+      val immediate = new ImmediateImpl(width, height, ctx, path)
+      f(immediate)
+    }
+  }
+
+  def text(text: String, x: Double, y: Double): CanvasDrawing[Unit] =
+    CanvasDrawing { ctx =>
+      ctx.fillText(text, x, y)
+    }
 
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
