@@ -41,6 +41,9 @@ import org.scalajs.dom.CanvasRenderingContext2D
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
 
+/** A canvas `Drawing` is a function that, when applied, produces a value of
+  * type `A` and has the side-effect of drawing on the canvas.
+  */
 opaque type CanvasDrawing[A] = Function[CanvasRenderingContext2D, A]
 object CanvasDrawing {
   given Apply[CanvasDrawing] with {
@@ -54,6 +57,7 @@ object CanvasDrawing {
   def pure[A](value: A): CanvasDrawing[A] =
     CanvasDrawing(_ => value)
 
+  /** CanvasDrawing that does nothing */
   val unit: CanvasDrawing[Unit] =
     pure(())
 
