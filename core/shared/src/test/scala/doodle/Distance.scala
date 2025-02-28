@@ -16,8 +16,6 @@
 
 package doodle
 
-import doodle.core.*
-
 trait Distance[A] {
   def distance(a1: A, a2: A): Double
 }
