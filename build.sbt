@@ -50,6 +50,7 @@ commands += Command.command("build") { state =>
     "golden/test" ::
     "scalafixAll" ::
     "scalafmtAll" ::
+    "scalafmtSbt" ::
     "headerCreateAll" ::
     "githubWorkflowGenerate" ::
     "dependencyUpdates" ::
@@ -143,7 +144,7 @@ lazy val algebra = crossProject(JSPlatform, JVMPlatform)
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      Dependencies.catsEffect.value,
+      Dependencies.catsEffect.value
     ),
     moduleName := "doodle-algebra"
   )
