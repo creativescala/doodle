@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package doodle
-package syntax
+package doodle.core.syntax
 
-import doodle.core.Normalized
-import org.scalacheck.*
-import org.scalacheck.Prop.*
+import doodle.core.UnsignedByte
 
-class NormalizedSpec extends Properties("Normalized syntax") {
-  import doodle.syntax.normalized.*
-
-  property(".normalized") = forAll { (d: Double) =>
-    if d >= 1.0 then d.normalized ?= Normalized.MaxValue
-    else if d <= 0.0 then d.normalized ?= Normalized.MinValue
-    else d.normalized ?= Normalized.clip(d)
+trait UnsignedByteSyntax {
+  implicit class ToUnsignedByteOps(val value: Int) {
+    def uByte: UnsignedByte =
+      UnsignedByte.clip(value)
   }
 }

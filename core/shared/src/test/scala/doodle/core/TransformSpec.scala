@@ -22,7 +22,7 @@ import org.scalacheck.Prop.*
 
 class TransformSpec extends Properties("Transform") {
   import doodle.arbitrary.*
-  import doodle.syntax.approximatelyEqual.*
+  import doodle.core.syntax.approximatelyEqual.*
 
   property("scale scale the x and y coordinates appropriately") = forAll {
     (scale: Scale, point: Point) =>

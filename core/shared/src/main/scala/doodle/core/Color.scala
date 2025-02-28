@@ -17,9 +17,7 @@
 package doodle
 package core
 
-import doodle.syntax.angle.*
-import doodle.syntax.normalized.*
-import doodle.syntax.unsignedByte.*
+import doodle.core.syntax.all.*
 
 import scala.math.*
 

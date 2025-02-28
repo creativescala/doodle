@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package doodle
-package syntax
+package doodle.core.syntax
 
-import doodle.core.UnsignedByte
+import doodle.core.Normalized
 
-trait UnsignedByteSyntax {
-  implicit class ToUnsignedByteOps(val value: Int) {
-    def uByte: UnsignedByte =
-      UnsignedByte.clip(value)
+trait NormalizedSyntax {
+  implicit class ToNormalizedOps(val value: Double) {
+    def normalized: Normalized =
+      Normalized.clip(value)
   }
 }

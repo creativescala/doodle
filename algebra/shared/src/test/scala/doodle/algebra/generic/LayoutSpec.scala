@@ -34,7 +34,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
   property("hand generated path bounding boxes are correct") = {
     import doodle.core.*
-    import doodle.syntax.approximatelyEqual.*
+    import doodle.core.syntax.approximatelyEqual.*
     import Instances.*
 
     implicit val algebra = TestAlgebra()
@@ -67,7 +67,7 @@ object LayoutSpec extends Properties("Layout properties") {
 
   property("hand generated at bounding boxes are correct") = {
     import doodle.syntax.all.*
-    import doodle.syntax.approximatelyEqual.*
+    import doodle.core.syntax.approximatelyEqual.*
     import Instances.*
     import TestAlgebra.*
 

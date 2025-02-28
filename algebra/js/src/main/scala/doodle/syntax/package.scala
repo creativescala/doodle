@@ -16,6 +16,10 @@
 
 package doodle
 
+import doodle.core.syntax.AngleSyntax
+import doodle.core.syntax.NormalizedSyntax
+import doodle.core.syntax.UnsignedByteSyntax
+
 package object syntax {
   object all
       extends AngleSyntax

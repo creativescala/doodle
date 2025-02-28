@@ -81,6 +81,7 @@ lazy val rootJvm =
     .settings(mimaPreviousArtifacts := Set.empty)
     .dependsOn(
       core.jvm,
+      algebra.jvm,
       java2d,
       image.jvm,
       interact.jvm,
@@ -90,6 +91,7 @@ lazy val rootJvm =
     )
     .aggregate(
       core.jvm,
+      algebra.jvm,
       java2d,
       image.jvm,
       interact.jvm,
@@ -105,6 +107,7 @@ lazy val rootJs =
     .dependsOn(
       canvas,
       core.js,
+      algebra.js,
       image.js,
       interact.js,
       reactor.js,
@@ -114,6 +117,7 @@ lazy val rootJs =
     .aggregate(
       canvas,
       core.js,
+      algebra.js,
       image.js,
       interact.js,
       reactor.js,
@@ -129,11 +133,24 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
     commonSettings,
     libraryDependencies ++= Seq(
       Dependencies.catsCore.value,
-      Dependencies.catsEffect.value,
       Dependencies.catsFree.value
     ),
     moduleName := "doodle-core"
   )
+
+lazy val algebra = crossProject(JSPlatform, JVMPlatform)
+  .in(file("algebra"))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(
+      Dependencies.catsEffect.value,
+    ),
+    moduleName := "doodle-algebra"
+  )
+lazy val algebraJvm =
+  algebra.jvm.dependsOn(core.jvm % "test->test;compile->compile")
+lazy val algebraJs =
+  algebra.js.dependsOn(core.js % "test->test;compile->compile")
 
 lazy val docs =
   project
@@ -187,7 +204,7 @@ lazy val docs =
       tlFatalWarnings := false
     )
     .enablePlugins(TypelevelSitePlugin)
-    .dependsOn(core.jvm, image.jvm)
+    .dependsOn(algebra.jvm, image.jvm)
 
 lazy val unidocs = project
   .in(file("unidocs"))
@@ -197,7 +214,7 @@ lazy val unidocs = project
     ScalaUnidoc / unidoc / unidocProjectFilter :=
       inAnyProject -- inProjects(
         docs,
-        core.js,
+        algebra.js,
         interact.js,
         examples.js,
         golden,
@@ -215,8 +232,8 @@ lazy val interact = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies += Dependencies.fs2.value,
     moduleName := "doodle-interact"
   )
-  .jvmConfigure(_.dependsOn(core.jvm % "compile->compile;test->test"))
-  .jsConfigure(_.dependsOn(core.js % "compile->compile;test->test"))
+  .jvmConfigure(_.dependsOn(algebra.jvm % "compile->compile;test->test"))
+  .jsConfigure(_.dependsOn(algebra.js % "compile->compile;test->test"))
 
 lazy val java2d = project
   .in(file("java2d"))
@@ -229,19 +246,19 @@ lazy val java2d = project
       Dependencies.fs2.value
     )
   )
-  .dependsOn(core.jvm, interact.jvm)
+  .dependsOn(algebra.jvm, interact.jvm)
 
 lazy val image = crossProject(JSPlatform, JVMPlatform)
   .in(file("image"))
   .settings(commonSettings, moduleName := "doodle-image")
-  .jvmConfigure(_.dependsOn(core.jvm, java2d))
-  .jsConfigure(_.dependsOn(core.js))
+  .jvmConfigure(_.dependsOn(algebra.jvm, java2d))
+  .jsConfigure(_.dependsOn(algebra.js))
 
 lazy val turtle = crossProject(JSPlatform, JVMPlatform)
   .in(file("turtle"))
   .settings(commonSettings, moduleName := "doodle-turtle")
-  .jvmConfigure(_.dependsOn(core.jvm, image.jvm))
-  .jsConfigure(_.dependsOn(core.js, image.js))
+  .jvmConfigure(_.dependsOn(algebra.jvm, image.jvm))
+  .jsConfigure(_.dependsOn(algebra.js, image.js))
 
 lazy val reactor = crossProject(JSPlatform, JVMPlatform)
   .in(file("reactor"))
@@ -250,8 +267,8 @@ lazy val reactor = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies += Dependencies.fs2.value,
     moduleName := "doodle-reactor"
   )
-  .jvmConfigure(_.dependsOn(core.jvm, java2d, image.jvm, interact.jvm))
-  .jsConfigure(_.dependsOn(core.js, image.js, interact.js))
+  .jvmConfigure(_.dependsOn(algebra.jvm, java2d, image.jvm, interact.jvm))
+  .jsConfigure(_.dependsOn(algebra.js, image.js, interact.js))
 
 lazy val svg = crossProject(JSPlatform, JVMPlatform)
   .in(file("svg"))
@@ -263,7 +280,7 @@ lazy val svg = crossProject(JSPlatform, JVMPlatform)
     ),
     moduleName := "doodle-svg"
   )
-  .dependsOn(core, interact)
+  .dependsOn(algebra, interact)
   .jvmConfigure(_.dependsOn(java2d))
 
 lazy val canvas = project
@@ -273,7 +290,7 @@ lazy val canvas = project
     libraryDependencies += Dependencies.scalajsDom.value,
     moduleName := "doodle-canvas"
   )
-  .dependsOn(core.js)
+  .dependsOn(algebra.js)
   .enablePlugins(ScalaJSPlugin)
 
 // Just for testing
@@ -290,7 +307,7 @@ lazy val golden = project
     mimaPreviousArtifacts := Set.empty,
     testFrameworks += new TestFramework("munit.Framework")
   )
-  .dependsOn(core.jvm, image.jvm, interact.jvm, java2d)
+  .dependsOn(algebra.jvm, image.jvm, interact.jvm, java2d)
 
 // To avoid including this in the core build
 lazy val examples = crossProject(JSPlatform, JVMPlatform)
@@ -301,10 +318,10 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
   )
   .jvmConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(core.jvm, java2d, image.jvm, interact.jvm)
+      .dependsOn(algebra.jvm, java2d, image.jvm, interact.jvm)
   )
   .jsConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(core.js, canvas, image.js, interact.js)
+      .dependsOn(algebra.js, canvas, image.js, interact.js)
   )
   .dependsOn(svg)

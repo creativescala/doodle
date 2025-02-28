@@ -16,12 +16,12 @@
 
 package doodle.core
 
-import doodle.syntax.all.*
+import doodle.core.syntax.all.*
 
 /** The Tailwind CSS 4.0 default color palette. See
   * https://tailwindcss.com/docs/colors
   */
-object TailwindColors {
+object Tailwind4Colors {
   // These colors are used under the terms of Tailwind CSS license, repeated below.
   //
   // MIT License

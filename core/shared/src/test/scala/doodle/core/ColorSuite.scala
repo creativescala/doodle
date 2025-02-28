@@ -17,7 +17,7 @@
 package doodle
 package core
 
-import doodle.syntax.all.*
+import doodle.core.syntax.all.*
 import munit.FunSuite
 
 class ColorSuite extends FunSuite {
