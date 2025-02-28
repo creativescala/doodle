@@ -19,7 +19,7 @@ package core
 
 import doodle.core.Color.Oklch
 import doodle.core.Color.Rgb
-import doodle.syntax.all.*
+import doodle.core.syntax.all.*
 import org.scalacheck.Gen
 
 trait Generators {

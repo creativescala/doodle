@@ -14,31 +14,13 @@
  * limitations under the License.
  */
 
-package doodle
-package syntax
+package doodle.core.syntax
 
-import doodle.core.Angle
+import doodle.Distance
 
-trait AngleSyntax {
-  implicit class AngleDoubleOps(val angle: Double) {
-    def degrees: Angle =
-      Angle.degrees(angle)
-
-    def radians: Angle =
-      Angle.radians(angle)
-
-    def turns: Angle =
-      Angle.turns(angle)
-  }
-
-  implicit class AngleIntOps(val angle: Int) {
-    def degrees: Angle =
-      Angle.degrees(angle.toDouble)
-
-    def radians: Angle =
-      Angle.radians(angle.toDouble)
-
-    def turns: Angle =
-      Angle.turns(angle.toDouble)
+object approximatelyEqual {
+  implicit class ApproximatelyEqualOps[A](a1: A) {
+    def ~=(a2: A)(implicit distance: Distance[A]): Boolean =
+      distance.distance(a1, a2) < 0.01
   }
 }

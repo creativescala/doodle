@@ -18,7 +18,7 @@ package doodle
 package interact
 package easing
 
-import doodle.syntax.approximatelyEqual.*
+import doodle.core.syntax.approximatelyEqual.*
 import org.scalacheck.*
 import org.scalacheck.Prop.*
 

@@ -26,7 +26,7 @@ package object syntax {
     * to avoid pulling in Algebra syntax that may conflict with Image.
     */
   object core
-      extends doodle.syntax.AngleSyntax
-      with doodle.syntax.NormalizedSyntax
-      with doodle.syntax.UnsignedByteSyntax
+      extends doodle.core.syntax.AngleSyntax
+      with doodle.core.syntax.NormalizedSyntax
+      with doodle.core.syntax.UnsignedByteSyntax
 }

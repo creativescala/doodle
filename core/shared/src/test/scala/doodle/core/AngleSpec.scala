@@ -22,7 +22,7 @@ import org.scalacheck.Prop.*
 
 object AngleSpec extends Properties("Angle properties") {
   import doodle.arbitrary.*
-  import doodle.syntax.approximatelyEqual.*
+  import doodle.core.syntax.approximatelyEqual.*
 
   property("angle has bijection to Double as radians") = forAll { (a: Angle) =>
     a ~= Angle.radians(a.toRadians)

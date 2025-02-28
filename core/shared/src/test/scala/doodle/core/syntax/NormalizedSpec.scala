@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package doodle
-package image
+package doodle.core.syntax
 
-package object syntax {
-  object all extends JvmImageSyntax with TraverseImageSyntax
-  object image extends JvmImageSyntax
-  object traverse extends TraverseImageSyntax
+import doodle.core.Normalized
+import org.scalacheck.*
+import org.scalacheck.Prop.*
 
-  /** The core object defines syntax for doodle.core, which is a convenient way
-    * to avoid pulling in Algebra syntax that may conflict with Image.
-    */
-  object core
-      extends doodle.core.syntax.AngleSyntax
-      with doodle.core.syntax.NormalizedSyntax
-      with doodle.core.syntax.UnsignedByteSyntax
+class NormalizedSpec extends Properties("Normalized syntax") {
+  import doodle.core.syntax.all.*
+
+  property(".normalized") = forAll { (d: Double) =>
+    if d >= 1.0 then d.normalized ?= Normalized.MaxValue
+    else if d <= 0.0 then d.normalized ?= Normalized.MinValue
+    else d.normalized ?= Normalized.clip(d)
+  }
 }

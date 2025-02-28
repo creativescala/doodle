@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package doodle
-package syntax
+package doodle.core.syntax
 
-import doodle.core.Normalized
+import doodle.core.Angle
+import org.scalacheck.*
+import org.scalacheck.Prop.*
 
-trait NormalizedSyntax {
-  implicit class ToNormalizedOps(val value: Double) {
-    def normalized: Normalized =
-      Normalized.clip(value)
-  }
+class AngleSpec extends Properties("Angle syntax properties") {
+  import doodle.core.syntax.all.*
+
+  property(".degrees") = forAll { (d: Double) => d.degrees ?= Angle.degrees(d) }
+
+  property(".radians") = forAll { (d: Double) => d.radians ?= Angle.radians(d) }
+
+  property(".turns") = forAll { (d: Double) => d.turns ?= Angle.turns(d) }
 }

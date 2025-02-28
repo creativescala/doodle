@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
-package doodle
-package syntax
+package doodle.core.syntax
 
 import doodle.core.Angle
-import org.scalacheck.*
-import org.scalacheck.Prop.*
 
-class AngleSpec extends Properties("Angle syntax properties") {
-  import doodle.syntax.angle.*
+trait AngleSyntax {
+  implicit class AngleDoubleOps(val angle: Double) {
+    def degrees: Angle =
+      Angle.degrees(angle)
 
-  property(".degrees") = forAll { (d: Double) => d.degrees ?= Angle.degrees(d) }
+    def radians: Angle =
+      Angle.radians(angle)
 
-  property(".radians") = forAll { (d: Double) => d.radians ?= Angle.radians(d) }
+    def turns: Angle =
+      Angle.turns(angle)
+  }
 
-  property(".turns") = forAll { (d: Double) => d.turns ?= Angle.turns(d) }
+  implicit class AngleIntOps(val angle: Int) {
+    def degrees: Angle =
+      Angle.degrees(angle.toDouble)
+
+    def radians: Angle =
+      Angle.radians(angle.toDouble)
+
+    def turns: Angle =
+      Angle.turns(angle.toDouble)
+  }
 }

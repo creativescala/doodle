@@ -17,7 +17,7 @@
 package doodle
 package core
 
-import doodle.syntax.approximatelyEqual.*
+import doodle.core.syntax.approximatelyEqual.*
 import org.scalacheck.*
 import org.scalacheck.Prop.*
 

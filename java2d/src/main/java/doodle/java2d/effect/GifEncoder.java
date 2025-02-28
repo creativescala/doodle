@@ -312,9 +312,9 @@ public class GifEncoder {
     return started = ok;
   }
 
-  /**
-   * Fixes the color palette for all frames until cleared
-   */
+   // /**
+   //  * Fixes the color palette for all frames until cleared
+   //  */
    // public void setPalette(int[] palette_pixels, int width, int height) {
    //     int len = palette_pixels.length;
    //     int nPix = len / 3;

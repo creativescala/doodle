@@ -74,11 +74,11 @@ jobs:
 
       - name: Make target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: mkdir -p reactor/js/target image/js/target unidocs/target js/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target jvm/target interact/js/target interact/jvm/target java2d/target examples/jvm/target turtle/jvm/target image/jvm/target svg/jvm/target svg/js/target golden/target target canvas/target project/target
+        run: mkdir -p reactor/js/target image/js/target unidocs/target js/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target jvm/target interact/js/target interact/jvm/target java2d/target examples/jvm/target algebra/jvm/target algebra/js/target turtle/jvm/target image/jvm/target svg/jvm/target svg/js/target golden/target target canvas/target project/target
 
       - name: Compress target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: tar cf targets.tar reactor/js/target image/js/target unidocs/target js/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target jvm/target interact/js/target interact/jvm/target java2d/target examples/jvm/target turtle/jvm/target image/jvm/target svg/jvm/target svg/js/target golden/target target canvas/target project/target
+        run: tar cf targets.tar reactor/js/target image/js/target unidocs/target js/target reactor/jvm/target core/js/target examples/js/target turtle/js/target core/jvm/target jvm/target interact/js/target interact/jvm/target java2d/target examples/jvm/target algebra/jvm/target algebra/js/target turtle/jvm/target image/jvm/target svg/jvm/target svg/js/target golden/target target canvas/target project/target
 
       - name: Upload target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
