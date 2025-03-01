@@ -17,6 +17,7 @@
 package doodle.canvas.algebra
 
 import cats.Apply
+import doodle.core.Gradient
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Fill.ColorFill
 import doodle.algebra.generic.Fill.GradientFill
@@ -46,9 +47,7 @@ import scala.scalajs.js.JSConverters.*
 opaque type CanvasDrawing[A] = Function[CanvasRenderingContext2D, A]
 object CanvasDrawing {
   given Apply[CanvasDrawing] with {
-    def ap[A, B](ff: CanvasDrawing[A => B])(
-        fa: CanvasDrawing[A]
-    ): CanvasDrawing[B] =
+    def ap[A, B](ff: CanvasDrawing[A => B])(fa: CanvasDrawing[A]): CanvasDrawing[B] =
       CanvasDrawing(ctx => ff(ctx)(fa(ctx)))
 
     def map[A, B](fa: CanvasDrawing[A])(f: A => B): CanvasDrawing[B] =
@@ -88,28 +87,22 @@ object CanvasDrawing {
   def closedPath(path: ClosedPath): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
       ctx.beginPath()
-      path.elements.foreach(elt =>
-        elt match {
-          case MoveTo(to) => ctx.moveTo(to.x, to.y)
-          case LineTo(to) => ctx.lineTo(to.x, to.y)
-          case BezierCurveTo(cp1, cp2, to) =>
-            ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y)
-        }
-      )
+      path.elements.foreach {
+        case MoveTo(to)           => ctx.moveTo(to.x, to.y)
+        case LineTo(to)           => ctx.lineTo(to.x, to.y)
+        case BezierCurveTo(cp1, cp2, to) => ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y)
+      }
       ctx.closePath()
     }
 
   def openPath(path: OpenPath): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
       ctx.beginPath()
-      path.elements.foreach(elt =>
-        elt match {
-          case MoveTo(to) => ctx.moveTo(to.x, to.y)
-          case LineTo(to) => ctx.lineTo(to.x, to.y)
-          case BezierCurveTo(cp1, cp2, to) =>
-            ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y)
-        }
-      )
+      path.elements.foreach {
+        case MoveTo(to)           => ctx.moveTo(to.x, to.y)
+        case LineTo(to)           => ctx.lineTo(to.x, to.y)
+        case BezierCurveTo(cp1, cp2, to) => ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y)
+      }
     }
 
   def rectangle(width: Double, height: Double): CanvasDrawing[Unit] = {
@@ -124,34 +117,46 @@ object CanvasDrawing {
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
 
-  def setFill(fill: Fill): CanvasDrawing[Unit] = {
-    CanvasDrawing { ctx =>
-      fill match {
-        case ColorFill(color) => ctx.fillStyle = colorToCSS(color)
-        // TODO: Implement
-        case GradientFill(gradient) => ()
-      }
+  def setFill(fill: Fill): CanvasDrawing[Unit] = CanvasDrawing { ctx =>
+    fill match {
+      case ColorFill(color) =>
+        ctx.fillStyle = colorToCSS(color)
+
+      case GradientFill(gradient) =>
+        gradient match {
+          case Gradient.Linear(start, end, stops, _) =>
+            val canvasGradient = ctx.createLinearGradient(start.x, start.y, end.x, end.y)
+            stops.foreach { case (color, offset) =>
+              canvasGradient.addColorStop(offset, colorToCSS(color))
+            }
+            ctx.fillStyle = canvasGradient
+
+          case Gradient.Radial(inner, outer, radius, stops, _) =>
+            val canvasGradient = ctx.createRadialGradient(inner.x, inner.y, radius, outer.x, outer.y, radius)
+            stops.foreach { case (color, offset) =>
+              canvasGradient.addColorStop(offset, colorToCSS(color))
+            }
+            ctx.fillStyle = canvasGradient
+        }
     }
-  }
+    ()
+  }: CanvasDrawing[Unit]
 
   def setFont(font: Font): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
-      val fontStyle =
-        font.style match {
-          case FontStyle.Italic => "italic"
-          case FontStyle.Normal => ""
-        }
+      val fontStyle = font.style match {
+        case FontStyle.Italic => "italic"
+        case FontStyle.Normal => ""
+      }
 
-      val fontWeight =
-        font.weight match {
-          case FontWeight.Normal => "normal"
-          case FontWeight.Bold   => "bold"
-        }
+      val fontWeight = font.weight match {
+        case FontWeight.Normal => "normal"
+        case FontWeight.Bold   => "bold"
+      }
 
-      val fontSize =
-        font.size match {
-          case FontSize.Points(pts) => s"${pts}pt"
-        }
+      val fontSize = font.size match {
+        case FontSize.Points(pts) => s"${pts}pt"
+      }
 
       val fontFamily = font.family match {
         case FontFamily.Serif      => "serif"
@@ -190,28 +195,19 @@ object CanvasDrawing {
     }
   }
 
-  def setTransform(transform: Transform): CanvasDrawing[Unit] = {
+  def setTransform(transform: Transform): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
       val elts = transform.elements
       ctx.setTransform(elts(0), elts(3), elts(1), elts(4), elts(2), elts(5))
     }
-  }
 
-  def withFill[A](
-      fill: Option[Fill]
-  )(drawing: CanvasDrawing[A]): CanvasDrawing[A] =
+  def withFill[A](fill: Option[Fill])(drawing: CanvasDrawing[A]): CanvasDrawing[A] =
     CanvasDrawing.setFill(fill) >> drawing.tap(
-      fill
-        .map(s => CanvasDrawing(ctx => ctx.fill()))
-        .getOrElse(CanvasDrawing.unit)
+      fill.map(s => CanvasDrawing(ctx => ctx.fill())).getOrElse(CanvasDrawing.unit)
     )
 
-  def withStroke[A](
-      stroke: Option[Stroke]
-  )(drawing: CanvasDrawing[A]): CanvasDrawing[A] =
+  def withStroke[A](stroke: Option[Stroke])(drawing: CanvasDrawing[A]): CanvasDrawing[A] =
     CanvasDrawing.setStroke(stroke) >> drawing.tap(
-      stroke
-        .map(s => CanvasDrawing(ctx => ctx.stroke()))
-        .getOrElse(CanvasDrawing.unit)
+      stroke.map(s => CanvasDrawing(ctx => ctx.stroke())).getOrElse(CanvasDrawing.unit)
     )
 }
