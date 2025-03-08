@@ -132,7 +132,7 @@ object CanvasDrawing {
             ctx.fillStyle = canvasGradient
 
           case Gradient.Radial(inner, outer, radius, stops, _) =>
-            val canvasGradient = ctx.createRadialGradient(inner.x, inner.y, radius, outer.x, outer.y, radius)
+            val canvasGradient = ctx.createRadialGradient(inner.x, inner.y, radius / 4, outer.x, outer.y, radius)
             stops.foreach { case (color, offset) =>
               canvasGradient.addColorStop(offset, colorToCSS(color))
             }
