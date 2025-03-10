@@ -24,6 +24,7 @@ import doodle.algebra.generic.Stroke
 import doodle.core.Cap
 import doodle.core.ClosedPath
 import doodle.core.Color
+import doodle.core.Gradient
 import doodle.core.Join
 import doodle.core.OpenPath
 import doodle.core.PathElement.BezierCurveTo
@@ -128,8 +129,38 @@ object CanvasDrawing {
     CanvasDrawing { ctx =>
       fill match {
         case ColorFill(color) => ctx.fillStyle = colorToCSS(color)
-        // TODO: Implement
-        case GradientFill(gradient) => ()
+        case GradientFill(gradient) =>
+          gradient match {
+            case linear: Gradient.Linear =>
+              val jsGradient = ctx.createLinearGradient(
+                linear.start.x,
+                linear.start.y,
+                linear.end.x,
+                linear.end.y
+              )
+
+              linear.stops.foreach { case (color, offset) =>
+                jsGradient.addColorStop(offset, colorToCSS(color))
+              }
+
+              ctx.fillStyle = jsGradient
+
+            case radial: Gradient.Radial =>
+              val jsGradient = ctx.createRadialGradient(
+                radial.inner.x,
+                radial.inner.y,
+                0, // Inner radius should be 0
+                radial.outer.x,
+                radial.outer.y,
+                radial.radius
+              )
+
+              radial.stops.foreach { case (color, offset) =>
+                jsGradient.addColorStop(offset, colorToCSS(color))
+              }
+
+              ctx.fillStyle = jsGradient
+          }
       }
     }
   }
