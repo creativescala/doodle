@@ -1,3 +1,8 @@
+## Next
+
+- Canvas backend support linear and radial fills (by `@Atharva-Kanherkar `).
+
+
 ## 0.28.0 12-Feb-2025
 
 - Rework the color system to use OkLCh or RGB, instead of HSL or RGB. This gives
