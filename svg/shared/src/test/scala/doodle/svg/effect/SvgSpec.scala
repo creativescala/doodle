@@ -31,7 +31,8 @@ class SvgSpec
   import scalatags.Text.{svgAttrs, svgTags}
   import scalatags.Text.implicits.*
 
-  val blackStroke = Stroke(Color.black, 1.0, Cap.butt, Join.miter, None)
+ 
+val blackStroke = Stroke(StrokeStyle.color(Color.black), 1.0, Cap.butt, Join.miter, None)
 
   test("circle renders to svg circle") {
     val diameter = 10.0
