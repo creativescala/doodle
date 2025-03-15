@@ -22,6 +22,7 @@ import org.scalacheck.*
 import org.scalacheck.Prop.*
 import doodle.algebra.generic.StrokeStyle
 import doodle.algebra.generic.reified.Reified
+import doodle.core.Color
 
 object TextSpec extends Properties("Text properties") {
   val algebra = TestAlgebra()

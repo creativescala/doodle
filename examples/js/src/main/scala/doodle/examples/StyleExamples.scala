@@ -69,12 +69,46 @@ trait StyleExamples[Alg <: Debug & Layout & Path & Shape & Style]
           )
           .strokeWidth(5.0)
       )
+
+  val strokeGradientStyle =
+    square(100)
+      .strokeGradient(
+        Gradient.linear(
+          Point(-50, -50),
+          Point(50, 50),
+          List(
+            (Color.crimson, 0.0),
+            (Color.gold, 0.5),
+            (Color.deepSkyBlue, 1.0)
+          ),
+          Gradient.CycleMethod.repeat
+        )
+      )
+      .strokeWidth(10.0)
+      .noFill
+      .margin(0.0, 5.0, 0.0, 0.0)
+      .beside(
+        circle(100)
+          .strokeGradient(
+            Gradient.radial(
+              Point(0, 0),
+              Point(0, 0),
+              50,
+              List((Color.magenta, 0.0), (Color.cyan, 1.0))
+            )
+          )
+          .strokeWidth(15.0)
+          .noFill
+      )
+
   //
   // If you add a new example, also add it in here
   val allPictures =
     List(
       basicStyle,
       strokeStyle,
-      fillStyle
+      fillStyle,
+      strokeGradientStyle
     )
+
 }
