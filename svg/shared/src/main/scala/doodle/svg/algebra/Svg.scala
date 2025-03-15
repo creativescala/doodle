@@ -23,6 +23,7 @@ import cats.effect.IO
 import doodle.algebra.Picture
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
+import doodle.algebra.generic.StrokeStyle
 import doodle.core.*
 import doodle.core.font.*
 import doodle.core.font.FontSize.Points
@@ -173,7 +174,7 @@ trait SvgModule { self: Base =>
         gradients: mutable.Set[Tag]
     ): String = {
       val f = fill.fold("fill: none;")(f => this.toStyle(f, gradients))
-      val s = stroke.fold("stroke: none;")(Svg.toStyle(_))
+      val s = stroke.fold("stroke: none;")(s => this.toStyle(s, gradients))
 
       s ++ " " ++ f
     }
@@ -256,7 +257,7 @@ trait SvgModule { self: Base =>
       )
     }
 
-    def toStyle(stroke: Stroke): String = {
+    def toStyle(stroke: Stroke, gradients: mutable.Set[Tag]): String = {
       val builder = new StringBuilder(64)
 
       val linecap = stroke.cap match {
@@ -270,7 +271,14 @@ trait SvgModule { self: Base =>
         case Join.Miter => "miter"
       }
       builder ++= s"stroke-width: ${stroke.width}px; "
-      builder ++= s"stroke: ${toOklch(stroke.color)}; "
+      stroke.style match {
+        case StrokeStyle.ColorStroke(color) =>
+          builder ++= s"stroke: ${toOklch(color)}; "
+        case StrokeStyle.GradientStroke(gradient) =>
+          val (id, svgGradient) = toSvgGradient(gradient)
+          gradients += svgGradient
+          builder ++= s"stroke: url('#${id}'); "
+      }
       builder ++= s"stroke-linecap: ${linecap}; "
       builder ++= s"stroke-linejoin: ${linejoin}; "
       builder ++= (stroke.dash match {
@@ -280,7 +288,6 @@ trait SvgModule { self: Base =>
 
       builder.toString
     }
-
     def toSvgTransform(tx: Transform): String = {
       val elt = tx.elements
       val a = elt(0)

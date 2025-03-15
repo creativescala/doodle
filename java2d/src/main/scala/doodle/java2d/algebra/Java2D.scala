@@ -30,6 +30,7 @@ import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.Transform as Tx
 import doodle.core.font.*
+import doodle.algebra.generic.StrokeStyle
 
 import java.awt.BasicStroke
 import java.awt.Color as AwtColor
@@ -121,10 +122,21 @@ object Java2D {
         case Some(dash) =>
           new BasicStroke(width, cap, join, 1.0f, dash, 0.0f)
       }
-    val jColor = Java2D.toAwtColor(stroke.color)
+
+    val paint: Paint = stroke.style match {
+      case StrokeStyle.ColorStroke(color) =>
+        Java2D.toAwtColor(color)
+      case StrokeStyle.GradientStroke(gradient) =>
+        gradient match {
+          case l: Gradient.Linear =>
+            Java2D.toLinearGradientPaint(l)
+          case r: Gradient.Radial =>
+            Java2D.toRadialGradientPaint(r)
+        }
+    }
 
     graphics.setStroke(jStroke)
-    graphics.setColor(jColor)
+    graphics.setPaint(paint)
   }
 
   def setFill(graphics: Graphics2D, fill: Fill) = {
