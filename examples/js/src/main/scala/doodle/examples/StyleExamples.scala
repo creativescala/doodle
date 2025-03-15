@@ -94,7 +94,8 @@ trait StyleExamples[Alg <: Debug & Layout & Path & Shape & Style]
               Point(0, 0),
               Point(0, 0),
               50,
-              List((Color.magenta, 0.0), (Color.cyan, 1.0))
+              List((Color.magenta, 0.0), (Color.cyan, 1.0)),
+              Gradient.CycleMethod.noCycle
             )
           )
           .strokeWidth(15.0)
