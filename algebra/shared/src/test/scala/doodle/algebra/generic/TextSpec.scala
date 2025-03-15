@@ -20,6 +20,7 @@ package generic
 
 import org.scalacheck.*
 import org.scalacheck.Prop.*
+import doodle.algebra.generic.StrokeStyle
 
 object TextSpec extends Properties("Text properties") {
   val algebra = TestAlgebra()
@@ -29,10 +30,14 @@ object TextSpec extends Properties("Text properties") {
       import doodle.algebra.generic.reified.Reified.*
       val reified =
         Generators.reify(algebra.strokeColor(algebra.text("Hello"), c))
-      reified match {
-        case List(Text(_, _, stroke, _, text)) =>
-          (stroke.get.color ?= c) && (text ?= "Hello")
-        case _ => Prop.falsified
-      }
+    reified match {
+      case List(Text(_, _, stroke, _, text)) =>
+        val strokeColor = stroke.get.style match {
+          case StrokeStyle.ColorStroke(color) => color
+          case _ => fail("Expected ColorStroke but got something else")
+        }
+        (strokeColor ?= c) && (text ?= "Hello")
+      case _ => Prop.falsified
+    }
   }
 }
