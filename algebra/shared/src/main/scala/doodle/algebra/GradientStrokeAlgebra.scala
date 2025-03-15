@@ -23,5 +23,11 @@ import doodle.core.{Gradient}
  * Algebra for applying gradient strokes to shapes.
  */
 trait GradientStrokeAlgebra extends Algebra {
+  /** Apply a gradient stroke to an image.
+    *
+    * @param image The image to which the gradient stroke will be applied
+    * @param strokeGradient The gradient to use for the stroke
+    * @return A new image with the given gradient stroke
+    */
   def strokeGradient[A](image: Drawing[A], strokeGradient: Gradient): Drawing[A]
 }

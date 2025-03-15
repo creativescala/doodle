@@ -46,7 +46,13 @@ trait StyleSyntax {
         def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
           algebra.strokeColor(picture(algebra), strokeColor)
       }
+ 
 
+    def strokeGradient(strokeGradient: Gradient): Picture[Alg with Style, A] =
+      new Picture[Alg with Style, A] {
+        def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
+          algebra.strokeGradient(picture(algebra), strokeGradient)
+      }
     def strokeWidth(strokeWidth: Double): Picture[Alg with Style, A] =
       new Picture[Alg with Style, A] {
         def apply(implicit algebra: Alg with Style): algebra.Drawing[A] =
