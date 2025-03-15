@@ -40,15 +40,13 @@ trait GenericStyle[G[_]] extends Style {
       strokeColor: Color
   ): Finalized[G, A] =
     Finalized.contextTransform(_.strokeColor(strokeColor))(image)
-   
- 
 
   def strokeGradient[A](
       image: Finalized[G, A],
       strokeGradient: Gradient
   ): Finalized[G, A] =
     Finalized.contextTransform(_.strokeGradient(strokeGradient))(image)
-    
+
   def strokeWidth[A](
       image: Finalized[G, A],
       strokeWidth: Double

@@ -257,8 +257,6 @@ trait SvgModule { self: Base =>
       )
     }
 
- // Make sure this is properly indented
-
     def toStyle(stroke: Stroke, gradients: mutable.Set[Tag]): String = {
       val builder = new StringBuilder(64)
 

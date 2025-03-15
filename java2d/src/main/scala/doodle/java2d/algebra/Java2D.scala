@@ -101,10 +101,6 @@ object Java2D {
     new AwtColor(rgba.r.get, rgba.g.get, rgba.b.get, rgba.a.toUnsignedByte.get)
   }
 
- // In the setStroke method:
-
- // Make sure this is properly indented within its containing class or object
-
   def setStroke(graphics: Graphics2D, stroke: Stroke) = {
     val width = stroke.width.toFloat
     val cap = stroke.cap match {
@@ -128,9 +124,9 @@ object Java2D {
       }
 
     val paint: Paint = stroke.style match {
-      case StrokeStyle.ColorStroke(color) => 
+      case StrokeStyle.ColorStroke(color) =>
         Java2D.toAwtColor(color)
-      case StrokeStyle.GradientStroke(gradient) => 
+      case StrokeStyle.GradientStroke(gradient) =>
         gradient match {
           case l: Gradient.Linear =>
             Java2D.toLinearGradientPaint(l)

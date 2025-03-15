@@ -211,11 +211,11 @@ object CanvasDrawing {
         case Join.Round => "round"
         case Join.Miter => "miter"
       }
-      
+
       stroke.style match {
         case StrokeStyle.ColorStroke(color) =>
           ctx.strokeStyle = colorToCSS(color)
-          
+
         case StrokeStyle.GradientStroke(gradient) =>
           gradient match {
             case linear: Gradient.Linear =>
@@ -225,13 +225,13 @@ object CanvasDrawing {
                 linear.end.x,
                 linear.end.y
               )
-              
+
               linear.stops.foreach { case (color, offset) =>
                 jsGradient.addColorStop(offset, colorToCSS(color))
               }
-              
+
               ctx.strokeStyle = jsGradient
-              
+
             case radial: Gradient.Radial =>
               val jsGradient = ctx.createRadialGradient(
                 radial.inner.x,
@@ -241,15 +241,15 @@ object CanvasDrawing {
                 radial.outer.y,
                 radial.radius
               )
-              
+
               radial.stops.foreach { case (color, offset) =>
                 jsGradient.addColorStop(offset, colorToCSS(color))
               }
-              
+
               ctx.strokeStyle = jsGradient
           }
       }
-      
+
       ctx.setLineDash(
         stroke.dash match {
           case None       => js.Array()

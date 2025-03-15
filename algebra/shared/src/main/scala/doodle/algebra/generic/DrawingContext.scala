@@ -18,11 +18,8 @@ package doodle
 package algebra
 package generic
 
-
 import doodle.core.{Cap, Color, Gradient, Join}
 import doodle.core.font.Font
-
-
 
 sealed trait StrokeStyle extends Product with Serializable
 object StrokeStyle {
@@ -56,11 +53,15 @@ object Fill {
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
     blendMode: BlendMode,
-    strokeStyle: StrokeStyle,  // Changed from strokeColor: Color
-    strokeWidth: Option[Double], // We use strokeWidth to determine if there is a stroke or not
+    strokeStyle: StrokeStyle, // Changed from strokeColor: Color
+    strokeWidth: Option[
+      Double
+    ], // We use strokeWidth to determine if there is a stroke or not
     strokeCap: Cap,
     strokeJoin: Join,
-    strokeDash: Option[Array[Float]], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
+    strokeDash: Option[
+      Array[Float]
+    ], // If we don't specify a dash we get the default (which is Array(1.0, 0.0))
     fill: Option[Fill],
     font: Font
 ) {
@@ -71,7 +72,7 @@ final case class DrawingContext(
     strokeWidth.map(w =>
       Stroke(strokeStyle, w, strokeCap, strokeJoin, strokeDash)
     )
- 
+
   def strokeColor(color: Color): DrawingContext =
     this.copy(strokeStyle = StrokeStyle.color(color))
 
@@ -79,7 +80,7 @@ final case class DrawingContext(
     this.copy(strokeStyle = StrokeStyle.gradient(gradient))
 
   def strokeWidth(width: Double): DrawingContext =
-    this.copy(strokeWidth = if (width <= 0) None else Some(width))
+    this.copy(strokeWidth = if width <= 0 then None else Some(width))
 
   def strokeCap(cap: Cap): DrawingContext =
     this.copy(strokeCap = cap)
@@ -113,7 +114,7 @@ object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
       BlendMode.sourceOver,
-      StrokeStyle.color(Color.black), 
+      StrokeStyle.color(Color.black),
       Option(1.0),
       Cap.butt,
       Join.miter,
