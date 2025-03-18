@@ -32,13 +32,13 @@ trait Style extends Algebra {
   def strokeGradient[A](image: Drawing[A], strokeGradient: Gradient): Drawing[A]
   def strokeWidth[A](image: Drawing[A], strokeWidth: Double): Drawing[A]
   def strokeCap[A](image: Drawing[A], strokeCap: Cap): Drawing[A]
+  def strokeJoin[A](image: Drawing[A], strokeJoin: Join): Drawing[A]
 
   /** Specify the stroke dash pattern. The pattern gives the length, in local
     * coordinates, of opaque and transparent sections. The first element is the
     * length of an opaque section, the second of a transparent section, and so
     * on.
     */
-  def strokeJoin[A](image: Drawing[A], strokeJoin: Join): Drawing[A]
   def strokeDash[A](image: Drawing[A], pattern: Iterable[Double]): Drawing[A]
   def noDash[A](image: Drawing[A]): Drawing[A]
 

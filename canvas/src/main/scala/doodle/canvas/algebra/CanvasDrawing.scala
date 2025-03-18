@@ -123,6 +123,43 @@ object CanvasDrawing {
     }
   }
 
+  def createGradient(
+      ctx: CanvasRenderingContext2D,
+      gradient: Gradient
+  ): js.Any = {
+    gradient match {
+      case linear: Gradient.Linear =>
+        val jsGradient = ctx.createLinearGradient(
+          linear.start.x,
+          linear.start.y,
+          linear.end.x,
+          linear.end.y
+        )
+
+        linear.stops.foreach { case (color, offset) =>
+          jsGradient.addColorStop(offset, colorToCSS(color))
+        }
+
+        jsGradient
+
+      case radial: Gradient.Radial =>
+        val jsGradient = ctx.createRadialGradient(
+          radial.inner.x,
+          radial.inner.y,
+          0, // Inner radius should be 0
+          radial.outer.x,
+          radial.outer.y,
+          radial.radius
+        )
+
+        radial.stops.foreach { case (color, offset) =>
+          jsGradient.addColorStop(offset, colorToCSS(color))
+        }
+
+        jsGradient
+    }
+  }
+
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
 
@@ -131,37 +168,7 @@ object CanvasDrawing {
       fill match {
         case ColorFill(color) => ctx.fillStyle = colorToCSS(color)
         case GradientFill(gradient) =>
-          gradient match {
-            case linear: Gradient.Linear =>
-              val jsGradient = ctx.createLinearGradient(
-                linear.start.x,
-                linear.start.y,
-                linear.end.x,
-                linear.end.y
-              )
-
-              linear.stops.foreach { case (color, offset) =>
-                jsGradient.addColorStop(offset, colorToCSS(color))
-              }
-
-              ctx.fillStyle = jsGradient
-
-            case radial: Gradient.Radial =>
-              val jsGradient = ctx.createRadialGradient(
-                radial.inner.x,
-                radial.inner.y,
-                0, // Inner radius should be 0
-                radial.outer.x,
-                radial.outer.y,
-                radial.radius
-              )
-
-              radial.stops.foreach { case (color, offset) =>
-                jsGradient.addColorStop(offset, colorToCSS(color))
-              }
-
-              ctx.fillStyle = jsGradient
-          }
+          ctx.fillStyle = createGradient(ctx, gradient)
       }
     }
   }
@@ -217,37 +224,7 @@ object CanvasDrawing {
           ctx.strokeStyle = colorToCSS(color)
 
         case StrokeStyle.GradientStroke(gradient) =>
-          gradient match {
-            case linear: Gradient.Linear =>
-              val jsGradient = ctx.createLinearGradient(
-                linear.start.x,
-                linear.start.y,
-                linear.end.x,
-                linear.end.y
-              )
-
-              linear.stops.foreach { case (color, offset) =>
-                jsGradient.addColorStop(offset, colorToCSS(color))
-              }
-
-              ctx.strokeStyle = jsGradient
-
-            case radial: Gradient.Radial =>
-              val jsGradient = ctx.createRadialGradient(
-                radial.inner.x,
-                radial.inner.y,
-                0, // Inner radius should be 0
-                radial.outer.x,
-                radial.outer.y,
-                radial.radius
-              )
-
-              radial.stops.foreach { case (color, offset) =>
-                jsGradient.addColorStop(offset, colorToCSS(color))
-              }
-
-              ctx.strokeStyle = jsGradient
-          }
+          ctx.strokeStyle = createGradient(ctx, gradient)
       }
 
       ctx.setLineDash(

@@ -53,7 +53,7 @@ object Fill {
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
     blendMode: BlendMode,
-    strokeStyle: StrokeStyle, // Changed from strokeColor: Color
+    strokeStyle: StrokeStyle,
     strokeWidth: Option[
       Double
     ], // We use strokeWidth to determine if there is a stroke or not
