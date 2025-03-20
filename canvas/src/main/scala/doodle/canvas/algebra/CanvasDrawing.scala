@@ -38,7 +38,7 @@ import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
-
+import org.scalajs.dom.{CanvasGradient}
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
 
@@ -126,7 +126,7 @@ object CanvasDrawing {
   def createGradient(
       ctx: CanvasRenderingContext2D,
       gradient: Gradient
-  ): js.Any = {
+  ): CanvasGradient = {
     gradient match {
       case linear: Gradient.Linear =>
         val jsGradient = ctx.createLinearGradient(
