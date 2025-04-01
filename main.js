@@ -3428,6 +3428,43 @@ $c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.rectang
   }));
   return f;
 });
+$c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.createGradient__Lorg_scalajs_dom_CanvasRenderingContext2D__Ldoodle_core_Gradient__Lorg_scalajs_dom_CanvasGradient = (function(ctx, gradient) {
+  if ((gradient instanceof $c_Ldoodle_core_Gradient$Linear)) {
+    var linear = $as_Ldoodle_core_Gradient$Linear(gradient);
+    var jsGradient = ctx.createLinearGradient($n($n(linear).Ldoodle_core_Gradient$Linear__f_start).x__D(), $n($n(linear).Ldoodle_core_Gradient$Linear__f_start).y__D(), $n($n(linear).Ldoodle_core_Gradient$Linear__f_end).x__D(), $n($n(linear).Ldoodle_core_Gradient$Linear__f_end).y__D());
+    $n($n(linear).Ldoodle_core_Gradient$Linear__f_stops).foreach__F1__V(new $c_sjsr_AnonFunction1(((x$1) => {
+      var x$1$1 = $as_T2(x$1);
+      matchResult3: {
+        if ((x$1$1 !== null)) {
+          var color = $as_Ldoodle_core_Color($n(x$1$1)._1__O());
+          var offset = $uD($n(x$1$1)._2__O());
+          jsGradient.addColorStop(offset, $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().colorToCSS__Ldoodle_core_Color__T(color));
+          break matchResult3;
+        }
+        throw new $c_s_MatchError(x$1$1);
+      }
+    })));
+    return jsGradient;
+  }
+  if ((gradient instanceof $c_Ldoodle_core_Gradient$Radial)) {
+    var radial = $as_Ldoodle_core_Gradient$Radial(gradient);
+    var jsGradient$3 = ctx.createRadialGradient($n($n(radial).Ldoodle_core_Gradient$Radial__f_inner).x__D(), $n($n(radial).Ldoodle_core_Gradient$Radial__f_inner).y__D(), 0.0, $n($n(radial).Ldoodle_core_Gradient$Radial__f_outer).x__D(), $n($n(radial).Ldoodle_core_Gradient$Radial__f_outer).y__D(), $n(radial).Ldoodle_core_Gradient$Radial__f_radius);
+    $n($n(radial).Ldoodle_core_Gradient$Radial__f_stops).foreach__F1__V(new $c_sjsr_AnonFunction1(((x$1$2) => {
+      var x$1$3 = $as_T2(x$1$2);
+      matchResult4: {
+        if ((x$1$3 !== null)) {
+          var color$1 = $as_Ldoodle_core_Color($n(x$1$3)._1__O());
+          var offset$1 = $uD($n(x$1$3)._2__O());
+          jsGradient$3.addColorStop(offset$1, $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().colorToCSS__Ldoodle_core_Color__T(color$1));
+          break matchResult4;
+        }
+        throw new $c_s_MatchError(x$1$3);
+      }
+    })));
+    return jsGradient$3;
+  }
+  throw new $c_s_MatchError(gradient);
+});
 $c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.setFill__s_Option__F1 = (function(fill) {
   var this$1 = $n(fill);
   if (this$1.isEmpty__Z()) {
@@ -3455,43 +3492,8 @@ $c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.setFill
         var x$1$1 = $as_Ldoodle_algebra_generic_Fill$GradientFill(fill);
         var this$5 = $n(x$1$1);
         var x37 = this$5.Ldoodle_algebra_generic_Fill$GradientFill__f_gradient;
-        if ((x37 instanceof $c_Ldoodle_core_Gradient$Linear)) {
-          var linear = $as_Ldoodle_core_Gradient$Linear(x37);
-          var jsGradient = ctx.createLinearGradient($n($n(linear).Ldoodle_core_Gradient$Linear__f_start).x__D(), $n($n(linear).Ldoodle_core_Gradient$Linear__f_start).y__D(), $n($n(linear).Ldoodle_core_Gradient$Linear__f_end).x__D(), $n($n(linear).Ldoodle_core_Gradient$Linear__f_end).y__D());
-          $n($n(linear).Ldoodle_core_Gradient$Linear__f_stops).foreach__F1__V(new $c_sjsr_AnonFunction1(((x$1$2) => {
-            var x$1$3 = $as_T2(x$1$2);
-            matchResult3: {
-              if ((x$1$3 !== null)) {
-                var color = $as_Ldoodle_core_Color($n(x$1$3)._1__O());
-                var offset = $uD($n(x$1$3)._2__O());
-                jsGradient.addColorStop(offset, $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().colorToCSS__Ldoodle_core_Color__T(color));
-                break matchResult3;
-              }
-              throw new $c_s_MatchError(x$1$3);
-            }
-          })));
-          ctx.fillStyle = jsGradient;
-          break matchResult6;
-        }
-        if ((x37 instanceof $c_Ldoodle_core_Gradient$Radial)) {
-          var radial = $as_Ldoodle_core_Gradient$Radial(x37);
-          var jsGradient$3 = ctx.createRadialGradient($n($n(radial).Ldoodle_core_Gradient$Radial__f_inner).x__D(), $n($n(radial).Ldoodle_core_Gradient$Radial__f_inner).y__D(), 0.0, $n($n(radial).Ldoodle_core_Gradient$Radial__f_outer).x__D(), $n($n(radial).Ldoodle_core_Gradient$Radial__f_outer).y__D(), $n(radial).Ldoodle_core_Gradient$Radial__f_radius);
-          $n($n(radial).Ldoodle_core_Gradient$Radial__f_stops).foreach__F1__V(new $c_sjsr_AnonFunction1(((x$1$2$1) => {
-            var x$1$4 = $as_T2(x$1$2$1);
-            matchResult4: {
-              if ((x$1$4 !== null)) {
-                var color$1 = $as_Ldoodle_core_Color($n(x$1$4)._1__O());
-                var offset$1 = $uD($n(x$1$4)._2__O());
-                jsGradient$3.addColorStop(offset$1, $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().colorToCSS__Ldoodle_core_Color__T(color$1));
-                break matchResult4;
-              }
-              throw new $c_s_MatchError(x$1$4);
-            }
-          })));
-          ctx.fillStyle = jsGradient$3;
-          break matchResult6;
-        }
-        throw new $c_s_MatchError(x37);
+        ctx.fillStyle = $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().createGradient__Lorg_scalajs_dom_CanvasRenderingContext2D__Ldoodle_core_Gradient__Lorg_scalajs_dom_CanvasGradient(ctx, x37);
+        break matchResult6;
       }
       throw new $c_s_MatchError(fill);
     }
@@ -3510,91 +3512,80 @@ $c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.setStro
   return $as_F1((this$2.isEmpty__Z() ? $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$__f_unit : this$2.get__O()));
 });
 $c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.setStroke__Ldoodle_algebra_generic_Stroke__F1 = (function(stroke) {
-  matchResult11: {
-    var \u03b41$___1;
-    var \u03b41$___2;
-    var \u03b41$___3;
-    var \u03b41$___4;
-    var \u03b41$___5;
-    if ((stroke !== null)) {
-      var this$2 = $n(stroke);
-      var x53 = this$2.Ldoodle_algebra_generic_Stroke__f_color;
-      var this$3 = $n(stroke);
-      var x54 = this$3.Ldoodle_algebra_generic_Stroke__f_width;
-      var this$4 = $n(stroke);
-      var x55 = this$4.Ldoodle_algebra_generic_Stroke__f_cap;
-      var this$5 = $n(stroke);
-      var x56 = this$5.Ldoodle_algebra_generic_Stroke__f_join;
-      var this$6 = $n(stroke);
-      var x57 = this$6.Ldoodle_algebra_generic_Stroke__f_dash;
-      var \u03b41$___1 = x53;
-      var \u03b41$___2 = x54;
-      var \u03b41$___3 = x55;
-      var \u03b41$___4 = x56;
-      var \u03b41$___5 = x57;
-      break matchResult11;
-    }
-    throw new $c_s_MatchError(stroke);
-  }
-  var color$2 = $as_Ldoodle_core_Color(\u03b41$___1);
-  var width$2 = $uD(\u03b41$___2);
-  var cap$2 = $as_Ldoodle_core_Cap(\u03b41$___3);
-  var join$2 = $as_Ldoodle_core_Join(\u03b41$___4);
-  var dash$2 = $as_s_Option(\u03b41$___5);
   $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$();
   var f$1 = new $c_sjsr_AnonFunction1(((ctx) => {
-    var s = $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().colorToCSS__Ldoodle_core_Color__T(color$2);
-    ctx.strokeStyle = s;
-    ctx.lineWidth = width$2;
-    matchResult12: {
+    ctx.lineWidth = $n(stroke).Ldoodle_algebra_generic_Stroke__f_width;
+    matchResult11: {
       var $x_1;
+      var x51 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_cap;
       var x = $m_Ldoodle_core_Cap$Butt$();
-      if ((x === cap$2)) {
+      if ((x === x51)) {
         var $x_1 = "butt";
-        break matchResult12;
+        break matchResult11;
       }
       var x$3 = $m_Ldoodle_core_Cap$Round$();
-      if ((x$3 === cap$2)) {
+      if ((x$3 === x51)) {
         var $x_1 = "round";
-        break matchResult12;
+        break matchResult11;
       }
       var x$5 = $m_Ldoodle_core_Cap$Square$();
-      if ((x$5 === cap$2)) {
+      if ((x$5 === x51)) {
         var $x_1 = "square";
-        break matchResult12;
+        break matchResult11;
       }
-      throw new $c_s_MatchError(cap$2);
+      throw new $c_s_MatchError(x51);
     }
     ctx.lineCap = $x_1;
-    matchResult13: {
+    matchResult12: {
       var $x_2;
+      var x52 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_join;
       var x$7 = $m_Ldoodle_core_Join$Bevel$();
-      if ((x$7 === join$2)) {
+      if ((x$7 === x52)) {
         var $x_2 = "bevel";
-        break matchResult13;
+        break matchResult12;
       }
       var x$9 = $m_Ldoodle_core_Join$Round$();
-      if ((x$9 === join$2)) {
+      if ((x$9 === x52)) {
         var $x_2 = "round";
-        break matchResult13;
+        break matchResult12;
       }
       var x$11 = $m_Ldoodle_core_Join$Miter$();
-      if ((x$11 === join$2)) {
+      if ((x$11 === x52)) {
         var $x_2 = "miter";
-        break matchResult13;
+        break matchResult12;
       }
-      throw new $c_s_MatchError(join$2);
+      throw new $c_s_MatchError(x52);
     }
     ctx.lineJoin = $x_2;
+    matchResult13: {
+      var x53 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_style;
+      if ((x53 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke)) {
+        var x$1 = $as_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(x53);
+        var this$2 = $n(x$1);
+        var x59 = this$2.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
+        var s = $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().colorToCSS__Ldoodle_core_Color__T(x59);
+        ctx.strokeStyle = s;
+        break matchResult13;
+      }
+      if ((x53 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke)) {
+        var x$1$1 = $as_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(x53);
+        var this$5 = $n(x$1$1);
+        var x56 = this$5.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
+        ctx.strokeStyle = $m_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$().createGradient__Lorg_scalajs_dom_CanvasRenderingContext2D__Ldoodle_core_Gradient__Lorg_scalajs_dom_CanvasGradient(ctx, x56);
+        break matchResult13;
+      }
+      throw new $c_s_MatchError(x53);
+    }
     matchResult14: {
       var $x_3;
+      var x60 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_dash;
       var x$13 = $m_s_None$();
-      if ((x$13 === dash$2)) {
+      if ((x$13 === x60)) {
         var $x_3 = [];
         break matchResult14;
       }
-      if ((dash$2 instanceof $c_s_Some)) {
-        var elts = $asArrayOf_F($n($as_s_Some(dash$2)).s_Some__f_value, 1);
+      if ((x60 instanceof $c_s_Some)) {
+        var elts = $asArrayOf_F($n($as_s_Some(x60)).s_Some__f_value, 1);
         var f = ((_$2) => {
           var _$2$1 = $uF(_$2);
           return _$2$1;
@@ -3684,7 +3675,7 @@ $c_Ldoodle_canvas_algebra_CanvasDrawing$package$CanvasDrawing$.prototype.setStro
         var $x_3 = $m_sjs_js_JSConverters$JSRichIterableOnce$().toJSArray$extension__sc_IterableOnce__sjs_js_Array(ev$2);
         break matchResult14;
       }
-      throw new $c_s_MatchError(dash$2);
+      throw new $c_s_MatchError(x60);
     }
     ctx.setLineDash($x_3);
   }));
@@ -3911,7 +3902,7 @@ function $f_Ldoodle_core_CommonColors__$init$__V($thiz) {
   var this$20 = $m_Ldoodle_core_Color$();
   $thiz.Ldoodle_core_Color$__f_crimson = this$20.rgb__I__I__I__D__Ldoodle_core_Color(220, 20, 60, 1.0);
   var this$21 = $m_Ldoodle_core_Color$();
-  this$21.rgb__I__I__I__D__Ldoodle_core_Color(0, 255, 255, 1.0);
+  $thiz.Ldoodle_core_Color$__f_cyan = this$21.rgb__I__I__I__D__Ldoodle_core_Color(0, 255, 255, 1.0);
   var this$22 = $m_Ldoodle_core_Color$();
   $thiz.Ldoodle_core_Color$__f_darkBlue = this$22.rgb__I__I__I__D__Ldoodle_core_Color(0, 0, 139, 1.0);
   var this$23 = $m_Ldoodle_core_Color$();
@@ -3953,7 +3944,7 @@ function $f_Ldoodle_core_CommonColors__$init$__V($thiz) {
   var this$41 = $m_Ldoodle_core_Color$();
   this$41.rgb__I__I__I__D__Ldoodle_core_Color(255, 20, 147, 1.0);
   var this$42 = $m_Ldoodle_core_Color$();
-  this$42.rgb__I__I__I__D__Ldoodle_core_Color(0, 191, 255, 1.0);
+  $thiz.Ldoodle_core_Color$__f_deepSkyBlue = this$42.rgb__I__I__I__D__Ldoodle_core_Color(0, 191, 255, 1.0);
   var this$43 = $m_Ldoodle_core_Color$();
   this$43.rgb__I__I__I__D__Ldoodle_core_Color(105, 105, 105, 1.0);
   var this$44 = $m_Ldoodle_core_Color$();
@@ -3973,7 +3964,7 @@ function $f_Ldoodle_core_CommonColors__$init$__V($thiz) {
   var this$51 = $m_Ldoodle_core_Color$();
   this$51.rgb__I__I__I__D__Ldoodle_core_Color(248, 248, 255, 1.0);
   var this$52 = $m_Ldoodle_core_Color$();
-  this$52.rgb__I__I__I__D__Ldoodle_core_Color(255, 215, 0, 1.0);
+  $thiz.Ldoodle_core_Color$__f_gold = this$52.rgb__I__I__I__D__Ldoodle_core_Color(255, 215, 0, 1.0);
   var this$53 = $m_Ldoodle_core_Color$();
   this$53.rgb__I__I__I__D__Ldoodle_core_Color(218, 165, 32, 1.0);
   var this$54 = $m_Ldoodle_core_Color$();
@@ -4410,7 +4401,7 @@ function $f_Ldoodle_examples_ParametricSpiral__$init$__V($thiz) {
     var fillColor = $n($m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_red).spin__Ldoodle_core_Angle__Ldoodle_core_Color($n($n(point$1).angle__Ldoodle_core_Angle()).$div__D__Ldoodle_core_Angle(4.0));
     var picture$1 = new $c_Ldoodle_syntax_StyleSyntax$$anon$1(fillColor, this$3);
     var this$5 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$4, picture$1);
-    return new $c_Ldoodle_syntax_StyleSyntax$$anon$10(this$5);
+    return new $c_Ldoodle_syntax_StyleSyntax$$anon$11(this$5);
   })));
   $thiz.doodle$examples$ParametricSpiral$_setter_$picture_$eq__Ldoodle_algebra_Picture__V($f_Ldoodle_examples_ParametricSpiral__drawCurve__I__F1__F1__Ldoodle_algebra_Picture($thiz, 20, $thiz.marker__F1(), new $c_sjsr_AnonFunction1(((angle) => {
     var angle$1 = $as_Ldoodle_core_Angle(angle);
@@ -4469,7 +4460,7 @@ $c_Ldoodle_examples_Simple$.prototype.ball__T__V = (function(id) {
     var fillColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_chartreuse;
     var picture$1 = new $c_Ldoodle_syntax_StyleSyntax$$anon$1(fillColor, this$4);
     var this$6 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$5, picture$1);
-    var picture$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(3.0, this$6);
+    var picture$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(3.0, this$6);
     var this$8 = new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$7, picture$2);
     return new $c_Ldoodle_syntax_LayoutSyntax$$anon$7(x$1, 0.0, this$8);
   }));
@@ -4726,7 +4717,7 @@ $c_Ldoodle_examples_svg_BouncyCircles$.prototype.go__T__V = (function(id) {
               var s$4 = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
               var picture$17 = new $c_Ldoodle_syntax_LayoutSyntax$$anon$1(that$4, s$4, this$57);
               var this$59 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$58, picture$17);
-              return new $c_Ldoodle_syntax_StyleSyntax$$anon$4(2.0, this$59);
+              return new $c_Ldoodle_syntax_StyleSyntax$$anon$5(2.0, this$59);
             }
           }
         }
@@ -5399,7 +5390,7 @@ function $c_Ldoodle_svg_TextPositioning$() {
   var this$7 = $m_Ldoodle_syntax_package$all$();
   var picture$2 = new $c_Ldoodle_algebra_ShapeConstructor$$anon$4(100.0);
   var this$8 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$7, picture$2);
-  var that = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(3.0, this$8);
+  var that = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(3.0, this$8);
   var s = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
   var that$1 = new $c_Ldoodle_syntax_LayoutSyntax$$anon$1(that, s, this$10);
   var s$1 = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
@@ -5723,11 +5714,11 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__s_Option__s_Option__scm
     var $x_2 = "stroke: none;";
   } else {
     var arg1$1 = this$2.get__O();
-    var _$1 = $as_Ldoodle_algebra_generic_Stroke(arg1$1);
-    var $x_2 = this.toStyle__Ldoodle_algebra_generic_Stroke__T(_$1);
+    var s = $as_Ldoodle_algebra_generic_Stroke(arg1$1);
+    var $x_2 = this.toStyle__Ldoodle_algebra_generic_Stroke__scm_Set__T(s, gradients);
   }
-  var s = $as_T($x_2);
-  var x = (s + " ");
+  var s$2 = $as_T($x_2);
+  var x = (s$2 + " ");
   return (x + f$2);
 });
 $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic_Fill__scm_Set__T = (function(fill, gradients) {
@@ -5829,7 +5820,7 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgGradientStop__T2__Lscalatag
   var xs = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).offset__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(offset$2, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).stopColor__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(color, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).stopOpacity__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(opacity, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue())]));
   return this$2.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs);
 });
-$c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic_Stroke__T = (function(stroke) {
+$c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic_Stroke__scm_Set__T = (function(stroke, gradients) {
   var builder = $ct_scm_StringBuilder__I__(new $c_scm_StringBuilder(), 64);
   matchResult18: {
     var linecap;
@@ -5873,17 +5864,52 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic
   }
   var s = (("stroke-width: " + $n(stroke).Ldoodle_algebra_generic_Stroke__f_width) + "px; ");
   builder.addAll__T__scm_StringBuilder(s);
-  var s$1 = (("stroke: " + this.toOklch__Ldoodle_core_Color__T($n(stroke).Ldoodle_algebra_generic_Stroke__f_color)) + "; ");
-  builder.addAll__T__scm_StringBuilder(s$1);
-  var s$2 = (("stroke-linecap: " + linecap) + "; ");
-  builder.addAll__T__scm_StringBuilder(s$2);
-  var s$3 = (("stroke-linejoin: " + linejoin) + "; ");
+  matchResult21: {
+    var x85 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_style;
+    if ((x85 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke)) {
+      var x$1 = $as_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(x85);
+      var this$2 = $n(x$1);
+      var x91 = this$2.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
+      var s$1 = (("stroke: " + this.toOklch__Ldoodle_core_Color__T(x91)) + "; ");
+      builder.addAll__T__scm_StringBuilder(s$1);
+      break matchResult21;
+    }
+    if ((x85 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke)) {
+      var x$1$1 = $as_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(x85);
+      var this$4 = $n(x$1$1);
+      var x88 = this$4.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
+      matchResult20: {
+        var \u03b412$___1;
+        var \u03b412$___2;
+        var x82 = this.toSvgGradient__Ldoodle_core_Gradient__T2(x88);
+        if ((x82 !== null)) {
+          var id = $as_T($n(x82)._1__O());
+          var svgGradient = $as_Lscalatags_generic_TypedTag($n(x82)._2__O());
+          var \u03b412$___1 = id;
+          var \u03b412$___2 = svgGradient;
+          break matchResult20;
+        }
+        throw new $c_s_MatchError(x82);
+      }
+      var id$2 = $as_T(\u03b412$___1);
+      var svgGradient$2 = $as_Lscalatags_generic_TypedTag(\u03b412$___2);
+      var this$6 = $n(gradients);
+      this$6.addOne__O__scm_Growable(svgGradient$2);
+      var s$2 = (("stroke: url('#" + id$2) + "'); ");
+      builder.addAll__T__scm_StringBuilder(s$2);
+      break matchResult21;
+    }
+    throw new $c_s_MatchError(x85);
+  }
+  var s$3 = (("stroke-linecap: " + linecap) + "; ");
   builder.addAll__T__scm_StringBuilder(s$3);
-  matchResult20: {
-    var s$4;
-    var x82 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_dash;
-    if ((x82 instanceof $c_s_Some)) {
-      var d = $asArrayOf_F($n($as_s_Some(x82)).s_Some__f_value, 1);
+  var s$4 = (("stroke-linejoin: " + linejoin) + "; ");
+  builder.addAll__T__scm_StringBuilder(s$4);
+  matchResult22: {
+    var s$5;
+    var x92 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_dash;
+    if ((x92 instanceof $c_s_Some)) {
+      var d = $asArrayOf_F($n($as_s_Some(x92)).s_Some__f_value, 1);
       var $x_10 = $m_s_Predef$();
       var f = ((a) => {
         var a$1 = $uF(a);
@@ -5970,18 +5996,18 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic
           throw new $c_s_MatchError(d);
         }
       }
-      var this$5 = $n($x_10.wrapRefArray__AO__scm_ArraySeq$ofRef(ys));
-      var s$4 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$5, "", " ", "");
-      break matchResult20;
+      var this$11 = $n($x_10.wrapRefArray__AO__scm_ArraySeq$ofRef(ys));
+      var s$5 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$11, "", " ", "");
+      break matchResult22;
     }
     var x$13 = $m_s_None$();
-    if ((x$13 === x82)) {
-      var s$4 = "";
-      break matchResult20;
+    if ((x$13 === x92)) {
+      var s$5 = "";
+      break matchResult22;
     }
-    throw new $c_s_MatchError(x82);
+    throw new $c_s_MatchError(x92);
   }
-  builder.addAll__T__scm_StringBuilder(s$4);
+  builder.addAll__T__scm_StringBuilder(s$5);
   return $n(builder.scm_StringBuilder__f_underlying).jl_StringBuilder__f_java$lang$StringBuilder$$content;
 });
 $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgTransform__Ldoodle_core_Transform__T = (function(tx) {
@@ -6015,51 +6041,51 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgPath__sci_List__Ldoodle_svg
   while ((!$n(these).isEmpty__Z())) {
     var arg1 = $n(these).head__O();
     var x$1 = $as_Ldoodle_core_PathElement(arg1);
-    matchResult25: {
+    matchResult27: {
       if ((x$1 instanceof $c_Ldoodle_core_PathElement$MoveTo)) {
         var x$1$1 = $as_Ldoodle_core_PathElement$MoveTo(x$1);
         var this$3 = $n(x$1$1);
-        var x100 = this$3.Ldoodle_core_PathElement$MoveTo__f_to;
-        var d = $n(x100).x__D();
+        var x110 = this$3.Ldoodle_core_PathElement$MoveTo__f_to;
+        var d = $n(x110).x__D();
         var $x_1 = $f_T__replaceFirst__T__T__T(("" + d), "\\.0+$", "");
-        var d$1 = $n(x100).y__D();
+        var d$1 = $n(x110).y__D();
         var s = (((("M " + $x_1) + ",") + $f_T__replaceFirst__T__T__T(("" + d$1), "\\.0+$", "")) + " ");
         builder.addAll__T__scm_StringBuilder(s);
-        break matchResult25;
+        break matchResult27;
       }
       if ((x$1 instanceof $c_Ldoodle_core_PathElement$LineTo)) {
         var x$1$2 = $as_Ldoodle_core_PathElement$LineTo(x$1);
         var this$7 = $n(x$1$2);
-        var x97 = this$7.Ldoodle_core_PathElement$LineTo__f_to;
-        var d$2 = $n(x97).x__D();
+        var x107 = this$7.Ldoodle_core_PathElement$LineTo__f_to;
+        var d$2 = $n(x107).x__D();
         var $x_2 = $f_T__replaceFirst__T__T__T(("" + d$2), "\\.0+$", "");
-        var d$3 = $n(x97).y__D();
+        var d$3 = $n(x107).y__D();
         var s$1 = (((("L " + $x_2) + ",") + $f_T__replaceFirst__T__T__T(("" + d$3), "\\.0+$", "")) + " ");
         builder.addAll__T__scm_StringBuilder(s$1);
-        break matchResult25;
+        break matchResult27;
       }
       if ((x$1 instanceof $c_Ldoodle_core_PathElement$BezierCurveTo)) {
         var x$1$3 = $as_Ldoodle_core_PathElement$BezierCurveTo(x$1);
         var this$11 = $n(x$1$3);
-        var x92 = this$11.Ldoodle_core_PathElement$BezierCurveTo__f_cp1;
+        var x102 = this$11.Ldoodle_core_PathElement$BezierCurveTo__f_cp1;
         var this$12 = $n(x$1$3);
-        var x93 = this$12.Ldoodle_core_PathElement$BezierCurveTo__f_cp2;
+        var x103 = this$12.Ldoodle_core_PathElement$BezierCurveTo__f_cp2;
         var this$13 = $n(x$1$3);
-        var x94 = this$13.Ldoodle_core_PathElement$BezierCurveTo__f_to;
-        var d$4 = $n(x92).x__D();
+        var x104 = this$13.Ldoodle_core_PathElement$BezierCurveTo__f_to;
+        var d$4 = $n(x102).x__D();
         var $x_7 = $f_T__replaceFirst__T__T__T(("" + d$4), "\\.0+$", "");
-        var d$5 = $n(x92).y__D();
+        var d$5 = $n(x102).y__D();
         var $x_6 = $f_T__replaceFirst__T__T__T(("" + d$5), "\\.0+$", "");
-        var d$6 = $n(x93).x__D();
+        var d$6 = $n(x103).x__D();
         var $x_5 = $f_T__replaceFirst__T__T__T(("" + d$6), "\\.0+$", "");
-        var d$7 = $n(x93).y__D();
+        var d$7 = $n(x103).y__D();
         var $x_4 = $f_T__replaceFirst__T__T__T(("" + d$7), "\\.0+$", "");
-        var d$8 = $n(x94).x__D();
+        var d$8 = $n(x104).x__D();
         var $x_3 = $f_T__replaceFirst__T__T__T(("" + d$8), "\\.0+$", "");
-        var d$9 = $n(x94).y__D();
+        var d$9 = $n(x104).y__D();
         var s$2 = (((((((((((("C " + $x_7) + ",") + $x_6) + " ") + $x_5) + ",") + $x_4) + " ") + $x_3) + ",") + $f_T__replaceFirst__T__T__T(("" + d$9), "\\.0+$", "")) + " ");
         builder.addAll__T__scm_StringBuilder(s$2);
-        break matchResult25;
+        break matchResult27;
       }
       throw new $c_s_MatchError(x$1);
     }
@@ -20222,7 +20248,7 @@ function $f_Ldoodle_examples_LayoutExamples__$init$__V($thiz) {
   var s$1 = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
   var picture$5 = new $c_Ldoodle_syntax_LayoutSyntax$$anon$3(that$1, s$1, this$15);
   var this$17 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$16, picture$5);
-  $thiz.Ldoodle_examples_canvas_CanvasLayoutExamples$__f_basicLayout = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(5.0, this$17);
+  $thiz.Ldoodle_examples_canvas_CanvasLayoutExamples$__f_basicLayout = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(5.0, this$17);
   var this$27 = $m_Ldoodle_syntax_package$all$();
   var this$21 = $m_Ldoodle_syntax_package$all$();
   var this$19 = $m_Ldoodle_syntax_package$all$();
@@ -20489,7 +20515,7 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   var strokeColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_purple;
   var picture$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$3(strokeColor, this$5);
   var this$7 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$6, picture$2);
-  var picture$3 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(5.0, this$7);
+  var picture$3 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(5.0, this$7);
   var this$9 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$8, picture$3);
   var fillColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_lavender;
   var that = new $c_Ldoodle_syntax_StyleSyntax$$anon$1(fillColor, this$9);
@@ -20503,19 +20529,19 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   var this$13 = $m_Ldoodle_syntax_package$all$();
   var picture$4 = new $c_Ldoodle_syntax_PathSyntax$$anon$4(5, 50.0, 25.0);
   var this$14 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$13, picture$4);
-  var picture$5 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(5.0, this$14);
+  var picture$5 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(5.0, this$14);
   var this$16 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$15, picture$5);
   var strokeColor$1 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_limeGreen;
   var picture$6 = new $c_Ldoodle_syntax_StyleSyntax$$anon$3(strokeColor$1, this$16);
   var this$18 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$17, picture$6);
   var strokeJoin = $m_Ldoodle_core_Join$Bevel$();
-  var picture$7 = new $c_Ldoodle_syntax_StyleSyntax$$anon$7(strokeJoin, this$18);
+  var picture$7 = new $c_Ldoodle_syntax_StyleSyntax$$anon$8(strokeJoin, this$18);
   var this$20 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$19, picture$7);
   var strokeCap = $m_Ldoodle_core_Cap$Round$();
-  var picture$8 = new $c_Ldoodle_syntax_StyleSyntax$$anon$6(strokeCap, this$20);
+  var picture$8 = new $c_Ldoodle_syntax_StyleSyntax$$anon$7(strokeCap, this$20);
   var this$22 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$21, picture$8);
   var pattern = new $ac_D(new Float64Array([9.0, 7.0]));
-  var picture$9 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(pattern, this$22);
+  var picture$9 = new $c_Ldoodle_syntax_StyleSyntax$$anon$6(pattern, this$22);
   var this$36 = new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$23, picture$9);
   var this$33 = $m_Ldoodle_syntax_package$all$();
   var this$31 = $m_Ldoodle_syntax_package$all$();
@@ -20524,19 +20550,19 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   var this$25 = $m_Ldoodle_syntax_package$all$();
   var picture$10 = new $c_Ldoodle_syntax_PathSyntax$$anon$4(5, 50.0, 25.0);
   var this$26 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$25, picture$10);
-  var picture$11 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(5.0, this$26);
+  var picture$11 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(5.0, this$26);
   var this$28 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$27, picture$11);
   var strokeColor$2 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_greenYellow;
   var picture$12 = new $c_Ldoodle_syntax_StyleSyntax$$anon$3(strokeColor$2, this$28);
   var this$30 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$29, picture$12);
   var strokeJoin$1 = $m_Ldoodle_core_Join$Miter$();
-  var picture$13 = new $c_Ldoodle_syntax_StyleSyntax$$anon$7(strokeJoin$1, this$30);
+  var picture$13 = new $c_Ldoodle_syntax_StyleSyntax$$anon$8(strokeJoin$1, this$30);
   var this$32 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$31, picture$13);
   var strokeCap$1 = $m_Ldoodle_core_Cap$Square$();
-  var picture$14 = new $c_Ldoodle_syntax_StyleSyntax$$anon$6(strokeCap$1, this$32);
+  var picture$14 = new $c_Ldoodle_syntax_StyleSyntax$$anon$7(strokeCap$1, this$32);
   var this$34 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$33, picture$14);
   var pattern$1 = new $ac_D(new Float64Array([12.0, 9.0]));
-  var that$1 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(pattern$1, this$34);
+  var that$1 = new $c_Ldoodle_syntax_StyleSyntax$$anon$6(pattern$1, this$34);
   var s$1 = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
   $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeStyle = new $c_Ldoodle_syntax_LayoutSyntax$$anon$2(that$1, s$1, this$36);
   var this$52 = $m_Ldoodle_syntax_package$all$();
@@ -20557,7 +20583,7 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   var fillGradient = new $c_Ldoodle_core_Gradient$Linear(start, end, stops, cycleMethod);
   var picture$16 = new $c_Ldoodle_syntax_StyleSyntax$$anon$2(fillGradient, this$47);
   var this$49 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$48, picture$16);
-  var picture$17 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(5.0, this$49);
+  var picture$17 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(5.0, this$49);
   var this$51 = new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$50, picture$17);
   var picture$18 = new $c_Ldoodle_syntax_LayoutSyntax$$anon$16(0.0, 5.0, 0.0, 0.0, this$51);
   var this$59 = new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$52, picture$18);
@@ -20568,10 +20594,59 @@ function $f_Ldoodle_examples_StyleExamples__$init$__V($thiz) {
   var fillGradient$1 = $m_Ldoodle_core_Gradient$().dichromaticRadial__Ldoodle_core_Color__Ldoodle_core_Color__D__Ldoodle_core_Gradient$Radial($m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_limeGreen, $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_darkBlue, 50.0);
   var picture$20 = new $c_Ldoodle_syntax_StyleSyntax$$anon$2(fillGradient$1, this$55);
   var this$57 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$56, picture$20);
-  var that$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(5.0, this$57);
+  var that$2 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(5.0, this$57);
   var s$2 = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
   $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_fillStyle = new $c_Ldoodle_syntax_LayoutSyntax$$anon$2(that$2, s$2, this$59);
-  $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_allPictures = new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_basicStyle, new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeStyle, new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_fillStyle, $m_sci_Nil$())));
+  var this$78 = $m_Ldoodle_syntax_package$all$();
+  var this$76 = $m_Ldoodle_syntax_package$all$();
+  var this$74 = $m_Ldoodle_syntax_package$all$();
+  var this$72 = $m_Ldoodle_syntax_package$all$();
+  var this$61 = $m_Ldoodle_syntax_package$all$();
+  var picture$21 = new $c_Ldoodle_syntax_ShapeSyntax$$anon$2(100.0);
+  var this$71 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$61, picture$21);
+  $m_Ldoodle_core_Point$();
+  var start$1 = new $c_Ldoodle_core_Point$Cartesian((-50.0), (-50.0));
+  $m_Ldoodle_core_Point$();
+  var end$1 = new $c_Ldoodle_core_Point$Cartesian(50.0, 50.0);
+  var _1$2 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_crimson;
+  var $x_3 = new $c_T2(_1$2, 0.0);
+  var _1$3 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_gold;
+  var $x_2 = new $c_T2(_1$3, 0.5);
+  var _1$4 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_deepSkyBlue;
+  var stops$1 = new $c_sci_$colon$colon($x_3, new $c_sci_$colon$colon($x_2, new $c_sci_$colon$colon(new $c_T2(_1$4, 1.0), $m_sci_Nil$())));
+  var cycleMethod$1 = $m_Ldoodle_core_Gradient$CycleMethod$Repeat$();
+  var strokeGradient = new $c_Ldoodle_core_Gradient$Linear(start$1, end$1, stops$1, cycleMethod$1);
+  var picture$22 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(strokeGradient, this$71);
+  var this$73 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$72, picture$22);
+  var picture$23 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(10.0, this$73);
+  var this$75 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$74, picture$23);
+  var picture$24 = new $c_Ldoodle_syntax_StyleSyntax$$anon$10(this$75);
+  var this$77 = new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$76, picture$24);
+  var picture$25 = new $c_Ldoodle_syntax_LayoutSyntax$$anon$16(0.0, 5.0, 0.0, 0.0, this$77);
+  var this$95 = new $c_Ldoodle_syntax_LayoutSyntax$LayoutPictureOps(this$78, picture$25);
+  var this$92 = $m_Ldoodle_syntax_package$all$();
+  var this$90 = $m_Ldoodle_syntax_package$all$();
+  var this$80 = $m_Ldoodle_syntax_package$all$();
+  var picture$26 = new $c_Ldoodle_syntax_ShapeSyntax$$anon$4(100.0);
+  var this$89 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$80, picture$26);
+  $m_Ldoodle_core_Point$();
+  var outer = new $c_Ldoodle_core_Point$Cartesian(0.0, 0.0);
+  $m_Ldoodle_core_Point$();
+  var inner = new $c_Ldoodle_core_Point$Cartesian(0.0, 0.0);
+  var _1$5 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_magenta;
+  var $x_4 = new $c_T2(_1$5, 0.0);
+  var _1$6 = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_cyan;
+  var stops$2 = new $c_sci_$colon$colon($x_4, new $c_sci_$colon$colon(new $c_T2(_1$6, 1.0), $m_sci_Nil$()));
+  var cycleMethod$2 = $m_Ldoodle_core_Gradient$CycleMethod$NoCycle$();
+  var strokeGradient$1 = new $c_Ldoodle_core_Gradient$Radial(outer, inner, 50.0, stops$2, cycleMethod$2);
+  var picture$27 = new $c_Ldoodle_syntax_StyleSyntax$$anon$4(strokeGradient$1, this$89);
+  var this$91 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$90, picture$27);
+  var picture$28 = new $c_Ldoodle_syntax_StyleSyntax$$anon$5(15.0, this$91);
+  var this$93 = new $c_Ldoodle_syntax_StyleSyntax$StylePictureOps(this$92, picture$28);
+  var that$3 = new $c_Ldoodle_syntax_StyleSyntax$$anon$10(this$93);
+  var s$3 = $m_Lcats_kernel_instances_unit_package$().Lcats_kernel_instances_unit_package$__f_catsKernelStdAlgebraForUnit;
+  $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeGradientStyle = new $c_Ldoodle_syntax_LayoutSyntax$$anon$2(that$3, s$3, this$95);
+  $thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_allPictures = new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_basicStyle, new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeStyle, new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_fillStyle, new $c_sci_$colon$colon($thiz.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeGradientStyle, $m_sci_Nil$()))));
 }
 function $f_Ldoodle_examples_TextExamples__$init$__V($thiz) {
   var this$2 = $m_Ldoodle_syntax_package$all$();
@@ -22444,13 +22519,39 @@ $h_Ldoodle_syntax_StyleSyntax$$anon$10.prototype = $c_Ldoodle_syntax_StyleSyntax
 $c_Ldoodle_syntax_StyleSyntax$$anon$10.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
   var this$1 = $n(algebra);
   var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$10__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
-  return $f_Ldoodle_algebra_generic_GenericStyle__noStroke__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0));
+  return $f_Ldoodle_algebra_generic_GenericStyle__noFill__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0));
 });
 $c_Ldoodle_syntax_StyleSyntax$$anon$10.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
   return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
 });
 var $d_Ldoodle_syntax_StyleSyntax$$anon$10 = new $TypeData().initClass($c_Ldoodle_syntax_StyleSyntax$$anon$10, "doodle.syntax.StyleSyntax$$anon$10", ({
   Ldoodle_syntax_StyleSyntax$$anon$10: 1,
+  Ldoodle_algebra_Picture: 1
+}));
+/** @constructor */
+function $c_Ldoodle_syntax_StyleSyntax$$anon$11(outer) {
+  this.Ldoodle_syntax_StyleSyntax$$anon$11__f_$outer = null;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException());
+  }
+  this.Ldoodle_syntax_StyleSyntax$$anon$11__f_$outer = outer;
+}
+$c_Ldoodle_syntax_StyleSyntax$$anon$11.prototype = new $h_O();
+$c_Ldoodle_syntax_StyleSyntax$$anon$11.prototype.constructor = $c_Ldoodle_syntax_StyleSyntax$$anon$11;
+/** @constructor */
+function $h_Ldoodle_syntax_StyleSyntax$$anon$11() {
+}
+$h_Ldoodle_syntax_StyleSyntax$$anon$11.prototype = $c_Ldoodle_syntax_StyleSyntax$$anon$11.prototype;
+$c_Ldoodle_syntax_StyleSyntax$$anon$11.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
+  var this$1 = $n(algebra);
+  var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$11__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
+  return $f_Ldoodle_algebra_generic_GenericStyle__noStroke__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0));
+});
+$c_Ldoodle_syntax_StyleSyntax$$anon$11.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
+  return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
+});
+var $d_Ldoodle_syntax_StyleSyntax$$anon$11 = new $TypeData().initClass($c_Ldoodle_syntax_StyleSyntax$$anon$11, "doodle.syntax.StyleSyntax$$anon$11", ({
+  Ldoodle_syntax_StyleSyntax$$anon$11: 1,
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
@@ -22512,10 +22613,10 @@ var $d_Ldoodle_syntax_StyleSyntax$$anon$3 = new $TypeData().initClass($c_Ldoodle
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
-function $c_Ldoodle_syntax_StyleSyntax$$anon$4(strokeWidth$2, outer) {
-  this.Ldoodle_syntax_StyleSyntax$$anon$4__f_strokeWidth$1 = 0.0;
+function $c_Ldoodle_syntax_StyleSyntax$$anon$4(strokeGradient$2, outer) {
+  this.Ldoodle_syntax_StyleSyntax$$anon$4__f_strokeGradient$1 = null;
   this.Ldoodle_syntax_StyleSyntax$$anon$4__f_$outer = null;
-  this.Ldoodle_syntax_StyleSyntax$$anon$4__f_strokeWidth$1 = strokeWidth$2;
+  this.Ldoodle_syntax_StyleSyntax$$anon$4__f_strokeGradient$1 = strokeGradient$2;
   if ((outer === null)) {
     throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException());
   }
@@ -22530,8 +22631,8 @@ $h_Ldoodle_syntax_StyleSyntax$$anon$4.prototype = $c_Ldoodle_syntax_StyleSyntax$
 $c_Ldoodle_syntax_StyleSyntax$$anon$4.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
   var this$1 = $n(algebra);
   var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$4__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
-  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$4__f_strokeWidth$1;
-  return $f_Ldoodle_algebra_generic_GenericStyle__strokeWidth__Ldoodle_algebra_generic_Finalized__D__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
+  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$4__f_strokeGradient$1;
+  return $f_Ldoodle_algebra_generic_GenericStyle__strokeGradient__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Gradient__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
 });
 $c_Ldoodle_syntax_StyleSyntax$$anon$4.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
   return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
@@ -22541,10 +22642,10 @@ var $d_Ldoodle_syntax_StyleSyntax$$anon$4 = new $TypeData().initClass($c_Ldoodle
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
-function $c_Ldoodle_syntax_StyleSyntax$$anon$5(pattern$2, outer) {
-  this.Ldoodle_syntax_StyleSyntax$$anon$5__f_pattern$1 = null;
+function $c_Ldoodle_syntax_StyleSyntax$$anon$5(strokeWidth$2, outer) {
+  this.Ldoodle_syntax_StyleSyntax$$anon$5__f_strokeWidth$1 = 0.0;
   this.Ldoodle_syntax_StyleSyntax$$anon$5__f_$outer = null;
-  this.Ldoodle_syntax_StyleSyntax$$anon$5__f_pattern$1 = pattern$2;
+  this.Ldoodle_syntax_StyleSyntax$$anon$5__f_strokeWidth$1 = strokeWidth$2;
   if ((outer === null)) {
     throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException());
   }
@@ -22559,8 +22660,8 @@ $h_Ldoodle_syntax_StyleSyntax$$anon$5.prototype = $c_Ldoodle_syntax_StyleSyntax$
 $c_Ldoodle_syntax_StyleSyntax$$anon$5.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
   var this$1 = $n(algebra);
   var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$5__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
-  var x1 = $m_s_Predef$().wrapDoubleArray__AD__scm_ArraySeq$ofDouble(this.Ldoodle_syntax_StyleSyntax$$anon$5__f_pattern$1);
-  return $f_Ldoodle_algebra_generic_GenericStyle__strokeDash__Ldoodle_algebra_generic_Finalized__sc_Iterable__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
+  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$5__f_strokeWidth$1;
+  return $f_Ldoodle_algebra_generic_GenericStyle__strokeWidth__Ldoodle_algebra_generic_Finalized__D__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
 });
 $c_Ldoodle_syntax_StyleSyntax$$anon$5.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
   return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
@@ -22570,10 +22671,10 @@ var $d_Ldoodle_syntax_StyleSyntax$$anon$5 = new $TypeData().initClass($c_Ldoodle
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
-function $c_Ldoodle_syntax_StyleSyntax$$anon$6(strokeCap$2, outer) {
-  this.Ldoodle_syntax_StyleSyntax$$anon$6__f_strokeCap$1 = null;
+function $c_Ldoodle_syntax_StyleSyntax$$anon$6(pattern$2, outer) {
+  this.Ldoodle_syntax_StyleSyntax$$anon$6__f_pattern$1 = null;
   this.Ldoodle_syntax_StyleSyntax$$anon$6__f_$outer = null;
-  this.Ldoodle_syntax_StyleSyntax$$anon$6__f_strokeCap$1 = strokeCap$2;
+  this.Ldoodle_syntax_StyleSyntax$$anon$6__f_pattern$1 = pattern$2;
   if ((outer === null)) {
     throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException());
   }
@@ -22588,8 +22689,8 @@ $h_Ldoodle_syntax_StyleSyntax$$anon$6.prototype = $c_Ldoodle_syntax_StyleSyntax$
 $c_Ldoodle_syntax_StyleSyntax$$anon$6.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
   var this$1 = $n(algebra);
   var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$6__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
-  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$6__f_strokeCap$1;
-  return $f_Ldoodle_algebra_generic_GenericStyle__strokeCap__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Cap__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
+  var x1 = $m_s_Predef$().wrapDoubleArray__AD__scm_ArraySeq$ofDouble(this.Ldoodle_syntax_StyleSyntax$$anon$6__f_pattern$1);
+  return $f_Ldoodle_algebra_generic_GenericStyle__strokeDash__Ldoodle_algebra_generic_Finalized__sc_Iterable__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
 });
 $c_Ldoodle_syntax_StyleSyntax$$anon$6.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
   return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
@@ -22599,10 +22700,10 @@ var $d_Ldoodle_syntax_StyleSyntax$$anon$6 = new $TypeData().initClass($c_Ldoodle
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
-function $c_Ldoodle_syntax_StyleSyntax$$anon$7(strokeJoin$2, outer) {
-  this.Ldoodle_syntax_StyleSyntax$$anon$7__f_strokeJoin$1 = null;
+function $c_Ldoodle_syntax_StyleSyntax$$anon$7(strokeCap$2, outer) {
+  this.Ldoodle_syntax_StyleSyntax$$anon$7__f_strokeCap$1 = null;
   this.Ldoodle_syntax_StyleSyntax$$anon$7__f_$outer = null;
-  this.Ldoodle_syntax_StyleSyntax$$anon$7__f_strokeJoin$1 = strokeJoin$2;
+  this.Ldoodle_syntax_StyleSyntax$$anon$7__f_strokeCap$1 = strokeCap$2;
   if ((outer === null)) {
     throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException());
   }
@@ -22617,14 +22718,43 @@ $h_Ldoodle_syntax_StyleSyntax$$anon$7.prototype = $c_Ldoodle_syntax_StyleSyntax$
 $c_Ldoodle_syntax_StyleSyntax$$anon$7.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
   var this$1 = $n(algebra);
   var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$7__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
-  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$7__f_strokeJoin$1;
-  return $f_Ldoodle_algebra_generic_GenericStyle__strokeJoin__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Join__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
+  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$7__f_strokeCap$1;
+  return $f_Ldoodle_algebra_generic_GenericStyle__strokeCap__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Cap__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
 });
 $c_Ldoodle_syntax_StyleSyntax$$anon$7.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
   return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
 });
 var $d_Ldoodle_syntax_StyleSyntax$$anon$7 = new $TypeData().initClass($c_Ldoodle_syntax_StyleSyntax$$anon$7, "doodle.syntax.StyleSyntax$$anon$7", ({
   Ldoodle_syntax_StyleSyntax$$anon$7: 1,
+  Ldoodle_algebra_Picture: 1
+}));
+/** @constructor */
+function $c_Ldoodle_syntax_StyleSyntax$$anon$8(strokeJoin$2, outer) {
+  this.Ldoodle_syntax_StyleSyntax$$anon$8__f_strokeJoin$1 = null;
+  this.Ldoodle_syntax_StyleSyntax$$anon$8__f_$outer = null;
+  this.Ldoodle_syntax_StyleSyntax$$anon$8__f_strokeJoin$1 = strokeJoin$2;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException());
+  }
+  this.Ldoodle_syntax_StyleSyntax$$anon$8__f_$outer = outer;
+}
+$c_Ldoodle_syntax_StyleSyntax$$anon$8.prototype = new $h_O();
+$c_Ldoodle_syntax_StyleSyntax$$anon$8.prototype.constructor = $c_Ldoodle_syntax_StyleSyntax$$anon$8;
+/** @constructor */
+function $h_Ldoodle_syntax_StyleSyntax$$anon$8() {
+}
+$h_Ldoodle_syntax_StyleSyntax$$anon$8.prototype = $c_Ldoodle_syntax_StyleSyntax$$anon$8.prototype;
+$c_Ldoodle_syntax_StyleSyntax$$anon$8.prototype.apply__Ldoodle_algebra_Style__O = (function(algebra) {
+  var this$1 = $n(algebra);
+  var x0 = $n($n(this.Ldoodle_syntax_StyleSyntax$$anon$8__f_$outer).Ldoodle_syntax_StyleSyntax$StylePictureOps__f_doodle$syntax$StyleSyntax$StylePictureOps$$picture).apply__Ldoodle_algebra_Algebra__O(algebra);
+  var x1 = this.Ldoodle_syntax_StyleSyntax$$anon$8__f_strokeJoin$1;
+  return $f_Ldoodle_algebra_generic_GenericStyle__strokeJoin__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Join__Ldoodle_algebra_generic_Finalized(this$1, $as_Ldoodle_algebra_generic_Finalized(x0), x1);
+});
+$c_Ldoodle_syntax_StyleSyntax$$anon$8.prototype.apply__Ldoodle_algebra_Algebra__O = (function(algebra) {
+  return this.apply__Ldoodle_algebra_Style__O($as_Ldoodle_algebra_Style(algebra));
+});
+var $d_Ldoodle_syntax_StyleSyntax$$anon$8 = new $TypeData().initClass($c_Ldoodle_syntax_StyleSyntax$$anon$8, "doodle.syntax.StyleSyntax$$anon$8", ({
+  Ldoodle_syntax_StyleSyntax$$anon$8: 1,
   Ldoodle_algebra_Picture: 1
 }));
 /** @constructor */
@@ -30512,14 +30642,15 @@ function $h_Ldoodle_algebra_generic_DrawingContext$() {
 $h_Ldoodle_algebra_generic_DrawingContext$.prototype = $c_Ldoodle_algebra_generic_DrawingContext$.prototype;
 $c_Ldoodle_algebra_generic_DrawingContext$.prototype.default__Ldoodle_algebra_generic_DrawingContext = (function() {
   var blendMode = $m_Ldoodle_algebra_generic_BlendMode$SourceOver$();
-  var strokeColor = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_black;
+  var color = $m_Ldoodle_core_Color$().Ldoodle_core_Color$__f_black;
+  var strokeStyle = new $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(color);
   var strokeWidth = $m_s_Option$().apply__O__s_Option(1.0);
   var strokeCap = $m_Ldoodle_core_Cap$Butt$();
   var strokeJoin = $m_Ldoodle_core_Join$Miter$();
   var strokeDash = $m_s_None$();
   var fill = $m_s_None$();
   var font = $m_Ldoodle_core_font_Font$().Ldoodle_core_font_Font$__f_defaultSansSerif;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font);
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeStyle, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font);
 });
 var $d_Ldoodle_algebra_generic_DrawingContext$ = new $TypeData().initClass($c_Ldoodle_algebra_generic_DrawingContext$, "doodle.algebra.generic.DrawingContext$", ({
   Ldoodle_algebra_generic_DrawingContext$: 1,
@@ -30607,20 +30738,12 @@ function $f_Ldoodle_algebra_generic_GenericDebug__debug__Ldoodle_algebra_generic
         var this$3 = $n($as_Ldoodle_algebra_Layout($thiz));
         var x2 = $m_Lcats_implicits$().Lcats_implicits$__f_catsKernelStdAlgebraForUnit;
         var bbPicture = $f_Ldoodle_algebra_generic_GenericLayout__on__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized__Lcats_kernel_Semigroup__Ldoodle_algebra_generic_Finalized(this$3, bbOrigin, bbOutline, x2);
-        var this$5 = $n(bbPicture);
+        var this$4 = $n(bbPicture);
         var ctxTxs$2 = new $c_sci_$colon$colon(new $c_sjsr_AnonFunction1(((dc) => {
           var dc$1 = $as_Ldoodle_algebra_generic_DrawingContext(dc);
-          var this$4 = $n(dc$1);
-          var blendMode = this$4.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-          var strokeWidth = this$4.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
-          var strokeCap = this$4.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
-          var strokeJoin = this$4.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
-          var strokeDash = this$4.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
-          var fill = this$4.Ldoodle_algebra_generic_DrawingContext__f_fill;
-          var font = this$4.Ldoodle_algebra_generic_DrawingContext__f_font;
-          return $n(new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, color, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font).strokeWidth__D__Ldoodle_algebra_generic_DrawingContext(1.0)).noFill__Ldoodle_algebra_generic_DrawingContext();
+          return $n($n($n(dc$1).strokeColor__Ldoodle_core_Color__Ldoodle_algebra_generic_DrawingContext(color)).strokeWidth__D__Ldoodle_algebra_generic_DrawingContext(1.0)).noFill__Ldoodle_algebra_generic_DrawingContext();
         })), $m_sci_Nil$());
-        return $n($as_Lcats_Eval($n(this$5.Ldoodle_algebra_generic_Finalized__f_f).apply__O__O(ctxTxs$2))).map__F1__Lcats_Eval(new $c_sjsr_AnonFunction1(((x$1$2) => {
+        return $n($as_Lcats_Eval($n(this$4.Ldoodle_algebra_generic_Finalized__f_f).apply__O__O(ctxTxs$2))).map__F1__Lcats_Eval(new $c_sjsr_AnonFunction1(((x$1$2) => {
           var x$1$3 = $as_T2(x$1$2);
           if ((x$1$3 !== null)) {
             var rdrDebug = $as_Lcats_data_IndexedStateT($n(x$1$3)._2__O());
@@ -30639,9 +30762,9 @@ function $f_Ldoodle_algebra_generic_GenericDebug__debug__Ldoodle_algebra_generic
                 })), $n($as_Ldoodle_algebra_generic_GivenApply($as_Ldoodle_algebra_Layout($thiz))).applyDrawing__Lcats_Apply(), $n($as_Ldoodle_algebra_generic_GivenApply($as_Ldoodle_algebra_Layout($thiz))).applyDrawing__Lcats_Apply());
               })), $m_Lcats_Eval$().Lcats_EvalInstances__f_catsBimonadForEval, $m_Lcats_Eval$().Lcats_EvalInstances__f_catsBimonadForEval));
             }));
-            var this$11 = $m_Lcats_data_IndexedStateT$();
+            var this$10 = $m_Lcats_data_IndexedStateT$();
             var F = $m_Lcats_Eval$().Lcats_EvalInstances__f_catsBimonadForEval;
-            var fullRdr = $f_Lcats_data_CommonStateTConstructors__inspectF__F1__Lcats_Applicative__Lcats_data_IndexedStateT(this$11, f, F);
+            var fullRdr = $f_Lcats_data_CommonStateTConstructors__inspectF__F1__Lcats_Applicative__Lcats_data_IndexedStateT(this$10, f, F);
             return new $c_T2(bb, fullRdr);
           }
           throw new $c_s_MatchError(x$1$3);
@@ -31040,59 +31163,57 @@ function $f_Ldoodle_algebra_generic_GenericStyle__fillGradient__Ldoodle_algebra_
 function $f_Ldoodle_algebra_generic_GenericStyle__strokeColor__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Color__Ldoodle_algebra_generic_Finalized($thiz, image, strokeColor) {
   return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$4) => {
     var _$4$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$4);
-    var this$1 = $n(_$4$1);
-    var blendMode = this$1.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-    var strokeWidth = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
-    var strokeCap = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
-    var strokeJoin = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
-    var strokeDash = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
-    var fill = this$1.Ldoodle_algebra_generic_DrawingContext__f_fill;
-    var font = this$1.Ldoodle_algebra_generic_DrawingContext__f_font;
-    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font);
+    return $n(_$4$1).strokeColor__Ldoodle_core_Color__Ldoodle_algebra_generic_DrawingContext(strokeColor);
+  })), image);
+}
+function $f_Ldoodle_algebra_generic_GenericStyle__strokeGradient__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Gradient__Ldoodle_algebra_generic_Finalized($thiz, image, strokeGradient) {
+  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$5) => {
+    var _$5$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$5);
+    return $n(_$5$1).strokeGradient__Ldoodle_core_Gradient__Ldoodle_algebra_generic_DrawingContext(strokeGradient);
   })), image);
 }
 function $f_Ldoodle_algebra_generic_GenericStyle__strokeWidth__Ldoodle_algebra_generic_Finalized__D__Ldoodle_algebra_generic_Finalized($thiz, image, strokeWidth) {
-  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$5) => {
-    var _$5$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$5);
-    return $n(_$5$1).strokeWidth__D__Ldoodle_algebra_generic_DrawingContext(strokeWidth);
+  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$6) => {
+    var _$6$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$6);
+    return $n(_$6$1).strokeWidth__D__Ldoodle_algebra_generic_DrawingContext(strokeWidth);
   })), image);
 }
 function $f_Ldoodle_algebra_generic_GenericStyle__strokeCap__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Cap__Ldoodle_algebra_generic_Finalized($thiz, image, cap) {
-  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$6) => {
-    var _$6$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$6);
-    var this$1 = $n(_$6$1);
-    var blendMode = this$1.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-    var strokeColor = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
-    var strokeWidth = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
-    var strokeJoin = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
-    var strokeDash = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
-    var fill = this$1.Ldoodle_algebra_generic_DrawingContext__f_fill;
-    var font = this$1.Ldoodle_algebra_generic_DrawingContext__f_font;
-    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strokeWidth, cap, strokeJoin, strokeDash, fill, font);
-  })), image);
-}
-function $f_Ldoodle_algebra_generic_GenericStyle__strokeJoin__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Join__Ldoodle_algebra_generic_Finalized($thiz, image, join) {
   return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$7) => {
     var _$7$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$7);
     var this$1 = $n(_$7$1);
     var blendMode = this$1.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-    var strokeColor = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+    var strokeStyle = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
+    var strokeWidth = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
+    var strokeJoin = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
+    var strokeDash = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
+    var fill = this$1.Ldoodle_algebra_generic_DrawingContext__f_fill;
+    var font = this$1.Ldoodle_algebra_generic_DrawingContext__f_font;
+    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeStyle, strokeWidth, cap, strokeJoin, strokeDash, fill, font);
+  })), image);
+}
+function $f_Ldoodle_algebra_generic_GenericStyle__strokeJoin__Ldoodle_algebra_generic_Finalized__Ldoodle_core_Join__Ldoodle_algebra_generic_Finalized($thiz, image, join) {
+  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$8) => {
+    var _$8$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$8);
+    var this$1 = $n(_$8$1);
+    var blendMode = this$1.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
+    var strokeStyle = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
     var strokeWidth = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
     var strokeCap = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
     var strokeDash = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
     var fill = this$1.Ldoodle_algebra_generic_DrawingContext__f_fill;
     var font = this$1.Ldoodle_algebra_generic_DrawingContext__f_font;
-    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strokeWidth, strokeCap, join, strokeDash, fill, font);
+    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeStyle, strokeWidth, strokeCap, join, strokeDash, fill, font);
   })), image);
 }
 function $f_Ldoodle_algebra_generic_GenericStyle__strokeDash__Ldoodle_algebra_generic_Finalized__sc_Iterable__Ldoodle_algebra_generic_Finalized($thiz, image, pattern) {
-  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$8) => {
-    var _$8$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$8);
-    var $x_10 = $n(_$8$1);
+  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$9) => {
+    var _$9$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$9);
+    var $x_10 = $n(_$9$1);
     var xs = $asArrayOf_D($n(pattern).toArray__s_reflect_ClassTag__O($m_s_reflect_ManifestFactory$DoubleManifest$()), 1);
-    var f = ((_$9) => {
-      var _$9$1 = $uD(_$9);
-      return Math.fround(_$9$1);
+    var f = ((_$10) => {
+      var _$10$1 = $uD(_$10);
+      return Math.fround(_$10$1);
     });
     var len = $n(xs).u.length;
     var ys = new $ac_F(len);
@@ -31178,10 +31299,16 @@ function $f_Ldoodle_algebra_generic_GenericStyle__strokeDash__Ldoodle_algebra_ge
     return $x_10.strokeDash__AF__Ldoodle_algebra_generic_DrawingContext(ys);
   })), image);
 }
-function $f_Ldoodle_algebra_generic_GenericStyle__noStroke__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized($thiz, image) {
+function $f_Ldoodle_algebra_generic_GenericStyle__noFill__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized($thiz, image) {
   return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$12) => {
     var _$12$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$12);
-    return $n(_$12$1).noStroke__Ldoodle_algebra_generic_DrawingContext();
+    return $n(_$12$1).noFill__Ldoodle_algebra_generic_DrawingContext();
+  })), image);
+}
+function $f_Ldoodle_algebra_generic_GenericStyle__noStroke__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized($thiz, image) {
+  return $m_Ldoodle_algebra_generic_Finalized$().contextTransform__F1__Ldoodle_algebra_generic_Finalized__Ldoodle_algebra_generic_Finalized(new $c_sjsr_AnonFunction1(((_$13) => {
+    var _$13$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$13);
+    return $n(_$13$1).noStroke__Ldoodle_algebra_generic_DrawingContext();
   })), image);
 }
 function $f_Ldoodle_algebra_generic_GenericText__font__Ldoodle_algebra_generic_Finalized__Ldoodle_core_font_Font__Ldoodle_algebra_generic_Finalized($thiz, image, font) {
@@ -31189,13 +31316,13 @@ function $f_Ldoodle_algebra_generic_GenericText__font__Ldoodle_algebra_generic_F
     var _$2$1 = $as_Ldoodle_algebra_generic_DrawingContext(_$2);
     var this$1 = $n(_$2$1);
     var blendMode = this$1.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-    var strokeColor = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+    var strokeStyle = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
     var strokeWidth = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
     var strokeCap = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
     var strokeJoin = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
     var strokeDash = this$1.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
     var fill = this$1.Ldoodle_algebra_generic_DrawingContext__f_fill;
-    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font);
+    return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeStyle, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font);
   })), image);
 }
 function $f_Ldoodle_algebra_generic_GenericText__text__T__Ldoodle_algebra_generic_Finalized($thiz, text) {
@@ -31860,6 +31987,7 @@ function $c_Ldoodle_examples_canvas_CanvasStyleExamples$() {
   this.Ldoodle_examples_canvas_CanvasStyleExamples$__f_basicStyle = null;
   this.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeStyle = null;
   this.Ldoodle_examples_canvas_CanvasStyleExamples$__f_fillStyle = null;
+  this.Ldoodle_examples_canvas_CanvasStyleExamples$__f_strokeGradientStyle = null;
   this.Ldoodle_examples_canvas_CanvasStyleExamples$__f_allPictures = null;
   $n_Ldoodle_examples_canvas_CanvasStyleExamples$ = this;
   $f_Ldoodle_examples_StyleExamples__$init$__V(this);
@@ -31921,13 +32049,13 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont__T__V = (function(id
   var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_font;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawHello__T__V(prep0);
-});
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawFont__T__V(prep0);
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawHello__T__V(prep0);
 });
 var $d_Ldoodle_examples_svg_SvgTextExamples$ = new $TypeData().initClass($c_Ldoodle_examples_svg_SvgTextExamples$, "doodle.examples.svg.SvgTextExamples$", ({
   Ldoodle_examples_svg_SvgTextExamples$: 1,
@@ -36510,9 +36638,9 @@ $c_Ldoodle_algebra_generic_BlendMode.prototype.productIterator__sc_Iterator = (f
   return new $c_s_Product$$anon$1(this);
 });
 /** @constructor */
-function $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font) {
+function $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeStyle, strokeWidth, strokeCap, strokeJoin, strokeDash, fill, font) {
   this.Ldoodle_algebra_generic_DrawingContext__f_blendMode = null;
-  this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor = null;
+  this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle = null;
   this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth = null;
   this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap = null;
   this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin = null;
@@ -36520,7 +36648,7 @@ function $c_Ldoodle_algebra_generic_DrawingContext(blendMode, strokeColor, strok
   this.Ldoodle_algebra_generic_DrawingContext__f_fill = null;
   this.Ldoodle_algebra_generic_DrawingContext__f_font = null;
   this.Ldoodle_algebra_generic_DrawingContext__f_blendMode = blendMode;
-  this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor = strokeColor;
+  this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle = strokeStyle;
   this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth = strokeWidth;
   this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap = strokeCap;
   this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin = strokeJoin;
@@ -36555,8 +36683,8 @@ $c_Ldoodle_algebra_generic_DrawingContext.prototype.equals__O__Z = (function(x$0
       var $x_7 = (this$1 === x$2);
     }
     if ($x_7) {
-      var x$3 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
-      var x$4 = $n(x$0$2).Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+      var x$3 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
+      var x$4 = $n(x$0$2).Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
       var $x_6 = ((x$3 === null) ? (x$4 === null) : $n(x$3).equals__O__Z(x$4));
     } else {
       var $x_6 = false;
@@ -36633,7 +36761,7 @@ $c_Ldoodle_algebra_generic_DrawingContext.prototype.productElement__I__O = (func
       break;
     }
     case 1: {
-      return this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+      return this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
       break;
     }
     case 2: {
@@ -36672,80 +36800,102 @@ $c_Ldoodle_algebra_generic_DrawingContext.prototype.stroke__s_Option = (function
   } else {
     var arg1 = this$1.get__O();
     var w = $uD(arg1);
-    var color = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+    var style = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
     var cap = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
     var join = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
     var dash = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
-    return new $c_s_Some(new $c_Ldoodle_algebra_generic_Stroke(color, w, cap, join, dash));
+    return new $c_s_Some(new $c_Ldoodle_algebra_generic_Stroke(style, w, cap, join, dash));
   }
 });
-$c_Ldoodle_algebra_generic_DrawingContext.prototype.strokeWidth__D__Ldoodle_algebra_generic_DrawingContext = (function(width) {
-  var strokeWidth$1 = ((width <= 0.0) ? $m_s_None$() : new $c_s_Some(width));
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.strokeColor__Ldoodle_core_Color__Ldoodle_algebra_generic_DrawingContext = (function(color) {
+  var strokeStyle$1 = new $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(color);
   var blendMode$1 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-  var strokeColor$1 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+  var strokeWidth$1 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
   var strokeCap$1 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
   var strokeJoin$1 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
   var strokeDash$1 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
   var fill$1 = this.Ldoodle_algebra_generic_DrawingContext__f_fill;
   var font$1 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$1, strokeColor$1, strokeWidth$1, strokeCap$1, strokeJoin$1, strokeDash$1, fill$1, font$1);
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$1, strokeStyle$1, strokeWidth$1, strokeCap$1, strokeJoin$1, strokeDash$1, fill$1, font$1);
 });
-$c_Ldoodle_algebra_generic_DrawingContext.prototype.strokeDash__AF__Ldoodle_algebra_generic_DrawingContext = (function(pattern) {
-  var strokeDash$2 = new $c_s_Some(pattern);
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.strokeGradient__Ldoodle_core_Gradient__Ldoodle_algebra_generic_DrawingContext = (function(gradient) {
+  var strokeStyle$2 = new $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(gradient);
   var blendMode$2 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-  var strokeColor$2 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
   var strokeWidth$2 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
   var strokeCap$2 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
   var strokeJoin$2 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
+  var strokeDash$2 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
   var fill$2 = this.Ldoodle_algebra_generic_DrawingContext__f_fill;
   var font$2 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$2, strokeColor$2, strokeWidth$2, strokeCap$2, strokeJoin$2, strokeDash$2, fill$2, font$2);
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$2, strokeStyle$2, strokeWidth$2, strokeCap$2, strokeJoin$2, strokeDash$2, fill$2, font$2);
 });
-$c_Ldoodle_algebra_generic_DrawingContext.prototype.noStroke__Ldoodle_algebra_generic_DrawingContext = (function() {
-  var strokeWidth$4 = $m_s_None$();
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.strokeWidth__D__Ldoodle_algebra_generic_DrawingContext = (function(width) {
+  var strokeWidth$3 = ((width <= 0.0) ? $m_s_None$() : new $c_s_Some(width));
+  var blendMode$3 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
+  var strokeStyle$3 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
+  var strokeCap$3 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
+  var strokeJoin$3 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
+  var strokeDash$3 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
+  var fill$3 = this.Ldoodle_algebra_generic_DrawingContext__f_fill;
+  var font$3 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$3, strokeStyle$3, strokeWidth$3, strokeCap$3, strokeJoin$3, strokeDash$3, fill$3, font$3);
+});
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.strokeDash__AF__Ldoodle_algebra_generic_DrawingContext = (function(pattern) {
+  var strokeDash$4 = new $c_s_Some(pattern);
   var blendMode$4 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-  var strokeColor$4 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+  var strokeStyle$4 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
+  var strokeWidth$4 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
   var strokeCap$4 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
   var strokeJoin$4 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
-  var strokeDash$4 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
   var fill$4 = this.Ldoodle_algebra_generic_DrawingContext__f_fill;
   var font$4 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$4, strokeColor$4, strokeWidth$4, strokeCap$4, strokeJoin$4, strokeDash$4, fill$4, font$4);
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$4, strokeStyle$4, strokeWidth$4, strokeCap$4, strokeJoin$4, strokeDash$4, fill$4, font$4);
 });
-$c_Ldoodle_algebra_generic_DrawingContext.prototype.fillColor__Ldoodle_core_Color__Ldoodle_algebra_generic_DrawingContext = (function(color) {
-  var value = new $c_Ldoodle_algebra_generic_Fill$ColorFill(color);
-  var fill$5 = new $c_s_Some(value);
-  var blendMode$5 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-  var strokeColor$5 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
-  var strokeWidth$5 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
-  var strokeCap$5 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
-  var strokeJoin$5 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
-  var strokeDash$5 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
-  var font$5 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$5, strokeColor$5, strokeWidth$5, strokeCap$5, strokeJoin$5, strokeDash$5, fill$5, font$5);
-});
-$c_Ldoodle_algebra_generic_DrawingContext.prototype.fillGradient__Ldoodle_core_Gradient__Ldoodle_algebra_generic_DrawingContext = (function(gradient) {
-  var value = new $c_Ldoodle_algebra_generic_Fill$GradientFill(gradient);
-  var fill$6 = new $c_s_Some(value);
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.noStroke__Ldoodle_algebra_generic_DrawingContext = (function() {
+  var strokeWidth$6 = $m_s_None$();
   var blendMode$6 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-  var strokeColor$6 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
-  var strokeWidth$6 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
+  var strokeStyle$6 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
   var strokeCap$6 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
   var strokeJoin$6 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
   var strokeDash$6 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
+  var fill$6 = this.Ldoodle_algebra_generic_DrawingContext__f_fill;
   var font$6 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$6, strokeColor$6, strokeWidth$6, strokeCap$6, strokeJoin$6, strokeDash$6, fill$6, font$6);
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$6, strokeStyle$6, strokeWidth$6, strokeCap$6, strokeJoin$6, strokeDash$6, fill$6, font$6);
 });
-$c_Ldoodle_algebra_generic_DrawingContext.prototype.noFill__Ldoodle_algebra_generic_DrawingContext = (function() {
-  var fill$7 = $m_s_None$();
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.fillColor__Ldoodle_core_Color__Ldoodle_algebra_generic_DrawingContext = (function(color) {
+  var value = new $c_Ldoodle_algebra_generic_Fill$ColorFill(color);
+  var fill$7 = new $c_s_Some(value);
   var blendMode$7 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
-  var strokeColor$7 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeColor;
+  var strokeStyle$7 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
   var strokeWidth$7 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
   var strokeCap$7 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
   var strokeJoin$7 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
   var strokeDash$7 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
   var font$7 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
-  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$7, strokeColor$7, strokeWidth$7, strokeCap$7, strokeJoin$7, strokeDash$7, fill$7, font$7);
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$7, strokeStyle$7, strokeWidth$7, strokeCap$7, strokeJoin$7, strokeDash$7, fill$7, font$7);
+});
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.fillGradient__Ldoodle_core_Gradient__Ldoodle_algebra_generic_DrawingContext = (function(gradient) {
+  var value = new $c_Ldoodle_algebra_generic_Fill$GradientFill(gradient);
+  var fill$8 = new $c_s_Some(value);
+  var blendMode$8 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
+  var strokeStyle$8 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
+  var strokeWidth$8 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
+  var strokeCap$8 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
+  var strokeJoin$8 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
+  var strokeDash$8 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
+  var font$8 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$8, strokeStyle$8, strokeWidth$8, strokeCap$8, strokeJoin$8, strokeDash$8, fill$8, font$8);
+});
+$c_Ldoodle_algebra_generic_DrawingContext.prototype.noFill__Ldoodle_algebra_generic_DrawingContext = (function() {
+  var fill$9 = $m_s_None$();
+  var blendMode$9 = this.Ldoodle_algebra_generic_DrawingContext__f_blendMode;
+  var strokeStyle$9 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeStyle;
+  var strokeWidth$9 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeWidth;
+  var strokeCap$9 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeCap;
+  var strokeJoin$9 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeJoin;
+  var strokeDash$9 = this.Ldoodle_algebra_generic_DrawingContext__f_strokeDash;
+  var font$9 = this.Ldoodle_algebra_generic_DrawingContext__f_font;
+  return new $c_Ldoodle_algebra_generic_DrawingContext(blendMode$9, strokeStyle$9, strokeWidth$9, strokeCap$9, strokeJoin$9, strokeDash$9, fill$9, font$9);
 });
 function $as_Ldoodle_algebra_generic_DrawingContext(obj) {
   return (((obj instanceof $c_Ldoodle_algebra_generic_DrawingContext) || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.algebra.generic.DrawingContext"));
@@ -36860,13 +37010,13 @@ var $d_Ldoodle_algebra_generic_Finalized = new $TypeData().initClass($c_Ldoodle_
   Ljava_io_Serializable: 1
 }));
 /** @constructor */
-function $c_Ldoodle_algebra_generic_Stroke(color, width, cap, join, dash) {
-  this.Ldoodle_algebra_generic_Stroke__f_color = null;
+function $c_Ldoodle_algebra_generic_Stroke(style, width, cap, join, dash) {
+  this.Ldoodle_algebra_generic_Stroke__f_style = null;
   this.Ldoodle_algebra_generic_Stroke__f_width = 0.0;
   this.Ldoodle_algebra_generic_Stroke__f_cap = null;
   this.Ldoodle_algebra_generic_Stroke__f_join = null;
   this.Ldoodle_algebra_generic_Stroke__f_dash = null;
-  this.Ldoodle_algebra_generic_Stroke__f_color = color;
+  this.Ldoodle_algebra_generic_Stroke__f_style = style;
   this.Ldoodle_algebra_generic_Stroke__f_width = width;
   this.Ldoodle_algebra_generic_Stroke__f_cap = cap;
   this.Ldoodle_algebra_generic_Stroke__f_join = join;
@@ -36887,7 +37037,7 @@ $c_Ldoodle_algebra_generic_Stroke.prototype.hashCode__I = (function() {
   var data = $f_T__hashCode__I("Stroke");
   acc = $m_sr_Statics$().mix__I__I__I(hash, data);
   var hash$1 = acc;
-  var x = this.Ldoodle_algebra_generic_Stroke__f_color;
+  var x = this.Ldoodle_algebra_generic_Stroke__f_style;
   var data$1 = $m_sr_Statics$().anyHash__O__I(x);
   acc = $m_sr_Statics$().mix__I__I__I(hash$1, data$1);
   var hash$2 = acc;
@@ -36915,8 +37065,8 @@ $c_Ldoodle_algebra_generic_Stroke.prototype.equals__O__Z = (function(x$0) {
   } else if ((x$0 instanceof $c_Ldoodle_algebra_generic_Stroke)) {
     var x$0$2 = $as_Ldoodle_algebra_generic_Stroke(x$0);
     if ((this.Ldoodle_algebra_generic_Stroke__f_width === $n(x$0$2).Ldoodle_algebra_generic_Stroke__f_width)) {
-      var x = this.Ldoodle_algebra_generic_Stroke__f_color;
-      var x$2 = $n(x$0$2).Ldoodle_algebra_generic_Stroke__f_color;
+      var x = this.Ldoodle_algebra_generic_Stroke__f_style;
+      var x$2 = $n(x$0$2).Ldoodle_algebra_generic_Stroke__f_style;
       var $x_3 = ((x === null) ? (x$2 === null) : $n(x).equals__O__Z(x$2));
     } else {
       var $x_3 = false;
@@ -36968,7 +37118,7 @@ $c_Ldoodle_algebra_generic_Stroke.prototype.productPrefix__T = (function() {
 $c_Ldoodle_algebra_generic_Stroke.prototype.productElement__I__O = (function(n) {
   switch (n) {
     case 0: {
-      return this.Ldoodle_algebra_generic_Stroke__f_color;
+      return this.Ldoodle_algebra_generic_Stroke__f_style;
       break;
     }
     case 1: {
@@ -37468,15 +37618,6 @@ $h_Ldoodle_core_Cap.prototype = $c_Ldoodle_core_Cap.prototype;
 $c_Ldoodle_core_Cap.prototype.productIterator__sc_Iterator = (function() {
   return new $c_s_Product$$anon$1(this);
 });
-function $as_Ldoodle_core_Cap(obj) {
-  return (((obj instanceof $c_Ldoodle_core_Cap) || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.core.Cap"));
-}
-function $isArrayOf_Ldoodle_core_Cap(obj, depth) {
-  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldoodle_core_Cap)));
-}
-function $asArrayOf_Ldoodle_core_Cap(obj, depth) {
-  return (($isArrayOf_Ldoodle_core_Cap(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldoodle.core.Cap;", depth));
-}
 /** @constructor */
 function $c_Ldoodle_core_ClosedPath(reversed) {
   this.Ldoodle_core_ClosedPath__f_reversed = null;
@@ -37708,8 +37849,11 @@ function $c_Ldoodle_core_Color$() {
   this.Ldoodle_core_Color$__f_blueViolet = null;
   this.Ldoodle_core_Color$__f_chartreuse = null;
   this.Ldoodle_core_Color$__f_crimson = null;
+  this.Ldoodle_core_Color$__f_cyan = null;
   this.Ldoodle_core_Color$__f_darkBlue = null;
   this.Ldoodle_core_Color$__f_darkMagenta = null;
+  this.Ldoodle_core_Color$__f_deepSkyBlue = null;
+  this.Ldoodle_core_Color$__f_gold = null;
   this.Ldoodle_core_Color$__f_greenYellow = null;
   this.Ldoodle_core_Color$__f_hotPink = null;
   this.Ldoodle_core_Color$__f_lavender = null;
@@ -37804,15 +37948,6 @@ $h_Ldoodle_core_Join.prototype = $c_Ldoodle_core_Join.prototype;
 $c_Ldoodle_core_Join.prototype.productIterator__sc_Iterator = (function() {
   return new $c_s_Product$$anon$1(this);
 });
-function $as_Ldoodle_core_Join(obj) {
-  return (((obj instanceof $c_Ldoodle_core_Join) || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.core.Join"));
-}
-function $isArrayOf_Ldoodle_core_Join(obj, depth) {
-  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldoodle_core_Join)));
-}
-function $asArrayOf_Ldoodle_core_Join(obj, depth) {
-  return (($isArrayOf_Ldoodle_core_Join(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldoodle.core.Join;", depth));
-}
 /** @constructor */
 function $c_Ldoodle_core_Landmark(x, y) {
   this.Ldoodle_core_Landmark__f_x = null;
@@ -45704,6 +45839,128 @@ var $d_Ldoodle_algebra_generic_Fill$GradientFill = new $TypeData().initClass($c_
   s_Product: 1,
   Ljava_io_Serializable: 1,
   Ldoodle_algebra_generic_Fill: 1
+}));
+/** @constructor */
+function $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(color) {
+  this.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color = null;
+  this.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color = color;
+}
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype = new $h_O();
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.constructor = $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke;
+/** @constructor */
+function $h_Ldoodle_algebra_generic_StrokeStyle$ColorStroke() {
+}
+$h_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype = $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype;
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_s_Product$$anon$1(this);
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.hashCode__I = (function() {
+  var this$2 = $m_s_util_hashing_MurmurHash3$();
+  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false);
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.equals__O__Z = (function(x$0) {
+  if ((this === x$0)) {
+    return true;
+  } else if ((x$0 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke)) {
+    var x$0$2 = $as_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(x$0);
+    var x = this.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
+    var x$2 = $n(x$0$2).Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
+    return ((x === null) ? (x$2 === null) : $n(x).equals__O__Z(x$2));
+  } else {
+    return false;
+  }
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$()._toString__s_Product__T(this);
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.productArity__I = (function() {
+  return 1;
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.productPrefix__T = (function() {
+  return "ColorStroke";
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke.prototype.productElement__I__O = (function(n) {
+  if ((n === 0)) {
+    return this.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
+  }
+  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n));
+});
+function $as_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(obj) {
+  return (((obj instanceof $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke) || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.algebra.generic.StrokeStyle$ColorStroke"));
+}
+function $isArrayOf_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldoodle_algebra_generic_StrokeStyle$ColorStroke)));
+}
+function $asArrayOf_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(obj, depth) {
+  return (($isArrayOf_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldoodle.algebra.generic.StrokeStyle$ColorStroke;", depth));
+}
+var $d_Ldoodle_algebra_generic_StrokeStyle$ColorStroke = new $TypeData().initClass($c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke, "doodle.algebra.generic.StrokeStyle$ColorStroke", ({
+  Ldoodle_algebra_generic_StrokeStyle$ColorStroke: 1,
+  s_Equals: 1,
+  s_Product: 1,
+  Ljava_io_Serializable: 1,
+  Ldoodle_algebra_generic_StrokeStyle: 1
+}));
+/** @constructor */
+function $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(gradient) {
+  this.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient = null;
+  this.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient = gradient;
+}
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype = new $h_O();
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.constructor = $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke;
+/** @constructor */
+function $h_Ldoodle_algebra_generic_StrokeStyle$GradientStroke() {
+}
+$h_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype = $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype;
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_s_Product$$anon$1(this);
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.hashCode__I = (function() {
+  var this$2 = $m_s_util_hashing_MurmurHash3$();
+  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false);
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.equals__O__Z = (function(x$0) {
+  if ((this === x$0)) {
+    return true;
+  } else if ((x$0 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke)) {
+    var x$0$2 = $as_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(x$0);
+    var x = this.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
+    var x$2 = $n(x$0$2).Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
+    return ((x === null) ? (x$2 === null) : $n(x).equals__O__Z(x$2));
+  } else {
+    return false;
+  }
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$()._toString__s_Product__T(this);
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.productArity__I = (function() {
+  return 1;
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.productPrefix__T = (function() {
+  return "GradientStroke";
+});
+$c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke.prototype.productElement__I__O = (function(n) {
+  if ((n === 0)) {
+    return this.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
+  }
+  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n));
+});
+function $as_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(obj) {
+  return (((obj instanceof $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke) || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.algebra.generic.StrokeStyle$GradientStroke"));
+}
+function $isArrayOf_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldoodle_algebra_generic_StrokeStyle$GradientStroke)));
+}
+function $asArrayOf_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(obj, depth) {
+  return (($isArrayOf_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldoodle.algebra.generic.StrokeStyle$GradientStroke;", depth));
+}
+var $d_Ldoodle_algebra_generic_StrokeStyle$GradientStroke = new $TypeData().initClass($c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke, "doodle.algebra.generic.StrokeStyle$GradientStroke", ({
+  Ldoodle_algebra_generic_StrokeStyle$GradientStroke: 1,
+  s_Equals: 1,
+  s_Product: 1,
+  Ljava_io_Serializable: 1,
+  Ldoodle_algebra_generic_StrokeStyle: 1
 }));
 /** @constructor */
 function $c_Ldoodle_canvas_effect_Size() {
