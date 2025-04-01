@@ -18,7 +18,10 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.{Cap, Color, Gradient, Join}
+import doodle.core.Cap
+import doodle.core.Color
+import doodle.core.Gradient
+import doodle.core.Join
 import doodle.core.font.Font
 
 sealed trait StrokeStyle extends Product with Serializable

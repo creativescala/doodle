@@ -21,6 +21,7 @@ package algebra
 import doodle.algebra.generic.DrawingContext
 import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Stroke
+import doodle.algebra.generic.StrokeStyle
 import doodle.core.BoundingBox
 import doodle.core.Cap
 import doodle.core.Color
@@ -30,7 +31,6 @@ import doodle.core.PathElement
 import doodle.core.Point
 import doodle.core.Transform as Tx
 import doodle.core.font.*
-import doodle.algebra.generic.StrokeStyle
 
 import java.awt.BasicStroke
 import java.awt.Color as AwtColor

@@ -37,8 +37,9 @@ import doodle.core.font.FontFamily
 import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
+import org.scalajs.dom.CanvasGradient
 import org.scalajs.dom.CanvasRenderingContext2D
-import org.scalajs.dom.{CanvasGradient}
+
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
 

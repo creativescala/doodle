@@ -18,10 +18,10 @@ package doodle
 package algebra
 package generic
 
-import org.scalacheck.*
-import org.scalacheck.Prop.*
 import doodle.algebra.generic.reified.Reified
 import doodle.core.Color
+import org.scalacheck.*
+import org.scalacheck.Prop.*
 
 object TextSpec extends Properties("Text properties") {
   val algebra = TestAlgebra()

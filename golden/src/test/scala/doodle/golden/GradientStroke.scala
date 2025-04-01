@@ -18,8 +18,8 @@ package doodle
 package golden
 
 import doodle.core.*
-import doodle.syntax.all.*
 import doodle.java2d.*
+import doodle.syntax.all.*
 import munit.*
 
 class GradientStroke extends FunSuite with GoldenPicture {
