@@ -21,6 +21,7 @@ import doodle.algebra.generic.Fill
 import doodle.algebra.generic.Fill.ColorFill
 import doodle.algebra.generic.Fill.GradientFill
 import doodle.algebra.generic.Stroke
+import doodle.algebra.generic.StrokeStyle
 import doodle.core.Cap
 import doodle.core.ClosedPath
 import doodle.core.Color
@@ -37,7 +38,7 @@ import doodle.core.font.FontSize
 import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasRenderingContext2D
-
+import org.scalajs.dom.{CanvasGradient}
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
 
@@ -122,6 +123,43 @@ object CanvasDrawing {
     }
   }
 
+  def createGradient(
+      ctx: CanvasRenderingContext2D,
+      gradient: Gradient
+  ): CanvasGradient = {
+    gradient match {
+      case linear: Gradient.Linear =>
+        val jsGradient = ctx.createLinearGradient(
+          linear.start.x,
+          linear.start.y,
+          linear.end.x,
+          linear.end.y
+        )
+
+        linear.stops.foreach { case (color, offset) =>
+          jsGradient.addColorStop(offset, colorToCSS(color))
+        }
+
+        jsGradient
+
+      case radial: Gradient.Radial =>
+        val jsGradient = ctx.createRadialGradient(
+          radial.inner.x,
+          radial.inner.y,
+          0, // Inner radius should be 0
+          radial.outer.x,
+          radial.outer.y,
+          radial.radius
+        )
+
+        radial.stops.foreach { case (color, offset) =>
+          jsGradient.addColorStop(offset, colorToCSS(color))
+        }
+
+        jsGradient
+    }
+  }
+
   def setFill(fill: Option[Fill]): CanvasDrawing[Unit] =
     fill.map(setFill).getOrElse(unit)
 
@@ -130,37 +168,7 @@ object CanvasDrawing {
       fill match {
         case ColorFill(color) => ctx.fillStyle = colorToCSS(color)
         case GradientFill(gradient) =>
-          gradient match {
-            case linear: Gradient.Linear =>
-              val jsGradient = ctx.createLinearGradient(
-                linear.start.x,
-                linear.start.y,
-                linear.end.x,
-                linear.end.y
-              )
-
-              linear.stops.foreach { case (color, offset) =>
-                jsGradient.addColorStop(offset, colorToCSS(color))
-              }
-
-              ctx.fillStyle = jsGradient
-
-            case radial: Gradient.Radial =>
-              val jsGradient = ctx.createRadialGradient(
-                radial.inner.x,
-                radial.inner.y,
-                0, // Inner radius should be 0
-                radial.outer.x,
-                radial.outer.y,
-                radial.radius
-              )
-
-              radial.stops.foreach { case (color, offset) =>
-                jsGradient.addColorStop(offset, colorToCSS(color))
-              }
-
-              ctx.fillStyle = jsGradient
-          }
+          ctx.fillStyle = createGradient(ctx, gradient)
       }
     }
   }
@@ -197,29 +205,35 @@ object CanvasDrawing {
   def setStroke(stroke: Option[Stroke]): CanvasDrawing[Unit] =
     stroke.map(setStroke).getOrElse(unit)
 
-  def setStroke(stroke: Stroke): CanvasDrawing[Unit] = {
-    val Stroke(color, width, cap, join, dash) = stroke
+  def setStroke(stroke: Stroke): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
-      ctx.strokeStyle = colorToCSS(color)
-      ctx.lineWidth = width
-      ctx.lineCap = cap match {
+      ctx.lineWidth = stroke.width
+      ctx.lineCap = stroke.cap match {
         case Cap.Butt   => "butt"
         case Cap.Round  => "round"
         case Cap.Square => "square"
       }
-      ctx.lineJoin = join match {
+      ctx.lineJoin = stroke.join match {
         case Join.Bevel => "bevel"
         case Join.Round => "round"
         case Join.Miter => "miter"
       }
+
+      stroke.style match {
+        case StrokeStyle.ColorStroke(color) =>
+          ctx.strokeStyle = colorToCSS(color)
+
+        case StrokeStyle.GradientStroke(gradient) =>
+          ctx.strokeStyle = createGradient(ctx, gradient)
+      }
+
       ctx.setLineDash(
-        dash match {
+        stroke.dash match {
           case None       => js.Array()
           case Some(elts) => elts.map(_.toDouble).toJSArray
         }
       )
     }
-  }
 
   def setTransform(transform: Transform): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>

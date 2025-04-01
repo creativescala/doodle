@@ -20,19 +20,34 @@ package generic
 
 import org.scalacheck.*
 import org.scalacheck.Prop.*
+import doodle.algebra.generic.reified.Reified
+import doodle.core.Color
 
 object TextSpec extends Properties("Text properties") {
   val algebra = TestAlgebra()
 
   property("strokeColor is preserved for text") = forAll(Generators.color) {
     (c) =>
-      import doodle.algebra.generic.reified.Reified.*
+      import Reified.*
       val reified =
         Generators.reify(algebra.strokeColor(algebra.text("Hello"), c))
+
       reified match {
-        case List(Text(_, _, stroke, _, text)) =>
-          (stroke.get.color ?= c) && (text ?= "Hello")
-        case _ => Prop.falsified
+        case List(textObj: Text) =>
+          val stroke = textObj.stroke
+          val text = textObj.text
+
+          val strokeColor = stroke
+            .map(s =>
+              s.style match {
+                case StrokeStyle.ColorStroke(col) => col
+                case _ => Color.black // Default if not ColorStroke
+              }
+            )
+            .getOrElse(Color.black)
+
+          (strokeColor == c) && (text == "Hello")
+        case _ => false
       }
   }
 }

@@ -18,19 +18,26 @@ package doodle
 package algebra
 package generic
 
-import doodle.core.Cap
-import doodle.core.Color
-import doodle.core.Gradient
-import doodle.core.Join
+import doodle.core.{Cap, Color, Gradient, Join}
 import doodle.core.font.Font
 
+sealed trait StrokeStyle extends Product with Serializable
+object StrokeStyle {
+  final case class ColorStroke(color: Color) extends StrokeStyle
+  final case class GradientStroke(gradient: Gradient) extends StrokeStyle
+
+  def color(color: Color): StrokeStyle = ColorStroke(color)
+  def gradient(gradient: Gradient): StrokeStyle = GradientStroke(gradient)
+}
+
 final case class Stroke(
-    color: Color,
+    style: StrokeStyle,
     width: Double,
     cap: Cap,
     join: Join,
     dash: Option[Array[Float]]
 )
+
 sealed trait Fill extends Product with Serializable
 object Fill {
   final case class ColorFill(color: Color) extends Fill
@@ -46,7 +53,7 @@ object Fill {
 /** Stores state about the current drawing style. */
 final case class DrawingContext(
     blendMode: BlendMode,
-    strokeColor: Color,
+    strokeStyle: StrokeStyle,
     strokeWidth: Option[
       Double
     ], // We use strokeWidth to determine if there is a stroke or not
@@ -62,12 +69,15 @@ final case class DrawingContext(
     this.copy(blendMode = mode)
 
   def stroke: Option[Stroke] =
-    (strokeWidth).map(w =>
-      Stroke(strokeColor, w, strokeCap, strokeJoin, strokeDash)
+    strokeWidth.map(w =>
+      Stroke(strokeStyle, w, strokeCap, strokeJoin, strokeDash)
     )
 
   def strokeColor(color: Color): DrawingContext =
-    this.copy(strokeColor = color)
+    this.copy(strokeStyle = StrokeStyle.color(color))
+
+  def strokeGradient(gradient: Gradient): DrawingContext =
+    this.copy(strokeStyle = StrokeStyle.gradient(gradient))
 
   def strokeWidth(width: Double): DrawingContext =
     this.copy(strokeWidth = if width <= 0 then None else Some(width))
@@ -99,11 +109,12 @@ final case class DrawingContext(
   def font(font: Font): DrawingContext =
     this.copy(font = font)
 }
+
 object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
       BlendMode.sourceOver,
-      Color.black,
+      StrokeStyle.color(Color.black),
       Option(1.0),
       Cap.butt,
       Join.miter,
