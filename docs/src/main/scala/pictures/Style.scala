@@ -53,6 +53,16 @@ object Style {
           .strokeCap(Cap.square)
           .strokeDash(Array(12.0, 9.0))
       )
+      .beside(
+        star(5, 50, 25)
+          .strokeWidth(5.0)
+          .strokeGradient(
+            Gradient.dichromaticVertical(Color.crimson, Color.midnightBlue, 50)
+          )
+          .strokeJoin(Join.round)
+          .strokeCap(Cap.butt)
+          .strokeDash(Array(15.0, 5.0))
+      )
 
   strokeStyle.save("pictures/stroke-style.png")
 
