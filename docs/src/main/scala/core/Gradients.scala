@@ -19,9 +19,9 @@ package core
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.*
+import doodle.core.Gradient.CycleMethod
 import doodle.java2d.*
 import doodle.syntax.all.*
-import doodle.core.Gradient.CycleMethod
 
 object Gradients {
   def swatch(gradient: Gradient): Picture[Unit] =
