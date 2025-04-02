@@ -91,7 +91,17 @@
             <p>The rendered SVG will appear where the element is positioned on your web page.</p>
             
             <h2 id="running-on-the-jvm" class="section">Running on the JVM</h2>
-            <p>On the JVM you can&#39;t draw SVG to the screen. Use the <code>java2d</code> backend for that instead. However you can write SVG output in the usual way.</p>
+            <p>On the JVM you can&#39;t draw SVG to the screen. Use the <code>java2d</code> backend for that. However you can write SVG output, as described in <a href="../pictures/writing.html">writing to a file</a>. Here&#39;s a simple example.</p>
+            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">circle</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
+  .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">10.0</span><span>)
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>)
+  
+</span><span class="identifier">circle</span><span>.</span><span class="identifier">write</span><span>[</span><span class="type-name">Svg</span><span>](</span><span class="string-literal">&quot;circle.svg&quot;</span><span>)</span></code></pre>
             
             <h2 id="examples" class="section">Examples</h2>
             <p>The source for these examples is <a href="https://github.com/creativescala/doodle-svg/tree/main/examples/src/main/scala">in the repository</a>.</p>
