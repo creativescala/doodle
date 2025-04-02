@@ -21,21 +21,30 @@ import cats.effect.unsafe.implicits.global
 import doodle.core.*
 import doodle.java2d.*
 import doodle.syntax.all.*
+import doodle.core.Gradient.CycleMethod
 
 object Gradients {
-  val box = Picture.rectangle(10, 40).noStroke
+  def swatch(gradient: Gradient): Picture[Unit] =
+    roundedRectangle(100, 100, 5)
+      .fillGradient(gradient)
+      .strokeWidth(1)
+      .strokeColor(Color.black)
 
-  def gradient(count: Int, step: Angle, f: Angle => Color): Picture[Unit] =
-    if count == 0 then Picture.empty
-    else box.fillColor(f(step * count)).beside(gradient(count - 1, step, f))
+  extension (gradients: List[Gradient]) {
+    def toSwatches: Picture[Unit] =
+      gradients.map(g => swatch(g).margin(10, 0)).allBeside
+  }
 
-  val hsl =
-    gradient(40, 5.degrees, angle => Color.hsl(angle, 0.5, 0.5))
+  val linearAndRadial =
+    List(
+      Gradient.linear(
+        Point(-50, 0),
+        Point(50, 0),
+        Seq((Color.papayaWhip, 0.0), (Color.midnightBlue, 1.0)),
+        CycleMethod.repeat
+      ),
+      Gradient.dichromaticRadial(Color.azure, Color.crimson, 70)
+    ).toSwatches
 
-  val oklch =
-    gradient(40, 5.degrees, angle => Color.oklch(0.7, 0.2, angle + 36.degrees))
-
-  val picture = hsl.above(oklch.margin(0, 20))
-
-  picture.save("core/gradients.png")
+  linearAndRadial.save("core/linear-radial.png")
 }

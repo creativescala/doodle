@@ -161,7 +161,7 @@ sealed abstract class Color extends Product with Serializable {
     * `aColor.saturateBy(0.1)` increases the saturation by 10% of the current
     * saturation.
     */
-  def saturateBy(saturation: Double) = {
+  def saturateBy(saturation: Double): Color = {
     val original = this.toOklch
     original.copy(c = original.c * (1 + saturation))
   }

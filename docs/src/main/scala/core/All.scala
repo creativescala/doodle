@@ -18,5 +18,6 @@ package docs
 package core
 
 object All {
+  Colors
   Gradients
 }
