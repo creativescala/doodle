@@ -6,7 +6,7 @@ The SVG backend draws Doodle pictures to SVG in the browser using [Scala JS](htt
 
 Firstly, bring everything into scope
 
-```scala 
+```scala mdoc:silent
 import doodle.svg.*
 ```
 
@@ -40,8 +40,20 @@ The rendered SVG will appear where the element is positioned on your web page.
 
 ## Running on the JVM
 
-On the JVM you can't draw SVG to the screen. Use the `java2d` backend for that instead. However you can write SVG output in the usual way.
+On the JVM you can't draw SVG to the screen. Use the `java2d` backend for that. However you can write SVG output, as described in [writing to a file](../pictures/writing.md). Here's a simple example.
 
+```scala mdoc:compile-only
+import cats.effect.unsafe.implicits.global
+import doodle.core.*
+import doodle.core.format.*
+import doodle.syntax.all.*
+
+val circle = Picture.circle(100)
+  .strokeWidth(10.0)
+  .fillColor(Color.crimson)
+  
+circle.write[Svg]("circle.svg")
+```
 
 ## Examples
 

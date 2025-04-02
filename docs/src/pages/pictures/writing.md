@@ -33,15 +33,12 @@ This import makes available the standard formats supported by Doodle.
 
 Call the `write` method to write to a file, giving the format as a type parameter and the file name as a `String` parameter. For example, to write a PNG to the file called `"circle.png"`
 
-```scala mdoc:silent
+```scala mdoc:compile-only
 val circle = Picture.circle(100)
   .strokeWidth(10.0)
   .fillColor(Color.crimson)
   
 circle.write[Png]("circle.png")
-```
-```scala mdoc:invisible
-new java.io.File("circle.png").delete()
 ```
 
 Instead of using `Png` you could use `Gif` or `Jpg` to specify those file formats. You'd probably want to change the file name as well if you change the format. That's it! Your masterpiece is now ready to share with the world.

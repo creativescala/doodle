@@ -17,6 +17,7 @@
 package doodle
 
 import doodle.core.format.Svg
+import doodle.effect.DefaultFrame
 import doodle.effect.FileWriter
 
 package object svg {
@@ -34,6 +35,10 @@ package object svg {
   val Frame = doodle.svg.effect.Frame
   implicit val svgWriter: FileWriter[Algebra, Frame, Svg] =
     doodle.svg.effect.SvgWriter
+  implicit val svgFrame: DefaultFrame[doodle.svg.effect.Frame] =
+    new DefaultFrame[doodle.svg.effect.Frame] {
+      val default: Frame = doodle.svg.effect.Frame("dummy")
+    }
 
   type Picture[A] = doodle.algebra.Picture[Algebra, A]
   object Picture
