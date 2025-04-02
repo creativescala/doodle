@@ -1,8 +1,8 @@
 ## Next
 
+- `DefaultFrame` implementation for SVG on JVM. See #180
 - Canvas backend support linear and radial fills (by `@Atharva-Kanherkar `).
 - All backends support linear and radial strokes (by `@Atharva-Kanherkar `).
-
 
 
 ## 0.28.0 12-Feb-2025
