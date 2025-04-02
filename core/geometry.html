@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Typelevel Laika" />
+    <title>Geometry</title>
+    
+    
+    <meta name="description" content="docs" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+        rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
+    <script src="../main.js"></script>
+    <script> /* for avoiding page load transitions */</script>
+</head>
+
+<body>
+    <nav id="topbar"><p><a href="index.html">←</a></p>
+<p><a href="../../">Doodle</a></p>
+<p><a href="color.html">→</a></p></nav>
+    <nav id="sidebar">
+        <ul class="nav-list">
+          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
+          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+          <li class="level1 nav-node"><a href="index.html">Core</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Geometry</a></li>
+          <li class="level2 nav-leaf"><a href="color.html">Color and Gradients</a></li>
+          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
+          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+          <li class="level2 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
+          <li class="level1 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+          <li class="level1 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+          <li class="level1 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+          <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+          <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
+          <li class="level2 nav-leaf"><a href="../development/design.html">Design</a></li>
+          <li class="level2 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+          <li class="level2 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+          <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <main class="content">
+            <h1 id="geometry" class="title">Geometry</h1>
+            <p>Doodle provides many utilities for working with two-dimensional geometry.</p>
+            
+            <h2 id="angle" class="section">Angle</h2>
+            <p>The <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Angle.html">Angle</a> type represents an angle, as the name suggests.</p>
+            <p>Most of the time you&#39;ll create <code>Angles</code> using the extension methods shown below. Degrees and radians should be familiar, but turns may not be. One turn corresponds to a full circle (i.e. 360 degrees), so using turns in a convenient way to represent simple fractions or multiples of circles.</p>
+            <pre><code class="nohighlight"><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="number-literal">1</span><span>.</span><span class="identifier">radians</span><span>
+</span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span> </span><span class="comment">// One turn is a full circle, so this is half a circle</span></code></pre>
+            <p>There are various methods to perform arithmetic on angles. Here are some examples. See the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Angle.html">Angle</a> API for a complete list.</p>
+            <pre><code class="nohighlight"><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> + </span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>) &lt; </span><span class="number-literal">180</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="comment">// res3: Boolean = true
+</span><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> * </span><span class="number-literal">2</span><span>) &lt; </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="comment">// res4: Boolean = false
+</span><span class="number-literal">180</span><span>.</span><span class="identifier">degrees</span><span> - </span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>
+</span><span class="comment">// res5: Angle = Angle(0.0)</span></code></pre>
+            <p>Other useful methods are calculating the sine and cosine of an angle, and normalizing an angle to between zero and 360 degrees.</p>
+            <pre><code class="nohighlight"><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">sin</span><span>
+</span><span class="comment">// res6: Double = 1.2246467991473532E-16
+</span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">cos</span><span>
+</span><span class="comment">// res7: Double = -1.0
+</span><span class="number-literal">2</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">normalize</span><span> == </span><span class="number-literal">1</span><span>.</span><span class="identifier">turns</span><span>
+</span><span class="comment">// res8: Boolean = true</span></code></pre>
+            
+            <h2 id="point" class="section">Point</h2>
+            <p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Point.html">Point</a> represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.</p>
+            <pre><code class="nohighlight"><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">1.0</span><span>) </span><span class="comment">// cartesian coordinates
+// res9: Point = Cartesian(x = 1.0, y = 1.0)
+</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>) </span><span class="comment">// polar coordinates
+// res10: Point = Polar(r = 1.0, angle = Angle(1.5707963267948966))</span></code></pre>
+            <p>No matter how we construct a <code>Point</code> we can still access x- and y-coordinates or radius and angle.</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">pt1</span><span> = </span><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">0.0</span><span>)
+</span><span class="comment">// pt1: Point = Cartesian(x = 1.0, y = 0.0)
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">x</span><span>
+</span><span class="comment">// res11: Double = 1.0
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">y</span><span>
+</span><span class="comment">// res12: Double = 0.0
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">r</span><span>
+</span><span class="comment">// res13: Double = 1.0
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">angle</span><span>
+</span><span class="comment">// res14: Angle = Angle(0.0)</span></code></pre>
+            
+            <h2 id="transform" class="section">Transform</h2>
+            <p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Transform.html">Transform</a>, in Doodle, represents an <a href="https://en.wikipedia.org/wiki/Affine_transformation">affine transform</a> in two-dimensions. The easiest way to create a <code>Transform</code> is via the methods on the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Transform$.html">Transform</a>. Here are some examples.</p>
+            <pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)</span></code></pre>
+            <p>A <code>Transform</code> can be applied to a <code>Point</code> to transform that point.</p>
+            <pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res18: Point = Cartesian(x = 5.0, y = -2.0)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res19: Point = Cartesian(x = -0.9999999999999999, y = 1.0)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res20: Point = Cartesian(x = 11.0, y = 11.0)</span></code></pre>
+            <p><code>Transforms</code> can be composed together using the <code>andThen</code> method.</p>
+            <pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>).</span><span class="identifier">andThen</span><span>(</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>))(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res21: Point = Cartesian(x = 15.0, y = 8.0)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>).</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>)) </span><span class="comment">// Shorter version
+// res22: Point = Cartesian(x = 15.0, y = 8.0)</span></code></pre>
+            
+            <h2 id="vec" class="section">Vec</h2>
+            <p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Vec.html">Vec</a> represents a two-dimensional vector. You can construct <code>Vecs</code> from cartesian (xy-coordinates) or polar (length and angle) coordinates, just like <code>Point</code>.</p>
+            <pre><code class="nohighlight"><span class="type-name">Vec</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">1</span><span>)
+</span><span class="comment">// res23: Vec = Vec(x = 0.0, y = 1.0)
+</span><span class="type-name">Vec</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)
+</span><span class="comment">// res24: Vec = Vec(x = 6.123233995736766E-17, y = 1.0)</span></code></pre>
+            <p class="nextPage"><a href="color.html">Color and Gradients→</a></p>
+        </main>
+        <footer>Creative Scala is copyright Noel Welsh</footer>
+    </div>
+
+    </div>
+</body>
+
+</html>
