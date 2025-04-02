@@ -65,6 +65,7 @@ val strokeStyle =
         .strokeDash(Array(12.0, 9.0))
     )
     .beside(
+      Picture
         .star(5, 50, 25)
         .strokeWidth(5.0)
         .strokeGradient(
