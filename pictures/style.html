@@ -99,7 +99,7 @@
             </div>
             <p>The available settings for the stroke are:</p>
             <ul>
-              <li>the color, <code>strokeColor</code>;</li>
+              <li>the color, <code>strokeColor</code>, or gradient, <code>strokeGradient</code>;</li>
               <li>the width, <code>strokeWidth</code>;</li>
               <li>the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Cap.html">Cap</a>, <code>strokeCap</code>, which specifies how lines end;</li>
               <li>the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Join.html">Join</a>, <code>strokeJoin</code>, which specifies how lines are joined together; and</li>
@@ -123,6 +123,17 @@
         .</span><span class="identifier">strokeJoin</span><span>(</span><span class="type-name">Join</span><span>.</span><span class="identifier">miter</span><span>)
         .</span><span class="identifier">strokeCap</span><span>(</span><span class="type-name">Cap</span><span>.</span><span class="identifier">square</span><span>)
         .</span><span class="identifier">strokeDash</span><span>(</span><span class="type-name">Array</span><span>(</span><span class="number-literal">12.0</span><span>, </span><span class="number-literal">9.0</span><span>))
+    )
+    .</span><span class="identifier">beside</span><span>(
+      </span><span class="type-name">Picture</span><span>
+        .</span><span class="identifier">star</span><span>(</span><span class="number-literal">5</span><span>, </span><span class="number-literal">50</span><span>, </span><span class="number-literal">25</span><span>)
+        .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">5.0</span><span>)
+        .</span><span class="identifier">strokeGradient</span><span>(
+          </span><span class="type-name">Gradient</span><span>.</span><span class="identifier">dichromaticVertical</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>, </span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>, </span><span class="number-literal">50</span><span>)
+        )
+        .</span><span class="identifier">strokeJoin</span><span>(</span><span class="type-name">Join</span><span>.</span><span class="identifier">round</span><span>)
+        .</span><span class="identifier">strokeCap</span><span>(</span><span class="type-name">Cap</span><span>.</span><span class="identifier">butt</span><span>)
+        .</span><span class="identifier">strokeDash</span><span>(</span><span class="type-name">Array</span><span>(</span><span class="number-literal">15.0</span><span>, </span><span class="number-literal">5.0</span><span>))
     )</span></code></pre>
             <div class="default-image-block">
               <img src="stroke-style.png" alt="Two stars with different stroke styles" title="Two stars with different stroke styles">
