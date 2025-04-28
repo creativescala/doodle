@@ -1,4 +1,4 @@
-## Next
+## 0.29.0 28-Apr-2025
 
 - `DefaultFrame` implementation for SVG on JVM. See #180
 - Canvas backend support linear and radial fills (by `@Atharva-Kanherkar `).
