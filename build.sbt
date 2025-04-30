@@ -18,7 +18,7 @@ import laika.config.LinkConfig
 import laika.config.ApiLinks
 import laika.theme.Theme
 
-ThisBuild / tlBaseVersion := "0.30" // your current series x.y
+ThisBuild / tlBaseVersion := "0.31" // your current series x.y
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
