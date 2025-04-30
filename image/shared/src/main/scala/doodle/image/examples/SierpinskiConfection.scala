@@ -19,7 +19,7 @@ package image
 package examples
 
 import doodle.core.*
-import doodle.random.*
+import doodle.random.{*, given}
 import doodle.syntax.all.*
 
 object SierpinskiConfection {

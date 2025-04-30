@@ -23,7 +23,7 @@ import doodle.core.*
 import doodle.image.Image.*
 import doodle.image.syntax.all.*
 import doodle.image.syntax.core.*
-import doodle.random.*
+import doodle.random.{*, given}
 
 object Sine {
   import Parametric.AngularCurve

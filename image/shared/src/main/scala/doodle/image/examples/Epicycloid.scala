@@ -21,7 +21,7 @@ package examples
 import cats.instances.list.*
 import cats.syntax.traverse.*
 import doodle.core.*
-import doodle.random.*
+import doodle.random.{*, given}
 
 import scala.math.BigDecimal
 

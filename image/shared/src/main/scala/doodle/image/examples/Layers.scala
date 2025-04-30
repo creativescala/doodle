@@ -20,7 +20,7 @@ package examples
 
 import cats.implicits.*
 import doodle.core.*
-import doodle.random.*
+import doodle.random.{*, given}
 
 object Layers {
   val point =

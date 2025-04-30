@@ -20,7 +20,7 @@ package examples
 
 import cats.syntax.all.*
 import doodle.core.*
-import doodle.random.*
+import doodle.random.{*, given}
 import doodle.syntax.all.*
 
 object Windswept {

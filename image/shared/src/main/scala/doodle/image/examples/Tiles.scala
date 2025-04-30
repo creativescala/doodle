@@ -22,7 +22,7 @@ import cats.instances.all.*
 import cats.syntax.all.*
 import doodle.core.*
 import doodle.image.syntax.all.*
-import doodle.random.*
+import doodle.random.{*, given}
 import doodle.syntax.all.*
 
 object Tiles {
