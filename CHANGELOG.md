@@ -1,3 +1,8 @@
+## 0.30.0 30-Apr-2025
+
+- Rework `random` package to modernise and add features
+
+
 ## 0.29.0 28-Apr-2025
 
 - `DefaultFrame` implementation for SVG on JVM. See #180
