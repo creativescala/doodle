@@ -20,29 +20,26 @@ package algebra
 
 import doodle.algebra.Blend
 import doodle.algebra.generic.Finalized
-import doodle.algebra.generic.Renderable // Import Renderable object for apply method
-// Remove unused imports
-// import doodle.core.BoundingBox
-// import doodle.core.Transform // Import Transform alias
+import doodle.algebra.generic.Renderable  
 import cats.Eval
 import org.scalajs.dom
 
 trait CanvasBlend extends Blend {
   self: CanvasAlgebra =>
 
-  // Import the necessary functionality
+ 
   import self.Drawing
 
   private def blend[A](
       image: Drawing[A],
       blendMode: String
   ): Drawing[A] = {
-    Finalized { transform => // transform: List[ContextTransform]
-      image.run(transform).map { case (bb, rdr) => // rdr: Renderable[CanvasDrawing, A] == State[Transform, CanvasDrawing[A]]
+    Finalized { transform => 
+      image.run(transform).map { case (bb, rdr) =>  
         // Create a new Renderable that wraps the original
         val newRenderable: Renderable[CanvasDrawing, A] =
-          Renderable { tx => // tx: Transform (This is the Transform the State receives)
-            // Run the original Renderable with the Transform to get the Eval[CanvasDrawing[A]]
+          Renderable { tx => 
+ 
             val originalDrawingEval: Eval[CanvasDrawing[A]] = rdr.runA(tx) // Eval[CanvasRenderingContext2D => A]
 
             // Map over the Eval to create the new CanvasDrawing function
@@ -63,7 +60,7 @@ trait CanvasBlend extends Blend {
     }
   }
 
-  // Define each blending operation using the helper
+ 
   def screen[A](image: Drawing[A]): Drawing[A] =
     blend(image, "screen")
 
