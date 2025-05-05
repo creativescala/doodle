@@ -41,7 +41,6 @@ final case class Algebra(
     with ReifiedShape
     with ReifiedText
     with GenericDebug[Reification]
-    with doodle.algebra.Blend
     with GenericLayout[Reification]
     with GenericSize[Reification]
     with GenericStyle[Reification]
