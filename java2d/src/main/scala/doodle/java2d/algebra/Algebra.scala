@@ -25,7 +25,6 @@ import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.java2d.algebra.reified.*
 import doodle.language.Basic
-import doodle.algebra.Blend
 
 import java.awt.Graphics2D
 
