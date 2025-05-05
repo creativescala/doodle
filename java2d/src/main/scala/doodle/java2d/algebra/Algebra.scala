@@ -25,6 +25,7 @@ import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.java2d.algebra.reified.*
 import doodle.language.Basic
+import doodle.algebra.Blend
 
 import java.awt.Graphics2D
 
@@ -40,6 +41,7 @@ final case class Algebra(
     with ReifiedShape
     with ReifiedText
     with GenericDebug[Reification]
+    with doodle.algebra.Blend
     with GenericLayout[Reification]
     with GenericSize[Reification]
     with GenericStyle[Reification]
