@@ -252,6 +252,18 @@ object CanvasDrawing {
         .getOrElse(CanvasDrawing.unit)
     )
 
+  def withCompositeOperation[A](
+      blendMode: String
+  )(drawing: CanvasDrawing[A]): CanvasDrawing[A] = {
+    CanvasDrawing { ctx =>
+      ctx.save()
+      ctx.globalCompositeOperation = blendMode
+      val result = drawing(ctx)
+      ctx.restore()
+      result
+    }
+  }
+
   def withStroke[A](
       stroke: Option[Stroke]
   )(drawing: CanvasDrawing[A]): CanvasDrawing[A] =

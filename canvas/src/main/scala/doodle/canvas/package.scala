@@ -19,7 +19,7 @@ package doodle.canvas
 import doodle.algebra.*
 import doodle.effect.Renderer
 
-type Algebra = doodle.canvas.algebra.CanvasAlgebra
+type Algebra = doodle.canvas.algebra.CanvasAlgebra with doodle.algebra.Blend
 type Canvas = doodle.canvas.effect.Canvas
 type Drawing[A] =
   doodle.algebra.generic.Finalized[doodle.canvas.algebra.CanvasDrawing, A]
