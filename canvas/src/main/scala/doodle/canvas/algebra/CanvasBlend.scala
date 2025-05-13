@@ -22,12 +22,11 @@ import doodle.algebra.Blend
 import doodle.algebra.generic.Finalized
 import doodle.algebra.generic.Renderable
 import cats.Eval
-import org.scalajs.dom
 
 trait CanvasBlend extends Blend {
-  self: CanvasAlgebra =>
-
-  import self.Drawing
+  self: doodle.algebra.Algebra {
+    type Drawing[A] = Finalized[CanvasDrawing, A]
+  } =>
 
   private def blend[A](
       image: Drawing[A],
@@ -40,13 +39,7 @@ trait CanvasBlend extends Blend {
             val originalDrawingEval: Eval[CanvasDrawing[A]] = rdr.runA(tx)
 
             originalDrawingEval.map { originalDrawing =>
-              CanvasDrawing { (ctx: dom.CanvasRenderingContext2D) =>
-                ctx.save()
-                ctx.globalCompositeOperation = blendMode
-                val result: A = originalDrawing(ctx)
-                ctx.restore()
-                result
-              }
+              CanvasDrawing.withCompositeOperation(blendMode)(originalDrawing)
             }
           }
         (bb, newRenderable)
