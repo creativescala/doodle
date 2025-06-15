@@ -41,6 +41,7 @@ package object syntax {
       with TraverseSyntax
       with UnsignedByteSyntax
       with FileWriterSyntax
+      with FilterSyntax
   object angle extends AngleSyntax
   object base64Writer extends Base64WriterSyntax
   object bitmap extends BitmapSyntax
@@ -60,4 +61,5 @@ package object syntax {
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
   object fileWriter extends FileWriterSyntax
+  object filter extends FilterSyntax
 }

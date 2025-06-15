@@ -25,7 +25,11 @@ import doodle.algebra.generic.*
 import doodle.language.Basic
 
 trait AlgebraModule {
-  self: Base with ShapeModule with PathModule with SvgModule =>
+  self: Base
+    with ShapeModule
+    with PathModule
+    with SvgModule
+    with FilterModule =>
   trait BaseAlgebra
       extends doodle.algebra.Algebra
       with Layout
@@ -33,6 +37,7 @@ trait AlgebraModule {
       with Shape
       with Path
       with Text
+      with Filter
       with GenericDebug[SvgResult]
       with GenericLayout[SvgResult]
       with GenericSize[SvgResult]

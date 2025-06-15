@@ -34,6 +34,7 @@ trait JvmAlgebraModule
     with ShapeModule
     with SvgModule
     with TextModule
+    with FilterModule
     with JvmBase {
   type Algebra = JvmAlgebra
 
@@ -41,6 +42,7 @@ trait JvmAlgebraModule
       extends JPanel(false)
       with BaseAlgebra
       with Text
+      with Filter
       with HasTextBoundingBox[Rectangle2D] {
 
     def textBoundingBox(
