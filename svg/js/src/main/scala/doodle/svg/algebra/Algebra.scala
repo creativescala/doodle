@@ -32,6 +32,7 @@ trait JsAlgebraModule
     with ShapeModule
     with SvgModule
     with TextModule
+    with FilterModule
     with JsBase {
   type Algebra = JsAlgebra
 
@@ -41,6 +42,7 @@ trait JsAlgebraModule
       val functorF: Functor[SvgResult]
   ) extends BaseAlgebra
       with Text
+      with Filter
       with HasTextBoundingBox[Rect] {
     def textBoundingBox(text: String, font: Font): (BoundingBox, Rect) =
       canvas.textBoundingBox(text, font)
