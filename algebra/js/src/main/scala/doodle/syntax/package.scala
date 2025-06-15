@@ -38,6 +38,7 @@ package object syntax {
       with TransformSyntax
       with TraverseSyntax
       with UnsignedByteSyntax
+      with FilterSyntax
   object angle extends AngleSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
@@ -54,4 +55,5 @@ package object syntax {
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
+  object filter extends FilterSyntax
 }

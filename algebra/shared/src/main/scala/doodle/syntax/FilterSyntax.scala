@@ -21,11 +21,11 @@ import doodle.algebra.Algebra
 import doodle.algebra.Filter
 import doodle.algebra.Picture
 import doodle.core.Color
-import doodle.core.syntax.all.ToNormalizedOps // @fixme
+import doodle.core.Normalized
 
 trait FilterSyntax {
   implicit class FilterPictureOps[Alg <: Algebra, A](
-    picture: Picture[Alg, A]
+      picture: Picture[Alg, A]
   ) {
 
     def blur(stdDeviation: Double = 3.0): Picture[Alg with Filter, A] =
@@ -62,9 +62,9 @@ trait FilterSyntax {
       }
 
     def convolve(
-      matrix: Vector[Vector[Double]],
-      divisor: Option[Double] = None,
-      bias: Double = 0.0
+        matrix: Vector[Vector[Double]],
+        divisor: Option[Double] = None,
+        bias: Double = 0.0
     ): Picture[Alg with Filter, A] =
       new Picture[Alg with Filter, A] {
         def apply(implicit algebra: Alg with Filter): algebra.Drawing[A] =
@@ -72,10 +72,10 @@ trait FilterSyntax {
       }
 
     def dropShadow(
-      offsetX: Double = 4.0,
-      offsetY: Double = 4.0,
-      blur: Double = 4.0,
-      color: Color = Color.black.alpha((0.5).normalized)
+        offsetX: Double = 4.0,
+        offsetY: Double = 4.0,
+        blur: Double = 4.0,
+        color: Color = Color.black.alpha(Normalized(0.5))
     ): Picture[Alg with Filter, A] =
       new Picture[Alg with Filter, A] {
         def apply(implicit algebra: Alg with Filter): algebra.Drawing[A] =
