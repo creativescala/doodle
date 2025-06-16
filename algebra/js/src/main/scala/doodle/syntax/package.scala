@@ -26,6 +26,7 @@ package object syntax {
       with BitmapSyntax
       with BlendSyntax
       with DebugSyntax
+      with FilterSyntax
       with LayoutSyntax
       with NormalizedSyntax
       with PathSyntax
@@ -38,11 +39,11 @@ package object syntax {
       with TransformSyntax
       with TraverseSyntax
       with UnsignedByteSyntax
-      with FilterSyntax
   object angle extends AngleSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
   object debug extends DebugSyntax
+  object filter extends FilterSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
@@ -55,5 +56,4 @@ package object syntax {
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
-  object filter extends FilterSyntax
 }
