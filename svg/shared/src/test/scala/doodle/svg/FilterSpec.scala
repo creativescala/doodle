@@ -17,6 +17,7 @@
 package doodle
 package svg
 
+import doodle.algebra.Kernel
 import doodle.core.*
 import doodle.syntax.all.*
 import munit.CatsEffectSuite
@@ -49,6 +50,7 @@ class FilterSpec
 
         assert(tagStr.contains("filter"))
         assert(tagStr.contains("feConvolveMatrix"))
+        assert(tagStr.contains("order=\"7\""))
       }
   }
 
@@ -63,6 +65,7 @@ class FilterSpec
         assert(tagStr.contains("filter"))
         assert(tagStr.contains("feConvolveMatrix"))
         assert(tagStr.contains("kernelMatrix"))
+        assert(tagStr.contains("order=\"3\""))
       }
   }
 
@@ -111,10 +114,12 @@ class FilterSpec
   }
 
   test("custom convolve filter should render") {
-    val kernel = Vector(
-      Vector(0.0, -1.0, 0.0),
-      Vector(-1.0, 5.0, -1.0),
-      Vector(0.0, -1.0, 0.0)
+    val kernel = Kernel(
+      3,
+      3,
+      IArray(
+        0.0, -1.0, 0.0, -1.0, 5.0, -1.0, 0.0, -1.0, 0.0
+      )
     )
     val picture = circle(100.0).convolve(kernel)
 
@@ -126,6 +131,21 @@ class FilterSpec
         assert(tagStr.contains("filter"))
         assert(tagStr.contains("feConvolveMatrix"))
         assert(tagStr.contains("order=\"3\""))
+      }
+  }
+
+  test("non-square kernel should render with two order values") {
+    val kernel = Kernel(5, 3, IArray.fill(15)(0.1))
+    val picture = circle(100.0).convolve(kernel)
+
+    Svg
+      .renderWithoutRootTag(algebraInstance, picture)
+      .map { case (_, tag, _) =>
+        val tagStr = tag.render
+
+        assert(tagStr.contains("filter"))
+        assert(tagStr.contains("feConvolveMatrix"))
+        assert(tagStr.contains("order=\"5 3\""))
       }
   }
 

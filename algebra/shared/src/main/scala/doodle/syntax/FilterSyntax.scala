@@ -19,6 +19,7 @@ package syntax
 
 import doodle.algebra.Algebra
 import doodle.algebra.Filter
+import doodle.algebra.Kernel
 import doodle.algebra.Picture
 import doodle.core.Color
 import doodle.core.Normalized
@@ -62,13 +63,13 @@ trait FilterSyntax {
       }
 
     def convolve(
-        matrix: Vector[Vector[Double]],
+        kernel: Kernel,
         divisor: Option[Double] = None,
         bias: Double = 0.0
     ): Picture[Alg with Filter, A] =
       new Picture[Alg with Filter, A] {
         def apply(implicit algebra: Alg with Filter): algebra.Drawing[A] =
-          algebra.convolveMatrix(picture(algebra), matrix, divisor, bias)
+          algebra.convolveMatrix(picture(algebra), kernel, divisor, bias)
       }
 
     def dropShadow(

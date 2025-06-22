@@ -41,18 +41,18 @@ trait Filter extends Algebra {
 
   def emboss[A](picture: Drawing[A]): Drawing[A]
 
-  /** Apply a custom convolution matrix
+  /** Apply a custom convolution kernel
     *
-    * @param matrix
-    *   The convolution matrix (must be square and odd-sized)
+    * @param kernel
+    *   The convolution kernel
     * @param divisor
-    *   Optional divisor for the result (defaults to sum of matrix)
+    *   Optional divisor for the result (defaults to sum of kernel)
     * @param bias
     *   Optional bias to add to each pixel
     */
   def convolveMatrix[A](
       picture: Drawing[A],
-      matrix: Vector[Vector[Double]],
+      kernel: Kernel,
       divisor: Option[Double] = None,
       bias: Double = 0.0
   ): Drawing[A]
@@ -69,35 +69,47 @@ trait Filter extends Algebra {
 /** Companion object with standard convolution kernels */
 object Filter {
 
-  val gaussianKernel3x3: Vector[Vector[Double]] = Vector(
-    Vector(1, 2, 1),
-    Vector(2, 4, 2),
-    Vector(1, 2, 1)
-  ).map(_.map(_.toDouble / 16))
+  val gaussianKernel3x3: Kernel = Kernel(
+    3,
+    3,
+    IArray(
+      1.0 / 16,
+      2.0 / 16,
+      1.0 / 16,
+      2.0 / 16,
+      4.0 / 16,
+      2.0 / 16,
+      1.0 / 16,
+      2.0 / 16,
+      1.0 / 16
+    )
+  )
 
-  val edgeDetectionKernel: Vector[Vector[Double]] = Vector(
-    Vector(0, -1, 0),
-    Vector(-1, 4, -1),
-    Vector(0, -1, 0)
-  ).map(_.map(_.toDouble))
+  val edgeDetectionKernel: Kernel = Kernel(
+    3,
+    3,
+    IArray(
+      0.0, -1.0, 0.0, -1.0, 4.0, -1.0, 0.0, -1.0, 0.0
+    )
+  )
 
-  val sharpenKernel: Vector[Vector[Double]] = Vector(
-    Vector(0, -1, 0),
-    Vector(-1, 5, -1),
-    Vector(0, -1, 0)
-  ).map(_.map(_.toDouble))
+  val sharpenKernel: Kernel = Kernel(
+    3,
+    3,
+    IArray(
+      0.0, -1.0, 0.0, -1.0, 5.0, -1.0, 0.0, -1.0, 0.0
+    )
+  )
 
-  val embossKernel: Vector[Vector[Double]] = Vector(
-    Vector(-2, -1, 0),
-    Vector(-1, 1, 1),
-    Vector(0, 1, 2)
-  ).map(_.map(_.toDouble))
+  val embossKernel: Kernel = Kernel(
+    3,
+    3,
+    IArray(
+      -2.0, -1.0, 0.0, -1.0, 1.0, 1.0, 0.0, 1.0, 2.0
+    )
+  )
 
-  val boxBlurKernel3x3: Vector[Vector[Double]] = Vector(
-    Vector(1, 1, 1),
-    Vector(1, 1, 1),
-    Vector(1, 1, 1)
-  ).map(_.map(_.toDouble / 9))
+  val boxBlurKernel3x3: Kernel = Kernel(3, 3, IArray.fill(9)(1.0 / 9))
 }
 
 // @todo might be interesting to have a Kernel composition

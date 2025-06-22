@@ -20,6 +20,7 @@ package algebra
 
 import cats.Eval
 import doodle.algebra.Filter
+import doodle.algebra.Kernel
 import doodle.algebra.generic.*
 import doodle.core.Color
 
@@ -30,6 +31,7 @@ trait FilterModule { root: Base with SvgModule =>
     self: doodle.algebra.Algebra {
       type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
     } =>
+
     def gaussianBlur[A](picture: Drawing[A], stdDeviation: Double): Drawing[A] =
       picture.flatMap { (bb, rdr) =>
         Finalized.leaf { dc =>
@@ -60,7 +62,9 @@ trait FilterModule { root: Base with SvgModule =>
 
     def boxBlur[A](picture: Drawing[A], radius: Int): Drawing[A] = {
       val size = 2 * radius + 1
-      val kernel = Vector.fill(size, size)(1.0 / (size * size))
+      val kernel =
+        Kernel(size, size, IArray.fill(size * size)(1.0 / (size * size)))
+
       convolveMatrix(picture, kernel, Some(1.0), 0.0)
     }
 
@@ -68,7 +72,12 @@ trait FilterModule { root: Base with SvgModule =>
       convolveMatrix(picture, Filter.edgeDetectionKernel, None, 0.0)
 
     def sharpen[A](picture: Drawing[A], amount: Double): Drawing[A] = {
-      val kernel = Filter.sharpenKernel.map(_.map(_ * amount))
+      val baseKernel = Filter.sharpenKernel
+      val scaledElements = IArray.tabulate(baseKernel.elements.length)(i =>
+        baseKernel.elements(i) * amount
+      )
+      val kernel = baseKernel.copy(elements = scaledElements)
+
       convolveMatrix(picture, kernel, None, 0.0)
     }
 
@@ -77,14 +86,14 @@ trait FilterModule { root: Base with SvgModule =>
 
     def convolveMatrix[A](
         picture: Drawing[A],
-        matrix: Vector[Vector[Double]],
+        kernel: Kernel,
         divisor: Option[Double],
         bias: Double
     ): Drawing[A] =
       picture.flatMap { (bb, rdr) =>
         Finalized.leaf { dc =>
           val filterId = s"convolve-${Random.nextLong().toHexString}"
-          val filterTag = createConvolveFilter(filterId, matrix, divisor, bias)
+          val filterTag = createConvolveFilter(filterId, kernel, divisor, bias)
 
           val newRdr: Renderable[SvgResult, A] = rdr.map { result =>
             val (tag, defs, a) = result
@@ -164,7 +173,7 @@ trait FilterModule { root: Base with SvgModule =>
 
     private def createConvolveFilter(
         id: String,
-        matrix: Vector[Vector[Double]],
+        kernel: Kernel,
         divisor: Option[Double],
         bias: Double
     ): Tag = {
@@ -172,18 +181,24 @@ trait FilterModule { root: Base with SvgModule =>
       import b.implicits.*
       import b.{svgAttrs, svgTags}
 
-      val size = matrix.length
-      val kernelMatrix = matrix.flatten.mkString(" ")
-      val div = divisor.getOrElse(matrix.flatten.sum)
+      val kernelMatrix = kernel.elements.map(formatSvgNumber).mkString(" ")
+      val div = divisor.getOrElse(kernel.sum)
+
+      // Use single value for square kernels, two values for rectangular
+      val orderValue = if kernel.width == kernel.height then {
+        s"${kernel.width}"
+      } else {
+        s"${kernel.width} ${kernel.height}"
+      }
 
       svgTags.tag("filter")(
         svgAttrs.id := id,
         svgTags.tag("feConvolveMatrix")(
           svgAttrs.attr("in") := "SourceGraphic",
-          svgAttrs.attr("order") := s"$size",
+          svgAttrs.attr("order") := orderValue,
           svgAttrs.attr("kernelMatrix") := kernelMatrix,
-          svgAttrs.attr("divisor") := s"$div",
-          svgAttrs.attr("bias") := s"$bias",
+          svgAttrs.attr("divisor") := formatSvgNumber(div),
+          svgAttrs.attr("bias") := formatSvgNumber(bias),
           svgAttrs.attr("edgeMode") := "duplicate"
         )
       )
