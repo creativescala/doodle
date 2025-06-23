@@ -20,15 +20,6 @@ package algebra
 import doodle.core.Color
 import doodle.core.Normalized
 
-/** Algebra for applying filter effects to pictures.
-  *
-  * This includes convolution operations (blur, sharpen, edge detection) and
-  * other filter effects. Different backends implement these differently:
-  *   - SVG: uses native filter elements like feGaussianBlur and
-  *     feConvolveMatrix
-  *   - Java2d: may need to rasterize to bitmap first
-  *   - Canvas: manual pixel manipulation
-  */
 trait Filter extends Algebra {
 
   def gaussianBlur[A](picture: Drawing[A], stdDeviation: Double): Drawing[A]

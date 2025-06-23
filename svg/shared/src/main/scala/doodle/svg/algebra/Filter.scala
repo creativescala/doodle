@@ -38,14 +38,6 @@ trait FilterModule { root: Base with SvgModule =>
           val filterId = s"blur-${Random.nextLong().toHexString}"
           val filterTag = createGaussianBlurFilter(filterId, stdDeviation)
 
-          /** Instead of creating a new State via State monad, transform the
-            * existing State.
-            *
-            * So, transform the value inside the existing Renderable (which is a
-            * State) rather than trying to run it and create a new one.
-            *
-            * The transformation preserves the Renderable[SvgResult, A].
-            */
           val newRdr: Renderable[SvgResult, A] = rdr.map { result =>
             val (tag, defs, a) = result
 
@@ -150,18 +142,6 @@ trait FilterModule { root: Base with SvgModule =>
       import b.implicits.*
       import b.{svgAttrs, svgTags}
 
-      /** SVG filter elements (filter, feGaussianBlur, etc.) aren't in the
-        * standard scalatags bundle so create them manually here
-        *
-        * SVG stdDeviation accepts float/decimal values as per SVG
-        * specification:
-        *   - DOM interface: setStdDeviation(in float stdDeviationX, in float
-        *     stdDeviationY)
-        *   - Attribute type: <number-optional-number> where <number> can be
-        *     decimal
-        *   - Using formatSvgNumber ensures consistent integer format across
-        *     JVM/JS platforms
-        */
       svgTags.tag("filter")(
         svgAttrs.id := id,
         svgTags.tag("feGaussianBlur")(
