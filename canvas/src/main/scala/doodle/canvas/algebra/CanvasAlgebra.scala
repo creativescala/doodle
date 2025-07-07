@@ -20,16 +20,20 @@ import cats.Apply
 import cats.Eval
 import cats.Functor
 import cats.Monad
+import cats.syntax.all.*
 import doodle.algebra.generic.*
 import doodle.core.BoundingBox
+import doodle.core.font.Font
 import org.scalajs.dom.CanvasRenderingContext2D
 
 final case class CanvasAlgebra(
     ctx: CanvasRenderingContext2D,
     applyDrawing: Apply[CanvasDrawing] = Apply.apply[CanvasDrawing],
     functorDrawing: Functor[CanvasDrawing] = Apply.apply[CanvasDrawing]
-) extends Path,
+) extends HasTextBoundingBox,
+      Path,
       Shape,
+      Text,
       GenericDebug[CanvasDrawing],
       GenericLayout[CanvasDrawing],
       GenericSize[CanvasDrawing],
@@ -38,7 +42,9 @@ final case class CanvasAlgebra(
       GivenApply[CanvasDrawing],
       GivenFunctor[CanvasDrawing],
       doodle.algebra.Algebra {
+
   type Drawing[A] = doodle.canvas.Drawing[A]
+
   implicit val drawingInstance: Monad[Drawing] =
     new Monad[Drawing] {
       def pure[A](x: A): Drawing[A] =
@@ -68,4 +74,17 @@ final case class CanvasAlgebra(
       }
     }
 
+  def textBoundingBox(
+      text: String,
+      font: Font
+  ): (BoundingBox, TextMetrics) = {
+    val effect =
+      CanvasDrawing.setFont(font) >> CanvasDrawing.measureText(text).map {
+        metrics =>
+          val bb = CanvasDrawing.textMetricsToBoundingBox(metrics)
+          (bb, metrics)
+      }
+
+    effect(ctx)
+  }
 }

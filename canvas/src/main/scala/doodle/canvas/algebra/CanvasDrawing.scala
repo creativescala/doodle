@@ -42,6 +42,7 @@ import org.scalajs.dom.CanvasRenderingContext2D
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
+import doodle.core.BoundingBox
 
 /** A canvas `Drawing` is a function that, when applied, produces a value of
   * type `A` and has the side-effect of drawing on the canvas.
@@ -101,6 +102,19 @@ object CanvasDrawing {
       )
       ctx.closePath()
     }
+
+  def fillText(
+      text: String,
+      x: Double,
+      y: Double,
+      fill: Option[Fill]
+  ): CanvasDrawing[Unit] =
+    CanvasDrawing.withFill(fill) {
+      CanvasDrawing(canvas => canvas.fillText(text, x, y))
+    }
+
+  def measureText(text: String): CanvasDrawing[TextMetrics] =
+    CanvasDrawing(canvas => canvas.measureText(text).asInstanceOf[TextMetrics])
 
   def openPath(path: OpenPath): CanvasDrawing[Unit] =
     CanvasDrawing { ctx =>
@@ -243,6 +257,27 @@ object CanvasDrawing {
     }
   }
 
+  def textMetricsToBoundingBox(metrics: TextMetrics): BoundingBox = {
+    val width = Math.abs(metrics.actualBoundingBoxLeft) + Math.abs(
+      metrics.actualBoundingBoxRight
+    )
+    val height = Math.abs(metrics.actualBoundingBoxAscent) + Math.abs(
+      metrics.actualBoundingBoxDescent
+    )
+
+    BoundingBox.centered(width, height)
+  }
+
+  def strokeText(
+      text: String,
+      x: Double,
+      y: Double,
+      stroke: Option[Stroke]
+  ): CanvasDrawing[Unit] =
+    CanvasDrawing.withStroke(stroke) {
+      CanvasDrawing(canvas => canvas.strokeText(text, x, y))
+    }
+
   def withFill[A](
       fill: Option[Fill]
   )(drawing: CanvasDrawing[A]): CanvasDrawing[A] =
@@ -260,4 +295,5 @@ object CanvasDrawing {
         .map(s => CanvasDrawing(ctx => ctx.stroke()))
         .getOrElse(CanvasDrawing.unit)
     )
+
 }

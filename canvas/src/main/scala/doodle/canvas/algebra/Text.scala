@@ -21,13 +21,14 @@ import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.Transform as Tx
 import doodle.core.font.Font
-import org.scalajs.dom
 
 trait Text extends GenericText[CanvasDrawing] {
-  self: Algebra { type Drawing[A] = Finalized[CanvasDrawing, A] } =>
+  self: Algebra {
+    type Drawing[A] = Finalized[CanvasDrawing, A]
+  } & HasTextBoundingBox =>
 
   object TextApi extends TextApi {
-    type Bounds = dom.TextMetrics
+    type Bounds = TextMetrics
 
     def text(
         tx: Tx,
@@ -36,11 +37,25 @@ trait Text extends GenericText[CanvasDrawing] {
         font: Font,
         text: String,
         bounds: Bounds
-    ): CanvasDrawing[Unit] =
-      ???
+    ): CanvasDrawing[Unit] = {
+      val width = Math.abs(bounds.actualBoundingBoxLeft) + Math.abs(
+        bounds.actualBoundingBoxRight
+      )
+      val height = Math.abs(bounds.actualBoundingBoxAscent) + Math.abs(
+        bounds.actualBoundingBoxDescent
+      )
+
+      val x = -width / 2.0
+      val y = Math.abs(bounds.actualBoundingBoxAscent) - (height / 2.0)
+
+      CanvasDrawing.setTransform(Tx.verticalReflection.andThen(tx)) >>
+        CanvasDrawing.setFont(font) >>
+        CanvasDrawing.fillText(text, x, y, fill) >>
+        CanvasDrawing.strokeText(text, x, y, stroke)
+    }
 
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {
-      ???
+      self.textBoundingBox(text, font)
     }
   }
 }
