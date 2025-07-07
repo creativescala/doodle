@@ -30,7 +30,11 @@ val Frame = doodle.canvas.effect.Frame
 given Renderer[Algebra, Frame, Canvas] = doodle.canvas.effect.CanvasRenderer
 
 type Picture[A] = doodle.algebra.Picture[Algebra, A]
-object Picture extends BaseConstructor, PathConstructor, ShapeConstructor {
+object Picture
+    extends BaseConstructor,
+      PathConstructor,
+      ShapeConstructor,
+      TextConstructor {
 
   type Algebra = doodle.canvas.Algebra
   type Drawing[A] = doodle.canvas.Drawing[A]
