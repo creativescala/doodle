@@ -61,7 +61,7 @@ sealed abstract class Point extends Product with Serializable {
   def toCartesian: Cartesian =
     this match {
       case c @ Cartesian(_, _) => c
-      case Polar(r, a) =>
+      case Polar(r, a)         =>
         Cartesian(r * a.cos, r * a.sin)
     }
 

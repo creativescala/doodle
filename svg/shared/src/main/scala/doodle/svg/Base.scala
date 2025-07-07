@@ -40,10 +40,8 @@ trait Base { self =>
   /** The result is:
     *
     *   - the Tag that should be rendered for this Picture
-    *
     *   - other Tags that should be rendered in a separate group. Used for
     *     gradients and font styles, which must be specified separately in SVG.
-    *
     *   - the restul of evaluating the Picture
     */
   type SvgResult[A] = (Tag, mutable.Set[Tag], A)

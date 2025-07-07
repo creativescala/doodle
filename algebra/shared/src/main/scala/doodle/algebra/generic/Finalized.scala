@@ -31,7 +31,6 @@ import doodle.core.Transform as Tx
   *
   *   - for each shape work out its [[DrawingContext]] from which we can work
   *     out a [[doodle.core.BoundingBox]].
-  *
   *   - apply transforms to bounding boxes at the point they are defined so each
   *     transformed subtree is laid out in its local coordinate system.
   *

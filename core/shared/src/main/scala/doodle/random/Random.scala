@@ -130,7 +130,7 @@ object Random {
         Always(f(fa))
       override def extract[A](x: RandomOp[A]): A =
         x match {
-          case Always(a) => a
+          case Always(a)      => a
           case Discrete(elts) =>
             val weight = rng.nextDouble()
             pick(0.0, weight, elts)

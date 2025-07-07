@@ -68,7 +68,7 @@ object Rosette {
 
   def mapTails[A, B](list: List[A])(f: (A, A) => B): List[B] =
     list match {
-      case Nil => Nil
+      case Nil     => Nil
       case x :: xs =>
         xs.map(f(x, _)) ::: mapTails(xs)(f)
     }
