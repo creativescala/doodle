@@ -1,3 +1,8 @@
+## NEXT
+
+- Add `Text` algebra to the Canvas backend
+
+
 ## 0.30.0 30-Apr-2025
 
 - Rework `random` package to modernise and add features
