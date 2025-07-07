@@ -22,6 +22,7 @@ import doodle.algebra.generic.Fill.ColorFill
 import doodle.algebra.generic.Fill.GradientFill
 import doodle.algebra.generic.Stroke
 import doodle.algebra.generic.StrokeStyle
+import doodle.core.BoundingBox
 import doodle.core.Cap
 import doodle.core.ClosedPath
 import doodle.core.Color
@@ -42,7 +43,6 @@ import org.scalajs.dom.CanvasRenderingContext2D
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
-import doodle.core.BoundingBox
 
 /** A canvas `Drawing` is a function that, when applied, produces a value of
   * type `A` and has the side-effect of drawing on the canvas.
@@ -94,8 +94,8 @@ object CanvasDrawing {
       ctx.beginPath()
       path.elements.foreach(elt =>
         elt match {
-          case MoveTo(to) => ctx.moveTo(to.x, to.y)
-          case LineTo(to) => ctx.lineTo(to.x, to.y)
+          case MoveTo(to)                  => ctx.moveTo(to.x, to.y)
+          case LineTo(to)                  => ctx.lineTo(to.x, to.y)
           case BezierCurveTo(cp1, cp2, to) =>
             ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y)
         }
@@ -121,8 +121,8 @@ object CanvasDrawing {
       ctx.beginPath()
       path.elements.foreach(elt =>
         elt match {
-          case MoveTo(to) => ctx.moveTo(to.x, to.y)
-          case LineTo(to) => ctx.lineTo(to.x, to.y)
+          case MoveTo(to)                  => ctx.moveTo(to.x, to.y)
+          case LineTo(to)                  => ctx.lineTo(to.x, to.y)
           case BezierCurveTo(cp1, cp2, to) =>
             ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, to.x, to.y)
         }
@@ -181,7 +181,7 @@ object CanvasDrawing {
   def setFill(fill: Fill): CanvasDrawing[Unit] = {
     CanvasDrawing { ctx =>
       fill match {
-        case ColorFill(color) => ctx.fillStyle = colorToCSS(color)
+        case ColorFill(color)       => ctx.fillStyle = colorToCSS(color)
         case GradientFill(gradient) =>
           ctx.fillStyle = createGradient(ctx, gradient)
       }

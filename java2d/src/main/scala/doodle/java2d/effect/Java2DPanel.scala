@@ -121,7 +121,7 @@ final class Java2DPanel(
   // A fixed size frame allows us to set the panel size and inverse transform
   // without a picture present
   frame.size match {
-    case FitToImage(border) => ()
+    case FitToImage(border)       => ()
     case FixedSize(width, height) =>
       setSize(width.toInt, height.toInt)
       // resize(width, height)

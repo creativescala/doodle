@@ -40,10 +40,8 @@ import scala.concurrent.duration.Duration
   *     parallel, with product, they always take the same amount of time when
   *     converted to a transducer. Transducers combined in parallel may take
   *     differing amounts of time.
-  *
   *   - A transducer can represent arbitrary FSMs, while an interpolation moves
   *     from start to end value.
-  *
   *   - Transducers can be run. Interpolations must be transformed to
   *     transducers to run.
   */

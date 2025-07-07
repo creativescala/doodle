@@ -25,7 +25,7 @@ import munit.FunSuite
 
 class Base64WriterSuite extends FunSuite {
   def base64Distance[A <: Format](b1: Base64[A], b2: Base64[A]): Double = {
-    import java.util.{Base64 as JBase64}
+    import java.util.Base64 as JBase64
     val d1 = JBase64.getDecoder().decode(b1.value)
     val d2 = JBase64.getDecoder().decode(b2.value)
 

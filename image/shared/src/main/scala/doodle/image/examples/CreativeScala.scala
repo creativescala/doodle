@@ -477,7 +477,7 @@ object CreativeScala {
 
     def allOn(points: List[Random[Image]]): Random[Image] =
       points match {
-        case Nil => Random.always(Image.empty)
+        case Nil         => Random.always(Image.empty)
         case img :: imgs =>
           (img, allOn(imgs)) mapN { (i, is) =>
             i on is
@@ -546,7 +546,7 @@ object CreativeScala {
 
     def allOn(points: List[Random[Image]]): Random[Image] =
       points match {
-        case Nil => Random.always(Image.empty)
+        case Nil         => Random.always(Image.empty)
         case img :: imgs =>
           (img, allOn(imgs)) mapN { (i, is) =>
             i on is

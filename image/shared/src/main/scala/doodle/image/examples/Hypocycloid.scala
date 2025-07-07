@@ -30,7 +30,7 @@ object Hypocycloid {
   def eval(t: Angle, pattern: Hypocycloid): Vec = {
     def loop(pattern: Hypocycloid): Vec =
       pattern match {
-        case Nil => Vec.zero
+        case Nil                             => Vec.zero
         case (weight, freq, flipped) :: tail => {
           val angle = (t * freq)
           (if flipped then Vec(weight * angle.sin, weight * angle.cos)

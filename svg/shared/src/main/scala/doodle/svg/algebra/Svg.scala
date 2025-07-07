@@ -188,7 +188,7 @@ trait SvgModule { self: Base =>
       */
     def toStyle(fill: Fill, gradients: mutable.Set[Tag]): String = {
       fill match {
-        case Fill.ColorFill(c) => s"fill: ${Svg.toOklch(c)};"
+        case Fill.ColorFill(c)    => s"fill: ${Svg.toOklch(c)};"
         case Fill.GradientFill(g) =>
           val (id, gradient) = toSvgGradient(g)
           gradients += gradient
