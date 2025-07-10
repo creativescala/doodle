@@ -25,8 +25,8 @@ import doodle.syntax.all.*
 import scala.scalajs.js.annotation.*
 
 object FilterShapes {
-  val redCircle = circle(80).fillColor(Color.red).strokeWidth(0)
-  val blueSquare = square(100).fillColor(Color.blue).strokeWidth(0)
+  val redCircle = circle(80).fillColor(Color.red).strokeWidth(0).margin(20)
+
   val gradientCircle = circle(80)
     .fillGradient(
       Gradient.linear(
@@ -41,11 +41,37 @@ object FilterShapes {
       )
     )
     .strokeWidth(0)
+    .margin(20)
 
   val complexShape = (circle(60) on square(80))
     .fillColor(Color.purple)
     .strokeColor(Color.black)
     .strokeWidth(3)
+    .margin(20)
+
+  val layeredShape = (circle(60) on square(100))
+    .fillColor(Color.lightBlue)
+    .strokeColor(Color.darkBlue)
+    .strokeWidth(4)
+    .margin(20)
+
+  val embossShape = (regularPolygon(6, 80) on circle(100))
+    .fillGradient(
+      Gradient.radial(
+        Point(0, 0),
+        Point(0, 0),
+        50,
+        List(
+          (Color.lightBlue, 0.0),
+          (Color.blue, 0.7),
+          (Color.darkBlue, 1.0)
+        ),
+        Gradient.CycleMethod.NoCycle
+      )
+    )
+    .strokeColor(Color.navy)
+    .strokeWidth(2)
+    .margin(20)
 }
 
 @JSExportTopLevel("SvgBlurDemo")
@@ -54,10 +80,10 @@ object BlurDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val original = redCircle
-    val blurred = redCircle.blur(5.0)
+    val original = redCircle.below(text("original").fillColor(Color.black))
+    val blurred = redCircle.blur(5.0).below(text("blur").fillColor(Color.black))
 
-    (original beside blurred.beside(text("blur(5.0)").fillColor(Color.black)))
+    (original beside blurred)
       .drawWithFrame(Frame(mount))
   }
 }
@@ -84,29 +110,26 @@ object SharpenDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val original = complexShape
-    val sharpened = complexShape.sharpen(2.0)
+    val original = complexShape.below(text("original").fillColor(Color.black))
+    val sharpened =
+      complexShape.sharpen(2.0).below(text("sharpen").fillColor(Color.black))
 
-    (original beside sharpened.beside(
-      text("sharpen(2.0)").fillColor(Color.black)
-    ))
+    (original beside sharpened)
       .drawWithFrame(Frame(mount))
   }
 }
 
 @JSExportTopLevel("SvgEdgeDetectionDemo")
 object EdgeDetectionDemo {
+  import FilterShapes.*
 
   @JSExport
   def draw(mount: String) = {
-    val shape = (circle(60) on square(100))
-      .fillColor(Color.lightBlue)
-      .strokeColor(Color.darkBlue)
-      .strokeWidth(4)
+    val original = layeredShape.below(text("original").fillColor(Color.black))
+    val edges =
+      layeredShape.detectEdges.below(text("detectEdges").fillColor(Color.black))
 
-    val edges = shape.detectEdges
-
-    (shape beside edges.beside(text("detectEdges").fillColor(Color.black)))
+    (original beside edges)
       .drawWithFrame(Frame(mount))
   }
 }
@@ -117,10 +140,11 @@ object EmbossDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val original = blueSquare
-    val embossed = blueSquare.emboss
+    val original = embossShape.below(text("original").fillColor(Color.black))
+    val embossed =
+      embossShape.emboss.below(text("emboss").fillColor(Color.black))
 
-    (original beside embossed.beside(text("emboss").fillColor(Color.black)))
+    (original beside embossed)
       .drawWithFrame(Frame(mount))
   }
 }
@@ -130,10 +154,17 @@ object DropShadowDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val shape = star(5, 50, 25).fillColor(Color.gold).strokeWidth(0)
-    val shadowed = shape.dropShadow(8, 8, 4, Color.black.alpha(Normalized(0.5)))
+    val shape = star(5, 50, 25)
+      .fillColor(Color.gold)
+      .strokeWidth(0)
+      .margin(20)
 
-    (shape beside shadowed.beside(text("dropShadow").fillColor(Color.black)))
+    val original = shape.below(text("original").fillColor(Color.black))
+    val shadowed = shape
+      .dropShadow(8, 8, 4, Color.black.alpha(Normalized(0.5)))
+      .below(text("dropShadow").fillColor(Color.black))
+
+    (original beside shadowed)
       .drawWithFrame(Frame(mount))
   }
 }
@@ -147,40 +178,56 @@ object ChainedFilters {
       .fillColor(Color.crimson)
       .strokeColor(Color.white)
       .strokeWidth(3)
+      .margin(20)
 
+    val original = shape.below(text("original").fillColor(Color.black))
     val filtered = shape
       .blur(2.0)
       .sharpen(1.5)
       .dropShadow(10, 10, 3, Color.black.alpha(Normalized(0.4)))
+      .below(text("chained filters").fillColor(Color.black))
 
-    (shape beside filtered)
-      .below(
-        text("Original → blur → sharpen → dropShadow").fillColor(Color.black)
-      )
+    (original beside filtered)
       .drawWithFrame(Frame(mount))
   }
 }
 
 @JSExportTopLevel("SvgCustomKernelDemo")
 object CustomKernelDemo {
-  import FilterShapes.*
 
   @JSExport
   def draw(mount: String) = {
-    val shape = complexShape
-
-    // Edge enhancement kernel
-    val enhance = Kernel(
+    val customSharpen = Kernel(
       3,
       3,
       IArray(
-        -1, -1, -1, -1, 9, -1, -1, -1, -1
+        0, -2, 0, -2, 9, -2, 0, -2, 0
       )
     )
 
-    val enhanced = shape.convolve(enhance)
+    val shape = (star(6, 60, 30) on circle(80))
+      .fillGradient(
+        Gradient.linear(
+          Point(-40, -40),
+          Point(40, 40),
+          List(
+            (Color.purple, 0.0),
+            (Color.hotPink, 0.5),
+            (Color.orange, 1.0)
+          ),
+          Gradient.CycleMethod.NoCycle
+        )
+      )
+      .strokeColor(Color.black)
+      .strokeWidth(2)
+      .margin(20)
 
-    (shape beside enhanced.beside(text("custom kernel").fillColor(Color.black)))
+    val original = shape.below(text("original").fillColor(Color.black))
+    val enhanced = shape
+      .convolve(customSharpen)
+      .below(text("custom sharpen").fillColor(Color.black))
+
+    (original beside enhanced)
       .drawWithFrame(Frame(mount))
   }
 }
@@ -193,19 +240,15 @@ object BoxBlurComparison {
   def draw(mount: String) = {
     val shape = gradientCircle
 
-    val gaussian =
-      shape.blur(5.0).below(text("blur(5.0)").fillColor(Color.black))
-    val box = shape.boxBlur(5).below(text("boxBlur(5)").fillColor(Color.black))
+    val original = shape.below(text("original").fillColor(Color.black))
+    val gaussian = shape
+      .blur(5.0)
+      .below(text("gaussianBlur").fillColor(Color.black))
+    val box = shape
+      .boxBlur(5)
+      .below(text("boxBlur").fillColor(Color.black))
 
-    (gaussian beside box).drawWithFrame(Frame(mount))
+    (original beside gaussian beside box)
+      .drawWithFrame(Frame(mount))
   }
-}
-
-// @testing filter chains
-object ChainTest {
-  private val chainTest = circle(50)
-    .blur(1.0)
-    .sharpen(2.0)
-    .emboss
-    .dropShadow(5, 5, 2, Color.black)
 }

@@ -37,6 +37,8 @@ val sharpenedShape = compositeShape.sharpen(2.0)
 
 @:doodle("sharpen-demo", "SvgSharpenDemo.draw")
 
+The sharpen amount parameter controls the intensity of the effect. Values above 1.0 increase sharpness, while values between 0 and 1 reduce it.
+
 ## Edge Detection
 
 The `detectEdges` method highlights boundaries and contours:
@@ -52,13 +54,23 @@ val edgeDetected = layeredShape.detectEdges
 
 @:doodle("edge-detection-demo", "SvgEdgeDetectionDemo.draw")
 
+Edge detection is particularly effective on shapes with color gradients or multiple overlapping elements.
+
 ## Emboss
 
 The `emboss` method creates a 3D raised surface effect:
 
 ```scala mdoc:silent
-val squareShape = square(100).fillColor(Color.blue)
-val embossedSquare = squareShape.emboss
+val embossShape = regularPolygon(6, 80).on(circle(100))
+  .fillGradient(
+    Gradient.radial(
+      Point(0, 0), Point(0, 0), 50,
+      List((Color.lightBlue, 0.0), (Color.darkBlue, 1.0)),
+      Gradient.CycleMethod.NoCycle
+    )
+  )
+
+val embossedShape = embossShape.emboss
 ```
 
 @:doodle("emboss-demo", "SvgEmbossDemo.draw")
@@ -79,6 +91,8 @@ val shadowedStar = starShape.dropShadow(
 
 @:doodle("drop-shadow-demo", "SvgDropShadowDemo.draw")
 
+You can control the shadow's position (`offsetX`, `offsetY`), softness (`blur`), and appearance (`color` with alpha transparency).
+
 ## Combining Effects
 
 Filter effects can be chained to create complex transformations:
@@ -97,33 +111,44 @@ val multiFiltered = hexagon
 
 @:doodle("chained-filters", "SvgChainedFilters.draw")
 
+When combining filters, consider the order of operations, but blur before sharpen creates a different effect than sharpen before blur.
+
 ## Custom Convolutions
 
-For advanced effects, create custom kernels with the `convolve` method:
+For advanced effects, create custom kernels with the `convolve` method. A kernel is a matrix of values that determines how each pixel is combined with its neighbors:
 
 ```scala mdoc:silent
 import doodle.algebra.Kernel
 
-// Edge enhancement kernel
-val enhance = Kernel(3, 3, IArray(
-  -1, -1, -1,
-  -1,  9, -1,
-  -1, -1, -1
+// Custom sharpening kernel
+val customSharpen = Kernel(3, 3, IArray(
+   0, -2,  0,
+  -2,  9, -2,
+   0, -2,  0
 ))
 
-val customShape = circle(60).on(square(80))
-  .fillColor(Color.purple)
-  .strokeColor(Color.black)
-  .strokeWidth(3)
+val customStarShape = star(6, 60, 30).on(circle(80))
+  .fillGradient(
+    Gradient.linear(
+      Point(-40, -40), Point(40, 40),
+      List((Color.purple, 0.0), (Color.hotPink, 0.5), (Color.orange, 1.0)),
+      Gradient.CycleMethod.NoCycle
+    )
+  )
 
-val enhancedShape = customShape.convolve(enhance)
+val enhancedShape = customStarShape.convolve(customSharpen)
 ```
 
 @:doodle("custom-kernel-demo", "SvgCustomKernelDemo.draw")
 
+Convolution kernels work by multiplying each pixel and its neighbors by the corresponding kernel values, then summing the results. Common kernel patterns include:
+- **Edge detection**: negative values around a positive center.
+- **Blur**: all positive values that sum to 1.
+- **Sharpen**: negative values around a center value greater than.
+
 ## Box Blur
 
-The `boxBlur` method provides an alternative blur implementation:
+The `boxBlur` method provides an alternative blur implementation. Unlike Gaussian blur which creates a smooth falloff, box blur averages pixels uniformly within a square area:
 
 ```scala mdoc:silent
 val orangeCircle = circle(80).fillColor(Color.orange)
