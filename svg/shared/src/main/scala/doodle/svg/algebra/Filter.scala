@@ -61,7 +61,7 @@ trait FilterModule { root: Base with SvgModule =>
     }
 
     def detectEdges[A](picture: Drawing[A]): Drawing[A] =
-      convolveMatrix(picture, Filter.edgeDetectionKernel, None, 0.0)
+      convolveMatrix(picture, Filter.edgeDetectionKernel, Some(1.0), 0.5)
 
     def sharpen[A](picture: Drawing[A], amount: Double): Drawing[A] = {
       val baseKernel = Filter.sharpenKernel
