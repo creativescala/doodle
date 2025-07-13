@@ -71,15 +71,18 @@ object FilterShapes {
 
   val randomCircle: Random[Picture[Unit]] =
     for {
-      x <- Random.int(-100, 100)
-      y <- Random.int(-100, 100)
+      pt <- (
+        Random.double.map(r => Math.sqrt(r) * 100),
+        Random.double.map(_.turns)
+      )
+        .mapN(Point.polar)
       r <- Random.int(15, 45)
-      l <- Random.double(0.2, 0.8)
+      l <- Random.double(0.3, 0.8)
       c <- Random.double(0.1, 0.4)
-      h <- Random.double(0.0, 0.3).map(_.turns)
+      h = (pt.r * 0.35 / 100.0).turns
     } yield Picture
       .circle(r)
-      .at(x, y)
+      .at(pt)
       .noStroke
       .fillColor(Color.oklch(l, c, h, 0.5))
 
