@@ -28,6 +28,8 @@ package object syntax {
       with BlendSyntax
       with BufferedImageWriterSyntax
       with DebugSyntax
+      with FileWriterSyntax
+      with FilterSyntax
       with LayoutSyntax
       with NormalizedSyntax
       with PathSyntax
@@ -40,13 +42,14 @@ package object syntax {
       with TransformSyntax
       with TraverseSyntax
       with UnsignedByteSyntax
-      with FileWriterSyntax
   object angle extends AngleSyntax
   object base64Writer extends Base64WriterSyntax
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
   object bufferedImageWriter extends BufferedImageWriterSyntax
   object debug extends DebugSyntax
+  object fileWriter extends FileWriterSyntax
+  object filter extends FilterSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
@@ -59,5 +62,4 @@ package object syntax {
   object transform extends TransformSyntax
   object traverse extends TraverseSyntax
   object unsignedByte extends UnsignedByteSyntax
-  object fileWriter extends FileWriterSyntax
 }

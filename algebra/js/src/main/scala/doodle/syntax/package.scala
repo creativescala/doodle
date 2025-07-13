@@ -26,6 +26,7 @@ package object syntax {
       with BitmapSyntax
       with BlendSyntax
       with DebugSyntax
+      with FilterSyntax
       with LayoutSyntax
       with NormalizedSyntax
       with PathSyntax
@@ -42,6 +43,7 @@ package object syntax {
   object bitmap extends BitmapSyntax
   object blend extends BlendSyntax
   object debug extends DebugSyntax
+  object filter extends FilterSyntax
   object layout extends LayoutSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
