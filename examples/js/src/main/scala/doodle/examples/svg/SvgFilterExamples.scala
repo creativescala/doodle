@@ -17,8 +17,10 @@
 package doodle.examples.svg
 
 import cats.effect.unsafe.implicits.global
+import cats.syntax.all.*
 import doodle.algebra.Kernel
 import doodle.core.*
+import doodle.random.{*, given}
 import doodle.svg.*
 import doodle.syntax.all.*
 
@@ -30,11 +32,11 @@ object FilterShapes {
   val gradientCircle = circle(80)
     .fillGradient(
       Gradient.linear(
-        Point(-40, 0),
-        Point(40, 0),
+        Point(0, 0),
+        Point(1, 0),
         List(
-          (Color.orange, 0.0),
-          (Color.yellow, 0.5),
+          (Color.orange, -1.0),
+          (Color.yellow, 0.0),
           (Color.red, 1.0)
         ),
         Gradient.CycleMethod.NoCycle
@@ -48,6 +50,40 @@ object FilterShapes {
     .strokeColor(Color.black)
     .strokeWidth(3)
     .margin(20)
+
+  val concentricCircles = {
+    def loop(count: Int): Picture[Unit] =
+      count match {
+        case 0 => Picture.empty
+        case n =>
+          Picture
+            .circle(n * 15)
+            .fillColor(Color.crimson.spin(10.degrees * n).alpha(0.7.normalized))
+            .strokeColor(
+              Color.red.spin(15.degrees * n).alpha(0.7.normalized)
+            )
+            .strokeWidth(4.0)
+            .under(loop(n - 1))
+      }
+
+    loop(7).margin(20)
+  }
+
+  val randomCircle: Random[Picture[Unit]] =
+    for {
+      x <- Random.int(-100, 100)
+      y <- Random.int(-100, 100)
+      r <- Random.int(15, 45)
+      l <- Random.double(0.2, 0.8)
+      c <- Random.double(0.1, 0.4)
+      h <- Random.double(0.0, 0.3).map(_.turns)
+    } yield Picture
+      .circle(r)
+      .at(x, y)
+      .noStroke
+      .fillColor(Color.oklch(l, c, h, 0.5))
+
+  val randomCircles = randomCircle.replicateA(200).map(_.allOn.margin(20))
 
   val layeredShape = (circle(60) on square(100))
     .fillColor(Color.lightBlue)
@@ -81,9 +117,11 @@ object BlurDemo {
   @JSExport
   def draw(mount: String) = {
     val original = redCircle.below(text("original").fillColor(Color.black))
-    val blurred = redCircle.blur(5.0).below(text("blur").fillColor(Color.black))
+    val blurred =
+      redCircle.blur(5.0).below(text("blurred").fillColor(Color.black))
 
-    (original beside blurred)
+    (original
+      .beside(blurred))
       .drawWithFrame(Frame(mount))
   }
 }
@@ -100,7 +138,7 @@ object BlurIntensities {
         .below(text(s"blur($intensity)").fillColor(Color.black))
     }
 
-    blurs.reduce(_ beside _).drawWithFrame(Frame(mount))
+    blurs.reduce(_.beside(_)).drawWithFrame(Frame(mount))
   }
 }
 
@@ -110,9 +148,13 @@ object SharpenDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val original = complexShape.below(text("original").fillColor(Color.black))
+    val picture = randomCircles.run()
+    val original =
+      picture.below(text("original").fillColor(Color.black))
     val sharpened =
-      complexShape.sharpen(2.0).below(text("sharpen").fillColor(Color.black))
+      picture
+        .sharpen(4.0)
+        .below(text("sharpened").fillColor(Color.black))
 
     (original beside sharpened)
       .drawWithFrame(Frame(mount))
@@ -140,11 +182,13 @@ object EmbossDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val original = embossShape.below(text("original").fillColor(Color.black))
+    val original =
+      concentricCircles.below(text("original").fillColor(Color.black))
     val embossed =
-      embossShape.emboss.below(text("emboss").fillColor(Color.black))
+      concentricCircles.emboss.below(text("embossed").fillColor(Color.black))
 
-    (original beside embossed)
+    (original
+      .beside(embossed))
       .drawWithFrame(Frame(mount))
   }
 }

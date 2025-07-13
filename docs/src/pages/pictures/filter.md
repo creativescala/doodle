@@ -1,15 +1,24 @@
-# Filter Effects
+# Convolution Filters
 
 ```scala mdoc:invisible
-import doodle.core._
-import doodle.syntax.all._
+import cats.syntax.all.*
+import doodle.core.*
+import doodle.random.{*, given}
+import doodle.svg.*
+import doodle.syntax.all.*
 ```
 
-Filter effects transform your pictures with image processing operations like blur, edge detection, and shadows. These effects enhance visual appearance by manipulating how shapes are rendered.
+
+## Concept
+
+Convolution filters, or filters for short, transform pictures at the level of individual pixels. They work by replacing each pixel with a weighted sum of its neighboring pixels. The  weights are determined by two-dimensional matrix known as a kernel. Filters can be used for a variety of image processing operations and creative effects such as blurring, edge detection, and drop shadows. 
+
+The filter functionality is provided by the @:api(doodle.algebra.Filter) algebra. It provides a method to apply a user-defined @:api(doodle.algebra.Kernel) to a `Picture`, but also conveniences to apply common operations, like a Gaussian blur, without having to construct a @:api(doodle.algebra.Kernel). These conveniences may also have more efficient implementations, depending upon the backend.
+
 
 ## Blur
 
-The `blur` method creates a soft, out-of-focus effect using Gaussian blur:
+The `blur` method creates a soft, out-of-focus effect using a Gaussian blur:
 
 ```scala mdoc:silent
 val circleShape = circle(80).fillColor(Color.red)
@@ -18,26 +27,39 @@ val blurredCircle = circleShape.blur(5.0)
 
 @:doodle("blur-demo", "SvgBlurDemo.draw")
 
-You can control the blur intensity - higher values create stronger blur effects:
+The argument to `blur` controls the intensity of the effect, as shown below. 
 
 @:doodle("blur-intensities", "SvgBlurIntensities.draw")
+
 
 ## Sharpen
 
 The `sharpen` method enhances edges and details:
 
 ```scala mdoc:silent
-val compositeShape = circle(60).on(square(80))
-  .fillColor(Color.purple)
-  .strokeColor(Color.black)
-  .strokeWidth(3)
+val randomCircle: Random[Picture[Unit]] =
+  for {
+    x <- Random.int(-100, 100)
+    y <- Random.int(-100, 100)
+    r <- Random.int(15, 45)
+    l <- Random.double(0.2, 0.8)
+    c <- Random.double(0.1, 0.4)
+    h <- Random.double(0.0, 0.3).map(_.turns)
+  } yield Picture
+    .circle(r)
+    .at(x, y)
+    .noStroke
+    .fillColor(Color.oklch(l, c, h, 0.5))
 
-val sharpenedShape = compositeShape.sharpen(2.0)
+val randomCircles = randomCircle.replicateA(200).map(_.allOn.margin(20)).run()
+
+val sharpenedShape = randomCircles.sharpen(4.0)
 ```
 
 @:doodle("sharpen-demo", "SvgSharpenDemo.draw")
 
-The sharpen amount parameter controls the intensity of the effect. Values above 1.0 increase sharpness, while values between 0 and 1 reduce it.
+The method's parameter controls the intensity of the effect. Values above 1.0 increase sharpness, while values between 0 and 1 reduce it.
+
 
 ## Edge Detection
 
@@ -56,24 +78,34 @@ val edgeDetected = layeredShape.detectEdges
 
 Edge detection is particularly effective on shapes with color gradients or multiple overlapping elements.
 
+
 ## Emboss
 
 The `emboss` method creates a 3D raised surface effect:
 
 ```scala mdoc:silent
-val embossShape = regularPolygon(6, 80).on(circle(100))
-  .fillGradient(
-    Gradient.radial(
-      Point(0, 0), Point(0, 0), 50,
-      List((Color.lightBlue, 0.0), (Color.darkBlue, 1.0)),
-      Gradient.CycleMethod.NoCycle
-    )
-  )
+val concentricCircles = {
+  def loop(count: Int): Picture[Unit] =
+    count match {
+      case 0 => Picture.empty
+      case n =>
+        Picture
+          .circle(n * 15)
+          .fillColor(Color.crimson.spin(10.degrees * n).alpha(0.7.normalized))
+          .strokeColor(
+            Color.red.spin(15.degrees * n).alpha(0.7.normalized)
+          )
+          .strokeWidth(4.0)
+          .under(loop(n - 1))
+    }
 
-val embossedShape = embossShape.emboss
+  loop(7)
+}
+val embossedShape = concentricCircles.emboss
 ```
 
 @:doodle("emboss-demo", "SvgEmbossDemo.draw")
+
 
 ## Drop Shadow
 
@@ -93,6 +125,7 @@ val shadowedStar = starShape.dropShadow(
 
 You can control the shadow's position (`offsetX`, `offsetY`), softness (`blur`), and appearance (`color` with alpha transparency).
 
+
 ## Combining Effects
 
 Filter effects can be chained to create complex transformations:
@@ -111,7 +144,8 @@ val multiFiltered = hexagon
 
 @:doodle("chained-filters", "SvgChainedFilters.draw")
 
-When combining filters, consider the order of operations, but blur before sharpen creates a different effect than sharpen before blur.
+The order of operations is important when combining filters. For example, blur before sharpen creates a different effect to sharpen before blur.
+
 
 ## Custom Convolutions
 
@@ -145,6 +179,7 @@ Convolution kernels work by multiplying each pixel and its neighbors by the corr
 - **Edge detection**: negative values around a positive center.
 - **Blur**: all positive values that sum to 1.
 - **Sharpen**: negative values around a center value greater than.
+
 
 ## Box Blur
 
