@@ -94,15 +94,18 @@
             <p>The <code>sharpen</code> method enhances edges and details:</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">randomCircle</span><span>: </span><span class="type-name">Random</span><span>[</span><span class="type-name">Picture</span><span>[</span><span class="type-name">Unit</span><span>]] =
   </span><span class="keyword">for</span><span> {
-    </span><span class="identifier">x</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(-</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
-    </span><span class="identifier">y</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(-</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
+    </span><span class="identifier">pt</span><span> &lt;- (
+      </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">r</span><span> =&gt; </span><span class="type-name">Math</span><span>.</span><span class="identifier">sqrt</span><span>(</span><span class="identifier">r</span><span>) * </span><span class="number-literal">100</span><span>),
+      </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">turns</span><span>)
+    )
+      .</span><span class="identifier">mapN</span><span>(</span><span class="type-name">Point</span><span>.</span><span class="identifier">polar</span><span>)
     </span><span class="identifier">r</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(</span><span class="number-literal">15</span><span>, </span><span class="number-literal">45</span><span>)
-    </span><span class="identifier">l</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.2</span><span>, </span><span class="number-literal">0.8</span><span>)
+    </span><span class="identifier">l</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.3</span><span>, </span><span class="number-literal">0.8</span><span>)
     </span><span class="identifier">c</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.1</span><span>, </span><span class="number-literal">0.4</span><span>)
-    </span><span class="identifier">h</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.0</span><span>, </span><span class="number-literal">0.3</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">turns</span><span>)
+    </span><span class="identifier">h</span><span> = (</span><span class="identifier">pt</span><span>.</span><span class="identifier">r</span><span> * </span><span class="number-literal">0.35</span><span> / </span><span class="number-literal">100.0</span><span>).</span><span class="identifier">turns</span><span>
   } </span><span class="keyword">yield</span><span> </span><span class="type-name">Picture</span><span>
     .</span><span class="identifier">circle</span><span>(</span><span class="identifier">r</span><span>)
-    .</span><span class="identifier">at</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>)
+    .</span><span class="identifier">at</span><span>(</span><span class="identifier">pt</span><span>)
     .</span><span class="identifier">noStroke</span><span>
     .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">oklch</span><span>(</span><span class="identifier">l</span><span>, </span><span class="identifier">c</span><span>, </span><span class="identifier">h</span><span>, </span><span class="number-literal">0.5</span><span>))
 
