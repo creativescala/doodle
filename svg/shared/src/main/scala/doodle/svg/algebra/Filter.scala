@@ -142,11 +142,11 @@ trait FilterModule { root: Base with SvgModule =>
       import b.implicits.*
       import b.{svgAttrs, svgTags}
 
-      svgTags.tag("filter")(
+      svgTags.filter(
         svgAttrs.id := id,
-        svgTags.tag("feGaussianBlur")(
-          svgAttrs.attr("in") := "SourceGraphic",
-          svgAttrs.attr("stdDeviation") := formatSvgNumber(stdDev)
+        svgTags.feGaussianBlur(
+          svgAttrs.in := "SourceGraphic",
+          svgAttrs.stdDeviation := formatSvgNumber(stdDev)
         )
       )
     }
@@ -171,15 +171,15 @@ trait FilterModule { root: Base with SvgModule =>
         s"${kernel.width} ${kernel.height}"
       }
 
-      svgTags.tag("filter")(
+      svgTags.filter(
         svgAttrs.id := id,
-        svgTags.tag("feConvolveMatrix")(
-          svgAttrs.attr("in") := "SourceGraphic",
-          svgAttrs.attr("order") := orderValue,
-          svgAttrs.attr("kernelMatrix") := kernelMatrix,
-          svgAttrs.attr("divisor") := formatSvgNumber(div),
-          svgAttrs.attr("bias") := formatSvgNumber(bias),
-          svgAttrs.attr("edgeMode") := "duplicate"
+        svgTags.feConvolveMatrix(
+          svgAttrs.in := "SourceGraphic",
+          svgAttrs.order := orderValue,
+          svgAttrs.kernelMatrix := kernelMatrix,
+          svgAttrs.divisor := formatSvgNumber(div),
+          svgAttrs.bias := formatSvgNumber(bias),
+          svgAttrs.edgeMode := "duplicate"
         )
       )
     }
@@ -195,29 +195,29 @@ trait FilterModule { root: Base with SvgModule =>
       import b.implicits.*
       import b.{svgAttrs, svgTags}
 
-      svgTags.tag("filter")(
+      svgTags.filter(
         svgAttrs.id := id,
-        svgTags.tag("feGaussianBlur")(
-          svgAttrs.attr("in") := "SourceAlpha",
-          svgAttrs.attr("stdDeviation") := formatSvgNumber(stdDev)
+        svgTags.feGaussianBlur(
+          svgAttrs.in := "SourceAlpha",
+          svgAttrs.stdDeviation := formatSvgNumber(stdDev)
         ),
-        svgTags.tag("feOffset")(
-          svgAttrs.attr("dx") := formatSvgNumber(dx),
-          svgAttrs.attr("dy") := formatSvgNumber(dy),
-          svgAttrs.attr("result") := "offsetblur"
+        svgTags.feOffset(
+          svgAttrs.dx := formatSvgNumber(dx),
+          svgAttrs.dy := formatSvgNumber(dy),
+          svgAttrs.result := "offsetblur"
         ),
-        svgTags.tag("feFlood")(
-          svgAttrs.attr("flood-color") := Svg.toOklch(color),
-          svgAttrs.attr("flood-opacity") := s"${color.alpha.get}"
+        svgTags.feFlood(
+          svgAttrs.floodColor := Svg.toOklch(color),
+          svgAttrs.floodOpacity := s"${color.alpha.get}"
         ),
-        svgTags.tag("feComposite")(
-          svgAttrs.attr("in2") := "offsetblur",
-          svgAttrs.attr("operator") := "in"
+        svgTags.feComposite(
+          svgAttrs.in2 := "offsetblur",
+          svgAttrs.operator := "in"
         ),
-        svgTags.tag("feMerge")(
-          svgTags.tag("feMergeNode")(),
-          svgTags.tag("feMergeNode")(
-            svgAttrs.attr("in") := "SourceGraphic"
+        svgTags.feMerge(
+          svgTags.feMergeNode(),
+          svgTags.feMergeNode(
+            svgAttrs.in := "SourceGraphic"
           )
         )
       )
@@ -230,7 +230,7 @@ trait FilterModule { root: Base with SvgModule =>
 
       // Wrap the tag in a group with the filter applied
       svgTags.g(
-        svgAttrs.attr("filter") := s"url(#$filterId)",
+        svgAttrs.filter := s"url(#$filterId)",
         tag
       )
     }
