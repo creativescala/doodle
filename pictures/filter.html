@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Typelevel Laika" />
-    <title>Filter Effects</title>
+    <title>Convolution Filters</title>
     
     
     <meta name="description" content="docs" />
@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <nav id="topbar"><p><a href="writing.html">←</a></p>
+    <nav id="topbar"><p><a href="transform.html">←</a></p>
 <p><a href="../../">Doodle</a></p>
-<p><a href="../core/">→</a></p></nav>
+<p><a href="size.html">→</a></p></nav>
     <nav id="sidebar">
         <ul class="nav-list">
           <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
@@ -41,11 +41,11 @@
           <li class="level2 nav-leaf"><a href="layout.html">Layout</a></li>
           <li class="level2 nav-leaf"><a href="style.html">Style</a></li>
           <li class="level2 nav-leaf"><a href="transform.html">Transforms</a></li>
+          <li class="level2 active nav-leaf"><a href="#">Convolution Filters</a></li>
           <li class="level2 nav-leaf"><a href="size.html">Size</a></li>
           <li class="level2 nav-leaf"><a href="text.html">Text</a></li>
           <li class="level2 nav-leaf"><a href="drawing.html">Drawing to the Screen</a></li>
           <li class="level2 nav-leaf"><a href="writing.html">Writing to a File</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Filter Effects</a></li>
           <li class="level1 nav-node"><a href="../core/">Core</a></li>
           <li class="level2 nav-leaf"><a href="../core/geometry.html">Geometry</a></li>
           <li class="level2 nav-leaf"><a href="../core/color.html">Color and Gradients</a></li>
@@ -74,30 +74,44 @@
 
     <div id="content">
         <main class="content">
-            <h1 id="filter-effects" class="title">Filter Effects</h1>
-            <p>Filter effects transform your pictures with image processing operations like blur, edge detection, and shadows. These effects enhance visual appearance by manipulating how shapes are rendered.</p>
+            <h1 id="convolution-filters" class="title">Convolution Filters</h1>
+            
+            <h2 id="concept" class="section">Concept</h2>
+            <p>Convolution filters, or filters for short, transform pictures at the level of individual pixels. They work by replacing each pixel with a weighted sum of its neighboring pixels. The  weights are determined by two-dimensional matrix known as a kernel. Filters can be used for a variety of image processing operations and creative effects such as blurring, edge detection, and drop shadows. </p>
+            <p>The filter functionality is provided by the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Filter.html">Filter</a> algebra. It provides a method to apply a user-defined <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Kernel.html">Kernel</a> to a <code>Picture</code>, but also conveniences to apply common operations, like a Gaussian blur, without having to construct a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Kernel.html">Kernel</a>. These conveniences may also have more efficient implementations, depending upon the backend.</p>
             
             <h2 id="blur" class="section">Blur</h2>
-            <p>The <code>blur</code> method creates a soft, out-of-focus effect using Gaussian blur:</p>
+            <p>The <code>blur</code> method creates a soft, out-of-focus effect using a Gaussian blur:</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">circleShape</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">80</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">blurredCircle</span><span> = </span><span class="identifier">circleShape</span><span>.</span><span class="identifier">blur</span><span>(</span><span class="number-literal">5.0</span><span>)</span></code></pre>
             <div id="blur-demo"></div>
             <script>SvgBlurDemo.draw("blur-demo")</script>
-            <p>You can control the blur intensity - higher values create stronger blur effects:</p>
+            <p>The argument to <code>blur</code> controls the intensity of the effect, as shown below. </p>
             <div id="blur-intensities"></div>
             <script>SvgBlurIntensities.draw("blur-intensities")</script>
             
             <h2 id="sharpen" class="section">Sharpen</h2>
             <p>The <code>sharpen</code> method enhances edges and details:</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">compositeShape</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">60</span><span>).</span><span class="identifier">on</span><span>(</span><span class="identifier">square</span><span>(</span><span class="number-literal">80</span><span>))
-  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">purple</span><span>)
-  .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
-  .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">3</span><span>)
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">randomCircle</span><span>: </span><span class="type-name">Random</span><span>[</span><span class="type-name">Picture</span><span>[</span><span class="type-name">Unit</span><span>]] =
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">x</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(-</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
+    </span><span class="identifier">y</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(-</span><span class="number-literal">100</span><span>, </span><span class="number-literal">100</span><span>)
+    </span><span class="identifier">r</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(</span><span class="number-literal">15</span><span>, </span><span class="number-literal">45</span><span>)
+    </span><span class="identifier">l</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.2</span><span>, </span><span class="number-literal">0.8</span><span>)
+    </span><span class="identifier">c</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.1</span><span>, </span><span class="number-literal">0.4</span><span>)
+    </span><span class="identifier">h</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">double</span><span>(</span><span class="number-literal">0.0</span><span>, </span><span class="number-literal">0.3</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">turns</span><span>)
+  } </span><span class="keyword">yield</span><span> </span><span class="type-name">Picture</span><span>
+    .</span><span class="identifier">circle</span><span>(</span><span class="identifier">r</span><span>)
+    .</span><span class="identifier">at</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>)
+    .</span><span class="identifier">noStroke</span><span>
+    .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">oklch</span><span>(</span><span class="identifier">l</span><span>, </span><span class="identifier">c</span><span>, </span><span class="identifier">h</span><span>, </span><span class="number-literal">0.5</span><span>))
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">sharpenedShape</span><span> = </span><span class="identifier">compositeShape</span><span>.</span><span class="identifier">sharpen</span><span>(</span><span class="number-literal">2.0</span><span>)</span></code></pre>
+</span><span class="keyword">val</span><span> </span><span class="identifier">randomCircles</span><span> = </span><span class="identifier">randomCircle</span><span>.</span><span class="identifier">replicateA</span><span>(</span><span class="number-literal">200</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">allOn</span><span>.</span><span class="identifier">margin</span><span>(</span><span class="number-literal">20</span><span>)).</span><span class="identifier">run</span><span>()
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">sharpenedShape</span><span> = </span><span class="identifier">randomCircles</span><span>.</span><span class="identifier">sharpen</span><span>(</span><span class="number-literal">4.0</span><span>)</span></code></pre>
             <div id="sharpen-demo"></div>
             <script>SvgSharpenDemo.draw("sharpen-demo")</script>
-            <p>The sharpen amount parameter controls the intensity of the effect. Values above 1.0 increase sharpness, while values between 0 and 1 reduce it.</p>
+            <p>The method&#39;s parameter controls the intensity of the effect. Values above 1.0 increase sharpness, while values between 0 and 1 reduce it.</p>
             
             <h2 id="edge-detection" class="section">Edge Detection</h2>
             <p>The <code>detectEdges</code> method highlights boundaries and contours:</p>
@@ -113,16 +127,24 @@
             
             <h2 id="emboss" class="section">Emboss</h2>
             <p>The <code>emboss</code> method creates a 3D raised surface effect:</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">embossShape</span><span> = </span><span class="identifier">regularPolygon</span><span>(</span><span class="number-literal">6</span><span>, </span><span class="number-literal">80</span><span>).</span><span class="identifier">on</span><span>(</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>))
-  .</span><span class="identifier">fillGradient</span><span>(
-    </span><span class="type-name">Gradient</span><span>.</span><span class="identifier">radial</span><span>(
-      </span><span class="type-name">Point</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>), </span><span class="type-name">Point</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>), </span><span class="number-literal">50</span><span>,
-      </span><span class="type-name">List</span><span>((</span><span class="type-name">Color</span><span>.</span><span class="identifier">lightBlue</span><span>, </span><span class="number-literal">0.0</span><span>), (</span><span class="type-name">Color</span><span>.</span><span class="identifier">darkBlue</span><span>, </span><span class="number-literal">1.0</span><span>)),
-      </span><span class="type-name">Gradient</span><span>.</span><span class="type-name">CycleMethod</span><span>.</span><span class="type-name">NoCycle</span><span>
-    )
-  )
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">concentricCircles</span><span> = {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">loop</span><span>(</span><span class="identifier">count</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Picture</span><span>[</span><span class="type-name">Unit</span><span>] =
+    </span><span class="identifier">count</span><span> </span><span class="keyword">match</span><span> {
+      </span><span class="keyword">case</span><span> </span><span class="number-literal">0</span><span> =&gt; </span><span class="type-name">Picture</span><span>.</span><span class="identifier">empty</span><span>
+      </span><span class="keyword">case</span><span> </span><span class="identifier">n</span><span> =&gt;
+        </span><span class="type-name">Picture</span><span>
+          .</span><span class="identifier">circle</span><span>(</span><span class="identifier">n</span><span> * </span><span class="number-literal">15</span><span>)
+          .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">crimson</span><span>.</span><span class="identifier">spin</span><span>(</span><span class="number-literal">10</span><span>.</span><span class="identifier">degrees</span><span> * </span><span class="identifier">n</span><span>).</span><span class="identifier">alpha</span><span>(</span><span class="number-literal">0.7</span><span>.</span><span class="identifier">normalized</span><span>))
+          .</span><span class="identifier">strokeColor</span><span>(
+            </span><span class="type-name">Color</span><span>.</span><span class="identifier">red</span><span>.</span><span class="identifier">spin</span><span>(</span><span class="number-literal">15</span><span>.</span><span class="identifier">degrees</span><span> * </span><span class="identifier">n</span><span>).</span><span class="identifier">alpha</span><span>(</span><span class="number-literal">0.7</span><span>.</span><span class="identifier">normalized</span><span>)
+          )
+          .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">4.0</span><span>)
+          .</span><span class="identifier">under</span><span>(</span><span class="identifier">loop</span><span>(</span><span class="identifier">n</span><span> - </span><span class="number-literal">1</span><span>))
+    }
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">embossedShape</span><span> = </span><span class="identifier">embossShape</span><span>.</span><span class="identifier">emboss</span></code></pre>
+  </span><span class="identifier">loop</span><span>(</span><span class="number-literal">7</span><span>)
+}
+</span><span class="keyword">val</span><span> </span><span class="identifier">embossedShape</span><span> = </span><span class="identifier">concentricCircles</span><span>.</span><span class="identifier">emboss</span></code></pre>
             <div id="emboss-demo"></div>
             <script>SvgEmbossDemo.draw("emboss-demo")</script>
             
@@ -152,7 +174,7 @@
   .</span><span class="identifier">dropShadow</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>.</span><span class="identifier">alpha</span><span>(</span><span class="type-name">Normalized</span><span>(</span><span class="number-literal">0.4</span><span>)))</span></code></pre>
             <div id="chained-filters"></div>
             <script>SvgChainedFilters.draw("chained-filters")</script>
-            <p>When combining filters, consider the order of operations, but blur before sharpen creates a different effect than sharpen before blur.</p>
+            <p>The order of operations is important when combining filters. For example, blur before sharpen creates a different effect to sharpen before blur.</p>
             
             <h2 id="custom-convolutions" class="section">Custom Convolutions</h2>
             <p>For advanced effects, create custom kernels with the <code>convolve</code> method. A kernel is a matrix of values that determines how each pixel is combined with its neighbors:</p>
@@ -191,7 +213,7 @@
             <div id="box-blur-comparison"></div>
             <script>SvgBoxBlurComparison.draw("box-blur-comparison")</script>
             <p>Box blur creates a uniform blur effect, while Gaussian blur produces a smoother, more natural result.</p>
-            <p class="nextPage"><a href="../core/">Core→</a></p>
+            <p class="nextPage"><a href="size.html">Size→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
     </div>
