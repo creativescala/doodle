@@ -2,6 +2,8 @@
 
 - Add `Text` algebra to the Canvas backend
 
+- Define `Filter` algebra and implement for SVG (by `@untainsYD`)
+
 
 ## 0.30.0 30-Apr-2025
 
