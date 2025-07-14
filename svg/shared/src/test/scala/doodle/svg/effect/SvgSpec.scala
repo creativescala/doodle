@@ -89,9 +89,13 @@ class SvgSpec
 
     assertEquals(
       Svg
-        .textTag("abc", Font.defaultSansSerif.family(FontFamily.monospaced))
+        .textTag(
+          "abc",
+          Font.defaultSansSerif.family(FontFamily.monospaced),
+          "stroke: none;"
+        )
         .toString,
-      """<text font-family="monospace" style="font-style: normal;" font-size="12pt" font-weight="normal">abc</text>"""
+      """<text style="font-family: monospace; font-style: normal; font-weight: normal; font-size: 12pt; stroke: none;">abc</text>"""
     )
 
   }

@@ -54,10 +54,9 @@ trait TextModule extends JvmBase {
         // (0,0) of the Rectangle2D is the left baseline. For Doodle (0,0) is the
         // center of the bounding box.
         val style = Svg.toStyle(stroke, fill, set)
-        val elt = Svg.textTag(text, font)(
+        val elt = Svg.textTag(text, font, style)(
           bundle.svgAttrs.x := -(bounds.getMinX() + bounds.getWidth()) / 2.0,
-          bundle.svgAttrs.y := (bounds.getMinY() + bounds.getHeight()) / 2.0,
-          bundle.svgAttrs.style := style
+          bundle.svgAttrs.y := (bounds.getMinY() + bounds.getHeight()) / 2.0
         )
 
         (elt, set, ())

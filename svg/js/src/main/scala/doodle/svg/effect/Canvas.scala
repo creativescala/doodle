@@ -183,7 +183,7 @@ final case class Canvas(
     // we ask for the bounding box of such an element.
     val elt =
       target.appendChild(svgTags.svg(svgAttrs.visibility := "hidden").render)
-    val txt = elt.appendChild(Svg.textTag(text, font).render)
+    val txt = elt.appendChild(Svg.textTag(text, font, "").render)
     val bb = txt.asInstanceOf[dom.svg.Text].getBBox()
     val boundingBox = BoundingBox.centered(bb.width, bb.height)
 

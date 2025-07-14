@@ -113,7 +113,7 @@ trait SvgModule { self: Base =>
 
       }
 
-    def textTag(text: String, font: Font): Tag = {
+    def textTag(text: String, font: Font, style: String): Tag = {
       val fontFamily =
         font.family match {
           case FontFamily.Serif       => "serif"
@@ -139,11 +139,11 @@ trait SvgModule { self: Base =>
           case Points(pts) => s"${pts}pt"
         }
 
+      val tagStyle =
+        s"font-family: $fontFamily; font-style: $fontStyle; font-weight: $fontWeight; font-size: $fontSize; $style"
+
       svg.text(
-        svgAttrs.fontFamily := fontFamily,
-        bundle.styles.fontStyle := fontStyle,
-        svgAttrs.fontSize := fontSize,
-        svgAttrs.fontWeight := fontWeight,
+        svgAttrs.style := tagStyle,
         text
       )
     }
@@ -288,6 +288,7 @@ trait SvgModule { self: Base =>
 
       builder.toString
     }
+
     def toSvgTransform(tx: Transform): String = {
       val elt = tx.elements
       val a = elt(0)

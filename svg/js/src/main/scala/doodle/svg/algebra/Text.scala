@@ -53,7 +53,7 @@ trait TextModule extends JsBase {
         //
         // For Doodle (0,0) is the center of the bounding box.
         val style = Svg.toStyle(stroke, fill, set)
-        val elt = Svg.textTag(text, font)(
+        val elt = Svg.textTag(text, font, style)(
           // Our y coordinates are reversed (y increases as we move up in
           // Doodle, and decreases in SVG). The transform takes care of this but
           // means the text will be drawn upside down, so we must flip it before
@@ -66,8 +66,7 @@ trait TextModule extends JsBase {
           // Setting baseline to the middle allows us to accurately layout the
           // text. Otherwise we don't know how far the baseline is offset from
           // the bounding box we're given.
-          svgAttrs.dominantBaseline := "middle",
-          svgAttrs.style := style
+          svgAttrs.dominantBaseline := "middle"
         )
 
         (elt, set, ())
