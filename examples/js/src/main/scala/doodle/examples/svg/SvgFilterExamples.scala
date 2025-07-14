@@ -20,6 +20,8 @@ import cats.effect.unsafe.implicits.global
 import cats.syntax.all.*
 import doodle.algebra.Kernel
 import doodle.core.*
+import doodle.core.font.Font
+import doodle.core.font.FontSize
 import doodle.random.{*, given}
 import doodle.svg.*
 import doodle.syntax.all.*
@@ -209,7 +211,7 @@ object DropShadowDemo {
     val original = shape.below(text("original").fillColor(Color.black))
     val shadowed = shape
       .dropShadow(8, 8, 4, Color.black.alpha(Normalized(0.5)))
-      .below(text("dropShadow").fillColor(Color.black))
+      .below(text("drop shadow").fillColor(Color.black))
 
     (original beside shadowed)
       .drawWithFrame(Frame(mount))
@@ -244,19 +246,20 @@ object CustomKernelDemo {
 
   @JSExport
   def draw(mount: String) = {
-    val customSharpen = Kernel(
+    val customEmboss = Kernel(
       3,
       3,
       IArray(
-        0, -2, 0, -2, 9, -2, 0, -2, 0
+        -9, -2, 1, -2, 1, 2, 1, 2, 9
       )
     )
 
-    val shape = (star(6, 60, 30) on circle(80))
+    val shape = text("Convolution")
+      .font(Font.defaultSerif.bold.italic.size(FontSize.points(36)))
       .fillGradient(
         Gradient.linear(
-          Point(-40, -40),
-          Point(40, 40),
+          Point(0, 0),
+          Point(1, 1),
           List(
             (Color.purple, 0.0),
             (Color.hotPink, 0.5),
@@ -271,10 +274,11 @@ object CustomKernelDemo {
 
     val original = shape.below(text("original").fillColor(Color.black))
     val enhanced = shape
-      .convolve(customSharpen)
-      .below(text("custom sharpen").fillColor(Color.black))
+      .convolve(customEmboss)
+      .below(text("custom emboss").fillColor(Color.black))
 
-    (original beside enhanced)
+    (original
+      .beside(enhanced))
       .drawWithFrame(Frame(mount))
   }
 }
@@ -290,10 +294,10 @@ object BoxBlurComparison {
     val original = shape.below(text("original").fillColor(Color.black))
     val gaussian = shape
       .blur(5.0)
-      .below(text("gaussianBlur").fillColor(Color.black))
+      .below(text("Gaussian blur").fillColor(Color.black))
     val box = shape
       .boxBlur(5)
-      .below(text("boxBlur").fillColor(Color.black))
+      .below(text("box blur").fillColor(Color.black))
 
     (original beside gaussian beside box)
       .drawWithFrame(Frame(mount))

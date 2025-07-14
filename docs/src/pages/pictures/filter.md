@@ -3,6 +3,7 @@
 ```scala mdoc:invisible
 import cats.syntax.all.*
 import doodle.core.*
+import doodle.core.font.{Font, FontSize}
 import doodle.random.{*, given}
 import doodle.svg.*
 import doodle.syntax.all.*
@@ -30,6 +31,20 @@ val blurredCircle = circleShape.blur(5.0)
 The argument to `blur` controls the intensity of the effect, as shown below. 
 
 @:doodle("blur-intensities", "SvgBlurIntensities.draw")
+
+
+## Box Blur
+
+The `boxBlur` method provides an alternative blur implementation. Unlike Gaussian blur which creates a smooth falloff, box blur averages pixels uniformly within a square area:
+
+```scala mdoc:silent
+val orangeCircle = circle(80).fillColor(Color.orange)
+val boxBlurred = orangeCircle.boxBlur(5)
+```
+
+@:doodle("box-blur-comparison", "SvgBoxBlurComparison.draw")
+
+Box blur creates a uniform blur effect, while Gaussian blur produces a smoother, more natural result. However, box blur may be faster than Gaussian blur.
 
 
 ## Sharpen
@@ -157,42 +172,40 @@ For advanced effects, create custom kernels with the `convolve` method. A kernel
 ```scala mdoc:silent
 import doodle.algebra.Kernel
 
-// Custom sharpening kernel
-val customSharpen = Kernel(3, 3, IArray(
-   0, -2,  0,
-  -2,  9, -2,
-   0, -2,  0
-))
+// Custom emboss kernel
+val customEmboss = Kernel(3, 3, IArray(
+    -9, -2, 1, 
+    -2,  1, 2, 
+     1,  2, 9
+  )
+)
 
-val customStarShape = star(6, 60, 30).on(circle(80))
+val shape = text("Convolution")
+  .font(Font.defaultSerif.bold.italic.size(FontSize.points(36)))
   .fillGradient(
     Gradient.linear(
-      Point(-40, -40), Point(40, 40),
-      List((Color.purple, 0.0), (Color.hotPink, 0.5), (Color.orange, 1.0)),
+      Point(0, 0),
+      Point(1, 1),
+      List(
+        (Color.purple, 0.0),
+        (Color.hotPink, 0.5),
+        (Color.orange, 1.0)
+      ),
       Gradient.CycleMethod.NoCycle
     )
   )
+  .strokeColor(Color.black)
+  .strokeWidth(2)
 
-val enhancedShape = customStarShape.convolve(customSharpen)
+val enhancedShape = shape.convolve(customEmboss)
 ```
 
 @:doodle("custom-kernel-demo", "SvgCustomKernelDemo.draw")
 
 Convolution kernels work by multiplying each pixel and its neighbors by the corresponding kernel values, then summing the results. Common kernel patterns include:
+
 - **Edge detection**: negative values around a positive center.
 - **Blur**: all positive values that sum to 1.
-- **Sharpen**: negative values around a center value greater than.
+- **Sharpen**: negative values around a center value greater than the sum of the neighbors.
 
 
-## Box Blur
-
-The `boxBlur` method provides an alternative blur implementation. Unlike Gaussian blur which creates a smooth falloff, box blur averages pixels uniformly within a square area:
-
-```scala mdoc:silent
-val orangeCircle = circle(80).fillColor(Color.orange)
-val boxBlurred = orangeCircle.boxBlur(5)
-```
-
-@:doodle("box-blur-comparison", "SvgBoxBlurComparison.draw")
-
-Box blur creates a uniform blur effect, while Gaussian blur produces a smoother, more natural result.
