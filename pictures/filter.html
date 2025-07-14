@@ -90,6 +90,14 @@
             <div id="blur-intensities"></div>
             <script>SvgBlurIntensities.draw("blur-intensities")</script>
             
+            <h2 id="box-blur" class="section">Box Blur</h2>
+            <p>The <code>boxBlur</code> method provides an alternative blur implementation. Unlike Gaussian blur which creates a smooth falloff, box blur averages pixels uniformly within a square area:</p>
+            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">orangeCircle</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">80</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">orange</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">boxBlurred</span><span> = </span><span class="identifier">orangeCircle</span><span>.</span><span class="identifier">boxBlur</span><span>(</span><span class="number-literal">5</span><span>)</span></code></pre>
+            <div id="box-blur-comparison"></div>
+            <script>SvgBoxBlurComparison.draw("box-blur-comparison")</script>
+            <p>Box blur creates a uniform blur effect, while Gaussian blur produces a smoother, more natural result. However, box blur may be faster than Gaussian blur.</p>
+            
             <h2 id="sharpen" class="section">Sharpen</h2>
             <p>The <code>sharpen</code> method enhances edges and details:</p>
             <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">randomCircle</span><span>: </span><span class="type-name">Random</span><span>[</span><span class="type-name">Picture</span><span>[</span><span class="type-name">Unit</span><span>]] =
@@ -183,39 +191,40 @@
             <p>For advanced effects, create custom kernels with the <code>convolve</code> method. A kernel is a matrix of values that determines how each pixel is combined with its neighbors:</p>
             <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">algebra</span><span>.</span><span class="type-name">Kernel</span><span>
 
-</span><span class="comment">// Custom sharpening kernel
-</span><span class="keyword">val</span><span> </span><span class="identifier">customSharpen</span><span> = </span><span class="type-name">Kernel</span><span>(</span><span class="number-literal">3</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="type-name">IArray</span><span>(
-   </span><span class="number-literal">0</span><span>, -</span><span class="number-literal">2</span><span>,  </span><span class="number-literal">0</span><span>,
-  -</span><span class="number-literal">2</span><span>,  </span><span class="number-literal">9</span><span>, -</span><span class="number-literal">2</span><span>,
-   </span><span class="number-literal">0</span><span>, -</span><span class="number-literal">2</span><span>,  </span><span class="number-literal">0</span><span>
-))
+</span><span class="comment">// Custom emboss kernel
+</span><span class="keyword">val</span><span> </span><span class="identifier">customEmboss</span><span> = </span><span class="type-name">Kernel</span><span>(</span><span class="number-literal">3</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="type-name">IArray</span><span>(
+    -</span><span class="number-literal">9</span><span>, -</span><span class="number-literal">2</span><span>, </span><span class="number-literal">1</span><span>, 
+    -</span><span class="number-literal">2</span><span>,  </span><span class="number-literal">1</span><span>, </span><span class="number-literal">2</span><span>, 
+     </span><span class="number-literal">1</span><span>,  </span><span class="number-literal">2</span><span>, </span><span class="number-literal">9</span><span>
+  )
+)
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">customStarShape</span><span> = </span><span class="identifier">star</span><span>(</span><span class="number-literal">6</span><span>, </span><span class="number-literal">60</span><span>, </span><span class="number-literal">30</span><span>).</span><span class="identifier">on</span><span>(</span><span class="identifier">circle</span><span>(</span><span class="number-literal">80</span><span>))
+</span><span class="keyword">val</span><span> </span><span class="identifier">shape</span><span> = </span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Convolution&quot;</span><span>)
+  .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>.</span><span class="identifier">bold</span><span>.</span><span class="identifier">italic</span><span>.</span><span class="identifier">size</span><span>(</span><span class="type-name">FontSize</span><span>.</span><span class="identifier">points</span><span>(</span><span class="number-literal">36</span><span>)))
   .</span><span class="identifier">fillGradient</span><span>(
     </span><span class="type-name">Gradient</span><span>.</span><span class="identifier">linear</span><span>(
-      </span><span class="type-name">Point</span><span>(-</span><span class="number-literal">40</span><span>, -</span><span class="number-literal">40</span><span>), </span><span class="type-name">Point</span><span>(</span><span class="number-literal">40</span><span>, </span><span class="number-literal">40</span><span>),
-      </span><span class="type-name">List</span><span>((</span><span class="type-name">Color</span><span>.</span><span class="identifier">purple</span><span>, </span><span class="number-literal">0.0</span><span>), (</span><span class="type-name">Color</span><span>.</span><span class="identifier">hotPink</span><span>, </span><span class="number-literal">0.5</span><span>), (</span><span class="type-name">Color</span><span>.</span><span class="identifier">orange</span><span>, </span><span class="number-literal">1.0</span><span>)),
+      </span><span class="type-name">Point</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>),
+      </span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">1</span><span>),
+      </span><span class="type-name">List</span><span>(
+        (</span><span class="type-name">Color</span><span>.</span><span class="identifier">purple</span><span>, </span><span class="number-literal">0.0</span><span>),
+        (</span><span class="type-name">Color</span><span>.</span><span class="identifier">hotPink</span><span>, </span><span class="number-literal">0.5</span><span>),
+        (</span><span class="type-name">Color</span><span>.</span><span class="identifier">orange</span><span>, </span><span class="number-literal">1.0</span><span>)
+      ),
       </span><span class="type-name">Gradient</span><span>.</span><span class="type-name">CycleMethod</span><span>.</span><span class="type-name">NoCycle</span><span>
     )
   )
+  .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+  .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">2</span><span>)
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">enhancedShape</span><span> = </span><span class="identifier">customStarShape</span><span>.</span><span class="identifier">convolve</span><span>(</span><span class="identifier">customSharpen</span><span>)</span></code></pre>
+</span><span class="keyword">val</span><span> </span><span class="identifier">enhancedShape</span><span> = </span><span class="identifier">shape</span><span>.</span><span class="identifier">convolve</span><span>(</span><span class="identifier">customEmboss</span><span>)</span></code></pre>
             <div id="custom-kernel-demo"></div>
             <script>SvgCustomKernelDemo.draw("custom-kernel-demo")</script>
             <p>Convolution kernels work by multiplying each pixel and its neighbors by the corresponding kernel values, then summing the results. Common kernel patterns include:</p>
             <ul>
               <li><strong>Edge detection</strong>: negative values around a positive center.</li>
               <li><strong>Blur</strong>: all positive values that sum to 1.</li>
-              <li><strong>Sharpen</strong>: negative values around a center value greater than.</li>
+              <li><strong>Sharpen</strong>: negative values around a center value greater than the sum of the neighbors.</li>
             </ul>
-            
-            <h2 id="box-blur" class="section">Box Blur</h2>
-            <p>The <code>boxBlur</code> method provides an alternative blur implementation. Unlike Gaussian blur which creates a smooth falloff, box blur averages pixels uniformly within a square area:</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">orangeCircle</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">80</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">orange</span><span>)
-</span><span class="keyword">val</span><span> </span><span class="identifier">boxBlurred</span><span> = </span><span class="identifier">orangeCircle</span><span>.</span><span class="identifier">boxBlur</span><span>(</span><span class="number-literal">5</span><span>)</span></code></pre>
-            <div id="box-blur-comparison"></div>
-            <script>SvgBoxBlurComparison.draw("box-blur-comparison")</script>
-            <p>Box blur creates a uniform blur effect, while Gaussian blur produces a smoother, more natural result.</p>
             <p class="nextPage"><a href="size.html">Size→</a></p>
         </main>
         <footer>Creative Scala is copyright Noel Welsh</footer>
