@@ -28,6 +28,7 @@ package object syntax {
       with DebugSyntax
       with FilterSyntax
       with LayoutSyntax
+      with LoadBitmapSyntax
       with NormalizedSyntax
       with PathSyntax
       with RendererSyntax
@@ -45,6 +46,7 @@ package object syntax {
   object debug extends DebugSyntax
   object filter extends FilterSyntax
   object layout extends LayoutSyntax
+  object loadBitmap extends LoadBitmapSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
   object renderer extends RendererSyntax
