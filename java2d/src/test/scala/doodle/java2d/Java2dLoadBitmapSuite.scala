@@ -21,7 +21,7 @@ package algebra
 import cats.effect.unsafe.implicits.global
 import doodle.algebra.FileNotFound
 import doodle.algebra.InvalidFormat
-import doodle.java2d.algebra.Java2dLoadBitmap.given
+import doodle.java2d.{*, given}
 import doodle.syntax.all.*
 import munit.FunSuite
 

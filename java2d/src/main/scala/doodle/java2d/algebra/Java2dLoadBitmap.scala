@@ -31,32 +31,34 @@ import java.nio.file.Path
 import javax.imageio.ImageIO
 
 object Java2dLoadBitmap {
-  given LoadBitmap[File, BufferedImage] with {
-    def load(file: File): IO[BufferedImage] =
-      IO {
-        if !file.exists() then {
-          throw new FileNotFoundException(s"File not found: ${file.getPath}")
-        }
+  val loadBitmapFromFile: LoadBitmap[File, BufferedImage] =
+    new LoadBitmap[File, BufferedImage] {
+      def load(file: File): IO[BufferedImage] =
+        IO {
+          if !file.exists() then {
+            throw new FileNotFoundException(s"File not found: ${file.getPath}")
+          }
 
-        Option(ImageIO.read(file)) match {
-          case Some(image) => image
-          case None        =>
-            throw new IOException(
-              s"Unable to read image from file: ${file.getPath}"
-            )
+          Option(ImageIO.read(file)) match {
+            case Some(image) => image
+            case None        =>
+              throw new IOException(
+                s"Unable to read image from file: ${file.getPath}"
+              )
+          }
+        }.adaptError {
+          case _: FileNotFoundException =>
+            FileNotFound(file.getPath)
+          case e: IOException =>
+            InvalidFormat(file.getPath, e)
+          case e: Exception =>
+            InvalidFormat(file.getPath, e)
         }
-      }.adaptError {
-        case _: FileNotFoundException =>
-          FileNotFound(file.getPath)
-        case e: IOException =>
-          InvalidFormat(file.getPath, e)
-        case e: Exception =>
-          InvalidFormat(file.getPath, e)
-      }
-  }
+    }
 
-  given LoadBitmap[Path, BufferedImage] with {
-    def load(path: Path): IO[BufferedImage] =
-      summon[LoadBitmap[File, BufferedImage]].load(path.toFile)
-  }
+  val loadBitmapFromPath: LoadBitmap[Path, BufferedImage] =
+    new LoadBitmap[Path, BufferedImage] {
+      def load(path: Path): IO[BufferedImage] =
+        loadBitmapFromFile.load(path.toFile)
+    }
 }

@@ -29,6 +29,10 @@ import doodle.interact.effect.AnimationWriter
 import doodle.java2d.algebra.reified.Reification
 import doodle.language.Basic
 
+import java.awt.image.BufferedImage
+import java.io.File
+import java.nio.file.Path
+
 package object java2d extends Java2dToPicture {
   type Algebra =
     doodle.algebra.Algebra
@@ -72,6 +76,11 @@ package object java2d extends Java2dToPicture {
   implicit val java2dBufferedImageWriter
       : BufferedImageWriter[doodle.java2d.Algebra, Frame] =
     doodle.java2d.effect.Java2dBufferedImageWriter
+
+  given LoadBitmap[File, BufferedImage] =
+    doodle.java2d.algebra.Java2dLoadBitmap.loadBitmapFromFile
+  given LoadBitmap[Path, BufferedImage] =
+    doodle.java2d.algebra.Java2dLoadBitmap.loadBitmapFromPath
 
   val Frame = doodle.java2d.effect.Frame
 
