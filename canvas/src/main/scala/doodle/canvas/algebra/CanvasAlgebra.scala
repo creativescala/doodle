@@ -31,6 +31,7 @@ final case class CanvasAlgebra(
     applyDrawing: Apply[CanvasDrawing] = Apply.apply[CanvasDrawing],
     functorDrawing: Functor[CanvasDrawing] = Apply.apply[CanvasDrawing]
 ) extends HasTextBoundingBox,
+      FromHtmlImageElement,
       Path,
       Shape,
       Text,
