@@ -24,7 +24,7 @@ We can draw a picture to the screen using the `draw` method. This is @:api(doodl
 
 In addition to drawing a picture to the screen we can write it to a file or convert it to some other type. The `write` method saves a picture to a file. When we call write we must pass two parameters: a normal parameter that is the file name to use and a type parameter that gives the format of the file. In the example below we save a file as a [PNG][png].
 
-```scala mdoc:silent
+```scala mdoc:compile-only
 import doodle.core.*
 import doodle.syntax.all.*
 import doodle.java2d.*
