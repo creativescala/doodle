@@ -17,7 +17,9 @@
 package doodle.canvas
 
 import doodle.algebra.*
+import doodle.canvas.algebra.CanvasToPicture
 import doodle.effect.Renderer
+import org.scalajs.dom
 
 type Algebra = doodle.canvas.algebra.CanvasAlgebra
 type Canvas = doodle.canvas.effect.Canvas
@@ -26,6 +28,11 @@ type Drawing[A] =
 
 type Frame = doodle.canvas.effect.Frame
 val Frame = doodle.canvas.effect.Frame
+
+given ToPicture[dom.HTMLImageElement, Algebra] =
+  CanvasToPicture.HTMLImageElementToPicture
+given ToPicture[dom.ImageBitmap, Algebra] =
+  CanvasToPicture.ImageBitmapToPicture
 
 given Renderer[Algebra, Frame, Canvas] = doodle.canvas.effect.CanvasRenderer
 
