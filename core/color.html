@@ -1,146 +1,256 @@
 <!doctype html>
-<html lang="">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Typelevel Laika" />
+<html class="scroll-smooth"
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Laika 1.0.0" />
     <title>Color and Gradients</title>
-    
-    
+     
     <meta name="description" content="docs" />
     
-    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
-        rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
-    <script src="../main.js"></script>
-    <script> /* for avoiding page load transitions */</script>
-</head>
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Crimson+Pro:400"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" href="../css/creative-scala.css" /> <script src="../js/solution.js"></script><script src="../main.js"></script>
+    <script>
+      /* for avoiding page load transitions */
+    </script>
+  </head>
 
-<body>
-    <nav id="topbar"><p><a href="geometry.html">←</a></p>
-<p><a href="../../">Doodle</a></p>
-<p><a href="../interact/">→</a></p></nav>
-    <nav id="sidebar">
-        <ul class="nav-list">
-          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
-          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
-          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/size.html">Size</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/text.html">Text</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1 nav-node"><a href="index.html">Core</a></li>
-          <li class="level2 nav-leaf"><a href="geometry.html">Geometry</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Color and Gradients</a></li>
-          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
-          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
-          <li class="level2 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
-          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
-          <li class="level1 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
-          <li class="level1 nav-leaf"><a href="../svg/">SVG Backend</a></li>
-          <li class="level1 nav-node"><a href="../canvas/">Canvas Backend</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
-          <li class="level1 nav-node"><a href="../development/">Developing Doodle</a></li>
-          <li class="level2 nav-leaf"><a href="../development/design.html">Design</a></li>
-          <li class="level2 nav-leaf"><a href="../development/process.html">Development Process</a></li>
-          <li class="level2 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
-          <li class="level2 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
-        </ul>
-    </nav>
+  <body>
+    <header>
+      <div id="topbar">
+        <nav id="topbar">
+          <button
+            class="text-sm text-pink-800 font-sans font-semibold hover:text-pink-600 focus:text-pink-600"
+            popovertarget="topbar-nav"
+          >
+            Contents
+          </button>
+          <div id="topbar-nav" popover="auto">
+            <div id="topbar-nav-container" class="flex justify-items-center items-center h-dvh w-dvw">
+              <div
+                class="p-4 mx-auto rounded-md bg-white border border-slate-900 max-h-4/5 w-4/5 overflow-y-auto overflow-x-auto flex flex-col items-end"
+              >
+                <button
+                  class="text-slate-900 hover:text-pink-800 focus:text-pink-800"
+                  popovertarget="topbar-nav"
+                  popovertargetaction="hide"
+                >
+                  ✕
+                </button>
+                <div class="w-full">
+                  <ul class="nav-list">
+                    <li class="level1 nav-node"><a href="../">Doodle</a></li>
+                    <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+                    <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+                    <li class="level2 nav-node"><a href="index.html">Core</a></li>
+                    <li class="level3 nav-leaf"><a href="geometry.html">Geometry</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Color and Gradients</a></li>
+                    <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+                    <li class="level2 nav-node"><a href="../algebra/">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+                    <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
+                    <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+                    <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+                    <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+                    <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <nav id="home"><a class="text-link" href="../">Doodle</a></nav>
+        <nav id="external"><a href="https://discord.gg/rRhcFbJxVG">Community<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest">API<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://github.com/creativescala/doodle">Source<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a></nav>
+      </div>
+    </header>
 
-    <div id="content">
-        <main class="content">
-            <h1 id="color-and-gradients" class="title">Color and Gradients</h1>
-            <p>Creating and manipulating colors and gradients is a core part of creating images, and Doodle provides extensive support for both.</p>
-            
-            <h2 id="color" class="section">Color</h2>
-            <p>Working with <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a> is something that most images will do. There are two representations of color used in Doodle:</p>
-            <ul>
-              <li>lightness, chroma, and hue (<a href="https://en.wikipedia.org/wiki/Oklab_color_space">OkLCh</a>); and</li>
-              <li>red, green, and blue (RGB).</li>
-            </ul>
-            <p>You can use either representation interchangeably. The OkLCh representation is easier to work with, while the RGB representation is how colors are actually generated by computer screens. All colors also have an alpha value, which determines transparency. An alpha of 1.0 is fully opaque will and alpha of 0.0 is completely transparent. Various constructors allow creating colors:</p>
-            <pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">oklch</span><span>(</span><span class="number-literal">0.5</span><span>, </span><span class="number-literal">0.4</span><span>, </span><span class="number-literal">0</span><span>.</span><span class="identifier">degrees</span><span>) </span><span class="comment">// a vibrant pink
+    <main class="max-w-8xl mx-auto my-8 min-h-screen flex">
+      <!-- Left sticky table of contents -->
+      <nav
+        id="sitebar"
+        class="hidden lg:block min-w-64 max-w-md mr-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <ul class="nav-list">
+            <li class="level1 nav-node"><a href="../">Doodle</a></li>
+            <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+            <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+            <li class="level2 nav-node"><a href="index.html">Core</a></li>
+            <li class="level3 nav-leaf"><a href="geometry.html">Geometry</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Color and Gradients</a></li>
+            <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+            <li class="level2 nav-node"><a href="../algebra/">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+            <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
+            <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+            <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+            <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+            <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
+            <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
+            <li class="level3 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+            <li class="level3 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div id="contentbar" class="mx-auto flex-1">
+        <div class="max-w-prose mx-auto">
+          <div id="content"><h1 id="color-and-gradients" class="title">Color and Gradients</h1>
+<p>Creating and manipulating colors and gradients is a core part of creating images, and Doodle provides extensive support for both.</p>
+
+<h2 id="color" class="section">Color</h2>
+<p>Working with <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a> is something that most images will do. There are two representations of color used in Doodle:</p>
+<ul>
+  <li>lightness, chroma, and hue (<a href="https://en.wikipedia.org/wiki/Oklab_color_space">OkLCh</a>); and</li>
+  <li>red, green, and blue (RGB).</li>
+</ul>
+<p>You can use either representation interchangeably. The OkLCh representation is easier to work with, while the RGB representation is how colors are actually generated by computer screens. All colors also have an alpha value, which determines transparency. An alpha of 1.0 is fully opaque will and alpha of 0.0 is completely transparent. Various constructors allow creating colors:</p>
+<pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">oklch</span><span>(</span><span class="number-literal">0.5</span><span>, </span><span class="number-literal">0.4</span><span>, </span><span class="number-literal">0</span><span>.</span><span class="identifier">degrees</span><span>) </span><span class="comment">// a vibrant pink
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">oklch</span><span>(</span><span class="number-literal">0.5</span><span>, </span><span class="number-literal">0.4</span><span>, </span><span class="number-literal">0</span><span>.</span><span class="identifier">degrees</span><span>, </span><span class="number-literal">0.5</span><span>) </span><span class="comment">// as above, but we also specify the alpha
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">rgb</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">255</span><span>) </span><span class="comment">// pure blue
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">rgb</span><span>(</span><span class="number-literal">0</span><span>.</span><span class="identifier">uByte</span><span>, </span><span class="number-literal">0</span><span>.</span><span class="identifier">uByte</span><span>, </span><span class="number-literal">255</span><span>.</span><span class="identifier">uByte</span><span>) </span><span class="comment">// Using the UnsignedByte type
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">rgb</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">255</span><span>, </span><span class="number-literal">0.5</span><span>) </span><span class="comment">// Setting alpha
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">rgb</span><span>(</span><span class="number-literal">0</span><span>.</span><span class="identifier">uByte</span><span>, </span><span class="number-literal">0</span><span>.</span><span class="identifier">uByte</span><span>, </span><span class="number-literal">255</span><span>.</span><span class="identifier">uByte</span><span>, </span><span class="number-literal">0.5</span><span>.</span><span class="identifier">normalized</span><span>) </span><span class="comment">// Setting alpha</span></code></pre>
-            <p>These colors are shown below.</p>
-            <div class="default-image-block">
-              <img src="basic-colors.png">
-            </div>
-            <p>There are also constructors using the HSL (hue, saturation, lightness) color format, but it is preferred to use OkLCh.</p>
-            <pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">hsl</span><span>(</span><span class="number-literal">0</span><span>.</span><span class="identifier">degrees</span><span>, </span><span class="number-literal">0.4</span><span>, </span><span class="number-literal">0.4</span><span>) </span><span class="comment">// A red color using HSL</span></code></pre>
-            <p>On the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color$.html">Color</a> object all the standard CSS colors are defined. Here are a few examples.</p>
-            <pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">steelBlue</span><span> </span><span class="comment">// Not to be confused with blue steel
+<p>These colors are shown below.</p>
+<div class="default-image-block">
+  <img src="basic-colors.png">
+</div>
+<p>There are also constructors using the HSL (hue, saturation, lightness) color format, but it is preferred to use OkLCh.</p>
+<pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">hsl</span><span>(</span><span class="number-literal">0</span><span>.</span><span class="identifier">degrees</span><span>, </span><span class="number-literal">0.4</span><span>, </span><span class="number-literal">0.4</span><span>) </span><span class="comment">// A red color using HSL</span></code></pre>
+<p>On the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color$.html">Color</a> object all the standard CSS colors are defined. Here are a few examples.</p>
+<pre><code class="nohighlight"><span class="type-name">Color</span><span>.</span><span class="identifier">steelBlue</span><span> </span><span class="comment">// Not to be confused with blue steel
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">beige</span><span> 
 </span><span class="type-name">Color</span><span>.</span><span class="identifier">limeGreen</span></code></pre>
-            <p>Swatches of these colors are shown below.</p>
-            <div class="default-image-block">
-              <img src="css-colors.png">
-            </div>
-            <p>You can also parse colors from CSS hex-color strings. For example:</p>
-            <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">red</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#f00&quot;</span><span>)
+<p>Swatches of these colors are shown below.</p>
+<div class="default-image-block">
+  <img src="css-colors.png">
+</div>
+<p>You can also parse colors from CSS hex-color strings. For example:</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">red</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#f00&quot;</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">green</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#00ff00&quot;</span><span>)
 </span><span class="keyword">val</span><span> </span><span class="identifier">transparentBlue</span><span> = </span><span class="type-name">Color</span><span>.</span><span class="identifier">fromHex</span><span>(</span><span class="string-literal">&quot;#0f09&quot;</span><span>)</span></code></pre>
-            <p>There are additional color palettes in <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Tailwind4Colors$.html">Tailwind4Colors</a> and <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/CrayolaColors$.html">CrayolaColors</a>. Shown below are swatches of <code>Tailwind4Colors.amber500</code>, <code>Tailwind4Colors.emerald500</code>, <code>Tailwind4Colors.sky500</code>, <code>CrayolaColors.cinnamonSatin</code>, <code>CrayolaColors.grannySmithApple</code>, and <code>CrayolaColors.cloudySky</code>.</p>
-            <div class="default-image-block">
-              <img src="palette-colors.png">
-            </div>
-            
-            <h3 id="working-with-colors" class="section">Working with Colors</h3>
-            <p>There are many methods to transform colors, such as <code>spin</code>, <code>lighten</code>, and <code>desaturate</code>. 
-            The example below shows a row of colors where the first color is transformed by rotating the hue using <code>spin</code>, then a row where the first color is transformed by <code>lightenBy</code>, and finally a row where the first color is transformed by <code>saturateBy</code>.</p>
-            <div class="default-image-block">
-              <img src="color-transformations.png">
-            </div>
-            <p>See the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a> API for full details of the available methods.</p>
-            <p>Transforming colors is where working with OkLCh colors really comes into its own.
-            OkLCh is designed for perceptual uniformity, meaning that colors with the same, say, lightness really do look like they have the same lightness.
-            This is not the case for colors specified using RGB or HSL.
-            For example, we can construct a gradient by changing only the hue of colors specified with both HSL and OkLCh.
-            This result is shown below, with the HSL gradient above the OkLCh gradient.
-            The OkLCh gradient is clearly smoother than that created using HSL.</p>
-            <div class="default-image-block">
-              <img src="gradients.png" alt="A gradient created by changing only the hue using HSL and OkLCh colors" title="A gradient created by changing only the hue using HSL and OkLCh colors">
-            </div>
-            
-            <h2 id="gradients" class="section">Gradients</h2>
-            <p>Doodle also support gradients, which allows strokes and fills to smoothly transition between colors. Gradients can be quite complicated. There are two main types of gradients, linear and radial. An example of each is shown below.</p>
-            <div class="default-image-block">
-              <img src="linear-radial.png" alt="An example of a linear and a radial gradient" title="An example of a linear and a radial gradient">
-            </div>
-            <p class="nextPage"><a href="../interact/">Interactivity→</a></p>
-        </main>
-        <footer>Creative Scala is copyright Noel Welsh</footer>
-    </div>
+<p>There are additional color palettes in <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Tailwind4Colors$.html">Tailwind4Colors</a> and <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/CrayolaColors$.html">CrayolaColors</a>. Shown below are swatches of <code>Tailwind4Colors.amber500</code>, <code>Tailwind4Colors.emerald500</code>, <code>Tailwind4Colors.sky500</code>, <code>CrayolaColors.cinnamonSatin</code>, <code>CrayolaColors.grannySmithApple</code>, and <code>CrayolaColors.cloudySky</code>.</p>
+<div class="default-image-block">
+  <img src="palette-colors.png">
+</div>
 
-    </div>
-</body>
+<h3 id="working-with-colors" class="section">Working with Colors</h3>
+<p>There are many methods to transform colors, such as <code>spin</code>, <code>lighten</code>, and <code>desaturate</code>. 
+The example below shows a row of colors where the first color is transformed by rotating the hue using <code>spin</code>, then a row where the first color is transformed by <code>lightenBy</code>, and finally a row where the first color is transformed by <code>saturateBy</code>.</p>
+<div class="default-image-block">
+  <img src="color-transformations.png">
+</div>
+<p>See the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Color.html">Color</a> API for full details of the available methods.</p>
+<p>Transforming colors is where working with OkLCh colors really comes into its own.
+OkLCh is designed for perceptual uniformity, meaning that colors with the same, say, lightness really do look like they have the same lightness.
+This is not the case for colors specified using RGB or HSL.
+For example, we can construct a gradient by changing only the hue of colors specified with both HSL and OkLCh.
+This result is shown below, with the HSL gradient above the OkLCh gradient.
+The OkLCh gradient is clearly smoother than that created using HSL.</p>
+<div class="default-image-block">
+  <img src="gradients.png" alt="A gradient created by changing only the hue using HSL and OkLCh colors" title="A gradient created by changing only the hue using HSL and OkLCh colors">
+</div>
 
+<h2 id="gradients" class="section">Gradients</h2>
+<p>Doodle also support gradients, which allows strokes and fills to smoothly transition between colors. Gradients can be quite complicated. There are two main types of gradients, linear and radial. An example of each is shown below.</p>
+<div class="default-image-block">
+  <img src="linear-radial.png" alt="An example of a linear and a radial gradient" title="An example of a linear and a radial gradient">
+</div></div>
+          <div class="flex flex-row justify-between">
+            <a class="pagenav" href="geometry.html">←Geometry</a> <a class="pagenav" href="../interact/">Interactivity→</a>
+          </div>
+        </div>
+        <footer>
+          Copyright &copy; Noel Welsh. Built with
+          <span class="hover:text-pink-900">💖</span>
+        </footer>
+      </div>
+      <!-- Right sticky page contents -->
+      <nav
+        id="pagebar"
+        class="hidden lg:block min-w-60 max-w-64 ml-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <p>On This Page</p>
+          <ul class="nav-list">
+            <li class="level1 nav-node"><a href="#color">Color</a></li>
+            <li class="level2 nav-leaf"><a href="#working-with-colors">Working with Colors</a></li>
+            <li class="level1 nav-leaf"><a href="#gradients">Gradients</a></li>
+          </ul>
+        </div>
+      </nav>
+    </main>
+  </body>
 </html>

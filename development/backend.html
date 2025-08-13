@@ -1,107 +1,200 @@
 <!doctype html>
-<html lang="">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Typelevel Laika" />
+<html class="scroll-smooth"
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Laika 1.0.0" />
     <title>Implementing a Backend</title>
-    
-    
+     
     <meta name="description" content="docs" />
     
-    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
-        rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Pro:400" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="../creative-scala.css" />
-    <script src="../main.js"></script>
-    <script> /* for avoiding page load transitions */</script>
-</head>
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Crimson+Pro:400"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" href="../css/creative-scala.css" /> <script src="../js/solution.js"></script><script src="../main.js"></script>
+    <script>
+      /* for avoiding page load transitions */
+    </script>
+  </head>
 
-<body>
-    <nav id="topbar"><p><a href="syntax.html">←</a></p>
-<p><a href="../../">Doodle</a></p>
-<p></p></nav>
-    <nav id="sidebar">
-        <ul class="nav-list">
-          <li class="level1 nav-leaf"><a href="../">Doodle</a></li>
-          <li class="level1 nav-node"><a href="../concepts/">Core Concepts</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
-          <li class="level2 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
-          <li class="level1 nav-node"><a href="../pictures/">Creating Pictures</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/style.html">Style</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/size.html">Size</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/text.html">Text</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
-          <li class="level2 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
-          <li class="level1 nav-node"><a href="../core/">Core</a></li>
-          <li class="level2 nav-leaf"><a href="../core/geometry.html">Geometry</a></li>
-          <li class="level2 nav-leaf"><a href="../core/color.html">Color and Gradients</a></li>
-          <li class="level1 nav-node"><a href="../interact/">Interactivity</a></li>
-          <li class="level2 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
-          <li class="level2 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
-          <li class="level1 nav-node"><a href="../algebra/">Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
-          <li class="level2 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
-          <li class="level2 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
-          <li class="level1 nav-leaf"><a href="../effect/">Effects</a></li>
-          <li class="level1 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
-          <li class="level1 nav-leaf"><a href="../svg/">SVG Backend</a></li>
-          <li class="level1 nav-node"><a href="../canvas/">Canvas Backend</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
-          <li class="level2 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
-          <li class="level1 nav-node"><a href="index.html">Developing Doodle</a></li>
-          <li class="level2 nav-leaf"><a href="design.html">Design</a></li>
-          <li class="level2 nav-leaf"><a href="process.html">Development Process</a></li>
-          <li class="level2 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
-          <li class="level2 active nav-leaf"><a href="#">Implementing a Backend</a></li>
-        </ul>
-    </nav>
+  <body>
+    <header>
+      <div id="topbar">
+        <nav id="topbar">
+          <button
+            class="text-sm text-pink-800 font-sans font-semibold hover:text-pink-600 focus:text-pink-600"
+            popovertarget="topbar-nav"
+          >
+            Contents
+          </button>
+          <div id="topbar-nav" popover="auto">
+            <div id="topbar-nav-container" class="flex justify-items-center items-center h-dvh w-dvw">
+              <div
+                class="p-4 mx-auto rounded-md bg-white border border-slate-900 max-h-4/5 w-4/5 overflow-y-auto overflow-x-auto flex flex-col items-end"
+              >
+                <button
+                  class="text-slate-900 hover:text-pink-800 focus:text-pink-800"
+                  popovertarget="topbar-nav"
+                  popovertargetaction="hide"
+                >
+                  ✕
+                </button>
+                <div class="w-full">
+                  <ul class="nav-list">
+                    <li class="level1 nav-node"><a href="../">Doodle</a></li>
+                    <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+                    <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+                    <li class="level2 nav-node"><a href="../core/">Core</a></li>
+                    <li class="level3 nav-leaf"><a href="../core/geometry.html">Geometry</a></li>
+                    <li class="level3 nav-leaf"><a href="../core/color.html">Color and Gradients</a></li>
+                    <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+                    <li class="level2 nav-node"><a href="../algebra/">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+                    <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
+                    <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+                    <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+                    <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+                    <li class="level2 nav-node"><a href="index.html">Developing Doodle</a></li>
+                    <li class="level3 nav-leaf"><a href="design.html">Design</a></li>
+                    <li class="level3 nav-leaf"><a href="process.html">Development Process</a></li>
+                    <li class="level3 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Implementing a Backend</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <nav id="home"><a class="text-link" href="../">Doodle</a></nav>
+        <nav id="external"><a href="https://discord.gg/rRhcFbJxVG">Community<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest">API<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://github.com/creativescala/doodle">Source<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a></nav>
+      </div>
+    </header>
 
-    <div id="content">
-        <main class="content">
-            <h1 id="implementing-a-backend" class="title">Implementing a Backend</h1>
-            <p>This is a quick guide to implementing a backend. It assume familiarity with the major <a href="../concepts/">concepts</a> of Doodle.</p>
-            
-            <h2 id="code-organization" class="section">Code Organization</h2>
-            <p>The majority of the backend code should be in the package <code>doodle.&lt;backend&gt;.algebra</code>, with files in the corresponding directory. Here you&#39;ll implement all the algebras for your backend.</p>
-            <p>In <code>doodle.&lt;backend&gt;.effect</code> you should implement your <code>Frame</code>, <code>Canvas</code>, <code>Renderer</code>, and any other effect types.</p>
-            
-            <h2 id="drawing-type" class="section">Drawing Type</h2>
-            <p>Deciding on the <code>Drawing</code> type is the first step in implementing a backend. It must have the shape <code>F[A]</code>, where <code>A</code> is the value produced when drawing the drawing. You probably don&#39;t want to call it <code>Drawing</code>, because that name is used in the generic algebras you&#39;ll be extending. <code>&lt;Backend&gt;Drawing</code> is a good choice. This goes in the <code>algebra</code> package.</p>
-            
-            <h2 id="implement-algebras" class="section">Implement Algebras</h2>
-            <p>You should create <code>&lt;Backend&gt;Algebra</code> in your <code>algebra</code> package to implement the algebras you have selected for your backend. Using the generic algebras, which you almost certainly should, will get a lot of functionality for free. You simply need to implement the <code>*Api</code> <code>trait</code> within a generic algebra, if one exists. This algebra often holds a reference to a <code>Canvas</code>, which does the actual drawing. See below.</p>
-            
-            <h2 id="implement-effects" class="section">Implement Effects</h2>
-            <p>In <code>doodle.&lt;backend&gt;.effect</code> you should implement:</p>
-            <ul>
-              <li><code>Canvas</code>, which is usually where actual drawing takes place;</li>
-              <li><code>Frame</code>, which specifies a <code>Canvas</code>. Make sure to follow existing naming conventions;</li>
-              <li><code>&lt;Backend&gt;Renderer</code>, which implements <code>doodle.effect.Renderer</code>; and</li>
-              <li>any other effects.</li>
-            </ul>
-            
-            <h2 id="top-level-definitions" class="section">Top-level Definitions</h2>
-            <p>For ease of use, users should just be able to write</p>
-            <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.{*, </span><span class="identifier">given</span><span>}</span></code></pre>
-            <p>to use the backend.</p>
-            <p>In a file (usually called <code>package.scala</code>, though we don&#39;t use package objects any more in Scala 3) you should define all the types and values needed to use the backend. Something like the following. Make sure you add all the necessary constructors to the <code>Picture</code> object.</p>
-            <pre><code class="nohighlight"><span class="keyword">package</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;
+    <main class="max-w-8xl mx-auto my-8 min-h-screen flex">
+      <!-- Left sticky table of contents -->
+      <nav
+        id="sitebar"
+        class="hidden lg:block min-w-64 max-w-md mr-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <ul class="nav-list">
+            <li class="level1 nav-node"><a href="../">Doodle</a></li>
+            <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+            <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+            <li class="level2 nav-node"><a href="../core/">Core</a></li>
+            <li class="level3 nav-leaf"><a href="../core/geometry.html">Geometry</a></li>
+            <li class="level3 nav-leaf"><a href="../core/color.html">Color and Gradients</a></li>
+            <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+            <li class="level2 nav-node"><a href="../algebra/">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+            <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
+            <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+            <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+            <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+            <li class="level2 nav-node"><a href="index.html">Developing Doodle</a></li>
+            <li class="level3 nav-leaf"><a href="design.html">Design</a></li>
+            <li class="level3 nav-leaf"><a href="process.html">Development Process</a></li>
+            <li class="level3 nav-leaf"><a href="syntax.html">Implementing Syntax</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Implementing a Backend</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div id="contentbar" class="mx-auto flex-1">
+        <div class="max-w-prose mx-auto">
+          <div id="content"><h1 id="implementing-a-backend" class="title">Implementing a Backend</h1>
+<p>This is a quick guide to implementing a backend. It assume familiarity with the major <a href="../concepts/">concepts</a> of Doodle.</p>
+
+<h2 id="code-organization" class="section">Code Organization</h2>
+<p>The majority of the backend code should be in the package <code>doodle.&lt;backend&gt;.algebra</code>, with files in the corresponding directory. Here you&#39;ll implement all the algebras for your backend.</p>
+<p>In <code>doodle.&lt;backend&gt;.effect</code> you should implement your <code>Frame</code>, <code>Canvas</code>, <code>Renderer</code>, and any other effect types.</p>
+
+<h2 id="drawing-type" class="section">Drawing Type</h2>
+<p>Deciding on the <code>Drawing</code> type is the first step in implementing a backend. It must have the shape <code>F[A]</code>, where <code>A</code> is the value produced when drawing the drawing. You probably don&#39;t want to call it <code>Drawing</code>, because that name is used in the generic algebras you&#39;ll be extending. <code>&lt;Backend&gt;Drawing</code> is a good choice. This goes in the <code>algebra</code> package.</p>
+
+<h2 id="implement-algebras" class="section">Implement Algebras</h2>
+<p>You should create <code>&lt;Backend&gt;Algebra</code> in your <code>algebra</code> package to implement the algebras you have selected for your backend. Using the generic algebras, which you almost certainly should, will get a lot of functionality for free. You simply need to implement the <code>*Api</code> <code>trait</code> within a generic algebra, if one exists. This algebra often holds a reference to a <code>Canvas</code>, which does the actual drawing. See below.</p>
+
+<h2 id="implement-effects" class="section">Implement Effects</h2>
+<p>In <code>doodle.&lt;backend&gt;.effect</code> you should implement:</p>
+<ul>
+  <li><code>Canvas</code>, which is usually where actual drawing takes place;</li>
+  <li><code>Frame</code>, which specifies a <code>Canvas</code>. Make sure to follow existing naming conventions;</li>
+  <li><code>&lt;Backend&gt;Renderer</code>, which implements <code>doodle.effect.Renderer</code>; and</li>
+  <li>any other effects.</li>
+</ul>
+
+<h2 id="top-level-definitions" class="section">Top-level Definitions</h2>
+<p>For ease of use, users should just be able to write</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.{*, </span><span class="identifier">given</span><span>}</span></code></pre>
+<p>to use the backend.</p>
+<p>In a file (usually called <code>package.scala</code>, though we don&#39;t use package objects any more in Scala 3) you should define all the types and values needed to use the backend. Something like the following. Make sure you add all the necessary constructors to the <code>Picture</code> object.</p>
+<pre><code class="nohighlight"><span class="keyword">package</span><span> </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;
 
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">algebra</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Renderer</span><span>
@@ -121,13 +214,32 @@
 
   </span><span class="keyword">type</span><span> </span><span class="type-name">Algebra</span><span> = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="type-name">Algebra</span><span>
   </span><span class="keyword">type</span><span> </span><span class="type-name">Drawing</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="identifier">doodle</span><span>.&lt;</span><span class="identifier">backend</span><span>&gt;.</span><span class="type-name">Drawing</span><span>[</span><span class="type-name">A</span><span>]
-}</span></code></pre>
-            
-        </main>
-        <footer>Creative Scala is copyright Noel Welsh</footer>
-    </div>
-
-    </div>
-</body>
-
+}</span></code></pre></div>
+          <div class="flex flex-row justify-between">
+            <a class="pagenav" href="syntax.html">←Implementing Syntax</a> 
+          </div>
+        </div>
+        <footer>
+          Copyright &copy; Noel Welsh. Built with
+          <span class="hover:text-pink-900">💖</span>
+        </footer>
+      </div>
+      <!-- Right sticky page contents -->
+      <nav
+        id="pagebar"
+        class="hidden lg:block min-w-60 max-w-64 ml-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <p>On This Page</p>
+          <ul class="nav-list">
+            <li class="level1 nav-leaf"><a href="#code-organization">Code Organization</a></li>
+            <li class="level1 nav-leaf"><a href="#drawing-type">Drawing Type</a></li>
+            <li class="level1 nav-leaf"><a href="#implement-algebras">Implement Algebras</a></li>
+            <li class="level1 nav-leaf"><a href="#implement-effects">Implement Effects</a></li>
+            <li class="level1 nav-leaf"><a href="#top-level-definitions">Top-level Definitions</a></li>
+          </ul>
+        </div>
+      </nav>
+    </main>
+  </body>
 </html>
