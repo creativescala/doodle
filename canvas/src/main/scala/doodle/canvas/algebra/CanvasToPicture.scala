@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Creative Scala
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package doodle.canvas.algebra
 
 import doodle.algebra.ToPicture
@@ -5,12 +21,19 @@ import doodle.canvas.Picture
 import org.scalajs.dom
 
 object CanvasToPicture {
-  object HTMLImageElementToPicture
-      extends ToPicture[dom.HTMLImageElement, CanvasAlgebra] {
-    def toPicture(in: dom.HTMLImageElement): Picture[Unit] =
+  trait GenericToPicture[A](
+      f: (algebra: CanvasAlgebra) => (A => algebra.Drawing[Unit])
+  ) extends ToPicture[A, CanvasAlgebra] {
+    def toPicture(in: A): Picture[Unit] =
       new Picture[Unit] {
         def apply(implicit algebra: CanvasAlgebra): algebra.Drawing[Unit] =
-          algebra.fromHtmlImageElement(in)
+          f(algebra)(in)
       }
   }
+
+  object HTMLImageElementToPicture
+      extends GenericToPicture[dom.HTMLImageElement](_.fromHtmlImageElement)
+
+  object ImageBitmapToPicture
+      extends GenericToPicture[dom.ImageBitmap](_.fromImageBitmap)
 }
