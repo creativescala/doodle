@@ -26,6 +26,11 @@ trait Shape extends GenericShape[CanvasDrawing] {
   self: Algebra { type Drawing[A] = Finalized[CanvasDrawing, A] } =>
 
   object ShapeApi extends ShapeApi {
+
+    override def link(bits: Renderable[CanvasDrawing, Unit], href: String): CanvasDrawing[Unit] = {
+      bits.runA(Tx.identity).value
+    }
+
     def rectangle(
         tx: Tx,
         fill: Option[Fill],

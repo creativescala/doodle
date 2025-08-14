@@ -26,6 +26,10 @@ trait GenericShape[G[_]] extends Shape {
   self: Algebra { type Drawing[A] = Finalized[G, A] } =>
 
   trait ShapeApi {
+    def link(
+      bits: Renderable[G, Unit],
+      href: String
+    ): G[Unit]
     def rectangle(
         tx: Tx,
         fill: Option[Fill],
@@ -50,6 +54,19 @@ trait GenericShape[G[_]] extends Shape {
   }
 
   def ShapeApi: ShapeApi
+
+  override def link(bits: Finalized[G, Unit], href: String): Finalized[G, Unit] = {
+    Finalized { ctxTxs =>
+      val eval = bits.run(ctxTxs)
+      
+      eval.map( (bb, t) =>
+        (bb,
+          State.inspect((tx: Tx) =>
+            ShapeApi.link(t, href)
+          ))
+      )
+    }
+  }
 
   def rectangle(width: Double, height: Double): Finalized[G, Unit] =
     Finalized.leaf { dc =>

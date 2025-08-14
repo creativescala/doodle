@@ -174,6 +174,7 @@ object Image {
     * smart constructors.
     */
   object Elements {
+    final case class Link(img: Image, href: String) extends Image
     final case class OpenPath(path: doodle.core.OpenPath) extends Image
     final case class ClosedPath(path: doodle.core.ClosedPath) extends Image
     final case class Text(get: String) extends Image
@@ -218,6 +219,9 @@ object Image {
   import Elements.*
 
   // Smart constructors
+
+  def link(img: Image, href: String): Image =
+    Link(img, href)
 
   def path(path: doodle.core.ClosedPath): Image =
     ClosedPath(path)
@@ -299,6 +303,8 @@ object Image {
     new doodle.algebra.Picture[Alg, Unit] {
       def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
         image match {
+          case Link(img, href) =>
+            algebra.link(compile(img)(algebra), href)
           case OpenPath(path) =>
             algebra.path(path)
           case ClosedPath(path) =>
