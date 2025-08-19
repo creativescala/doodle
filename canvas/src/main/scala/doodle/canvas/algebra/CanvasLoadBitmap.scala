@@ -65,7 +65,6 @@ object CanvasLoadBitmap {
         for {
           img <- loadBitmapFromUrl.load(url)
           bitmap <- IO.fromFuture(IO {
-            import scala.scalajs.js.Thenable.Implicits.*
             window.createImageBitmap(img).toFuture
           })
         } yield bitmap
