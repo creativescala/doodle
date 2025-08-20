@@ -135,7 +135,7 @@ object Canvas {
       .toResource
       .flatMap(canvas => canvas.stream.compile.drain.background.as(canvas))
       .flatMap(canvas =>
-        Resource.make(IO.pure(canvas))(canvas => canvas.closed)
+        Resource.make(IO.pure(canvas))(canvas => frame.blockingBehavior.maybeBlock(canvas))
       )
   }
 }
