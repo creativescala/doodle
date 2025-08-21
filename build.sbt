@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 import scala.sys.process.*
+import creativescala.ExternalLink
 import laika.config.LinkConfig
 import laika.config.ApiLinks
 import laika.theme.Theme
+import laika.helium.config.TextLink
 
 ThisBuild / tlBaseVersion := "0.31" // your current series x.y
 
@@ -157,6 +159,11 @@ lazy val docs =
   project
     .in(file("docs"))
     .settings(
+      tlSiteApiUrl := Some(
+        sbt.url(
+          "https://javadoc.io/doc/org.creativescala/terminus-docs_3/latest/"
+        )
+      ),
       laikaConfig := laikaConfig.value.withConfigValue(
         LinkConfig.empty
           .addApiLinks(
@@ -166,39 +173,41 @@ lazy val docs =
           )
       ),
       mdocIn := file("docs/src/pages"),
-      css := {
-        val src = file("docs/src/css")
-        val dest1 = mdocOut.value
-        val dest2 = (laikaSite / target).value
-        "npm install" !
-        val cmd1 =
-          s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest1.toString}/creative-scala.css"
-        val cmd2 =
-          s"npx tailwindcss -i ${src.toString}/creative-scala.css -o ${dest2.toString}/creative-scala.css"
-        println(cmd1)
-        cmd1 !
-
-        println(cmd2)
-        cmd2 !
-      },
       Laika / sourceDirectories ++=
         Seq(
-          file("docs/src/templates"),
           (examples.js / Compile / fastOptJS / artifactPath).value
             .getParentFile() / s"${(examples.js / moduleName).value}-fastopt"
         ),
-      laikaTheme := Theme.empty,
+      laikaTheme := CreativeScalaTheme.empty
+        .withHome(
+          TextLink.internal(laika.ast.Path.Root / "README.md", "Doodle")
+        )
+        .withCommunity(
+          ExternalLink("https://discord.gg/rRhcFbJxVG", "Community")
+        )
+        .withApi(
+          ExternalLink(
+            "https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest",
+            "API"
+          )
+        )
+        .withSource(
+          ExternalLink(
+            "https://github.com/creativescala/doodle",
+            "Source"
+          )
+        )
+        .addJs(laika.ast.Path.Root / "main.js")
+        .build,
       laikaExtensions ++= Seq(
         laika.format.Markdown.GitHubFlavor,
-        laika.config.SyntaxHighlighting,
-        CreativeScalaDirectives
+        laika.config.SyntaxHighlighting
       ),
       tlSite := Def
         .sequential(
           (examples.js / Compile / fastLinkJS),
           (Compile / run).toTask(""),
           mdoc.toTask(""),
-          css,
           laikaSite
         )
         .value,
