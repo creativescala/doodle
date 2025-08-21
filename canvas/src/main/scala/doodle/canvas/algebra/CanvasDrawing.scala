@@ -40,7 +40,6 @@ import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasGradient
 import org.scalajs.dom.CanvasRenderingContext2D
-import org.scalajs.dom.HTMLElement
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
@@ -295,14 +294,5 @@ object CanvasDrawing {
       stroke
         .map(s => CanvasDrawing(ctx => ctx.stroke()))
         .getOrElse(CanvasDrawing.unit)
-    )
-
-  def drawImage(
-      image: HTMLElement,
-      width: Double,
-      height: Double
-  ): CanvasDrawing[Unit] =
-    CanvasDrawing(canvas =>
-      canvas.drawImage(image, -width / 2, -height / 2, width, height)
     )
 }
