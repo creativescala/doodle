@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-package doodle
-package syntax
+package doodle.syntax
 
 import cats.effect.IO
 import doodle.algebra.Algebra
@@ -24,16 +23,17 @@ import doodle.algebra.Picture
 import doodle.algebra.ToPicture
 
 trait LoadBitmapSyntax {
-
-  extension [S, B](specifier: S)(using loader: LoadBitmap[S, B]) {
+  extension [S](specifier: S) {
 
     /** Load a bitmap from this specifier */
-    def loadBitmap: IO[B] = loader.load(specifier)
+    def loadBitmap[B](using loader: LoadBitmap[S, B]): IO[B] =
+      loader.load(specifier)
 
     /** Load a bitmap and immediately convert to Picture. This is a convenience
       * method that combines loading and conversion.
       */
-    def loadAsPicture[Alg <: Algebra](using
+    def loadAsPicture[B, Alg <: Algebra](using
+        loader: LoadBitmap[S, B],
         tp: ToPicture[B, Alg]
     ): IO[Picture[Alg, Unit]] =
       loader.load(specifier).map(tp.toPicture)

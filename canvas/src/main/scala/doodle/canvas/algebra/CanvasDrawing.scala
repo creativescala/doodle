@@ -297,6 +297,16 @@ object CanvasDrawing {
         .getOrElse(CanvasDrawing.unit)
     )
 
+  /** Draw an image (HTMLElement that can be drawn) centered at the origin. This
+    * is required by CanvasAlgebraFrom.fromImage to actually render images.
+    *
+    * @param image
+    *   HTMLElement (HTMLImageElement or ImageBitmap cast to HTMLElement)
+    * @param width
+    *   Width to draw the image
+    * @param height
+    *   Height to draw the image
+    */
   def drawImage(
       image: HTMLElement,
       width: Double,
