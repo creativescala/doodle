@@ -295,4 +295,5 @@ object CanvasDrawing {
         .map(s => CanvasDrawing(ctx => ctx.stroke()))
         .getOrElse(CanvasDrawing.unit)
     )
+
 }

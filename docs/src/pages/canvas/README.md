@@ -1,6 +1,6 @@
 # Canvas Backend
 
-The Canvas backend supports the [HTML Canvas][html-canvas]. It currently supports the following algebras: `Debug`, `Layout`, `Path`, `Shape`, `Size`, `Style`, `ToPicture`, and `Transform`.
+The Canvas backend supports the [HTML Canvas][html-canvas]. It currently supports the following algebras: `Debug`, `Layout`, `Path`, `Shape`, `Size`, `Style`, and `Transform`.
 
 
 ## Usage
