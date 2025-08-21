@@ -19,7 +19,6 @@ package svg
 package algebra
 
 import doodle.algebra.generic.*
-import doodle.algebra.generic.Finalized
 import doodle.core.*
 import doodle.core.Transform as Tx
 import doodle.core.font.Font
