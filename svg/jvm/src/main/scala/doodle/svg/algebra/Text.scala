@@ -20,7 +20,6 @@ package algebra
 
 import doodle.algebra.generic.*
 import doodle.core.*
-import doodle.core.Transform as Tx
 import doodle.core.font.Font
 
 import java.awt.geom.Rectangle2D
@@ -41,7 +40,7 @@ trait TextModule extends JvmBase {
         self.textBoundingBox(text, font)
 
       def text(
-          tx: Tx,
+          tx: Transform,
           fill: Option[Fill],
           stroke: Option[Stroke],
           font: Font,
