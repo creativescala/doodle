@@ -90,6 +90,7 @@
                     <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
                     <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
                     <li class="level2 active nav-node"><a href="#">Canvas Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="to-picture.html">Loading Images</a></li>
                     <li class="level3 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
                     <li class="level3 nav-leaf"><a href="layout-examples.html">Layout Examples</a></li>
                     <li class="level3 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
@@ -153,6 +154,7 @@
             <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
             <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
             <li class="level2 active nav-node"><a href="#">Canvas Backend</a></li>
+            <li class="level3 nav-leaf"><a href="to-picture.html">Loading Images</a></li>
             <li class="level3 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
             <li class="level3 nav-leaf"><a href="layout-examples.html">Layout Examples</a></li>
             <li class="level3 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
@@ -168,7 +170,7 @@
       <div id="contentbar" class="mx-auto flex-1">
         <div class="max-w-prose mx-auto">
           <div id="content"><h1 id="canvas-backend" class="title">Canvas Backend</h1>
-<p>The Canvas backend supports the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">HTML Canvas</a>. It currently supports the following algebras: <code>Debug</code>, <code>Layout</code>, <code>Path</code>, <code>Shape</code>, <code>Size</code>, <code>Style</code>, and <code>Transform</code>.</p>
+<p>The Canvas backend supports the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">HTML Canvas</a>. It currently supports the following algebras: <code>Debug</code>, <code>Layout</code>, <code>Path</code>, <code>Shape</code>, <code>Size</code>, <code>Style</code>, <code>ToPicture</code>, and <code>Transform</code>.</p>
 
 <h2 id="usage" class="section">Usage</h2>
 <p>Firstly, bring everything into scope</p>
@@ -186,7 +188,7 @@
 <p>The <code>Frame</code> must specify the <code>id</code> of the element where the drawing should be placed.
 Additional options include the background color and the frame size. The frame size can either be determined by the size of the picture or a fixed size. The first case is the default, and includes a 20 pixel border. You can change this by calling <code>withSizedToPicture</code>. The picture will be drawn centered on the drawing area. A fixed size frame, specified with <code>withSize</code>, has the given size and the origin is set to the center of the drawing area. This means that pictures that are not centered at the origin will not be centered on the screen.</p></div>
           <div class="flex flex-row justify-between">
-            <a class="pagenav" href="../svg/">←SVG Backend</a> <a class="pagenav" href="examples.html">Miscellaneous Examples→</a>
+            <a class="pagenav" href="../svg/">←SVG Backend</a> <a class="pagenav" href="to-picture.html">Loading Images→</a>
           </div>
         </div>
         <footer>
