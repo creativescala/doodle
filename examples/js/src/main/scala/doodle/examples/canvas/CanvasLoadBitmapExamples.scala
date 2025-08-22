@@ -18,7 +18,6 @@ package doodle.examples.canvas
 
 import cats.effect.unsafe.implicits.global
 import doodle.canvas.{*, given}
-import doodle.core.*
 import doodle.syntax.all.*
 import org.scalajs.dom
 
@@ -31,27 +30,21 @@ object CanvasLoadBitmapExamples {
   val testImageUrl =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAIAAADZSiLoAAAAF0lEQVR4nGNkYPjPwMDAwMDAxAADCBYAG10BBdmz9y8AAAAASUVORK5CYII="
 
+  // Scaled down version of https://commons.wikimedia.org/wiki/File:A_Koch_woman.jpg
+  //
+  // Used under CC license https://creativecommons.org/licenses/by-sa/4.0/deed.en
+  val wikimediaUrl =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/A_Koch_woman.jpg/330px-A_Koch_woman.jpg"
+
   @JSExport
   def demo(id: String): Unit = {
     val program = for {
-      htmlImg <- testImageUrl.loadBitmap[dom.HTMLImageElement]
-      imgBitmap <- testImageUrl.loadBitmap[dom.ImageBitmap]
+      htmlImg <- wikimediaUrl.loadBitmap[dom.HTMLImageElement].toPicture
+      imgBitmap <- wikimediaUrl.loadBitmap[dom.ImageBitmap].toPicture
 
-      pic1 = htmlImg
-        .toPicture[Algebra]
-        .scale(50, 50)
-        .strokeColor(Color.red)
-        .strokeWidth(2.0)
+      composite = htmlImg.beside(imgBitmap)
 
-      pic2 = imgBitmap
-        .toPicture[Algebra]
-        .scale(50, 50)
-        .strokeColor(Color.blue)
-        .strokeWidth(2.0)
-
-      composite = pic1.beside(pic2)
-
-      _ = composite.drawWithFrame(Frame(id))
+      _ <- composite.drawWithFrameToIO(Frame(id))
     } yield ()
 
     val _ = program.unsafeToFuture()

@@ -29,7 +29,7 @@ object CanvasToPictureExamples {
   def toHtmlImagePicture(id: String): Unit = {
     val img =
       dom.document.querySelector("img").asInstanceOf[dom.HTMLImageElement]
-    val picture = img.toPicture[Algebra]
+    val picture = img.toPicture.scale(0.5, 0.5).horizontalReflection
 
     picture.drawWithFrame(Frame(id))
   }
