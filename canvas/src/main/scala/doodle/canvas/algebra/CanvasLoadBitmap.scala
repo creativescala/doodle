@@ -59,7 +59,7 @@ object CanvasLoadBitmap {
     }
 
   /** LoadBitmap instance for loading images from URLs as ImageBitmap */
-  val loadBitmapFromUrlAsImageBitmap: LoadBitmap[String, ImageBitmap] =
+  val loadBitMapFromUrlToImageBitmap: LoadBitmap[String, ImageBitmap] =
     new LoadBitmap[String, ImageBitmap] {
       def load(url: String): IO[ImageBitmap] =
         for {

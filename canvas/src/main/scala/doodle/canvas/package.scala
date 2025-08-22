@@ -33,7 +33,7 @@ val Frame = doodle.canvas.effect.Frame
 given LoadBitmap[String, dom.HTMLImageElement] =
   CanvasLoadBitmap.loadBitmapFromUrl
 given LoadBitmap[String, dom.ImageBitmap] =
-  CanvasLoadBitmap.loadBitmapFromUrlAsImageBitmap
+  CanvasLoadBitmap.loadBitMapFromUrlToImageBitmap
 
 given ToPicture[dom.HTMLImageElement, Algebra] =
   CanvasToPicture.HTMLImageElementToPicture

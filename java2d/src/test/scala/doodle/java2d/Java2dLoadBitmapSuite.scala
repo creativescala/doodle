@@ -127,7 +127,7 @@ class Java2dLoadBitmapSuite extends FunSuite {
 
       val directPicture =
         tempFile.toFile
-          .loadAsPicture[BufferedImage, doodle.java2d.Algebra]
+          .loadToPicture[BufferedImage, doodle.java2d.Algebra]
           .unsafeRunSync()
       assert(directPicture != null)
     } finally {

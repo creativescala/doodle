@@ -32,7 +32,7 @@ trait LoadBitmapSyntax {
     /** Load a bitmap and immediately convert to Picture. This is a convenience
       * method that combines loading and conversion.
       */
-    def loadAsPicture[B, Alg <: Algebra](using
+    def loadToPicture[B, Alg <: Algebra](using
         loader: LoadBitmap[S, B],
         tp: ToPicture[B, Alg]
     ): IO[Picture[Alg, Unit]] =
