@@ -20,7 +20,7 @@ package generic
 package reified
 
 import cats.data.WriterT
-import doodle.core.*
+import doodle.core.PathElement
 import doodle.core.Transform as Tx
 
 trait ReifiedPath extends GenericPath[Reification] {
