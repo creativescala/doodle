@@ -1,11 +1,9 @@
 # Layout
 
-## Concept
-
-Positioning pictures relative to other pictures is important for many compositions, and the @:api(doodle.algebra.Layout) algebra provides a flexible system for handling this.
+Just about every composition will involving positioning pictures. The @:api(doodle.algebra.Layout) algebra provides a flexible system for handling this.
 
 
-### Above, Beside, and On
+## Above, Beside, and On
 
 The most basic layout methods are `above`, `beside`, and `on`. They do what their names suggest, putting a picture above, beside, or on top of another picture. Below is an example.
 
@@ -33,7 +31,7 @@ Here's the output this creates.
 As a convenience, there are also methods `below` and `under`, which are the opposite of `above` and `on` respectively. That is, `a.above(b) == b.below(a)` and `a.on(b) == b.under(a)`
 
 
-### Bounding Box and Origin
+## Bounding Box and Origin
 
 To really understand how layout works we have to understand how layout works with the bounding box and origin. Every picture has a bounding box and origin. The bounding box defines the outer extent of the picture, and the origin is an arbitrary point within the bounding box. By convention, the built-in [shapes](shape.md) and [paths](path.md) have their origin in the center of the bounding box. You can position the origin anywhere you want, either by creating your own paths or using the `at` and `originAt` methods described below. If necessary, the bounding box will expand to include the origin.
 
@@ -58,7 +56,7 @@ val debugLayout =
 This gives us some insight into how the basic layout works. Using `beside` horizontally aligns the origins of the two pictures,  the creates a new bounding box enclosing the two existing boxes with the new origin in the middle of the line joining the two origins. `Above` works similarly, except the alignment is vertical, while `on` simply places the origins at the same location.
 
 
-### Repositioning the Origin
+## Repositioning the Origin
 
 The origin defines a local coordinate system for each picture, and the origin is always the point (0, 0). Changing the location of the origin is the key to creative layouts. There are two methods that do this:
 
@@ -97,7 +95,7 @@ val pentagon =
 }
 
 
-### Positioning using Landmarks
+## Positioning using Landmarks
 
 @:api(doodle.core.Landmark) provides more flexible layout, by allowing you to specify points relative to the bounding box or origin instead of in absolute terms relative to the origin. For example, we can specify the top left of the bounding box by simply using `Landmark.topLeft` instead of working out the coordinates of this location. Both `at` and `originAt` support landmarks.
 
@@ -133,7 +131,7 @@ val overlappingCircles =
 }
 
 
-### Adjusting the Bounding Box
+## Adjusting the Bounding Box
 
 The `size` and `margin` methods allow direct manipulation of the bounding box. We will show examples below to generate this image:
 
@@ -179,6 +177,7 @@ val rollingCirclesMargin =
   alt = Five circles with different margins
   title = Five circles with different margins
 }
+
 
 ## Implementation
 
