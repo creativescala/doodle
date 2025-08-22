@@ -10,7 +10,7 @@ Firstly, import the Doodle core and syntax, the Java2D definitions, and the defa
 ```scala mdoc:silent
 import cats.effect.unsafe.implicits.global
 import doodle.core.*
-import doodle.java2d.*
+import doodle.java2d.{*, given}
 import doodle.syntax.all.*
 ```
 
@@ -21,6 +21,9 @@ Picture.circle(100).draw()
 ```
 
 The drawing will appear in a window on the screen.
+
+
+## Frame
 
 You can define a @:api(doodle.java2d.effect.Frame) to have more control over the appearance of the window in which a `Picture` is drawn.
 The `Frame`  allows you to specify, for example, the title for the window, the background color, or the size of the window.
