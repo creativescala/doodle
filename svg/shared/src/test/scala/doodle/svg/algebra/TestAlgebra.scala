@@ -30,6 +30,7 @@ trait TestAlgebraModule
     with ShapeModule
     with SvgModule
     with FilterModule
+    with ImageModule
     with TestBase {
 
   type Algebra = TestAlgebra
@@ -38,7 +39,8 @@ trait TestAlgebraModule
       val applyF: Apply[SvgResult],
       val functorF: Functor[SvgResult]
   ) extends BaseAlgebra
-      with Filter {
+      with Filter
+      with Image {
 
     def font[A](image: Drawing[A], font: Font): TestAlgebra.this.Drawing[A] =
       ???

@@ -16,9 +16,14 @@
 
 package doodle
 
+import doodle.algebra.LoadBitmap
+import doodle.algebra.ToPicture
 import doodle.core.format.Svg
 import doodle.effect.DefaultFrame
 import doodle.effect.FileWriter
+import doodle.svg.algebra.SvgImageRef
+import doodle.svg.algebra.SvgLoadBitmap
+import doodle.svg.algebra.SvgToPicture
 
 package object svg {
   val jvm = new doodle.svg.algebra.JvmAlgebraModule {}
@@ -39,6 +44,11 @@ package object svg {
     new DefaultFrame[doodle.svg.effect.Frame] {
       val default: Frame = doodle.svg.effect.Frame("dummy")
     }
+
+  given LoadBitmap[String, SvgImageRef] =
+    SvgLoadBitmap.loadBitmapFromUrl
+  given [Alg <: svg.Algebra]: ToPicture[SvgImageRef, Alg] =
+    SvgToPicture.svgImageRefToPicture[Alg]
 
   type Picture[A] = doodle.algebra.Picture[Algebra, A]
   object Picture

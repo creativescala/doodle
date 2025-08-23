@@ -16,8 +16,13 @@
 
 package doodle
 
+import doodle.algebra.LoadBitmap
+import doodle.algebra.ToPicture
 import doodle.effect.Renderer
 import doodle.interact.effect.AnimationRenderer
+import doodle.svg.algebra.SvgImageRef
+import doodle.svg.algebra.SvgLoadBitmap
+import doodle.svg.algebra.SvgToPicture
 
 package object svg {
   val js = new doodle.svg.algebra.JsAlgebraModule {}
@@ -39,6 +44,11 @@ package object svg {
     doodle.svg.algebra.CanvasAlgebra
 
   val Frame = doodle.svg.effect.Frame
+
+  given LoadBitmap[String, SvgImageRef] =
+    SvgLoadBitmap.loadBitmapFromUrl
+  given [Alg <: svg.Algebra]: ToPicture[SvgImageRef, Alg] =
+    SvgToPicture.svgImageRefToPicture[Alg]
 
   type Picture[A] = doodle.algebra.Picture[Algebra, A]
   object Picture
