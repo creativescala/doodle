@@ -27,8 +27,8 @@ trait GenericShape[G[_]] extends Shape {
 
   trait ShapeApi {
     def link(
-      bits: Renderable[G, Unit],
-      href: String
+        bits: Renderable[G, Unit],
+        href: String
     ): G[Unit]
     def rectangle(
         tx: Tx,
@@ -55,15 +55,15 @@ trait GenericShape[G[_]] extends Shape {
 
   def ShapeApi: ShapeApi
 
-  override def link(bits: Finalized[G, Unit], href: String): Finalized[G, Unit] = {
+  override def link(
+      bits: Finalized[G, Unit],
+      href: String
+  ): Finalized[G, Unit] = {
     Finalized { ctxTxs =>
       val eval = bits.run(ctxTxs)
-      
-      eval.map( (bb, t) =>
-        (bb,
-          State.inspect((tx: Tx) =>
-            ShapeApi.link(t, href)
-          ))
+
+      eval.map((bb, t) =>
+        (bb, State.inspect((tx: Tx) => ShapeApi.link(t, href)))
       )
     }
   }

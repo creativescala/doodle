@@ -30,8 +30,10 @@ trait ReifiedShape extends GenericShape[Reification] {
     def append(a: Option[Reified], b: Option[Reified]): Reification[Unit] =
       WriterT.tell(a.toList ++ b.toList)
 
-
-    override def link(bits: Renderable[Reification, Unit], href: String): Reification[Unit] = {
+    override def link(
+        bits: Renderable[Reification, Unit],
+        href: String
+    ): Reification[Unit] = {
       bits.runA(Tx.identity).value
     }
 

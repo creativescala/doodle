@@ -34,12 +34,14 @@ trait ShapeModule { root: Base with SvgModule =>
       import b.implicits.*
       import b.{svgAttrs, svgTags, tags, attrs}
 
-
-      override def link(bits: Renderable[SvgResult, Unit], href: String): SvgResult[Unit] = {
+      override def link(
+          bits: Renderable[SvgResult, Unit],
+          href: String
+      ): SvgResult[Unit] = {
         val svg = bits.runA(Tx.identity).value
         (tags.a(svg._1, attrs.href := href), svg._2, ())
       }
-      
+
       def rectangle(
           tx: Tx,
           fill: Option[Fill],

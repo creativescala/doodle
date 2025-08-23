@@ -21,17 +21,17 @@ package algebra
   * center of the shape the origin of the bounding box.
   */
 trait Shape extends Algebra {
-/*
+  /*
 
 ShapeConstructor -> Shape ->                    ShapeApi
 Pict => Pict       Drawing => Drawing           Renderable => SvgResult
 
   type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
   type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
-* */
+   * */
   def link(
-    bits: Drawing[Unit],
-    href: String
+      bits: Drawing[Unit],
+      href: String
   ): Drawing[Unit]
 
   /** A rectangle with the given width and height. */
@@ -63,7 +63,7 @@ trait ShapeConstructor {
         algebra2.link(bits(algebra2), href)
       }
     }
-  
+
   /** A rectangle with the given width and height. */
   def rectangle(width: Double, height: Double): Picture[Unit] =
     new Picture[Unit] {

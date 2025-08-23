@@ -27,7 +27,10 @@ trait Shape extends GenericShape[CanvasDrawing] {
 
   object ShapeApi extends ShapeApi {
 
-    override def link(bits: Renderable[CanvasDrawing, Unit], href: String): CanvasDrawing[Unit] = {
+    override def link(
+        bits: Renderable[CanvasDrawing, Unit],
+        href: String
+    ): CanvasDrawing[Unit] = {
       bits.runA(Tx.identity).value
     }
 
