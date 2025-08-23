@@ -29,7 +29,8 @@ trait AlgebraModule {
     with ShapeModule
     with PathModule
     with SvgModule
-    with FilterModule =>
+    with FilterModule
+    with ImageModule =>
   trait BaseAlgebra
       extends doodle.algebra.Algebra
       with Layout
@@ -38,6 +39,7 @@ trait AlgebraModule {
       with Path
       with Text
       with Filter
+      with Image
       with GenericDebug[SvgResult]
       with GenericLayout[SvgResult]
       with GenericSize[SvgResult]
