@@ -23,6 +23,13 @@ import doodle.algebra.ToPicture
 
 /** ToPicture implementation for SVG image references */
 object SvgToPicture {
+
+  /** Creates a ToPicture instance for SvgImageRef.
+    *
+    * Note on type constraint: We require svg.Algebra here, but in practice we
+    * only use the `image` method from the Image trait. Any algebra that
+    * includes ImageModule will work with this implementation.
+    */
   def svgImageRefToPicture[Alg <: svg.Algebra]: ToPicture[SvgImageRef, Alg] =
     new ToPicture[SvgImageRef, Alg] {
       def toPicture(ref: SvgImageRef): Picture[Alg, Unit] =
