@@ -88,9 +88,10 @@
                     <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
                     <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
                     <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
-                    <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+                    <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
                     <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
-                    <li class="level3 nav-leaf"><a href="../canvas/bitmaps.html">Working With Bitmaps</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/bitmap.html">Bitmaps in Canvas</a></li>
                     <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
                     <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
                     <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
@@ -152,9 +153,10 @@
             <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
             <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
             <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
-            <li class="level2 nav-leaf"><a href="../svg/">SVG Backend</a></li>
+            <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
             <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
-            <li class="level3 nav-leaf"><a href="../canvas/bitmaps.html">Working With Bitmaps</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/bitmap.html">Bitmaps in Canvas</a></li>
             <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
             <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
             <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
@@ -198,10 +200,10 @@ This is necessary because the size may depend on backend-specific calculations, 
       .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">hotPink</span><span>)
       .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">3.0</span><span>)
   )
-</span><span class="comment">// boundingBox: Picture[FromGifBase64 &amp; Basic &amp; Bitmap &amp; FromBufferedImage &amp; FromPngBase64 &amp; FromJpgBase64, Unit] = doodle.algebra.Picture$$anon$1@54a7955
+</span><span class="comment">// boundingBox: Picture[FromGifBase64 &amp; Basic &amp; Bitmap &amp; FromBufferedImage &amp; FromPngBase64 &amp; FromJpgBase64, Unit] = doodle.algebra.Picture$$anon$1@660d0a0d
 </span><span>  
 </span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>.</span><span class="identifier">on</span><span>(</span><span class="identifier">boundingBox</span><span>)
-</span><span class="comment">// picture: Picture[Bitmap &amp; FromBufferedImage &amp; FromPngBase64 &amp; FromGifBase64 &amp; Basic &amp; FromJpgBase64, Unit] = doodle.syntax.LayoutSyntax$$anon$1@727dea0d</span></code></pre>
+</span><span class="comment">// picture: Picture[Bitmap &amp; FromBufferedImage &amp; FromPngBase64 &amp; FromGifBase64 &amp; Basic &amp; FromJpgBase64, Unit] = doodle.syntax.LayoutSyntax$$anon$1@3cae9057</span></code></pre>
 <p>This produces the picture shown below.</p>
 <div class="default-image-block">
   <img src="bounding-box.png" alt="A circle with a bounding box" title="A circle with a bounding box">

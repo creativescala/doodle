@@ -1,0 +1,308 @@
+<!doctype html>
+<html class="scroll-smooth"
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Laika 1.0.0" />
+    <title>Bitmaps in SVG</title>
+     
+    <meta name="description" content="docs" />
+    
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Crimson+Pro:400"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" href="../css/creative-scala.css" /> <script src="../js/solution.js"></script><script src="../main.js"></script>
+    <script>
+      /* for avoiding page load transitions */
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div id="topbar">
+        <nav id="topbar">
+          <button
+            class="text-sm text-pink-800 font-sans font-semibold hover:text-pink-600 focus:text-pink-600"
+            popovertarget="topbar-nav"
+          >
+            Contents
+          </button>
+          <div id="topbar-nav" popover="auto">
+            <div id="topbar-nav-container" class="flex justify-items-center items-center h-dvh w-dvw">
+              <div
+                class="p-4 mx-auto rounded-md bg-white border border-slate-900 max-h-4/5 w-4/5 overflow-y-auto overflow-x-auto flex flex-col items-end"
+              >
+                <button
+                  class="text-slate-900 hover:text-pink-800 focus:text-pink-800"
+                  popovertarget="topbar-nav"
+                  popovertargetaction="hide"
+                >
+                  ✕
+                </button>
+                <div class="w-full">
+                  <ul class="nav-list">
+                    <li class="level1 nav-node"><a href="../">Doodle</a></li>
+                    <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+                    <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+                    <li class="level2 nav-node"><a href="../core/">Core</a></li>
+                    <li class="level3 nav-leaf"><a href="../core/geometry.html">Geometry</a></li>
+                    <li class="level3 nav-leaf"><a href="../core/color.html">Color and Gradients</a></li>
+                    <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+                    <li class="level2 nav-node"><a href="../algebra/">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+                    <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+                    <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
+                    <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+                    <li class="level2 nav-node"><a href="index.html">SVG Backend</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Bitmaps in SVG</a></li>
+                    <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/bitmap.html">Bitmaps in Canvas</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+                    <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <nav id="home"><a class="text-link" href="../">Doodle</a></nav>
+        <nav id="external"><a href="https://discord.gg/rRhcFbJxVG">Community<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest">API<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://github.com/creativescala/doodle">Source<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a></nav>
+      </div>
+    </header>
+
+    <main class="max-w-8xl mx-auto my-8 min-h-screen flex">
+      <!-- Left sticky table of contents -->
+      <nav
+        id="sitebar"
+        class="hidden lg:block min-w-64 max-w-md mr-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <ul class="nav-list">
+            <li class="level1 nav-node"><a href="../">Doodle</a></li>
+            <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+            <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+            <li class="level2 nav-node"><a href="../core/">Core</a></li>
+            <li class="level3 nav-leaf"><a href="../core/geometry.html">Geometry</a></li>
+            <li class="level3 nav-leaf"><a href="../core/color.html">Color and Gradients</a></li>
+            <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+            <li class="level2 nav-node"><a href="../algebra/">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/using.html">Using Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/picture.html">Picture</a></li>
+            <li class="level3 nav-leaf"><a href="../algebra/algebras.html">Available Algebras</a></li>
+            <li class="level2 nav-leaf"><a href="../effect/">Effects</a></li>
+            <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
+            <li class="level2 nav-node"><a href="index.html">SVG Backend</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Bitmaps in SVG</a></li>
+            <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/bitmap.html">Bitmaps in Canvas</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+            <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
+            <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
+            <li class="level3 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+            <li class="level3 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div id="contentbar" class="mx-auto flex-1">
+        <div class="max-w-prose mx-auto">
+          <div id="content"><h1 id="bitmaps-in-svg" class="title">Bitmaps in SVG</h1>
+<p>The SVG backend provides support for bitmap images through <code>&lt;image&gt;</code> elements. Unlike raster-based backends, SVG doesn&#39;t load actual pixel data. Instead, it creates image references that the browser loads and renders.</p>
+
+<h2 id="how-svg-handles-bitmaps" class="section">How SVG Handles Bitmaps</h2>
+<p>SVG handles bitmaps differently from other backends:</p>
+<ul>
+  <li><strong>No pixel manipulation</strong>: SVG creates <code>&lt;image&gt;</code> elements with <code>href</code> attributes pointing to image sources.</li>
+  <li><strong>Browser-handled loading</strong>: the browser handles fetching images and respecting CORS policies.</li>
+  <li><strong>Vector context</strong>: bitmaps are embedded in a vector graphics context and can have SVG transformations and filters applied.</li>
+</ul>
+
+<h2 id="loading-bitmap-references" class="section">Loading Bitmap References</h2>
+<p>In the SVG backend, &quot;loading&quot; a bitmap creates an <code>SvgImageRef</code> which stores the image URL and optional dimensions. The specifier type is <code>String</code> (representing a URL or data URI).</p>
+<pre><code class="nohighlight"><span class="comment">// Load from URL
+</span><span class="keyword">val</span><span> </span><span class="identifier">imageRef</span><span> = </span><span class="string-literal">&quot;https://example.com/image.png&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]
+
+</span><span class="comment">// Load from data URI
+</span><span class="keyword">val</span><span> </span><span class="identifier">dataUri</span><span> = </span><span class="string-literal">&quot;data:image/png;base64,iVBORw0KGgoAAAANS...&quot;</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">dataRef</span><span> = </span><span class="identifier">dataUri</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]
+
+</span><span class="comment">// Load from relative path
+</span><span class="keyword">val</span><span> </span><span class="identifier">localRef</span><span> = </span><span class="string-literal">&quot;images/logo.svg&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]</span></code></pre>
+<p>Note* that <code>loadBitmap</code> returns an <code>IO[SvgImageRef]</code>. Use <code>.unsafeRunSync()</code> to extract the value in examples, or handle the <code>IO</code> properly in production code.</p>
+
+<h2 id="specifying-dimensions" class="section">Specifying Dimensions</h2>
+<p>You can optionally specify dimensions when creating image references:</p>
+<pre><code class="nohighlight"><span class="comment">// With both width and height
+</span><span class="keyword">val</span><span> </span><span class="identifier">withDims</span><span> = </span><span class="type-name">SvgLoadBitmap</span><span>.</span><span class="identifier">withDimensions</span><span>(</span><span class="string-literal">&quot;image.jpg&quot;</span><span>, </span><span class="identifier">width</span><span> = </span><span class="number-literal">200</span><span>, </span><span class="identifier">height</span><span> = </span><span class="number-literal">150</span><span>)
+
+</span><span class="comment">// With width only (height auto-calculated by browser)
+</span><span class="keyword">val</span><span> </span><span class="identifier">withWidth</span><span> = </span><span class="type-name">SvgLoadBitmap</span><span>.</span><span class="identifier">withWidth</span><span>(</span><span class="string-literal">&quot;image.png&quot;</span><span>, </span><span class="identifier">width</span><span> = </span><span class="number-literal">300</span><span>)
+
+</span><span class="comment">// With height only (width auto-calculated by browser)
+</span><span class="keyword">val</span><span> </span><span class="identifier">withHeight</span><span> = </span><span class="type-name">SvgLoadBitmap</span><span>.</span><span class="identifier">withHeight</span><span>(</span><span class="string-literal">&quot;image.gif&quot;</span><span>, </span><span class="identifier">height</span><span> = </span><span class="number-literal">250</span><span>)</span></code></pre>
+<p>If dimensions are not specified, the SVG backend uses a default size of 100x100 pixels for bounding box calculations.</p>
+
+<h2 id="converting-to-pictures" class="section">Converting to Pictures</h2>
+<p>An <code>SvgImageRef</code> can be converted to a <code>Picture</code> using the <code>toPicture</code> method:</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">imageRefIO</span><span> = </span><span class="string-literal">&quot;photo.jpg&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]
+</span><span class="keyword">val</span><span> </span><span class="identifier">imageRef</span><span> = </span><span class="identifier">imageRefIO</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">imageRef</span><span>.</span><span class="identifier">toPicture</span><span>
+
+</span><span class="comment">// Or load and convert in one step
+</span><span class="keyword">val</span><span> </span><span class="identifier">directPictureIO</span><span> = </span><span class="string-literal">&quot;photo.jpg&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>].</span><span class="identifier">toPicture</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">directPicture</span><span> = </span><span class="identifier">directPictureIO</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()</span></code></pre>
+
+<h2 id="composing-with-vector-graphics" class="section">Composing with Vector Graphics</h2>
+<p>Since bitmap references become regular <code>Pictures</code>, they can be composed with vector graphics:</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">logoIO</span><span> = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">imageRef</span><span> &lt;- </span><span class="string-literal">&quot;logo.png&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]
+  </span><span class="identifier">logo</span><span> = </span><span class="identifier">imageRef</span><span>.</span><span class="identifier">toPicture</span><span>
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">logo</span><span>
+  .</span><span class="identifier">on</span><span>(</span><span class="identifier">circle</span><span>(</span><span class="number-literal">150</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">lightBlue</span><span>))
+  .</span><span class="identifier">beside</span><span>(</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Welcome&quot;</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>))
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">composition</span><span> = </span><span class="identifier">logoIO</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()</span></code></pre>
+
+<h2 id="svg-filters-on-bitmaps" class="section">SVG Filters on Bitmaps</h2>
+<p>SVG filters can be applied to bitmap images just like any other <code>Picture</code>:</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">filteredIO</span><span> = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">imageRef</span><span> &lt;- </span><span class="string-literal">&quot;photo.jpg&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]
+  </span><span class="identifier">image</span><span> = </span><span class="identifier">imageRef</span><span>.</span><span class="identifier">toPicture</span><span>
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">image</span><span>
+  .</span><span class="identifier">blur</span><span>(</span><span class="number-literal">3.0</span><span>)
+  .</span><span class="identifier">dropShadow</span><span>(</span><span class="number-literal">4</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>.</span><span class="identifier">alpha</span><span>(</span><span class="number-literal">0.5</span><span>.</span><span class="identifier">normalized</span><span>))
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">filtered</span><span> = </span><span class="identifier">filteredIO</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()</span></code></pre>
+
+<h2 id="complete-example" class="section">Complete Example</h2>
+<p>This example demonstrates loading an image, applying transformations, and composing with vector graphics:</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">program</span><span> = </span><span class="keyword">for</span><span> {
+  </span><span class="comment">// Load the image reference
+</span><span>  </span><span class="identifier">imageRef</span><span> &lt;- </span><span class="string-literal">&quot;https://example.com/logo.png&quot;</span><span>.</span><span class="identifier">loadBitmap</span><span>[</span><span class="type-name">SvgImageRef</span><span>]
+
+  </span><span class="comment">// Convert to Picture
+</span><span>  </span><span class="identifier">logo</span><span> = </span><span class="identifier">imageRef</span><span>.</span><span class="identifier">toPicture</span><span>
+
+  </span><span class="comment">// Create composition
+</span><span>  </span><span class="identifier">composition</span><span> = </span><span class="identifier">logo</span><span>
+    .</span><span class="identifier">scale</span><span>(</span><span class="number-literal">0.75</span><span>, </span><span class="number-literal">0.75</span><span>)
+    .</span><span class="identifier">on</span><span>(</span><span class="identifier">square</span><span>(</span><span class="number-literal">200</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">lightGray</span><span>))
+    .</span><span class="identifier">above</span><span>(</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Company Name&quot;</span><span>).</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">darkGray</span><span>))
+
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">composition</span><span>
+
+</span><span class="comment">// In production, handle IO properly
+// For examples, we can use unsafeRunSync
+</span><span class="keyword">val</span><span> </span><span class="identifier">result</span><span> = </span><span class="identifier">program</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()</span></code></pre>
+
+<h2 id="important-considerations" class="section">Important Considerations</h2>
+
+<h3 id="cors-policies" class="section">CORS Policies</h3>
+<p>When loading images from external domains, be aware of CORS (Cross-Origin Resource Sharing) policies.</p>
+
+<h3 id="no-pixel-access" class="section">No Pixel Access</h3>
+<p>Unlike Java2D or Canvas backends, SVG cannot:</p>
+<ul>
+  <li>Access individual pixels.</li>
+  <li>Convert Pictures to bitmap data.</li>
+  <li>Apply pixel-level manipulations.</li>
+</ul>
+<p>For these operations, use a raster-based backend.</p></div>
+          <div class="flex flex-row justify-between">
+            <a class="pagenav" href="index.html">←SVG Backend</a> <a class="pagenav" href="../canvas/">Canvas Backend→</a>
+          </div>
+        </div>
+        <footer>
+          Copyright &copy; Noel Welsh. Built with
+          <span class="hover:text-pink-900">💖</span>
+        </footer>
+      </div>
+      <!-- Right sticky page contents -->
+      <nav
+        id="pagebar"
+        class="hidden lg:block min-w-60 max-w-64 ml-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <p>On This Page</p>
+          <ul class="nav-list">
+            <li class="level1 nav-leaf"><a href="#how-svg-handles-bitmaps">How SVG Handles Bitmaps</a></li>
+            <li class="level1 nav-leaf"><a href="#loading-bitmap-references">Loading Bitmap References</a></li>
+            <li class="level1 nav-leaf"><a href="#specifying-dimensions">Specifying Dimensions</a></li>
+            <li class="level1 nav-leaf"><a href="#converting-to-pictures">Converting to Pictures</a></li>
+            <li class="level1 nav-leaf"><a href="#composing-with-vector-graphics">Composing with Vector Graphics</a></li>
+            <li class="level1 nav-leaf"><a href="#svg-filters-on-bitmaps">SVG Filters on Bitmaps</a></li>
+            <li class="level1 nav-leaf"><a href="#complete-example">Complete Example</a></li>
+            <li class="level1 nav-node"><a href="#important-considerations">Important Considerations</a></li>
+            <li class="level2 nav-leaf"><a href="#cors-policies">CORS Policies</a></li>
+            <li class="level2 nav-leaf"><a href="#no-pixel-access">No Pixel Access</a></li>
+          </ul>
+        </div>
+      </nav>
+    </main>
+  </body>
+</html>
