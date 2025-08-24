@@ -1,4 +1,4 @@
-# Working With Bitmaps
+# Bitmaps in Canvas
 
 The Canvas backend provides methods to load bitmap images in the various types provided by the web platform (i.e. the browser) and convert them to a Doodle `Picture`.
 
@@ -70,7 +70,7 @@ import org.scalajs.dom
 // Used under CC license https://creativecommons.org/licenses/by-sa/4.0/deed.en
 val wikimediaUrl =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/A_Koch_woman.jpg/330px-A_Koch_woman.jpg"
-  
+
 val program = for {
   htmlImg <- wikimediaUrl.loadBitmap[dom.HTMLImageElement].toPicture
   imgBitmap <- wikimediaUrl.loadBitmap[dom.ImageBitmap].toPicture
