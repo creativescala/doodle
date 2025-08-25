@@ -32,6 +32,7 @@ package object syntax {
       with FilterSyntax
       with LayoutSyntax
       with LoadBitmapSyntax
+      with LoadBitmapConvenienceSyntax
       with NormalizedSyntax
       with PathSyntax
       with RendererSyntax
@@ -53,6 +54,7 @@ package object syntax {
   object filter extends FilterSyntax
   object layout extends LayoutSyntax
   object loadBitmap extends LoadBitmapSyntax
+  object loadBitmapConvenience extends LoadBitmapConvenienceSyntax
   object normalized extends NormalizedSyntax
   object path extends PathSyntax
   object renderer extends RendererSyntax
