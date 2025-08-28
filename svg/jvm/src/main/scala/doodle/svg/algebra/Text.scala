@@ -53,8 +53,12 @@ trait TextModule extends JvmBase {
         // center of the bounding box.
         val style = Svg.toStyle(stroke, fill, set)
         val elt = Svg.textTag(text, font, style)(
+          bundle.svgAttrs.transform := Svg.toSvgTransform(
+            Transform.verticalReflection.andThen(tx)
+          ),
           bundle.svgAttrs.x := -(bounds.getMinX() + bounds.getWidth()) / 2.0,
-          bundle.svgAttrs.y := (bounds.getMinY() + bounds.getHeight()) / 2.0
+          bundle.svgAttrs.y := (bounds.getMinY() + bounds.getHeight()) / 2.0,
+          bundle.svgAttrs.dominantBaseline := "middle"
         )
 
         (elt, set, ())

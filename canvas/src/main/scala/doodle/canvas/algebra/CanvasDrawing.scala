@@ -104,16 +104,6 @@ object CanvasDrawing {
       ctx.closePath()
     }
 
-  def fillText(
-      text: String,
-      x: Double,
-      y: Double,
-      fill: Option[Fill]
-  ): CanvasDrawing[Unit] =
-    CanvasDrawing.withFill(fill) {
-      CanvasDrawing(canvas => canvas.fillText(text, x, y))
-    }
-
   def measureText(text: String): CanvasDrawing[TextMetrics] =
     CanvasDrawing(canvas => canvas.measureText(text).asInstanceOf[TextMetrics])
 
@@ -269,15 +259,25 @@ object CanvasDrawing {
     BoundingBox.centered(width, height)
   }
 
+  def fillText(
+      text: String,
+      x: Double,
+      y: Double,
+      fill: Fill
+  ): CanvasDrawing[Unit] =
+    CanvasDrawing.setFill(fill) >> CanvasDrawing(canvas =>
+      canvas.fillText(text, x, y)
+    )
+
   def strokeText(
       text: String,
       x: Double,
       y: Double,
-      stroke: Option[Stroke]
+      stroke: Stroke
   ): CanvasDrawing[Unit] =
-    CanvasDrawing.withStroke(stroke) {
-      CanvasDrawing(canvas => canvas.strokeText(text, x, y))
-    }
+    CanvasDrawing.setStroke(stroke) >> CanvasDrawing(canvas =>
+      canvas.strokeText(text, x, y)
+    )
 
   def withFill[A](
       fill: Option[Fill]
