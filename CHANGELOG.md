@@ -6,6 +6,8 @@
 
 - Add `LoadBitmap` algebra for loading bitmaps as a separate type (by `@untainsYD`)
 
+- Fix SVG text rendering on JVM
+
 
 ## 0.30.0 30-Apr-2025
 
