@@ -90,6 +90,7 @@
                     <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
                     <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
                     <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
+                    <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
                     <li class="level2 nav-node"><a href="index.html">Canvas Backend</a></li>
                     <li class="level3 nav-leaf"><a href="bitmap.html">Bitmaps in Canvas</a></li>
                     <li class="level3 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
@@ -155,6 +156,7 @@
             <li class="level2 nav-leaf"><a href="../java2d/">Java2D Backend</a></li>
             <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
             <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
+            <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
             <li class="level2 nav-node"><a href="index.html">Canvas Backend</a></li>
             <li class="level3 nav-leaf"><a href="bitmap.html">Bitmaps in Canvas</a></li>
             <li class="level3 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
@@ -175,9 +177,12 @@
 <p>The Canvas backend fully supports <a href="../pictures/text.html">Text</a>. For example, here&#39;s a basic usage of text.</p>
 <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">canvas</span><span>.*
 
-</span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Hello from Doodle!&quot;</span><span>)
-  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)</span></code></pre>
-<p>This produces the output below. Notice we specify a fill to get solid text.</p>
+</span><span class="keyword">val</span><span> </span><span class="identifier">hello</span><span> = </span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Hello from Doodle!&quot;</span><span>)
+</span><span class="identifier">hello</span><span>.</span><span class="identifier">noStroke</span><span>
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+  .</span><span class="identifier">beside</span><span>(</span><span class="identifier">hello</span><span>.</span><span class="identifier">noStroke</span><span>)
+  .</span><span class="identifier">beside</span><span>(</span><span class="identifier">hello</span><span>.</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>).</span><span class="identifier">noStroke</span><span>)</span></code></pre>
+<p>This produces the output below. Notice we specify a fill to get solid text, but rendering with a stroke as well can lead to blurry text at small sizes.</p>
 <div class="doodle" id="text-hello"></div>
 <script>CanvasTextExamples.drawHello("text-hello")</script>
 <p>We can fully style text, changing font, color, and so on. </p>
