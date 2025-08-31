@@ -1,16 +1,41 @@
+/*
+ * Copyright 2015 Creative Scala
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package doodle
 package java2d
 package algebra
 
 import cats.Eval
 import cats.data.WriterT
-import doodle.algebra.{Filter as FilterAlgebra, Kernel}
+import doodle.algebra.Filter as FilterAlgebra
+import doodle.algebra.Kernel
 import doodle.algebra.generic.*
-import doodle.core.{BoundingBox, Color, Transform as Tx}
+import doodle.core.BoundingBox
+import doodle.core.Color
+import doodle.core.Transform as Tx
 import doodle.java2d.algebra.reified.*
 import doodle.java2d.effect.Java2d
-import java.awt.image.{BufferedImage, ConvolveOp, Kernel as AwtKernel}
-import java.awt.{Graphics2D, RenderingHints, AlphaComposite}
+
+import java.awt.AlphaComposite
+import java.awt.Graphics2D
+import java.awt.RenderingHints
+import java.awt.image.BufferedImage
+import java.awt.image.ConvolveOp
+import java.awt.image.ImagingOpException
+import java.awt.image.Kernel as AwtKernel
 
 /** Java2D implementation of the Filter algebra using BufferedImage operations
   */
@@ -24,6 +49,7 @@ trait FilterModule extends FilterAlgebra {
     val size = 2 * radius + 1
     val kernel =
       Kernel(size, size, IArray.fill(size * size)(1.0 / (size * size)))
+
     convolveMatrix(picture, kernel, Some(1.0), 0.0)
   }
 
@@ -36,6 +62,7 @@ trait FilterModule extends FilterAlgebra {
       baseKernel.elements(i) * amount
     )
     val kernel = baseKernel.copy(elements = scaledElements)
+
     convolveMatrix(picture, kernel, None, 0.0)
   }
 
@@ -49,7 +76,7 @@ trait FilterModule extends FilterAlgebra {
       blur: Double,
       color: Color
   ): Drawing[A] = {
-    // Note: Java2D drop shadow is complex and requires multiple operations
+    // NOTE: Java2d drop shadow is complex and requires multiple operations
     // This is a simplified implementation - full implementation would need:
     // 1. Extract alpha channel as shadow
     // 2. Apply blur to shadow
@@ -57,6 +84,7 @@ trait FilterModule extends FilterAlgebra {
     // 4. Colorize shadow
     // 5. Composite original over shadow
     // For now, we'll implement a basic version
+    // @todo Implement full drop shadow effect
     transformToBufferedImage(picture) { image =>
       applyDropShadow(image, offsetX.toInt, offsetY.toInt, blur, color)
     }
@@ -77,47 +105,53 @@ trait FilterModule extends FilterAlgebra {
   )(transform: BufferedImage => BufferedImage): Drawing[A] =
     picture.flatMap { case (bb, rdr) =>
       Finalized.leaf { dc =>
-        val width = Math.max(1, Math.ceil(bb.width).toInt)
-        val height = Math.max(1, Math.ceil(bb.height).toInt)
+        val padding = 40
+        val width = Math.max(100, Math.ceil(bb.width).toInt + padding * 2)
+        val height = Math.max(100, Math.ceil(bb.height).toInt + padding * 2)
 
-        val image =
+        val sourceImage =
           new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-        val g2d = image.createGraphics()
+        val g2d = sourceImage.createGraphics()
         setupGraphics(g2d)
 
         g2d.setComposite(AlphaComposite.Clear)
         g2d.fillRect(0, 0, width, height)
         g2d.setComposite(AlphaComposite.SrcOver)
 
-        val tx = Tx.translate(width / 2.0, height / 2.0)
+        // Center the rendering in the padded space
+        val centerX = width / 2.0
+        val centerY = height / 2.0
+        val tx = Tx.translate(centerX, centerY)
 
-        // Render the current drawing to the BufferedImage
         val (txResult, renderable) = rdr.run(tx).value
         val (reification, a) = renderable.run.value
 
         Java2d.render(g2d, reification, txResult)
         g2d.dispose()
 
-        val filtered = transform(image)
+        val filteredImage = transform(sourceImage)
 
-        // Create new Reification from the filtered image
+        // Calculate the offset to center the bitmap in the coordinate system
+        val offsetX = -filteredImage.getWidth / 2.0
+        val offsetY = -filteredImage.getHeight / 2.0
+        val bitmapTransform = Tx.translate(offsetX, offsetY)
+
         val newReification: Reification[A] = WriterT
           .tell[Eval, List[Reified]](
-            List(Reified.bitmap(Tx.identity, filtered))
+            List(Reified.bitmap(bitmapTransform, filteredImage))
           )
           .map(_ => a)
 
         val newRenderable: Renderable[Reification, A] =
           Renderable.apply(_ => Eval.now(newReification))
 
-        // Update bounding box if image size changed
-        val newBB =
-          if filtered.getWidth != width || filtered.getHeight != height then
-            BoundingBox.centered(
-              filtered.getWidth.toDouble,
-              filtered.getHeight.toDouble
-            )
-          else bb
+        // Keep the original bounding box since we want the same logical size
+        // but expand it slightly to account for filter effects
+        val expansionFactor = 1.2 // 20% larger to account for blur/shadow effects
+        val newBB = BoundingBox.centered(
+          bb.width * expansionFactor,
+          bb.height * expansionFactor
+        )
 
         (newBB, newRenderable)
       }
@@ -134,38 +168,62 @@ trait FilterModule extends FilterAlgebra {
     )
   }
 
-  private def applyGaussianBlur(
-      image: BufferedImage,
-      stdDev: Double
-  ): BufferedImage = {
-    val radius = Math.ceil(stdDev * 3).toInt
-    val size = 2 * radius + 1
-    val kernel = createGaussianKernel(size, stdDev)
-
-    val awtKernel = new AwtKernel(size, size, kernel)
-    val op = new ConvolveOp(awtKernel, ConvolveOp.EDGE_NO_OP, null)
-    op.filter(image, null)
-  }
-
   private def createGaussianKernel(size: Int, stdDev: Double): Array[Float] = {
     val kernel = Array.ofDim[Float](size * size)
-    val mean = size / 2
-    var sum = 0.0
+    val center = size / 2
+    var sum = 0.0f
 
     for {
       y <- 0 until size
       x <- 0 until size
     } {
-      val value = Math.exp(
-        -0.5 * (Math.pow((x - mean) / stdDev, 2.0) +
-          Math.pow((y - mean) / stdDev, 2.0))
-      ) / (2 * Math.PI * stdDev * stdDev)
-      kernel(y * size + x) = value.toFloat
+      val dx = x - center
+      val dy = y - center
+      val distance = dx * dx + dy * dy
+      val value = Math.exp(-distance / (2.0 * stdDev * stdDev)).toFloat
+      kernel(y * size + x) = value
       sum += value
     }
 
-    // Normalize
-    kernel.map(v => (v / sum).toFloat)
+    // Normalize kernel so sum equals 1
+    for (i <- kernel.indices) {
+      kernel(i) /= sum
+    }
+
+    kernel
+  }
+
+  private def applyGaussianBlur(
+      image: BufferedImage,
+      stdDev: Double
+  ): BufferedImage = {
+    if stdDev < 0.5 then return image
+
+    val radius = Math.min(
+      10,
+      Math.ceil(stdDev * 3).toInt
+    ) // Cap radius to prevent huge kernels
+    val size = 2 * radius + 1
+    val kernel = createGaussianKernel(size, stdDev)
+
+    val awtKernel = new AwtKernel(size, size, kernel)
+
+    val src = ensureCompatibleImage(image)
+    val dest = new BufferedImage(
+      src.getWidth,
+      src.getHeight,
+      BufferedImage.TYPE_INT_ARGB
+    )
+
+    val op = new ConvolveOp(awtKernel, ConvolveOp.EDGE_NO_OP, null)
+
+    try {
+      op.filter(src, dest)
+      dest
+    } catch {
+      case _: ImagingOpException =>
+        src
+    }
   }
 
   private def applyConvolution(
@@ -174,26 +232,53 @@ trait FilterModule extends FilterAlgebra {
       divisor: Option[Double],
       bias: Double
   ): BufferedImage = {
+    val compatibleImage = ensureCompatibleImage(image)
+
     val kernelArray =
-      IArray.genericWrapArray(kernel.elements.map(_.toFloat)).toArray
-    val actualDivisor = divisor.getOrElse(kernelArray.sum.toDouble)
+      Array.tabulate(kernel.elements.length)(i => kernel.elements(i).toFloat)
+    val actualDivisor = divisor.getOrElse(kernelArray.sum.toDouble).toFloat
 
     val normalizedKernel =
-      if actualDivisor != 1.0 then
-        kernelArray.map(v => (v / actualDivisor).toFloat)
+      if Math.abs(actualDivisor - 1.0f) > 0.001f then
+        kernelArray.map(v => v / actualDivisor)
       else kernelArray
 
     val awtKernel = new AwtKernel(kernel.width, kernel.height, normalizedKernel)
+
+    val dest = new BufferedImage(
+      compatibleImage.getWidth,
+      compatibleImage.getHeight,
+      BufferedImage.TYPE_INT_ARGB
+    )
+
     val op = new ConvolveOp(awtKernel, ConvolveOp.EDGE_NO_OP, null)
 
-    var result = op.filter(image, null)
-
-    // Apply bias if needed
-    if bias != 0.0 then {
-      result = applyBias(result, bias)
+    try {
+      op.filter(compatibleImage, dest)
+      if Math.abs(bias) > 0.001 then {
+        applyBias(dest, bias)
+      } else {
+        dest
+      }
+    } catch {
+      case _: ImagingOpException =>
+        compatibleImage
     }
+  }
 
-    result
+  private def ensureCompatibleImage(image: BufferedImage): BufferedImage = {
+    if image.getType == BufferedImage.TYPE_INT_ARGB then image
+    else {
+      val newImage = new BufferedImage(
+        image.getWidth,
+        image.getHeight,
+        BufferedImage.TYPE_INT_ARGB
+      )
+      val g2d = newImage.createGraphics()
+      g2d.drawImage(image, 0, 0, null)
+      g2d.dispose()
+      newImage
+    }
   }
 
   private def applyBias(image: BufferedImage, bias: Double): BufferedImage = {
@@ -222,7 +307,6 @@ trait FilterModule extends FilterAlgebra {
       blur: Double,
       shadowColor: Color
   ): BufferedImage = {
-    // Calculate required size including shadow
     val extraSpace = Math.ceil(blur * 3).toInt
     val newWidth = image.getWidth + Math.abs(offsetX) + 2 * extraSpace
     val newHeight = image.getHeight + Math.abs(offsetY) + 2 * extraSpace
@@ -235,16 +319,13 @@ trait FilterModule extends FilterAlgebra {
     // Extract alpha channel and create shadow
     val shadow = extractAlphaAsShadow(image, shadowColor)
 
-    // Apply blur to shadow
     val blurredShadow =
       if blur > 0 then applyGaussianBlur(shadow, blur) else shadow
 
-    // Draw shadow with offset
     val shadowX = if offsetX >= 0 then offsetX + extraSpace else extraSpace
     val shadowY = if offsetY >= 0 then offsetY + extraSpace else extraSpace
     g2d.drawImage(blurredShadow, shadowX, shadowY, null)
 
-    // Draw original image on top
     val origX =
       if offsetX >= 0 then extraSpace else Math.abs(offsetX) + extraSpace
     val origY =
