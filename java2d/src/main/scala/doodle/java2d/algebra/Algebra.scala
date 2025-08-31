@@ -33,6 +33,7 @@ final case class Algebra(
     applyDrawing: Apply[Reification] = Apply.apply[Reification],
     functorDrawing: Functor[Reification] = Apply.apply[Reification]
 ) extends Basic
+    with FilterModule
     with Java2dFromBufferedImage
     with Java2dFromBase64
     with ReifiedBitmap
