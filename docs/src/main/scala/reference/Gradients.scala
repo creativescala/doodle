@@ -15,7 +15,7 @@
  */
 
 package docs
-package core
+package reference
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.*
@@ -46,5 +46,5 @@ object Gradients {
       Gradient.dichromaticRadial(Color.azure, Color.crimson, 70)
     ).toSwatches
 
-  linearAndRadial.save("core/linear-radial.png")
+  linearAndRadial.save("reference/linear-radial.png")
 }
