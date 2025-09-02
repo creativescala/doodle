@@ -54,11 +54,11 @@ val chessboard =
 To draw these Images call the `draw` method like so
 
 
-```scala
+```scala mdoc:compile-only
 // Extension methods
 import doodle.image.syntax.all.*
 // Render to a window using Java2D (must be running in the JVM)
-import doodle.java2d.*
+import doodle.java2d.{*, given}
 // Need the Cats Effect runtime to run everything
 import cats.effect.unsafe.implicits.global
 

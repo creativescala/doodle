@@ -15,7 +15,7 @@
  */
 
 package docs
-package core
+package reference
 
 object All {
   Colors
