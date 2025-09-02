@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Laika 1.0.0" />
-    <title>Java2D Backend</title>
+    <title>Geometry</title>
      
     <meta name="description" content="docs" />
     
@@ -80,14 +80,14 @@
                     <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
                     <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
                     <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
-                    <li class="level2 nav-node"><a href="../reference/">Reference</a></li>
-                    <li class="level3 nav-leaf"><a href="../reference/geometry.html">Geometry</a></li>
-                    <li class="level3 nav-leaf"><a href="../reference/color.html">Color and Gradients</a></li>
-                    <li class="level3 nav-leaf"><a href="../reference/effect.html">Effects</a></li>
-                    <li class="level3 nav-leaf"><a href="../reference/picture.html">Picture</a></li>
-                    <li class="level3 nav-leaf"><a href="../reference/using.html">Using Algebras</a></li>
-                    <li class="level2 active nav-node"><a href="#">Java2D Backend</a></li>
-                    <li class="level3 nav-leaf"><a href="bitmap.html">Bitmaps in Java2D</a></li>
+                    <li class="level2 nav-node"><a href="index.html">Reference</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Geometry</a></li>
+                    <li class="level3 nav-leaf"><a href="color.html">Color and Gradients</a></li>
+                    <li class="level3 nav-leaf"><a href="effect.html">Effects</a></li>
+                    <li class="level3 nav-leaf"><a href="picture.html">Picture</a></li>
+                    <li class="level3 nav-leaf"><a href="using.html">Using Algebras</a></li>
+                    <li class="level2 nav-node"><a href="../java2d/">Java2D Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../java2d/bitmap.html">Bitmaps in Java2D</a></li>
                     <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
                     <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
                     <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
@@ -146,14 +146,14 @@
             <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
             <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
             <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
-            <li class="level2 nav-node"><a href="../reference/">Reference</a></li>
-            <li class="level3 nav-leaf"><a href="../reference/geometry.html">Geometry</a></li>
-            <li class="level3 nav-leaf"><a href="../reference/color.html">Color and Gradients</a></li>
-            <li class="level3 nav-leaf"><a href="../reference/effect.html">Effects</a></li>
-            <li class="level3 nav-leaf"><a href="../reference/picture.html">Picture</a></li>
-            <li class="level3 nav-leaf"><a href="../reference/using.html">Using Algebras</a></li>
-            <li class="level2 active nav-node"><a href="#">Java2D Backend</a></li>
-            <li class="level3 nav-leaf"><a href="bitmap.html">Bitmaps in Java2D</a></li>
+            <li class="level2 nav-node"><a href="index.html">Reference</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Geometry</a></li>
+            <li class="level3 nav-leaf"><a href="color.html">Color and Gradients</a></li>
+            <li class="level3 nav-leaf"><a href="effect.html">Effects</a></li>
+            <li class="level3 nav-leaf"><a href="picture.html">Picture</a></li>
+            <li class="level3 nav-leaf"><a href="using.html">Using Algebras</a></li>
+            <li class="level2 nav-node"><a href="../java2d/">Java2D Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../java2d/bitmap.html">Bitmaps in Java2D</a></li>
             <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
             <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
             <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
@@ -173,65 +173,74 @@
       </nav>
       <div id="contentbar" class="mx-auto flex-1">
         <div class="max-w-prose mx-auto">
-          <div id="content"><h1 id="java2d-backend" class="title">Java2D Backend</h1>
-<p>The Java2D backend draws Doodle pictures using <a href="https://www.oracle.com/java/technologies/java-2d-api.html">Java 2D</a>, the graphic library that ships with the JVM.</p>
+          <div id="content"><h1 id="geometry" class="title">Geometry</h1>
+<p>Doodle provides many utilities for working with two-dimensional geometry.</p>
 
-<h2 id="usage" class="section">Usage</h2>
-<p>Firstly, import the Doodle core and syntax, the Java2D definitions, and the default Cats Effect runtime.</p>
-<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.{*, </span><span class="identifier">given</span><span>}
-</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
-<p>Now you can draw <code>Pictures</code> like so:</p>
-<pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">draw</span><span>()</span></code></pre>
-<p>The drawing will appear in a window on the screen.</p>
+<h2 id="angle" class="section">Angle</h2>
+<p>The <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Angle.html">Angle</a> type represents an angle, as the name suggests.</p>
+<p>Most of the time you&#39;ll create <code>Angles</code> using the extension methods shown below. Degrees and radians should be familiar, but turns may not be. One turn corresponds to a full circle (i.e. 360 degrees), so using turns in a convenient way to represent simple fractions or multiples of circles.</p>
+<pre><code class="nohighlight"><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="number-literal">1</span><span>.</span><span class="identifier">radians</span><span>
+</span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span> </span><span class="comment">// One turn is a full circle, so this is half a circle</span></code></pre>
+<p>There are various methods to perform arithmetic on angles. Here are some examples. See the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Angle.html">Angle</a> API for a complete list.</p>
+<pre><code class="nohighlight"><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> + </span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span>) &lt; </span><span class="number-literal">180</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="comment">// res3: Boolean = true
+</span><span>(</span><span class="number-literal">45</span><span>.</span><span class="identifier">degrees</span><span> * </span><span class="number-literal">2</span><span>) &lt; </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>
+</span><span class="comment">// res4: Boolean = false
+</span><span class="number-literal">180</span><span>.</span><span class="identifier">degrees</span><span> - </span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>
+</span><span class="comment">// res5: Angle = Angle(0.0)</span></code></pre>
+<p>Other useful methods are calculating the sine and cosine of an angle, and normalizing an angle to between zero and 360 degrees.</p>
+<pre><code class="nohighlight"><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">sin</span><span>
+</span><span class="comment">// res6: Double = 1.2246467991473532E-16
+</span><span class="number-literal">0.5</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">cos</span><span>
+</span><span class="comment">// res7: Double = -1.0
+</span><span class="number-literal">2</span><span>.</span><span class="identifier">turns</span><span>.</span><span class="identifier">normalize</span><span> == </span><span class="number-literal">1</span><span>.</span><span class="identifier">turns</span><span>
+</span><span class="comment">// res8: Boolean = true</span></code></pre>
 
-<h2 id="frame" class="section">Frame</h2>
-<p>You can define a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Frame.html">Frame</a> to have more control over the appearance of the window in which a <code>Picture</code> is drawn.
-The <code>Frame</code>  allows you to specify, for example, the title for the window, the background color, or the size of the window.
-Here&#39;s an example:</p>
-<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">frame</span><span> =
-  </span><span class="type-name">Frame</span><span>.</span><span class="keyword">default</span><span>
-    .</span><span class="identifier">withSize</span><span>(</span><span class="number-literal">600</span><span>, </span><span class="number-literal">600</span><span>)
-    .</span><span class="identifier">withCenterAtOrigin</span><span>
-    .</span><span class="identifier">withBackground</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">midnightBlue</span><span>)
-    .</span><span class="identifier">withTitle</span><span>(</span><span class="string-literal">&quot;Oodles of Doodles!&quot;</span><span>)</span></code></pre>
-<p>This sets:</p>
-<ul>
-  <li>the size of the window to 600 pixels wide and high;</li>
-  <li>the center of the window to the origin (0, 0), instead of the center of the bounding box of the <code>Picture</code> that is rendered;</li>
-  <li>the background color to midnight blue; and</li>
-  <li>the window&#39;s title to &quot;Oodles of Doodles!&quot;</li>
-</ul>
-<p>We can drawn to a frame using the <code>drawWithFrame</code> syntax.</p>
-<pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">drawWithFrame</span><span>(</span><span class="identifier">frame</span><span>)</span></code></pre>
+<h2 id="point" class="section">Point</h2>
+<p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Point.html">Point</a> represents a location in the 2-D plane. We can construct points from cartesian (xy-coordinates) or polar (radius and angle) coordinates as shown below.</p>
+<pre><code class="nohighlight"><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">1.0</span><span>) </span><span class="comment">// cartesian coordinates
+// res9: Point = Cartesian(x = 1.0, y = 1.0)
+</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>) </span><span class="comment">// polar coordinates
+// res10: Point = Polar(r = 1.0, angle = Angle(1.5707963267948966))</span></code></pre>
+<p>No matter how we construct a <code>Point</code> we can still access x- and y-coordinates or radius and angle.</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">pt1</span><span> = </span><span class="type-name">Point</span><span>(</span><span class="number-literal">1.0</span><span>, </span><span class="number-literal">0.0</span><span>)
+</span><span class="comment">// pt1: Point = Cartesian(x = 1.0, y = 0.0)
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">x</span><span>
+</span><span class="comment">// res11: Double = 1.0
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">y</span><span>
+</span><span class="comment">// res12: Double = 0.0
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">r</span><span>
+</span><span class="comment">// res13: Double = 1.0
+</span><span class="identifier">pt1</span><span>.</span><span class="identifier">angle</span><span>
+</span><span class="comment">// res14: Angle = Angle(0.0)</span></code></pre>
 
-<h2 id="canvas" class="section">Canvas</h2>
-<p>The Java2D <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/java2d/effect/Canvas.html">Canvas</a> offers several features that are useful for interactive programs.
-It provides the following streams of events:</p>
-<ul>
-  <li><code>mouseClick</code>, which is a <code>Stream[IO, Point]</code> producing the position of mouse clicks;</li>
-  <li><code>mouseMove</code>, which is a <code>Stream[IO, Point]</code> producing the position of the mouse cursor and updates when the mouse moves;</li>
-  <li><code>redraw</code>, which is a <code>Stream[IO, Int]</code> producing a value approximately every 16.67ms (i.e. at a rate of 60fps). The value is the duration, in milliseconds, since the previous event.</li>
-</ul>
-<p>Also available are</p>
-<ul>
-  <li><code>closed</code>, an <code>IO[Unit]</code> that produces a value when the window has been closed; and</li>
-  <li><code>close()</code>, a method to programmatically close the window instead of waiting for the user to do so.</li>
-</ul>
-<p>To create a <code>Canvas</code> you call the <code>canvas()</code> method on a <code>Frame</code>.
-The returns a <code>Resource</code> that will produce the canvas when <code>use</code>d.
-Here&#39;s a small example:</p>
-<pre><code class="nohighlight"><span class="identifier">frame</span><span>
-  .</span><span class="identifier">canvas</span><span>()
-  .</span><span class="identifier">use</span><span> { </span><span class="identifier">canvas</span><span> =&gt;
-    </span><span class="comment">// Do stuff here
-</span><span>    </span><span class="comment">// This example just closes the canvas
-</span><span>    </span><span class="identifier">canvas</span><span>.</span><span class="identifier">close</span><span>()
-  }</span></code></pre>
-<p>`</p></div>
+<h2 id="transform" class="section">Transform</h2>
+<p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Transform.html">Transform</a>, in Doodle, represents an <a href="https://en.wikipedia.org/wiki/Affine_transformation">affine transform</a> in two-dimensions. The easiest way to create a <code>Transform</code> is via the methods on the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Transform$.html">Transform</a>. Here are some examples.</p>
+<pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)</span></code></pre>
+<p>A <code>Transform</code> can be applied to a <code>Point</code> to transform that point.</p>
+<pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res18: Point = Cartesian(x = 5.0, y = -2.0)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">rotate</span><span>(</span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res19: Point = Cartesian(x = -0.9999999999999999, y = 1.0)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res20: Point = Cartesian(x = 11.0, y = 11.0)</span></code></pre>
+<p><code>Transforms</code> can be composed together using the <code>andThen</code> method.</p>
+<pre><code class="nohighlight"><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>).</span><span class="identifier">andThen</span><span>(</span><span class="type-name">Transform</span><span>.</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>))(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>))
+</span><span class="comment">// res21: Point = Cartesian(x = 15.0, y = 8.0)
+</span><span class="type-name">Transform</span><span>.</span><span class="identifier">scale</span><span>(</span><span class="number-literal">5.0</span><span>, -</span><span class="number-literal">2.0</span><span>).</span><span class="identifier">translate</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">10</span><span>)(</span><span class="type-name">Point</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">1</span><span>)) </span><span class="comment">// Shorter version
+// res22: Point = Cartesian(x = 15.0, y = 8.0)</span></code></pre>
+
+<h2 id="vec" class="section">Vec</h2>
+<p>A <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Vec.html">Vec</a> represents a two-dimensional vector. You can construct <code>Vecs</code> from cartesian (xy-coordinates) or polar (length and angle) coordinates, just like <code>Point</code>.</p>
+<pre><code class="nohighlight"><span class="type-name">Vec</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">1</span><span>)
+</span><span class="comment">// res23: Vec = Vec(x = 0.0, y = 1.0)
+</span><span class="type-name">Vec</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">90</span><span>.</span><span class="identifier">degrees</span><span>)
+</span><span class="comment">// res24: Vec = Vec(x = 6.123233995736766E-17, y = 1.0)</span></code></pre></div>
           <div class="flex flex-row justify-between">
-            <a class="pagenav" href="../reference/using.html">←Using Algebras</a> <a class="pagenav" href="bitmap.html">Bitmaps in Java2D→</a>
+            <a class="pagenav" href="index.html">←Reference</a> <a class="pagenav" href="color.html">Color and Gradients→</a>
           </div>
         </div>
         <footer>
@@ -247,9 +256,10 @@ Here&#39;s a small example:</p>
         <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
           <p>On This Page</p>
           <ul class="nav-list">
-            <li class="level1 nav-leaf"><a href="#usage">Usage</a></li>
-            <li class="level1 nav-leaf"><a href="#frame">Frame</a></li>
-            <li class="level1 nav-leaf"><a href="#canvas">Canvas</a></li>
+            <li class="level1 nav-leaf"><a href="#angle">Angle</a></li>
+            <li class="level1 nav-leaf"><a href="#point">Point</a></li>
+            <li class="level1 nav-leaf"><a href="#transform">Transform</a></li>
+            <li class="level1 nav-leaf"><a href="#vec">Vec</a></li>
           </ul>
         </div>
       </nav>

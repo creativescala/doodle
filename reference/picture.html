@@ -1,0 +1,264 @@
+<!doctype html>
+<html class="scroll-smooth"
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Laika 1.0.0" />
+    <title>Picture</title>
+     
+    <meta name="description" content="docs" />
+    
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400|Source+Sans+Pro:300,400,600"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Crimson+Pro:400"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" href="../css/creative-scala.css" /> <script src="../js/solution.js"></script><script src="../main.js"></script>
+    <script>
+      /* for avoiding page load transitions */
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div id="topbar">
+        <nav id="topbar">
+          <button
+            class="text-sm text-pink-800 font-sans font-semibold hover:text-pink-600 focus:text-pink-600"
+            popovertarget="topbar-nav"
+          >
+            Contents
+          </button>
+          <div id="topbar-nav" popover="auto">
+            <div id="topbar-nav-container" class="flex justify-items-center items-center h-dvh w-dvw">
+              <div
+                class="p-4 mx-auto rounded-md bg-white border border-slate-900 max-h-4/5 w-4/5 overflow-y-auto overflow-x-auto flex flex-col items-end"
+              >
+                <button
+                  class="text-slate-900 hover:text-pink-800 focus:text-pink-800"
+                  popovertarget="topbar-nav"
+                  popovertargetaction="hide"
+                >
+                  ✕
+                </button>
+                <div class="w-full">
+                  <ul class="nav-list">
+                    <li class="level1 nav-node"><a href="../">Doodle</a></li>
+                    <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/bitmap.html">Bitmaps</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+                    <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+                    <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+                    <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+                    <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+                    <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+                    <li class="level2 nav-node"><a href="index.html">Reference</a></li>
+                    <li class="level3 nav-leaf"><a href="geometry.html">Geometry</a></li>
+                    <li class="level3 nav-leaf"><a href="color.html">Color and Gradients</a></li>
+                    <li class="level3 nav-leaf"><a href="effect.html">Effects</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Picture</a></li>
+                    <li class="level3 nav-leaf"><a href="using.html">Using Algebras</a></li>
+                    <li class="level2 nav-node"><a href="../java2d/">Java2D Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../java2d/bitmap.html">Bitmaps in Java2D</a></li>
+                    <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
+                    <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
+                    <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/bitmap.html">Bitmaps in Canvas</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+                    <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+                    <li class="level3 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <nav id="home"><a class="text-link" href="../">Doodle</a></nav>
+        <nav id="external"><a href="https://discord.gg/rRhcFbJxVG">Community<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest">API<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://github.com/creativescala/doodle">Source<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a></nav>
+      </div>
+    </header>
+
+    <main class="max-w-8xl mx-auto my-8 min-h-screen flex">
+      <!-- Left sticky table of contents -->
+      <nav
+        id="sitebar"
+        class="hidden lg:block min-w-64 max-w-md mr-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <ul class="nav-list">
+            <li class="level1 nav-node"><a href="../">Doodle</a></li>
+            <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/picture-image.html">Picture and Image</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/shape.html">Shapes</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/path.html">Paths</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/bitmap.html">Bitmaps</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/layout.html">Layout</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/style.html">Style</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/transform.html">Transforms</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/filter.html">Convolution Filters</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/size.html">Size</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/text.html">Text</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/drawing.html">Drawing to the Screen</a></li>
+            <li class="level3 nav-leaf"><a href="../pictures/writing.html">Writing to a File</a></li>
+            <li class="level2 nav-node"><a href="../concepts/">Core Concepts</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/principles.html">Principles</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/algebras.html">Algebras</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/drawing-picture.html">Picture and Drawing</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/picture-object.html">Picture Object</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/syntax.html">Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/frame-canvas.html">Frame and Canvas</a></li>
+            <li class="level3 nav-leaf"><a href="../concepts/effects.html">Effects</a></li>
+            <li class="level2 nav-node"><a href="../interact/">Interactivity</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/animation.html">Animations</a></li>
+            <li class="level3 nav-leaf"><a href="../interact/examples.html">Examples</a></li>
+            <li class="level2 nav-node"><a href="index.html">Reference</a></li>
+            <li class="level3 nav-leaf"><a href="geometry.html">Geometry</a></li>
+            <li class="level3 nav-leaf"><a href="color.html">Color and Gradients</a></li>
+            <li class="level3 nav-leaf"><a href="effect.html">Effects</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Picture</a></li>
+            <li class="level3 nav-leaf"><a href="using.html">Using Algebras</a></li>
+            <li class="level2 nav-node"><a href="../java2d/">Java2D Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../java2d/bitmap.html">Bitmaps in Java2D</a></li>
+            <li class="level2 nav-node"><a href="../svg/">SVG Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../svg/bitmap.html">Bitmaps in SVG</a></li>
+            <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
+            <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/bitmap.html">Bitmaps in Canvas</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/examples.html">Miscellaneous Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/layout-examples.html">Layout Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/style-examples.html">Style Examples</a></li>
+            <li class="level3 nav-leaf"><a href="../canvas/text-examples.html">Text Examples</a></li>
+            <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
+            <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
+            <li class="level3 nav-leaf"><a href="../development/process.html">Development Process</a></li>
+            <li class="level3 nav-leaf"><a href="../development/syntax.html">Implementing Syntax</a></li>
+            <li class="level3 nav-leaf"><a href="../development/backend.html">Implementing a Backend</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div id="contentbar" class="mx-auto flex-1">
+        <div class="max-w-prose mx-auto">
+          <div id="content"><h1 id="picture" class="title">Picture</h1>
+<p><a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Picture.html">Picture</a> is an imitation of a function whose input is an implicit parameter (which in Scala 3 is a <a href="https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html">context function</a>), and whose output type depends on the input type (which in Scala 3 is a <a href="https://docs.scala-lang.org/scala3/reference/new-types/dependent-function-types.html">dependent function type</a>). It has two type parameters. They are, in order:</p>
+<ul>
+  <li>The type <code>Alg</code> of the algebras that the picture needs to draw. This is an input to the <code>Picture</code> and hence it is contravariant. This type has a type member <code>Drawing[_]</code> that is the type of effect the <code>Picture</code> produces when it is applied to a concrete algebra.</li>
+  <li>The type <code>A</code> of the result the picture will produce when it is drawn. This is usually <code>Unit</code>, as we normally draw pictures just for their effect, but it could be something else.</li>
+</ul>
+<p>In Scala 3 notation, a <code>Picture</code> is conceptually equivalent to a function with type <code>[Alg &lt;: Algebra, A] =&gt; (a: Alg) ?=&gt; a.Drawing[A]</code>.</p>
+
+<h2 id="pictures-are-values" class="section">Pictures Are Values</h2>
+<p>Algebras <em>do not</em> work directly with <code>Picture</code>. Instead they work with the <code>Drawing[A]</code> type that is the output of a <code>Picture</code>. However, all the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax.html">syntax</a> that makes the algebras easier to use, and which we have used in our previous examples, create and consume <code>Picture</code>. The reason for this is that working with raw algebras requires we wrap everything in methods. Methods are not values; we cannot pass a method to a method nor return a method from a method. Functions are values, but in Scala 2 their input parameters cannot also be implicit parameters. <code>Picture</code> is like a function with an implicit input parameter. It also provides a bit more structure than using functions directly. When we see a <code>Picture</code> we know exactly what we&#39;re dealing with.</p>
+
+<h2 id="drawing-pictures" class="section">Drawing Pictures</h2>
+<p>We can draw a picture to the screen using the <code>draw</code> method. This is <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax/RendererSyntax.html">RendererSyntax</a> that depends on a having a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Renderer.html">Renderer</a> in scope. There are other methods provided by the <code>Renderer</code> effect, as explained in its documentation.</p>
+
+<h2 id="writing-and-converting-pictures" class="section">Writing and Converting Pictures</h2>
+<p>In addition to drawing a picture to the screen we can write it to a file or convert it to some other type. The <code>write</code> method saves a picture to a file. When we call write we must pass two parameters: a normal parameter that is the file name to use and a type parameter that gives the format of the file. In the example below we save a file as a <a href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a>.</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
+
+</span><span class="identifier">picture</span><span>.</span><span class="identifier">write</span><span>[</span><span class="type-name">Png</span><span>](</span><span class="string-literal">&quot;circle.png&quot;</span><span>)</span></code></pre>
+<p>The <code>write</code> method is <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax/WriterSyntax.html">WriterSyntax</a> that comes from the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Writer.html">Writer</a>. There are other methods that allow, for example, specifying a <code>Frame</code> to use when saving the file.</p>
+<p>We can convert a <code>Picture</code> to a <a href="https://en.wikipedia.org/wiki/Base64">Base64</a> value using the <code>base64</code> method. As with <code>write</code>, this method is <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax/Base64Syntax.html">Base64Syntax</a> for the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/effect/Base64.html">Base64</a>. The parameters are similar to <code>write</code>: we must specify a format to encode the picture in but we don&#39;t specify a filename. Instead we get back the result of evaluating the <code>Picture</code> (the <code>A</code> in <code>F[A]</code> which is usually <code>()</code>) and a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Base64.html">Base64</a> value.</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>)
+
+</span><span class="keyword">val</span><span> (</span><span class="identifier">result</span><span>, </span><span class="identifier">b64</span><span>) = </span><span class="identifier">picture</span><span>.</span><span class="identifier">base64</span><span>[</span><span class="type-name">Png</span><span>]()</span></code></pre>
+
+<h2 id="converting-other-types-to-a-picture" class="section">Converting Other Types to a Picture</h2>
+<p>The <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/ToPicture.html">ToPicture</a> algebra provides a single method that converts some type (fixed for each instance of <code>ToPicture</code>) to a <code>F[Unit]</code>. The <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/syntax/ToPictureSyntax.html">ToPictureSyntax</a> wraps the result in a <code>Picture</code>, as is standard for syntax, and therefore gives a way to convert the input type to a <code>Picture</code>.</p>
+<p>The available instances vary depending on the backend. For the Java2D backend, <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/Base64.html">Base64</a> and <code>BufferedImage</code> values can be converted to <code>Picture</code>. For SVG only <code>Base64</code> is currently supported.</p>
+<p>Here is quick example of use. First we create a <code>Base64</code> value from a <code>Picture</code>.</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">java2d</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">format</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">unsafe</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">global</span></code></pre>
+<pre><code class="nohighlight"><span class="comment">// The value we throw away is the result of evaluating the
+// `Picture`, which is `Unit`.
+</span><span class="keyword">val</span><span> (</span><span class="identifier">_</span><span>, </span><span class="identifier">base64</span><span>) = </span><span class="identifier">circle</span><span>(</span><span class="number-literal">100</span><span>).</span><span class="identifier">base64</span><span>[</span><span class="type-name">Png</span><span>]()</span></code></pre>
+<p>We can convert it right back to a <code>Picture</code> using the <code>toPicture</code> method.</p>
+<pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">picture</span><span> = </span><span class="identifier">base64</span><span>.</span><span class="identifier">toPicture</span></code></pre>
+
+<h2 id="type-class-instances-for-picture" class="section">Type Class Instances for Picture</h2>
+<p>There some type class instances defined for <code>Picture</code>.</p>
+<p><code>Picture[Alg,*]</code> always has an <code>Monad</code> instance.</p>
+<p><code>Picture[Alg,*]</code> has a <code>Monoid</code> instance if:</p>
+<ul>
+  <li>the algebra has <code>Layout</code> and <code>Shape</code>; and</li>
+  <li>and the result type has a <code>Monoid</code>.</li>
+</ul>
+<p>In this case the combine is <code>on</code>, with identity <code>empty</code>.</p></div>
+          <div class="flex flex-row justify-between">
+            <a class="pagenav" href="effect.html">←Effects</a> <a class="pagenav" href="using.html">Using Algebras→</a>
+          </div>
+        </div>
+        <footer>
+          Copyright &copy; Noel Welsh. Built with
+          <span class="hover:text-pink-900">💖</span>
+        </footer>
+      </div>
+      <!-- Right sticky page contents -->
+      <nav
+        id="pagebar"
+        class="hidden lg:block min-w-60 max-w-64 ml-8 sticky top-24 self-start flex-shrink-0"
+      >
+        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <p>On This Page</p>
+          <ul class="nav-list">
+            <li class="level1 nav-leaf"><a href="#pictures-are-values">Pictures Are Values</a></li>
+            <li class="level1 nav-leaf"><a href="#drawing-pictures">Drawing Pictures</a></li>
+            <li class="level1 nav-leaf"><a href="#writing-and-converting-pictures">Writing and Converting Pictures</a></li>
+            <li class="level1 nav-leaf"><a href="#converting-other-types-to-a-picture">Converting Other Types to a Picture</a></li>
+            <li class="level1 nav-leaf"><a href="#type-class-instances-for-picture">Type Class Instances for Picture</a></li>
+          </ul>
+        </div>
+      </nav>
+    </main>
+  </body>
+</html>
