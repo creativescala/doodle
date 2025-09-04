@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-package docs
+package doodle.examples.canvas
 
-object All extends App {
-  Chessboard
-  algebra.All
-  reference.All
-  pictures.All
+import cats.effect.unsafe.implicits.global
+import doodle.canvas.{*, given}
+import doodle.syntax.all.*
+import org.scalajs.dom
+
+import scala.scalajs.js.annotation.*
+
+@JSExportTopLevel("CanvasToPictureExamples")
+object CanvasToPictureExamples {
+  @JSExport
+  def toHtmlImagePicture(id: String): Unit = {
+    val img =
+      dom.document.querySelector("img").asInstanceOf[dom.HTMLImageElement]
+    val picture = img.toPicture.scale(0.5, 0.5).horizontalReflection
+
+    picture.drawWithFrame(Frame(id))
+  }
 }

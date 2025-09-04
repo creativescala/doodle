@@ -25,9 +25,14 @@ import doodle.syntax.all.*
   * independent style.
   */
 trait TextExamples[Alg <: Layout & Style & Text] extends BaseExamples[Alg] {
-  val hello =
-    text("Hello from Doodle!")
+  val hello = {
+    val txt = text("Hello from Doodle!")
+
+    txt.noStroke
       .fillColor(Color.black)
+      .above(txt.noFill)
+      .above(txt.fillColor(Color.black))
+  }
 
   val font =
     text("Change the font")

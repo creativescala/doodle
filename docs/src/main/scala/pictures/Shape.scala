@@ -32,4 +32,25 @@ object Shape {
       .strokeWidth(5.0)
 
   basicShapes.save("pictures/basic-shapes.png")
+
+  def polygon(size: Int): Picture[Unit] =
+    Picture
+      .regularPolygon(5, size)
+      .strokeColor(Tailwind4Colors.amber400)
+
+  def star(size: Int): Picture[Unit] =
+    Picture
+      .star(5, size, size / 2)
+      .strokeColor(Tailwind4Colors.sky500)
+
+  val complexShapes =
+    polygon(60)
+      .on(star(70))
+      .on(star(90))
+      .on(polygon(80))
+      .on(polygon(100))
+      .on(star(110))
+      .strokeWidth(7.0)
+
+  complexShapes.save("pictures/complex-shapes.png")
 }

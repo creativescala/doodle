@@ -50,8 +50,12 @@ trait Text extends GenericText[CanvasDrawing] {
 
       CanvasDrawing.setTransform(Tx.verticalReflection.andThen(tx)) >>
         CanvasDrawing.setFont(font) >>
-        CanvasDrawing.fillText(text, x, y, fill) >>
-        CanvasDrawing.strokeText(text, x, y, stroke)
+        fill.fold(CanvasDrawing.unit)(f =>
+          CanvasDrawing.fillText(text, x, y, f)
+        ) >>
+        stroke.fold(CanvasDrawing.unit)(s =>
+          CanvasDrawing.strokeText(text, x, y, s)
+        )
     }
 
     def textBoundingBox(text: String, font: Font): (BoundingBox, Bounds) = {

@@ -33,6 +33,7 @@ trait JsAlgebraModule
     with SvgModule
     with TextModule
     with FilterModule
+    with ImageModule
     with JsBase {
   type Algebra = JsAlgebra
 
@@ -43,6 +44,7 @@ trait JsAlgebraModule
   ) extends BaseAlgebra
       with Text
       with Filter
+      with Image
       with HasTextBoundingBox[Rect] {
     def textBoundingBox(text: String, font: Font): (BoundingBox, Rect) =
       canvas.textBoundingBox(text, font)

@@ -15,7 +15,7 @@
  */
 
 package docs
-package core
+package reference
 
 import cats.effect.unsafe.implicits.global
 import doodle.core.*
@@ -54,13 +54,13 @@ object Colors {
     colors.toSwatches
   }
 
-  basicColors.save("core/basic-colors.png")
+  basicColors.save("reference/basic-colors.png")
 
   val cssColors = {
     List(Color.steelBlue, Color.beige, Color.limeGreen).toSwatches
   }
 
-  cssColors.save("core/css-colors.png")
+  cssColors.save("reference/css-colors.png")
 
   val paletteColors = {
     List(
@@ -73,7 +73,7 @@ object Colors {
     ).toSwatches
   }
 
-  paletteColors.save("core/palette-colors.png")
+  paletteColors.save("reference/palette-colors.png")
 
   val colorTransformations = {
     val spins =
@@ -106,7 +106,7 @@ object Colors {
       .above(saturations.margin(10, 0, 0, 0))
   }
 
-  colorTransformations.save("core/color-transformations.png")
+  colorTransformations.save("reference/color-transformations.png")
 
   val box = Picture.rectangle(10, 40).noStroke
 
@@ -122,5 +122,5 @@ object Colors {
 
   val picture = hsl.above(oklch.margin(0, 20))
 
-  picture.save("core/gradients.png")
+  picture.save("reference/gradients.png")
 }

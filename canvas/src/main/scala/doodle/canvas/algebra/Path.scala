@@ -19,14 +19,13 @@ package doodle.canvas.algebra
 import doodle.algebra.Algebra
 import doodle.algebra.generic.*
 import doodle.core.*
-import doodle.core.Transform as Tx
 
 trait Path extends GenericPath[CanvasDrawing] {
   self: Algebra { type Drawing[A] = Finalized[CanvasDrawing, A] } =>
 
   object PathApi extends PathApi {
     def closedPath(
-        tx: Tx,
+        tx: Transform,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]
@@ -39,7 +38,7 @@ trait Path extends GenericPath[CanvasDrawing] {
         }
 
     def openPath(
-        tx: Tx,
+        tx: Transform,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]

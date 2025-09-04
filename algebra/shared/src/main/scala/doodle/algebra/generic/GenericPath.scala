@@ -20,7 +20,6 @@ package generic
 
 import cats.data.State
 import doodle.core.*
-import doodle.core.Transform as Tx
 
 import scala.annotation.tailrec
 
@@ -29,13 +28,13 @@ trait GenericPath[G[_]] extends Path {
 
   trait PathApi {
     def closedPath(
-        tx: Tx,
+        tx: Transform,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]
     ): G[Unit]
     def openPath(
-        tx: Tx,
+        tx: Transform,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]

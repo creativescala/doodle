@@ -40,6 +40,7 @@ import doodle.core.font.FontStyle
 import doodle.core.font.FontWeight
 import org.scalajs.dom.CanvasGradient
 import org.scalajs.dom.CanvasRenderingContext2D
+import org.scalajs.dom.HTMLElement
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
@@ -101,16 +102,6 @@ object CanvasDrawing {
         }
       )
       ctx.closePath()
-    }
-
-  def fillText(
-      text: String,
-      x: Double,
-      y: Double,
-      fill: Option[Fill]
-  ): CanvasDrawing[Unit] =
-    CanvasDrawing.withFill(fill) {
-      CanvasDrawing(canvas => canvas.fillText(text, x, y))
     }
 
   def measureText(text: String): CanvasDrawing[TextMetrics] =
@@ -268,15 +259,25 @@ object CanvasDrawing {
     BoundingBox.centered(width, height)
   }
 
+  def fillText(
+      text: String,
+      x: Double,
+      y: Double,
+      fill: Fill
+  ): CanvasDrawing[Unit] =
+    CanvasDrawing.setFill(fill) >> CanvasDrawing(canvas =>
+      canvas.fillText(text, x, y)
+    )
+
   def strokeText(
       text: String,
       x: Double,
       y: Double,
-      stroke: Option[Stroke]
+      stroke: Stroke
   ): CanvasDrawing[Unit] =
-    CanvasDrawing.withStroke(stroke) {
-      CanvasDrawing(canvas => canvas.strokeText(text, x, y))
-    }
+    CanvasDrawing.setStroke(stroke) >> CanvasDrawing(canvas =>
+      canvas.strokeText(text, x, y)
+    )
 
   def withFill[A](
       fill: Option[Fill]
@@ -296,4 +297,22 @@ object CanvasDrawing {
         .getOrElse(CanvasDrawing.unit)
     )
 
+  /** Draw an image (HTMLElement that can be drawn) centered at the origin. This
+    * is required by CanvasAlgebraFrom.fromImage to actually render images.
+    *
+    * @param image
+    *   HTMLElement (HTMLImageElement or ImageBitmap cast to HTMLElement)
+    * @param width
+    *   Width to draw the image
+    * @param height
+    *   Height to draw the image
+    */
+  def drawImage(
+      image: HTMLElement,
+      width: Double,
+      height: Double
+  ): CanvasDrawing[Unit] =
+    CanvasDrawing(canvas =>
+      canvas.drawImage(image, -width / 2, -height / 2, width, height)
+    )
 }

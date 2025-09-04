@@ -20,8 +20,8 @@ package generic
 package reified
 
 import cats.data.WriterT
-import doodle.core.*
-import doodle.core.Transform as Tx
+import doodle.core.PathElement
+import doodle.core.Transform
 
 trait ReifiedPath extends GenericPath[Reification] {
   self: Algebra { type Drawing[A] = TestAlgebra.Drawing[A] } =>
@@ -31,7 +31,7 @@ trait ReifiedPath extends GenericPath[Reification] {
       WriterT.tell(a.toList ++ b.toList)
 
     def closedPath(
-        tx: Tx,
+        tx: Transform,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]
@@ -42,7 +42,7 @@ trait ReifiedPath extends GenericPath[Reification] {
       )
 
     def openPath(
-        tx: Tx,
+        tx: Transform,
         fill: Option[Fill],
         stroke: Option[Stroke],
         elements: List[PathElement]
