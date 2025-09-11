@@ -17,6 +17,8 @@
 package doodle.svg.algebra
 
 import doodle.svg.JsBase
+import scalatags.JsDom
+import scalatags.generic.Namespace
 
 trait JsTaggedModule extends JsBase {
   trait JsTagged extends Tagged[Tag] {
@@ -25,6 +27,12 @@ trait JsTaggedModule extends JsBase {
     } =>
 
     import bundle.implicits.stringAttr
+
+    val svgA = JsDom.TypedTag(
+      "a",
+      modifiers = List.empty,
+      namespace = Namespace.svgNamespaceConfig
+    )
 
     /** Wrap the given Tag around the given Drawing. */
     def tagged[A](drawing: Drawing[A], tag: Tag): Drawing[A] =
@@ -41,6 +49,6 @@ trait JsTaggedModule extends JsBase {
 
     /** A utility to include wrap a link (an a tag) around a Drawing. */
     def link[A](drawing: Drawing[A], href: String): Drawing[A] =
-      tagged(drawing, bundle.tags.a(bundle.attrs.href := href))
+      tagged(drawing, svgA(bundle.attrs.href := href))
   }
 }

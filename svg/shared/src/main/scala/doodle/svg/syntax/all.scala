@@ -35,3 +35,4 @@ trait all {
       }
   }
 }
+object all extends all
