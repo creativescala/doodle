@@ -17,8 +17,11 @@
 package doodle.java2d.repl
 
 import doodle.effect.DefaultFrame
-import doodle.java2d.effect.{Frame,BlockingBehavior}
+import doodle.java2d.effect.BlockingBehavior
+import doodle.java2d.effect.Frame
 
 object Java2dReplDefaultFrame extends DefaultFrame[Frame] {
-  val default: Frame = Frame.default.withSizedToPicture(20).withBlockingBehavior(BlockingBehavior.DoNotBlock)
+  val default: Frame = Frame.default
+    .withSizedToPicture(20)
+    .withBlockingBehavior(BlockingBehavior.DoNotBlock)
 }
