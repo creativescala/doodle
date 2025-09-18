@@ -28,12 +28,13 @@ import org.scalajs.dom.svg.Rect
 
 trait JsAlgebraModule
     extends AlgebraModule
+    with FilterModule
+    with ImageModule
+    with JsTaggedModule
     with PathModule
     with ShapeModule
     with SvgModule
     with TextModule
-    with FilterModule
-    with ImageModule
     with JsBase {
   type Algebra = JsAlgebra
 
@@ -42,10 +43,11 @@ trait JsAlgebraModule
       val applyF: Apply[SvgResult],
       val functorF: Functor[SvgResult]
   ) extends BaseAlgebra
-      with Text
       with Filter
+      with HasTextBoundingBox[Rect]
       with Image
-      with HasTextBoundingBox[Rect] {
+      with JsTagged
+      with Text {
     def textBoundingBox(text: String, font: Font): (BoundingBox, Rect) =
       canvas.textBoundingBox(text, font)
 

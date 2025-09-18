@@ -31,6 +31,7 @@ import javax.swing.JPanel
 trait JvmAlgebraModule
     extends AlgebraModule
     with PathModule
+    with JvmTaggedModule
     with ShapeModule
     with SvgModule
     with TextModule
@@ -43,6 +44,7 @@ trait JvmAlgebraModule
       extends JPanel(false)
       with BaseAlgebra
       with Text
+      with JvmTagged
       with Filter
       with Image
       with HasTextBoundingBox[Rectangle2D] {
