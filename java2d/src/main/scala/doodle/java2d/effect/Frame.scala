@@ -18,6 +18,7 @@ package doodle
 package java2d
 package effect
 
+import cats.effect.IO
 import doodle.core.Color
 
 /** The [[Frame]] specifies how to create a [[Canvas]]. The idiomatic way to
@@ -35,7 +36,8 @@ final case class Frame(
     title: String,
     center: Center,
     background: Option[Color],
-    redraw: Redraw
+    redraw: Redraw,
+    blockingBehavior: BlockingBehavior
 ) {
 
   /** Size the canvas with the given fixed dimensions. */
@@ -77,6 +79,9 @@ final case class Frame(
   /** Make the center of the canvas the origin. */
   def withCenterAtOrigin: Frame =
     this.copy(center = Center.atOrigin)
+
+  def withBlockingBehavior(blockingBehavior: BlockingBehavior): Frame =
+    this.copy(blockingBehavior = blockingBehavior)
 }
 object Frame {
   val default =
@@ -85,6 +90,12 @@ object Frame {
       title = "Doodle",
       center = Center.centeredOnPicture,
       background = Some(Color.white),
-      redraw = Redraw.clearToBackground
+      redraw = Redraw.clearToBackground,
+      blockingBehavior = BlockingBehavior.BlockUntilWindowClosed
     )
+}
+
+enum BlockingBehavior(val maybeBlock: Canvas => IO[Unit]) {
+  case BlockUntilWindowClosed extends BlockingBehavior(_.closed)
+  case DoNotBlock extends BlockingBehavior(canvas => IO.unit)
 }
