@@ -1,60 +1,32 @@
-/*
- * Copyright 2015 Creative Scala
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package doodle
 package java2d
 package algebra
 
 import cats.Eval
 import cats.data.WriterT
-import doodle.algebra.Filter as FilterAlgebra
-import doodle.algebra.Kernel
+import doodle.algebra.{Filter as FilterAlgebra, Kernel}
 import doodle.algebra.generic.*
-import doodle.core.BoundingBox
-import doodle.core.Color
-import doodle.core.Transform as Tx
+import doodle.core.{BoundingBox, Color, Transform as Tx}
 import doodle.java2d.algebra.reified.*
 import doodle.java2d.effect.Java2d
+import java.awt.image.{BufferedImage, ConvolveOp, Kernel as AwtKernel}
+import java.awt.{ Graphics2D, RenderingHints }
 
-import java.awt.AlphaComposite
-import java.awt.Graphics2D
-import java.awt.RenderingHints
-import java.awt.image.BufferedImage
-import java.awt.image.ConvolveOp
-import java.awt.image.ImagingOpException
-import java.awt.image.Kernel as AwtKernel
-
-/** Java2D implementation of the Filter algebra using BufferedImage operations
-  */
 trait FilterModule extends FilterAlgebra {
   self: Algebra =>
 
   def gaussianBlur[A](picture: Drawing[A], stdDeviation: Double): Drawing[A] =
-    transformToBufferedImage(picture)(applyGaussianBlur(_, stdDeviation))
+    transformPicture(picture)(applyGaussianBlur(_, stdDeviation))
 
   def boxBlur[A](picture: Drawing[A], radius: Int): Drawing[A] = {
     val size = 2 * radius + 1
     val kernel =
       Kernel(size, size, IArray.fill(size * size)(1.0 / (size * size)))
-
-    convolveMatrix(picture, kernel, Some(1.0), 0.0)
+    convolveMatrix(picture, kernel, None, 0.0)
   }
 
   def detectEdges[A](picture: Drawing[A]): Drawing[A] =
-    convolveMatrix(picture, FilterAlgebra.edgeDetectionKernel, Some(1.0), 0.5)
+    convolveMatrix(picture, FilterAlgebra.edgeDetectionKernel, None, 0.5)
 
   def sharpen[A](picture: Drawing[A], amount: Double): Drawing[A] = {
     val baseKernel = FilterAlgebra.sharpenKernel
@@ -62,12 +34,11 @@ trait FilterModule extends FilterAlgebra {
       baseKernel.elements(i) * amount
     )
     val kernel = baseKernel.copy(elements = scaledElements)
-
     convolveMatrix(picture, kernel, None, 0.0)
   }
 
   def emboss[A](picture: Drawing[A]): Drawing[A] =
-    convolveMatrix(picture, FilterAlgebra.embossKernel, None, 0.0)
+    convolveMatrix(picture, FilterAlgebra.embossKernel, None, 0.5)
 
   def dropShadow[A](
       picture: Drawing[A],
@@ -75,20 +46,10 @@ trait FilterModule extends FilterAlgebra {
       offsetY: Double,
       blur: Double,
       color: Color
-  ): Drawing[A] = {
-    // NOTE: Java2d drop shadow is complex and requires multiple operations
-    // This is a simplified implementation - full implementation would need:
-    // 1. Extract alpha channel as shadow
-    // 2. Apply blur to shadow
-    // 3. Offset shadow
-    // 4. Colorize shadow
-    // 5. Composite original over shadow
-    // For now, we'll implement a basic version
-    // @todo Implement full drop shadow effect
-    transformToBufferedImage(picture) { image =>
-      applyDropShadow(image, offsetX.toInt, offsetY.toInt, blur, color)
-    }
-  }
+  ): Drawing[A] =
+    transformPicture(picture)(
+      applyDropShadow(_, offsetX.toInt, offsetY.toInt, blur, color)
+    )
 
   def convolveMatrix[A](
       picture: Drawing[A],
@@ -96,66 +57,53 @@ trait FilterModule extends FilterAlgebra {
       divisor: Option[Double],
       bias: Double
   ): Drawing[A] =
-    transformToBufferedImage(picture) { image =>
-      applyConvolution(image, kernel, divisor, bias)
-    }
+    transformPicture(picture)(applyConvolution(_, kernel, divisor, bias))
 
-  private def transformToBufferedImage[A](
+  private def transformPicture[A](
       picture: Drawing[A]
-  )(transform: BufferedImage => BufferedImage): Drawing[A] =
+  )(transform: BufferedImage => BufferedImage): Drawing[A] = {
     picture.flatMap { case (bb, rdr) =>
-      Finalized.leaf { dc =>
-        val padding = 40
-        val width = Math.max(100, Math.ceil(bb.width).toInt + padding * 2)
-        val height = Math.max(100, Math.ceil(bb.height).toInt + padding * 2)
+      Finalized.leaf { _ =>
+        val width = Math.max(1, Math.ceil(bb.width).toInt + 100)
+        val height = Math.max(1, Math.ceil(bb.height).toInt + 100)
 
-        val sourceImage =
+        val image =
           new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-        val g2d = sourceImage.createGraphics()
+        val g2d = image.createGraphics()
         setupGraphics(g2d)
 
-        g2d.setComposite(AlphaComposite.Clear)
-        g2d.fillRect(0, 0, width, height)
-        g2d.setComposite(AlphaComposite.SrcOver)
+        // Transform to center
+        val centerTx = Tx.translate(width / 2.0, height / 2.0)
 
-        // Center the rendering in the padded space
-        val centerX = width / 2.0
-        val centerY = height / 2.0
-        val tx = Tx.translate(centerX, centerY)
-
-        val (txResult, renderable) = rdr.run(tx).value
+        // Get the reification and render it
+        val (txResult, renderable) = rdr.run(centerTx).value
         val (reification, a) = renderable.run.value
 
         Java2d.render(g2d, reification, txResult)
         g2d.dispose()
 
-        val filteredImage = transform(sourceImage)
+        val filtered = transform(image)
 
-        // Calculate the offset to center the bitmap in the coordinate system
-        val offsetX = -filteredImage.getWidth / 2.0
-        val offsetY = -filteredImage.getHeight / 2.0
-        val bitmapTransform = Tx.translate(offsetX, offsetY)
-
-        val newReification: Reification[A] = WriterT
-          .tell[Eval, List[Reified]](
-            List(Reified.bitmap(bitmapTransform, filteredImage))
-          )
-          .map(_ => a)
-
-        val newRenderable: Renderable[Reification, A] =
-          Renderable.apply(_ => Eval.now(newReification))
-
-        // Keep the original bounding box since we want the same logical size
-        // but expand it slightly to account for filter effects
-        val expansionFactor = 1.2 // 20% larger to account for blur/shadow effects
-        val newBB = BoundingBox.centered(
-          bb.width * expansionFactor,
-          bb.height * expansionFactor
+        // Create new bounding box
+        val filteredBB = BoundingBox.centered(
+          filtered.getWidth.toDouble,
+          filtered.getHeight.toDouble
         )
 
-        (newBB, newRenderable)
+        val newRenderable: Renderable[Reification, A] = Renderable { tx =>
+          Eval.now(
+            WriterT
+              .liftF[Eval, List[Reified], A](
+                Eval.now(a)
+              )
+              .tell(List(Reified.bitmap(tx, filtered)))
+          )
+        }
+
+        (filteredBB, newRenderable)
       }
     }
+  }
 
   private def setupGraphics(g2d: Graphics2D): Unit = {
     g2d.setRenderingHint(
@@ -166,64 +114,38 @@ trait FilterModule extends FilterAlgebra {
       RenderingHints.KEY_RENDERING,
       RenderingHints.VALUE_RENDER_QUALITY
     )
-  }
-
-  private def createGaussianKernel(size: Int, stdDev: Double): Array[Float] = {
-    val kernel = Array.ofDim[Float](size * size)
-    val center = size / 2
-    var sum = 0.0f
-
-    for {
-      y <- 0 until size
-      x <- 0 until size
-    } {
-      val dx = x - center
-      val dy = y - center
-      val distance = dx * dx + dy * dy
-      val value = Math.exp(-distance / (2.0 * stdDev * stdDev)).toFloat
-      kernel(y * size + x) = value
-      sum += value
-    }
-
-    // Normalize kernel so sum equals 1
-    for (i <- kernel.indices) {
-      kernel(i) /= sum
-    }
-
-    kernel
+    g2d.setRenderingHint(
+      RenderingHints.KEY_INTERPOLATION,
+      RenderingHints.VALUE_INTERPOLATION_BILINEAR
+    )
   }
 
   private def applyGaussianBlur(
       image: BufferedImage,
       stdDev: Double
   ): BufferedImage = {
-    if stdDev < 0.5 then return image
+    if stdDev < 0.1 then return image
 
-    val radius = Math.min(
-      10,
-      Math.ceil(stdDev * 3).toInt
-    ) // Cap radius to prevent huge kernels
+    val radius = Math.min(15, Math.max(1, Math.ceil(stdDev * 2).toInt))
     val size = 2 * radius + 1
-    val kernel = createGaussianKernel(size, stdDev)
 
-    val awtKernel = new AwtKernel(size, size, kernel)
+    val kernel = Array.ofDim[Float](size * size)
+    var sum = 0.0f
+    val sigma2 = 2.0f * stdDev.toFloat * stdDev.toFloat
 
-    val src = ensureCompatibleImage(image)
-    val dest = new BufferedImage(
-      src.getWidth,
-      src.getHeight,
-      BufferedImage.TYPE_INT_ARGB
-    )
-
-    val op = new ConvolveOp(awtKernel, ConvolveOp.EDGE_NO_OP, null)
-
-    try {
-      op.filter(src, dest)
-      dest
-    } catch {
-      case _: ImagingOpException =>
-        src
+    for y <- 0 until size; x <- 0 until size do {
+      val dx = x - radius
+      val dy = y - radius
+      val value = Math.exp(-(dx * dx + dy * dy) / sigma2).toFloat
+      kernel(y * size + x) = value
+      sum += value
     }
+
+    for i <- kernel.indices do {
+      kernel(i) /= sum
+    }
+
+    applyKernel(image, kernel, size, size)
   }
 
   private def applyConvolution(
@@ -232,71 +154,115 @@ trait FilterModule extends FilterAlgebra {
       divisor: Option[Double],
       bias: Double
   ): BufferedImage = {
-    val compatibleImage = ensureCompatibleImage(image)
-
     val kernelArray =
       Array.tabulate(kernel.elements.length)(i => kernel.elements(i).toFloat)
-    val actualDivisor = divisor.getOrElse(kernelArray.sum.toDouble).toFloat
+    val sum = kernelArray.sum
+    val actualDivisor = divisor
+      .getOrElse(if Math.abs(sum) < 0.001 then 1.0 else sum.toDouble)
+      .toFloat
 
-    val normalizedKernel =
-      if Math.abs(actualDivisor - 1.0f) > 0.001f then
-        kernelArray.map(v => v / actualDivisor)
-      else kernelArray
+    val normalized = kernelArray.map(_ / actualDivisor)
 
-    val awtKernel = new AwtKernel(kernel.width, kernel.height, normalizedKernel)
+    val result = applyKernel(image, normalized, kernel.width, kernel.height)
 
-    val dest = new BufferedImage(
-      compatibleImage.getWidth,
-      compatibleImage.getHeight,
-      BufferedImage.TYPE_INT_ARGB
-    )
-
-    val op = new ConvolveOp(awtKernel, ConvolveOp.EDGE_NO_OP, null)
-
-    try {
-      op.filter(compatibleImage, dest)
-      if Math.abs(bias) > 0.001 then {
-        applyBias(dest, bias)
-      } else {
-        dest
-      }
-    } catch {
-      case _: ImagingOpException =>
-        compatibleImage
+    if Math.abs(bias) > 0.001 then {
+      applyBias(result, bias)
+    } else {
+      result
     }
   }
 
-  private def ensureCompatibleImage(image: BufferedImage): BufferedImage = {
-    if image.getType == BufferedImage.TYPE_INT_ARGB then image
-    else {
-      val newImage = new BufferedImage(
+  private def applyKernel(
+      image: BufferedImage,
+      kernel: Array[Float],
+      kw: Int,
+      kh: Int
+  ): BufferedImage = {
+    val src = ensureARGB(image)
+    val dest = new BufferedImage(
+      src.getWidth,
+      src.getHeight,
+      BufferedImage.TYPE_INT_ARGB
+    )
+
+    try {
+      val awtKernel = new AwtKernel(kw, kh, kernel)
+      val op = new ConvolveOp(awtKernel, ConvolveOp.EDGE_NO_OP, null)
+      op.filter(src, dest)
+    } catch {
+      case _: Exception =>
+        manualConvolve(src, kernel, kw, kh, dest)
+    }
+
+    dest
+  }
+
+  private def manualConvolve(
+      src: BufferedImage,
+      kernel: Array[Float],
+      kw: Int,
+      kh: Int,
+      dest: BufferedImage
+  ): Unit = {
+    val width = src.getWidth
+    val height = src.getHeight
+    val kcx = kw / 2
+    val kcy = kh / 2
+
+    for y <- 0 until height; x <- 0 until width do {
+      var r = 0f
+      var g = 0f
+      var b = 0f
+      var a = 0f
+
+      for ky <- 0 until kh; kx <- 0 until kw do {
+        val sx = Math.min(width - 1, Math.max(0, x + kx - kcx))
+        val sy = Math.min(height - 1, Math.max(0, y + ky - kcy))
+        val pixel = src.getRGB(sx, sy)
+        val weight = kernel(ky * kw + kx)
+
+        a += ((pixel >> 24) & 0xff) * weight
+        r += ((pixel >> 16) & 0xff) * weight
+        g += ((pixel >> 8) & 0xff) * weight
+        b += (pixel & 0xff) * weight
+      }
+
+      val newPixel =
+        (Math.min(255, Math.max(0, a.toInt)) << 24) |
+          (Math.min(255, Math.max(0, r.toInt)) << 16) |
+          (Math.min(255, Math.max(0, g.toInt)) << 8) |
+          Math.min(255, Math.max(0, b.toInt))
+
+      dest.setRGB(x, y, newPixel)
+    }
+  }
+
+  private def ensureARGB(image: BufferedImage): BufferedImage = {
+    if image.getType == BufferedImage.TYPE_INT_ARGB then {
+      image
+    } else {
+      val argb = new BufferedImage(
         image.getWidth,
         image.getHeight,
         BufferedImage.TYPE_INT_ARGB
       )
-      val g2d = newImage.createGraphics()
-      g2d.drawImage(image, 0, 0, null)
-      g2d.dispose()
-      newImage
+      val g = argb.createGraphics()
+      g.drawImage(image, 0, 0, null)
+      g.dispose()
+      argb
     }
   }
 
   private def applyBias(image: BufferedImage, bias: Double): BufferedImage = {
-    val biasInt = (bias * 128).toInt
-
-    for {
-      y <- 0 until image.getHeight
-      x <- 0 until image.getWidth
-    } {
+    val biasInt = (bias * 127).toInt
+    for y <- 0 until image.getHeight; x <- 0 until image.getWidth do {
       val pixel = image.getRGB(x, y)
       val a = (pixel >> 24) & 0xff
       val r = Math.min(255, Math.max(0, ((pixel >> 16) & 0xff) + biasInt))
       val g = Math.min(255, Math.max(0, ((pixel >> 8) & 0xff) + biasInt))
       val b = Math.min(255, Math.max(0, (pixel & 0xff) + biasInt))
-
       image.setRGB(x, y, (a << 24) | (r << 16) | (g << 8) | b)
     }
-
     image
   }
 
@@ -307,64 +273,41 @@ trait FilterModule extends FilterAlgebra {
       blur: Double,
       shadowColor: Color
   ): BufferedImage = {
-    val extraSpace = Math.ceil(blur * 3).toInt
-    val newWidth = image.getWidth + Math.abs(offsetX) + 2 * extraSpace
-    val newHeight = image.getHeight + Math.abs(offsetY) + 2 * extraSpace
+    val padding = Math.ceil(blur * 3).toInt + 5
+    val newWidth = image.getWidth + Math.abs(offsetX) + padding * 2
+    val newHeight = image.getHeight + Math.abs(offsetY) + padding * 2
 
     val result =
       new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB)
     val g2d = result.createGraphics()
     setupGraphics(g2d)
 
-    // Extract alpha channel and create shadow
-    val shadow = extractAlphaAsShadow(image, shadowColor)
-
-    val blurredShadow =
-      if blur > 0 then applyGaussianBlur(shadow, blur) else shadow
-
-    val shadowX = if offsetX >= 0 then offsetX + extraSpace else extraSpace
-    val shadowY = if offsetY >= 0 then offsetY + extraSpace else extraSpace
-    g2d.drawImage(blurredShadow, shadowX, shadowY, null)
-
-    val origX =
-      if offsetX >= 0 then extraSpace else Math.abs(offsetX) + extraSpace
-    val origY =
-      if offsetY >= 0 then extraSpace else Math.abs(offsetY) + extraSpace
-    g2d.drawImage(image, origX, origY, null)
-
-    g2d.dispose()
-    result
-  }
-
-  private def extractAlphaAsShadow(
-      image: BufferedImage,
-      shadowColor: Color
-  ): BufferedImage = {
-    val result = new BufferedImage(
+    // Create shadow from alpha
+    val shadow = new BufferedImage(
       image.getWidth,
       image.getHeight,
       BufferedImage.TYPE_INT_ARGB
     )
-
     val rgb = shadowColor.toRgb
-    val sr = (rgb.r.get * 255).toInt
-    val sg = (rgb.g.get * 255).toInt
-    val sb = (rgb.b.get * 255).toInt
-    val sa = (rgb.a.get * 255).toInt
 
-    for {
-      y <- 0 until image.getHeight
-      x <- 0 until image.getWidth
-    } {
+    for y <- 0 until image.getHeight; x <- 0 until image.getWidth do {
       val pixel = image.getRGB(x, y)
-      val alpha = (pixel >> 24) & 0xff
-
-      // Create shadow pixel with original alpha modulated by shadow alpha
-      val shadowAlpha = (alpha * sa) / 255
-      val shadowPixel = (shadowAlpha << 24) | (sr << 16) | (sg << 8) | sb
-      result.setRGB(x, y, shadowPixel)
+      val alpha = ((pixel >> 24) & 0xff) * rgb.a.get
+      val shadowPixel =
+        (alpha.toInt << 24) |
+          ((rgb.r.get * 255).toInt << 16) |
+          ((rgb.g.get * 255).toInt << 8) |
+          (rgb.b.get * 255).toInt
+      shadow.setRGB(x, y, shadowPixel)
     }
 
+    val blurredShadow =
+      if blur > 0.5 then applyGaussianBlur(shadow, blur) else shadow
+
+    g2d.drawImage(blurredShadow, offsetX + padding, offsetY + padding, null)
+    g2d.drawImage(image, padding, padding, null)
+
+    g2d.dispose()
     result
   }
 }

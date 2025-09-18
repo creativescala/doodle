@@ -1,61 +1,44 @@
-package doodle
-package java2d
-package examples
+package doodle.java2d.examples
 
 import cats.effect.*
 import cats.effect.unsafe.implicits.global
 
 import doodle.core.*
+import doodle.core.font.Font
+
 import doodle.java2d.*
 import doodle.syntax.all.*
+import doodle.algebra.Kernel
 
 object Filter extends IOApp {
 
-  def examples: Picture[Unit] = {
-    import doodle.java2d.Picture.*
-
-    val baseCircle = circle(100).fillColor(Color.blue)
-    val baseSquare = square(80).fillColor(Color.red)
+  def basicFilters: Picture[Unit] = {
+    val circle = Picture.circle(80).fillColor(Color.red)
+    val square = Picture.square(80).fillColor(Color.blue)
 
     val row1 = List(
-      baseCircle.margin(10),
-      baseCircle.blur(5.0).margin(10),
-      baseCircle.boxBlur(3).margin(10)
-    ).allBeside
+      circle.above(Picture.text("Original").margin(10)),
+      circle.blur(5.0).above(Picture.text("Blur 5.0").margin(10)),
+      circle.blur(10.0).above(Picture.text("Blur 10.0").margin(10))
+    ).map(_.margin(40)).allBeside
 
     val row2 = List(
-      baseSquare.margin(10),
-      baseSquare.detectEdges.margin(10),
-      baseSquare.sharpen(2.0).margin(10)
-    ).allBeside
+      square.above(Picture.text("Original").margin(10)),
+      square.detectEdges.above(Picture.text("Edges").margin(10)),
+      square.sharpen(2.0).above(Picture.text("Sharpen").margin(10))
+    ).map(_.margin(40)).allBeside
 
-    val row3 = List(
-      baseCircle.emboss.margin(10),
-      baseSquare
-        .dropShadow(
-          offsetX = 5.0,
-          offsetY = 5.0,
-          blur = 3.0,
-          color = Color.black.alpha(0.5.normalized)
-        )
-        .margin(10)
-    ).allBeside
-
-    List(row1, row2, row3).allBeside
+    row1.above(row2.margin(40))
   }
 
   def convolutionExamples: Picture[Unit] = {
-    import doodle.java2d.Picture.*
-    import doodle.algebra.Kernel
-
-    val baseImage = circle(60)
+    val base = Picture
+      .circle(60)
       .fillColor(Color.orange)
-      .beside(
-        square(60).fillColor(Color.purple)
-      )
+      .on(Picture.square(60).fillColor(Color.purple))
 
-    // Custom edge detection kernel
-    val customEdgeKernel = Kernel(
+    // Edge detection kernel
+    val edgeKernel = Kernel(
       3,
       3,
       IArray(
@@ -63,32 +46,54 @@ object Filter extends IOApp {
       ).map(_.toDouble)
     )
 
-    // Custom blur kernel
-    val customBlurKernel = Kernel(
-      3,
-      3,
-      IArray(
-        1, 2, 1, 2, 4, 2, 1, 2, 1
-      ).map(d => d / 16.0)
-    )
+    // Emboss
+    val examples = List(
+      base.above(Picture.text("Original").margin(10)),
+      base.emboss.above(Picture.text("Emboss").margin(10)),
+      base.convolve(edgeKernel).above(Picture.text("Custom Edge").margin(10))
+    ).map(_.margin(40)).allBeside
+
+    examples
+  }
+
+  def dropShadowExample: Picture[Unit] = {
+    val shape = Picture.star(5, 50, 25).fillColor(Color.green)
 
     List(
-      baseImage.margin(50),
-      baseImage.convolve(customEdgeKernel).margin(50),
-      baseImage.convolve(customBlurKernel).margin(50)
-    ).allBeside
+      shape.above(Picture.text("Original").margin(10)),
+      shape
+        .dropShadow(10, 10, 5, Color.black.alpha(0.5.normalized))
+        .above(Picture.text("Drop Shadow").margin(10))
+    ).map(_.margin(40)).allBeside
   }
 
   def run(args: List[String]): IO[ExitCode] = {
+    val fullExample = List(
+      Picture
+        .text("Basic Filters")
+        .font(Font.defaultSansSerif.size(18))
+        .margin(20),
+      basicFilters,
+      Picture
+        .text("Convolution Examples")
+        .font(Font.defaultSansSerif.size(18))
+        .margin(20),
+      convolutionExamples,
+      Picture
+        .text("Drop Shadow")
+        .font(Font.defaultSansSerif.size(18))
+        .margin(20),
+      dropShadowExample
+    ).allAbove
+
     val frame = Frame.default
-      .withSize(800, 600)
-      .withBackground(Color.lightGray)
+      .withSize(1000, 700)
+      .withBackground(Color.white)
       .withTitle("Java2D Filter Examples")
 
-    val picture = examples.above(convolutionExamples.margin(90))
-
+    // Fix: Use drawToIO instead of drawWithFrame
     IO {
-      picture.drawWithFrame(frame)
-    } *> IO.never.as(ExitCode.Success)
+      fullExample.drawWithFrame(frame)
+    }.flatMap(_ => IO.never)
   }
 }
