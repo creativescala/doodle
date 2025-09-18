@@ -1,5 +1,8 @@
 ## NEXT
 
+
+## 0.31.0 18-Sep-2025
+
 - Define `Filter` algebra and implement for SVG (by `@untainsYD`)
 
 - Add `LoadBitmap` algebra for loading bitmaps as a separate type (by `@untainsYD`)
