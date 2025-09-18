@@ -1,0 +1,107 @@
+/*
+ * Copyright 2015 Creative Scala
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package doodle.java2d
+
+import doodle.algebra.*
+import doodle.core.format.*
+import doodle.effect.Base64Writer
+import doodle.effect.BufferedImageWriter
+import doodle.effect.DefaultFrame
+import doodle.effect.FileWriter
+import doodle.effect.Renderer
+import doodle.interact.algebra.*
+import doodle.interact.effect.AnimationRenderer
+import doodle.interact.effect.AnimationWriter
+import doodle.java2d.algebra.reified.Reification
+import doodle.language.Basic
+
+import java.awt.image.BufferedImage
+import java.io.File
+import java.nio.file.Path
+
+/** This trait provides the default implementation of the Java2D package. I.e.
+  * what the user gets when they `import doodle.java2d.*`. It is provided some
+  * that customizations of this can be easily created by overriding selected
+  * members.
+  */
+trait Java2dPackage extends Java2dToPicture { self =>
+  type Algebra =
+    doodle.algebra.Algebra
+      with Basic
+      with Bitmap
+      with FromBufferedImage
+      with FromPngBase64
+      with FromGifBase64
+      with FromJpgBase64
+  type Drawing[A] = doodle.algebra.generic.Finalized[Reification, A]
+  type Renderable[A] = doodle.algebra.generic.Renderable[Reification, A]
+
+  type Frame = doodle.java2d.effect.Frame
+  type Canvas = doodle.java2d.effect.Canvas
+
+  implicit val java2dCanvasAlgebra
+      : MouseClick[Canvas] with MouseMove[Canvas] with Redraw[Canvas] =
+    doodle.java2d.algebra.CanvasAlgebra
+
+  implicit val java2dAnimationRenderer: AnimationRenderer[Canvas] =
+    doodle.java2d.effect.Java2dAnimationRenderer
+  implicit val java2dGifAnimationWriter: AnimationWriter[Algebra, Frame, Gif] =
+    doodle.java2d.effect.Java2dAnimationWriter
+
+  implicit val java2dRenderer
+      : Renderer[Algebra, doodle.java2d.effect.Frame, Canvas] =
+    doodle.java2d.effect.Java2dRenderer
+  implicit val java2dFrame: DefaultFrame[doodle.java2d.effect.Frame] =
+    doodle.java2d.effect.Java2dDefaultFrame
+  implicit val java2dGifWriter
+      : FileWriter[Algebra, Frame, Gif] with Base64Writer[Algebra, Frame, Gif] =
+    doodle.java2d.effect.Java2dGifWriter
+  implicit val java2dPngWriter
+      : FileWriter[Algebra, Frame, Png] with Base64Writer[Algebra, Frame, Png] =
+    doodle.java2d.effect.Java2dPngWriter
+  implicit val java2dJpgWriter
+      : FileWriter[Algebra, Frame, Jpg] with Base64Writer[Algebra, Frame, Jpg] =
+    doodle.java2d.effect.Java2dJpgWriter
+  implicit val java2dPdfWriter
+      : FileWriter[Algebra, Frame, Pdf] with Base64Writer[Algebra, Frame, Pdf] =
+    doodle.java2d.effect.Java2dPdfWriter
+  implicit val java2dBufferedImageWriter
+      : BufferedImageWriter[doodle.java2d.Algebra, Frame] =
+    doodle.java2d.effect.Java2dBufferedImageWriter
+
+  given LoadBitmap[File, BufferedImage] =
+    doodle.java2d.algebra.Java2dLoadBitmap.loadBitmapFromFile
+  given LoadBitmap[Path, BufferedImage] =
+    doodle.java2d.algebra.Java2dLoadBitmap.loadBitmapFromPath
+
+  val Frame = doodle.java2d.effect.Frame
+
+  type Picture[A] = doodle.algebra.Picture[Algebra, A]
+  object Picture
+      extends BaseConstructor
+      with BitmapConstructor
+      with FromGifBase64Constructor
+      with FromPngBase64Constructor
+      with FromJpgBase64Constructor
+      with PathConstructor
+      with ShapeConstructor
+      with TextConstructor {
+
+    type Algebra = self.Algebra
+    type Drawing[A] = self.Drawing[A]
+  }
+}

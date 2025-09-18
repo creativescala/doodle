@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package doodle
-package java2d
+package doodle.java2d
 
 import doodle.effect.DefaultFrame
 
-package object repl extends Java2dToPicture {
-  implicit val java2dFrame: DefaultFrame[doodle.java2d.effect.Frame] =
+package object repl extends Java2dPackage {
+  override implicit val java2dFrame: DefaultFrame[doodle.java2d.effect.Frame] =
     doodle.java2d.repl.Java2dReplDefaultFrame
 }

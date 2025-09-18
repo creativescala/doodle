@@ -1,12 +1,14 @@
 ## NEXT
 
-- Add `Text` algebra to the Canvas backend
-
 - Define `Filter` algebra and implement for SVG (by `@untainsYD`)
 
 - Add `LoadBitmap` algebra for loading bitmaps as a separate type (by `@untainsYD`)
 
+- Add `Text` algebra to the Canvas backend
+
 - Fix SVG text rendering on JVM
+
+- Allow customisation of blocking behaviour on Java2D (by `@dwalend`)
 
 
 ## 0.30.0 30-Apr-2025
