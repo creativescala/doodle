@@ -10,6 +10,8 @@
 
 - Allow customisation of blocking behaviour on Java2D (by `@dwalend`)
 
+- Create `Tagged` algebra to allow mixing arbitrary tags in SVG output (with contributions by `@lychko`)
+
 
 ## 0.30.0 30-Apr-2025
 
