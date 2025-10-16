@@ -212,7 +212,7 @@ lazy val docs =
       tlFatalWarnings := false
     )
     .enablePlugins(TypelevelSitePlugin)
-    .dependsOn(algebra.jvm, image.jvm, svg.jvm)
+    .dependsOn(algebra.jvm, image.jvm, svg.jvm, reactor.jvm)
 
 lazy val unidocs = project
   .in(file("unidocs"))

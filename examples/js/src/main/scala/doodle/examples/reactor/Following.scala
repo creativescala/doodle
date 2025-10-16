@@ -16,16 +16,20 @@ object Following {
 
   val reactor =
     Reactor
-      .init(State(Point.zero, Color.red))
+      .init(State(Point.zero, Color.hotPink))
       .withOnMouseMove((pt, state) => state.copy(point = pt))
-      .withOnMouseClick((_, state) =>
-        state.copy(color = state.color.spin(15.degrees))
-      )
       .withRender(state =>
-        Image.circle(20).noStroke.fillColor(state.color).at(state.point)
+        Image
+          .circle(20)
+          .strokeColor(Color.white)
+          .strokeWidth(3.0)
+          .fillColor(state.color)
+          .at(state.point)
       )
 
   @JSExport
   def go(id: String): Unit =
-    reactor.animateWithFrame(Frame(id).withSize(300, 300))
+    reactor.animateWithFrame(
+      Frame(id).withSize(300, 300).withBackground(Color.midnightBlue)
+    )
 }
