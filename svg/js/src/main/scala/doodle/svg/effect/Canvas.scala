@@ -78,7 +78,8 @@ final case class Canvas(
 
   private def mouseClickCallback(tx: Transform): dom.MouseEvent => Point =
     (evt: dom.MouseEvent) => {
-      val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
+      val rect =
+        evt.currentTarget.asInstanceOf[dom.Element].getBoundingClientRect()
       val x = evt.clientX - rect.left; // x position within the element.
       val y = evt.clientY - rect.top;
       tx(doodle.core.Point(x, y))
@@ -86,7 +87,8 @@ final case class Canvas(
 
   private def mouseMoveCallback(tx: Transform): dom.MouseEvent => Point =
     (evt: dom.MouseEvent) => {
-      val rect = evt.target.asInstanceOf[dom.Element].getBoundingClientRect()
+      val rect =
+        evt.currentTarget.asInstanceOf[dom.Element].getBoundingClientRect()
       val x = evt.clientX - rect.left; // x position within the element.
       val y = evt.clientY - rect.top;
       tx(doodle.core.Point(x, y))
@@ -98,7 +100,7 @@ final case class Canvas(
       Stream.repeatEval(
         IO.async_(cb =>
           elt.addEventListener(
-            "move",
+            "mousemove",
             evt => cb(Right(onMoveCallback(evt.asInstanceOf[dom.MouseEvent]))),
             eventListenerOptions
           )

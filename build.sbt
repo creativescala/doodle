@@ -326,10 +326,10 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
   )
   .jvmConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(algebra.jvm, java2d, image.jvm, interact.jvm)
+      .dependsOn(algebra.jvm, java2d, image.jvm, interact.jvm, reactor.jvm)
   )
   .jsConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(algebra.js, canvas, image.js, interact.js)
+      .dependsOn(algebra.js, canvas, image.js, interact.js, reactor.js)
   )
   .dependsOn(svg)
