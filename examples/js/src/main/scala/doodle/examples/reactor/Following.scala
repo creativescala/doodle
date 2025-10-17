@@ -17,11 +17,11 @@
 package doodle.examples.reactor
 
 import cats.effect.unsafe.implicits.global
+import doodle.canvas.{*, given}
 import doodle.core.*
 import doodle.image.*
 import doodle.reactor.*
 import doodle.reactor.syntax.all.*
-import doodle.svg.*
 import doodle.syntax.all.*
 
 import scala.scalajs.js.annotation.*
@@ -33,7 +33,12 @@ object Following {
   val reactor =
     Reactor
       .init(State(Point.zero, Color.hotPink))
-      .withOnMouseMove((pt, state) => state.copy(point = pt))
+      .withOnMouseMove { (pt, state) =>
+        state.copy(point = pt)
+      }
+      .withOnMouseClick { (pt, state) =>
+        state.copy(color = state.color.spin(15.degrees))
+      }
       .withRender(state =>
         Image
           .circle(20)
