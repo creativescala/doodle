@@ -19,6 +19,7 @@ It's not the most exciting example, but the code is easy to understand.
 
 ```scala mdoc:silent
 import doodle.core.*
+import doodle.syntax.all.*
 import doodle.image.*
 import doodle.reactor.*
 import doodle.reactor.syntax.all.*
@@ -27,7 +28,7 @@ final case class State(point: Point, color: Color)
 
 val reactor =
   Reactor
-    .init(State(Point.zero))
+    .init(State(Point.zero, Color.hotPink))
     .withOnMouseMove { (pt, state) =>
       state.copy(point = pt)
     }
@@ -65,3 +66,10 @@ To respond to events we add callbacks. The `withOnMouseClick` and `withOnMouseMo
 
 To have any visible output we pass a `State => Image` function to `withRender`. Finally, we can determine when to stop the `Reactor` by passing a `State => Boolean` function to `withStop`.
 
+There are several ways to run a `Reactor`, all of which are provided as extension methods. From most to least convenient they are:
+
+* `animate()`, which immediately runs and draws the `Reactor`. It uses the `doodle.effect.DefaultFrame` of the current backend, if one exists. Web-based backends typically don't have a default frame as you must specify where on the DOM to mount the animation.
+* `animateWithFrame(frame)` immediately runs and draws the `Reactor` with the given frame.
+* `animateToIO()` is like `animate`, except it returns an `IO`. Only when that `IO` is run will the animation appear.
+* `animateWithFrameToIO(frame)` is like `animateWithFrame`, except it returns an `IO`. Only when that `IO` is run will the animation appear.
+* `animateWithCanvasToIO(canvas)` returns an `IO` that, when run, animates the `Reactor` on the given `Canvas`.
