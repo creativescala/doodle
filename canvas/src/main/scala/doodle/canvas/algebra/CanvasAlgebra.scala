@@ -24,13 +24,15 @@ import cats.syntax.all.*
 import doodle.algebra.generic.*
 import doodle.core.BoundingBox
 import doodle.core.font.Font
+import doodle.language.Basic
 import org.scalajs.dom.CanvasRenderingContext2D
 
 final case class CanvasAlgebra(
     ctx: CanvasRenderingContext2D,
     applyDrawing: Apply[CanvasDrawing] = Apply.apply[CanvasDrawing],
     functorDrawing: Functor[CanvasDrawing] = Apply.apply[CanvasDrawing]
-) extends HasTextBoundingBox,
+) extends Basic,
+      HasTextBoundingBox,
       CanvasAlgebraFrom,
       FromHtmlImageElement,
       FromImageBitmap,

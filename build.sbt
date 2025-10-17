@@ -298,7 +298,7 @@ lazy val canvas = project
     libraryDependencies += Dependencies.scalajsDom.value,
     moduleName := "doodle-canvas"
   )
-  .dependsOn(algebra.js)
+  .dependsOn(algebra.js, interact.js)
   .enablePlugins(ScalaJSPlugin)
 
 // Just for testing
