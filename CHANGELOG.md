@@ -1,5 +1,11 @@
 ## NEXT
 
+- Major refactor of `Reactor`
+
+- Fix `MouseMove` on SVG
+
+- Implement `interact` algebras for Canvas backend, so it can now display animations
+
 
 ## 0.31.0 18-Sep-2025
 
