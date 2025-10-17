@@ -7,7 +7,7 @@ object Dependencies {
   // Library Versions
   val catsVersion = "2.13.0"
   val catsEffectVersion = "3.6.3"
-  val fs2Version = "3.12.0"
+  val fs2Version = "3.12.2"
 
   val scalatagsVersion = "0.13.1"
   val scalajsDomVersion = "2.8.1"
@@ -15,8 +15,8 @@ object Dependencies {
   val batikVersion = "1.19"
 
   val scalaCheckVersion = "1.15.4"
-  val munitVersion = "1.1.1"
-  val munitScalacheckVersion = "1.1.0"
+  val munitVersion = "1.2.1"
+  val munitScalacheckVersion = "1.2.0"
   val munitCatsEffectVersion = "2.1.0"
 
   // Libraries
