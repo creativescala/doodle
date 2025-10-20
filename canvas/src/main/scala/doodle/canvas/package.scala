@@ -20,6 +20,10 @@ import doodle.algebra.*
 import doodle.canvas.algebra.CanvasLoadBitmap
 import doodle.canvas.algebra.CanvasToPicture
 import doodle.effect.Renderer
+import doodle.interact.algebra.MouseClick
+import doodle.interact.algebra.MouseMove
+import doodle.interact.algebra.Redraw
+import doodle.interact.effect.AnimationRenderer
 import org.scalajs.dom
 
 type Algebra = doodle.canvas.algebra.CanvasAlgebra
@@ -40,7 +44,12 @@ given ToPicture[dom.HTMLImageElement, Algebra] =
 given ToPicture[dom.ImageBitmap, Algebra] =
   CanvasToPicture.ImageBitmapToPicture
 
+given (MouseClick[Canvas] & MouseMove[Canvas] & Redraw[Canvas]) =
+  doodle.canvas.effect.CanvasAlgebra
+
 given Renderer[Algebra, Frame, Canvas] = doodle.canvas.effect.CanvasRenderer
+given AnimationRenderer[Canvas] =
+  doodle.canvas.effect.CanvasAnimationRenderer
 
 type Picture[A] = doodle.algebra.Picture[Algebra, A]
 object Picture

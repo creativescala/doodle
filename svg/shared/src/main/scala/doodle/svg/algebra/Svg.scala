@@ -94,9 +94,10 @@ trait SvgModule { self: Base =>
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${bb.left - border} ${-bb.top - border} ${w} ${h}",
             bundle.attrs.style :=
-              frame.background
-                .map(c => s"background-color: ${Svg.toOklch(c)};")
-                .getOrElse("")
+              "pointer-events: bounding-box; " ++
+                frame.background
+                  .map(c => s"background-color: ${Svg.toOklch(c)};")
+                  .getOrElse("")
           )
 
         case Size.FixedSize(w, h) =>
@@ -106,9 +107,10 @@ trait SvgModule { self: Base =>
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
             bundle.attrs.style :=
-              frame.background
-                .map(c => s"background-color: ${Svg.toOklch(c)};")
-                .getOrElse("")
+              "pointer-events: bounding-box; " ++
+                frame.background
+                  .map(c => s"background-color: ${Svg.toOklch(c)};")
+                  .getOrElse("")
           )
 
       }

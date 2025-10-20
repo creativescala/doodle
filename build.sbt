@@ -20,7 +20,7 @@ import laika.config.ApiLinks
 import laika.theme.Theme
 import laika.helium.config.TextLink
 
-ThisBuild / tlBaseVersion := "0.31" // your current series x.y
+ThisBuild / tlBaseVersion := "0.32" // your current series x.y
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -212,7 +212,7 @@ lazy val docs =
       tlFatalWarnings := false
     )
     .enablePlugins(TypelevelSitePlugin)
-    .dependsOn(algebra.jvm, image.jvm, svg.jvm)
+    .dependsOn(algebra.jvm, image.jvm, svg.jvm, reactor.jvm)
 
 lazy val unidocs = project
   .in(file("unidocs"))
@@ -298,7 +298,7 @@ lazy val canvas = project
     libraryDependencies += Dependencies.scalajsDom.value,
     moduleName := "doodle-canvas"
   )
-  .dependsOn(algebra.js)
+  .dependsOn(algebra.js, interact.js)
   .enablePlugins(ScalaJSPlugin)
 
 // Just for testing
@@ -326,10 +326,10 @@ lazy val examples = crossProject(JSPlatform, JVMPlatform)
   )
   .jvmConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(algebra.jvm, java2d, image.jvm, interact.jvm)
+      .dependsOn(algebra.jvm, java2d, image.jvm, interact.jvm, reactor.jvm)
   )
   .jsConfigure(
     _.settings(mimaPreviousArtifacts := Set.empty)
-      .dependsOn(algebra.js, canvas, image.js, interact.js)
+      .dependsOn(algebra.js, canvas, image.js, interact.js, reactor.js)
   )
   .dependsOn(svg)

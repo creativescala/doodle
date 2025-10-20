@@ -22,6 +22,7 @@ import cats.effect.unsafe.implicits.global
 import doodle.core.*
 import doodle.image.Image
 import doodle.java2d.*
+import doodle.reactor.syntax.all.*
 
 object Easing {
   def easeIn(t: Double): Double =
@@ -44,5 +45,5 @@ object Easing {
       )
 
   def go() =
-    reactor.run(Frame.default.withSize(600, 600))
+    reactor.animateWithFrame(Frame.default.withSize(600, 600))
 }
