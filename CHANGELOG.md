@@ -1,4 +1,4 @@
-## NEXT
+## 0.32.0 30-Oct-2025
 
 - Major refactor of `Reactor`
 
