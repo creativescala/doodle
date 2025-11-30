@@ -204,10 +204,68 @@ In this example we use the default serif font, bold weight, 24 point size, and s
     .</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Change the font&quot;</span><span>)
     .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blueViolet</span><span>)
     .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">royalBlue</span><span>)
-    .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>.</span><span class="identifier">bold</span><span>.</span><span class="identifier">size</span><span>(</span><span class="type-name">FontSize</span><span>.</span><span class="identifier">points</span><span>(</span><span class="number-literal">24</span><span>)))</span></code></pre>
+    .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>.</span><span class="identifier">withBold</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="type-name">FontSize</span><span>.</span><span class="identifier">points</span><span>(</span><span class="number-literal">24</span><span>)))</span></code></pre>
 <p>This produces the picture below.</p>
 <div class="doodle" id="font-example"></div>
 <script>SvgTextExamples.drawFont("font-example")</script>
+
+<h2 id="fonts" class="section">Fonts</h2>
+<p>The <code>Text</code> algebra works with a <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/core/font/Font.html">Font</a> to specify the font used to render the text. A <code>Font</code> has the following elements:</p>
+<ul>
+  <li>the font family, such as Helvetica or Times New Roman, is what people often refer to as just the font;</li>
+  <li>the style of the font, which is italic or normal;</li>
+  <li>the weight of the font, which is bold or normal; and</li>
+  <li>the size of the font, which is specified in points.</li>
+</ul>
+<p>When constructing a <code>Font</code> all these parameters, apart from the font family, are optional. 
+So, for example, you can create a <code>Font</code> with just the following:</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">font</span><span>.</span><span class="type-name">FontFamily</span><span>
+
+</span><span class="type-name">Font</span><span>(</span><span class="type-name">FontFamily</span><span>.</span><span class="identifier">serif</span><span>)</span></code></pre>
+<p>You can also take an existing font and use the builder methods to create a copy with changed properties. For example, here we take a font and change it&#39;s size and weight.</p>
+<pre><code class="nohighlight"><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="number-literal">20</span><span>).</span><span class="identifier">withBold</span></code></pre>
+<p>Let&#39;s look at the elements of a font in a bit more detail.</p>
+
+<h3 id="font-families" class="section">Font Families</h3>
+<p>There are three default font families, for serif, sans serif, and monospaced fonts. 
+These are a good choice for cross platform applications, as the actual font is chosen by the platform. </p>
+<p>The simplest way to use these families is by calling <code>Font.defaultSerif</code>, <code>Font.defaultSansSerif</code>, and <code>Font.defaultMonospaced</code>. 
+The example below shows the default font families in use.</p>
+<pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;serif&quot;</span><span>)
+  .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>)
+  .</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>)
+  .</span><span class="identifier">beside</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;sans serif&quot;</span><span>).</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSansSerif</span><span>).</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>))
+  .</span><span class="identifier">beside</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;monospaced&quot;</span><span>).</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultMonospaced</span><span>).</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>))
+  .</span><span class="identifier">noStroke</span><span>
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)</span></code></pre>
+<p>Here&#39;s the output it produces. This output is drawn using the SVG backend, so the exact choice of fonts will be determined by the browser you use to view this page.</p>
+<div class="doodle" id="default-example"></div>
+<script>SvgTextExamples.drawDefault("default-example")</script>
+<p>You may wish to specify an exact font family by it&#39;s <code>String</code> name. The interpretation of this name is down to the backend. For example, using the SVG backend means a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-family">CSS font family</a>.</p>
+<p>This example code shows the use of four different font families.</p>
+<pre><code class="nohighlight"><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Helvetica&quot;</span><span>)
+  .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>(</span><span class="type-name">FontFamily</span><span>.</span><span class="identifier">named</span><span>(</span><span class="string-literal">&quot;Helvetica&quot;</span><span>)))
+  .</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>)
+  .</span><span class="identifier">beside</span><span>(
+    </span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Gill Sans&quot;</span><span>)
+      .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>(</span><span class="type-name">FontFamily</span><span>.</span><span class="identifier">named</span><span>(</span><span class="string-literal">&quot;Gill Sans&quot;</span><span>)))
+      .</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>)
+  )
+  .</span><span class="identifier">beside</span><span>(
+    </span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Garamond&quot;</span><span>)
+      .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>(</span><span class="type-name">FontFamily</span><span>.</span><span class="identifier">named</span><span>(</span><span class="string-literal">&quot;Garamond&quot;</span><span>)))
+      .</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>)
+  )
+  .</span><span class="identifier">beside</span><span>(
+    </span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Adwaita Sans&quot;</span><span>)
+      .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>(</span><span class="type-name">FontFamily</span><span>.</span><span class="identifier">named</span><span>(</span><span class="string-literal">&quot;Adwaita Sans&quot;</span><span>)))
+      .</span><span class="identifier">margin</span><span>(</span><span class="number-literal">10</span><span>)
+  )
+  .</span><span class="identifier">noStroke</span><span>
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)</span></code></pre>
+<p>Here&#39;s the output. What you will see depends on what fonts you have installed.</p>
+<div class="doodle" id="font-family-example"></div>
+<script>SvgTextExamples.drawFontFamily("font-family-example")</script>
 
 <h2 id="implementation" class="section">Implementation</h2>
 <p>These methods are available on both the <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/algebra/Text.html">Text</a> algebra and <a class="api" href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest/doodle/image/Image.html">Image</a>.</p></div>
@@ -229,6 +287,8 @@ In this example we use the default serif font, bold weight, 24 point size, and s
           <p>On This Page</p>
           <ul class="nav-list">
             <li class="level1 nav-leaf"><a href="#concept">Concept</a></li>
+            <li class="level1 nav-node"><a href="#fonts">Fonts</a></li>
+            <li class="level2 nav-leaf"><a href="#font-families">Font Families</a></li>
             <li class="level1 nav-leaf"><a href="#implementation">Implementation</a></li>
           </ul>
         </div>
