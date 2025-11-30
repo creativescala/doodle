@@ -18,12 +18,14 @@ package doodle
 package core
 package font
 
-sealed abstract class FontFamily extends Product with Serializable
+enum FontFamily {
+  case Serif
+  case SansSerif
+  case Monospaced
+  case Named(get: String)
+}
 object FontFamily {
-  case object Serif extends FontFamily
-  case object SansSerif extends FontFamily
-  case object Monospaced extends FontFamily
-  final case class Named(get: String) extends FontFamily
+  import FontFamily.*
 
   val serif: FontFamily = Serif
   val sansSerif: FontFamily = SansSerif
@@ -31,59 +33,66 @@ object FontFamily {
   def named(name: String): FontFamily = Named(name)
 }
 
-sealed abstract class FontWeight extends Product with Serializable
+enum FontWeight {
+  case Normal
+  case Bold
+}
 object FontWeight {
-  case object Normal extends FontWeight
-  case object Bold extends FontWeight
+  import FontWeight.*
 
   val bold: FontWeight = Bold
   val normal: FontWeight = Normal
 }
 
-sealed abstract class FontStyle extends Product with Serializable
+enum FontStyle {
+  case Italic
+  case Normal
+
+}
 object FontStyle {
-  case object Italic extends FontStyle
-  case object Normal extends FontStyle
+  import FontStyle.*
 
   val italic: FontStyle = Italic
   val normal: FontStyle = Normal
 }
 
-sealed abstract class FontSize extends Product with Serializable
+enum FontSize {
+  case Points(get: Int)
+}
 object FontSize {
-  final case class Points(get: Int) extends FontSize
+  import FontSize.*
 
   def points(pts: Int): FontSize = Points(pts)
 }
 
 final case class Font(
     family: FontFamily,
-    style: FontStyle,
-    weight: FontWeight,
-    size: FontSize
+    style: FontStyle = FontStyle.normal,
+    weight: FontWeight = FontWeight.normal,
+    size: FontSize = FontSize.points(12)
 ) {
-  def family(name: String): Font =
-    family(FontFamily.named(name))
+  def withFamily(name: String): Font =
+    withFamily(FontFamily.named(name))
 
-  def family(family: FontFamily): Font =
+  def withFamily(family: FontFamily): Font =
     this.copy(family = family)
 
-  def italic: Font =
-    style(FontStyle.italic)
-
-  def style(style: FontStyle) =
+  def withStyle(style: FontStyle) =
     this.copy(style = style)
 
-  def bold: Font =
-    weight(FontWeight.bold)
+  def withItalic: Font =
+    withStyle(FontStyle.italic)
 
-  def weight(weight: FontWeight): Font =
+  def withBold: Font =
+    withWeight(FontWeight.bold)
+
+  def withWeight(weight: FontWeight): Font =
     this.copy(weight = weight)
 
-  def size(points: Int): Font =
-    size(FontSize.points(points))
+  def withSize(points: Int): Font =
+    withSize(FontSize.points(points))
 
-  def size(size: FontSize): Font =
+  def withSize(size: FontSize): Font =
     this.copy(size = size)
 
 }
@@ -95,4 +104,6 @@ object Font {
     Font(serif, FontStyle.normal, FontWeight.normal, points(12))
   val defaultSansSerif =
     Font(sansSerif, FontStyle.normal, FontWeight.normal, points(12))
+  val defaultMonospaced =
+    Font(monospaced, FontStyle.normal, FontWeight.normal, points(12))
 }

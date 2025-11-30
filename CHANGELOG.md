@@ -1,3 +1,10 @@
+## NEXT
+
+- Rework fonts to follow convention of `with` prefix for builder methods
+
+- Improve font documentation
+
+
 ## 0.32.0 30-Oct-2025
 
 - Major refactor of `Reactor`

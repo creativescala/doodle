@@ -38,12 +38,12 @@ class Text extends FunSuite with GoldenPicture {
   }
 
   testPicture("text-serif-48pt") {
-    text[Algebra]("Hi!").font(Font.defaultSerif.size(48)).on(spacer)
+    text[Algebra]("Hi!").font(Font.defaultSerif.withSize(48)).on(spacer)
   }
 
   testPicture("text-sans-serif-48pt") {
     text[Algebra]("Hi!")
-      .font(Font.defaultSansSerif.size(48))
+      .font(Font.defaultSansSerif.withSize(48))
       .on(spacer)
   }
 
@@ -57,7 +57,7 @@ class Text extends FunSuite with GoldenPicture {
     text[Algebra]("Red")
       .strokeColor(Color.red)
       .beside(text[Algebra]("Blue").strokeColor(Color.blue))
-      .font(Font.defaultSerif.size(24).family("Arial"))
+      .font(Font.defaultSerif.withSize(24).withFamily("Arial"))
       .on(rectangle(115, 50).fillColor(Color.white).noStroke)
   }
 }

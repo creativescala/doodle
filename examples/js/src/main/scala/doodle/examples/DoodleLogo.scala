@@ -28,7 +28,9 @@ import scala.scalajs.js.annotation.*
 @JSExportTopLevel("DoodleLogo")
 object DoodleLogo {
   val font =
-    Font.defaultSansSerif.size(FontSize.points(22)).weight(FontWeight.bold)
+    Font.defaultSansSerif
+      .withSize(FontSize.points(22))
+      .withWeight(FontWeight.bold)
   val logo: Picture[Unit] =
     (0.to(10))
       .map(i =>

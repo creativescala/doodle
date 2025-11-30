@@ -38,12 +38,41 @@ trait TextExamples[Alg <: Layout & Style & Text] extends BaseExamples[Alg] {
     text("Change the font")
       .strokeColor(Color.blueViolet)
       .fillColor(Color.royalBlue)
-      .font(Font.defaultSerif.bold.size(FontSize.points(24)))
-  //
+      .font(Font.defaultSerif.withBold.withSize(FontSize.points(24)))
+
+  val default =
+    text("serif")
+      .font(Font.defaultSerif)
+      .margin(10)
+      .beside(text("sans serif").font(Font.defaultSansSerif).margin(10))
+      .beside(text("monospaced").font(Font.defaultMonospaced).margin(10))
+      .noStroke
+      .fillColor(Color.black)
+
+  val fontFamily =
+    text("Helvetica")
+      .font(Font(FontFamily.named("Helvetica")))
+      .margin(10)
+      .beside(
+        text("Gill Sans").font(Font(FontFamily.named("Gill Sans"))).margin(10)
+      )
+      .beside(
+        text("Garamond").font(Font(FontFamily.named("Garamond"))).margin(10)
+      )
+      .beside(
+        text("Adwaita Sans")
+          .font(Font(FontFamily.named("Adwaita Sans")))
+          .margin(10)
+      )
+      .noStroke
+      .fillColor(Color.black)
+
   // If you add a new example, also add it in here
   val allPictures =
     List(
       hello,
-      font
+      font,
+      default,
+      fontFamily
     )
 }

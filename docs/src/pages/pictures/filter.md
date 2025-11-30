@@ -181,7 +181,7 @@ val customEmboss = Kernel(3, 3, IArray(
 )
 
 val shape = text("Convolution")
-  .font(Font.defaultSerif.bold.italic.size(FontSize.points(36)))
+  .font(Font.defaultSerif.withBold.withItalic.withSize(FontSize.points(36)))
   .fillGradient(
     Gradient.linear(
       Point(0, 0),

@@ -34,7 +34,7 @@ object Text {
   val font =
     Picture
       .text("Change the font")
-      .font(Font.defaultSerif.bold.size(FontSize.points(24)))
+      .font(Font.defaultSerif.withBold.withSize(FontSize.points(24)))
 
   font.save("pictures/font.png")
 }

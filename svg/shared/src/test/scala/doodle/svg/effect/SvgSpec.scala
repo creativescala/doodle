@@ -91,7 +91,7 @@ class SvgSpec
       Svg
         .textTag(
           "abc",
-          Font.defaultSansSerif.family(FontFamily.monospaced),
+          Font.defaultSansSerif.withFamily(FontFamily.monospaced),
           "stroke: none;"
         )
         .toString,

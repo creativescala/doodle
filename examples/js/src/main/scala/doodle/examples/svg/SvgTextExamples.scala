@@ -30,4 +30,10 @@ object SvgTextExamples extends TextExamples[Algebra] {
 
   @JSExport
   def drawFont(id: String): Unit = font.drawWithFrame(Frame(id))
+
+  @JSExport
+  def drawDefault(id: String): Unit = default.drawWithFrame(Frame(id))
+
+  @JSExport
+  def drawFontFamily(id: String): Unit = fontFamily.drawWithFrame(Frame(id))
 }
