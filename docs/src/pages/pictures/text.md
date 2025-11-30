@@ -15,6 +15,11 @@ val hello =
   Picture
     .text("Hello from Doodle!")
     .fillColor(Color.black)
+
+hello.noStroke
+  .fillColor(Color.black)
+  .above(hello.noFill)
+  .above(hello.fillColor(Color.black))
 ```
 
 The output is shown below.
@@ -27,12 +32,11 @@ In this example we use the default serif font, bold weight, 24 point size, and s
 ```scala mdoc:silent
 import doodle.core.font.{Font, FontSize}
 
-val font =
-  Picture
-    .text("Change the font")
-    .strokeColor(Color.blueViolet)
-    .fillColor(Color.royalBlue)
-    .font(Font.defaultSerif.withBold.withSize(FontSize.points(24)))
+Picture
+  .text("Change the font")
+  .strokeColor(Color.blueViolet)
+  .fillColor(Color.royalBlue)
+  .font(Font.defaultSerif.withBold.withSize(FontSize.points(24)))
 ```
 
 This produces the picture below.
