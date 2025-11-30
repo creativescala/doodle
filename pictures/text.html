@@ -191,7 +191,12 @@
 </span><span class="keyword">val</span><span> </span><span class="identifier">hello</span><span> =
   </span><span class="type-name">Picture</span><span>
     .</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Hello from Doodle!&quot;</span><span>)
-    .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)</span></code></pre>
+    .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+
+</span><span class="identifier">hello</span><span>.</span><span class="identifier">noStroke</span><span>
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>)
+  .</span><span class="identifier">above</span><span>(</span><span class="identifier">hello</span><span>.</span><span class="identifier">noFill</span><span>)
+  .</span><span class="identifier">above</span><span>(</span><span class="identifier">hello</span><span>.</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>))</span></code></pre>
 <p>The output is shown below.</p>
 <div class="doodle" id="hello-example"></div>
 <script>SvgTextExamples.drawHello("hello-example")</script>
@@ -199,12 +204,11 @@
 In this example we use the default serif font, bold weight, 24 point size, and some questionable color choices.</p>
 <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.</span><span class="identifier">font</span><span>.{</span><span class="type-name">Font</span><span>, </span><span class="type-name">FontSize</span><span>}
 
-</span><span class="keyword">val</span><span> </span><span class="identifier">font</span><span> =
-  </span><span class="type-name">Picture</span><span>
-    .</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Change the font&quot;</span><span>)
-    .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blueViolet</span><span>)
-    .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">royalBlue</span><span>)
-    .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>.</span><span class="identifier">withBold</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="type-name">FontSize</span><span>.</span><span class="identifier">points</span><span>(</span><span class="number-literal">24</span><span>)))</span></code></pre>
+</span><span class="type-name">Picture</span><span>
+  .</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Change the font&quot;</span><span>)
+  .</span><span class="identifier">strokeColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">blueViolet</span><span>)
+  .</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">royalBlue</span><span>)
+  .</span><span class="identifier">font</span><span>(</span><span class="type-name">Font</span><span>.</span><span class="identifier">defaultSerif</span><span>.</span><span class="identifier">withBold</span><span>.</span><span class="identifier">withSize</span><span>(</span><span class="type-name">FontSize</span><span>.</span><span class="identifier">points</span><span>(</span><span class="number-literal">24</span><span>)))</span></code></pre>
 <p>This produces the picture below.</p>
 <div class="doodle" id="font-example"></div>
 <script>SvgTextExamples.drawFont("font-example")</script>
