@@ -79,5 +79,3 @@ frame
     canvas.close()
   }
 ```
-
-`
