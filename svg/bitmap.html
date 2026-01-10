@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Laika 1.0.0" />
-    <title>Bitmaps in SVG</title>
+    <title>Images in SVG</title>
      
     <meta name="description" content="docs" />
     
@@ -92,7 +92,7 @@
                     <li class="level3 nav-leaf"><a href="../java2d/repl.html">Working at the REPL</a></li>
                     <li class="level3 nav-leaf"><a href="../java2d/fonts.html">Fonts and Text</a></li>
                     <li class="level2 nav-node"><a href="index.html">SVG Backend</a></li>
-                    <li class="level3 active nav-leaf"><a href="#">Bitmaps in SVG</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Images in SVG</a></li>
                     <li class="level3 nav-leaf"><a href="tagging.html">Tagging Pictures</a></li>
                     <li class="level3 nav-leaf"><a href="examples.html">Examples</a></li>
                     <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
@@ -162,7 +162,7 @@
             <li class="level3 nav-leaf"><a href="../java2d/repl.html">Working at the REPL</a></li>
             <li class="level3 nav-leaf"><a href="../java2d/fonts.html">Fonts and Text</a></li>
             <li class="level2 nav-node"><a href="index.html">SVG Backend</a></li>
-            <li class="level3 active nav-leaf"><a href="#">Bitmaps in SVG</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Images in SVG</a></li>
             <li class="level3 nav-leaf"><a href="tagging.html">Tagging Pictures</a></li>
             <li class="level3 nav-leaf"><a href="examples.html">Examples</a></li>
             <li class="level2 nav-node"><a href="../canvas/">Canvas Backend</a></li>
@@ -181,8 +181,8 @@
       </nav>
       <div id="contentbar" class="mx-auto flex-1">
         <div class="max-w-prose mx-auto">
-          <div id="content"><h1 id="bitmaps-in-svg" class="title">Bitmaps in SVG</h1>
-<p>The SVG backend provides support for bitmap images through <code>&lt;image&gt;</code> elements. Unlike raster-based backends, SVG doesn&#39;t load actual pixel data. Instead, it creates image references that the browser loads and renders.</p>
+          <div id="content"><h1 id="images-in-svg" class="title">Images in SVG</h1>
+<p>The SVG backend provides support for bitmap and SVG images through <code>&lt;image&gt;</code> elements. Unlike raster-based backends, SVG doesn&#39;t load actual pixel data. Instead, it creates image references that the browser loads and renders. Per the <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/image">documentation</a>, it must support at least JPEG, PNG, and SVG formats.</p>
 
 <h2 id="how-svg-handles-bitmaps" class="section">How SVG Handles Bitmaps</h2>
 <p>SVG handles bitmaps differently from other backends:</p>
