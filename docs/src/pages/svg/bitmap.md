@@ -1,4 +1,4 @@
-# Bitmaps in SVG
+# Images in SVG
 
 ```scala mdoc:invisible
 import cats.effect.unsafe.implicits.global
@@ -8,7 +8,7 @@ import doodle.svg.algebra.{SvgImageRef, SvgLoadBitmap}
 import doodle.syntax.all.*
 ```
 
-The SVG backend provides support for bitmap images through `<image>` elements. Unlike raster-based backends, SVG doesn't load actual pixel data. Instead, it creates image references that the browser loads and renders.
+The SVG backend provides support for bitmap and SVG images through `<image>` elements. Unlike raster-based backends, SVG doesn't load actual pixel data. Instead, it creates image references that the browser loads and renders. Per the [documentation](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/image), it must support at least JPEG, PNG, and SVG formats.
 
 
 ## How SVG Handles Bitmaps
