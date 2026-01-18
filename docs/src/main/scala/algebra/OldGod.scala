@@ -26,7 +26,7 @@ import doodle.syntax.all.* // For Color
 object OldGod {
   val redCircle = circle(100).strokeColor(Color.red)
   val twoRedCircles = redCircle.beside(redCircle)
-  val oldGod = read[Algebra]("docs/src/main/scala/algebra/old-god.png")
+  val oldGod = read[Algebra]("./docs/src/main/scala/algebra/old-god.png")
 
   twoRedCircles.above(oldGod).save("algebra/suns-old-god.png")
 
