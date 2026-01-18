@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package doodle.svg.algebra
+package doodle.examples.svg
 
-import doodle.algebra.Algebra
+import cats.effect.unsafe.implicits.global
+import doodle.core.*
+import doodle.svg.*
+import doodle.svg.syntax.all.*
+import doodle.syntax.all.*
 
-/** This algebra allows you to include any ScalaTags tag within an SVG drawing.
-  */
-trait Tagged[Tag] extends Algebra {
+import scala.scalajs.js.annotation.*
 
-  /** Wrap the given Tag around the given Drawing. */
-  def tagged[A](drawing: Drawing[A], tag: Tag): Drawing[A]
-
-  /** A utility to include wrap a link (an a tag) around a Drawing. */
-  def link[A](drawing: Drawing[A], href: String): Drawing[A]
-
-  def attribute[A](drawing: Drawing[A], attr: String, value: String): Drawing[A]
-
+@JSExportTopLevel("SvgAttributeddExamples")
+object SvgAttributedExamples {
+  @JSExport
+  def drawWithAttribute(id: String): Unit =
+    Picture
+      .regularPolygon(7, 15)
+      .strokeWidth(5.0)
+      .beside(Picture.text("Creative Scala").noStroke.fillColor(Color.black))
+      .attribute("id", "referenceable")
+      .drawWithFrame(Frame(id))
 }

@@ -17,6 +17,7 @@
 package doodle.svg.algebra
 
 import doodle.svg.JvmBase
+import scalatags.generic.Attr
 
 trait JvmTaggedModule extends JvmBase {
   trait JvmTagged extends Tagged[Tag] {
@@ -43,5 +44,13 @@ trait JvmTaggedModule extends JvmBase {
     /** A utility to include wrap a link (an a tag) around a Drawing. */
     def link[A](drawing: Drawing[A], href: String): Drawing[A] =
       tagged(drawing, tags.a(bundle.attrs.href := href))
+
+    def attribute[A](
+        drawing: Drawing[A],
+        attrLabel: String,
+        value: String
+    ): Drawing[A] =
+      tagged(drawing, tags.div(Attr(attrLabel) := value))
+
   }
 }

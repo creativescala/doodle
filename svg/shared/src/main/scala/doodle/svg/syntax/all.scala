@@ -33,6 +33,15 @@ trait all {
         def apply(implicit algebra: Alg & Tagged[Tag]): algebra.Drawing[A] =
           algebra.link(picture.apply(algebra), href)
       }
+
+    def attribute[Tag](
+        attrLabel: String,
+        value: String
+    ): Picture[Alg & Tagged[Tag], A] =
+      new Picture[Alg & Tagged[Tag], A] {
+        def apply(implicit algebra: Alg & Tagged[Tag]): algebra.Drawing[A] =
+          algebra.attribute(picture.apply(algebra), attrLabel, value)
+      }
   }
 }
 object all extends all
