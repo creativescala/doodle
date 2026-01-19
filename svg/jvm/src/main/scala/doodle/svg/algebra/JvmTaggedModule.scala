@@ -17,9 +17,7 @@
 package doodle.svg.algebra
 
 import doodle.svg.JvmBase
-import scalatags.generic.Attr
 import scalatags.generic.AttrPair
-import scalatags.generic.TypedTag
 
 trait JvmTaggedModule extends JvmBase {
   trait JvmTagged extends Tagged[Tag], Attributed[Builder] {

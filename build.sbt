@@ -53,9 +53,9 @@ commands += Command.command("build") { state =>
     "scalafmtSbt" ::
     "headerCreateAll" ::
     "githubWorkflowGenerate" ::
+    "docs / tlSite" ::
     "dependencyUpdates" ::
     "reload plugins; dependencyUpdates; reload return" ::
-    "docs / tlSite" ::
     state
 }
 
