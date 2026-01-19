@@ -21,17 +21,23 @@ import doodle.core.*
 import doodle.svg.*
 import doodle.svg.syntax.all.*
 import doodle.syntax.all.*
+import org.scalajs.dom
+import scalatags.JsDom.*
+import scalatags.JsDom.all.*
 
 import scala.scalajs.js.annotation.*
 
-@JSExportTopLevel("SvgAttributeddExamples")
+@JSExportTopLevel("SvgAttributedExamples")
 object SvgAttributedExamples {
   @JSExport
   def drawWithAttribute(id: String): Unit =
     Picture
       .regularPolygon(7, 15)
       .strokeWidth(5.0)
-      .beside(Picture.text("Creative Scala").noStroke.fillColor(Color.black))
-      .attribute("id", "referenceable")
+      .beside(Picture.text("Click me!").noStroke.fillColor(Color.black))
+      .attribute(style := "cursor: pointer;")
+      .attribute(onclick := { () =>
+        dom.window.alert("You clicked me!")
+      })
       .drawWithFrame(Frame(id))
 }

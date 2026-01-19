@@ -17,17 +17,20 @@
 package doodle.svg.algebra
 
 import doodle.algebra.Algebra
+import scalatags.generic.AttrPair
 
-/** This algebra allows you to include (ScalaTags) tags within a SVG drawing.
+/** This algebra allows you to include (ScalaTags) attributes within a SVG
+  * drawing.
   *
-  * The type parameter `Tag` is the type of tags for the Scalatags backend in
-  * use.
+  * The type parameter `Builder` corresponds to backend-specific `Builder` type
+  * in ScalaTags.
   */
-trait Tagged[Tag] extends Algebra {
+trait Attributed[Builder] extends Algebra {
 
-  /** Wrap the given Tag around the given Drawing. */
-  def tagged[A](drawing: Drawing[A], tag: Tag): Drawing[A]
+  /** Add an attribute to the given Drawing. */
+  def attribute[A, T](
+      drawing: Drawing[A],
+      attr: AttrPair[Builder, T]
+  ): Drawing[A]
 
-  /** A utility to wrap a link (an `a` tag) around a Drawing. */
-  def link[A](drawing: Drawing[A], href: String): Drawing[A]
 }

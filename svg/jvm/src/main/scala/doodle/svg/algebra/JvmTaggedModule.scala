@@ -18,9 +18,11 @@ package doodle.svg.algebra
 
 import doodle.svg.JvmBase
 import scalatags.generic.Attr
+import scalatags.generic.AttrPair
+import scalatags.generic.TypedTag
 
 trait JvmTaggedModule extends JvmBase {
-  trait JvmTagged extends Tagged[Tag] {
+  trait JvmTagged extends Tagged[Tag], Attributed[Builder] {
     self: doodle.algebra.Algebra {
       type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
     } =>
@@ -45,12 +47,19 @@ trait JvmTaggedModule extends JvmBase {
     def link[A](drawing: Drawing[A], href: String): Drawing[A] =
       tagged(drawing, tags.a(bundle.attrs.href := href))
 
-    def attribute[A](
+    def attribute[A, T](
         drawing: Drawing[A],
-        attrLabel: String,
-        value: String
+        attr: AttrPair[Builder, T]
     ): Drawing[A] =
-      tagged(drawing, tags.div(Attr(attrLabel) := value))
-
+      drawing.map((bb, rdr) =>
+        val newRdr = rdr.map { case (svg, other, a) =>
+          (
+            svg.apply(attr),
+            other,
+            a
+          )
+        }
+        (bb, newRdr)
+      )
   }
 }
