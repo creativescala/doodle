@@ -4,6 +4,8 @@
 
 - Improve font documentation
 
+- SVG supports adding attributes (with `@jonoabroad`)
+
 
 ## 0.32.0 30-Oct-2025
 
