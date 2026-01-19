@@ -182,7 +182,7 @@
       <div id="contentbar" class="mx-auto flex-1">
         <div class="max-w-prose mx-auto">
           <div id="content"><h1 id="tagging-pictures" class="title">Tagging Pictures</h1>
-<p>The SVG backend allows you to add <a href="https://github.com/com-lihaoyi/scalatags">ScalaTags</a> tags into SVG output.
+<p>The SVG backend allows you to add <a href="https://github.com/com-lihaoyi/scalatags">ScalaTags</a> tags and attributes into SVG output.
 For example, we can add a hyperlink to an element within a SVG drawing using the
 <code>link</code> method. Here&#39;s an example. Notice that we import
 <code>doodle.svg.syntax.all.*</code> to get the <code>link</code> extension method.</p>
@@ -203,22 +203,30 @@ For example, we can add a hyperlink to an element within a SVG drawing using the
 wrapped around the SVG drawing on which they are called. Note that should only
 use tags in the SVG namespace. Mixing HTML and SVG tags will likely result in a
 drawing that does not render. </p>
-<p>This functionality currently does not allow you add tags that do not surround a SVG picture created via Doodle. If you would
-benefit from removing these limitations, please join our Discord and mention
-this. </p>
+<p>We can also add an attribute using the <code>attribute</code> method. Here&#39;s an example.</p>
 <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">core</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">svg</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">svg</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
 </span><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">scalatags</span><span>.</span><span class="type-name">JsDom</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">scalatags</span><span>.</span><span class="type-name">JsDom</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalajs</span><span>.</span><span class="identifier">dom</span><span>
 
 </span><span class="type-name">Picture</span><span>
   .</span><span class="identifier">regularPolygon</span><span>(</span><span class="number-literal">7</span><span>, </span><span class="number-literal">15</span><span>)
   .</span><span class="identifier">strokeWidth</span><span>(</span><span class="number-literal">5.0</span><span>)
-  .</span><span class="identifier">beside</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Creative Scala&quot;</span><span>).</span><span class="identifier">noStroke</span><span>.</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>))
-  .</span><span class="identifier">attribute</span><span>(</span><span class="string-literal">&quot;id&quot;</span><span>,</span><span class="string-literal">&quot;referenceable&quot;</span><span>)</span></code></pre>
-<p>This produces the output shown below.</p>
-<div class="doodle" id="draw-link"></div>
-<script>SvgAttributedExamples.drawWithAttribute("draw-link")</script>
+  .</span><span class="identifier">beside</span><span>(</span><span class="type-name">Picture</span><span>.</span><span class="identifier">text</span><span>(</span><span class="string-literal">&quot;Click me!&quot;</span><span>).</span><span class="identifier">noStroke</span><span>.</span><span class="identifier">fillColor</span><span>(</span><span class="type-name">Color</span><span>.</span><span class="identifier">black</span><span>))
+  .</span><span class="identifier">attribute</span><span>(</span><span class="identifier">style</span><span> := </span><span class="string-literal">&quot;cursor: pointer;&quot;</span><span>)
+  .</span><span class="identifier">attribute</span><span>(</span><span class="identifier">onclick</span><span> := { () =&gt;
+    </span><span class="identifier">dom</span><span>.</span><span class="identifier">window</span><span>.</span><span class="identifier">alert</span><span>(</span><span class="string-literal">&quot;You clicked me!&quot;</span><span>)
+  })</span></code></pre>
+<p>This produces the output shown below. Notice that the pointer changes when over
+the drawing, and when you click it you should see an alert box pop up.</p>
+<div class="doodle" id="draw-attribute"></div>
+<script>SvgAttributedExamples.drawWithAttribute("draw-attribute")</script>
+<p>This functionality currently does not allow you add tags that do not surround a SVG picture created via Doodle. If you would
+benefit from removing these limitations, please join our Discord and mention
+this. </p>
 <p>Note this only works on SVG, and attempting to use it with a
 different backend will fail to compile.</p></div>
           <div class="flex flex-row justify-between">
