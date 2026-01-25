@@ -17,6 +17,9 @@
 package doodle
 package algebra
 
+import doodle.core.ClosedPath
+import doodle.core.OpenPath
+
 /** Represents converting from the Input type to a Picture, and depends on the
   * support of some Algebra to actually do the conversion. This can be used to
   * represent, for example, creating a picture from a bitmap in a base64 encoded
@@ -24,4 +27,21 @@ package algebra
   */
 trait ToPicture[Input, Alg <: Algebra] {
   def toPicture(in: Input): Picture[Alg, Unit]
+}
+object ToPicture {
+  given [Alg <: Path]: ToPicture[OpenPath, Alg] with {
+    def toPicture(in: OpenPath): Picture[Alg, Unit] =
+      new Picture[Alg, Unit] {
+        def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+          algebra.path(in)
+      }
+  }
+
+  given [Alg <: Path]: ToPicture[ClosedPath, Alg] with {
+    def toPicture(in: ClosedPath): Picture[Alg, Unit] =
+      new Picture[Alg, Unit] {
+        def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+          algebra.path(in)
+      }
+  }
 }
