@@ -22,7 +22,7 @@ val feather =
     .curveTo(90, 75, 90, 25, 10, 10)
     .moveTo(100, 100)
     .curveTo(75, 90, 25, 90, 10, 10)
-    .path
+    .toPicture
 ```
 
 Drawing this path creates the output below.
@@ -41,10 +41,10 @@ Here's an example showing the difference. We create a curve, drawn as both an op
 
 ```scala mdoc:silent
 val open =
-  OpenPath.empty.curveTo(90, 0, 100, 10, 50, 50).path.strokeColor(Color.red)
+  OpenPath.empty.curveTo(90, 0, 100, 10, 50, 50).toPicture.strokeColor(Color.red)
 
 val closed =
-  ClosedPath.empty.curveTo(90, 0, 100, 10, 50, 50).path.strokeColor(Color.blue)
+  ClosedPath.empty.curveTo(90, 0, 100, 10, 50, 50).toPicture.strokeColor(Color.blue)
 
 val curves = open.beside(closed)
 ```
@@ -66,7 +66,8 @@ The `close` method converts an `OpenPath` to a `ClosedPath`, and the `open` meth
 
 ## Creating Pictures from Paths
 
-To convert a path to a `Picture` you can use the `path` syntax method, which is demonstrated in the examples above, or use the `path` method on the `Picture` object.
+Use the `toPicture` method to convert a path to a `Picture`, as demonstrated in the examples above.
+There are two other ways to do this, which have been superceded by the `toPicture` method, but you might still see in older code: using the `path` method in place of `toPicture`, or calling the `path` method on the `Picture` object.
 
 To create an `Image` from a path, use the `path` method on `Image`. Here's an example.
 

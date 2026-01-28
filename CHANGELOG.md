@@ -1,3 +1,8 @@
+## NEXT
+
+- Add `toPicture` method to paths (with `@arnavsharma990`)
+
+
 ## 0.33.0 24-Jan-2026
 
 - Rework fonts to follow convention of `with` prefix for builder methods

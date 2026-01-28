@@ -30,21 +30,21 @@ object Path {
       .moveTo(100, 100)
       .curveTo(75, 90, 25, 90, 10, 10)
 
-  val picture = path.path.strokeWidth(3.0).strokeCap(Cap.round)
+  val picture = path.toPicture.strokeWidth(3.0).strokeCap(Cap.round)
 
   picture.save("pictures/basic-path.png")
 
   val open =
     OpenPath.empty
       .curveTo(90, 0, 100, 10, 50, 50)
-      .path
+      .toPicture
       .strokeColor(Color.red)
       .strokeWidth(3.0)
 
   val closed =
     ClosedPath.empty
       .curveTo(90, 0, 100, 10, 50, 50)
-      .path
+      .toPicture
       .strokeColor(Color.blue)
       .strokeWidth(3.0)
 

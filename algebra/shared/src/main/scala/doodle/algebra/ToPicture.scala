@@ -29,18 +29,18 @@ trait ToPicture[Input, Alg <: Algebra] {
   def toPicture(in: Input): Picture[Alg, Unit]
 }
 object ToPicture {
-  given [Alg <: Path]: ToPicture[OpenPath, Alg] with {
-    def toPicture(in: OpenPath): Picture[Alg, Unit] =
-      new Picture[Alg, Unit] {
-        def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+  given ToPicture[OpenPath, Path] with {
+    def toPicture(in: OpenPath): Picture[Path, Unit] =
+      new Picture[Path, Unit] {
+        def apply(implicit algebra: Path): algebra.Drawing[Unit] =
           algebra.path(in)
       }
   }
 
-  given [Alg <: Path]: ToPicture[ClosedPath, Alg] with {
-    def toPicture(in: ClosedPath): Picture[Alg, Unit] =
-      new Picture[Alg, Unit] {
-        def apply(implicit algebra: Alg): algebra.Drawing[Unit] =
+  given ToPicture[ClosedPath, Path] with {
+    def toPicture(in: ClosedPath): Picture[Path, Unit] =
+      new Picture[Path, Unit] {
+        def apply(implicit algebra: Path): algebra.Drawing[Unit] =
           algebra.path(in)
       }
   }
