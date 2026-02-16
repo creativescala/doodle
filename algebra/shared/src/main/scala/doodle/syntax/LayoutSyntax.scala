@@ -174,5 +174,44 @@ trait LayoutSyntax {
         def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.size(picture(algebra), extent)
       }
+    // Landmark-based margin methods
+    def margin(
+        top: Landmark,
+        right: Landmark,
+        bottom: Landmark,
+        left: Landmark
+    ): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.margin(picture(algebra), top, right, bottom, left)
+      }
+
+    def margin(
+        horizontal: Landmark,
+        vertical: Landmark
+    ): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.margin(picture(algebra), horizontal, vertical)
+      }
+
+    def margin(all: Landmark): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.margin(picture(algebra), all)
+      }
+
+    // Landmark-based size methods
+    def size(width: Landmark, height: Landmark): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.size(picture(algebra), width, height)
+      }
+
+    def size(extent: Landmark): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.size(picture(algebra), extent)
+      }
   }
 }

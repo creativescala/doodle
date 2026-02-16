@@ -145,4 +145,72 @@ trait GenericLayout[G[_]] extends Layout {
       (newBb, rdr)
     }
   }
+  def margin[A](
+      img: Finalized[G, A],
+      top: Landmark,
+      right: Landmark,
+      bottom: Landmark,
+      left: Landmark
+  ): Finalized[G, A] =
+    img.map { case (bb, rdr) =>
+      // Evaluate landmarks relative to current bounding box dimensions
+      // For left/right: use width as the reference dimension
+      // For top/bottom: use height as the reference dimension
+      val width = bb.width
+      val height = bb.height
+      
+      // Evaluate each landmark coordinate
+      // Using the x-coordinate of the landmark for horizontal margins
+      // Using the y-coordinate of the landmark for vertical margins
+      val topMargin = top.y.eval(0, height)
+      val rightMargin = right.x.eval(0, width)
+      val bottomMargin = bottom.y.eval(0, height)
+      val leftMargin = left.x.eval(0, width)
+      
+      val newBb = BoundingBox(
+        left = bb.left - leftMargin,
+        top = bb.top + topMargin,
+        right = bb.right + rightMargin,
+        bottom = bb.bottom - bottomMargin
+      )
+      (newBb, rdr)
+    }
+
+  def size[A](
+      img: Finalized[G, A],
+      width: Landmark,
+      height: Landmark
+  ): Finalized[G, A] =
+    img.map { case (bb, rdr) =>
+      // Evaluate landmarks relative to current bounding box dimensions
+      // Using the x-coordinate for width and y-coordinate for height
+      val currentWidth = bb.width
+      val currentHeight = bb.height
+      
+      // Evaluate the new dimensions
+      val newWidth = width.x.eval(0, currentWidth)
+      val newHeight = height.y.eval(0, currentHeight)
+      
+      // Validate the new dimensions
+      assert(
+        newWidth >= 0,
+        s"Evaluated size resulted in a width of ${newWidth}. The bounding box's width must be non-negative."
+      )
+      assert(
+        newHeight >= 0,
+        s"Evaluated size resulted in a height of ${newHeight}. The bounding box's height must be non-negative."
+      )
+      
+      val w = newWidth / 2.0
+      val h = newHeight / 2.0
+
+      val newBb = BoundingBox(
+        left = -w,
+        top = h,
+        right = w,
+        bottom = -h
+      )
+
+      (newBb, rdr)
+}
 }
