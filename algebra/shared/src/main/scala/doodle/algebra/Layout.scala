@@ -78,9 +78,9 @@ trait Layout extends Algebra {
 
   /** Set the width and height of the given `Drawing's` bounding box. Each
     * Landmark parameter can specify either absolute (point) or relative
-    * (percent) dimensions. Percentages are relative to the current bounding
-    * box size. For example, Landmark.percent(200, 200) will double the size,
-    * while Landmark.percent(50, 50) will halve it.
+    * (percent) dimensions. Percentages are relative to the current bounding box
+    * size. For example, Landmark.percent(200, 200) will double the size, while
+    * Landmark.percent(50, 50) will halve it.
     */
   def size[A](img: Drawing[A], width: Landmark, height: Landmark): Drawing[A]
 
@@ -143,8 +143,8 @@ trait Layout extends Algebra {
     size(img, extent, extent)
 
   /** Set the width and height to the same value, specified as a Landmark.
-    * Supports both absolute and percentage-based sizing. For example,
-    * size(img, Landmark.percent(200, 200)) will double the size.
+    * Supports both absolute and percentage-based sizing. For example, size(img,
+    * Landmark.percent(200, 200)) will double the size.
     */
   def size[A](img: Drawing[A], extent: Landmark): Drawing[A] =
     size(img, extent, extent)

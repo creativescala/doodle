@@ -158,7 +158,7 @@ trait GenericLayout[G[_]] extends Layout {
       // For top/bottom: use height as the reference dimension
       val width = bb.width
       val height = bb.height
-      
+
       // Evaluate each landmark coordinate
       // Using the x-coordinate of the landmark for horizontal margins
       // Using the y-coordinate of the landmark for vertical margins
@@ -166,7 +166,7 @@ trait GenericLayout[G[_]] extends Layout {
       val rightMargin = right.x.eval(0, width)
       val bottomMargin = bottom.y.eval(0, height)
       val leftMargin = left.x.eval(0, width)
-      
+
       val newBb = BoundingBox(
         left = bb.left - leftMargin,
         top = bb.top + topMargin,
@@ -186,11 +186,11 @@ trait GenericLayout[G[_]] extends Layout {
       // Using the x-coordinate for width and y-coordinate for height
       val currentWidth = bb.width
       val currentHeight = bb.height
-      
+
       // Evaluate the new dimensions
       val newWidth = width.x.eval(0, currentWidth)
       val newHeight = height.y.eval(0, currentHeight)
-      
+
       // Validate the new dimensions
       assert(
         newWidth >= 0,
@@ -200,7 +200,7 @@ trait GenericLayout[G[_]] extends Layout {
         newHeight >= 0,
         s"Evaluated size resulted in a height of ${newHeight}. The bounding box's height must be non-negative."
       )
-      
+
       val w = newWidth / 2.0
       val h = newHeight / 2.0
 
@@ -212,5 +212,5 @@ trait GenericLayout[G[_]] extends Layout {
       )
 
       (newBb, rdr)
-}
+    }
 }
