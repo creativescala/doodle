@@ -29,6 +29,7 @@ trait AlgebraModule {
     with ShapeModule
     with PathModule
     with SvgModule
+    with BlendModule
     with FilterModule
     with ImageModule =>
   trait BaseAlgebra
@@ -38,6 +39,7 @@ trait AlgebraModule {
       with Shape
       with Path
       with Text
+      with Blend
       with Filter
       with Image
       with GenericDebug[SvgResult]

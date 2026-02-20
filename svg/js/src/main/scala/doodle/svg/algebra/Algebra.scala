@@ -28,6 +28,7 @@ import org.scalajs.dom.svg.Rect
 
 trait JsAlgebraModule
     extends AlgebraModule
+    with BlendModule
     with FilterModule
     with ImageModule
     with JsTaggedModule
@@ -43,6 +44,7 @@ trait JsAlgebraModule
       val applyF: Apply[SvgResult],
       val functorF: Functor[SvgResult]
   ) extends BaseAlgebra
+      with Blend
       with Filter
       with HasTextBoundingBox[Rect]
       with Image
