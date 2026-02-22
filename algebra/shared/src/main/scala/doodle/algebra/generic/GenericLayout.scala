@@ -145,7 +145,7 @@ trait GenericLayout[G[_]] extends Layout {
       (newBb, rdr)
     }
   }
-  def margin[A](
+  override def margin[A](
       img: Finalized[G, A],
       top: Landmark,
       right: Landmark,
@@ -176,7 +176,7 @@ trait GenericLayout[G[_]] extends Layout {
       (newBb, rdr)
     }
 
-  def size[A](
+  override def size[A](
       img: Finalized[G, A],
       width: Landmark,
       height: Landmark

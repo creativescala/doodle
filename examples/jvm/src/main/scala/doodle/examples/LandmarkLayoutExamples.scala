@@ -82,7 +82,7 @@ object LandmarkLayoutExamples {
     * Creates a grid where elements scale proportionally
     */
   def responsiveGrid = {
-    val cell = square(60).fillColor(Color.hotpink)
+    val cell = square(60).fillColor(Color.hotPink)
 
     // Each cell scales to 80% of its size
     val scaled = cell.size(Landmark.percent(80, 80))

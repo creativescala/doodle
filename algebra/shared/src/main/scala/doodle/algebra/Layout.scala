@@ -60,6 +60,11 @@ trait Layout extends Algebra {
     * dimensions. Percentages are relative to the current bounding box size:
     * left/right margins are percentages of the current width, top/bottom
     * margins are percentages of the current height.
+    *
+    * The default implementation evaluates Landmarks against a zero-sized
+    * bounding box (so percentage values resolve to 0 and point values give
+    * their absolute amounts). Override for full bbox-aware behaviour (as
+    * GenericLayout does).
     */
   def margin[A](
       img: Drawing[A],
@@ -67,7 +72,14 @@ trait Layout extends Algebra {
       right: Landmark,
       bottom: Landmark,
       left: Landmark
-  ): Drawing[A]
+  ): Drawing[A] =
+    margin(
+      img,
+      top.y.eval(0, 0),
+      right.x.eval(0, 0),
+      bottom.y.eval(0, 0),
+      left.x.eval(0, 0)
+    )
 
   /** Set the width and height of the given `Drawing's` bounding box to the
     * given values. The new bounding box has the same origin as the original
@@ -81,8 +93,14 @@ trait Layout extends Algebra {
     * (percent) dimensions. Percentages are relative to the current bounding box
     * size. For example, Landmark.percent(200, 200) will double the size, while
     * Landmark.percent(50, 50) will halve it.
+    *
+    * The default implementation evaluates Landmarks against a zero-sized
+    * bounding box (so percentage values resolve to 0 and point values give
+    * their absolute amounts). Override for full bbox-aware behaviour (as
+    * GenericLayout does).
     */
-  def size[A](img: Drawing[A], width: Landmark, height: Landmark): Drawing[A]
+  def size[A](img: Drawing[A], width: Landmark, height: Landmark): Drawing[A] =
+    size(img, width.x.eval(0, 0), height.y.eval(0, 0))
 
   // Derived methods
 
