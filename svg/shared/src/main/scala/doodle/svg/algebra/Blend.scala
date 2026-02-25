@@ -55,7 +55,7 @@ trait BlendModule { root: Base with SvgModule =>
             import b.{svgAttrs, svgTags}
 
             val blendedTag = svgTags.g(
-              svgAttrs.style := s"mix-blend-mode: $mode",
+              svgAttrs.style := s"mix-blend-mode: $mode;",
               tag
             )
 
