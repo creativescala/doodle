@@ -29,6 +29,7 @@ trait TestAlgebraModule
     with PathModule
     with ShapeModule
     with SvgModule
+    with BlendModule
     with FilterModule
     with ImageModule
     with TestBase {
@@ -39,6 +40,7 @@ trait TestAlgebraModule
       val applyF: Apply[SvgResult],
       val functorF: Functor[SvgResult]
   ) extends BaseAlgebra
+      with Blend
       with Filter
       with Image {
 

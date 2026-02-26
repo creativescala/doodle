@@ -35,6 +35,7 @@ trait JvmAlgebraModule
     with ShapeModule
     with SvgModule
     with TextModule
+    with BlendModule
     with FilterModule
     with ImageModule
     with JvmBase {
@@ -45,6 +46,7 @@ trait JvmAlgebraModule
       with BaseAlgebra
       with Text
       with JvmTagged
+      with Blend
       with Filter
       with Image
       with HasTextBoundingBox[Rectangle2D] {
