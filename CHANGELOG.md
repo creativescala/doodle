@@ -1,5 +1,8 @@
 ## NEXT
 
+
+## 0.34 26-Feb-2026
+
 - Add `toPicture` method to paths (with `@arnavsharma990`)
 
 - Add blend modes to SVG backend (with `@arnavsharma990`)
