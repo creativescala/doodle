@@ -17,30 +17,42 @@
 package doodle
 package core
 
-/** A Coordinate represents a position on an axis relative to a bounding box's
-  * origin. Coordinates can be specified as a (1D) point or as a percentage
-  * relative to the edge of the bounding box.
+/** A Coordinate represents a position on an axis relative to a
+  * [[package.BoundingBox]] origin. Coordinates can be specified as a (1D) point
+  * or as a percentage relative to the edge of the bounding box.
   *
   * For example, `Coordinate.point(10)` is ten units from the origin in the
   * positive direction, while `Coordinate.percent(100)` is the positive (top or
   * right) edge of the bounding box.
   */
-sealed trait Coordinate {
-  import Coordinate.*
+enum Coordinate {
 
+  /** Values must be normalized so 100% is represented as 1.0 */
+  case Percent(value: Double)
+  case Point(value: Double)
+  case Add(left: Coordinate, right: Coordinate)
+  case Subtract(left: Coordinate, right: Coordinate)
+
+  /** Add together two Coordinates. */
   def add(that: Coordinate): Coordinate =
     Add(this, that)
 
+  /** Add together two Coordinates. */
   def +(that: Coordinate): Coordinate =
     Add(this, that)
 
+  /** Subtract two Coordinates. */
   def subtract(that: Coordinate): Coordinate =
     Subtract(this, that)
 
+  /** Subtract two Coordinates. */
   def -(that: Coordinate): Coordinate =
     Subtract(this, that)
 
-  /** Evaluate this Coordinate given values for -100% and +100% */
+  /** Convert the Coordinate to a value in Doodle's abstract units (which
+    * usually refer to pixels) relative to the origin, given values for -100%
+    * and +100%
+    */
   def eval(negative: Double, positive: Double): Double =
     this match {
       case Percent(value) =>
@@ -57,14 +69,17 @@ sealed trait Coordinate {
 }
 object Coordinate {
 
-  /** Value is normalized so 100 percent is 1.0 */
-  final case class Percent(value: Double) extends Coordinate
-  final case class Point(value: Double) extends Coordinate
-  final case class Add(left: Coordinate, right: Coordinate) extends Coordinate
-  final case class Subtract(left: Coordinate, right: Coordinate)
-      extends Coordinate
-
+  /** Construct a [[package.Coordinate]] as a percentage value. For example,
+    * `Coordinate.percent(100)` represents 100% of the right or top edge of the
+    * bounding box, while `Coordinate.percent(0)` is the origin.
+    */
   def percent(value: Double): Coordinate = Percent(value / 100.0)
+
+  /** Construct a [[package.Coordinate]] as a point value, expressed in Doodle's
+    * abstract units (which usually refer to pixels). `Coordinate.point(100)`
+    * represents 100 units towards the right or top edge of the bounding box,
+    * while `Coordinate.percent(0)` is the origin.
+    */
   def point(value: Double): Coordinate = Point(value)
   val zero = point(0.0)
   val oneHundredPercent = percent(100)

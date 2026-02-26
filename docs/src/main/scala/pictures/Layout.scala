@@ -23,26 +23,30 @@ import doodle.java2d.*
 import doodle.syntax.all.*
 
 object Layout {
-  val basicLayout =
-    Picture
-      .circle(100)
-      .strokeColor(Color.blue)
-      .beside(Picture.square(100).strokeColor(Color.darkBlue))
-      .above(Picture.triangle(100, 100).strokeColor(Color.crimson))
-      .strokeWidth(5.0)
+  {
+    val circle =
+      Picture.circle(100).strokeColor(Color.blue)
+    val square =
+      Picture.square(100).strokeColor(Color.darkBlue)
+    val triangle =
+      Picture.triangle(100, 100).strokeColor(Color.crimson)
+    val basicLayout =
+      circle.beside(square).above(triangle).strokeWidth(5.0)
 
-  basicLayout.save("pictures/basic-layout.png")
+    basicLayout.save("pictures/basic-layout.png")
+  }
 
-  val debugLayout =
-    Picture
-      .circle(100)
-      .debug
-      .beside(Picture.regularPolygon(5, 30).debug)
-      .above(
-        Picture.circle(100).beside(Picture.regularPolygon(5, 30)).debug
-      )
+  {
+    val circle = Picture.circle(100)
+    val pentagon = Picture.regularPolygon(5, 30)
 
-  debugLayout.save("pictures/debug-layout.png")
+    val debugLayout =
+      circle.debug
+        .beside(pentagon.debug)
+        .above(circle.beside(pentagon).debug)
+
+    debugLayout.save("pictures/debug-layout.png")
+  }
 
   val atAndOriginAt =
     Picture
@@ -64,27 +68,61 @@ object Layout {
 
   pentagon.save("pictures/pentagon.png")
 
-  val overlappingCircles =
-    Picture
-      .circle(100)
-      .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(-50)))
-      .on(
-        Picture
-          .circle(100)
-          .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(-50)))
-      )
-      .on(
-        Picture
-          .circle(100)
-          .originAt(Landmark(Coordinate.percent(-50), Coordinate.percent(50)))
-      )
-      .on(
-        Picture
-          .circle(100)
-          .originAt(Landmark(Coordinate.percent(50), Coordinate.percent(50)))
-      )
+  {
+    val bottomRight =
+      Picture
+        .circle(20)
+        .at(Landmark.bottomRight)
+        .on(Picture.circle(40).at(Landmark.bottomRight))
+        .on(Picture.circle(60).at(Landmark.bottomRight))
+        .on(Picture.circle(80).at(Landmark.bottomRight))
+        .on(Picture.circle(100).at(Landmark.bottomRight))
 
-  overlappingCircles.save("pictures/overlapping-circles.png")
+    bottomRight.save("pictures/bottom-right.png")
+  }
+
+  {
+    val landmark = Landmark.percent(-50, 50)
+    val quadrant =
+      Picture
+        .circle(20)
+        .originAt(landmark)
+        .on(Picture.circle(40).originAt(landmark))
+        .on(Picture.circle(60).originAt(landmark))
+        .on(Picture.circle(80).originAt(landmark))
+        .on(Picture.circle(100).originAt(landmark))
+
+    quadrant.save("pictures/quadrant.png")
+  }
+
+  {
+    val percent50 = Coordinate.percent(50)
+    val percentMinus50 = Coordinate.percent(-50)
+    val point50 = Coordinate.point(50)
+    val pointMinus50 = Coordinate.point(-50)
+
+    val overlappingCircles =
+      Picture
+        .circle(100)
+        .originAt(Landmark(percent50, pointMinus50))
+        .on(
+          Picture
+            .circle(100)
+            .originAt(Landmark(percentMinus50, pointMinus50))
+        )
+        .on(
+          Picture
+            .circle(100)
+            .originAt(Landmark(percent50, point50))
+        )
+        .on(
+          Picture
+            .circle(100)
+            .originAt(Landmark(percentMinus50, point50))
+        )
+
+    overlappingCircles.save("pictures/overlapping-circles.png")
+  }
 
   val circle = Picture.circle(50)
   val rollingCircles =
