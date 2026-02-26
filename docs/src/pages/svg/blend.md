@@ -1,45 +1,67 @@
 # Blend Modes
 
-The SVG backend supports CSS-style blend modes for creating compositing effects.
-Blend modes control how colors from one element interact with the colors beneath it,
-enabling effects like screen blending, color burning, and more.
+The SVG backend supports [CSS-style blend modes][css-blend] for creating compositing effects.
+Blend modes control how colors from one element interact with the colors beneath it.
+By default an color simply overwrites what is beneath, 
+but by changing the blend mode you can make the two colors interact in creative ways.
 
-## How Blend Modes Work
-
-Blend modes use the CSS `mix-blend-mode` property to determine how a drawing element's
-colors are merged with the background. This allows you to create effects without needing
-to manipulate pixel values directly.
 
 ## Using Blend Modes
 
+The SVG backend supports the following blend modes:
 
-The following blend mode extension methods are available on `Picture`:
+- screen: lightens by inverting, multiplying, and inverting again.
+- burn: darkens by inverting the bottom, dividing by the top, and inverting again. Corresponds to CSS `color-burn`.
+- dodge: divide the bottom by the inverse of the top. Corresponds to CSS `color-dodge`.
+- lighten: selects the lighter color.
+- sourceOver: the default, in which the top color overwrites whatever is below it. Corresponds to CSS `normal`.
 
-- `.screen` — Lightens by inverting, multiplying, and inverting again
-- `.burn` — Darkens by inverting the blend
-- `.dodge` — Lightens by inverting the base
-- `.lighten` — Selects the lighter color
-- `.sourceOver` — Standard opacity blending (default)
+Here's an example showing three polygons blended together with `screen` and `dodge`.
 
-
-Here's a minimal usage example:
-
-```scala
+```scala mdoc:silent
 import doodle.core.*
 import doodle.svg.*
 import doodle.syntax.all.*
 
-val red = Picture.circle(50).fillColor(Color.red).noStroke
-val blue = Picture.circle(50).fillColor(Color.blue).noStroke.translateX(40)
+val red = Picture
+  .regularPolygon(5, 50)
+  .fillColor(Color.indianRed)
+  .strokeColor(Color.mediumPurple)
+  .strokeWidth(7)
 
-// Apply screen blend mode to the blue circle
-val blended = red.beside(blue.screen)
+val green = Picture
+  .regularPolygon(7, 50)
+  .fillColor(Color.lawnGreen)
+  .strokeColor(Color.forestGreen)
+  .strokeWidth(7)
+
+val blue = Picture
+  .regularPolygon(9, 50)
+  .fillColor(Color.dodgerBlue)
+  .strokeColor(Color.lavenderBlush)
+  .strokeWidth(7)
+
+red
+  .at(Landmark.centerLeft)
+  .screen
+  .on(blue.at(Landmark.centerRight).dodge)
+  .on(green)
 ```
 
-The rendered result will show the overlapping area with the blend effect applied,
-lightening the colors where the circles overlap.
+This produces the following:
 
-## Browser Rendering
+@:doodle(polygons, SvgBlendModes.polygons)
 
-Blend modes are rendered using native SVG and CSS support, ensuring good performance
-and visual fidelity. They work in all modern browsers that support the `mix-blend-mode` CSS property.
+The following picture shows examples of all the blend modes, where the red and blue circles are placed on top of the green circle and both blended with the given mode.
+
+@:doodle(blend-table, SvgBlendModes.table)
+
+
+## Implementation Notes
+
+Blend modes are rendered using the [CSS `mix-blend-mode`][mix-blend-mode] property. At the time of writing there are still a few browsers, mainly on mobile devices, that don't support this feature on SVG elements. Check [compatibility] for your use case.
+
+
+[css-blend]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/blend-mode
+[mix-blend-mode]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mix-blend-mode
+[compatibility]: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mix-blend-mode#browser_compatibility
