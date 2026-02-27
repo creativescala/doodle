@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Laika 1.0.0" />
-    <title>Style Examples</title>
+    <title>Blend Modes</title>
      
     <meta name="description" content="docs" />
     
@@ -99,10 +99,10 @@
                     <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
                     <li class="level2 nav-node"><a href="index.html">Canvas Backend</a></li>
                     <li class="level3 nav-leaf"><a href="bitmap.html">Bitmaps in Canvas</a></li>
-                    <li class="level3 nav-leaf"><a href="blend.html">Blend Modes</a></li>
+                    <li class="level3 active nav-leaf"><a href="#">Blend Modes</a></li>
                     <li class="level3 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
                     <li class="level3 nav-leaf"><a href="layout-examples.html">Layout Examples</a></li>
-                    <li class="level3 active nav-leaf"><a href="#">Style Examples</a></li>
+                    <li class="level3 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
                     <li class="level3 nav-leaf"><a href="text-examples.html">Text Examples</a></li>
                     <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
                     <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
@@ -172,10 +172,10 @@
             <li class="level3 nav-leaf"><a href="../svg/examples.html">Examples</a></li>
             <li class="level2 nav-node"><a href="index.html">Canvas Backend</a></li>
             <li class="level3 nav-leaf"><a href="bitmap.html">Bitmaps in Canvas</a></li>
-            <li class="level3 nav-leaf"><a href="blend.html">Blend Modes</a></li>
+            <li class="level3 active nav-leaf"><a href="#">Blend Modes</a></li>
             <li class="level3 nav-leaf"><a href="examples.html">Miscellaneous Examples</a></li>
             <li class="level3 nav-leaf"><a href="layout-examples.html">Layout Examples</a></li>
-            <li class="level3 active nav-leaf"><a href="#">Style Examples</a></li>
+            <li class="level3 nav-leaf"><a href="style-examples.html">Style Examples</a></li>
             <li class="level3 nav-leaf"><a href="text-examples.html">Text Examples</a></li>
             <li class="level2 nav-node"><a href="../development/">Developing Doodle</a></li>
             <li class="level3 nav-leaf"><a href="../development/design.html">Design</a></li>
@@ -187,12 +187,20 @@
       </nav>
       <div id="contentbar" class="mx-auto flex-1">
         <div class="max-w-prose mx-auto">
-          <div id="content"><h1 id="style-examples" class="title">Style Examples</h1>
-<p>Examples from the <a href="../pictures/style.html">Style</a> documentation.</p>
-<div class="doodle" id="style-examples"></div>
-<script>CanvasStyleExamples.draw("style-examples")</script></div>
+          <div id="content"><h1 id="blend-modes" class="title">Blend Modes</h1>
+<p>The Canvas backend supports blend modes via the Canvas 2D API&#39;s <code>globalCompositeOperation</code> property.
+See the <a href="../pictures/blend.html">general blend mode documentation</a> for a description of the available blend modes and usage examples.</p>
+
+<h2 id="implementation-notes" class="section">Implementation Notes</h2>
+<p>Canvas blending currently does not work as intended when pictures have both a stroke and a fill. This is because the Canvas 2D API applies blend modes relative to the entire canvas, and stroking and filling a picture are each separate operations. The consequence is that the stroke blends with the fill. Correct per-layer blending requires <code>beginLayer</code> and <code>endLayer</code> support, which is not yet available.</p>
+<p>In the meantime, blend modes may still produce interesting effects, but the results may differ from what the SVG backend produces. Compare, for example, the canvas output </p>
+<div class="doodle" id="canvas-polygons"></div>
+<script>CanvasBlendExamples.drawPolygons("canvas-polygons")</script>
+<p>to the correct SVG output</p>
+<div class="doodle" id="svg-polygons"></div>
+<script>SvgBlendExamples.drawPolygons("svg-polygons")</script></div>
           <div class="flex flex-row justify-between">
-            <a class="pagenav" href="layout-examples.html">←Layout Examples</a> <a class="pagenav" href="text-examples.html">Text Examples→</a>
+            <a class="pagenav" href="bitmap.html">←Bitmaps in Canvas</a> <a class="pagenav" href="examples.html">Miscellaneous Examples→</a>
           </div>
         </div>
         <footer>
@@ -208,6 +216,7 @@
         <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
           <p>On This Page</p>
           <ul class="nav-list">
+            <li class="level1 nav-leaf"><a href="#implementation-notes">Implementation Notes</a></li>
           </ul>
         </div>
       </nav>
