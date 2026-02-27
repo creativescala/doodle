@@ -21,49 +21,38 @@ package algebra
 import doodle.algebra.generic.*
 
 trait BlendModule { root: Base with SvgModule =>
-  trait Blend extends doodle.algebra.Blend {
+  trait Blend extends GenericBlend[SvgResult] {
     self: doodle.algebra.Algebra {
       type Drawing[A] = doodle.algebra.generic.Finalized[SvgResult, A]
     } =>
 
-    def screen[A](image: Drawing[A]): Drawing[A] =
-      applyBlendMode(image, "screen")
+    object BlendApi extends BlendApi {
+      def applyBlend[A](
+          image: Finalized[SvgResult, A],
+          blendMode: BlendMode
+      ): Finalized[SvgResult, A] = {
+        val mode = blendMode.toCssName
+        image.flatMap { (bb, rdr) =>
+          Finalized.leaf { dc =>
+            val newRdr: Renderable[SvgResult, A] = rdr.map { result =>
+              val (tag, defs, a) = result
 
-    def burn[A](image: Drawing[A]): Drawing[A] =
-      applyBlendMode(image, "color-burn")
+              val b = bundle
+              import b.implicits.*
+              import b.{svgAttrs, svgTags}
 
-    def dodge[A](image: Drawing[A]): Drawing[A] =
-      applyBlendMode(image, "color-dodge")
+              val blendedTag = svgTags.g(
+                svgAttrs.style := s"mix-blend-mode: $mode;",
+                tag
+              )
 
-    def lighten[A](image: Drawing[A]): Drawing[A] =
-      applyBlendMode(image, "lighten")
+              (blendedTag, defs, a)
+            }
 
-    def sourceOver[A](image: Drawing[A]): Drawing[A] =
-      applyBlendMode(image, "normal")
-
-    private def applyBlendMode[A](
-        image: Drawing[A],
-        mode: String
-    ): Drawing[A] =
-      image.flatMap { (bb, rdr) =>
-        Finalized.leaf { dc =>
-          val newRdr: Renderable[SvgResult, A] = rdr.map { result =>
-            val (tag, defs, a) = result
-
-            val b = bundle
-            import b.implicits.*
-            import b.{svgAttrs, svgTags}
-
-            val blendedTag = svgTags.g(
-              svgAttrs.style := s"mix-blend-mode: $mode;",
-              tag
-            )
-
-            (blendedTag, defs, a)
+            (bb, newRdr)
           }
-
-          (bb, newRdr)
         }
       }
+    }
   }
 }

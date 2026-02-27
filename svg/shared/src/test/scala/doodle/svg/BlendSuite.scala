@@ -37,7 +37,7 @@ class BlendSuite
   }
 
   test("burn blend should render with mix-blend-mode color-burn") {
-    val picture = circle(100.0).burn
+    val picture = circle(100.0).colorBurn
 
     Svg
       .renderWithoutRootTag(algebraInstance, picture)
@@ -49,7 +49,7 @@ class BlendSuite
   }
 
   test("dodge blend should render with mix-blend-mode color-dodge") {
-    val picture = circle(100.0).dodge
+    val picture = circle(100.0).colorDodge
 
     Svg
       .renderWithoutRootTag(algebraInstance, picture)
@@ -73,7 +73,7 @@ class BlendSuite
   }
 
   test("sourceOver blend should render with mix-blend-mode normal") {
-    val picture = circle(100.0).sourceOver
+    val picture = circle(100.0).normal
 
     Svg
       .renderWithoutRootTag(algebraInstance, picture)

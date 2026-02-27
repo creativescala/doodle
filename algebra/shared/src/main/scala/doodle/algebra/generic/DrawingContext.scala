@@ -116,7 +116,7 @@ final case class DrawingContext(
 object DrawingContext {
   def default: DrawingContext =
     DrawingContext(
-      BlendMode.sourceOver,
+      BlendMode.Normal,
       StrokeStyle.color(Color.black),
       Option(1.0),
       Cap.butt,

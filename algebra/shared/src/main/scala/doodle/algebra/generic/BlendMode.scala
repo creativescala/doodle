@@ -18,17 +18,41 @@ package doodle
 package algebra
 package generic
 
-sealed abstract class BlendMode extends Product with Serializable
-object BlendMode {
-  case object Screen extends BlendMode
-  case object Burn extends BlendMode
-  case object Dodge extends BlendMode
-  case object Lighten extends BlendMode
-  case object SourceOver extends BlendMode
+enum BlendMode {
+  case Normal
+  case Darken
+  case Multiply
+  case ColorBurn
+  case Lighten
+  case Screen
+  case ColorDodge
+  case Overlay
+  case SoftLight
+  case HardLight
+  case Difference
+  case Exclusion
+  case Hue
+  case Saturation
+  case Color
+  case Luminosity
 
-  val screen: BlendMode = Screen
-  val burn: BlendMode = Burn
-  val dodge: BlendMode = Dodge
-  val lighten: BlendMode = Lighten
-  val sourceOver: BlendMode = SourceOver
+  def toCssName: String =
+    this match {
+      case Normal     => "normal"
+      case Darken     => "darken"
+      case Multiply   => "multiply"
+      case ColorBurn  => "color-burn"
+      case Lighten    => "lighten"
+      case Screen     => "screen"
+      case ColorDodge => "color-dodge"
+      case Overlay    => "overlay"
+      case SoftLight  => "soft-light"
+      case HardLight  => "hard-light"
+      case Difference => "difference"
+      case Exclusion  => "exclusion"
+      case Hue        => "hue"
+      case Saturation => "saturation"
+      case Color      => "color"
+      case Luminosity => "luminosity"
+    }
 }

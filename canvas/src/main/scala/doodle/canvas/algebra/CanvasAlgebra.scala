@@ -34,6 +34,7 @@ final case class CanvasAlgebra(
 ) extends Basic,
       HasTextBoundingBox,
       CanvasAlgebraFrom,
+      CanvasBlend,
       FromHtmlImageElement,
       FromImageBitmap,
       Path,

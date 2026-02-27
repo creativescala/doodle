@@ -279,6 +279,17 @@ object CanvasDrawing {
       canvas.strokeText(text, x, y)
     )
 
+  def withCompositeOperation[A](mode: String)(
+      drawing: CanvasDrawing[A]
+  ): CanvasDrawing[A] =
+    CanvasDrawing { ctx =>
+      val original = ctx.globalCompositeOperation
+      ctx.globalCompositeOperation = mode
+      val result = drawing(ctx)
+      ctx.globalCompositeOperation = original
+      result
+    }
+
   def withFill[A](
       fill: Option[Fill]
   )(drawing: CanvasDrawing[A]): CanvasDrawing[A] =

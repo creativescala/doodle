@@ -25,22 +25,28 @@ trait BlendSyntax {
   implicit class BlendPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-    def screen: Picture[Alg with Blend, A] =
+    def normal: Picture[Alg with Blend, A] =
       new Picture[Alg with Blend, A] {
         def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
-          algebra.screen(picture(algebra))
+          algebra.normal(picture(algebra))
       }
 
-    def burn: Picture[Alg with Blend, A] =
+    def darken: Picture[Alg with Blend, A] =
       new Picture[Alg with Blend, A] {
         def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
-          algebra.burn(picture(algebra))
+          algebra.darken(picture(algebra))
       }
 
-    def dodge: Picture[Alg with Blend, A] =
+    def multiply: Picture[Alg with Blend, A] =
       new Picture[Alg with Blend, A] {
         def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
-          algebra.dodge(picture(algebra))
+          algebra.multiply(picture(algebra))
+      }
+
+    def colorBurn: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.colorBurn(picture(algebra))
       }
 
     def lighten: Picture[Alg with Blend, A] =
@@ -49,10 +55,70 @@ trait BlendSyntax {
           algebra.lighten(picture(algebra))
       }
 
-    def sourceOver: Picture[Alg with Blend, A] =
+    def screen: Picture[Alg with Blend, A] =
       new Picture[Alg with Blend, A] {
         def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
-          algebra.sourceOver(picture(algebra))
+          algebra.screen(picture(algebra))
+      }
+
+    def colorDodge: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.colorDodge(picture(algebra))
+      }
+
+    def overlay: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.overlay(picture(algebra))
+      }
+
+    def softLight: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.softLight(picture(algebra))
+      }
+
+    def hardLight: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.hardLight(picture(algebra))
+      }
+
+    def difference: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.difference(picture(algebra))
+      }
+
+    def exclusion: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.exclusion(picture(algebra))
+      }
+
+    def hue: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.hue(picture(algebra))
+      }
+
+    def saturation: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.saturation(picture(algebra))
+      }
+
+    def color: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.color(picture(algebra))
+      }
+
+    def luminosity: Picture[Alg with Blend, A] =
+      new Picture[Alg with Blend, A] {
+        def apply(implicit algebra: Alg with Blend): algebra.Drawing[A] =
+          algebra.luminosity(picture(algebra))
       }
   }
 }
