@@ -1,5 +1,7 @@
 ## NEXT
 
+- `Blend` extended to support all CSS blend modes
+
 
 ## 0.34 26-Feb-2026
 
