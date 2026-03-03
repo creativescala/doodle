@@ -96,7 +96,10 @@ trait SvgModule { self: Base =>
             bundle.attrs.style :=
               "pointer-events: bounding-box; " ++
                 frame.background
-                  .map(c => s"background-color: ${Svg.toOklch(c)};")
+                  .map(c => s"background-color: ${Svg.toOklch(c)}; ")
+                  .getOrElse("") ++
+                frame.isolation
+                  .map(i => s"isolation: ${i.toCSS};")
                   .getOrElse("")
           )
 
@@ -109,7 +112,10 @@ trait SvgModule { self: Base =>
             bundle.attrs.style :=
               "pointer-events: bounding-box; " ++
                 frame.background
-                  .map(c => s"background-color: ${Svg.toOklch(c)};")
+                  .map(c => s"background-color: ${Svg.toOklch(c)}; ")
+                  .getOrElse("") ++
+                frame.isolation
+                  .map(i => s"isolation: ${i.toCSS};")
                   .getOrElse("")
           )
 
