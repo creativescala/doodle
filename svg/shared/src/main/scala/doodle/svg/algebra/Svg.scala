@@ -93,11 +93,16 @@ trait SvgModule { self: Base =>
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${bb.left - border} ${-bb.top - border} ${w} ${h}",
-            bundle.attrs.style :=
-              "pointer-events: bounding-box; " ++
-                frame.background
-                  .map(c => s"background-color: ${Svg.toOklch(c)};")
-                  .getOrElse("")
+            bundle.attrs.style := {
+              val parts = List(
+                Some("pointer-events: bounding-box;"),
+                frame.background.map(c =>
+                  s"background-color: ${Svg.toOklch(c)};"
+                ),
+                frame.isolation.map(i => s"isolation: ${i.toCSS};")
+              ).flatten
+              parts.mkString(" ")
+            }
           )
 
         case Size.FixedSize(w, h) =>
@@ -106,11 +111,16 @@ trait SvgModule { self: Base =>
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
-            bundle.attrs.style :=
-              "pointer-events: bounding-box; " ++
-                frame.background
-                  .map(c => s"background-color: ${Svg.toOklch(c)};")
-                  .getOrElse("")
+            bundle.attrs.style := {
+              val parts = List(
+                Some("pointer-events: bounding-box;"),
+                frame.background.map(c =>
+                  s"background-color: ${Svg.toOklch(c)};"
+                ),
+                frame.isolation.map(i => s"isolation: ${i.toCSS};")
+              ).flatten
+              parts.mkString(" ")
+            }
           )
 
       }
