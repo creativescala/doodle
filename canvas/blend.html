@@ -25,7 +25,7 @@
       rel="stylesheet"
       type="text/css"
     />
-    <link rel="stylesheet" type="text/css" href="../css/creative-scala.css" /> <script src="../js/solution.js"></script><script src="../main.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/creative-scala.css" /> <script src="../js/theme-toggle.js"></script><script src="../js/solution.js"></script><script src="../main.js"></script>
     <script>
       /* for avoiding page load transitions */
     </script>
@@ -34,24 +34,17 @@
   <body>
     <header>
       <div id="topbar">
-        <nav id="topbar">
-          <button
-            class="text-sm text-pink-800 font-sans font-semibold hover:text-pink-600 focus:text-pink-600"
-            popovertarget="topbar-nav"
-          >
+        <nav id="sm-contents">
+          <button id="toc-toggle" class="text-sm font-sans font-semibold" popovertarget="sm-toc">
             Contents
           </button>
-          <div id="topbar-nav" popover="auto">
-            <div id="topbar-nav-container" class="flex justify-items-center items-center h-dvh w-dvw">
-              <div
-                class="p-4 mx-auto rounded-md bg-white border border-slate-900 max-h-4/5 w-4/5 overflow-y-auto overflow-x-auto flex flex-col items-end"
-              >
-                <button
-                  class="text-slate-900 hover:text-pink-800 focus:text-pink-800"
-                  popovertarget="topbar-nav"
-                  popovertargetaction="hide"
-                >
-                  ✕
+          <div id="sm-toc" popover="auto">
+            <div id="sm-toc-container">
+              <div id="sm-toc-box">
+                <button id="toc-close" popovertarget="sm-toc" popovertargetaction="hide" >
+                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
                 </button>
                 <div class="w-full">
                   <ul class="nav-list">
@@ -116,17 +109,29 @@
           </div>
         </nav>
         <nav id="home"><a class="text-link" href="../">Doodle</a></nav>
-        <nav id="external"><a href="https://discord.gg/rRhcFbJxVG">Community<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest">API<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://github.com/creativescala/doodle">Source<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a></nav>
+        <div>
+          <nav id="external">
+            <a href="https://discord.gg/rRhcFbJxVG">Community<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://javadoc.io/doc/org.creativescala/doodle-docs_3/latest">API<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a> <a href="https://github.com/creativescala/doodle">Source<span><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-square-arrow-out-up-right' > <path d='M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6' /> <path d='m21 3-9 9' /> <path d='M15 3h6v6' /> </svg></span></a>
+          </nav>
+          <span>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+            <button class="toggle-button" onclick="toggleTheme()" aria-label="Toggle dark mode">
+              <span class="toggle-circle"></span>
+            </button>
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+            </svg>
+          </span>
+        </div>
       </div>
     </header>
 
-    <main class="max-w-8xl mx-auto my-8 min-h-screen flex">
+    <main>
       <!-- Left sticky table of contents -->
-      <nav
-        id="sitebar"
-        class="hidden lg:block min-w-64 max-w-md mr-8 sticky top-24 self-start flex-shrink-0"
-      >
-        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+      <nav id="contents">
+        <div>
           <ul class="nav-list">
             <li class="level1 nav-node"><a href="../">Doodle</a></li>
             <li class="level2 nav-node"><a href="../pictures/">Creating Pictures</a></li>
@@ -185,8 +190,8 @@
           </ul>
         </div>
       </nav>
-      <div id="contentbar" class="mx-auto flex-1">
-        <div class="max-w-prose mx-auto">
+      <div id="contentbar">
+        <div id="content-inner">
           <div id="content"><h1 id="blend-modes" class="title">Blend Modes</h1>
 <p>The Canvas backend supports blend modes via the Canvas 2D API&#39;s <code>globalCompositeOperation</code> property.
 See the <a href="../pictures/blend.html">general blend mode documentation</a> for a description of the available blend modes and usage examples.</p>
@@ -199,7 +204,7 @@ See the <a href="../pictures/blend.html">general blend mode documentation</a> fo
 <p>to the correct SVG output</p>
 <div class="doodle" id="svg-polygons"></div>
 <script>SvgBlendExamples.drawPolygons("svg-polygons")</script></div>
-          <div class="flex flex-row justify-between">
+          <div id="pagenav-wrapper">
             <a class="pagenav" href="bitmap.html">←Bitmaps in Canvas</a> <a class="pagenav" href="examples.html">Miscellaneous Examples→</a>
           </div>
         </div>
@@ -209,11 +214,8 @@ See the <a href="../pictures/blend.html">general blend mode documentation</a> fo
         </footer>
       </div>
       <!-- Right sticky page contents -->
-      <nav
-        id="pagebar"
-        class="hidden lg:block min-w-60 max-w-64 ml-8 sticky top-24 self-start flex-shrink-0"
-      >
-        <div class="max-h-[calc(100vh-6rem)] overflow-y-auto">
+      <nav id="pagebar">
+        <div>
           <p>On This Page</p>
           <ul class="nav-list">
             <li class="level1 nav-leaf"><a href="#implementation-notes">Implementation Notes</a></li>
