@@ -24,7 +24,7 @@
     --color-blue-900: oklch(0.379 0.146 265.522);
     --color-pink-300: oklch(0.823 0.12 346.018);
     --color-pink-400: oklch(0.718 0.202 349.761);
-    --color-pink-600: oklch(0.592 0.249 0.584);
+    --color-pink-500: oklch(0.656 0.241 354.308);
     --color-pink-800: oklch(0.459 0.187 3.815);
     --color-pink-900: oklch(0.408 0.153 2.432);
     --color-rose-400: oklch(0.712 0.194 13.428);
@@ -886,7 +886,7 @@ div#content {
         }
       }
       .identifier {
-        color: var(--color-pink-600);
+        color: var(--color-pink-500);
         &:where(.dark, .dark *) {
           color: var(--color-pink-300);
         }
