@@ -151,3 +151,4 @@ project/metals.sbt
 
 ## NPM
 node_modules/
+targets.tar

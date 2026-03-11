@@ -55,12 +55,52 @@ trait Layout extends Algebra {
       left: Double
   ): Drawing[A]
 
+  /** Expand the bounding box of img by the given amounts. Each Landmark
+    * parameter can specify either absolute (point) or relative (percent)
+    * dimensions. Percentages are relative to the current bounding box size:
+    * left/right margins are percentages of the current width, top/bottom
+    * margins are percentages of the current height.
+    *
+    * The default implementation evaluates Landmarks against a zero-sized
+    * bounding box (so percentage values resolve to 0 and point values give
+    * their absolute amounts). Override for full bbox-aware behaviour (as
+    * GenericLayout does).
+    */
+  def margin[A](
+      img: Drawing[A],
+      top: Landmark,
+      right: Landmark,
+      bottom: Landmark,
+      left: Landmark
+  ): Drawing[A] =
+    margin(
+      img,
+      top.y.eval(0, 0),
+      right.x.eval(0, 0),
+      bottom.y.eval(0, 0),
+      left.x.eval(0, 0)
+    )
+
   /** Set the width and height of the given `Drawing's` bounding box to the
     * given values. The new bounding box has the same origin as the original
     * bounding box, and extends symmetrically above and below, and left and
     * right of the origin.
     */
   def size[A](img: Drawing[A], width: Double, height: Double): Drawing[A]
+
+  /** Set the width and height of the given `Drawing's` bounding box. Each
+    * Landmark parameter can specify either absolute (point) or relative
+    * (percent) dimensions. Percentages are relative to the current bounding box
+    * size. For example, Landmark.percent(200, 200) will double the size, while
+    * Landmark.percent(50, 50) will halve it.
+    *
+    * The default implementation evaluates Landmarks against a zero-sized
+    * bounding box (so percentage values resolve to 0 and point values give
+    * their absolute amounts). Override for full bbox-aware behaviour (as
+    * GenericLayout does).
+    */
+  def size[A](img: Drawing[A], width: Landmark, height: Landmark): Drawing[A] =
+    size(img, width.x.eval(0, 0), height.y.eval(0, 0))
 
   // Derived methods
 
@@ -100,7 +140,30 @@ trait Layout extends Algebra {
   def margin[A](img: Drawing[A], width: Double): Drawing[A] =
     margin(img, width, width, width, width)
 
+  /** Expand the bounding box by horizontal and vertical margins specified as
+    * Landmarks. Supports both absolute and percentage-based margins.
+    */
+  def margin[A](
+      img: Drawing[A],
+      horizontal: Landmark,
+      vertical: Landmark
+  ): Drawing[A] =
+    margin(img, vertical, horizontal, vertical, horizontal)
+
+  /** Expand the bounding box by the same margin on all sides, specified as a
+    * Landmark. Supports both absolute and percentage-based margins.
+    */
+  def margin[A](img: Drawing[A], all: Landmark): Drawing[A] =
+    margin(img, all, all, all, all)
+
   /** Utility to set the width and height to the same value. */
   def size[A](img: Drawing[A], extent: Double): Drawing[A] =
+    size(img, extent, extent)
+
+  /** Set the width and height to the same value, specified as a Landmark.
+    * Supports both absolute and percentage-based sizing. For example, size(img,
+    * Landmark.percent(200, 200)) will double the size.
+    */
+  def size[A](img: Drawing[A], extent: Landmark): Drawing[A] =
     size(img, extent, extent)
 }
