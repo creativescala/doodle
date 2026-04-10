@@ -251,28 +251,33 @@ object LayoutSpec extends Properties("Layout properties") {
     val genShape = Generators.finalizedOfDepth(algebra, 5)
     val genFraction = Gen.choose[Double](-0.5, 0.5)
 
-    forAllNoShrink(genShape, genFraction, genFraction, genFraction, genFraction) {
-      (shape, topF, rightF, bottomF, leftF) =>
-        val bb = shape.boundingBox
-        val newBb = algebra
-          .margin(
-            shape,
-            Scalar.fraction(topF),
-            Scalar.fraction(rightF),
-            Scalar.fraction(bottomF),
-            Scalar.fraction(leftF)
-          )
-          .boundingBox
+    forAllNoShrink(
+      genShape,
+      genFraction,
+      genFraction,
+      genFraction,
+      genFraction
+    ) { (shape, topF, rightF, bottomF, leftF) =>
+      val bb = shape.boundingBox
+      val newBb = algebra
+        .margin(
+          shape,
+          Scalar.fraction(topF),
+          Scalar.fraction(rightF),
+          Scalar.fraction(bottomF),
+          Scalar.fraction(leftF)
+        )
+        .boundingBox
 
-        val top = bb.height * topF
-        val bottom = bb.height * bottomF
-        val right = bb.width * rightF
-        val left = bb.width * leftF
+      val top = bb.height * topF
+      val bottom = bb.height * bottomF
+      val right = bb.width * rightF
+      val left = bb.width * leftF
 
-        (newBb.left ?= bb.left - left) &&
-        (newBb.top ?= bb.top + top) &&
-        (newBb.right ?= bb.right + right) &&
-        (newBb.bottom ?= bb.bottom - bottom)
+      (newBb.left ?= bb.left - left) &&
+      (newBb.top ?= bb.top + top) &&
+      (newBb.right ?= bb.right + right) &&
+      (newBb.bottom ?= bb.bottom - bottom)
     }
   }
 

@@ -30,7 +30,7 @@ trait LayoutSyntax {
   implicit class LayoutPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
-  import Layout.Scalar
+    import Layout.Scalar
     def on[Alg2 <: Algebra](
         that: Picture[Alg2, A]
     )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =

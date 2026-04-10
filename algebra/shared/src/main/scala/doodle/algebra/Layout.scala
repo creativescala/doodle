@@ -57,8 +57,8 @@ trait Layout extends Algebra {
       left: Double
   ): Drawing[A]
 
-  /** Expand the bounding box of img by the given amounts, evaluated relative
-    * to the image's current bounding box.
+  /** Expand the bounding box of img by the given amounts, evaluated relative to
+    * the image's current bounding box.
     *
     * `top` and `bottom` are evaluated relative to the current bounding box
     * height; `left` and `right` are evaluated relative to the current bounding
@@ -147,7 +147,9 @@ object Layout {
       def eval(baseline: Double): Double = value
     }
 
-    /** A fraction of the baseline. For example, `0.1` means 10% of the baseline. */
+    /** A fraction of the baseline. For example, `0.1` means 10% of the
+      * baseline.
+      */
     final case class Fraction(value: Double) extends Scalar {
       def eval(baseline: Double): Double = baseline * value
     }
