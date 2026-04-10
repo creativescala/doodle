@@ -93,7 +93,7 @@ object Volcano {
 
   val image: Random[Image] = {
     val pts =
-      for (i <- 28 to 360 by 39) yield {
+      for i <- 28 to 360 by 39 yield {
         iterate(1.degrees) {
           point(
             rose(5),

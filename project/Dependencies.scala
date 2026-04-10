@@ -15,7 +15,7 @@ object Dependencies {
   val batikVersion = "1.19"
 
   val scalaCheckVersion = "1.15.4"
-  val munitVersion = "1.2.1"
+  val munitVersion = "1.2.4"
   val munitScalacheckVersion = "1.2.0"
   val munitCatsEffectVersion = "2.1.0"
 

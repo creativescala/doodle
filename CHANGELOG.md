@@ -2,6 +2,8 @@
 
 - `Blend` extended to support all CSS blend modes
 
+- Canvas backend supports blending
+
 
 ## 0.34 26-Feb-2026
 

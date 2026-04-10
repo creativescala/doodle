@@ -53,7 +53,7 @@ object Path {
   paths.save("pictures/open-closed-paths.png")
 
   val points =
-    for (x <- 0.to(360)) yield Point(x, x.degrees.sin * 100)
+    for x <- 0.to(360) yield Point(x, x.degrees.sin * 100)
 
   val curve = Picture.interpolatingSpline(points.toList)
 

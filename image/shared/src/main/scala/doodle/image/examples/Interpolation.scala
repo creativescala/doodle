@@ -25,8 +25,8 @@ import doodle.syntax.all.*
 
 object Interpolation {
   val pts =
-    for (x <- 1 to 400 by 20)
-      yield Point.cartesian(x.toDouble, (x / 100.0).turns.sin * 100)
+    for x <- 1 to 400 by 20
+    yield Point.cartesian(x.toDouble, (x / 100.0).turns.sin * 100)
 
   val dot =
     Image.circle(5).fillColor(Color.red)
