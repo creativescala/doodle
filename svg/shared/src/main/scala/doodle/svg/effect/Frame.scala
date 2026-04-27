@@ -34,13 +34,19 @@ import doodle.core.Color
 final case class Frame(
     id: String,
     size: Size,
-    background: Option[Color] = None
+    background: Option[Color] = None,
+    isolation: Option[Isolation] = None
 ) {
 
   /** Use the given color as the background.
     */
   def withBackground(color: Color): Frame =
     this.copy(background = Some(color))
+
+  /** Set the CSS isolation property on the SVG element.
+    */
+  def withIsolation(isolation: Isolation): Frame =
+    this.copy(isolation = Some(isolation))
 
   /** Size the canvas to fit to the picture's bounding box, plus the given
     * border around the bounding box.
@@ -54,5 +60,5 @@ final case class Frame(
 }
 object Frame {
   def apply(id: String): Frame =
-    Frame(id, Size.fitToPicture(), None)
+    Frame(id, Size.fitToPicture(), None, None)
 }
