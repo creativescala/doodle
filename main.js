@@ -38082,13 +38082,13 @@ $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.draw__T__V = (function
   var picture = $f_Ldoodle_examples_BaseExamples__all__Ldoodle_algebra_Picture(this);
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($m_Ldoodle_canvas_effect_Frame$().apply__T__Ldoodle_canvas_effect_Frame(id), $m_Ldoodle_canvas_package$package$().given_Renderer_Algebra_Frame_Canvas__Ldoodle_effect_Renderer(), $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.drawTable = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawTable__T__V(prep0);
-});
 $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.draw = (function(arg) {
   var prep0 = $as_T(arg);
   this.draw__T__V(prep0);
+});
+$c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.drawTable = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawTable__T__V(prep0);
 });
 $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.drawPolygons = (function(arg) {
   var prep0 = $as_T(arg);
