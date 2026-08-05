@@ -38393,10 +38393,6 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFontFamily__T__V = (funct
   var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_fontFamily;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawFont__T__V(prep0);
-});
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFontFamily = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawFontFamily__T__V(prep0);
@@ -38404,6 +38400,10 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFontFamily = (function(ar
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawDefault = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawDefault__T__V(prep0);
+});
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawFont__T__V(prep0);
 });
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
   var prep0 = $as_T(arg);
