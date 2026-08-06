@@ -20,6 +20,7 @@ package generic
 
 import cats.implicits.*
 import doodle.algebra.generic.reified.Reification
+import doodle.algebra.Layout.Scalar
 import doodle.core.BoundingBox
 import doodle.core.Transform as Tx
 import org.scalacheck.*
@@ -245,6 +246,41 @@ object LayoutSpec extends Properties("Layout properties") {
     }
   }
 
+  property("relative margin expands bounding box by the correct amount") = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+    val genFraction = Gen.choose[Double](-0.5, 0.5)
+
+    forAllNoShrink(
+      genShape,
+      genFraction,
+      genFraction,
+      genFraction,
+      genFraction
+    ) { (shape, topF, rightF, bottomF, leftF) =>
+      val bb = shape.boundingBox
+      val newBb = algebra
+        .margin(
+          shape,
+          Scalar.fraction(topF),
+          Scalar.fraction(rightF),
+          Scalar.fraction(bottomF),
+          Scalar.fraction(leftF)
+        )
+        .boundingBox
+
+      val top = bb.height * topF
+      val bottom = bb.height * bottomF
+      val right = bb.width * rightF
+      val left = bb.width * leftF
+
+      (newBb.left ?= bb.left - left) &&
+      (newBb.top ?= bb.top + top) &&
+      (newBb.right ?= bb.right + right) &&
+      (newBb.bottom ?= bb.bottom - bottom)
+    }
+  }
+
   property("size sets bounding box to the correct size") = {
     val algebra = TestAlgebra()
     val genShape = Generators.finalizedOfDepth(algebra, 5)
@@ -253,6 +289,27 @@ object LayoutSpec extends Properties("Layout properties") {
     forAllNoShrink(genShape, genDim, genDim) { (shape, width, height) =>
       val newBb = algebra
         .size(shape, width, height)
+        .boundingBox
+
+      (newBb.left ?= -(width / 2)) &&
+      (newBb.right ?= (width / 2)) &&
+      (newBb.top ?= (height / 2)) &&
+      (newBb.bottom ?= -(height / 2))
+    }
+  }
+
+  property("relative size sets bounding box to the correct size") = {
+    val algebra = TestAlgebra()
+    val genShape = Generators.finalizedOfDepth(algebra, 5)
+    val genFraction = Gen.choose[Double](0.0, 2.0)
+
+    forAllNoShrink(genShape, genFraction, genFraction) { (shape, wF, hF) =>
+      val bb = shape.boundingBox
+      val width = bb.width * wF
+      val height = bb.height * hF
+
+      val newBb = algebra
+        .size(shape, Scalar.fraction(wF), Scalar.fraction(hF))
         .boundingBox
 
       (newBb.left ?= -(width / 2)) &&

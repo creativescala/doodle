@@ -30,6 +30,7 @@ trait LayoutSyntax {
   implicit class LayoutPictureOps[Alg <: Algebra, A](
       picture: Picture[Alg, A]
   ) {
+    import Layout.Scalar
     def on[Alg2 <: Algebra](
         that: Picture[Alg2, A]
     )(implicit s: Semigroup[A]): Picture[Alg with Alg2 with Layout, A] =
@@ -151,6 +152,17 @@ trait LayoutSyntax {
           algebra.margin(picture(algebra), top, right, bottom, left)
       }
 
+    def margin(
+        top: Scalar,
+        right: Scalar,
+        bottom: Scalar,
+        left: Scalar
+    ): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.margin(picture(algebra), top, right, bottom, left)
+      }
+
     def margin(width: Double, height: Double): Picture[Alg with Layout, A] =
       new Picture[Alg with Layout, A] {
         def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
@@ -164,6 +176,12 @@ trait LayoutSyntax {
       }
 
     def size(width: Double, height: Double): Picture[Alg with Layout, A] =
+      new Picture[Alg with Layout, A] {
+        def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
+          algebra.size(picture(algebra), width, height)
+      }
+
+    def size(width: Scalar, height: Scalar): Picture[Alg with Layout, A] =
       new Picture[Alg with Layout, A] {
         def apply(implicit algebra: Alg with Layout): algebra.Drawing[A] =
           algebra.size(picture(algebra), width, height)
