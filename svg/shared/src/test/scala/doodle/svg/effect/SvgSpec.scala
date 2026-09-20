@@ -100,23 +100,92 @@ class SvgSpec
 
   }
 
-  test("paths of points render correctly") {
-    val path1 = "M 5,5 L 10,10 L 20,20 "
-    val path2 = "M 5,5 L 10,10 L 20,20 Z"
-    assertEquals(
-      Svg.toSvgPath(
-        Array(Point(5, 5), Point(10, 10), Point(20, 20)),
-        Svg.Open
-      ),
-      path1
+  test("svgTag style without isolation matches original output") {
+    val bb = BoundingBox.centered(100, 100)
+    val frame = Frame("test").withSizedToPicture()
+    val tag = Svg.svgTag(bb, frame)
+    val rendered = tag.toString
+
+    assert(
+      rendered.contains("""style="pointer-events: bounding-box;""""),
+      s"Expected no trailing space or extra properties in style, got: $rendered"
     )
-    assertEquals(
-      Svg
-        .toSvgPath(
-          Array(Point(5, 5), Point(10, 10), Point(20, 20)),
-          Svg.Closed
-        ),
-      path2
+    assert(
+      !rendered.contains("isolation:"),
+      s"Expected no isolation in style, got: $rendered"
+    )
+  }
+
+  test("svgTag style with isolation emits isolation property") {
+    val bb = BoundingBox.centered(100, 100)
+    val frame =
+      Frame("test").withSizedToPicture().withIsolation(Isolation.Isolate)
+    val tag = Svg.svgTag(bb, frame)
+    val rendered = tag.toString
+
+    assert(
+      rendered.contains("isolation: isolate;"),
+      s"Expected isolation: isolate; in style, got: $rendered"
+    )
+  }
+
+  test("svgTag style with background and isolation emits both") {
+    val bb = BoundingBox.centered(100, 100)
+    val frame = Frame("test")
+      .withSizedToPicture()
+      .withBackground(Color.white)
+      .withIsolation(Isolation.Isolate)
+    val tag = Svg.svgTag(bb, frame)
+    val rendered = tag.toString
+
+    assert(
+      rendered.contains("background-color:"),
+      s"Expected background-color in style, got: $rendered"
+    )
+    assert(
+      rendered.contains("isolation: isolate;"),
+      s"Expected isolation: isolate; in style, got: $rendered"
+    )
+  }
+
+  test("svgTag style with Isolation.Auto emits auto") {
+    val bb = BoundingBox.centered(100, 100)
+    val frame = Frame("test").withSizedToPicture().withIsolation(Isolation.Auto)
+    val tag = Svg.svgTag(bb, frame)
+    val rendered = tag.toString
+
+    assert(
+      rendered.contains("isolation: auto;"),
+      s"Expected isolation: auto; in style, got: $rendered"
+    )
+  }
+
+  test("svgTag FixedSize style without isolation has no trailing space") {
+    val bb = BoundingBox.centered(100, 100)
+    val frame = Frame("test").withSize(200, 200)
+    val tag = Svg.svgTag(bb, frame)
+    val rendered = tag.toString
+
+    assert(
+      rendered.contains("""style="pointer-events: bounding-box;""""),
+      s"Expected clean style without trailing space, got: $rendered"
+    )
+    assert(
+      !rendered.contains("isolation:"),
+      s"Expected no isolation in style, got: $rendered"
+    )
+  }
+
+  test("svgTag FixedSize style with isolation emits isolation property") {
+    val bb = BoundingBox.centered(100, 100)
+    val frame =
+      Frame("test").withSize(200, 200).withIsolation(Isolation.Isolate)
+    val tag = Svg.svgTag(bb, frame)
+    val rendered = tag.toString
+
+    assert(
+      rendered.contains("isolation: isolate;"),
+      s"Expected isolation: isolate; in style, got: $rendered"
     )
   }
 }

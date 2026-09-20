@@ -27,6 +27,7 @@ import doodle.core.Transform
 trait GenericLayout[G[_]] extends Layout {
   self: GivenApply[G] with Algebra { type Drawing[A] = Finalized[G, A] } =>
   import Renderable.*
+  import Layout.Scalar
 
   def on[A](top: Finalized[G, A], bottom: Finalized[G, A])(implicit
       s: Semigroup[A]
@@ -118,6 +119,28 @@ trait GenericLayout[G[_]] extends Layout {
       (newBb, rdr)
     }
 
+  def margin[A](
+      img: Finalized[G, A],
+      top: Scalar,
+      right: Scalar,
+      bottom: Scalar,
+      left: Scalar
+  ): Finalized[G, A] =
+    img.map { case (bb, rdr) =>
+      val topV = top.eval(bb.height)
+      val bottomV = bottom.eval(bb.height)
+      val rightV = right.eval(bb.width)
+      val leftV = left.eval(bb.width)
+
+      val newBb = BoundingBox(
+        left = bb.left - leftV,
+        top = bb.top + topV,
+        right = bb.right + rightV,
+        bottom = bb.bottom - bottomV
+      )
+      (newBb, rdr)
+    }
+
   def size[A](
       img: Finalized[G, A],
       width: Double,
@@ -145,4 +168,35 @@ trait GenericLayout[G[_]] extends Layout {
       (newBb, rdr)
     }
   }
+
+  def size[A](
+      img: Finalized[G, A],
+      width: Scalar,
+      height: Scalar
+  ): Finalized[G, A] =
+    img.map { case (bb, rdr) =>
+      val resolvedWidth = width.eval(bb.width)
+      val resolvedHeight = height.eval(bb.height)
+
+      assert(
+        resolvedWidth >= 0,
+        s"Called `size` with a width of ${resolvedWidth}. The bounding box's width must be non-negative."
+      )
+      assert(
+        resolvedHeight >= 0,
+        s"Called `size` with a height of ${resolvedHeight}. The bounding box's height must be non-negative."
+      )
+
+      val w = resolvedWidth / 2.0
+      val h = resolvedHeight / 2.0
+
+      val newBb = BoundingBox(
+        left = -w,
+        top = h,
+        right = w,
+        bottom = -h
+      )
+
+      (newBb, rdr)
+    }
 }

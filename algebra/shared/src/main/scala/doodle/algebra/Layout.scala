@@ -25,6 +25,8 @@ import doodle.core.Vec
 
 trait Layout extends Algebra {
 
+  import Layout.Scalar
+
   /** Place the origin of top on the origin of bottom */
   def on[A](top: Drawing[A], bottom: Drawing[A])(implicit
       s: Semigroup[A]
@@ -55,12 +57,35 @@ trait Layout extends Algebra {
       left: Double
   ): Drawing[A]
 
+  /** Expand the bounding box of img by the given amounts, evaluated relative
+    * to the image's current bounding box.
+    *
+    * `top` and `bottom` are evaluated relative to the current bounding box
+    * height; `left` and `right` are evaluated relative to the current bounding
+    * box width.
+    */
+  def margin[A](
+      img: Drawing[A],
+      top: Scalar,
+      right: Scalar,
+      bottom: Scalar,
+      left: Scalar
+  ): Drawing[A]
+
   /** Set the width and height of the given `Drawing's` bounding box to the
     * given values. The new bounding box has the same origin as the original
     * bounding box, and extends symmetrically above and below, and left and
     * right of the origin.
     */
   def size[A](img: Drawing[A], width: Double, height: Double): Drawing[A]
+
+  /** Set the width and height of the given `Drawing's` bounding box to values
+    * evaluated relative to the current bounding box.
+    *
+    * `width` is evaluated relative to the current bounding box width, and
+    * `height` is evaluated relative to the current bounding box height.
+    */
+  def size[A](img: Drawing[A], width: Scalar, height: Scalar): Drawing[A]
 
   // Derived methods
 
@@ -103,4 +128,31 @@ trait Layout extends Algebra {
   /** Utility to set the width and height to the same value. */
   def size[A](img: Drawing[A], extent: Double): Drawing[A] =
     size(img, extent, extent)
+}
+
+object Layout {
+
+  /** A scalar magnitude that can be evaluated relative to a baseline.
+    *
+    * This is used for layout operations like `margin` and `size`, where we want
+    * to express absolute values (usually pixels) or values relative to the
+    * current bounding box (e.g. a fraction of width or height).
+    */
+  sealed trait Scalar {
+    def eval(baseline: Double): Double
+  }
+
+  object Scalar {
+    final case class Absolute(value: Double) extends Scalar {
+      def eval(baseline: Double): Double = value
+    }
+
+    /** A fraction of the baseline. For example, `0.1` means 10% of the baseline. */
+    final case class Fraction(value: Double) extends Scalar {
+      def eval(baseline: Double): Double = baseline * value
+    }
+
+    def absolute(value: Double): Scalar = Absolute(value)
+    def fraction(value: Double): Scalar = Fraction(value)
+  }
 }
