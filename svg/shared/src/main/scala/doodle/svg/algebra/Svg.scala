@@ -83,7 +83,13 @@ trait SvgModule { self: Base =>
     /** Given a bounding box and a size specification create a <svg> tag that
       * has the correct size and viewbox
       */
-    def svgTag(bb: BoundingBox, frame: Frame): Tag =
+    def svgTag(bb: BoundingBox, frame: Frame): Tag = {
+      val style = List(
+        Some("pointer-events: bounding-box;"),
+        frame.background.map(c => s"background-color: ${Svg.toOklch(c)};"),
+        frame.isolation.map(i => s"isolation: ${i.toCSS};")
+      ).flatten.mkString(" ")
+
       frame.size match {
         case Size.FitToPicture(border) =>
           val w = bb.width + (2 * border)
@@ -93,11 +99,7 @@ trait SvgModule { self: Base =>
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${bb.left - border} ${-bb.top - border} ${w} ${h}",
-            bundle.attrs.style :=
-              "pointer-events: bounding-box; " ++
-                frame.background
-                  .map(c => s"background-color: ${Svg.toOklch(c)};")
-                  .getOrElse("")
+            bundle.attrs.style := style
           )
 
         case Size.FixedSize(w, h) =>
@@ -106,14 +108,11 @@ trait SvgModule { self: Base =>
             svgAttrs.width := w,
             svgAttrs.height := h,
             svgAttrs.viewBox := s"${-w / 2} ${-h / 2} ${w} ${h}",
-            bundle.attrs.style :=
-              "pointer-events: bounding-box; " ++
-                frame.background
-                  .map(c => s"background-color: ${Svg.toOklch(c)};")
-                  .getOrElse("")
+            bundle.attrs.style := style
           )
 
       }
+    }
 
     def textTag(text: String, font: Font, style: String): Tag = {
       val fontFamily =

@@ -37,6 +37,13 @@ thePicture.drawWithFrame(frame)
 
 The rendered SVG will appear where the element is positioned on your web page.
 
+To keep the SVG's blending separate from the surrounding page, set CSS isolation on the frame:
+
+```scala mdoc:silent
+import doodle.svg.effect.Isolation
+val isolatedFrame = doodle.svg.Frame("svg-root").withIsolation(Isolation.Isolate)
+```
+
 
 ## Running on the JVM
 
