@@ -7431,56 +7431,48 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.renderWithoutRootTag__Ldoodle_al
   })));
 });
 $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.svgTag__Ldoodle_core_BoundingBox__Ldoodle_svg_effect_Frame__Lscalatags_generic_TypedTag = (function(bb, frame) {
+  var $x_3 = new $c_s_Some("pointer-events: bounding-box;");
+  var this$2 = $n($n(frame).Ldoodle_svg_effect_Frame__f_background);
+  if (this$2.isEmpty__Z()) {
+    var $x_2 = $m_s_None$();
+  } else {
+    var x0 = this$2.get__O();
+    var c = $as_Ldoodle_core_Color(x0);
+    var $x_2 = new $c_s_Some((("background-color: " + this.toOklch__Ldoodle_core_Color__T(c)) + ";"));
+  }
+  var this$3 = $n($n(frame).Ldoodle_svg_effect_Frame__f_isolation);
+  if (this$3.isEmpty__Z()) {
+    var $x_1 = $m_s_None$();
+  } else {
+    var x0$1 = this$3.get__O();
+    var i = $as_Ldoodle_svg_effect_Isolation(x0$1);
+    var $x_1 = new $c_s_Some((("isolation: " + $n(i).toCSS__T()) + ";"));
+  }
+  var this$6 = new $c_sci_$colon$colon($x_3, new $c_sci_$colon$colon($x_2, new $c_sci_$colon$colon($x_1, $m_sci_Nil$())));
+  var this$5 = $m_s_$less$colon$less$();
+  var toIterableOnce = this$5.s_$less$colon$less$__f_singleton;
+  var this$7 = $n($as_sc_IterableOnceOps($f_sc_StrictOptimizedIterableOps__flatten__F1__O(this$6, toIterableOnce)));
+  var style = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$7, "", " ", "");
   var x38 = $n(frame).Ldoodle_svg_effect_Frame__f_size;
   if ((x38 instanceof $c_Ldoodle_svg_effect_Size$FitToPicture)) {
     var x$1 = $as_Ldoodle_svg_effect_Size$FitToPicture(x38);
-    var this$2 = $n(x$1);
-    var x45 = this$2.Ldoodle_svg_effect_Size$FitToPicture__f_border;
+    var this$9 = $n(x$1);
+    var x45 = this$9.Ldoodle_svg_effect_Size$FitToPicture__f_border;
     var w = ($n(bb).width__D() + (x45 << 1));
     var h = ($n(bb).height__D() + (x45 << 1));
-    var this$9 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).svg__Lscalatags_generic_TypedTag());
-    var $x_6 = $m_sr_ScalaRunTime$();
-    var $x_5 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue());
-    var $x_4 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(w, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue());
-    var $x_3 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(h, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue());
-    var $x_2 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((($n(bb).Ldoodle_core_BoundingBox__f_left - x45) + " ") + ((-$n(bb).Ldoodle_core_BoundingBox__f_top) - x45)) + " ") + w) + " ") + h), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue());
-    var $x_1 = ($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr();
-    var this$5 = $n($n(frame).Ldoodle_svg_effect_Frame__f_background);
-    if (this$5.isEmpty__Z()) {
-      var this$6 = $m_s_None$();
-    } else {
-      var x0 = this$5.get__O();
-      var c = $as_Ldoodle_core_Color(x0);
-      var this$6 = new $c_s_Some((("background-color: " + this.toOklch__Ldoodle_core_Color__T(c)) + ";"));
-    }
-    var xs = $as_T((this$6.isEmpty__Z() ? "" : this$6.get__O()));
-    var xs$1 = $x_6.wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$x_5, $x_4, $x_3, $x_2, $n($x_1).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(("pointer-events: bounding-box; " + xs), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
-    return this$9.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs$1);
+    var this$11 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).svg__Lscalatags_generic_TypedTag());
+    var xs = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(w, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(h, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((($n(bb).Ldoodle_core_BoundingBox__f_left - x45) + " ") + ((-$n(bb).Ldoodle_core_BoundingBox__f_top) - x45)) + " ") + w) + " ") + h), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n(($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(style, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
+    return this$11.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs);
   }
   if ((x38 instanceof $c_Ldoodle_svg_effect_Size$FixedSize)) {
     var x$1$1 = $as_Ldoodle_svg_effect_Size$FixedSize(x38);
-    var this$11 = $n(x$1$1);
-    var x41 = this$11.Ldoodle_svg_effect_Size$FixedSize__f_width;
-    var this$12 = $n(x$1$1);
-    var x42 = this$12.Ldoodle_svg_effect_Size$FixedSize__f_height;
-    var this$19 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).svg__Lscalatags_generic_TypedTag());
-    var $x_12 = $m_sr_ScalaRunTime$();
-    var $x_11 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue());
-    var $x_10 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x41, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue());
-    var $x_9 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x42, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue());
-    var $x_8 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((((-x41) / 2.0) + " ") + ((-x42) / 2.0)) + " ") + x41) + " ") + x42), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue());
-    var $x_7 = ($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr();
-    var this$15 = $n($n(frame).Ldoodle_svg_effect_Frame__f_background);
-    if (this$15.isEmpty__Z()) {
-      var this$16 = $m_s_None$();
-    } else {
-      var x0$1 = this$15.get__O();
-      var c$1 = $as_Ldoodle_core_Color(x0$1);
-      var this$16 = new $c_s_Some((("background-color: " + this.toOklch__Ldoodle_core_Color__T(c$1)) + ";"));
-    }
-    var xs$2 = $as_T((this$16.isEmpty__Z() ? "" : this$16.get__O()));
-    var xs$3 = $x_12.wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$x_11, $x_10, $x_9, $x_8, $n($x_7).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(("pointer-events: bounding-box; " + xs$2), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
-    return this$19.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs$3);
+    var this$13 = $n(x$1$1);
+    var x41 = this$13.Ldoodle_svg_effect_Size$FixedSize__f_width;
+    var this$14 = $n(x$1$1);
+    var x42 = this$14.Ldoodle_svg_effect_Size$FixedSize__f_height;
+    var this$16 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).svg__Lscalatags_generic_TypedTag());
+    var xs$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x41, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x42, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((((-x41) / 2.0) + " ") + ((-x42) / 2.0)) + " ") + x41) + " ") + x42), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n(($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(style, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
+    return this$16.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs$1);
   }
   throw new $c_s_MatchError(x38);
 });
@@ -38393,6 +38385,10 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFontFamily__T__V = (funct
   var picture = this.Ldoodle_examples_svg_SvgTextExamples$__f_fontFamily;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
+$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawDefault = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawDefault__T__V(prep0);
+});
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawFont__T__V(prep0);
@@ -38400,10 +38396,6 @@ $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFont = (function(arg) {
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawFontFamily = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawFontFamily__T__V(prep0);
-});
-$c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawDefault = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawDefault__T__V(prep0);
 });
 $c_Ldoodle_examples_svg_SvgTextExamples$.prototype.drawHello = (function(arg) {
   var prep0 = $as_T(arg);
@@ -38981,7 +38973,8 @@ $h_Ldoodle_svg_effect_Frame$.prototype = $c_Ldoodle_svg_effect_Frame$.prototype;
 $c_Ldoodle_svg_effect_Frame$.prototype.apply__T__Ldoodle_svg_effect_Frame = (function(id) {
   var size = new $c_Ldoodle_svg_effect_Size$FitToPicture(20);
   var background = $m_s_None$();
-  return new $c_Ldoodle_svg_effect_Frame(id, size, background);
+  var isolation = $m_s_None$();
+  return new $c_Ldoodle_svg_effect_Frame(id, size, background, isolation);
 });
 var $d_Ldoodle_svg_effect_Frame$ = new $TypeData().initClass($c_Ldoodle_svg_effect_Frame$, "doodle.svg.effect.Frame$", ({
   Ldoodle_svg_effect_Frame$: 1,
@@ -47277,13 +47270,15 @@ var $d_Ldoodle_svg_effect_Canvas = new $TypeData().initClass($c_Ldoodle_svg_effe
   Ljava_io_Serializable: 1
 }));
 /** @constructor */
-function $c_Ldoodle_svg_effect_Frame(id, size, background) {
+function $c_Ldoodle_svg_effect_Frame(id, size, background, isolation) {
   this.Ldoodle_svg_effect_Frame__f_id = null;
   this.Ldoodle_svg_effect_Frame__f_size = null;
   this.Ldoodle_svg_effect_Frame__f_background = null;
+  this.Ldoodle_svg_effect_Frame__f_isolation = null;
   this.Ldoodle_svg_effect_Frame__f_id = id;
   this.Ldoodle_svg_effect_Frame__f_size = size;
   this.Ldoodle_svg_effect_Frame__f_background = background;
+  this.Ldoodle_svg_effect_Frame__f_isolation = isolation;
 }
 $c_Ldoodle_svg_effect_Frame.prototype = new $h_O();
 $c_Ldoodle_svg_effect_Frame.prototype.constructor = $c_Ldoodle_svg_effect_Frame;
@@ -47306,14 +47301,21 @@ $c_Ldoodle_svg_effect_Frame.prototype.equals__O__Z = (function(x$0) {
     if ((this.Ldoodle_svg_effect_Frame__f_id === $n(x$0$2).Ldoodle_svg_effect_Frame__f_id)) {
       var x = this.Ldoodle_svg_effect_Frame__f_size;
       var x$2 = $n(x$0$2).Ldoodle_svg_effect_Frame__f_size;
-      var $x_1 = ((x === null) ? (x$2 === null) : $n(x).equals__O__Z(x$2));
+      var $x_2 = ((x === null) ? (x$2 === null) : $n(x).equals__O__Z(x$2));
+    } else {
+      var $x_2 = false;
+    }
+    if ($x_2) {
+      var x$3 = this.Ldoodle_svg_effect_Frame__f_background;
+      var x$4 = $n(x$0$2).Ldoodle_svg_effect_Frame__f_background;
+      var $x_1 = ((x$3 === null) ? (x$4 === null) : $n(x$3).equals__O__Z(x$4));
     } else {
       var $x_1 = false;
     }
     if ($x_1) {
-      var x$3 = this.Ldoodle_svg_effect_Frame__f_background;
-      var x$4 = $n(x$0$2).Ldoodle_svg_effect_Frame__f_background;
-      return ((x$3 === null) ? (x$4 === null) : $n(x$3).equals__O__Z(x$4));
+      var x$5 = this.Ldoodle_svg_effect_Frame__f_isolation;
+      var x$6 = $n(x$0$2).Ldoodle_svg_effect_Frame__f_isolation;
+      return ((x$5 === null) ? (x$6 === null) : $n(x$5).equals__O__Z(x$6));
     } else {
       return false;
     }
@@ -47325,7 +47327,7 @@ $c_Ldoodle_svg_effect_Frame.prototype.toString__T = (function() {
   return $m_sr_ScalaRunTime$()._toString__s_Product__T(this);
 });
 $c_Ldoodle_svg_effect_Frame.prototype.productArity__I = (function() {
-  return 3;
+  return 4;
 });
 $c_Ldoodle_svg_effect_Frame.prototype.productPrefix__T = (function() {
   return "Frame";
@@ -47344,6 +47346,10 @@ $c_Ldoodle_svg_effect_Frame.prototype.productElement__I__O = (function(n) {
       return this.Ldoodle_svg_effect_Frame__f_background;
       break;
     }
+    case 3: {
+      return this.Ldoodle_svg_effect_Frame__f_isolation;
+      break;
+    }
     default: {
       throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n));
     }
@@ -47353,13 +47359,15 @@ $c_Ldoodle_svg_effect_Frame.prototype.withBackground__Ldoodle_core_Color__Ldoodl
   var background$1 = new $c_s_Some(color);
   var id$1 = this.Ldoodle_svg_effect_Frame__f_id;
   var size$1 = this.Ldoodle_svg_effect_Frame__f_size;
-  return new $c_Ldoodle_svg_effect_Frame(id$1, size$1, background$1);
+  var isolation$1 = this.Ldoodle_svg_effect_Frame__f_isolation;
+  return new $c_Ldoodle_svg_effect_Frame(id$1, size$1, background$1, isolation$1);
 });
 $c_Ldoodle_svg_effect_Frame.prototype.withSize__D__D__Ldoodle_svg_effect_Frame = (function(width, height) {
-  var size$3 = new $c_Ldoodle_svg_effect_Size$FixedSize(width, height);
-  var id$3 = this.Ldoodle_svg_effect_Frame__f_id;
-  var background$3 = this.Ldoodle_svg_effect_Frame__f_background;
-  return new $c_Ldoodle_svg_effect_Frame(id$3, size$3, background$3);
+  var size$4 = new $c_Ldoodle_svg_effect_Size$FixedSize(width, height);
+  var id$4 = this.Ldoodle_svg_effect_Frame__f_id;
+  var background$4 = this.Ldoodle_svg_effect_Frame__f_background;
+  var isolation$4 = this.Ldoodle_svg_effect_Frame__f_isolation;
+  return new $c_Ldoodle_svg_effect_Frame(id$4, size$4, background$4, isolation$4);
 });
 function $as_Ldoodle_svg_effect_Frame(obj) {
   return (((obj instanceof $c_Ldoodle_svg_effect_Frame) || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.svg.effect.Frame"));
@@ -51082,6 +51090,16 @@ function $f_sc_StrictOptimizedIterableOps__flatMap__F1__O($thiz, f) {
   while ($n(it).hasNext__Z()) {
     var this$1 = $n(b);
     var elems = $as_sc_IterableOnce($n(f).apply__O__O($n(it).next__O()));
+    this$1.addAll__sc_IterableOnce__scm_Growable(elems);
+  }
+  return $n(b).result__O();
+}
+function $f_sc_StrictOptimizedIterableOps__flatten__F1__O($thiz, toIterableOnce) {
+  var b = $n($thiz.iterableFactory__sc_IterableFactory()).newBuilder__scm_Builder();
+  var it = $thiz.iterator__sc_Iterator();
+  while ($n(it).hasNext__Z()) {
+    var this$1 = $n(b);
+    var elems = $as_sc_IterableOnce($n(toIterableOnce).apply__O__O($n(it).next__O()));
     this$1.addAll__sc_IterableOnce__scm_Growable(elems);
   }
   return $n(b).result__O();
@@ -57218,6 +57236,15 @@ function $m_Ldoodle_svg_algebra_CanvasAlgebra$() {
     $n_Ldoodle_svg_algebra_CanvasAlgebra$ = new $c_Ldoodle_svg_algebra_CanvasAlgebra$();
   }
   return $n_Ldoodle_svg_algebra_CanvasAlgebra$;
+}
+function $as_Ldoodle_svg_effect_Isolation(obj) {
+  return ((false || (obj === null)) ? obj : $throwClassCastException(obj, "doodle.svg.effect.Isolation"));
+}
+function $isArrayOf_Ldoodle_svg_effect_Isolation(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldoodle_svg_effect_Isolation)));
+}
+function $asArrayOf_Ldoodle_svg_effect_Isolation(obj, depth) {
+  return (($isArrayOf_Ldoodle_svg_effect_Isolation(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldoodle.svg.effect.Isolation;", depth));
 }
 /** @constructor */
 function $c_Ldoodle_svg_effect_Size$FitToPicture(border) {
