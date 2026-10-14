@@ -137,4 +137,64 @@ class SvgSpec
       path2
     )
   }
+
+  test("svgTag styles cover both frame sizes and isolation values") {
+    val bb = BoundingBox.centered(100, 100)
+    val fit = Frame("test")
+    val fixed = fit.withSize(200, 200)
+    val pointer = "pointer-events: bounding-box;"
+    val background = s"background-color: ${Svg.toOklch(Color.white)};"
+    val cases = List(
+      (
+        "fit isolate",
+        fit.withIsolation(Isolation.Isolate),
+        s"$pointer isolation: isolate;"
+      ),
+      ("fit default", fit, pointer),
+      (
+        "fit background",
+        fit.withBackground(Color.white),
+        s"$pointer $background"
+      ),
+      (
+        "fit auto",
+        fit.withIsolation(Isolation.Auto),
+        s"$pointer isolation: auto;"
+      ),
+      (
+        "fit background and isolate",
+        fit.withBackground(Color.white).withIsolation(Isolation.Isolate),
+        s"$pointer $background isolation: isolate;"
+      ),
+      ("fixed default", fixed, pointer),
+      (
+        "fixed background",
+        fixed.withBackground(Color.white),
+        s"$pointer $background"
+      ),
+      (
+        "fixed isolate",
+        fixed.withIsolation(Isolation.Isolate),
+        s"$pointer isolation: isolate;"
+      ),
+      (
+        "fixed auto",
+        fixed.withIsolation(Isolation.Auto),
+        s"$pointer isolation: auto;"
+      ),
+      (
+        "fixed background and isolate",
+        fixed.withBackground(Color.white).withIsolation(Isolation.Isolate),
+        s"$pointer $background isolation: isolate;"
+      )
+    )
+
+    cases.foreach { case (name, frame, expectedStyle) =>
+      val rendered = Svg.svgTag(bb, frame).toString
+      assert(
+        rendered.contains("style=\"" + expectedStyle + "\""),
+        s"$name: $rendered"
+      )
+    }
+  }
 }
