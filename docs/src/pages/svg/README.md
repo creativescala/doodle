@@ -44,6 +44,18 @@ import doodle.svg.effect.Isolation
 val isolatedFrame = doodle.svg.Frame("svg-root").withIsolation(Isolation.Isolate)
 ```
 
+Sometimes you don't want Doodle to put the SVG on the page for you. You might want to add your own elements to it first, or choose yourself when and where it appears. In that case render to a `Tag` instead.
+
+``` scala
+import doodle.svg.effect.SvgRenderer
+
+SvgRenderer.renderToTag(frame, thePicture)
+```
+
+This gives you an `IO` of a [ScalaTags](https://com-lihaoyi.github.io/scalatags/) `Tag`, along with the picture's result. Nothing is added to the page. Call `.render` on the `Tag` when you want a DOM element to insert or manipulate.
+
+The frame's `id` is ignored here, as nothing is drawn to the screen, but its size, background and isolation still apply to the SVG you get back.
+
 
 ## Running on the JVM
 
