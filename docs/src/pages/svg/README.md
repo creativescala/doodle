@@ -54,7 +54,7 @@ SvgRenderer.renderToTag(frame, thePicture)
 
 This gives you an `IO` of a [ScalaTags](https://com-lihaoyi.github.io/scalatags/) `Tag`, along with the picture's result. Nothing is added to the page. Call `.render` on the `Tag` when you want a DOM element to insert or manipulate.
 
-The frame's `id` is ignored here, as nothing is drawn to the screen, but its size and background still apply to the SVG you get back.
+The frame's `id` is ignored here, as nothing is drawn to the screen, but its size, background and isolation still apply to the SVG you get back.
 
 
 ## Running on the JVM

@@ -36,7 +36,8 @@ object SvgRenderer extends Renderer[Algebra, Frame, Canvas] {
     * caller decides if, when and where the SVG is added to the document.
     *
     * The frame's `id` is not used, as nothing is drawn to the screen. The rest
-    * of the frame still determines the size and background of the result.
+    * of the frame still determines the size, background and isolation of the
+    * result.
     */
   def renderToTag[A](frame: Frame, picture: Picture[A]): IO[(Tag, A)] =
     Canvas.offscreen(frame).use(canvas => canvas.renderToTag(picture))
