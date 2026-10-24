@@ -67,6 +67,20 @@ trait SvgModule { self: Base =>
         .map { case (bb, tags, a) => (svgTag(bb, frame)(tags).render, a) }
     }
 
+    /** Render to a scalatags `Tag`, wrapped in a root `<svg>` tag, without
+      * converting it to a DOM element or inserting it into the page. The caller
+      * can decide if and how to add it to the page, using the ScalaTags API to
+      * render and manipulate the tag themselves.
+      */
+    def renderToTag[Alg <: self.Algebra, A](
+        frame: Frame,
+        algebra: Alg,
+        picture: Picture[Alg, A]
+    ): IO[(Tag, A)] = {
+      renderWithoutRootTag(algebra, picture)
+        .map { case (bb, tags, a) => (svgTag(bb, frame)(tags), a) }
+    }
+
     /** Render to SVG without wrapping with a root <svg> tag. */
     def renderWithoutRootTag[Alg <: self.Algebra, A](
         algebra: Alg,

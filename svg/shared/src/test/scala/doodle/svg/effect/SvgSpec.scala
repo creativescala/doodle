@@ -59,6 +59,24 @@ class SvgSpec
       .assertEquals(expected)
   }
 
+  test("renderToTag wraps the picture's content in a root svg tag") {
+    val diameter = 10.0
+    val circle = new doodle.algebra.Picture[Basic, Unit] {
+      def apply(implicit algebra: Basic): algebra.Drawing[Unit] =
+        algebra.strokeColor(algebra.circle(diameter), Color.black)
+    }
+    val frame = Frame("test").withSize(100, 100)
+
+    for {
+      withoutRoot <- Svg.renderWithoutRootTag(algebraInstance, circle)
+      withRoot <- Svg.renderToTag(frame, algebraInstance, circle)
+    } yield {
+      val (bb, tags, _) = withoutRoot
+      val (tag, _) = withRoot
+      assertEquals(tag, Svg.svgTag(bb, frame)(tags))
+    }
+  }
+
   test("paths of path elements render correctly") {
     import doodle.core.PathElement.*
     val path1 = "M 0,0 M 5,5 L 10,10 C 20,20 30,30 40,40 "

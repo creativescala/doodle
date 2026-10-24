@@ -203,6 +203,16 @@ final case class Canvas(
       a
     }
   }
+
+  /** Render the given picture to a scalatags `Tag` instead of drawing it to
+    * this Canvas, so the caller decides what to do with the result.
+    *
+    * Note this Canvas has already put its own root <svg> in the document. Use
+    * `Canvas.offscreen` if you want a Tag without anything being added to the
+    * page.
+    */
+  def renderToTag[A](picture: Picture[A]): IO[(Tag, A)] =
+    Svg.renderToTag[Algebra, A](frame, algebra, picture)
 }
 object Canvas {
   def fromFrame(
@@ -213,19 +223,46 @@ object Canvas {
       throw new java.util.NoSuchElementException(
         s"Doodle SVG Canvas could not be created, as could not find a DOM element with the requested id ${frame.id}"
       )
-    } else {
-      (Topic[IO, Int], Topic[IO, Point], Topic[IO, Point])
-        .mapN { (redrawTopic, mouseClickTopic, mouseMoveTopic) =>
-          Canvas(
-            target,
-            frame,
-            redrawTopic,
-            mouseClickTopic,
-            mouseMoveTopic
-          )
-        }
-        .toResource
-        .flatMap(canvas => canvas.stream.compile.drain.background.as(canvas))
-    }
+    } else fromTarget(target, frame)
   }
+
+  /** Create a Canvas that draws into a hidden element, which is removed again
+    * when the Resource is released. The page the user sees is left unchanged,
+    * so this is the way to render without drawing to the screen.
+    *
+    * The element is hidden with 'visibility', not 'display: none', because
+    * Firefox will not measure text inside an element that isn't displayed.
+    */
+  def offscreen(frame: Frame): Resource[IO, Canvas] =
+    Resource
+      .make(IO {
+        val target = dom.document.createElement("div")
+        target.setAttribute(
+          "style",
+          "position: absolute; left: -10000px; top: 0; visibility: hidden;"
+        )
+        dom.document.body.appendChild(target)
+      })(target =>
+        IO {
+          val _ = dom.document.body.removeChild(target)
+        }
+      )
+      .flatMap(target => fromTarget(target, frame))
+
+  private def fromTarget(
+      target: dom.Node,
+      frame: Frame
+  ): Resource[IO, Canvas] =
+    (Topic[IO, Int], Topic[IO, Point], Topic[IO, Point])
+      .mapN { (redrawTopic, mouseClickTopic, mouseMoveTopic) =>
+        Canvas(
+          target,
+          frame,
+          redrawTopic,
+          mouseClickTopic,
+          mouseMoveTopic
+        )
+      }
+      .toResource
+      .flatMap(canvas => canvas.stream.compile.drain.background.as(canvas))
 }

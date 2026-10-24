@@ -4,6 +4,8 @@
 
 - Canvas backend supports blending
 
+- SVG backend can render to a `Tag` instead of drawing to the page
+
 
 ## 0.34 26-Feb-2026
 

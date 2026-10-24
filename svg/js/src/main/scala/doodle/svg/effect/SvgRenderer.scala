@@ -31,4 +31,14 @@ object SvgRenderer extends Renderer[Algebra, Frame, Canvas] {
 
   def render[A](canvas: Canvas)(picture: Picture[A]): IO[A] =
     canvas.render(picture)
+
+  /** Render a picture to a scalatags `Tag`, leaving the page untouched. The
+    * caller decides if, when and where the SVG is added to the document.
+    *
+    * The frame's `id` is not used, as nothing is drawn to the screen. The rest
+    * of the frame still determines the size, background and isolation of the
+    * result.
+    */
+  def renderToTag[A](frame: Frame, picture: Picture[A]): IO[(Tag, A)] =
+    Canvas.offscreen(frame).use(canvas => canvas.renderToTag(picture))
 }
