@@ -7354,46 +7354,46 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.renderWithoutRootTag__Ldoodle_al
   var thunk = new $c_sjsr_AnonFunction0_$$Lambda$92a2e254bbb9c06a0a02fc31abab59c51c18ecc1((() => $as_Ldoodle_algebra_generic_Finalized($n(picture).apply__Ldoodle_algebra_Algebra__O(algebra))));
   return $n($n(this$1.delay__F0__Lcats_effect_IO(thunk)).map__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1_$$Lambda$3aa60c34ef08a878abffbf4628007cc68fa3c7ab(((drawing) => {
     var drawing$1 = $as_Ldoodle_algebra_generic_Finalized(drawing);
-    matchResult5: {
+    matchResult6: {
       var \u03b46$___1;
       var \u03b46$___2;
       var \u03b46$___3;
       var this$4 = $n(drawing$1);
       var ctxTxs = $m_sci_Nil$();
-      var x17 = $as_T2($n($as_Lcats_Eval($n(this$4.Ldoodle_algebra_generic_Finalized__f_f).apply__O__O(ctxTxs))).value__O());
-      if ((x17 !== null)) {
-        var bb = $as_Ldoodle_core_BoundingBox($n(x17)._1__O());
-        var rdr = $as_Lcats_data_IndexedStateT($n(x17)._2__O());
-        var \u03b46$___1 = x17;
+      var x21 = $as_T2($n($as_Lcats_Eval($n(this$4.Ldoodle_algebra_generic_Finalized__f_f).apply__O__O(ctxTxs))).value__O());
+      if ((x21 !== null)) {
+        var bb = $as_Ldoodle_core_BoundingBox($n(x21)._1__O());
+        var rdr = $as_Lcats_data_IndexedStateT($n(x21)._2__O());
+        var \u03b46$___1 = x21;
         var \u03b46$___2 = bb;
         var \u03b46$___3 = rdr;
-        break matchResult5;
+        break matchResult6;
       }
-      throw new $c_s_MatchError(x17);
+      throw new $c_s_MatchError(x21);
     }
     var \u03b44$$2 = $as_T2(\u03b46$___1);
     $as_Ldoodle_core_BoundingBox(\u03b46$___2);
     var rdr$2 = $as_Lcats_data_IndexedStateT(\u03b46$___3);
-    matchResult6: {
+    matchResult7: {
       var \u03b47$___1;
       var \u03b47$___2;
       var \u03b47$___3;
       var \u03b47$___4;
-      var x20 = $as_T2($n($as_Lcats_Eval($n(rdr$2).run__O__Lcats_FlatMap__O($m_Ldoodle_core_Transform$().Ldoodle_core_Transform$__f_verticalReflection, $m_Lcats_Eval$().Lcats_EvalInstances__f_catsBimonadForEval))).value__O());
-      if ((x20 !== null)) {
-        var x22 = $as_T3($n(x20)._2__O());
-        if ((x22 !== null)) {
-          var tags = $as_Lscalatags_generic_TypedTag($n(x22).T3__f__1);
-          var set = $as_scm_Set($n(x22).T3__f__2);
-          var a = $n(x22).T3__f__3;
-          var \u03b47$___1 = x20;
+      var x24 = $as_T2($n($as_Lcats_Eval($n(rdr$2).run__O__Lcats_FlatMap__O($m_Ldoodle_core_Transform$().Ldoodle_core_Transform$__f_verticalReflection, $m_Lcats_Eval$().Lcats_EvalInstances__f_catsBimonadForEval))).value__O());
+      if ((x24 !== null)) {
+        var x26 = $as_T3($n(x24)._2__O());
+        if ((x26 !== null)) {
+          var tags = $as_Lscalatags_generic_TypedTag($n(x26).T3__f__1);
+          var set = $as_scm_Set($n(x26).T3__f__2);
+          var a = $n(x26).T3__f__3;
+          var \u03b47$___1 = x24;
           var \u03b47$___2 = tags;
           var \u03b47$___3 = set;
           var \u03b47$___4 = a;
-          break matchResult6;
+          break matchResult7;
         }
       }
-      throw new $c_s_MatchError(x20);
+      throw new $c_s_MatchError(x24);
     }
     var \u03b45$$2 = $as_T2(\u03b47$___1);
     var tags$2 = $as_Lscalatags_generic_TypedTag(\u03b47$___2);
@@ -7409,18 +7409,18 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.renderWithoutRootTag__Ldoodle_al
   })))).map__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1_$$Lambda$3aa60c34ef08a878abffbf4628007cc68fa3c7ab(((x$1) => {
     var x$1$1 = $as_T4(x$1);
     if ((x$1$1 !== null)) {
-      var x28 = $as_T2($n(x$1$1).T4__f__2);
-      var x29 = $as_T2($n(x$1$1).T4__f__3);
+      var x32 = $as_T2($n(x$1$1).T4__f__2);
+      var x33 = $as_T2($n(x$1$1).T4__f__3);
       $as_Ldoodle_algebra_generic_Finalized($n(x$1$1).T4__f__1);
-      if ((x28 !== null)) {
-        var bb$1 = $as_Ldoodle_core_BoundingBox($n(x28)._1__O());
-        $as_Lcats_data_IndexedStateT($n(x28)._2__O());
-        if ((x29 !== null)) {
-          var x32 = $as_T3($n(x29)._2__O());
-          if ((x32 !== null)) {
-            $as_Lscalatags_generic_TypedTag($n(x32).T3__f__1);
-            $as_scm_Set($n(x32).T3__f__2);
-            var a$1 = $n(x32).T3__f__3;
+      if ((x32 !== null)) {
+        var bb$1 = $as_Ldoodle_core_BoundingBox($n(x32)._1__O());
+        $as_Lcats_data_IndexedStateT($n(x32)._2__O());
+        if ((x33 !== null)) {
+          var x36 = $as_T3($n(x33)._2__O());
+          if ((x36 !== null)) {
+            $as_Lscalatags_generic_TypedTag($n(x36).T3__f__1);
+            $as_scm_Set($n(x36).T3__f__2);
+            var a$1 = $n(x36).T3__f__3;
             var tagsWithGradients$1 = $as_Lscalatags_generic_TypedTag($n(x$1$1).T4__f__4);
             return new $c_T3(bb$1, tagsWithGradients$1, a$1);
           }
@@ -7453,122 +7453,122 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.svgTag__Ldoodle_core_BoundingBox
   var toIterableOnce = this$5.s_$less$colon$less$__f_singleton;
   var this$7 = $n($as_sc_IterableOnceOps($f_sc_StrictOptimizedIterableOps__flatten__F1__O(this$6, toIterableOnce)));
   var style = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$7, "", " ", "");
-  var x38 = $n(frame).Ldoodle_svg_effect_Frame__f_size;
-  if ((x38 instanceof $c_Ldoodle_svg_effect_Size$FitToPicture)) {
-    var x$1 = $as_Ldoodle_svg_effect_Size$FitToPicture(x38);
+  var x42 = $n(frame).Ldoodle_svg_effect_Frame__f_size;
+  if ((x42 instanceof $c_Ldoodle_svg_effect_Size$FitToPicture)) {
+    var x$1 = $as_Ldoodle_svg_effect_Size$FitToPicture(x42);
     var this$9 = $n(x$1);
-    var x45 = this$9.Ldoodle_svg_effect_Size$FitToPicture__f_border;
-    var w = ($n(bb).width__D() + (x45 << 1));
-    var h = ($n(bb).height__D() + (x45 << 1));
+    var x49 = this$9.Ldoodle_svg_effect_Size$FitToPicture__f_border;
+    var w = ($n(bb).width__D() + (x49 << 1));
+    var h = ($n(bb).height__D() + (x49 << 1));
     var this$11 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).svg__Lscalatags_generic_TypedTag());
-    var xs = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(w, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(h, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((($n(bb).Ldoodle_core_BoundingBox__f_left - x45) + " ") + ((-$n(bb).Ldoodle_core_BoundingBox__f_top) - x45)) + " ") + w) + " ") + h), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n(($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(style, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
+    var xs = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(w, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(h, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((($n(bb).Ldoodle_core_BoundingBox__f_left - x49) + " ") + ((-$n(bb).Ldoodle_core_BoundingBox__f_top) - x49)) + " ") + w) + " ") + h), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n(($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(style, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
     return this$11.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs);
   }
-  if ((x38 instanceof $c_Ldoodle_svg_effect_Size$FixedSize)) {
-    var x$1$1 = $as_Ldoodle_svg_effect_Size$FixedSize(x38);
+  if ((x42 instanceof $c_Ldoodle_svg_effect_Size$FixedSize)) {
+    var x$1$1 = $as_Ldoodle_svg_effect_Size$FixedSize(x42);
     var this$13 = $n(x$1$1);
-    var x41 = this$13.Ldoodle_svg_effect_Size$FixedSize__f_width;
+    var x45 = this$13.Ldoodle_svg_effect_Size$FixedSize__f_width;
     var this$14 = $n(x$1$1);
-    var x42 = this$14.Ldoodle_svg_effect_Size$FixedSize__f_height;
+    var x46 = this$14.Ldoodle_svg_effect_Size$FixedSize__f_height;
     var this$16 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).svg__Lscalatags_generic_TypedTag());
-    var xs$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x41, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x42, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((((-x41) / 2.0) + " ") + ((-x42) / 2.0)) + " ") + x41) + " ") + x42), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n(($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(style, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
+    var xs$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).xmlns__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair("http://www.w3.org/2000/svg", $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).width__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x45, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).height__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(x46, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).doubleAttr__Lscalatags_generic_AttrValue()), $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svgAttrs).viewBox__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(((((((((-x45) / 2.0) + " ") + ((-x46) / 2.0)) + " ") + x45) + " ") + x46), $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue()), $n(($n($n($as_Ldoodle_svg_Base(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_$outer)).Ldoodle_svg_package$$anon$1__f_bundle), $m_Lscalatags_JsDom$attrs$()).style__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair(style, $n($as_Lscalatags_generic_Aggregate(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_implicits)).stringAttr__Lscalatags_generic_AttrValue())]));
     return this$16.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs$1);
   }
-  throw new $c_s_MatchError(x38);
+  throw new $c_s_MatchError(x42);
 });
 $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.textTag__T__Ldoodle_core_font_Font__T__Lscalatags_generic_TypedTag = (function(text, font, style) {
-  matchResult9: {
-    var fontFamily;
-    var x46 = $n(font).Ldoodle_core_font_Font__f_family;
-    var x = $s_Ldoodle_core_font_FontFamily$__Serif__Ldoodle_core_font_FontFamily();
-    if (((x === null) ? (x46 === null) : $n(x).equals__O__Z(x46))) {
-      var fontFamily = "serif";
-      break matchResult9;
-    }
-    var x$3 = $s_Ldoodle_core_font_FontFamily$__SansSerif__Ldoodle_core_font_FontFamily();
-    if (((x$3 === null) ? (x46 === null) : $n(x$3).equals__O__Z(x46))) {
-      var fontFamily = "sans-serif";
-      break matchResult9;
-    }
-    var x$5 = $s_Ldoodle_core_font_FontFamily$__Monospaced__Ldoodle_core_font_FontFamily();
-    if (((x$5 === null) ? (x46 === null) : $n(x$5).equals__O__Z(x46))) {
-      var fontFamily = "monospace";
-      break matchResult9;
-    }
-    if ((x46 instanceof $c_Ldoodle_core_font_FontFamily$Named)) {
-      var x$1 = $as_Ldoodle_core_font_FontFamily$Named(x46);
-      var this$2 = $n(x$1);
-      var x49 = this$2.Ldoodle_core_font_FontFamily$Named__f_get;
-      var fontFamily = x49;
-      break matchResult9;
-    }
-    throw new $c_s_MatchError(x46);
-  }
   matchResult10: {
-    var fontStyle;
-    var x50 = $n(font).Ldoodle_core_font_Font__f_style;
-    var x$7 = $s_Ldoodle_core_font_FontStyle$__Italic__Ldoodle_core_font_FontStyle();
-    if ((x$7 === null)) {
-      var $x_1 = (x50 === null);
-    } else {
-      var this$3 = $n(x$7);
-      var $x_1 = (this$3 === x50);
-    }
-    if ($x_1) {
-      var fontStyle = "italic";
+    var fontFamily;
+    var x50 = $n(font).Ldoodle_core_font_Font__f_family;
+    var x = $s_Ldoodle_core_font_FontFamily$__Serif__Ldoodle_core_font_FontFamily();
+    if (((x === null) ? (x50 === null) : $n(x).equals__O__Z(x50))) {
+      var fontFamily = "serif";
       break matchResult10;
     }
-    var x$9 = $s_Ldoodle_core_font_FontStyle$__Normal__Ldoodle_core_font_FontStyle();
-    if ((x$9 === null)) {
-      var $x_2 = (x50 === null);
-    } else {
-      var this$4 = $n(x$9);
-      var $x_2 = (this$4 === x50);
+    var x$3 = $s_Ldoodle_core_font_FontFamily$__SansSerif__Ldoodle_core_font_FontFamily();
+    if (((x$3 === null) ? (x50 === null) : $n(x$3).equals__O__Z(x50))) {
+      var fontFamily = "sans-serif";
+      break matchResult10;
     }
-    if ($x_2) {
-      var fontStyle = "normal";
+    var x$5 = $s_Ldoodle_core_font_FontFamily$__Monospaced__Ldoodle_core_font_FontFamily();
+    if (((x$5 === null) ? (x50 === null) : $n(x$5).equals__O__Z(x50))) {
+      var fontFamily = "monospace";
+      break matchResult10;
+    }
+    if ((x50 instanceof $c_Ldoodle_core_font_FontFamily$Named)) {
+      var x$1 = $as_Ldoodle_core_font_FontFamily$Named(x50);
+      var this$2 = $n(x$1);
+      var x53 = this$2.Ldoodle_core_font_FontFamily$Named__f_get;
+      var fontFamily = x53;
       break matchResult10;
     }
     throw new $c_s_MatchError(x50);
   }
   matchResult11: {
+    var fontStyle;
+    var x54 = $n(font).Ldoodle_core_font_Font__f_style;
+    var x$7 = $s_Ldoodle_core_font_FontStyle$__Italic__Ldoodle_core_font_FontStyle();
+    if ((x$7 === null)) {
+      var $x_1 = (x54 === null);
+    } else {
+      var this$3 = $n(x$7);
+      var $x_1 = (this$3 === x54);
+    }
+    if ($x_1) {
+      var fontStyle = "italic";
+      break matchResult11;
+    }
+    var x$9 = $s_Ldoodle_core_font_FontStyle$__Normal__Ldoodle_core_font_FontStyle();
+    if ((x$9 === null)) {
+      var $x_2 = (x54 === null);
+    } else {
+      var this$4 = $n(x$9);
+      var $x_2 = (this$4 === x54);
+    }
+    if ($x_2) {
+      var fontStyle = "normal";
+      break matchResult11;
+    }
+    throw new $c_s_MatchError(x54);
+  }
+  matchResult12: {
     var fontWeight;
-    var x51 = $n(font).Ldoodle_core_font_Font__f_weight;
+    var x55 = $n(font).Ldoodle_core_font_Font__f_weight;
     var x$11 = $s_Ldoodle_core_font_FontWeight$__Bold__Ldoodle_core_font_FontWeight();
     if ((x$11 === null)) {
-      var $x_3 = (x51 === null);
+      var $x_3 = (x55 === null);
     } else {
       var this$5 = $n(x$11);
-      var $x_3 = (this$5 === x51);
+      var $x_3 = (this$5 === x55);
     }
     if ($x_3) {
       var fontWeight = "bold";
-      break matchResult11;
+      break matchResult12;
     }
     var x$13 = $s_Ldoodle_core_font_FontWeight$__Normal__Ldoodle_core_font_FontWeight();
     if ((x$13 === null)) {
-      var $x_4 = (x51 === null);
+      var $x_4 = (x55 === null);
     } else {
       var this$6 = $n(x$13);
-      var $x_4 = (this$6 === x51);
+      var $x_4 = (this$6 === x55);
     }
     if ($x_4) {
       var fontWeight = "normal";
-      break matchResult11;
-    }
-    throw new $c_s_MatchError(x51);
-  }
-  matchResult12: {
-    var fontSize;
-    var x52 = $n(font).Ldoodle_core_font_Font__f_size;
-    if ((x52 instanceof $c_Ldoodle_core_font_FontSize$Points)) {
-      var x$1$1 = $as_Ldoodle_core_font_FontSize$Points(x52);
-      var this$8 = $n(x$1$1);
-      var x55 = this$8.Ldoodle_core_font_FontSize$Points__f_get;
-      var fontSize = (x55 + "pt");
       break matchResult12;
     }
-    throw new $c_s_MatchError(x52);
+    throw new $c_s_MatchError(x55);
+  }
+  matchResult13: {
+    var fontSize;
+    var x56 = $n(font).Ldoodle_core_font_Font__f_size;
+    if ((x56 instanceof $c_Ldoodle_core_font_FontSize$Points)) {
+      var x$1$1 = $as_Ldoodle_core_font_FontSize$Points(x56);
+      var this$8 = $n(x$1$1);
+      var x59 = this$8.Ldoodle_core_font_FontSize$Points__f_get;
+      var fontSize = (x59 + "pt");
+      break matchResult13;
+    }
+    throw new $c_s_MatchError(x56);
   }
   var tagStyle = ((((((((("font-family: " + fontFamily) + "; font-style: ") + fontStyle) + "; font-weight: ") + fontWeight) + "; font-size: ") + fontSize) + "; ") + style);
   var this$10 = $n($n(this.Ldoodle_svg_algebra_SvgModule$Svg$__f_svg).text__Lscalatags_generic_TypedTag());
@@ -7579,18 +7579,18 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.inverseClientTransform__Ldoodle_
   if ((size instanceof $c_Ldoodle_svg_effect_Size$FitToPicture)) {
     var x$1 = $as_Ldoodle_svg_effect_Size$FitToPicture(size);
     var this$2 = $n(x$1);
-    var x63 = this$2.Ldoodle_svg_effect_Size$FitToPicture__f_border;
-    var w = ($n(bb).width__D() + (x63 << 1));
-    var h = ($n(bb).height__D() + (x63 << 1));
+    var x67 = this$2.Ldoodle_svg_effect_Size$FitToPicture__f_border;
+    var w = ($n(bb).width__D() + (x67 << 1));
+    var h = ($n(bb).height__D() + (x67 << 1));
     return $m_Ldoodle_core_Transform$().screenToLogical__D__D__Ldoodle_core_Transform(w, h);
   }
   if ((size instanceof $c_Ldoodle_svg_effect_Size$FixedSize)) {
     var x$1$1 = $as_Ldoodle_svg_effect_Size$FixedSize(size);
     var this$4 = $n(x$1$1);
-    var x59 = this$4.Ldoodle_svg_effect_Size$FixedSize__f_width;
+    var x63 = this$4.Ldoodle_svg_effect_Size$FixedSize__f_width;
     var this$5 = $n(x$1$1);
-    var x60 = this$5.Ldoodle_svg_effect_Size$FixedSize__f_height;
-    return $m_Ldoodle_core_Transform$().screenToLogical__D__D__Ldoodle_core_Transform(x59, x60);
+    var x64 = this$5.Ldoodle_svg_effect_Size$FixedSize__f_height;
+    return $m_Ldoodle_core_Transform$().screenToLogical__D__D__Ldoodle_core_Transform(x63, x64);
   }
   throw new $c_s_MatchError(size);
 });
@@ -7620,25 +7620,25 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic
   if ((fill instanceof $c_Ldoodle_algebra_generic_Fill$ColorFill)) {
     var x$1 = $as_Ldoodle_algebra_generic_Fill$ColorFill(fill);
     var this$2 = $n(x$1);
-    var x73 = this$2.Ldoodle_algebra_generic_Fill$ColorFill__f_color;
-    return (("fill: " + this.toOklch__Ldoodle_core_Color__T(x73)) + ";");
+    var x77 = this$2.Ldoodle_algebra_generic_Fill$ColorFill__f_color;
+    return (("fill: " + this.toOklch__Ldoodle_core_Color__T(x77)) + ";");
   }
   if ((fill instanceof $c_Ldoodle_algebra_generic_Fill$GradientFill)) {
     var x$1$1 = $as_Ldoodle_algebra_generic_Fill$GradientFill(fill);
     var this$4 = $n(x$1$1);
-    var x70 = this$4.Ldoodle_algebra_generic_Fill$GradientFill__f_gradient;
-    matchResult14: {
+    var x74 = this$4.Ldoodle_algebra_generic_Fill$GradientFill__f_gradient;
+    matchResult15: {
       var \u03b48$___1;
       var \u03b48$___2;
-      var x64 = this.toSvgGradient__Ldoodle_core_Gradient__T2(x70);
-      if ((x64 !== null)) {
-        var id = $as_T($n(x64)._1__O());
-        var gradient = $as_Lscalatags_generic_TypedTag($n(x64)._2__O());
+      var x68 = this.toSvgGradient__Ldoodle_core_Gradient__T2(x74);
+      if ((x68 !== null)) {
+        var id = $as_T($n(x68)._1__O());
+        var gradient = $as_Lscalatags_generic_TypedTag($n(x68)._2__O());
         var \u03b48$___1 = id;
         var \u03b48$___2 = gradient;
-        break matchResult14;
+        break matchResult15;
       }
-      throw new $c_s_MatchError(x64);
+      throw new $c_s_MatchError(x68);
     }
     var id$2 = $as_T(\u03b48$___1);
     var gradient$2 = $as_Lscalatags_generic_TypedTag(\u03b48$___2);
@@ -7695,7 +7695,7 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgRadialGradient__Ldoodle_cor
   return new $c_T2(id, domGradient);
 });
 $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgGradientStop__T2__Lscalatags_generic_TypedTag = (function(tuple) {
-  matchResult17: {
+  matchResult18: {
     var \u03b411$___1;
     var \u03b411$___2;
     if ((tuple !== null)) {
@@ -7703,7 +7703,7 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgGradientStop__T2__Lscalatag
       var offset = $uD($n(tuple)._2__O());
       var \u03b411$___1 = c;
       var \u03b411$___2 = offset;
-      break matchResult17;
+      break matchResult18;
     }
     throw new $c_s_MatchError(tuple);
   }
@@ -7717,74 +7717,74 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgGradientStop__T2__Lscalatag
 });
 $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic_Stroke__scm_Set__T = (function(stroke, gradients) {
   var builder = $ct_scm_StringBuilder__I__(new $c_scm_StringBuilder(), 64);
-  matchResult18: {
+  matchResult19: {
     var linecap;
-    var x80 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_cap;
+    var x84 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_cap;
     var x = $m_Ldoodle_core_Cap$Butt$();
-    if ((x === x80)) {
+    if ((x === x84)) {
       var linecap = "butt";
-      break matchResult18;
+      break matchResult19;
     }
     var x$3 = $m_Ldoodle_core_Cap$Round$();
-    if ((x$3 === x80)) {
+    if ((x$3 === x84)) {
       var linecap = "round";
-      break matchResult18;
+      break matchResult19;
     }
     var x$5 = $m_Ldoodle_core_Cap$Square$();
-    if ((x$5 === x80)) {
+    if ((x$5 === x84)) {
       var linecap = "square";
-      break matchResult18;
-    }
-    throw new $c_s_MatchError(x80);
-  }
-  matchResult19: {
-    var linejoin;
-    var x81 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_join;
-    var x$7 = $m_Ldoodle_core_Join$Bevel$();
-    if ((x$7 === x81)) {
-      var linejoin = "bevel";
       break matchResult19;
+    }
+    throw new $c_s_MatchError(x84);
+  }
+  matchResult20: {
+    var linejoin;
+    var x85 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_join;
+    var x$7 = $m_Ldoodle_core_Join$Bevel$();
+    if ((x$7 === x85)) {
+      var linejoin = "bevel";
+      break matchResult20;
     }
     var x$9 = $m_Ldoodle_core_Join$Round$();
-    if ((x$9 === x81)) {
+    if ((x$9 === x85)) {
       var linejoin = "round";
-      break matchResult19;
+      break matchResult20;
     }
     var x$11 = $m_Ldoodle_core_Join$Miter$();
-    if ((x$11 === x81)) {
+    if ((x$11 === x85)) {
       var linejoin = "miter";
-      break matchResult19;
+      break matchResult20;
     }
-    throw new $c_s_MatchError(x81);
+    throw new $c_s_MatchError(x85);
   }
   var s = (("stroke-width: " + $n(stroke).Ldoodle_algebra_generic_Stroke__f_width) + "px; ");
   builder.addAll__T__scm_StringBuilder(s);
-  matchResult21: {
-    var x85 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_style;
-    if ((x85 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke)) {
-      var x$1 = $as_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(x85);
+  matchResult22: {
+    var x89 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_style;
+    if ((x89 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$ColorStroke)) {
+      var x$1 = $as_Ldoodle_algebra_generic_StrokeStyle$ColorStroke(x89);
       var this$2 = $n(x$1);
-      var x91 = this$2.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
-      var s$1 = (("stroke: " + this.toOklch__Ldoodle_core_Color__T(x91)) + "; ");
+      var x95 = this$2.Ldoodle_algebra_generic_StrokeStyle$ColorStroke__f_color;
+      var s$1 = (("stroke: " + this.toOklch__Ldoodle_core_Color__T(x95)) + "; ");
       builder.addAll__T__scm_StringBuilder(s$1);
-      break matchResult21;
+      break matchResult22;
     }
-    if ((x85 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke)) {
-      var x$1$1 = $as_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(x85);
+    if ((x89 instanceof $c_Ldoodle_algebra_generic_StrokeStyle$GradientStroke)) {
+      var x$1$1 = $as_Ldoodle_algebra_generic_StrokeStyle$GradientStroke(x89);
       var this$4 = $n(x$1$1);
-      var x88 = this$4.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
-      matchResult20: {
+      var x92 = this$4.Ldoodle_algebra_generic_StrokeStyle$GradientStroke__f_gradient;
+      matchResult21: {
         var \u03b412$___1;
         var \u03b412$___2;
-        var x82 = this.toSvgGradient__Ldoodle_core_Gradient__T2(x88);
-        if ((x82 !== null)) {
-          var id = $as_T($n(x82)._1__O());
-          var svgGradient = $as_Lscalatags_generic_TypedTag($n(x82)._2__O());
+        var x86 = this.toSvgGradient__Ldoodle_core_Gradient__T2(x92);
+        if ((x86 !== null)) {
+          var id = $as_T($n(x86)._1__O());
+          var svgGradient = $as_Lscalatags_generic_TypedTag($n(x86)._2__O());
           var \u03b412$___1 = id;
           var \u03b412$___2 = svgGradient;
-          break matchResult20;
+          break matchResult21;
         }
-        throw new $c_s_MatchError(x82);
+        throw new $c_s_MatchError(x86);
       }
       var id$2 = $as_T(\u03b412$___1);
       var svgGradient$2 = $as_Lscalatags_generic_TypedTag(\u03b412$___2);
@@ -7792,19 +7792,19 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic
       this$6.addOne__O__scm_Growable(svgGradient$2);
       var s$2 = (("stroke: url('#" + id$2) + "'); ");
       builder.addAll__T__scm_StringBuilder(s$2);
-      break matchResult21;
+      break matchResult22;
     }
-    throw new $c_s_MatchError(x85);
+    throw new $c_s_MatchError(x89);
   }
   var s$3 = (("stroke-linecap: " + linecap) + "; ");
   builder.addAll__T__scm_StringBuilder(s$3);
   var s$4 = (("stroke-linejoin: " + linejoin) + "; ");
   builder.addAll__T__scm_StringBuilder(s$4);
-  matchResult22: {
+  matchResult23: {
     var s$5;
-    var x92 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_dash;
-    if ((x92 instanceof $c_s_Some)) {
-      var d = $asArrayOf_F($n($as_s_Some(x92)).s_Some__f_value, 1);
+    var x96 = $n(stroke).Ldoodle_algebra_generic_Stroke__f_dash;
+    if ((x96 instanceof $c_s_Some)) {
+      var d = $asArrayOf_F($n($as_s_Some(x96)).s_Some__f_value, 1);
       var $x_12 = $m_s_Predef$();
       var f = ((a) => {
         var a$1 = $uF(a);
@@ -7894,14 +7894,14 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toStyle__Ldoodle_algebra_generic
       }
       var this$11 = $n($x_12.wrapRefArray__AO__scm_ArraySeq$ofRef(ys));
       var s$5 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$11, "", " ", "");
-      break matchResult22;
+      break matchResult23;
     }
     var x$13 = $m_s_None$();
-    if ((x$13 === x92)) {
+    if ((x$13 === x96)) {
       var s$5 = "";
-      break matchResult22;
+      break matchResult23;
     }
-    throw new $c_s_MatchError(x92);
+    throw new $c_s_MatchError(x96);
   }
   builder.addAll__T__scm_StringBuilder(s$5);
   return $n(builder.scm_StringBuilder__f_underlying).jl_StringBuilder__f_java$lang$StringBuilder$$content;
@@ -7937,51 +7937,51 @@ $c_Ldoodle_svg_algebra_SvgModule$Svg$.prototype.toSvgPath__sci_List__Ldoodle_svg
   while ((!$n(these).isEmpty__Z())) {
     var x0 = $n(these).head__O();
     var x$1 = $as_Ldoodle_core_PathElement(x0);
-    matchResult27: {
+    matchResult28: {
       if ((x$1 instanceof $c_Ldoodle_core_PathElement$MoveTo)) {
         var x$1$1 = $as_Ldoodle_core_PathElement$MoveTo(x$1);
         var this$3 = $n(x$1$1);
-        var x110 = this$3.Ldoodle_core_PathElement$MoveTo__f_to;
-        var d = $n(x110).x__D();
+        var x114 = this$3.Ldoodle_core_PathElement$MoveTo__f_to;
+        var d = $n(x114).x__D();
         var $x_1 = $f_T__replaceFirst__T__T__T(("" + d), "\\.0+$", "");
-        var d$1 = $n(x110).y__D();
+        var d$1 = $n(x114).y__D();
         var s = (((("M " + $x_1) + ",") + $f_T__replaceFirst__T__T__T(("" + d$1), "\\.0+$", "")) + " ");
         builder.addAll__T__scm_StringBuilder(s);
-        break matchResult27;
+        break matchResult28;
       }
       if ((x$1 instanceof $c_Ldoodle_core_PathElement$LineTo)) {
         var x$1$2 = $as_Ldoodle_core_PathElement$LineTo(x$1);
         var this$7 = $n(x$1$2);
-        var x107 = this$7.Ldoodle_core_PathElement$LineTo__f_to;
-        var d$2 = $n(x107).x__D();
+        var x111 = this$7.Ldoodle_core_PathElement$LineTo__f_to;
+        var d$2 = $n(x111).x__D();
         var $x_2 = $f_T__replaceFirst__T__T__T(("" + d$2), "\\.0+$", "");
-        var d$3 = $n(x107).y__D();
+        var d$3 = $n(x111).y__D();
         var s$1 = (((("L " + $x_2) + ",") + $f_T__replaceFirst__T__T__T(("" + d$3), "\\.0+$", "")) + " ");
         builder.addAll__T__scm_StringBuilder(s$1);
-        break matchResult27;
+        break matchResult28;
       }
       if ((x$1 instanceof $c_Ldoodle_core_PathElement$BezierCurveTo)) {
         var x$1$3 = $as_Ldoodle_core_PathElement$BezierCurveTo(x$1);
         var this$11 = $n(x$1$3);
-        var x102 = this$11.Ldoodle_core_PathElement$BezierCurveTo__f_cp1;
+        var x106 = this$11.Ldoodle_core_PathElement$BezierCurveTo__f_cp1;
         var this$12 = $n(x$1$3);
-        var x103 = this$12.Ldoodle_core_PathElement$BezierCurveTo__f_cp2;
+        var x107 = this$12.Ldoodle_core_PathElement$BezierCurveTo__f_cp2;
         var this$13 = $n(x$1$3);
-        var x104 = this$13.Ldoodle_core_PathElement$BezierCurveTo__f_to;
-        var d$4 = $n(x102).x__D();
+        var x108 = this$13.Ldoodle_core_PathElement$BezierCurveTo__f_to;
+        var d$4 = $n(x106).x__D();
         var $x_7 = $f_T__replaceFirst__T__T__T(("" + d$4), "\\.0+$", "");
-        var d$5 = $n(x102).y__D();
+        var d$5 = $n(x106).y__D();
         var $x_6 = $f_T__replaceFirst__T__T__T(("" + d$5), "\\.0+$", "");
-        var d$6 = $n(x103).x__D();
+        var d$6 = $n(x107).x__D();
         var $x_5 = $f_T__replaceFirst__T__T__T(("" + d$6), "\\.0+$", "");
-        var d$7 = $n(x103).y__D();
+        var d$7 = $n(x107).y__D();
         var $x_4 = $f_T__replaceFirst__T__T__T(("" + d$7), "\\.0+$", "");
-        var d$8 = $n(x104).x__D();
+        var d$8 = $n(x108).x__D();
         var $x_3 = $f_T__replaceFirst__T__T__T(("" + d$8), "\\.0+$", "");
-        var d$9 = $n(x104).y__D();
+        var d$9 = $n(x108).y__D();
         var s$2 = (((((((((((("C " + $x_7) + ",") + $x_6) + " ") + $x_5) + ",") + $x_4) + " ") + $x_3) + ",") + $f_T__replaceFirst__T__T__T(("" + d$9), "\\.0+$", "")) + " ");
         builder.addAll__T__scm_StringBuilder(s$2);
-        break matchResult27;
+        break matchResult28;
       }
       throw new $c_s_MatchError(x$1);
     }
@@ -38074,10 +38074,6 @@ $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.draw__T__V = (function
   var picture = $f_Ldoodle_examples_BaseExamples__all__Ldoodle_algebra_Picture(this);
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($m_Ldoodle_canvas_effect_Frame$().apply__T__Ldoodle_canvas_effect_Frame(id), $m_Ldoodle_canvas_package$package$().given_Renderer_Algebra_Frame_Canvas__Ldoodle_effect_Renderer(), $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.drawPolygons = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawPolygons__T__V(prep0);
-});
 $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.draw = (function(arg) {
   var prep0 = $as_T(arg);
   this.draw__T__V(prep0);
@@ -38085,6 +38081,10 @@ $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.draw = (function(arg) 
 $c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.drawTable = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawTable__T__V(prep0);
+});
+$c_Ldoodle_examples_canvas_CanvasBlendExamples$.prototype.drawPolygons = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawPolygons__T__V(prep0);
 });
 var $d_Ldoodle_examples_canvas_CanvasBlendExamples$ = new $TypeData().initClass($c_Ldoodle_examples_canvas_CanvasBlendExamples$, "doodle.examples.canvas.CanvasBlendExamples$", ({
   Ldoodle_examples_canvas_CanvasBlendExamples$: 1,
@@ -38299,13 +38299,13 @@ $c_Ldoodle_examples_svg_SvgBlendExamples$.prototype.drawTable__T__V = (function(
   var picture = this.Ldoodle_examples_svg_SvgBlendExamples$__f_table;
   new $c_Ldoodle_syntax_AbstractRendererSyntax$RendererPictureOps(this$1, picture).drawWithFrame__O__Ldoodle_effect_Renderer__Lcats_effect_unsafe_IORuntime__V($n($m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_Frame).apply__T__Ldoodle_svg_effect_Frame(id), $m_Ldoodle_svg_package$().Ldoodle_svg_package$__f_svgRenderer, $m_Lcats_effect_unsafe_IORuntime$().global__Lcats_effect_unsafe_IORuntime());
 });
-$c_Ldoodle_examples_svg_SvgBlendExamples$.prototype.drawPolygons = (function(arg) {
-  var prep0 = $as_T(arg);
-  this.drawPolygons__T__V(prep0);
-});
 $c_Ldoodle_examples_svg_SvgBlendExamples$.prototype.drawTable = (function(arg) {
   var prep0 = $as_T(arg);
   this.drawTable__T__V(prep0);
+});
+$c_Ldoodle_examples_svg_SvgBlendExamples$.prototype.drawPolygons = (function(arg) {
+  var prep0 = $as_T(arg);
+  this.drawPolygons__T__V(prep0);
 });
 var $d_Ldoodle_examples_svg_SvgBlendExamples$ = new $TypeData().initClass($c_Ldoodle_examples_svg_SvgBlendExamples$, "doodle.examples.svg.SvgBlendExamples$", ({
   Ldoodle_examples_svg_SvgBlendExamples$: 1,
@@ -38908,6 +38908,33 @@ function $p_Ldoodle_svg_algebra_FilterModule$Filter__applyFilter__Lscalatags_gen
   var xs = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lscalatags_generic_Modifier.getArrayOf().constr)([$n(($n(b), $m_Lscalatags_JsDom$svgAttrs$()).filter__Lscalatags_generic_Attr()).$colon$eq__O__Lscalatags_generic_AttrValue__Lscalatags_generic_AttrPair((("url(#" + filterId) + ")"), ($n(b), $m_Lscalatags_JsDom$implicits$()).Lscalatags_JsDom$implicits$__f_stringAttr), tag]));
   return this$4.apply__sci_Seq__Lscalatags_JsDom$TypedTag(xs);
 }
+function $p_Ldoodle_svg_effect_Canvas$__fromTarget__Lorg_scalajs_dom_Node__Ldoodle_svg_effect_Frame__Lcats_effect_kernel_Resource($thiz, target, frame) {
+  var _1 = $m_Lfs2_concurrent_Topic$().apply__Lcats_effect_kernel_GenConcurrent__O($m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO);
+  var _2 = $m_Lfs2_concurrent_Topic$().apply__Lcats_effect_kernel_GenConcurrent__O($m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO);
+  var _3 = $m_Lfs2_concurrent_Topic$().apply__Lcats_effect_kernel_GenConcurrent__O($m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO);
+  var t = new $c_T3(_1, _2, _3);
+  var this$4 = $n($as_Lcats_effect_IO(new $c_Lcats_syntax_Tuple3SemigroupalOps(t).mapN__F3__Lcats_Functor__Lcats_Semigroupal__O(new $c_sjsr_AnonFunction3_$$Lambda$0321b7865d991d5a3e10ec941cd6461a4b204491(((redrawTopic, mouseClickTopic, mouseMoveTopic) => {
+    var redrawTopic$1 = $as_Lfs2_concurrent_Topic(redrawTopic);
+    var mouseClickTopic$1 = $as_Lfs2_concurrent_Topic(mouseClickTopic);
+    var mouseMoveTopic$1 = $as_Lfs2_concurrent_Topic(mouseMoveTopic);
+    return new $c_Ldoodle_svg_effect_Canvas(target, frame, redrawTopic$1, mouseClickTopic$1, mouseMoveTopic$1);
+  })), $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO, $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO)));
+  var this$13 = new $c_Lcats_effect_kernel_Resource$Eval(this$4);
+  var f = new $c_sjsr_AnonFunction1_$$Lambda$3aa60c34ef08a878abffbf4628007cc68fa3c7ab(((canvas) => {
+    var canvas$1 = $as_Ldoodle_svg_effect_Canvas(canvas);
+    var this$9 = $n($n(canvas$1).Ldoodle_svg_effect_Canvas__f_stream);
+    $m_Lfs2_Compiler$();
+    var evidence$1 = $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO;
+    var F = new $c_Lfs2_Compiler$Target$ConcurrentTarget(evidence$1);
+    var compiler = new $c_Lfs2_CompilerLowPriority1$$anon$2(F);
+    var target$1 = $n($as_Lcats_effect_IO(new $c_Lfs2_Stream$CompileOps(this$9.Lfs2_Stream__f_underlying, compiler).drain__O())).background__Lcats_effect_kernel_Resource();
+    var F0 = $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO;
+    var tc = new $c_Lcats_effect_kernel_ResourceHOInstances0$$anon$9(F0);
+    var this$12 = new $c_Lcats_Functor$ToFunctorOps$$anon$5(target$1, tc);
+    return $as_Lcats_effect_kernel_Resource($n(this$12.Lcats_Functor$ToFunctorOps$$anon$5__f_typeClassInstance).as__O__O__O(this$12.Lcats_Functor$ToFunctorOps$$anon$5__f_self, canvas$1));
+  }));
+  return new $c_Lcats_effect_kernel_Resource$Bind(this$13, f);
+}
 /** @constructor */
 function $c_Ldoodle_svg_effect_Canvas$() {
 }
@@ -38922,31 +38949,7 @@ $c_Ldoodle_svg_effect_Canvas$.prototype.fromFrame__Ldoodle_svg_effect_Frame__Lca
   if ((target === null)) {
     throw $ct_ju_NoSuchElementException__T__(new $c_ju_NoSuchElementException(), ("Doodle SVG Canvas could not be created, as could not find a DOM element with the requested id " + $n(frame).Ldoodle_svg_effect_Frame__f_id));
   } else {
-    var _1 = $m_Lfs2_concurrent_Topic$().apply__Lcats_effect_kernel_GenConcurrent__O($m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO);
-    var _2 = $m_Lfs2_concurrent_Topic$().apply__Lcats_effect_kernel_GenConcurrent__O($m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO);
-    var _3 = $m_Lfs2_concurrent_Topic$().apply__Lcats_effect_kernel_GenConcurrent__O($m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO);
-    var t = new $c_T3(_1, _2, _3);
-    var this$4 = $n($as_Lcats_effect_IO(new $c_Lcats_syntax_Tuple3SemigroupalOps(t).mapN__F3__Lcats_Functor__Lcats_Semigroupal__O(new $c_sjsr_AnonFunction3_$$Lambda$0321b7865d991d5a3e10ec941cd6461a4b204491(((redrawTopic, mouseClickTopic, mouseMoveTopic) => {
-      var redrawTopic$1 = $as_Lfs2_concurrent_Topic(redrawTopic);
-      var mouseClickTopic$1 = $as_Lfs2_concurrent_Topic(mouseClickTopic);
-      var mouseMoveTopic$1 = $as_Lfs2_concurrent_Topic(mouseMoveTopic);
-      return new $c_Ldoodle_svg_effect_Canvas(target, frame, redrawTopic$1, mouseClickTopic$1, mouseMoveTopic$1);
-    })), $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO, $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO)));
-    var this$13 = new $c_Lcats_effect_kernel_Resource$Eval(this$4);
-    var f = new $c_sjsr_AnonFunction1_$$Lambda$3aa60c34ef08a878abffbf4628007cc68fa3c7ab(((canvas) => {
-      var canvas$1 = $as_Ldoodle_svg_effect_Canvas(canvas);
-      var this$9 = $n($n(canvas$1).Ldoodle_svg_effect_Canvas__f_stream);
-      $m_Lfs2_Compiler$();
-      var evidence$1 = $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO;
-      var F = new $c_Lfs2_Compiler$Target$ConcurrentTarget(evidence$1);
-      var compiler = new $c_Lfs2_CompilerLowPriority1$$anon$2(F);
-      var target$1 = $n($as_Lcats_effect_IO(new $c_Lfs2_Stream$CompileOps(this$9.Lfs2_Stream__f_underlying, compiler).drain__O())).background__Lcats_effect_kernel_Resource();
-      var F0 = $m_Lcats_effect_IO$().Lcats_effect_IO$__f__asyncForIO;
-      var tc = new $c_Lcats_effect_kernel_ResourceHOInstances0$$anon$9(F0);
-      var this$12 = new $c_Lcats_Functor$ToFunctorOps$$anon$5(target$1, tc);
-      return $as_Lcats_effect_kernel_Resource($n(this$12.Lcats_Functor$ToFunctorOps$$anon$5__f_typeClassInstance).as__O__O__O(this$12.Lcats_Functor$ToFunctorOps$$anon$5__f_self, canvas$1));
-    }));
-    return new $c_Lcats_effect_kernel_Resource$Bind(this$13, f);
+    return $p_Ldoodle_svg_effect_Canvas$__fromTarget__Lorg_scalajs_dom_Node__Ldoodle_svg_effect_Frame__Lcats_effect_kernel_Resource(this, target, frame);
   }
 });
 var $d_Ldoodle_svg_effect_Canvas$ = new $TypeData().initClass($c_Ldoodle_svg_effect_Canvas$, "doodle.svg.effect.Canvas$", ({

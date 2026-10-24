@@ -212,6 +212,12 @@
 <p>To keep the SVG&#39;s blending separate from the surrounding page, set CSS isolation on the frame:</p>
 <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">svg</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Isolation</span><span>
 </span><span class="keyword">val</span><span> </span><span class="identifier">isolatedFrame</span><span> = </span><span class="identifier">doodle</span><span>.</span><span class="identifier">svg</span><span>.</span><span class="type-name">Frame</span><span>(</span><span class="string-literal">&quot;svg-root&quot;</span><span>).</span><span class="identifier">withIsolation</span><span>(</span><span class="type-name">Isolation</span><span>.</span><span class="type-name">Isolate</span><span>)</span></code></pre>
+<p>Sometimes you don&#39;t want Doodle to put the SVG on the page for you. You might want to add your own elements to it first, or choose yourself when and where it appears. In that case render to a <code>Tag</code> instead.</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">doodle</span><span>.</span><span class="identifier">svg</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">SvgRenderer</span><span>
+
+</span><span class="type-name">SvgRenderer</span><span>.</span><span class="identifier">renderToTag</span><span>(</span><span class="identifier">frame</span><span>, </span><span class="identifier">thePicture</span><span>)</span></code></pre>
+<p>This gives you an <code>IO</code> of a <a href="https://com-lihaoyi.github.io/scalatags/">ScalaTags</a> <code>Tag</code>, along with the picture&#39;s result. Nothing is added to the page. Call <code>.render</code> on the <code>Tag</code> when you want a DOM element to insert or manipulate.</p>
+<p>The frame&#39;s <code>id</code> is ignored here, as nothing is drawn to the screen, but its size, background and isolation still apply to the SVG you get back.</p>
 
 <h2 id="running-on-the-jvm" class="section">Running on the JVM</h2>
 <p>On the JVM you can&#39;t draw SVG to the screen. Use the <code>java2d</code> backend for that. However you can write SVG output, as described in <a href="../pictures/writing.html">writing to a file</a>. Here&#39;s a simple example.</p>
